@@ -8,6 +8,7 @@ import {
   RefreshCw,
 } from "lucide-react";
 import { base, request } from "./api";
+import { Experiments } from "./Experiments";
 
 interface Bid {
   id: string;
@@ -628,6 +629,7 @@ export function CognitionPane({ token }: { token: string }) {
           ))}
         </section>
       </div>
+      <Experiments token={token} />
     </div>
   );
 }
