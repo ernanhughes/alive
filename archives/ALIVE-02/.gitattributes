@@ -1,2 +1,2 @@
 # Preserve evidence bytes so manifest checksums survive checkout on every platform.
-* -text
+* -text whitespace=cr-at-eol
