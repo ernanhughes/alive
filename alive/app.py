@@ -20,7 +20,7 @@ from alive.cognitive_api import public_router, router
 from alive.config import Settings, prepare_local
 from alive.db import Database
 from alive.experiment.api import router as experiment_router
-from alive.experiment.service import Experiments
+from alive.experiment_budget import BudgetedExperiments as Experiments
 from alive.kernel import Kernel, envelope
 from alive.memory import MemoryService
 from alive.models import AgentRun, BrowserSession, Event, Goal, Memory, now, record
