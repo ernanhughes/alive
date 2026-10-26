@@ -1,0 +1,9 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>ALIVE · First Contact</title>
+<style>body{font:20px system-ui;background:#101a18;color:#e5f3eb;max-width:720px;margin:80px auto;padding:20px}button,input{font:inherit;padding:14px;margin:8px 0}button{background:#b9f979;border:0;border-radius:8px}small{color:#9bb5ab}#signal{padding:28px;border:1px solid #416257;margin:24px 0}</style>
+<small>ALIVE-01 / CONTROLLED ENVIRONMENT</small><h1>First Contact</h1>
+<p>A small change. A persistent experience.</p><div id="signal" aria-live="polite">The habitat is quiet.</div>
+<label>Signal <input id="message" data-alive-allow="fill" placeholder="A new observation"></label>
+<button id="change" data-alive-allow="click">Transmit signal</button>
+<p>Only the marked controls permit managed browser actions.</p>
+<script>document.querySelector('#change').onclick=()=>{document.querySelector('#signal').textContent=document.querySelector('#message').value||'A green light appeared in the habitat.'}</script>
+</html>
