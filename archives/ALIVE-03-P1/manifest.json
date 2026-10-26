@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "captured_at": "2026-10-26T23:49:05.580310+00:00",
+  "implementation_commit": "87e723276e5fc00ed432fab6bb52744bcda79128",
+  "freeze_id": "549774ba2c72105b0c075ac9dc2eb486a2b21dd59d911aeb83bbaa080f80cd5d",
+  "full_evaluation_executed": false,
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "acceptance.png": {
+      "sha256": "cdf0b585f22535ba2ae42e8a003ee2d0151ccbc3f853f0e4af1095e40d502b1b",
+      "bytes": 73264
+    },
+    "calibration-evidence.json": {
+      "sha256": "099fe440c1f9703dca9a2c95e164d1b48d8c22d6a681eda90cdfc1418955c31e",
+      "bytes": 8544
+    },
+    "calibration.json": {
+      "sha256": "063c120c0cf72252657d1635391b9563d3b11649d1ea9da35beee312e2d98675",
+      "bytes": 90510
+    },
+    "evaluation.sealed.json": {
+      "sha256": "e3515fbd04759f83e2b7e9f05adff21bf678a62b4ef53a6755d0a02717a9fe2e",
+      "bytes": 251618
+    },
+    "freeze-design.json": {
+      "sha256": "2b16884d77691d3843b4f781c951fccd72edb9b700917140b2b9481421666a50",
+      "bytes": 6193
+    },
+    "freeze-final.json": {
+      "sha256": "de3d1c79332a1d7c90ac45001bbf5a231d80d3ceff52786cddb8a19f3d0651f9",
+      "bytes": 6434
+    },
+    "model-and-prompts.json": {
+      "sha256": "1224df93f6a7112f91ebf00336ca91fbcda2307375500650603dcd36f45a5dff",
+      "bytes": 3367
+    },
+    "policy-configuration.json": {
+      "sha256": "c40e857a8ed9d483cc970deb0476db2fcfc4ecf3183f339124ae04451739d43f",
+      "bytes": 1630
+    },
+    "pricing.json": {
+      "sha256": "549cb34d69c22f8b11f3c95aa5d32ee5ae91ac7a5891fb6ad96f8c346d55ca9f",
+      "bytes": 439
+    },
+    "protocol.md": {
+      "sha256": "f929bd273e499b73e8536f5940c0f9e7bd1e5c7ec28a9080b173196f338360b4",
+      "bytes": 9192
+    },
+    "README.md": {
+      "sha256": "b63abadd61eb00cc669739a3a964add93d43a9a60ee3c87bd7dae4b72a23c08f",
+      "bytes": 5199
+    },
+    "results/live-calibration.json": {
+      "sha256": "e191381e4caf2715c2a4b2acb4a13a668e58f2289e2fdb8fa07df3caedd7ce17",
+      "bytes": 135042
+    },
+    "results/live-pilot.json": {
+      "sha256": "58914a93be8e75fdc5e6e7d057ac0ab714ddb7ac1035abce26fc3af3769f3435",
+      "bytes": 88777
+    },
+    "review-pack.json": {
+      "sha256": "5b1222200e9909bf0a18dd5f5808765211dd239364c117688b53252c73333658",
+      "bytes": 8403
+    },
+    "split-manifest.json": {
+      "sha256": "75b444d8f94e4dc9c437f828ccdef21e6b32efd532b261037531d6fd6fc27c16",
+      "bytes": 1371
+    },
+    "usage/redacted-ledger.json": {
+      "sha256": "41630a405545145b4832802f6f0af3d2c06f6b0bf9454e45f0c314ba2bf88dca",
+      "bytes": 108331
+    },
+    "validation/backend-tests.txt": {
+      "sha256": "161e75bb256fe34cb33bf2e4d73872367617996d0c5aca890ec06c2aba6b5edc",
+      "bytes": 849
+    },
+    "validation/baseline-integrity.json": {
+      "sha256": "b74daf085e3235738968f2b040be898e3d66ef25202e7d48a6f3bcc2b3d49049",
+      "bytes": 1097
+    },
+    "validation/browser-tests.txt": {
+      "sha256": "cfe70ec8ee0811d4ed80bef211066b156f68caa69f6068630104cf7110b1ca51",
+      "bytes": 477
+    },
+    "validation/frontend-build.txt": {
+      "sha256": "149c8c3aa1a23bd15c6a6ef3581335a00d1d15d58d12bde1dbf7ceef0e695750",
+      "bytes": 405
+    },
+    "validation/frontend-tests.txt": {
+      "sha256": "a88cf1e83913b265c60771c650d5adf7029997d0f8ff04890b018a102b8d8cf8",
+      "bytes": 252
+    }
+  },
+  "physical_pilot_calls": 8
+}

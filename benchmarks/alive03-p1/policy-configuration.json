@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "policy_version": "cognitive-economy-v1",
+  "weights": {
+    "uncertainty": 0.3,
+    "contradiction": 0.3,
+    "evidence_gap": 0.2,
+    "weak_evidence": 0.1,
+    "action_risk": 0.1
+  },
+  "threshold": 1.1,
+  "cost_weight": 0.03,
+  "calibration_count": 8,
+  "selection_criterion": "mean correctness minus 0.05*(critic tokens/3000, capped at 1)",
+  "candidates": [
+    {
+      "threshold": 0,
+      "utility": 0.9772395833333332,
+      "invocations": 8
+    },
+    {
+      "threshold": 0.1,
+      "utility": 0.9864895833333333,
+      "invocations": 5
+    },
+    {
+      "threshold": 0.2,
+      "utility": 0.9948791666666666,
+      "invocations": 2
+    },
+    {
+      "threshold": 0.3,
+      "utility": 1.0,
+      "invocations": 0
+    },
+    {
+      "threshold": 0.4,
+      "utility": 1.0,
+      "invocations": 0
+    },
+    {
+      "threshold": 0.5,
+      "utility": 1.0,
+      "invocations": 0
+    },
+    {
+      "threshold": 0.6,
+      "utility": 1.0,
+      "invocations": 0
+    },
+    {
+      "threshold": 0.7,
+      "utility": 1.0,
+      "invocations": 0
+    },
+    {
+      "threshold": 0.8,
+      "utility": 1.0,
+      "invocations": 0
+    },
+    {
+      "threshold": 0.9,
+      "utility": 1.0,
+      "invocations": 0
+    },
+    {
+      "threshold": 1.1,
+      "utility": 1.0,
+      "invocations": 0
+    }
+  ],
+  "evaluation_labels_used": false,
+  "limitation": "Eight development pairs provide weak calibration; this is deterministic parameter selection, not learned policy optimization.",
+  "provider": "meta",
+  "model": "muse-spark-1.3",
+  "source_run_id": "332a2d9f-abd6-41c5-affd-fd2e0ce31b50"
+}

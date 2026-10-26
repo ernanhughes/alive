@@ -1,0 +1,12 @@
+
+> alive-dashboard@0.2.0 test:e2e
+> playwright test
+
+
+Running 3 tests using 1 worker
+
+  ok 1 e2e\cognition.spec.ts:5:1 › autonomous DOM observation, role exchange, approval and hard budget controls (8.1s)
+  ok 2 e2e\experiments.spec.ts:5:1 › policy comparison renders persisted outcomes and preserves the full-run gate (975ms)
+  ok 3 e2e\first-contact.spec.ts:4:1 › dashboard renders persisted data, errors, agent progress and browser controls (7.2s)
+
+  3 passed (17.0s)
