@@ -48,7 +48,8 @@ class GoalTransition(BaseModel):
 
 class SearchInput(BaseModel):
     query: str = Field(min_length=1, max_length=500)
-    mode: Literal["text", "vector"] = "text"
+    mode: Literal["text", "vector", "hybrid"] = "text"
+    top_k: int = Field(default=5, ge=1, le=20)
 
 
 class RunInput(BaseModel):

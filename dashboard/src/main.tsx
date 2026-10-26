@@ -27,6 +27,7 @@ import type {
   State,
 } from "./api";
 import "./style.css";
+import { CognitionPane } from "./Cognition";
 
 const tabs = [
   "Overview",
@@ -35,9 +36,18 @@ const tabs = [
   "Agents",
   "Browser",
   "Runtime",
+  "Cognition",
 ] as const;
 type Tab = (typeof tabs)[number];
-const icons = [Layers3, Radio, BrainCircuit, Terminal, Globe2, Waypoints];
+const icons = [
+  Layers3,
+  Radio,
+  BrainCircuit,
+  Terminal,
+  Globe2,
+  Waypoints,
+  BrainCircuit,
+];
 const time = (s: string | null | undefined) =>
   s ? new Date(s).toLocaleTimeString("en-GB") : "Awaiting heartbeat";
 export function EventList({ events }: { events: AliveEvent[] }) {
@@ -91,6 +101,7 @@ export function App() {
     [busy, setBusy] = useState(false),
     [live, setLive] = useState(false);
   const [searchResults, setSearchResults] = useState<Memory[]>([]);
+  const [retrievalMode, setRetrievalMode] = useState("text");
   const [query, setQuery] = useState(""),
     [searchMode, setSearchMode] = useState(""),
     [objective, setObjective] = useState(""),
@@ -258,7 +269,11 @@ export function App() {
         <div className="content">
           <div className="page-heading">
             <div>
-              <div className="eyebrow">ALIVE-01 / FIRST CONTACT</div>
+              <div className="eyebrow">
+                {tab === "Cognition"
+                  ? "ALIVE-02 / COGNITIVE SOCIETY"
+                  : "ALIVE-01 / FIRST CONTACT"}
+              </div>
               <h1>
                 {tab === "Overview"
                   ? "Something is becoming."
@@ -270,7 +285,9 @@ export function App() {
                         ? "Thought into action."
                         : tab === "Browser"
                           ? "A window to the world."
-                          : "A persistent presence."}
+                          : tab === "Cognition"
+                            ? "Evidence becomes intention."
+                            : "A persistent presence."}
               </h1>
               <p>
                 {tab === "Overview"
@@ -502,7 +519,11 @@ export function App() {
             <section className="panel">
               <div className="panel-top">
                 <h2>Memory explorer</h2>
-                <span className="tag subtle">SEMANTIC SEARCH UNAVAILABLE</span>
+                <span className="tag subtle">
+                  {caps?.pgvector.search
+                    ? "SEMANTIC SEARCH AVAILABLE"
+                    : "FULL-TEXT MODE"}
+                </span>
               </div>
               <form
                 className="form-row"
@@ -512,13 +533,25 @@ export function App() {
                     const data = await request<{
                       mode: string;
                       results: Memory[];
-                    }>("/memories/search", token, { query });
+                    }>("/memories/search", token, {
+                      query,
+                      mode: retrievalMode,
+                    });
                     setSearchResults(data.results);
                     setSearchMode(data.mode);
                   });
                 }}
               >
                 <Search size={18} />
+                <select
+                  aria-label="Retrieval mode"
+                  value={retrievalMode}
+                  onChange={(e) => setRetrievalMode(e.target.value)}
+                >
+                  <option value="text">Full text</option>
+                  <option value="vector">Vector similarity</option>
+                  <option value="hybrid">Hybrid</option>
+                </select>
                 <input
                   aria-label="Search memories"
                   value={query}
@@ -830,6 +863,7 @@ export function App() {
               ))}
             </section>
           )}
+          {tab === "Cognition" && token && <CognitionPane token={token} />}
           <footer>
             <span>
               <span className="dot" /> ALIVE / ADAPTIVE LIVING INTELLIGENCE

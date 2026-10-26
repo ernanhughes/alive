@@ -15,9 +15,12 @@ from sqlalchemy import func, literal_column, select
 
 from alive.agents import Agents
 from alive.browser import Browsers
+from alive.cognition import Cognition
+from alive.cognitive_api import public_router, router
 from alive.config import Settings, prepare_local
 from alive.db import Database
 from alive.kernel import Kernel, envelope
+from alive.memory import MemoryService
 from alive.models import AgentRun, BrowserSession, Event, Goal, Memory, now, record
 from alive.providers import MetaProvider
 from alive.schemas import (
@@ -53,15 +56,20 @@ def create_app(settings=None):
         app.state.kernel = kernel
         app.state.agents = Agents(kernel)
         app.state.browsers = Browsers(kernel)
+        app.state.memory = MemoryService(kernel)
+        app.state.cognition = Cognition(kernel, app.state.memory)
+        if kernel.ready:
+            await app.state.cognition.initialize()
         try:
             yield
         finally:
+            await app.state.cognition.close()
             await app.state.agents.close()
             await app.state.browsers.close()
             await kernel.close()
             await transport.close()
 
-    app = FastAPI(title="ALIVE", version="0.1.0", lifespan=lifespan)
+    app = FastAPI(title="ALIVE", version="0.2.0", lifespan=lifespan)
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.alive_allowed_origins,
@@ -139,10 +147,24 @@ def create_app(settings=None):
             )
 
     secured = [Depends(ready)]
+    app.include_router(router(app, ready))
+    app.include_router(public_router(app))
+
+    @app.exception_handler(ValueError)
+    async def value_error(request, exc):
+        return await http_error(request, HTTPException(409, str(exc)))
+
+    @app.exception_handler(PermissionError)
+    async def permission_error(request, exc):
+        return await http_error(request, HTTPException(403, str(exc)))
+
+    @app.exception_handler(KeyError)
+    async def key_error(request, exc):
+        return await http_error(request, HTTPException(404, str(exc)))
 
     @app.get("/api/v1/health")
     async def health():
-        return {"status": "ok" if kernel and kernel.ready else "degraded", "version": "0.1.0"}
+        return {"status": "ok" if kernel and kernel.ready else "degraded", "version": "0.2.0"}
 
     @app.get("/api/v1/capabilities", dependencies=[Depends(auth)])
     async def capabilities():
@@ -154,9 +176,11 @@ def create_app(settings=None):
             },
             "pgvector": {
                 "storage": kernel.vector_storage,
-                "search": False,
+                "search": app.state.memory.embedding.available,
                 "dimension": 384,
-                "reason": "No embedding model configured",
+                "reason": "Pinned MiniLM available"
+                if app.state.memory.embedding.available
+                else "No embedding model configured",
             },
             "zeromq": {
                 "available": True,
@@ -182,6 +206,11 @@ def create_app(settings=None):
 
     @app.post("/api/v1/alive/stop", dependencies=secured)
     async def stop():
+        from alive.cognitive_schema import AutonomyCommand
+
+        await app.state.cognition.command(AutonomyCommand(command="pause"))
+        for session_id in list(app.state.browsers.watchers):
+            await app.state.browsers.watch(session_id, False)
         return await kernel.set_running(False)
 
     @app.get("/api/v1/events", dependencies=secured, response_model=list[PersistedEvent])
@@ -217,6 +246,11 @@ def create_app(settings=None):
 
     @app.post("/api/v1/memories/search", dependencies=secured)
     async def search(data: SearchInput):
+        if data.mode in ("vector", "hybrid"):
+            try:
+                return await app.state.memory.retrieve(data.query, data.mode, data.top_k)
+            except ValueError as exc:
+                raise HTTPException(409, str(exc)) from exc
         if data.mode == "vector":
             raise HTTPException(409, "Semantic search unavailable: no embedding model configured")
         async with db.sessions() as session:

@@ -12,6 +12,8 @@ class Database:
             @event.listens_for(self.engine.sync_engine, "connect")
             def sqlite_pragmas(connection, _):
                 connection.execute("PRAGMA foreign_keys=ON")
+                connection.execute("PRAGMA journal_mode=WAL")
+                connection.execute("PRAGMA busy_timeout=5000")
 
     async def probe(self):
         async with self.engine.connect() as conn:

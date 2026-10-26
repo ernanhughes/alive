@@ -66,10 +66,19 @@ async def main():
             await panel.locator("#send").click()
             await expect(panel.locator("#status")).to_contain_text("persisted")
             async with httpx.AsyncClient(headers={"Authorization": f"Bearer {token}"}) as client:
-                events = (
-                    await client.get("http://127.0.0.1:8000/api/v1/events", params={"limit": 500})
-                ).json()
-                assert any(e["event_id"] == event_id for e in events)
+                cursor, found = 0, False
+                while True:
+                    events = (
+                        await client.get(
+                            "http://127.0.0.1:8000/api/v1/events",
+                            params={"limit": 500, "after": cursor},
+                        )
+                    ).json()
+                    found = found or any(e["event_id"] == event_id for e in events)
+                    if found or not events:
+                        break
+                    cursor = events[-1]["sequence_number"]
+                assert found
             await panel.locator("#stop").click()
             await expect(panel.locator("#status")).to_contain_text("revoked")
             assert await demo.evaluate("!globalThis.__aliveObserver")

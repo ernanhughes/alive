@@ -31,12 +31,10 @@ describe("durable timeline", () => {
 });
 describe("API client", () => {
   it("authenticates writes", async () => {
-    const fetch = vi
-      .fn()
-      .mockResolvedValue({
-        ok: true,
-        json: async () => ({ status: "running" }),
-      });
+    const fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ status: "running" }),
+    });
     vi.stubGlobal("fetch", fetch);
     await request("/alive/start", "token", {});
     expect(fetch.mock.calls[0][1].headers.Authorization).toBe("Bearer token");
@@ -45,12 +43,10 @@ describe("API client", () => {
   it("surfaces backend failure states", async () => {
     vi.stubGlobal(
       "fetch",
-      vi
-        .fn()
-        .mockResolvedValue({
-          ok: false,
-          json: async () => ({ error: { message: "Database unavailable" } }),
-        }),
+      vi.fn().mockResolvedValue({
+        ok: false,
+        json: async () => ({ error: { message: "Database unavailable" } }),
+      }),
     );
     await expect(request("/alive", "token")).rejects.toThrow(
       "Database unavailable",
