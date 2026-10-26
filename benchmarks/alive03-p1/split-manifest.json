@@ -1,0 +1,45 @@
+{
+  "calibration_tasks": 48,
+  "evaluation_tasks": 120,
+  "calibration_distribution": {
+    "adversarial": 12,
+    "contradictory": 12,
+    "ambiguous": 12,
+    "straightforward": 12
+  },
+  "evaluation_distribution": {
+    "adversarial": 30,
+    "contradictory": 30,
+    "straightforward": 30,
+    "ambiguous": 30
+  },
+  "family_disjoint": true,
+  "exact_payload_duplicates": 0,
+  "max_cross_split_objective_trigram_jaccard": 0.0,
+  "near_duplicate_threshold": 0.65,
+  "all_ground_truth_recomputed": true,
+  "limitation": "Lexical and family disjointness do not prove semantic independence; tasks within a family are correlated.",
+  "schema_version": 1,
+  "calibration_live_ids": [
+    "265ec8c11c24eb045810873a",
+    "334ca0edc62d5858673c5c7e",
+    "1769d6d28f7e143494fc7932",
+    "19d58bc5c5b9bb5e0be0ff65",
+    "0c02541da850ad2a4d9425da",
+    "10a57fd9736fcac014ae98b0",
+    "0b49e0679c7360c18836bc42",
+    "17dac60834e675daf70ea322"
+  ],
+  "pilot_ids": [
+    "56e2f1fc3fb948b94e7b96d3",
+    "3a9ad3b02e97c4deb8125ec6",
+    "1c635095a22163a0f5558b24",
+    "1edf96366e275993e1621263"
+  ],
+  "evaluation_unsealed": false,
+  "selection_seed": "lexical-order-v1",
+  "files": {
+    "calibration.json": "063c120c0cf72252657d1635391b9563d3b11649d1ea9da35beee312e2d98675",
+    "evaluation.sealed.json": "e3515fbd04759f83e2b7e9f05adff21bf678a62b4ef53a6755d0a02717a9fe2e"
+  }
+}

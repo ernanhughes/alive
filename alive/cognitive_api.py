@@ -33,6 +33,11 @@ def router(app, ready):
 
     @route.post("/cognition/control")
     async def control(data: AutonomyCommand):
+        if app.state.experiments.active:
+            if data.command == "stop":
+                await app.state.experiments.cancel()
+            else:
+                raise ValueError("Stop the active experiment before changing cognitive control")
         result = await app.state.cognition.command(data)
         if data.command == "stop":
             for session_id in list(app.state.browsers.watchers):
@@ -41,6 +46,8 @@ def router(app, ready):
 
     @route.post("/cognition/configuration")
     async def configuration(data: CognitiveConfiguration):
+        if app.state.experiments.active:
+            raise ValueError("Stop the active experiment before changing Governor limits")
         return await app.state.cognition.configure(data)
 
     @route.get("/cognition/observations")
