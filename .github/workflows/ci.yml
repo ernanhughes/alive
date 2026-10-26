@@ -1,0 +1,60 @@
+name: ALIVE checks
+on: [push, pull_request]
+jobs:
+  backend:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.13'
+      - run: uv sync --locked
+      - run: uv run ruff check alive migrations scripts tests
+      - run: uv run ruff format --check alive migrations scripts tests
+      - run: uv run pytest -q
+  dashboard:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: dashboard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: dashboard/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+  first-contact-postgresql:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg18
+        env:
+          POSTGRES_DB: alive
+          POSTGRES_USER: alive
+          POSTGRES_PASSWORD: ephemeral-ci-only
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U alive -d alive"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql+asyncpg://alive:ephemeral-ci-only@127.0.0.1:5432/alive
+      ALIVE_API_TOKEN: ephemeral-ci-token-not-a-production-secret
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - run: uv sync --locked
+      - run: npm ci --prefix dashboard
+      - run: uv run playwright install --with-deps chrome
+      - run: uv run python -m scripts.first_contact --runner mock
