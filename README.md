@@ -8,6 +8,8 @@ ALIVE-01 is a working vertical slice: FastAPI + PostgreSQL/pgvector + ZeroMQ + R
 
 Read the [ALIVE-02 acceptance report](docs/ALIVE-02-ACCEPTANCE.md) and [design](docs/ALIVE-02-DESIGN.md). ALIVE-01 documentation remains the historical foundation, not the latest integration status.
 
+The reviewed ALIVE-02 specifications, results, screenshot and redacted usage records are retained in the [qualification archive](archives/ALIVE-02/README.md), with checksums and explicit evidence limitations.
+
 ## Run on Windows
 
 Prerequisites: Python 3.13, uv, Node 24+ (tested with 25.8.2), PostgreSQL and stable Chrome.

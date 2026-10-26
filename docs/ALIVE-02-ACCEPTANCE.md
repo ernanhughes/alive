@@ -1,5 +1,7 @@
 # ALIVE-02 — The First Autonomous Thought
 
+Publication follow-up: the owner reviewed this milestone as **PASS_WITH_LIMITATIONS** and authorized publication of its feature branch with preserved history. The [qualification archive](../archives/ALIVE-02/README.md) retains the specification/results, acceptance screenshot and redacted available Meta usage records. This follow-up did not independently rerun the reported qualification; “no push” statements below describe the original qualification-time state.
+
 Qualified locally on **26 October 2026**, on `codex/alive-02-cognitive-society`. Baseline: `3a73a72139b00b447394812c403b1a742094a641` on `codex/alive-01`, confirmed by read-only remote inspection as pushed to that remote feature branch. `main` remained at its initial commit. Existing untracked `models.txt` is preserved and excluded from the ALIVE-02 commits. No push, merge or deployment was performed.
 
 The final local HEAD and exact worktree status are returned in the completion message; `git rev-parse HEAD`, `git log -2 --oneline` and `git status --short` reproduce them. The original ALIVE-01 history is unchanged.

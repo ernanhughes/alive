@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "source_commit": "f98a6a53b20316b7057f77e5b635fbc06ab23061",
+  "review_status": "PASS_WITH_LIMITATIONS",
+  "review_is_independent_rerun": false,
+  "captured_at": "2026-10-26T23:14:30.359985+00:00",
+  "primary_dataset_sha256": "5884dc3791a0f6a96c3950c64f07a00a0f40bada7f704fb3833685d2dba7e8e8",
+  "files": {
+    "acceptance.png": {
+      "sha256": "ab95de782d034a48e1760a45ecc2ad394c6dcb621f80c59d23cfa949e57fbb1f",
+      "bytes": 134791
+    },
+    "qualification-report.md": {
+      "sha256": "dacc6d926dfd573446371d2a0a14ad81b05cf95ecbf11f6c5708c847452c4318",
+      "bytes": 17425
+    },
+    "results/controlled-critic-only.json": {
+      "sha256": "b6d22fbc69b2b269c9eb16dc26f99065764e284d8f3580edad96e9d0f9bc5781",
+      "bytes": 51700
+    },
+    "results/controlled-proposer-only.json": {
+      "sha256": "8d440db61835e9cde6c7113f614cfca074f4624e85002bbf06a968625d8c6757",
+      "bytes": 51911
+    },
+    "results/engineering-meta-ledger.json": {
+      "sha256": "79e3c4770707a978ae418b7345c1aa1ef991f001e79177b8bc05b57c1cf69a84",
+      "bytes": 37302
+    },
+    "results/engineering-meta.json": {
+      "sha256": "cae321a631127058b9927000582b8a8b40dd9ca3d4fa10b6533ba729bbac0a31",
+      "bytes": 108242
+    },
+    "results/first-thought-summary.json": {
+      "sha256": "7fb8f3b414fc3b07e40315755f599d8cef29128ddce1fa51f95ea0f19f00cd8c",
+      "bytes": 3526
+    },
+    "results/meta-smoke.json": {
+      "sha256": "3b9bf432b77a78d007de2b12c3d112e9f4602aaa126592871cf4d21c8cc2fb62",
+      "bytes": 758
+    },
+    "results/primary-meta-ledger.json": {
+      "sha256": "13299a411689bf363c55f10a43fc6f42891558e42b7d348d3de826e3c8d2d46b",
+      "bytes": 101680
+    },
+    "results/primary-meta.json": {
+      "sha256": "529b3129d3f8da1bb68bcf480fc8b3c3a40408931a213b27c0404ef4b04059d0",
+      "bytes": 247357
+    },
+    "specification/engineering-cases.json": {
+      "sha256": "c2a8d0f8585d049fb7ff8efcd72550ef7d30ae88bd07289228675be39c90496e",
+      "bytes": 1178
+    },
+    "specification/heldout-cases.json": {
+      "sha256": "5884dc3791a0f6a96c3950c64f07a00a0f40bada7f704fb3833685d2dba7e8e8",
+      "bytes": 1224
+    },
+    "specification/role-prompts.json": {
+      "sha256": "3bc307706e5e487292576ea873896b71f74b01edb50c607647a798d89d49360a",
+      "bytes": 2875
+    },
+    "usage/meta-usage.jsonl": {
+      "sha256": "720856d29d5f34c4eb71325c6609d841a275bca1e005cfbfb25a28762690886b",
+      "bytes": 39352
+    },
+    "usage/summary.json": {
+      "sha256": "95b9b326725f3a51fd1eface30b99c2b5f9ea7e41bc8eca54003298563a516aa",
+      "bytes": 666
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "provider": "meta",
+  "model": "muse-spark-1.3",
+  "schema": {
+    "type": "object",
+    "properties": {
+      "summary": {
+        "type": "string"
+      },
+      "uncertain": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "summary",
+      "uncertain"
+    ],
+    "additionalProperties": false
+  },
+  "output": {
+    "summary": "The laboratory beacon changed from grey to green.",
+    "uncertain": false
+  },
+  "usage": {
+    "completion_tokens": 604,
+    "prompt_tokens": 92,
+    "total_tokens": 696,
+    "completion_tokens_details": {
+      "reasoning_tokens": 576
+    },
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "latency_ms": 3525.8061999920756,
+  "validated": true
+}

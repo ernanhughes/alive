@@ -1,0 +1,114 @@
+{
+  "demonstration": "The First Autonomous Thought",
+  "provider": "meta",
+  "identity": "c63edf59-5194-4ccd-b5c2-7e528be49d36",
+  "restart_continuity": true,
+  "persistent_budget": {
+    "session_calls": 6,
+    "session_tools": 4,
+    "session_tokens": 13344,
+    "experiment_calls": 24,
+    "experiment_tools": 12,
+    "experiment_tokens": 37734
+  },
+  "dollar_cost": null,
+  "dollar_cost_note": "API reports token usage; no configured price/billing data",
+  "cognitive_logic": "model roles plus deterministic attention, evidence evaluation and Governor",
+  "results": [
+    {
+      "scenario": "relevant",
+      "investigation_id": "57f38da4-803d-423b-9b37-62b2b30512b5",
+      "state": "COMPLETED",
+      "evaluation": {
+        "status": "SUPPORTED",
+        "retained": true,
+        "provenance": "deterministic-exact-source-comparison-v1",
+        "limitations": [
+          "Controlled source verification does not establish general-world truth."
+        ],
+        "conclusion_checks": [
+          {
+            "reason": "Exact match to cited controlled measurement",
+            "status": "VERIFIED",
+            "evidence_refs": [
+              "sensor:5b15249a-ea42-46d2-ab57-b5b81ea7c9c2:1"
+            ]
+          }
+        ],
+        "conclusion_status": "VERIFIED",
+        "observation_checks": [
+          {
+            "reason": "Value matches source but claim lacks its citation",
+            "status": "SUPPORTED",
+            "evidence_refs": [
+              "sensor:5b15249a-ea42-46d2-ab57-b5b81ea7c9c2:1"
+            ]
+          }
+        ]
+      },
+      "usage": {
+        "calls": 3,
+        "tools": 2,
+        "tokens": 6556,
+        "latency_ms": 7397.83220004756
+      },
+      "experience_id": "095ef5e6-0304-4fe0-882f-0eb283b40fdd",
+      "goal_id": "5061bebf-ea30-482c-82bf-6b330ac04df9",
+      "models": [
+        "muse-spark-1.3"
+      ],
+      "reported_tokens": 6556
+    },
+    {
+      "scenario": "noise",
+      "model_calls": 0,
+      "decision": "NO ACTION WARRANTED",
+      "observations": 2
+    },
+    {
+      "scenario": "contradiction",
+      "investigation_id": "ae969108-e264-4189-979d-a9c648a04a37",
+      "state": "COMPLETED",
+      "evaluation": {
+        "status": "CONTRADICTED",
+        "retained": true,
+        "provenance": "deterministic-exact-source-comparison-v1",
+        "limitations": [
+          "Controlled source verification does not establish general-world truth."
+        ],
+        "conclusion_checks": [
+          {
+            "reason": "Exact match to cited controlled measurement",
+            "status": "VERIFIED",
+            "evidence_refs": [
+              "sensor:a9751ac4-4774-4e4e-bd39-7a26be2c2e38:1"
+            ]
+          }
+        ],
+        "conclusion_status": "VERIFIED",
+        "observation_checks": [
+          {
+            "reason": "Claim disagrees with controlled measurement",
+            "status": "CONTRADICTED",
+            "evidence_refs": [
+              "sensor:a9751ac4-4774-4e4e-bd39-7a26be2c2e38:1"
+            ]
+          }
+        ]
+      },
+      "usage": {
+        "calls": 3,
+        "tools": 2,
+        "tokens": 6788,
+        "latency_ms": 7364.688400004525
+      },
+      "experience_id": "6ca714d7-b92d-4577-b927-29994ce4d6b2",
+      "goal_id": "5ae82ed4-87e4-44be-951d-68e0f167ce2e",
+      "models": [
+        "muse-spark-1.3"
+      ],
+      "reported_tokens": 6788
+    }
+  ],
+  "redaction_note": "Nested runtime traces and retrieved memory bodies excluded. Complete recorded usage is exported separately."
+}
