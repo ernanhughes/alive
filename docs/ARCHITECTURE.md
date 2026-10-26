@@ -1,5 +1,7 @@
 # Architecture
 
+The foundation below is extended by [ALIVE-02's implemented cognitive loop](ALIVE-02-DESIGN.md), [attention auction](ATTENTION-AUCTION.md), [cognitive society](COGNITIVE-SOCIETY.md) and [experience schema](EXPERIENCE-SCHEMA.md). See ALIVE-02-ACCEPTANCE for current qualification.
+
 The FastAPI process owns one ALIVE instance, a lightweight heartbeat scheduler, a transactional event log, a bounded outbox worker, an independent ZeroMQ subscriber, browser contexts and supervised Pi processes.
 
 ```mermaid
@@ -19,7 +21,7 @@ flowchart LR
 
 ## Persistence and delivery
 
-Alembic migrations create explicit tables, foreign keys, goal/run status constraints, score bounds, event ordering/correlation indexes, PostgreSQL generated full-text documents and a GIN index. The first vector dimension is 384, reserved for a future MiniLM-class embedding model. No embedding model runs today; semantic search returns an explicit 409. pgvector storage capability and semantic search capability are reported separately.
+Alembic migrations create explicit tables, foreign keys, goal/run status constraints, score bounds, event ordering/correlation indexes, PostgreSQL generated full-text documents and a GIN index. ALIVE-02 adds a versioned sidecar for actual 384-dimensional MiniLM ONNX embeddings, PostgreSQL cosine retrieval and hybrid reciprocal rank fusion. Embeddings remain optional; unavailable vector search reports 409 and hybrid retrieval reports its explicit text fallback.
 
 Observation ingestion commits its event, memory, proposed goal and novelty state in one transaction. A unique event identity makes retries idempotent. The outbox scans up to 100 unattempted events in sequence order. `published_at` records a successful **publication attempt**, not subscriber acknowledgement. A crash between publish and commit may cause a duplicate. PUB/SUB can lose messages; it is never presented as a durable queue.
 
@@ -41,4 +43,4 @@ Browser contexts are separate from normal profiles. Every network request is che
 
 ## Model providers
 
-`ModelProvider` defines IDs, capabilities, generation, structured decisions and streamed output. The deterministic mock is exercised offline. The environment-driven Meta adapter targets an explicitly configured compatible backend gateway; no endpoint, model or credentials are assumed. It records usage and latency, reports vision/native streaming unavailable, and offers a documented buffered streaming fallback. Actual Meta inference and embeddings remain unverified until configured.
+`ModelProvider` defines IDs, capabilities, generation, structured decisions and streamed output. The deterministic mock is exercised offline. ALIVE-02 qualifies the real Meta Model API, confirmed model discovery and native schema-constrained responses, with usage, correlation, latency and sanitized error classification. Vision and native streaming remain unimplemented; the streaming method is an explicit buffered fallback. Credentials never reach frontend or extension code.
