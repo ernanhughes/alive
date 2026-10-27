@@ -19,4 +19,4 @@ tests/test_web_policy_recovery.py: 9 warnings
     self._get_loop()
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-202 passed, 140 warnings in 102.75s (0:01:42)
+202 passed, 140 warnings in 126.70s (0:02:06)

@@ -120,6 +120,12 @@ def verify_protocol_identity():
         raise SystemExit("Sealed answer-key hash mismatch")
     protocol = read_json(PROTOCOL)
     try:
+        git("cat-file", "-e", protocol["baseline"] + "^{commit}")
+    except subprocess.CalledProcessError:
+        # Shallow CI checkouts do not contain the baseline object. The frozen
+        # protocol hash above is still verified; ancestry is not checkable here.
+        return protocol
+    try:
         git("merge-base", "--is-ancestor", protocol["baseline"], "HEAD")
     except subprocess.CalledProcessError as exc:
         raise SystemExit("Protocol baseline is not an ancestor of HEAD") from exc

@@ -11,4 +11,4 @@ tests/test_alive14r3_experiment.py::test_phases_do_not_silently_authorise_the_ne
     self._get_loop()
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
-4 passed, 7 warnings in 6.37s
+4 passed, 7 warnings in 7.79s
