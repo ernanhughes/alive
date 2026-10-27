@@ -1,0 +1,8 @@
+Command: uv run python -m scripts.native13
+Output:
+VERIFIED native research retrieval, truthful connection and explicit withdrawal; synthetic calls 3
+evidence: .alive/native13-a39a142313e3/evidence.json
+
+Archived evidence:
+archives/ALIVE-13/evidence/native-synthetic.json
+archives/ALIVE-13/evidence/research-memory.png

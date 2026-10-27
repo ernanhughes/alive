@@ -1,0 +1,62 @@
+{
+  "provenance": {
+    "kind": "native Chrome extension with isolated current-branch backend",
+    "chrome_native": true,
+    "provider": "local synthetic HTTP stub",
+    "paid_calls": 0,
+    "meta_inference": false,
+    "source_commit": "d963d267c219d49e4dfab23cf838946b64c4b190"
+  },
+  "environment": {
+    "target_page": "http://127.0.0.1:53214/research/a",
+    "distractor_pages": [
+      "http://127.0.0.1:53214/research/distractor-1",
+      "http://127.0.0.1:53214/research/distractor-2"
+    ],
+    "current_page": "http://127.0.0.1:53214/research/current",
+    "backend": "http://127.0.0.1:53216",
+    "screenshot": "research-memory.png",
+    "chrome": "155.0.8059.85",
+    "presentation": "native side panel target",
+    "panel_opened_as_ordinary_tab": false
+  },
+  "steps": [],
+  "retrieval": {
+    "target_memory": "d0613e98-fde4-4f4e-829c-0c2e2bc7081a",
+    "rank_1_memory": "d0613e98-fde4-4f4e-829c-0c2e2bc7081a",
+    "rank_1_source_url": "http://127.0.0.1:53214/research/a",
+    "competing_research_memories": 3,
+    "result_count": 3,
+    "ranking_version": "alive13-scoped-lexical-v1"
+  },
+  "connection": {
+    "displayed": "candidate \u00b7 topic_overlap_candidate. The two reviewed excerpts share lexical content terms agent, memory, persistent, research, sources. This is a topic-overlap candidate only; it does not establish agreement, support, contradiction or corroboration.\nHistorical source quote: Persistent agent memory retains reviewed research sources across sessions.\nCurrent source quote: Persistent agent memory retrieval selects earlier research sources for a current goal.\nHistorical model quotation (not a source span): Persistent agent memory retains reviewed research sources across sessions.",
+    "truthful_label": true,
+    "exact_source_spans": true,
+    "owner_feedback_persisted": true
+  },
+  "negative_checks": {
+    "revoked_grant_connection": 403,
+    "retrieval_remains_local_after_revoke": true,
+    "wrong_origin_grant": 403
+  },
+  "withdrawal": {
+    "displayed_target": "d0613e98-fde4-4f4e-829c-0c2e2bc7081a",
+    "remaining_memory_ids": [
+      "0abd37be-464f-4527-9d62-6e600feb334b",
+      "81e26ecb-b300-466f-a630-1866533ab960"
+    ],
+    "last_saved_was_distractor": true,
+    "target_withdrawn": true
+  },
+  "restart": {
+    "memory_persisted_before_withdrawal": true,
+    "withdrawal_effective_after_restart": true,
+    "active_after_withdrawal": 2
+  },
+  "provider": {
+    "synthetic_calls": 3,
+    "paid": false
+  },
+  "status": "NATIVE_SYNTHETIC_PASS"
+}

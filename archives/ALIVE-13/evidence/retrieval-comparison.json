@@ -1,0 +1,3844 @@
+{
+  "protocol_version": "alive13-distractor-v1",
+  "protocol_sha256": "3cdbc67f6763b9a26e158f3b7e484a7a9465874235f0bcbee6b241ceee18d3ea",
+  "kind": "frozen distractor-rich cross-page research retrieval evaluation",
+  "source_commit": "d963d267c219d49e4dfab23cf838946b64c4b190",
+  "paid_inference": false,
+  "paid_calls": 0,
+  "synthetic_note_calls": 36,
+  "ordinary_memory_distractors": 60,
+  "memories": [
+    {
+      "corpus_id": "P11",
+      "actual_id": "419ec989-0575-4bb4-ab80-b2c011507e87",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P11",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:28.509948"
+    },
+    {
+      "corpus_id": "J05",
+      "actual_id": "700554f9-32e7-4fff-88d7-13704bf667ff",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J05",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:28.595510"
+    },
+    {
+      "corpus_id": "B12",
+      "actual_id": "7717db64-b88c-49b4-9cc6-e9dd50e05c50",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B12",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:28.655788"
+    },
+    {
+      "corpus_id": "P09",
+      "actual_id": "6127324e-6d37-4996-a3b2-95d3d770ee5b",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P09",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:28.717719"
+    },
+    {
+      "corpus_id": "J06",
+      "actual_id": "a6273ce5-d067-4726-9b3c-267175da99a6",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J06",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:28.780054"
+    },
+    {
+      "corpus_id": "B11",
+      "actual_id": "cb2db339-5e4d-4a3a-9f47-0a1e9d053e25",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B11",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:28.836258"
+    },
+    {
+      "corpus_id": "P05",
+      "actual_id": "1da54c7d-1a87-4083-a02b-2f57e4ea1003",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P05",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:28.897331"
+    },
+    {
+      "corpus_id": "J11",
+      "actual_id": "ccbfa1d8-1b22-4057-8072-a3599dee1d1d",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J11",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:28.965099"
+    },
+    {
+      "corpus_id": "B09",
+      "actual_id": "02498402-a700-4003-a8b6-1f217dcd514b",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B09",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.023379"
+    },
+    {
+      "corpus_id": "P12",
+      "actual_id": "f5f93ed4-bd8a-4be5-abdb-33bfe89b57fe",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P12",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.083593"
+    },
+    {
+      "corpus_id": "J08",
+      "actual_id": "ae7339bb-2a0a-482a-9689-17f313f3bcb7",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J08",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.140776"
+    },
+    {
+      "corpus_id": "B08",
+      "actual_id": "1862ad87-356f-4186-8c70-2e75d161364c",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B08",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.199590"
+    },
+    {
+      "corpus_id": "P07",
+      "actual_id": "c3721e7c-ec88-4c70-bcf8-c28a8f45fdc0",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P07",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.257802"
+    },
+    {
+      "corpus_id": "J09",
+      "actual_id": "8b3012f9-0722-46d9-9243-960e48056e8f",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J09",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.318902"
+    },
+    {
+      "corpus_id": "B04",
+      "actual_id": "abf41e80-b47d-4bfa-b46a-d342c4da4501",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B04",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.379227"
+    },
+    {
+      "corpus_id": "P08",
+      "actual_id": "1f464c7b-5d0c-434c-9a7b-6f8fb648ee2c",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P08",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.484746"
+    },
+    {
+      "corpus_id": "J12",
+      "actual_id": "8411732e-5b35-416a-9bdb-0bb84a8378f0",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J12",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.543007"
+    },
+    {
+      "corpus_id": "B03",
+      "actual_id": "0b626471-34ad-4f89-9ab6-2e973c44e8a8",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B03",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.600409"
+    },
+    {
+      "corpus_id": "P06",
+      "actual_id": "a97d64c9-91e8-4f09-bb4a-795c4e1469a0",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P06",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.656409"
+    },
+    {
+      "corpus_id": "J03",
+      "actual_id": "505b607e-67c7-4225-b151-b0b84468519b",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J03",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.717764"
+    },
+    {
+      "corpus_id": "B06",
+      "actual_id": "b870e445-c0ee-4672-8666-a569dfea8af5",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B06",
+      "stale_days": 30,
+      "reviewed_at": "2026-09-27T19:05:29.839387+00:00"
+    },
+    {
+      "corpus_id": "P10",
+      "actual_id": "b6d59d4f-9634-4e24-8c57-ce9d7c48f367",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P10",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.850056"
+    },
+    {
+      "corpus_id": "J10",
+      "actual_id": "3b054fe7-a475-402a-8f4c-b28d56663823",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J10",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.908590"
+    },
+    {
+      "corpus_id": "B02",
+      "actual_id": "aa3cf3b9-76fd-4efe-a5bb-713eee684432",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B02",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:29.965761"
+    },
+    {
+      "corpus_id": "P04",
+      "actual_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P04",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:30.024789"
+    },
+    {
+      "corpus_id": "J07",
+      "actual_id": "527f2a03-d5d3-4516-a63c-d2eae1987c9c",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J07",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:30.082611"
+    },
+    {
+      "corpus_id": "B07",
+      "actual_id": "986dd50b-ce87-4d6d-9f93-16880ece3e7f",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B07",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:30.165393"
+    },
+    {
+      "corpus_id": "P03",
+      "actual_id": "154f7f80-4f85-47ca-8ab9-53c6510ebda1",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P03",
+      "stale_days": 45,
+      "reviewed_at": "2026-09-12T19:05:30.284587+00:00"
+    },
+    {
+      "corpus_id": "J02",
+      "actual_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J02",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:30.295033"
+    },
+    {
+      "corpus_id": "B05",
+      "actual_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B05",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:30.364355"
+    },
+    {
+      "corpus_id": "P02",
+      "actual_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P02",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:30.432299"
+    },
+    {
+      "corpus_id": "J01",
+      "actual_id": "7a980268-2731-44f1-af18-c7e66108a558",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J01",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:30.494622"
+    },
+    {
+      "corpus_id": "B10",
+      "actual_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B10",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:30.553038"
+    },
+    {
+      "corpus_id": "P01",
+      "actual_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P01",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:30.615663"
+    },
+    {
+      "corpus_id": "J04",
+      "actual_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J04",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:30.674876"
+    },
+    {
+      "corpus_id": "B01",
+      "actual_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B01",
+      "stale_days": null,
+      "reviewed_at": "2026-10-27T19:05:30.736597"
+    }
+  ],
+  "queries": [
+    {
+      "id": "P-Q1",
+      "goal_id": "python-memory",
+      "relevant": [
+        "P01",
+        "P02"
+      ],
+      "label_rationale": "Both sources describe reference counting and the cycle-collection problem named by the query.",
+      "current_url": "http://127.0.0.1:9300/current/P-Q1",
+      "snapshot_id": "d2539eb9-7986-4416-a595-7a71ff14dba9",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "memory_id": "P01",
+              "actual_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+              "source_url": "http://127.0.0.1:9300/historical/P01",
+              "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "P02",
+              "actual_memory_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+              "source_url": "http://127.0.0.1:9300/historical/P02",
+              "sha256": "6f4d3770bd1563974ad57ad10113c32d2c789f7ad07c7932b2344b24d312de9e",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "P04",
+              "actual_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+              "source_url": "http://127.0.0.1:9300/historical/P04",
+              "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+              "rank": 3,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.265
+        },
+        "B_alive12_unscoped": {
+          "results": [],
+          "latency_ms": 3.428,
+          "candidate_count": 15,
+          "candidate_mode": "sqlite_substring"
+        },
+        "C_corrected_scoped_lexical": {
+          "results": [
+            {
+              "memory_id": "P01",
+              "actual_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+              "source_url": "http://127.0.0.1:9300/historical/P01",
+              "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+              "rank": 1,
+              "score": 14
+            },
+            {
+              "memory_id": "P02",
+              "actual_memory_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+              "source_url": "http://127.0.0.1:9300/historical/P02",
+              "sha256": "6f4d3770bd1563974ad57ad10113c32d2c789f7ad07c7932b2344b24d312de9e",
+              "rank": 2,
+              "score": 9
+            },
+            {
+              "memory_id": "P10",
+              "actual_memory_id": "b6d59d4f-9634-4e24-8c57-ce9d7c48f367",
+              "source_url": "http://127.0.0.1:9300/historical/P10",
+              "sha256": "cd1e53df0eb02a62d7cf3c3276c9fd8d018693d738251a4ef28ef59c68131fc2",
+              "rank": 3,
+              "score": 5
+            }
+          ],
+          "latency_ms": 6.123,
+          "candidate_count": 8,
+          "scoped_count": 12,
+          "candidate_limit": 5000
+        },
+        "D_full_history_access": {
+          "results": [
+            {
+              "memory_id": "P01",
+              "actual_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+              "source_url": "http://127.0.0.1:9300/historical/P01",
+              "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "P02",
+              "actual_memory_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+              "source_url": "http://127.0.0.1:9300/historical/P02",
+              "sha256": "6f4d3770bd1563974ad57ad10113c32d2c789f7ad07c7932b2344b24d312de9e",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "P04",
+              "actual_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+              "source_url": "http://127.0.0.1:9300/historical/P04",
+              "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+              "rank": 3,
+              "score": null
+            },
+            {
+              "memory_id": "P10",
+              "actual_memory_id": "b6d59d4f-9634-4e24-8c57-ce9d7c48f367",
+              "source_url": "http://127.0.0.1:9300/historical/P10",
+              "sha256": "cd1e53df0eb02a62d7cf3c3276c9fd8d018693d738251a4ef28ef59c68131fc2",
+              "rank": 4,
+              "score": null
+            },
+            {
+              "memory_id": "P06",
+              "actual_memory_id": "a97d64c9-91e8-4f09-bb4a-795c4e1469a0",
+              "source_url": "http://127.0.0.1:9300/historical/P06",
+              "sha256": "e08edd86f298a8ccf35c672b073fb52f2486ea693fc2dced4d6382bff0f9b1ac",
+              "rank": 5,
+              "score": null
+            },
+            {
+              "memory_id": "P08",
+              "actual_memory_id": "1f464c7b-5d0c-434c-9a7b-6f8fb648ee2c",
+              "source_url": "http://127.0.0.1:9300/historical/P08",
+              "sha256": "939ec1fa424fcb36d14c7695d7e5fac3aef0de2cc3b50cdbaab37bb33a110f48",
+              "rank": 6,
+              "score": null
+            },
+            {
+              "memory_id": "P07",
+              "actual_memory_id": "c3721e7c-ec88-4c70-bcf8-c28a8f45fdc0",
+              "source_url": "http://127.0.0.1:9300/historical/P07",
+              "sha256": "a519c7d3073b53656147b617a8ac505b4ab323d9ac4450c3d444babfade78718",
+              "rank": 7,
+              "score": null
+            },
+            {
+              "memory_id": "P12",
+              "actual_memory_id": "f5f93ed4-bd8a-4be5-abdb-33bfe89b57fe",
+              "source_url": "http://127.0.0.1:9300/historical/P12",
+              "sha256": "45f115ccee34fc9885e4cc8acf84f7819807034e696a437b80d444f4138e18d2",
+              "rank": 8,
+              "score": null
+            },
+            {
+              "memory_id": "P05",
+              "actual_memory_id": "1da54c7d-1a87-4083-a02b-2f57e4ea1003",
+              "source_url": "http://127.0.0.1:9300/historical/P05",
+              "sha256": "bda7f201d688ae29f701013da77f38d81371c879e439a436b5349e8f0539fb4b",
+              "rank": 9,
+              "score": null
+            },
+            {
+              "memory_id": "P09",
+              "actual_memory_id": "6127324e-6d37-4996-a3b2-95d3d770ee5b",
+              "source_url": "http://127.0.0.1:9300/historical/P09",
+              "sha256": "19271893f004dfcb7024ed9b09daaa84ae64383e3a43faa88094e568188a973e",
+              "rank": 10,
+              "score": null
+            },
+            {
+              "memory_id": "P11",
+              "actual_memory_id": "419ec989-0575-4bb4-ab80-b2c011507e87",
+              "source_url": "http://127.0.0.1:9300/historical/P11",
+              "sha256": "548961a81e7a6c050a38fc588820afeb22281471e8579568ff3c2c4bc1eba670",
+              "rank": 11,
+              "score": null
+            },
+            {
+              "memory_id": "P03",
+              "actual_memory_id": "154f7f80-4f85-47ca-8ab9-53c6510ebda1",
+              "source_url": "http://127.0.0.1:9300/historical/P03",
+              "sha256": "9190ecab90306c4acf9a64af0baea9ff670ef9d3e2763750808aefc3dc8ddb44",
+              "rank": 12,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.257,
+          "history_size": 12
+        }
+      },
+      "connection": {
+        "id": "dd26f60b-36d1-446f-bd89-28ae55589484",
+        "instance_id": "8eb03132-d61c-4bae-bc02-3c3362ad9d3a",
+        "kind": "research_connection",
+        "parent_id": "d2539eb9-7986-4416-a595-7a71ff14dba9",
+        "status": "candidate",
+        "data": {
+          "goal_id": "202ac8e7-6fe6-44d5-b133-519113ce60f7",
+          "current_snapshot_id": "d2539eb9-7986-4416-a595-7a71ff14dba9",
+          "current_url": "http://127.0.0.1:9300/current/P-Q1",
+          "current_sha256": "2dde820875f7e65b779f329a4f0f1646f2c98467cc4e6b0b550d0766d8823ddc",
+          "current_quote": "Reference counting reclaims objects immediately when their count reaches zero, but cycles need another mechanism.",
+          "historical_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+          "historical_url": "http://127.0.0.1:9300/historical/P01",
+          "historical_sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+          "historical_quote": "CPython uses reference counting to reclaim most objects immediately when their reference count reaches zero.",
+          "model_evidence_quote": "CPython uses reference counting to reclaim most objects immediately when their reference count reaches zero.",
+          "shared_terms": [
+            "count",
+            "counting",
+            "immediately",
+            "objects",
+            "reaches",
+            "reference",
+            "zero"
+          ],
+          "relation_type": "topic_overlap_candidate",
+          "explanation": "The two reviewed excerpts share lexical content terms count, counting, immediately, objects, reaches, reference. This is a topic-overlap candidate only; it does not establish agreement, support, contradiction or corroboration.",
+          "status": "candidate",
+          "evidence_policy": "exact source spans; shared words do not establish agreement",
+          "model": "deterministic-lexical-connection-v1",
+          "inference_calls": 0,
+          "owner_useful": null,
+          "quote_validation": {
+            "current_exact": true,
+            "historical_exact": true
+          },
+          "created_at": "2026-10-27T19:05:30.847405+00:00"
+        },
+        "created_at": "2026-10-27T19:05:30.848086+00:00",
+        "current_source": {
+          "url": "http://127.0.0.1:9300/current/P-Q1",
+          "sha256": "2dde820875f7e65b779f329a4f0f1646f2c98467cc4e6b0b550d0766d8823ddc"
+        },
+        "historical_source": {
+          "url": "http://127.0.0.1:9300/historical/P01",
+          "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+          "reviewed_at": "2026-10-27T19:05:30.615663"
+        },
+        "abstained": false
+      }
+    },
+    {
+      "id": "P-Q2",
+      "goal_id": "python-memory",
+      "relevant": [
+        "P03"
+      ],
+      "label_rationale": "The source describes generational collection, short-lived and long-lived objects, and pause reduction.",
+      "current_url": "http://127.0.0.1:9300/current/P-Q2",
+      "snapshot_id": "3e4dae1d-2989-4b1f-a441-a8bf3f36dd92",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "memory_id": "P01",
+              "actual_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+              "source_url": "http://127.0.0.1:9300/historical/P01",
+              "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "P02",
+              "actual_memory_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+              "source_url": "http://127.0.0.1:9300/historical/P02",
+              "sha256": "6f4d3770bd1563974ad57ad10113c32d2c789f7ad07c7932b2344b24d312de9e",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "P04",
+              "actual_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+              "source_url": "http://127.0.0.1:9300/historical/P04",
+              "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+              "rank": 3,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.23
+        },
+        "B_alive12_unscoped": {
+          "results": [],
+          "latency_ms": 4.522,
+          "candidate_count": 15,
+          "candidate_mode": "sqlite_substring"
+        },
+        "C_corrected_scoped_lexical": {
+          "results": [
+            {
+              "memory_id": "P03",
+              "actual_memory_id": "154f7f80-4f85-47ca-8ab9-53c6510ebda1",
+              "source_url": "http://127.0.0.1:9300/historical/P03",
+              "sha256": "9190ecab90306c4acf9a64af0baea9ff670ef9d3e2763750808aefc3dc8ddb44",
+              "rank": 1,
+              "score": 20
+            },
+            {
+              "memory_id": "P10",
+              "actual_memory_id": "b6d59d4f-9634-4e24-8c57-ce9d7c48f367",
+              "source_url": "http://127.0.0.1:9300/historical/P10",
+              "sha256": "cd1e53df0eb02a62d7cf3c3276c9fd8d018693d738251a4ef28ef59c68131fc2",
+              "rank": 2,
+              "score": 4
+            },
+            {
+              "memory_id": "P06",
+              "actual_memory_id": "a97d64c9-91e8-4f09-bb4a-795c4e1469a0",
+              "source_url": "http://127.0.0.1:9300/historical/P06",
+              "sha256": "e08edd86f298a8ccf35c672b073fb52f2486ea693fc2dced4d6382bff0f9b1ac",
+              "rank": 3,
+              "score": 4
+            }
+          ],
+          "latency_ms": 4.869,
+          "candidate_count": 6,
+          "scoped_count": 12,
+          "candidate_limit": 5000
+        },
+        "D_full_history_access": {
+          "results": [
+            {
+              "memory_id": "P01",
+              "actual_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+              "source_url": "http://127.0.0.1:9300/historical/P01",
+              "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "P02",
+              "actual_memory_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+              "source_url": "http://127.0.0.1:9300/historical/P02",
+              "sha256": "6f4d3770bd1563974ad57ad10113c32d2c789f7ad07c7932b2344b24d312de9e",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "P04",
+              "actual_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+              "source_url": "http://127.0.0.1:9300/historical/P04",
+              "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+              "rank": 3,
+              "score": null
+            },
+            {
+              "memory_id": "P10",
+              "actual_memory_id": "b6d59d4f-9634-4e24-8c57-ce9d7c48f367",
+              "source_url": "http://127.0.0.1:9300/historical/P10",
+              "sha256": "cd1e53df0eb02a62d7cf3c3276c9fd8d018693d738251a4ef28ef59c68131fc2",
+              "rank": 4,
+              "score": null
+            },
+            {
+              "memory_id": "P06",
+              "actual_memory_id": "a97d64c9-91e8-4f09-bb4a-795c4e1469a0",
+              "source_url": "http://127.0.0.1:9300/historical/P06",
+              "sha256": "e08edd86f298a8ccf35c672b073fb52f2486ea693fc2dced4d6382bff0f9b1ac",
+              "rank": 5,
+              "score": null
+            },
+            {
+              "memory_id": "P08",
+              "actual_memory_id": "1f464c7b-5d0c-434c-9a7b-6f8fb648ee2c",
+              "source_url": "http://127.0.0.1:9300/historical/P08",
+              "sha256": "939ec1fa424fcb36d14c7695d7e5fac3aef0de2cc3b50cdbaab37bb33a110f48",
+              "rank": 6,
+              "score": null
+            },
+            {
+              "memory_id": "P07",
+              "actual_memory_id": "c3721e7c-ec88-4c70-bcf8-c28a8f45fdc0",
+              "source_url": "http://127.0.0.1:9300/historical/P07",
+              "sha256": "a519c7d3073b53656147b617a8ac505b4ab323d9ac4450c3d444babfade78718",
+              "rank": 7,
+              "score": null
+            },
+            {
+              "memory_id": "P12",
+              "actual_memory_id": "f5f93ed4-bd8a-4be5-abdb-33bfe89b57fe",
+              "source_url": "http://127.0.0.1:9300/historical/P12",
+              "sha256": "45f115ccee34fc9885e4cc8acf84f7819807034e696a437b80d444f4138e18d2",
+              "rank": 8,
+              "score": null
+            },
+            {
+              "memory_id": "P05",
+              "actual_memory_id": "1da54c7d-1a87-4083-a02b-2f57e4ea1003",
+              "source_url": "http://127.0.0.1:9300/historical/P05",
+              "sha256": "bda7f201d688ae29f701013da77f38d81371c879e439a436b5349e8f0539fb4b",
+              "rank": 9,
+              "score": null
+            },
+            {
+              "memory_id": "P09",
+              "actual_memory_id": "6127324e-6d37-4996-a3b2-95d3d770ee5b",
+              "source_url": "http://127.0.0.1:9300/historical/P09",
+              "sha256": "19271893f004dfcb7024ed9b09daaa84ae64383e3a43faa88094e568188a973e",
+              "rank": 10,
+              "score": null
+            },
+            {
+              "memory_id": "P11",
+              "actual_memory_id": "419ec989-0575-4bb4-ab80-b2c011507e87",
+              "source_url": "http://127.0.0.1:9300/historical/P11",
+              "sha256": "548961a81e7a6c050a38fc588820afeb22281471e8579568ff3c2c4bc1eba670",
+              "rank": 11,
+              "score": null
+            },
+            {
+              "memory_id": "P03",
+              "actual_memory_id": "154f7f80-4f85-47ca-8ab9-53c6510ebda1",
+              "source_url": "http://127.0.0.1:9300/historical/P03",
+              "sha256": "9190ecab90306c4acf9a64af0baea9ff670ef9d3e2763750808aefc3dc8ddb44",
+              "rank": 12,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.073,
+          "history_size": 12
+        }
+      },
+      "connection": {
+        "id": "82e52523-3382-441f-8aec-cd2a567af692",
+        "instance_id": "8eb03132-d61c-4bae-bc02-3c3362ad9d3a",
+        "kind": "research_connection",
+        "parent_id": "3e4dae1d-2989-4b1f-a441-a8bf3f36dd92",
+        "status": "candidate",
+        "data": {
+          "goal_id": "202ac8e7-6fe6-44d5-b133-519113ce60f7",
+          "current_snapshot_id": "3e4dae1d-2989-4b1f-a441-a8bf3f36dd92",
+          "current_url": "http://127.0.0.1:9300/current/P-Q2",
+          "current_sha256": "d89b96895fbf400aa0fbfb674b6ee6ed879a04d37aea83cf657e1e5ff855a7cb",
+          "current_quote": "Generational collection separates short-lived objects from long-lived ones to shorten full collection pauses.",
+          "historical_memory_id": "154f7f80-4f85-47ca-8ab9-53c6510ebda1",
+          "historical_url": "http://127.0.0.1:9300/historical/P03",
+          "historical_sha256": "9190ecab90306c4acf9a64af0baea9ff670ef9d3e2763750808aefc3dc8ddb44",
+          "historical_quote": "A generational collector separates short-lived objects from long-lived ones to shorten full collection pauses.",
+          "model_evidence_quote": "A generational collector separates short-lived objects from long-lived ones to shorten full collection pauses.",
+          "shared_terms": [
+            "collection",
+            "full",
+            "generational",
+            "long-lived",
+            "objects",
+            "ones",
+            "pauses",
+            "separates",
+            "short-lived",
+            "shorten"
+          ],
+          "relation_type": "topic_overlap_candidate",
+          "explanation": "The two reviewed excerpts share lexical content terms collection, full, generational, long-lived, objects, ones. This is a topic-overlap candidate only; it does not establish agreement, support, contradiction or corroboration.",
+          "status": "candidate",
+          "evidence_policy": "exact source spans; shared words do not establish agreement",
+          "model": "deterministic-lexical-connection-v1",
+          "inference_calls": 0,
+          "owner_useful": null,
+          "quote_validation": {
+            "current_exact": true,
+            "historical_exact": true
+          },
+          "created_at": "2026-10-27T19:05:30.902656+00:00"
+        },
+        "created_at": "2026-10-27T19:05:30.903104+00:00",
+        "current_source": {
+          "url": "http://127.0.0.1:9300/current/P-Q2",
+          "sha256": "d89b96895fbf400aa0fbfb674b6ee6ed879a04d37aea83cf657e1e5ff855a7cb"
+        },
+        "historical_source": {
+          "url": "http://127.0.0.1:9300/historical/P03",
+          "sha256": "9190ecab90306c4acf9a64af0baea9ff670ef9d3e2763750808aefc3dc8ddb44",
+          "reviewed_at": "2026-09-12T19:05:30.284587+00:00"
+        },
+        "abstained": false
+      }
+    },
+    {
+      "id": "P-Q3",
+      "goal_id": "python-memory",
+      "relevant": [
+        "P04"
+      ],
+      "label_rationale": "The source describes the global interpreter lock and parallel bytecode execution.",
+      "current_url": "http://127.0.0.1:9300/current/P-Q3",
+      "snapshot_id": "64713ca8-0b35-4242-84eb-92713c54fcb8",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "memory_id": "P01",
+              "actual_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+              "source_url": "http://127.0.0.1:9300/historical/P01",
+              "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "P02",
+              "actual_memory_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+              "source_url": "http://127.0.0.1:9300/historical/P02",
+              "sha256": "6f4d3770bd1563974ad57ad10113c32d2c789f7ad07c7932b2344b24d312de9e",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "P04",
+              "actual_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+              "source_url": "http://127.0.0.1:9300/historical/P04",
+              "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+              "rank": 3,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.087
+        },
+        "B_alive12_unscoped": {
+          "results": [],
+          "latency_ms": 3.139,
+          "candidate_count": 15,
+          "candidate_mode": "sqlite_substring"
+        },
+        "C_corrected_scoped_lexical": {
+          "results": [
+            {
+              "memory_id": "P04",
+              "actual_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+              "source_url": "http://127.0.0.1:9300/historical/P04",
+              "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+              "rank": 1,
+              "score": 20
+            },
+            {
+              "memory_id": "P12",
+              "actual_memory_id": "f5f93ed4-bd8a-4be5-abdb-33bfe89b57fe",
+              "source_url": "http://127.0.0.1:9300/historical/P12",
+              "sha256": "45f115ccee34fc9885e4cc8acf84f7819807034e696a437b80d444f4138e18d2",
+              "rank": 2,
+              "score": 3
+            }
+          ],
+          "latency_ms": 4.177,
+          "candidate_count": 2,
+          "scoped_count": 12,
+          "candidate_limit": 5000
+        },
+        "D_full_history_access": {
+          "results": [
+            {
+              "memory_id": "P01",
+              "actual_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+              "source_url": "http://127.0.0.1:9300/historical/P01",
+              "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "P02",
+              "actual_memory_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+              "source_url": "http://127.0.0.1:9300/historical/P02",
+              "sha256": "6f4d3770bd1563974ad57ad10113c32d2c789f7ad07c7932b2344b24d312de9e",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "P04",
+              "actual_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+              "source_url": "http://127.0.0.1:9300/historical/P04",
+              "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+              "rank": 3,
+              "score": null
+            },
+            {
+              "memory_id": "P10",
+              "actual_memory_id": "b6d59d4f-9634-4e24-8c57-ce9d7c48f367",
+              "source_url": "http://127.0.0.1:9300/historical/P10",
+              "sha256": "cd1e53df0eb02a62d7cf3c3276c9fd8d018693d738251a4ef28ef59c68131fc2",
+              "rank": 4,
+              "score": null
+            },
+            {
+              "memory_id": "P06",
+              "actual_memory_id": "a97d64c9-91e8-4f09-bb4a-795c4e1469a0",
+              "source_url": "http://127.0.0.1:9300/historical/P06",
+              "sha256": "e08edd86f298a8ccf35c672b073fb52f2486ea693fc2dced4d6382bff0f9b1ac",
+              "rank": 5,
+              "score": null
+            },
+            {
+              "memory_id": "P08",
+              "actual_memory_id": "1f464c7b-5d0c-434c-9a7b-6f8fb648ee2c",
+              "source_url": "http://127.0.0.1:9300/historical/P08",
+              "sha256": "939ec1fa424fcb36d14c7695d7e5fac3aef0de2cc3b50cdbaab37bb33a110f48",
+              "rank": 6,
+              "score": null
+            },
+            {
+              "memory_id": "P07",
+              "actual_memory_id": "c3721e7c-ec88-4c70-bcf8-c28a8f45fdc0",
+              "source_url": "http://127.0.0.1:9300/historical/P07",
+              "sha256": "a519c7d3073b53656147b617a8ac505b4ab323d9ac4450c3d444babfade78718",
+              "rank": 7,
+              "score": null
+            },
+            {
+              "memory_id": "P12",
+              "actual_memory_id": "f5f93ed4-bd8a-4be5-abdb-33bfe89b57fe",
+              "source_url": "http://127.0.0.1:9300/historical/P12",
+              "sha256": "45f115ccee34fc9885e4cc8acf84f7819807034e696a437b80d444f4138e18d2",
+              "rank": 8,
+              "score": null
+            },
+            {
+              "memory_id": "P05",
+              "actual_memory_id": "1da54c7d-1a87-4083-a02b-2f57e4ea1003",
+              "source_url": "http://127.0.0.1:9300/historical/P05",
+              "sha256": "bda7f201d688ae29f701013da77f38d81371c879e439a436b5349e8f0539fb4b",
+              "rank": 9,
+              "score": null
+            },
+            {
+              "memory_id": "P09",
+              "actual_memory_id": "6127324e-6d37-4996-a3b2-95d3d770ee5b",
+              "source_url": "http://127.0.0.1:9300/historical/P09",
+              "sha256": "19271893f004dfcb7024ed9b09daaa84ae64383e3a43faa88094e568188a973e",
+              "rank": 10,
+              "score": null
+            },
+            {
+              "memory_id": "P11",
+              "actual_memory_id": "419ec989-0575-4bb4-ab80-b2c011507e87",
+              "source_url": "http://127.0.0.1:9300/historical/P11",
+              "sha256": "548961a81e7a6c050a38fc588820afeb22281471e8579568ff3c2c4bc1eba670",
+              "rank": 11,
+              "score": null
+            },
+            {
+              "memory_id": "P03",
+              "actual_memory_id": "154f7f80-4f85-47ca-8ab9-53c6510ebda1",
+              "source_url": "http://127.0.0.1:9300/historical/P03",
+              "sha256": "9190ecab90306c4acf9a64af0baea9ff670ef9d3e2763750808aefc3dc8ddb44",
+              "rank": 12,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.208,
+          "history_size": 12
+        }
+      },
+      "connection": {
+        "id": "e0af178b-8424-488a-af01-585dec5416c5",
+        "instance_id": "8eb03132-d61c-4bae-bc02-3c3362ad9d3a",
+        "kind": "research_connection",
+        "parent_id": "64713ca8-0b35-4242-84eb-92713c54fcb8",
+        "status": "candidate",
+        "data": {
+          "goal_id": "202ac8e7-6fe6-44d5-b133-519113ce60f7",
+          "current_snapshot_id": "64713ca8-0b35-4242-84eb-92713c54fcb8",
+          "current_url": "http://127.0.0.1:9300/current/P-Q3",
+          "current_sha256": "0ea78f61820f6ac3713b78b09968e3cd7226d5907c36634605c7136bfb854dde",
+          "current_quote": "Python's global interpreter lock prevents multiple threads from executing bytecode in parallel.",
+          "historical_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+          "historical_url": "http://127.0.0.1:9300/historical/P04",
+          "historical_sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+          "historical_quote": "The global interpreter lock prevents multiple threads from executing Python bytecode in parallel.",
+          "model_evidence_quote": "The global interpreter lock prevents multiple threads from executing Python bytecode in parallel.",
+          "shared_terms": [
+            "bytecode",
+            "executing",
+            "global",
+            "interpreter",
+            "lock",
+            "multiple",
+            "parallel",
+            "prevents",
+            "python",
+            "threads"
+          ],
+          "relation_type": "topic_overlap_candidate",
+          "explanation": "The two reviewed excerpts share lexical content terms bytecode, executing, global, interpreter, lock, multiple. This is a topic-overlap candidate only; it does not establish agreement, support, contradiction or corroboration.",
+          "status": "candidate",
+          "evidence_policy": "exact source spans; shared words do not establish agreement",
+          "model": "deterministic-lexical-connection-v1",
+          "inference_calls": 0,
+          "owner_useful": null,
+          "quote_validation": {
+            "current_exact": true,
+            "historical_exact": true
+          },
+          "created_at": "2026-10-27T19:05:30.953354+00:00"
+        },
+        "created_at": "2026-10-27T19:05:30.953781+00:00",
+        "current_source": {
+          "url": "http://127.0.0.1:9300/current/P-Q3",
+          "sha256": "0ea78f61820f6ac3713b78b09968e3cd7226d5907c36634605c7136bfb854dde"
+        },
+        "historical_source": {
+          "url": "http://127.0.0.1:9300/historical/P04",
+          "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+          "reviewed_at": "2026-10-27T19:05:30.024789"
+        },
+        "abstained": false
+      }
+    },
+    {
+      "id": "P-Q4",
+      "goal_id": "python-memory",
+      "relevant": [],
+      "label_rationale": "No retained source for this goal discusses quantum error correction; the correct outcome is abstention.",
+      "current_url": "http://127.0.0.1:9300/current/P-Q4",
+      "snapshot_id": "c9543c12-0072-4cde-8dc0-d1f15bda30a9",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "memory_id": "P01",
+              "actual_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+              "source_url": "http://127.0.0.1:9300/historical/P01",
+              "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "P02",
+              "actual_memory_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+              "source_url": "http://127.0.0.1:9300/historical/P02",
+              "sha256": "6f4d3770bd1563974ad57ad10113c32d2c789f7ad07c7932b2344b24d312de9e",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "P04",
+              "actual_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+              "source_url": "http://127.0.0.1:9300/historical/P04",
+              "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+              "rank": 3,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.251
+        },
+        "B_alive12_unscoped": {
+          "results": [],
+          "latency_ms": 4.614,
+          "candidate_count": 15,
+          "candidate_mode": "sqlite_substring"
+        },
+        "C_corrected_scoped_lexical": {
+          "results": [],
+          "latency_ms": 4.069,
+          "candidate_count": 0,
+          "scoped_count": 12,
+          "candidate_limit": 5000
+        },
+        "D_full_history_access": {
+          "results": [
+            {
+              "memory_id": "P01",
+              "actual_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+              "source_url": "http://127.0.0.1:9300/historical/P01",
+              "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "P02",
+              "actual_memory_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+              "source_url": "http://127.0.0.1:9300/historical/P02",
+              "sha256": "6f4d3770bd1563974ad57ad10113c32d2c789f7ad07c7932b2344b24d312de9e",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "P04",
+              "actual_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+              "source_url": "http://127.0.0.1:9300/historical/P04",
+              "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+              "rank": 3,
+              "score": null
+            },
+            {
+              "memory_id": "P10",
+              "actual_memory_id": "b6d59d4f-9634-4e24-8c57-ce9d7c48f367",
+              "source_url": "http://127.0.0.1:9300/historical/P10",
+              "sha256": "cd1e53df0eb02a62d7cf3c3276c9fd8d018693d738251a4ef28ef59c68131fc2",
+              "rank": 4,
+              "score": null
+            },
+            {
+              "memory_id": "P06",
+              "actual_memory_id": "a97d64c9-91e8-4f09-bb4a-795c4e1469a0",
+              "source_url": "http://127.0.0.1:9300/historical/P06",
+              "sha256": "e08edd86f298a8ccf35c672b073fb52f2486ea693fc2dced4d6382bff0f9b1ac",
+              "rank": 5,
+              "score": null
+            },
+            {
+              "memory_id": "P08",
+              "actual_memory_id": "1f464c7b-5d0c-434c-9a7b-6f8fb648ee2c",
+              "source_url": "http://127.0.0.1:9300/historical/P08",
+              "sha256": "939ec1fa424fcb36d14c7695d7e5fac3aef0de2cc3b50cdbaab37bb33a110f48",
+              "rank": 6,
+              "score": null
+            },
+            {
+              "memory_id": "P07",
+              "actual_memory_id": "c3721e7c-ec88-4c70-bcf8-c28a8f45fdc0",
+              "source_url": "http://127.0.0.1:9300/historical/P07",
+              "sha256": "a519c7d3073b53656147b617a8ac505b4ab323d9ac4450c3d444babfade78718",
+              "rank": 7,
+              "score": null
+            },
+            {
+              "memory_id": "P12",
+              "actual_memory_id": "f5f93ed4-bd8a-4be5-abdb-33bfe89b57fe",
+              "source_url": "http://127.0.0.1:9300/historical/P12",
+              "sha256": "45f115ccee34fc9885e4cc8acf84f7819807034e696a437b80d444f4138e18d2",
+              "rank": 8,
+              "score": null
+            },
+            {
+              "memory_id": "P05",
+              "actual_memory_id": "1da54c7d-1a87-4083-a02b-2f57e4ea1003",
+              "source_url": "http://127.0.0.1:9300/historical/P05",
+              "sha256": "bda7f201d688ae29f701013da77f38d81371c879e439a436b5349e8f0539fb4b",
+              "rank": 9,
+              "score": null
+            },
+            {
+              "memory_id": "P09",
+              "actual_memory_id": "6127324e-6d37-4996-a3b2-95d3d770ee5b",
+              "source_url": "http://127.0.0.1:9300/historical/P09",
+              "sha256": "19271893f004dfcb7024ed9b09daaa84ae64383e3a43faa88094e568188a973e",
+              "rank": 10,
+              "score": null
+            },
+            {
+              "memory_id": "P11",
+              "actual_memory_id": "419ec989-0575-4bb4-ab80-b2c011507e87",
+              "source_url": "http://127.0.0.1:9300/historical/P11",
+              "sha256": "548961a81e7a6c050a38fc588820afeb22281471e8579568ff3c2c4bc1eba670",
+              "rank": 11,
+              "score": null
+            },
+            {
+              "memory_id": "P03",
+              "actual_memory_id": "154f7f80-4f85-47ca-8ab9-53c6510ebda1",
+              "source_url": "http://127.0.0.1:9300/historical/P03",
+              "sha256": "9190ecab90306c4acf9a64af0baea9ff670ef9d3e2763750808aefc3dc8ddb44",
+              "rank": 12,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.252,
+          "history_size": 12
+        }
+      },
+      "connection": null
+    },
+    {
+      "id": "J-Q1",
+      "goal_id": "javascript-async",
+      "relevant": [
+        "J01",
+        "J02",
+        "J07"
+      ],
+      "label_rationale": "All three sources describe microtask, promise-reaction, timer or macrotask ordering.",
+      "current_url": "http://127.0.0.1:9300/current/J-Q1",
+      "snapshot_id": "379c5260-c768-4a28-a464-648b8e59cd66",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "memory_id": "J04",
+              "actual_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+              "source_url": "http://127.0.0.1:9300/historical/J04",
+              "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "J01",
+              "actual_memory_id": "7a980268-2731-44f1-af18-c7e66108a558",
+              "source_url": "http://127.0.0.1:9300/historical/J01",
+              "sha256": "db93fb9cd38fe4f33f30b7d70a52e9064db5b34e85f709f806b37217401c0901",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "J02",
+              "actual_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+              "source_url": "http://127.0.0.1:9300/historical/J02",
+              "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+              "rank": 3,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.476
+        },
+        "B_alive12_unscoped": {
+          "results": [],
+          "latency_ms": 4.168,
+          "candidate_count": 15,
+          "candidate_mode": "sqlite_substring"
+        },
+        "C_corrected_scoped_lexical": {
+          "results": [
+            {
+              "memory_id": "J02",
+              "actual_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+              "source_url": "http://127.0.0.1:9300/historical/J02",
+              "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+              "rank": 1,
+              "score": 10
+            },
+            {
+              "memory_id": "J01",
+              "actual_memory_id": "7a980268-2731-44f1-af18-c7e66108a558",
+              "source_url": "http://127.0.0.1:9300/historical/J01",
+              "sha256": "db93fb9cd38fe4f33f30b7d70a52e9064db5b34e85f709f806b37217401c0901",
+              "rank": 2,
+              "score": 6
+            },
+            {
+              "memory_id": "J07",
+              "actual_memory_id": "527f2a03-d5d3-4516-a63c-d2eae1987c9c",
+              "source_url": "http://127.0.0.1:9300/historical/J07",
+              "sha256": "47ba8c18b51835ae0be97776d6c5f2dda171ab733da25f174c25c27b8844425b",
+              "rank": 3,
+              "score": 4
+            }
+          ],
+          "latency_ms": 6.375,
+          "candidate_count": 4,
+          "scoped_count": 12,
+          "candidate_limit": 5000
+        },
+        "D_full_history_access": {
+          "results": [
+            {
+              "memory_id": "J04",
+              "actual_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+              "source_url": "http://127.0.0.1:9300/historical/J04",
+              "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "J01",
+              "actual_memory_id": "7a980268-2731-44f1-af18-c7e66108a558",
+              "source_url": "http://127.0.0.1:9300/historical/J01",
+              "sha256": "db93fb9cd38fe4f33f30b7d70a52e9064db5b34e85f709f806b37217401c0901",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "J02",
+              "actual_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+              "source_url": "http://127.0.0.1:9300/historical/J02",
+              "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+              "rank": 3,
+              "score": null
+            },
+            {
+              "memory_id": "J07",
+              "actual_memory_id": "527f2a03-d5d3-4516-a63c-d2eae1987c9c",
+              "source_url": "http://127.0.0.1:9300/historical/J07",
+              "sha256": "47ba8c18b51835ae0be97776d6c5f2dda171ab733da25f174c25c27b8844425b",
+              "rank": 4,
+              "score": null
+            },
+            {
+              "memory_id": "J10",
+              "actual_memory_id": "3b054fe7-a475-402a-8f4c-b28d56663823",
+              "source_url": "http://127.0.0.1:9300/historical/J10",
+              "sha256": "9454560255362e478260528470eac8b734b8eebad2ddc8e7da2675a4844ceff5",
+              "rank": 5,
+              "score": null
+            },
+            {
+              "memory_id": "J03",
+              "actual_memory_id": "505b607e-67c7-4225-b151-b0b84468519b",
+              "source_url": "http://127.0.0.1:9300/historical/J03",
+              "sha256": "060d7ec02f7a7470da38c3e67eb30a88584982154468c6e5a381ab9e4801bcb0",
+              "rank": 6,
+              "score": null
+            },
+            {
+              "memory_id": "J12",
+              "actual_memory_id": "8411732e-5b35-416a-9bdb-0bb84a8378f0",
+              "source_url": "http://127.0.0.1:9300/historical/J12",
+              "sha256": "770c6fecc0c4aa0f3757276d887e09f844ee59aa6891352b227012953d890b7f",
+              "rank": 7,
+              "score": null
+            },
+            {
+              "memory_id": "J09",
+              "actual_memory_id": "8b3012f9-0722-46d9-9243-960e48056e8f",
+              "source_url": "http://127.0.0.1:9300/historical/J09",
+              "sha256": "aef0c615e81ad5d0faa1ee5df7c2640f459c25d5e5a80c86f0fd3a0b165020d7",
+              "rank": 8,
+              "score": null
+            },
+            {
+              "memory_id": "J08",
+              "actual_memory_id": "ae7339bb-2a0a-482a-9689-17f313f3bcb7",
+              "source_url": "http://127.0.0.1:9300/historical/J08",
+              "sha256": "dc89ddef2009708a0ab0d95dcb4e747cae5c4e86258545845c302aa2e1a7539f",
+              "rank": 9,
+              "score": null
+            },
+            {
+              "memory_id": "J11",
+              "actual_memory_id": "ccbfa1d8-1b22-4057-8072-a3599dee1d1d",
+              "source_url": "http://127.0.0.1:9300/historical/J11",
+              "sha256": "2c9b08cda2ca8e8f5609be93adc06d2c4509a910916f2bdf75c232785f226f00",
+              "rank": 10,
+              "score": null
+            },
+            {
+              "memory_id": "J06",
+              "actual_memory_id": "a6273ce5-d067-4726-9b3c-267175da99a6",
+              "source_url": "http://127.0.0.1:9300/historical/J06",
+              "sha256": "da5cb75bf706444e6f416b84dbe5d78384c8652f132c1bf2b256103296734a37",
+              "rank": 11,
+              "score": null
+            },
+            {
+              "memory_id": "J05",
+              "actual_memory_id": "700554f9-32e7-4fff-88d7-13704bf667ff",
+              "source_url": "http://127.0.0.1:9300/historical/J05",
+              "sha256": "7110a0d151aef0be846ecace0ad47d356bcd7229a114e8b2c9a05da3530e827a",
+              "rank": 12,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.333,
+          "history_size": 12
+        }
+      },
+      "connection": {
+        "id": "652341d8-89f0-45f0-86fa-33fbe47d5ef8",
+        "instance_id": "8eb03132-d61c-4bae-bc02-3c3362ad9d3a",
+        "kind": "research_connection",
+        "parent_id": "379c5260-c768-4a28-a464-648b8e59cd66",
+        "status": "candidate",
+        "data": {
+          "goal_id": "74d304bb-77e9-44bb-bf71-d7829c27c153",
+          "current_snapshot_id": "379c5260-c768-4a28-a464-648b8e59cd66",
+          "current_url": "http://127.0.0.1:9300/current/J-Q1",
+          "current_sha256": "4962e51f8b49beb55ac06011039f59bee76b14f5cf457279f9a6fa95555a61fc",
+          "current_quote": "Promise reactions run as microtasks before timers and the next macrotask.",
+          "historical_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+          "historical_url": "http://127.0.0.1:9300/historical/J02",
+          "historical_sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+          "historical_quote": "Promise resolution schedules reactions as microtasks, so they run before timers.",
+          "model_evidence_quote": "Promise resolution schedules reactions as microtasks, so they run before timers.",
+          "shared_terms": [
+            "microtasks",
+            "promise",
+            "reactions",
+            "run",
+            "timers"
+          ],
+          "relation_type": "topic_overlap_candidate",
+          "explanation": "The two reviewed excerpts share lexical content terms microtasks, promise, reactions, run, timers. This is a topic-overlap candidate only; it does not establish agreement, support, contradiction or corroboration.",
+          "status": "candidate",
+          "evidence_policy": "exact source spans; shared words do not establish agreement",
+          "model": "deterministic-lexical-connection-v1",
+          "inference_calls": 0,
+          "owner_useful": null,
+          "quote_validation": {
+            "current_exact": true,
+            "historical_exact": true
+          },
+          "created_at": "2026-10-27T19:05:31.072934+00:00"
+        },
+        "created_at": "2026-10-27T19:05:31.074319+00:00",
+        "current_source": {
+          "url": "http://127.0.0.1:9300/current/J-Q1",
+          "sha256": "4962e51f8b49beb55ac06011039f59bee76b14f5cf457279f9a6fa95555a61fc"
+        },
+        "historical_source": {
+          "url": "http://127.0.0.1:9300/historical/J02",
+          "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+          "reviewed_at": "2026-10-27T19:05:30.295033"
+        },
+        "abstained": false
+      }
+    },
+    {
+      "id": "J-Q2",
+      "goal_id": "javascript-async",
+      "relevant": [
+        "J03",
+        "J10"
+      ],
+      "label_rationale": "Both sources describe frame-aligned visual updates or coalesced rendering before repaint.",
+      "current_url": "http://127.0.0.1:9300/current/J-Q2",
+      "snapshot_id": "b2790548-0c35-47b7-8f1a-2cd36e277c03",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "memory_id": "J04",
+              "actual_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+              "source_url": "http://127.0.0.1:9300/historical/J04",
+              "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "J01",
+              "actual_memory_id": "7a980268-2731-44f1-af18-c7e66108a558",
+              "source_url": "http://127.0.0.1:9300/historical/J01",
+              "sha256": "db93fb9cd38fe4f33f30b7d70a52e9064db5b34e85f709f806b37217401c0901",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "J02",
+              "actual_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+              "source_url": "http://127.0.0.1:9300/historical/J02",
+              "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+              "rank": 3,
+              "score": null
+            }
+          ],
+          "latency_ms": 2.488
+        },
+        "B_alive12_unscoped": {
+          "results": [],
+          "latency_ms": 6.03,
+          "candidate_count": 15,
+          "candidate_mode": "sqlite_substring"
+        },
+        "C_corrected_scoped_lexical": {
+          "results": [
+            {
+              "memory_id": "J03",
+              "actual_memory_id": "505b607e-67c7-4225-b151-b0b84468519b",
+              "source_url": "http://127.0.0.1:9300/historical/J03",
+              "sha256": "060d7ec02f7a7470da38c3e67eb30a88584982154468c6e5a381ab9e4801bcb0",
+              "rank": 1,
+              "score": 8
+            },
+            {
+              "memory_id": "J10",
+              "actual_memory_id": "3b054fe7-a475-402a-8f4c-b28d56663823",
+              "source_url": "http://127.0.0.1:9300/historical/J10",
+              "sha256": "9454560255362e478260528470eac8b734b8eebad2ddc8e7da2675a4844ceff5",
+              "rank": 2,
+              "score": 4
+            },
+            {
+              "memory_id": "J06",
+              "actual_memory_id": "a6273ce5-d067-4726-9b3c-267175da99a6",
+              "source_url": "http://127.0.0.1:9300/historical/J06",
+              "sha256": "da5cb75bf706444e6f416b84dbe5d78384c8652f132c1bf2b256103296734a37",
+              "rank": 3,
+              "score": 3
+            }
+          ],
+          "latency_ms": 11.784,
+          "candidate_count": 5,
+          "scoped_count": 12,
+          "candidate_limit": 5000
+        },
+        "D_full_history_access": {
+          "results": [
+            {
+              "memory_id": "J04",
+              "actual_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+              "source_url": "http://127.0.0.1:9300/historical/J04",
+              "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "J01",
+              "actual_memory_id": "7a980268-2731-44f1-af18-c7e66108a558",
+              "source_url": "http://127.0.0.1:9300/historical/J01",
+              "sha256": "db93fb9cd38fe4f33f30b7d70a52e9064db5b34e85f709f806b37217401c0901",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "J02",
+              "actual_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+              "source_url": "http://127.0.0.1:9300/historical/J02",
+              "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+              "rank": 3,
+              "score": null
+            },
+            {
+              "memory_id": "J07",
+              "actual_memory_id": "527f2a03-d5d3-4516-a63c-d2eae1987c9c",
+              "source_url": "http://127.0.0.1:9300/historical/J07",
+              "sha256": "47ba8c18b51835ae0be97776d6c5f2dda171ab733da25f174c25c27b8844425b",
+              "rank": 4,
+              "score": null
+            },
+            {
+              "memory_id": "J10",
+              "actual_memory_id": "3b054fe7-a475-402a-8f4c-b28d56663823",
+              "source_url": "http://127.0.0.1:9300/historical/J10",
+              "sha256": "9454560255362e478260528470eac8b734b8eebad2ddc8e7da2675a4844ceff5",
+              "rank": 5,
+              "score": null
+            },
+            {
+              "memory_id": "J03",
+              "actual_memory_id": "505b607e-67c7-4225-b151-b0b84468519b",
+              "source_url": "http://127.0.0.1:9300/historical/J03",
+              "sha256": "060d7ec02f7a7470da38c3e67eb30a88584982154468c6e5a381ab9e4801bcb0",
+              "rank": 6,
+              "score": null
+            },
+            {
+              "memory_id": "J12",
+              "actual_memory_id": "8411732e-5b35-416a-9bdb-0bb84a8378f0",
+              "source_url": "http://127.0.0.1:9300/historical/J12",
+              "sha256": "770c6fecc0c4aa0f3757276d887e09f844ee59aa6891352b227012953d890b7f",
+              "rank": 7,
+              "score": null
+            },
+            {
+              "memory_id": "J09",
+              "actual_memory_id": "8b3012f9-0722-46d9-9243-960e48056e8f",
+              "source_url": "http://127.0.0.1:9300/historical/J09",
+              "sha256": "aef0c615e81ad5d0faa1ee5df7c2640f459c25d5e5a80c86f0fd3a0b165020d7",
+              "rank": 8,
+              "score": null
+            },
+            {
+              "memory_id": "J08",
+              "actual_memory_id": "ae7339bb-2a0a-482a-9689-17f313f3bcb7",
+              "source_url": "http://127.0.0.1:9300/historical/J08",
+              "sha256": "dc89ddef2009708a0ab0d95dcb4e747cae5c4e86258545845c302aa2e1a7539f",
+              "rank": 9,
+              "score": null
+            },
+            {
+              "memory_id": "J11",
+              "actual_memory_id": "ccbfa1d8-1b22-4057-8072-a3599dee1d1d",
+              "source_url": "http://127.0.0.1:9300/historical/J11",
+              "sha256": "2c9b08cda2ca8e8f5609be93adc06d2c4509a910916f2bdf75c232785f226f00",
+              "rank": 10,
+              "score": null
+            },
+            {
+              "memory_id": "J06",
+              "actual_memory_id": "a6273ce5-d067-4726-9b3c-267175da99a6",
+              "source_url": "http://127.0.0.1:9300/historical/J06",
+              "sha256": "da5cb75bf706444e6f416b84dbe5d78384c8652f132c1bf2b256103296734a37",
+              "rank": 11,
+              "score": null
+            },
+            {
+              "memory_id": "J05",
+              "actual_memory_id": "700554f9-32e7-4fff-88d7-13704bf667ff",
+              "source_url": "http://127.0.0.1:9300/historical/J05",
+              "sha256": "7110a0d151aef0be846ecace0ad47d356bcd7229a114e8b2c9a05da3530e827a",
+              "rank": 12,
+              "score": null
+            }
+          ],
+          "latency_ms": 2.287,
+          "history_size": 12
+        }
+      },
+      "connection": {
+        "id": "62702bd6-ea6e-4963-99cc-42e94370da8c",
+        "instance_id": "8eb03132-d61c-4bae-bc02-3c3362ad9d3a",
+        "kind": "research_connection",
+        "parent_id": "b2790548-0c35-47b7-8f1a-2cd36e277c03",
+        "status": "candidate",
+        "data": {
+          "goal_id": "74d304bb-77e9-44bb-bf71-d7829c27c153",
+          "current_snapshot_id": "b2790548-0c35-47b7-8f1a-2cd36e277c03",
+          "current_url": "http://127.0.0.1:9300/current/J-Q2",
+          "current_sha256": "cb12ff04c40204f2666a28bd5af5e073536bc6805e690e5b90354c4fdb71cf7c",
+          "current_quote": "Animation frame callbacks batch visual updates before the browser repaints.",
+          "historical_memory_id": "505b607e-67c7-4225-b151-b0b84468519b",
+          "historical_url": "http://127.0.0.1:9300/historical/J03",
+          "historical_sha256": "060d7ec02f7a7470da38c3e67eb30a88584982154468c6e5a381ab9e4801bcb0",
+          "historical_quote": "requestAnimationFrame batches visual updates before the browser repaints.",
+          "model_evidence_quote": "requestAnimationFrame batches visual updates before the browser repaints.",
+          "shared_terms": [
+            "browser",
+            "repaints",
+            "updates",
+            "visual"
+          ],
+          "relation_type": "topic_overlap_candidate",
+          "explanation": "The two reviewed excerpts share lexical content terms browser, repaints, updates, visual. This is a topic-overlap candidate only; it does not establish agreement, support, contradiction or corroboration.",
+          "status": "candidate",
+          "evidence_policy": "exact source spans; shared words do not establish agreement",
+          "model": "deterministic-lexical-connection-v1",
+          "inference_calls": 0,
+          "owner_useful": null,
+          "quote_validation": {
+            "current_exact": true,
+            "historical_exact": true
+          },
+          "created_at": "2026-10-27T19:05:31.170855+00:00"
+        },
+        "created_at": "2026-10-27T19:05:31.171481+00:00",
+        "current_source": {
+          "url": "http://127.0.0.1:9300/current/J-Q2",
+          "sha256": "cb12ff04c40204f2666a28bd5af5e073536bc6805e690e5b90354c4fdb71cf7c"
+        },
+        "historical_source": {
+          "url": "http://127.0.0.1:9300/historical/J03",
+          "sha256": "060d7ec02f7a7470da38c3e67eb30a88584982154468c6e5a381ab9e4801bcb0",
+          "reviewed_at": "2026-10-27T19:05:29.717764"
+        },
+        "abstained": false
+      }
+    },
+    {
+      "id": "J-Q3",
+      "goal_id": "javascript-async",
+      "relevant": [
+        "J04"
+      ],
+      "label_rationale": "The source describes long tasks blocking the main thread and delaying input.",
+      "current_url": "http://127.0.0.1:9300/current/J-Q3",
+      "snapshot_id": "37c42629-5921-469c-b60a-17c8607abfea",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "memory_id": "J04",
+              "actual_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+              "source_url": "http://127.0.0.1:9300/historical/J04",
+              "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "J01",
+              "actual_memory_id": "7a980268-2731-44f1-af18-c7e66108a558",
+              "source_url": "http://127.0.0.1:9300/historical/J01",
+              "sha256": "db93fb9cd38fe4f33f30b7d70a52e9064db5b34e85f709f806b37217401c0901",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "J02",
+              "actual_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+              "source_url": "http://127.0.0.1:9300/historical/J02",
+              "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+              "rank": 3,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.719
+        },
+        "B_alive12_unscoped": {
+          "results": [],
+          "latency_ms": 3.566,
+          "candidate_count": 15,
+          "candidate_mode": "sqlite_substring"
+        },
+        "C_corrected_scoped_lexical": {
+          "results": [
+            {
+              "memory_id": "J04",
+              "actual_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+              "source_url": "http://127.0.0.1:9300/historical/J04",
+              "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+              "rank": 1,
+              "score": 10
+            },
+            {
+              "memory_id": "J08",
+              "actual_memory_id": "ae7339bb-2a0a-482a-9689-17f313f3bcb7",
+              "source_url": "http://127.0.0.1:9300/historical/J08",
+              "sha256": "dc89ddef2009708a0ab0d95dcb4e747cae5c4e86258545845c302aa2e1a7539f",
+              "rank": 2,
+              "score": 4
+            },
+            {
+              "memory_id": "J05",
+              "actual_memory_id": "700554f9-32e7-4fff-88d7-13704bf667ff",
+              "source_url": "http://127.0.0.1:9300/historical/J05",
+              "sha256": "7110a0d151aef0be846ecace0ad47d356bcd7229a114e8b2c9a05da3530e827a",
+              "rank": 3,
+              "score": 2
+            }
+          ],
+          "latency_ms": 7.403,
+          "candidate_count": 3,
+          "scoped_count": 12,
+          "candidate_limit": 5000
+        },
+        "D_full_history_access": {
+          "results": [
+            {
+              "memory_id": "J04",
+              "actual_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+              "source_url": "http://127.0.0.1:9300/historical/J04",
+              "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "J01",
+              "actual_memory_id": "7a980268-2731-44f1-af18-c7e66108a558",
+              "source_url": "http://127.0.0.1:9300/historical/J01",
+              "sha256": "db93fb9cd38fe4f33f30b7d70a52e9064db5b34e85f709f806b37217401c0901",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "J02",
+              "actual_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+              "source_url": "http://127.0.0.1:9300/historical/J02",
+              "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+              "rank": 3,
+              "score": null
+            },
+            {
+              "memory_id": "J07",
+              "actual_memory_id": "527f2a03-d5d3-4516-a63c-d2eae1987c9c",
+              "source_url": "http://127.0.0.1:9300/historical/J07",
+              "sha256": "47ba8c18b51835ae0be97776d6c5f2dda171ab733da25f174c25c27b8844425b",
+              "rank": 4,
+              "score": null
+            },
+            {
+              "memory_id": "J10",
+              "actual_memory_id": "3b054fe7-a475-402a-8f4c-b28d56663823",
+              "source_url": "http://127.0.0.1:9300/historical/J10",
+              "sha256": "9454560255362e478260528470eac8b734b8eebad2ddc8e7da2675a4844ceff5",
+              "rank": 5,
+              "score": null
+            },
+            {
+              "memory_id": "J03",
+              "actual_memory_id": "505b607e-67c7-4225-b151-b0b84468519b",
+              "source_url": "http://127.0.0.1:9300/historical/J03",
+              "sha256": "060d7ec02f7a7470da38c3e67eb30a88584982154468c6e5a381ab9e4801bcb0",
+              "rank": 6,
+              "score": null
+            },
+            {
+              "memory_id": "J12",
+              "actual_memory_id": "8411732e-5b35-416a-9bdb-0bb84a8378f0",
+              "source_url": "http://127.0.0.1:9300/historical/J12",
+              "sha256": "770c6fecc0c4aa0f3757276d887e09f844ee59aa6891352b227012953d890b7f",
+              "rank": 7,
+              "score": null
+            },
+            {
+              "memory_id": "J09",
+              "actual_memory_id": "8b3012f9-0722-46d9-9243-960e48056e8f",
+              "source_url": "http://127.0.0.1:9300/historical/J09",
+              "sha256": "aef0c615e81ad5d0faa1ee5df7c2640f459c25d5e5a80c86f0fd3a0b165020d7",
+              "rank": 8,
+              "score": null
+            },
+            {
+              "memory_id": "J08",
+              "actual_memory_id": "ae7339bb-2a0a-482a-9689-17f313f3bcb7",
+              "source_url": "http://127.0.0.1:9300/historical/J08",
+              "sha256": "dc89ddef2009708a0ab0d95dcb4e747cae5c4e86258545845c302aa2e1a7539f",
+              "rank": 9,
+              "score": null
+            },
+            {
+              "memory_id": "J11",
+              "actual_memory_id": "ccbfa1d8-1b22-4057-8072-a3599dee1d1d",
+              "source_url": "http://127.0.0.1:9300/historical/J11",
+              "sha256": "2c9b08cda2ca8e8f5609be93adc06d2c4509a910916f2bdf75c232785f226f00",
+              "rank": 10,
+              "score": null
+            },
+            {
+              "memory_id": "J06",
+              "actual_memory_id": "a6273ce5-d067-4726-9b3c-267175da99a6",
+              "source_url": "http://127.0.0.1:9300/historical/J06",
+              "sha256": "da5cb75bf706444e6f416b84dbe5d78384c8652f132c1bf2b256103296734a37",
+              "rank": 11,
+              "score": null
+            },
+            {
+              "memory_id": "J05",
+              "actual_memory_id": "700554f9-32e7-4fff-88d7-13704bf667ff",
+              "source_url": "http://127.0.0.1:9300/historical/J05",
+              "sha256": "7110a0d151aef0be846ecace0ad47d356bcd7229a114e8b2c9a05da3530e827a",
+              "rank": 12,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.545,
+          "history_size": 12
+        }
+      },
+      "connection": {
+        "id": "f8f0dbc3-b235-4b2f-bc0a-a430be8a7642",
+        "instance_id": "8eb03132-d61c-4bae-bc02-3c3362ad9d3a",
+        "kind": "research_connection",
+        "parent_id": "37c42629-5921-469c-b60a-17c8607abfea",
+        "status": "candidate",
+        "data": {
+          "goal_id": "74d304bb-77e9-44bb-bf71-d7829c27c153",
+          "current_snapshot_id": "37c42629-5921-469c-b60a-17c8607abfea",
+          "current_url": "http://127.0.0.1:9300/current/J-Q3",
+          "current_sha256": "7c972925e4fe0525e4707a5e1b4f6b049c7eb434ad543dc517ac20ae455bbb15",
+          "current_quote": "A long task blocks the main thread and delays input responsiveness.",
+          "historical_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+          "historical_url": "http://127.0.0.1:9300/historical/J04",
+          "historical_sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+          "historical_quote": "Long tasks block the main thread and delay input responsiveness.",
+          "model_evidence_quote": "Long tasks block the main thread and delay input responsiveness.",
+          "shared_terms": [
+            "input",
+            "long",
+            "main",
+            "responsiveness",
+            "thread"
+          ],
+          "relation_type": "topic_overlap_candidate",
+          "explanation": "The two reviewed excerpts share lexical content terms input, long, main, responsiveness, thread. This is a topic-overlap candidate only; it does not establish agreement, support, contradiction or corroboration.",
+          "status": "candidate",
+          "evidence_policy": "exact source spans; shared words do not establish agreement",
+          "model": "deterministic-lexical-connection-v1",
+          "inference_calls": 0,
+          "owner_useful": null,
+          "quote_validation": {
+            "current_exact": true,
+            "historical_exact": true
+          },
+          "created_at": "2026-10-27T19:05:31.243994+00:00"
+        },
+        "created_at": "2026-10-27T19:05:31.244626+00:00",
+        "current_source": {
+          "url": "http://127.0.0.1:9300/current/J-Q3",
+          "sha256": "7c972925e4fe0525e4707a5e1b4f6b049c7eb434ad543dc517ac20ae455bbb15"
+        },
+        "historical_source": {
+          "url": "http://127.0.0.1:9300/historical/J04",
+          "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+          "reviewed_at": "2026-10-27T19:05:30.674876"
+        },
+        "abstained": false
+      }
+    },
+    {
+      "id": "J-Q4",
+      "goal_id": "javascript-async",
+      "relevant": [],
+      "label_rationale": "No retained source for this goal discusses relational schema normalization; the correct outcome is abstention.",
+      "current_url": "http://127.0.0.1:9300/current/J-Q4",
+      "snapshot_id": "53765b25-9b0d-44d5-bf8c-1b572630c2ef",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "memory_id": "J04",
+              "actual_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+              "source_url": "http://127.0.0.1:9300/historical/J04",
+              "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "J01",
+              "actual_memory_id": "7a980268-2731-44f1-af18-c7e66108a558",
+              "source_url": "http://127.0.0.1:9300/historical/J01",
+              "sha256": "db93fb9cd38fe4f33f30b7d70a52e9064db5b34e85f709f806b37217401c0901",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "J02",
+              "actual_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+              "source_url": "http://127.0.0.1:9300/historical/J02",
+              "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+              "rank": 3,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.362
+        },
+        "B_alive12_unscoped": {
+          "results": [],
+          "latency_ms": 3.781,
+          "candidate_count": 15,
+          "candidate_mode": "sqlite_substring"
+        },
+        "C_corrected_scoped_lexical": {
+          "results": [],
+          "latency_ms": 4.826,
+          "candidate_count": 0,
+          "scoped_count": 12,
+          "candidate_limit": 5000
+        },
+        "D_full_history_access": {
+          "results": [
+            {
+              "memory_id": "J04",
+              "actual_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+              "source_url": "http://127.0.0.1:9300/historical/J04",
+              "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "J01",
+              "actual_memory_id": "7a980268-2731-44f1-af18-c7e66108a558",
+              "source_url": "http://127.0.0.1:9300/historical/J01",
+              "sha256": "db93fb9cd38fe4f33f30b7d70a52e9064db5b34e85f709f806b37217401c0901",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "J02",
+              "actual_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+              "source_url": "http://127.0.0.1:9300/historical/J02",
+              "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+              "rank": 3,
+              "score": null
+            },
+            {
+              "memory_id": "J07",
+              "actual_memory_id": "527f2a03-d5d3-4516-a63c-d2eae1987c9c",
+              "source_url": "http://127.0.0.1:9300/historical/J07",
+              "sha256": "47ba8c18b51835ae0be97776d6c5f2dda171ab733da25f174c25c27b8844425b",
+              "rank": 4,
+              "score": null
+            },
+            {
+              "memory_id": "J10",
+              "actual_memory_id": "3b054fe7-a475-402a-8f4c-b28d56663823",
+              "source_url": "http://127.0.0.1:9300/historical/J10",
+              "sha256": "9454560255362e478260528470eac8b734b8eebad2ddc8e7da2675a4844ceff5",
+              "rank": 5,
+              "score": null
+            },
+            {
+              "memory_id": "J03",
+              "actual_memory_id": "505b607e-67c7-4225-b151-b0b84468519b",
+              "source_url": "http://127.0.0.1:9300/historical/J03",
+              "sha256": "060d7ec02f7a7470da38c3e67eb30a88584982154468c6e5a381ab9e4801bcb0",
+              "rank": 6,
+              "score": null
+            },
+            {
+              "memory_id": "J12",
+              "actual_memory_id": "8411732e-5b35-416a-9bdb-0bb84a8378f0",
+              "source_url": "http://127.0.0.1:9300/historical/J12",
+              "sha256": "770c6fecc0c4aa0f3757276d887e09f844ee59aa6891352b227012953d890b7f",
+              "rank": 7,
+              "score": null
+            },
+            {
+              "memory_id": "J09",
+              "actual_memory_id": "8b3012f9-0722-46d9-9243-960e48056e8f",
+              "source_url": "http://127.0.0.1:9300/historical/J09",
+              "sha256": "aef0c615e81ad5d0faa1ee5df7c2640f459c25d5e5a80c86f0fd3a0b165020d7",
+              "rank": 8,
+              "score": null
+            },
+            {
+              "memory_id": "J08",
+              "actual_memory_id": "ae7339bb-2a0a-482a-9689-17f313f3bcb7",
+              "source_url": "http://127.0.0.1:9300/historical/J08",
+              "sha256": "dc89ddef2009708a0ab0d95dcb4e747cae5c4e86258545845c302aa2e1a7539f",
+              "rank": 9,
+              "score": null
+            },
+            {
+              "memory_id": "J11",
+              "actual_memory_id": "ccbfa1d8-1b22-4057-8072-a3599dee1d1d",
+              "source_url": "http://127.0.0.1:9300/historical/J11",
+              "sha256": "2c9b08cda2ca8e8f5609be93adc06d2c4509a910916f2bdf75c232785f226f00",
+              "rank": 10,
+              "score": null
+            },
+            {
+              "memory_id": "J06",
+              "actual_memory_id": "a6273ce5-d067-4726-9b3c-267175da99a6",
+              "source_url": "http://127.0.0.1:9300/historical/J06",
+              "sha256": "da5cb75bf706444e6f416b84dbe5d78384c8652f132c1bf2b256103296734a37",
+              "rank": 11,
+              "score": null
+            },
+            {
+              "memory_id": "J05",
+              "actual_memory_id": "700554f9-32e7-4fff-88d7-13704bf667ff",
+              "source_url": "http://127.0.0.1:9300/historical/J05",
+              "sha256": "7110a0d151aef0be846ecace0ad47d356bcd7229a114e8b2c9a05da3530e827a",
+              "rank": 12,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.444,
+          "history_size": 12
+        }
+      },
+      "connection": null
+    },
+    {
+      "id": "B-Q1",
+      "goal_id": "browser-storage",
+      "relevant": [
+        "B01",
+        "B05",
+        "B10"
+      ],
+      "label_rationale": "All three sources describe service-worker caching, precached shell assets or offline cache storage.",
+      "current_url": "http://127.0.0.1:9300/current/B-Q1",
+      "snapshot_id": "e37b5b29-fb2c-4e7d-981a-70ea5614b103",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "B05",
+              "actual_memory_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+              "source_url": "http://127.0.0.1:9300/historical/B05",
+              "sha256": "77cc4b1fd8f531cd9e0648c7750737766d97408b66ef4128dbdefdc626c117a0",
+              "rank": 3,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.323
+        },
+        "B_alive12_unscoped": {
+          "results": [],
+          "latency_ms": 3.998,
+          "candidate_count": 15,
+          "candidate_mode": "sqlite_substring"
+        },
+        "C_corrected_scoped_lexical": {
+          "results": [
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 1,
+              "score": 10
+            },
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 2,
+              "score": 8
+            },
+            {
+              "memory_id": "B05",
+              "actual_memory_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+              "source_url": "http://127.0.0.1:9300/historical/B05",
+              "sha256": "77cc4b1fd8f531cd9e0648c7750737766d97408b66ef4128dbdefdc626c117a0",
+              "rank": 3,
+              "score": 6
+            }
+          ],
+          "latency_ms": 7.854,
+          "candidate_count": 5,
+          "scoped_count": 12,
+          "candidate_limit": 5000
+        },
+        "D_full_history_access": {
+          "results": [
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "B05",
+              "actual_memory_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+              "source_url": "http://127.0.0.1:9300/historical/B05",
+              "sha256": "77cc4b1fd8f531cd9e0648c7750737766d97408b66ef4128dbdefdc626c117a0",
+              "rank": 3,
+              "score": null
+            },
+            {
+              "memory_id": "B07",
+              "actual_memory_id": "986dd50b-ce87-4d6d-9f93-16880ece3e7f",
+              "source_url": "http://127.0.0.1:9300/historical/B07",
+              "sha256": "a69e803474f6ab60c435c729df224d703a8d925ff4c829f73222529e63308492",
+              "rank": 4,
+              "score": null
+            },
+            {
+              "memory_id": "B02",
+              "actual_memory_id": "aa3cf3b9-76fd-4efe-a5bb-713eee684432",
+              "source_url": "http://127.0.0.1:9300/historical/B02",
+              "sha256": "f12a1a81b05180206b9e247c0300827e353f9a65c03230918844bc204fe02926",
+              "rank": 5,
+              "score": null
+            },
+            {
+              "memory_id": "B03",
+              "actual_memory_id": "0b626471-34ad-4f89-9ab6-2e973c44e8a8",
+              "source_url": "http://127.0.0.1:9300/historical/B03",
+              "sha256": "d444d20eca43b3348142f6fcd50ff200fd7882647fc48429f7f26918fd5217f6",
+              "rank": 6,
+              "score": null
+            },
+            {
+              "memory_id": "B04",
+              "actual_memory_id": "abf41e80-b47d-4bfa-b46a-d342c4da4501",
+              "source_url": "http://127.0.0.1:9300/historical/B04",
+              "sha256": "e50dbac0de3f07f27b8f08ba8469ad7f5986a782d86506fd6d19c03018ff546c",
+              "rank": 7,
+              "score": null
+            },
+            {
+              "memory_id": "B08",
+              "actual_memory_id": "1862ad87-356f-4186-8c70-2e75d161364c",
+              "source_url": "http://127.0.0.1:9300/historical/B08",
+              "sha256": "14b7579e9ef378c13e5d950d7bc0274c19c64bafdf811293fe69217d994c69c2",
+              "rank": 8,
+              "score": null
+            },
+            {
+              "memory_id": "B09",
+              "actual_memory_id": "02498402-a700-4003-a8b6-1f217dcd514b",
+              "source_url": "http://127.0.0.1:9300/historical/B09",
+              "sha256": "24c1a369a28014d8eacfb11e2241a70d1ba52a5cc7589fe949c80688d2dbc175",
+              "rank": 9,
+              "score": null
+            },
+            {
+              "memory_id": "B11",
+              "actual_memory_id": "cb2db339-5e4d-4a3a-9f47-0a1e9d053e25",
+              "source_url": "http://127.0.0.1:9300/historical/B11",
+              "sha256": "1876fe34dc897823f3f20c344a98876ed0a0c361a94b637ad98d2c734ea14d9f",
+              "rank": 10,
+              "score": null
+            },
+            {
+              "memory_id": "B12",
+              "actual_memory_id": "7717db64-b88c-49b4-9cc6-e9dd50e05c50",
+              "source_url": "http://127.0.0.1:9300/historical/B12",
+              "sha256": "85577ffa2deb213f507698d396c71aaf964080963f856a3996f78e79bd12f5e1",
+              "rank": 11,
+              "score": null
+            },
+            {
+              "memory_id": "B06",
+              "actual_memory_id": "b870e445-c0ee-4672-8666-a569dfea8af5",
+              "source_url": "http://127.0.0.1:9300/historical/B06",
+              "sha256": "780ee92f3146bc5a3c279014e999046d30a49e89decbab900ea7638dc7243e27",
+              "rank": 12,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.375,
+          "history_size": 12
+        }
+      },
+      "connection": {
+        "id": "5da9da07-7e90-49ce-8994-9debb73dc0f9",
+        "instance_id": "8eb03132-d61c-4bae-bc02-3c3362ad9d3a",
+        "kind": "research_connection",
+        "parent_id": "e37b5b29-fb2c-4e7d-981a-70ea5614b103",
+        "status": "candidate",
+        "data": {
+          "goal_id": "f77ea159-c3eb-430a-bd0b-01202ac3c3b8",
+          "current_snapshot_id": "e37b5b29-fb2c-4e7d-981a-70ea5614b103",
+          "current_url": "http://127.0.0.1:9300/current/B-Q1",
+          "current_sha256": "72fd461ae9b5668894319ec3fd94666086e6dd5c33194a9f20a5b771fb80500a",
+          "current_quote": "A service worker reads cache request-response pairs offline after precaching the app shell.",
+          "historical_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+          "historical_url": "http://127.0.0.1:9300/historical/B10",
+          "historical_sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+          "historical_quote": "Cache storage is origin-scoped, stores request-response pairs, and persists offline across browser sessions.",
+          "model_evidence_quote": "Cache storage is origin-scoped, stores request-response pairs, and persists offline across browser sessions.",
+          "shared_terms": [
+            "cache",
+            "offline",
+            "pairs",
+            "request-response"
+          ],
+          "relation_type": "topic_overlap_candidate",
+          "explanation": "The two reviewed excerpts share lexical content terms cache, offline, pairs, request-response. This is a topic-overlap candidate only; it does not establish agreement, support, contradiction or corroboration.",
+          "status": "candidate",
+          "evidence_policy": "exact source spans; shared words do not establish agreement",
+          "model": "deterministic-lexical-connection-v1",
+          "inference_calls": 0,
+          "owner_useful": null,
+          "quote_validation": {
+            "current_exact": true,
+            "historical_exact": true
+          },
+          "created_at": "2026-10-27T19:05:31.366077+00:00"
+        },
+        "created_at": "2026-10-27T19:05:31.366735+00:00",
+        "current_source": {
+          "url": "http://127.0.0.1:9300/current/B-Q1",
+          "sha256": "72fd461ae9b5668894319ec3fd94666086e6dd5c33194a9f20a5b771fb80500a"
+        },
+        "historical_source": {
+          "url": "http://127.0.0.1:9300/historical/B10",
+          "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+          "reviewed_at": "2026-10-27T19:05:30.553038"
+        },
+        "abstained": false
+      }
+    },
+    {
+      "id": "B-Q2",
+      "goal_id": "browser-storage",
+      "relevant": [
+        "B02",
+        "B07"
+      ],
+      "label_rationale": "Both sources describe IndexedDB transactions, structured object stores and request failure behaviour.",
+      "current_url": "http://127.0.0.1:9300/current/B-Q2",
+      "snapshot_id": "cedb7de3-c7a8-4059-8631-d46a442e34c8",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "B05",
+              "actual_memory_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+              "source_url": "http://127.0.0.1:9300/historical/B05",
+              "sha256": "77cc4b1fd8f531cd9e0648c7750737766d97408b66ef4128dbdefdc626c117a0",
+              "rank": 3,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.201
+        },
+        "B_alive12_unscoped": {
+          "results": [],
+          "latency_ms": 4.324,
+          "candidate_count": 15,
+          "candidate_mode": "sqlite_substring"
+        },
+        "C_corrected_scoped_lexical": {
+          "results": [
+            {
+              "memory_id": "B07",
+              "actual_memory_id": "986dd50b-ce87-4d6d-9f93-16880ece3e7f",
+              "source_url": "http://127.0.0.1:9300/historical/B07",
+              "sha256": "a69e803474f6ab60c435c729df224d703a8d925ff4c829f73222529e63308492",
+              "rank": 1,
+              "score": 10
+            },
+            {
+              "memory_id": "B02",
+              "actual_memory_id": "aa3cf3b9-76fd-4efe-a5bb-713eee684432",
+              "source_url": "http://127.0.0.1:9300/historical/B02",
+              "sha256": "f12a1a81b05180206b9e247c0300827e353f9a65c03230918844bc204fe02926",
+              "rank": 2,
+              "score": 6
+            },
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 3,
+              "score": 3
+            }
+          ],
+          "latency_ms": 5.314,
+          "candidate_count": 3,
+          "scoped_count": 12,
+          "candidate_limit": 5000
+        },
+        "D_full_history_access": {
+          "results": [
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "B05",
+              "actual_memory_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+              "source_url": "http://127.0.0.1:9300/historical/B05",
+              "sha256": "77cc4b1fd8f531cd9e0648c7750737766d97408b66ef4128dbdefdc626c117a0",
+              "rank": 3,
+              "score": null
+            },
+            {
+              "memory_id": "B07",
+              "actual_memory_id": "986dd50b-ce87-4d6d-9f93-16880ece3e7f",
+              "source_url": "http://127.0.0.1:9300/historical/B07",
+              "sha256": "a69e803474f6ab60c435c729df224d703a8d925ff4c829f73222529e63308492",
+              "rank": 4,
+              "score": null
+            },
+            {
+              "memory_id": "B02",
+              "actual_memory_id": "aa3cf3b9-76fd-4efe-a5bb-713eee684432",
+              "source_url": "http://127.0.0.1:9300/historical/B02",
+              "sha256": "f12a1a81b05180206b9e247c0300827e353f9a65c03230918844bc204fe02926",
+              "rank": 5,
+              "score": null
+            },
+            {
+              "memory_id": "B03",
+              "actual_memory_id": "0b626471-34ad-4f89-9ab6-2e973c44e8a8",
+              "source_url": "http://127.0.0.1:9300/historical/B03",
+              "sha256": "d444d20eca43b3348142f6fcd50ff200fd7882647fc48429f7f26918fd5217f6",
+              "rank": 6,
+              "score": null
+            },
+            {
+              "memory_id": "B04",
+              "actual_memory_id": "abf41e80-b47d-4bfa-b46a-d342c4da4501",
+              "source_url": "http://127.0.0.1:9300/historical/B04",
+              "sha256": "e50dbac0de3f07f27b8f08ba8469ad7f5986a782d86506fd6d19c03018ff546c",
+              "rank": 7,
+              "score": null
+            },
+            {
+              "memory_id": "B08",
+              "actual_memory_id": "1862ad87-356f-4186-8c70-2e75d161364c",
+              "source_url": "http://127.0.0.1:9300/historical/B08",
+              "sha256": "14b7579e9ef378c13e5d950d7bc0274c19c64bafdf811293fe69217d994c69c2",
+              "rank": 8,
+              "score": null
+            },
+            {
+              "memory_id": "B09",
+              "actual_memory_id": "02498402-a700-4003-a8b6-1f217dcd514b",
+              "source_url": "http://127.0.0.1:9300/historical/B09",
+              "sha256": "24c1a369a28014d8eacfb11e2241a70d1ba52a5cc7589fe949c80688d2dbc175",
+              "rank": 9,
+              "score": null
+            },
+            {
+              "memory_id": "B11",
+              "actual_memory_id": "cb2db339-5e4d-4a3a-9f47-0a1e9d053e25",
+              "source_url": "http://127.0.0.1:9300/historical/B11",
+              "sha256": "1876fe34dc897823f3f20c344a98876ed0a0c361a94b637ad98d2c734ea14d9f",
+              "rank": 10,
+              "score": null
+            },
+            {
+              "memory_id": "B12",
+              "actual_memory_id": "7717db64-b88c-49b4-9cc6-e9dd50e05c50",
+              "source_url": "http://127.0.0.1:9300/historical/B12",
+              "sha256": "85577ffa2deb213f507698d396c71aaf964080963f856a3996f78e79bd12f5e1",
+              "rank": 11,
+              "score": null
+            },
+            {
+              "memory_id": "B06",
+              "actual_memory_id": "b870e445-c0ee-4672-8666-a569dfea8af5",
+              "source_url": "http://127.0.0.1:9300/historical/B06",
+              "sha256": "780ee92f3146bc5a3c279014e999046d30a49e89decbab900ea7638dc7243e27",
+              "rank": 12,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.289,
+          "history_size": 12
+        }
+      },
+      "connection": {
+        "id": "d41c06a4-d784-4b71-9840-9a7684cb19af",
+        "instance_id": "8eb03132-d61c-4bae-bc02-3c3362ad9d3a",
+        "kind": "research_connection",
+        "parent_id": "cedb7de3-c7a8-4059-8631-d46a442e34c8",
+        "status": "candidate",
+        "data": {
+          "goal_id": "f77ea159-c3eb-430a-bd0b-01202ac3c3b8",
+          "current_snapshot_id": "cedb7de3-c7a8-4059-8631-d46a442e34c8",
+          "current_url": "http://127.0.0.1:9300/current/B-Q2",
+          "current_sha256": "37428aca316bdcc443e734bf595ac3e5bc8212d82c202d2d57ca0d6294a2598b",
+          "current_quote": "IndexedDB transactions store structured records and abort when a request fails.",
+          "historical_memory_id": "986dd50b-ce87-4d6d-9f93-16880ece3e7f",
+          "historical_url": "http://127.0.0.1:9300/historical/B07",
+          "historical_sha256": "a69e803474f6ab60c435c729df224d703a8d925ff4c829f73222529e63308492",
+          "historical_quote": "IndexedDB transactions abort when a request fails unless handled.",
+          "model_evidence_quote": "IndexedDB transactions abort when a request fails unless handled.",
+          "shared_terms": [
+            "abort",
+            "fails",
+            "indexeddb",
+            "request",
+            "transactions"
+          ],
+          "relation_type": "topic_overlap_candidate",
+          "explanation": "The two reviewed excerpts share lexical content terms abort, fails, indexeddb, request, transactions. This is a topic-overlap candidate only; it does not establish agreement, support, contradiction or corroboration.",
+          "status": "candidate",
+          "evidence_policy": "exact source spans; shared words do not establish agreement",
+          "model": "deterministic-lexical-connection-v1",
+          "inference_calls": 0,
+          "owner_useful": null,
+          "quote_validation": {
+            "current_exact": true,
+            "historical_exact": true
+          },
+          "created_at": "2026-10-27T19:05:31.426118+00:00"
+        },
+        "created_at": "2026-10-27T19:05:31.426778+00:00",
+        "current_source": {
+          "url": "http://127.0.0.1:9300/current/B-Q2",
+          "sha256": "37428aca316bdcc443e734bf595ac3e5bc8212d82c202d2d57ca0d6294a2598b"
+        },
+        "historical_source": {
+          "url": "http://127.0.0.1:9300/historical/B07",
+          "sha256": "a69e803474f6ab60c435c729df224d703a8d925ff4c829f73222529e63308492",
+          "reviewed_at": "2026-10-27T19:05:30.165393"
+        },
+        "abstained": false
+      }
+    },
+    {
+      "id": "B-Q3",
+      "goal_id": "browser-storage",
+      "relevant": [
+        "B03",
+        "B06"
+      ],
+      "label_rationale": "One source describes quota eviction under storage pressure; the other describes localStorage's small synchronous quota.",
+      "current_url": "http://127.0.0.1:9300/current/B-Q3",
+      "snapshot_id": "41b4243c-beb5-4de9-8e10-90601ac4bd89",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "B05",
+              "actual_memory_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+              "source_url": "http://127.0.0.1:9300/historical/B05",
+              "sha256": "77cc4b1fd8f531cd9e0648c7750737766d97408b66ef4128dbdefdc626c117a0",
+              "rank": 3,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.399
+        },
+        "B_alive12_unscoped": {
+          "results": [],
+          "latency_ms": 3.682,
+          "candidate_count": 15,
+          "candidate_mode": "sqlite_substring"
+        },
+        "C_corrected_scoped_lexical": {
+          "results": [
+            {
+              "memory_id": "B06",
+              "actual_memory_id": "b870e445-c0ee-4672-8666-a569dfea8af5",
+              "source_url": "http://127.0.0.1:9300/historical/B06",
+              "sha256": "780ee92f3146bc5a3c279014e999046d30a49e89decbab900ea7638dc7243e27",
+              "rank": 1,
+              "score": 10
+            },
+            {
+              "memory_id": "B03",
+              "actual_memory_id": "0b626471-34ad-4f89-9ab6-2e973c44e8a8",
+              "source_url": "http://127.0.0.1:9300/historical/B03",
+              "sha256": "d444d20eca43b3348142f6fcd50ff200fd7882647fc48429f7f26918fd5217f6",
+              "rank": 2,
+              "score": 8
+            },
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 3,
+              "score": 4
+            }
+          ],
+          "latency_ms": 5.293,
+          "candidate_count": 5,
+          "scoped_count": 12,
+          "candidate_limit": 5000
+        },
+        "D_full_history_access": {
+          "results": [
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "B05",
+              "actual_memory_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+              "source_url": "http://127.0.0.1:9300/historical/B05",
+              "sha256": "77cc4b1fd8f531cd9e0648c7750737766d97408b66ef4128dbdefdc626c117a0",
+              "rank": 3,
+              "score": null
+            },
+            {
+              "memory_id": "B07",
+              "actual_memory_id": "986dd50b-ce87-4d6d-9f93-16880ece3e7f",
+              "source_url": "http://127.0.0.1:9300/historical/B07",
+              "sha256": "a69e803474f6ab60c435c729df224d703a8d925ff4c829f73222529e63308492",
+              "rank": 4,
+              "score": null
+            },
+            {
+              "memory_id": "B02",
+              "actual_memory_id": "aa3cf3b9-76fd-4efe-a5bb-713eee684432",
+              "source_url": "http://127.0.0.1:9300/historical/B02",
+              "sha256": "f12a1a81b05180206b9e247c0300827e353f9a65c03230918844bc204fe02926",
+              "rank": 5,
+              "score": null
+            },
+            {
+              "memory_id": "B03",
+              "actual_memory_id": "0b626471-34ad-4f89-9ab6-2e973c44e8a8",
+              "source_url": "http://127.0.0.1:9300/historical/B03",
+              "sha256": "d444d20eca43b3348142f6fcd50ff200fd7882647fc48429f7f26918fd5217f6",
+              "rank": 6,
+              "score": null
+            },
+            {
+              "memory_id": "B04",
+              "actual_memory_id": "abf41e80-b47d-4bfa-b46a-d342c4da4501",
+              "source_url": "http://127.0.0.1:9300/historical/B04",
+              "sha256": "e50dbac0de3f07f27b8f08ba8469ad7f5986a782d86506fd6d19c03018ff546c",
+              "rank": 7,
+              "score": null
+            },
+            {
+              "memory_id": "B08",
+              "actual_memory_id": "1862ad87-356f-4186-8c70-2e75d161364c",
+              "source_url": "http://127.0.0.1:9300/historical/B08",
+              "sha256": "14b7579e9ef378c13e5d950d7bc0274c19c64bafdf811293fe69217d994c69c2",
+              "rank": 8,
+              "score": null
+            },
+            {
+              "memory_id": "B09",
+              "actual_memory_id": "02498402-a700-4003-a8b6-1f217dcd514b",
+              "source_url": "http://127.0.0.1:9300/historical/B09",
+              "sha256": "24c1a369a28014d8eacfb11e2241a70d1ba52a5cc7589fe949c80688d2dbc175",
+              "rank": 9,
+              "score": null
+            },
+            {
+              "memory_id": "B11",
+              "actual_memory_id": "cb2db339-5e4d-4a3a-9f47-0a1e9d053e25",
+              "source_url": "http://127.0.0.1:9300/historical/B11",
+              "sha256": "1876fe34dc897823f3f20c344a98876ed0a0c361a94b637ad98d2c734ea14d9f",
+              "rank": 10,
+              "score": null
+            },
+            {
+              "memory_id": "B12",
+              "actual_memory_id": "7717db64-b88c-49b4-9cc6-e9dd50e05c50",
+              "source_url": "http://127.0.0.1:9300/historical/B12",
+              "sha256": "85577ffa2deb213f507698d396c71aaf964080963f856a3996f78e79bd12f5e1",
+              "rank": 11,
+              "score": null
+            },
+            {
+              "memory_id": "B06",
+              "actual_memory_id": "b870e445-c0ee-4672-8666-a569dfea8af5",
+              "source_url": "http://127.0.0.1:9300/historical/B06",
+              "sha256": "780ee92f3146bc5a3c279014e999046d30a49e89decbab900ea7638dc7243e27",
+              "rank": 12,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.336,
+          "history_size": 12
+        }
+      },
+      "connection": {
+        "id": "eb3e5c6a-30f4-4890-8cf9-80cb354499d3",
+        "instance_id": "8eb03132-d61c-4bae-bc02-3c3362ad9d3a",
+        "kind": "research_connection",
+        "parent_id": "41b4243c-beb5-4de9-8e10-90601ac4bd89",
+        "status": "candidate",
+        "data": {
+          "goal_id": "f77ea159-c3eb-430a-bd0b-01202ac3c3b8",
+          "current_snapshot_id": "41b4243c-beb5-4de9-8e10-90601ac4bd89",
+          "current_url": "http://127.0.0.1:9300/current/B-Q3",
+          "current_sha256": "2cfcfb807995b5ddb9f6edeb4763768a575c4fb8cc67deabcc2975fa3e111a00",
+          "current_quote": "Storage pressure triggers quota eviction of origin data while localStorage has a small synchronous quota.",
+          "historical_memory_id": "b870e445-c0ee-4672-8666-a569dfea8af5",
+          "historical_url": "http://127.0.0.1:9300/historical/B06",
+          "historical_sha256": "780ee92f3146bc5a3c279014e999046d30a49e89decbab900ea7638dc7243e27",
+          "historical_quote": "Quota management evicts origin data when storage pressure grows.",
+          "model_evidence_quote": "Quota management evicts origin data when storage pressure grows.",
+          "shared_terms": [
+            "data",
+            "origin",
+            "pressure",
+            "quota",
+            "storage"
+          ],
+          "relation_type": "topic_overlap_candidate",
+          "explanation": "The two reviewed excerpts share lexical content terms data, origin, pressure, quota, storage. This is a topic-overlap candidate only; it does not establish agreement, support, contradiction or corroboration.",
+          "status": "candidate",
+          "evidence_policy": "exact source spans; shared words do not establish agreement",
+          "model": "deterministic-lexical-connection-v1",
+          "inference_calls": 0,
+          "owner_useful": null,
+          "quote_validation": {
+            "current_exact": true,
+            "historical_exact": true
+          },
+          "created_at": "2026-10-27T19:05:31.494819+00:00"
+        },
+        "created_at": "2026-10-27T19:05:31.495592+00:00",
+        "current_source": {
+          "url": "http://127.0.0.1:9300/current/B-Q3",
+          "sha256": "2cfcfb807995b5ddb9f6edeb4763768a575c4fb8cc67deabcc2975fa3e111a00"
+        },
+        "historical_source": {
+          "url": "http://127.0.0.1:9300/historical/B06",
+          "sha256": "780ee92f3146bc5a3c279014e999046d30a49e89decbab900ea7638dc7243e27",
+          "reviewed_at": "2026-09-27T19:05:29.839387+00:00"
+        },
+        "abstained": false
+      }
+    },
+    {
+      "id": "B-Q4",
+      "goal_id": "browser-storage",
+      "relevant": [],
+      "label_rationale": "No retained source for this goal discusses compilers or tail calls; the correct outcome is abstention.",
+      "current_url": "http://127.0.0.1:9300/current/B-Q4",
+      "snapshot_id": "7ee82d4c-e184-4235-b039-3d49f549fa3f",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "B05",
+              "actual_memory_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+              "source_url": "http://127.0.0.1:9300/historical/B05",
+              "sha256": "77cc4b1fd8f531cd9e0648c7750737766d97408b66ef4128dbdefdc626c117a0",
+              "rank": 3,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.199
+        },
+        "B_alive12_unscoped": {
+          "results": [],
+          "latency_ms": 4.094,
+          "candidate_count": 15,
+          "candidate_mode": "sqlite_substring"
+        },
+        "C_corrected_scoped_lexical": {
+          "results": [],
+          "latency_ms": 4.078,
+          "candidate_count": 0,
+          "scoped_count": 12,
+          "candidate_limit": 5000
+        },
+        "D_full_history_access": {
+          "results": [
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "B05",
+              "actual_memory_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+              "source_url": "http://127.0.0.1:9300/historical/B05",
+              "sha256": "77cc4b1fd8f531cd9e0648c7750737766d97408b66ef4128dbdefdc626c117a0",
+              "rank": 3,
+              "score": null
+            },
+            {
+              "memory_id": "B07",
+              "actual_memory_id": "986dd50b-ce87-4d6d-9f93-16880ece3e7f",
+              "source_url": "http://127.0.0.1:9300/historical/B07",
+              "sha256": "a69e803474f6ab60c435c729df224d703a8d925ff4c829f73222529e63308492",
+              "rank": 4,
+              "score": null
+            },
+            {
+              "memory_id": "B02",
+              "actual_memory_id": "aa3cf3b9-76fd-4efe-a5bb-713eee684432",
+              "source_url": "http://127.0.0.1:9300/historical/B02",
+              "sha256": "f12a1a81b05180206b9e247c0300827e353f9a65c03230918844bc204fe02926",
+              "rank": 5,
+              "score": null
+            },
+            {
+              "memory_id": "B03",
+              "actual_memory_id": "0b626471-34ad-4f89-9ab6-2e973c44e8a8",
+              "source_url": "http://127.0.0.1:9300/historical/B03",
+              "sha256": "d444d20eca43b3348142f6fcd50ff200fd7882647fc48429f7f26918fd5217f6",
+              "rank": 6,
+              "score": null
+            },
+            {
+              "memory_id": "B04",
+              "actual_memory_id": "abf41e80-b47d-4bfa-b46a-d342c4da4501",
+              "source_url": "http://127.0.0.1:9300/historical/B04",
+              "sha256": "e50dbac0de3f07f27b8f08ba8469ad7f5986a782d86506fd6d19c03018ff546c",
+              "rank": 7,
+              "score": null
+            },
+            {
+              "memory_id": "B08",
+              "actual_memory_id": "1862ad87-356f-4186-8c70-2e75d161364c",
+              "source_url": "http://127.0.0.1:9300/historical/B08",
+              "sha256": "14b7579e9ef378c13e5d950d7bc0274c19c64bafdf811293fe69217d994c69c2",
+              "rank": 8,
+              "score": null
+            },
+            {
+              "memory_id": "B09",
+              "actual_memory_id": "02498402-a700-4003-a8b6-1f217dcd514b",
+              "source_url": "http://127.0.0.1:9300/historical/B09",
+              "sha256": "24c1a369a28014d8eacfb11e2241a70d1ba52a5cc7589fe949c80688d2dbc175",
+              "rank": 9,
+              "score": null
+            },
+            {
+              "memory_id": "B11",
+              "actual_memory_id": "cb2db339-5e4d-4a3a-9f47-0a1e9d053e25",
+              "source_url": "http://127.0.0.1:9300/historical/B11",
+              "sha256": "1876fe34dc897823f3f20c344a98876ed0a0c361a94b637ad98d2c734ea14d9f",
+              "rank": 10,
+              "score": null
+            },
+            {
+              "memory_id": "B12",
+              "actual_memory_id": "7717db64-b88c-49b4-9cc6-e9dd50e05c50",
+              "source_url": "http://127.0.0.1:9300/historical/B12",
+              "sha256": "85577ffa2deb213f507698d396c71aaf964080963f856a3996f78e79bd12f5e1",
+              "rank": 11,
+              "score": null
+            },
+            {
+              "memory_id": "B06",
+              "actual_memory_id": "b870e445-c0ee-4672-8666-a569dfea8af5",
+              "source_url": "http://127.0.0.1:9300/historical/B06",
+              "sha256": "780ee92f3146bc5a3c279014e999046d30a49e89decbab900ea7638dc7243e27",
+              "rank": 12,
+              "score": null
+            }
+          ],
+          "latency_ms": 1.564,
+          "history_size": 12
+        }
+      },
+      "connection": null
+    }
+  ],
+  "arms": {
+    "A_recency": {
+      "positive_queries": 9,
+      "negative_queries": 3,
+      "precision_at_3": 0.3333,
+      "recall_at_3": 0.5185,
+      "mean_reciprocal_rank": 0.4259,
+      "relevant_at_rank_1": 0.3333,
+      "false_positive_results": 27,
+      "false_positive_queries": 11,
+      "correct_abstentions": 0,
+      "decoy_rate": 0.75,
+      "source_attribution_accuracy": 1.0,
+      "missing_memory_failures": 4,
+      "latency_ms_p50": 1.323,
+      "per_query": [
+        {
+          "id": "P-Q1",
+          "retrieved": [
+            "P01",
+            "P02",
+            "P04"
+          ],
+          "relevant": [
+            "P01",
+            "P02"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "memory_id": "P01",
+              "actual_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+              "source_url": "http://127.0.0.1:9300/historical/P01",
+              "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "P02",
+              "actual_memory_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+              "source_url": "http://127.0.0.1:9300/historical/P02",
+              "sha256": "6f4d3770bd1563974ad57ad10113c32d2c789f7ad07c7932b2344b24d312de9e",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "P04",
+              "actual_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+              "source_url": "http://127.0.0.1:9300/historical/P04",
+              "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+              "rank": 3,
+              "score": null
+            }
+          ]
+        },
+        {
+          "id": "P-Q2",
+          "retrieved": [
+            "P01",
+            "P02",
+            "P04"
+          ],
+          "relevant": [
+            "P03"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": [
+            {
+              "memory_id": "P01",
+              "actual_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+              "source_url": "http://127.0.0.1:9300/historical/P01",
+              "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "P02",
+              "actual_memory_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+              "source_url": "http://127.0.0.1:9300/historical/P02",
+              "sha256": "6f4d3770bd1563974ad57ad10113c32d2c789f7ad07c7932b2344b24d312de9e",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "P04",
+              "actual_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+              "source_url": "http://127.0.0.1:9300/historical/P04",
+              "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+              "rank": 3,
+              "score": null
+            }
+          ]
+        },
+        {
+          "id": "P-Q3",
+          "retrieved": [
+            "P01",
+            "P02",
+            "P04"
+          ],
+          "relevant": [
+            "P04"
+          ],
+          "rank_of_first_relevant": 3,
+          "raw_results": [
+            {
+              "memory_id": "P01",
+              "actual_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+              "source_url": "http://127.0.0.1:9300/historical/P01",
+              "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "P02",
+              "actual_memory_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+              "source_url": "http://127.0.0.1:9300/historical/P02",
+              "sha256": "6f4d3770bd1563974ad57ad10113c32d2c789f7ad07c7932b2344b24d312de9e",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "P04",
+              "actual_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+              "source_url": "http://127.0.0.1:9300/historical/P04",
+              "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+              "rank": 3,
+              "score": null
+            }
+          ]
+        },
+        {
+          "id": "P-Q4",
+          "retrieved": [
+            "P01",
+            "P02",
+            "P04"
+          ],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": [
+            {
+              "memory_id": "P01",
+              "actual_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+              "source_url": "http://127.0.0.1:9300/historical/P01",
+              "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "P02",
+              "actual_memory_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+              "source_url": "http://127.0.0.1:9300/historical/P02",
+              "sha256": "6f4d3770bd1563974ad57ad10113c32d2c789f7ad07c7932b2344b24d312de9e",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "P04",
+              "actual_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+              "source_url": "http://127.0.0.1:9300/historical/P04",
+              "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+              "rank": 3,
+              "score": null
+            }
+          ]
+        },
+        {
+          "id": "J-Q1",
+          "retrieved": [
+            "J04",
+            "J01",
+            "J02"
+          ],
+          "relevant": [
+            "J01",
+            "J02",
+            "J07"
+          ],
+          "rank_of_first_relevant": 2,
+          "raw_results": [
+            {
+              "memory_id": "J04",
+              "actual_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+              "source_url": "http://127.0.0.1:9300/historical/J04",
+              "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "J01",
+              "actual_memory_id": "7a980268-2731-44f1-af18-c7e66108a558",
+              "source_url": "http://127.0.0.1:9300/historical/J01",
+              "sha256": "db93fb9cd38fe4f33f30b7d70a52e9064db5b34e85f709f806b37217401c0901",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "J02",
+              "actual_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+              "source_url": "http://127.0.0.1:9300/historical/J02",
+              "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+              "rank": 3,
+              "score": null
+            }
+          ]
+        },
+        {
+          "id": "J-Q2",
+          "retrieved": [
+            "J04",
+            "J01",
+            "J02"
+          ],
+          "relevant": [
+            "J03",
+            "J10"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": [
+            {
+              "memory_id": "J04",
+              "actual_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+              "source_url": "http://127.0.0.1:9300/historical/J04",
+              "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "J01",
+              "actual_memory_id": "7a980268-2731-44f1-af18-c7e66108a558",
+              "source_url": "http://127.0.0.1:9300/historical/J01",
+              "sha256": "db93fb9cd38fe4f33f30b7d70a52e9064db5b34e85f709f806b37217401c0901",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "J02",
+              "actual_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+              "source_url": "http://127.0.0.1:9300/historical/J02",
+              "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+              "rank": 3,
+              "score": null
+            }
+          ]
+        },
+        {
+          "id": "J-Q3",
+          "retrieved": [
+            "J04",
+            "J01",
+            "J02"
+          ],
+          "relevant": [
+            "J04"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "memory_id": "J04",
+              "actual_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+              "source_url": "http://127.0.0.1:9300/historical/J04",
+              "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "J01",
+              "actual_memory_id": "7a980268-2731-44f1-af18-c7e66108a558",
+              "source_url": "http://127.0.0.1:9300/historical/J01",
+              "sha256": "db93fb9cd38fe4f33f30b7d70a52e9064db5b34e85f709f806b37217401c0901",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "J02",
+              "actual_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+              "source_url": "http://127.0.0.1:9300/historical/J02",
+              "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+              "rank": 3,
+              "score": null
+            }
+          ]
+        },
+        {
+          "id": "J-Q4",
+          "retrieved": [
+            "J04",
+            "J01",
+            "J02"
+          ],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": [
+            {
+              "memory_id": "J04",
+              "actual_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+              "source_url": "http://127.0.0.1:9300/historical/J04",
+              "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "J01",
+              "actual_memory_id": "7a980268-2731-44f1-af18-c7e66108a558",
+              "source_url": "http://127.0.0.1:9300/historical/J01",
+              "sha256": "db93fb9cd38fe4f33f30b7d70a52e9064db5b34e85f709f806b37217401c0901",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "J02",
+              "actual_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+              "source_url": "http://127.0.0.1:9300/historical/J02",
+              "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+              "rank": 3,
+              "score": null
+            }
+          ]
+        },
+        {
+          "id": "B-Q1",
+          "retrieved": [
+            "B01",
+            "B10",
+            "B05"
+          ],
+          "relevant": [
+            "B01",
+            "B05",
+            "B10"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "B05",
+              "actual_memory_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+              "source_url": "http://127.0.0.1:9300/historical/B05",
+              "sha256": "77cc4b1fd8f531cd9e0648c7750737766d97408b66ef4128dbdefdc626c117a0",
+              "rank": 3,
+              "score": null
+            }
+          ]
+        },
+        {
+          "id": "B-Q2",
+          "retrieved": [
+            "B01",
+            "B10",
+            "B05"
+          ],
+          "relevant": [
+            "B02",
+            "B07"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": [
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "B05",
+              "actual_memory_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+              "source_url": "http://127.0.0.1:9300/historical/B05",
+              "sha256": "77cc4b1fd8f531cd9e0648c7750737766d97408b66ef4128dbdefdc626c117a0",
+              "rank": 3,
+              "score": null
+            }
+          ]
+        },
+        {
+          "id": "B-Q3",
+          "retrieved": [
+            "B01",
+            "B10",
+            "B05"
+          ],
+          "relevant": [
+            "B03",
+            "B06"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": [
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "B05",
+              "actual_memory_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+              "source_url": "http://127.0.0.1:9300/historical/B05",
+              "sha256": "77cc4b1fd8f531cd9e0648c7750737766d97408b66ef4128dbdefdc626c117a0",
+              "rank": 3,
+              "score": null
+            }
+          ]
+        },
+        {
+          "id": "B-Q4",
+          "retrieved": [
+            "B01",
+            "B10",
+            "B05"
+          ],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": [
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 1,
+              "score": null
+            },
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 2,
+              "score": null
+            },
+            {
+              "memory_id": "B05",
+              "actual_memory_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+              "source_url": "http://127.0.0.1:9300/historical/B05",
+              "sha256": "77cc4b1fd8f531cd9e0648c7750737766d97408b66ef4128dbdefdc626c117a0",
+              "rank": 3,
+              "score": null
+            }
+          ]
+        }
+      ]
+    },
+    "B_alive12_unscoped": {
+      "positive_queries": 9,
+      "negative_queries": 3,
+      "precision_at_3": 0.0,
+      "recall_at_3": 0.0,
+      "mean_reciprocal_rank": 0.0,
+      "relevant_at_rank_1": 0.0,
+      "false_positive_results": 0,
+      "false_positive_queries": 0,
+      "correct_abstentions": 3,
+      "decoy_rate": null,
+      "source_attribution_accuracy": 0.0,
+      "missing_memory_failures": 9,
+      "latency_ms_p50": 4.094,
+      "per_query": [
+        {
+          "id": "P-Q1",
+          "retrieved": [],
+          "relevant": [
+            "P01",
+            "P02"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "P-Q2",
+          "retrieved": [],
+          "relevant": [
+            "P03"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "P-Q3",
+          "retrieved": [],
+          "relevant": [
+            "P04"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "P-Q4",
+          "retrieved": [],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "J-Q1",
+          "retrieved": [],
+          "relevant": [
+            "J01",
+            "J02",
+            "J07"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "J-Q2",
+          "retrieved": [],
+          "relevant": [
+            "J03",
+            "J10"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "J-Q3",
+          "retrieved": [],
+          "relevant": [
+            "J04"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "J-Q4",
+          "retrieved": [],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "B-Q1",
+          "retrieved": [],
+          "relevant": [
+            "B01",
+            "B05",
+            "B10"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "B-Q2",
+          "retrieved": [],
+          "relevant": [
+            "B02",
+            "B07"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "B-Q3",
+          "retrieved": [],
+          "relevant": [
+            "B03",
+            "B06"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "B-Q4",
+          "retrieved": [],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        }
+      ]
+    },
+    "C_corrected_scoped_lexical": {
+      "positive_queries": 9,
+      "negative_queries": 3,
+      "precision_at_3": 0.6296,
+      "recall_at_3": 1.0,
+      "mean_reciprocal_rank": 1.0,
+      "relevant_at_rank_1": 1.0,
+      "false_positive_results": 9,
+      "false_positive_queries": 7,
+      "correct_abstentions": 3,
+      "decoy_rate": 0.3462,
+      "source_attribution_accuracy": 1.0,
+      "missing_memory_failures": 0,
+      "latency_ms_p50": 5.314,
+      "per_query": [
+        {
+          "id": "P-Q1",
+          "retrieved": [
+            "P01",
+            "P02",
+            "P10"
+          ],
+          "relevant": [
+            "P01",
+            "P02"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "memory_id": "P01",
+              "actual_memory_id": "9aaefc71-eedf-45b5-9e7f-f4382ecc95a5",
+              "source_url": "http://127.0.0.1:9300/historical/P01",
+              "sha256": "0d4d9198be14d2bf1af31290e1001da20122f6a15979576d7724678a6af61cca",
+              "rank": 1,
+              "score": 14
+            },
+            {
+              "memory_id": "P02",
+              "actual_memory_id": "fa4399f2-6e3f-46c3-b67c-b2744b78feda",
+              "source_url": "http://127.0.0.1:9300/historical/P02",
+              "sha256": "6f4d3770bd1563974ad57ad10113c32d2c789f7ad07c7932b2344b24d312de9e",
+              "rank": 2,
+              "score": 9
+            },
+            {
+              "memory_id": "P10",
+              "actual_memory_id": "b6d59d4f-9634-4e24-8c57-ce9d7c48f367",
+              "source_url": "http://127.0.0.1:9300/historical/P10",
+              "sha256": "cd1e53df0eb02a62d7cf3c3276c9fd8d018693d738251a4ef28ef59c68131fc2",
+              "rank": 3,
+              "score": 5
+            }
+          ]
+        },
+        {
+          "id": "P-Q2",
+          "retrieved": [
+            "P03",
+            "P10",
+            "P06"
+          ],
+          "relevant": [
+            "P03"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "memory_id": "P03",
+              "actual_memory_id": "154f7f80-4f85-47ca-8ab9-53c6510ebda1",
+              "source_url": "http://127.0.0.1:9300/historical/P03",
+              "sha256": "9190ecab90306c4acf9a64af0baea9ff670ef9d3e2763750808aefc3dc8ddb44",
+              "rank": 1,
+              "score": 20
+            },
+            {
+              "memory_id": "P10",
+              "actual_memory_id": "b6d59d4f-9634-4e24-8c57-ce9d7c48f367",
+              "source_url": "http://127.0.0.1:9300/historical/P10",
+              "sha256": "cd1e53df0eb02a62d7cf3c3276c9fd8d018693d738251a4ef28ef59c68131fc2",
+              "rank": 2,
+              "score": 4
+            },
+            {
+              "memory_id": "P06",
+              "actual_memory_id": "a97d64c9-91e8-4f09-bb4a-795c4e1469a0",
+              "source_url": "http://127.0.0.1:9300/historical/P06",
+              "sha256": "e08edd86f298a8ccf35c672b073fb52f2486ea693fc2dced4d6382bff0f9b1ac",
+              "rank": 3,
+              "score": 4
+            }
+          ]
+        },
+        {
+          "id": "P-Q3",
+          "retrieved": [
+            "P04",
+            "P12"
+          ],
+          "relevant": [
+            "P04"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "memory_id": "P04",
+              "actual_memory_id": "c5b3d7e1-bb47-487a-b244-1f87aeadd6c9",
+              "source_url": "http://127.0.0.1:9300/historical/P04",
+              "sha256": "a222d93128a2914e07c7de504a3ac931d8ad507ad1561c875ba02f0b066e7525",
+              "rank": 1,
+              "score": 20
+            },
+            {
+              "memory_id": "P12",
+              "actual_memory_id": "f5f93ed4-bd8a-4be5-abdb-33bfe89b57fe",
+              "source_url": "http://127.0.0.1:9300/historical/P12",
+              "sha256": "45f115ccee34fc9885e4cc8acf84f7819807034e696a437b80d444f4138e18d2",
+              "rank": 2,
+              "score": 3
+            }
+          ]
+        },
+        {
+          "id": "P-Q4",
+          "retrieved": [],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "J-Q1",
+          "retrieved": [
+            "J02",
+            "J01",
+            "J07"
+          ],
+          "relevant": [
+            "J01",
+            "J02",
+            "J07"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "memory_id": "J02",
+              "actual_memory_id": "8413b63b-e943-4803-a8f1-e513e3da0e56",
+              "source_url": "http://127.0.0.1:9300/historical/J02",
+              "sha256": "b21753bd793da3f9c5fb043676e2bf133cd89e6e15b01009ab8e1abbdc32ffbc",
+              "rank": 1,
+              "score": 10
+            },
+            {
+              "memory_id": "J01",
+              "actual_memory_id": "7a980268-2731-44f1-af18-c7e66108a558",
+              "source_url": "http://127.0.0.1:9300/historical/J01",
+              "sha256": "db93fb9cd38fe4f33f30b7d70a52e9064db5b34e85f709f806b37217401c0901",
+              "rank": 2,
+              "score": 6
+            },
+            {
+              "memory_id": "J07",
+              "actual_memory_id": "527f2a03-d5d3-4516-a63c-d2eae1987c9c",
+              "source_url": "http://127.0.0.1:9300/historical/J07",
+              "sha256": "47ba8c18b51835ae0be97776d6c5f2dda171ab733da25f174c25c27b8844425b",
+              "rank": 3,
+              "score": 4
+            }
+          ]
+        },
+        {
+          "id": "J-Q2",
+          "retrieved": [
+            "J03",
+            "J10",
+            "J06"
+          ],
+          "relevant": [
+            "J03",
+            "J10"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "memory_id": "J03",
+              "actual_memory_id": "505b607e-67c7-4225-b151-b0b84468519b",
+              "source_url": "http://127.0.0.1:9300/historical/J03",
+              "sha256": "060d7ec02f7a7470da38c3e67eb30a88584982154468c6e5a381ab9e4801bcb0",
+              "rank": 1,
+              "score": 8
+            },
+            {
+              "memory_id": "J10",
+              "actual_memory_id": "3b054fe7-a475-402a-8f4c-b28d56663823",
+              "source_url": "http://127.0.0.1:9300/historical/J10",
+              "sha256": "9454560255362e478260528470eac8b734b8eebad2ddc8e7da2675a4844ceff5",
+              "rank": 2,
+              "score": 4
+            },
+            {
+              "memory_id": "J06",
+              "actual_memory_id": "a6273ce5-d067-4726-9b3c-267175da99a6",
+              "source_url": "http://127.0.0.1:9300/historical/J06",
+              "sha256": "da5cb75bf706444e6f416b84dbe5d78384c8652f132c1bf2b256103296734a37",
+              "rank": 3,
+              "score": 3
+            }
+          ]
+        },
+        {
+          "id": "J-Q3",
+          "retrieved": [
+            "J04",
+            "J08",
+            "J05"
+          ],
+          "relevant": [
+            "J04"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "memory_id": "J04",
+              "actual_memory_id": "c63f7a20-2357-4815-8b8c-568b9dd1afcc",
+              "source_url": "http://127.0.0.1:9300/historical/J04",
+              "sha256": "8da8be937270ef7e5d37806f211b7099c8dadd8a4cdf3f89e24157b55e2843ff",
+              "rank": 1,
+              "score": 10
+            },
+            {
+              "memory_id": "J08",
+              "actual_memory_id": "ae7339bb-2a0a-482a-9689-17f313f3bcb7",
+              "source_url": "http://127.0.0.1:9300/historical/J08",
+              "sha256": "dc89ddef2009708a0ab0d95dcb4e747cae5c4e86258545845c302aa2e1a7539f",
+              "rank": 2,
+              "score": 4
+            },
+            {
+              "memory_id": "J05",
+              "actual_memory_id": "700554f9-32e7-4fff-88d7-13704bf667ff",
+              "source_url": "http://127.0.0.1:9300/historical/J05",
+              "sha256": "7110a0d151aef0be846ecace0ad47d356bcd7229a114e8b2c9a05da3530e827a",
+              "rank": 3,
+              "score": 2
+            }
+          ]
+        },
+        {
+          "id": "J-Q4",
+          "retrieved": [],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "B-Q1",
+          "retrieved": [
+            "B10",
+            "B01",
+            "B05"
+          ],
+          "relevant": [
+            "B01",
+            "B05",
+            "B10"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 1,
+              "score": 10
+            },
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 2,
+              "score": 8
+            },
+            {
+              "memory_id": "B05",
+              "actual_memory_id": "011f2596-2282-4b9a-82f7-bbade5a97319",
+              "source_url": "http://127.0.0.1:9300/historical/B05",
+              "sha256": "77cc4b1fd8f531cd9e0648c7750737766d97408b66ef4128dbdefdc626c117a0",
+              "rank": 3,
+              "score": 6
+            }
+          ]
+        },
+        {
+          "id": "B-Q2",
+          "retrieved": [
+            "B07",
+            "B02",
+            "B01"
+          ],
+          "relevant": [
+            "B02",
+            "B07"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "memory_id": "B07",
+              "actual_memory_id": "986dd50b-ce87-4d6d-9f93-16880ece3e7f",
+              "source_url": "http://127.0.0.1:9300/historical/B07",
+              "sha256": "a69e803474f6ab60c435c729df224d703a8d925ff4c829f73222529e63308492",
+              "rank": 1,
+              "score": 10
+            },
+            {
+              "memory_id": "B02",
+              "actual_memory_id": "aa3cf3b9-76fd-4efe-a5bb-713eee684432",
+              "source_url": "http://127.0.0.1:9300/historical/B02",
+              "sha256": "f12a1a81b05180206b9e247c0300827e353f9a65c03230918844bc204fe02926",
+              "rank": 2,
+              "score": 6
+            },
+            {
+              "memory_id": "B01",
+              "actual_memory_id": "9d2511c9-35fd-4d12-81c5-afea9c484daf",
+              "source_url": "http://127.0.0.1:9300/historical/B01",
+              "sha256": "4fbe91911ac810a772c06b2a504ad15e071d6d28a35b719613d496b02958bc39",
+              "rank": 3,
+              "score": 3
+            }
+          ]
+        },
+        {
+          "id": "B-Q3",
+          "retrieved": [
+            "B06",
+            "B03",
+            "B10"
+          ],
+          "relevant": [
+            "B03",
+            "B06"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "memory_id": "B06",
+              "actual_memory_id": "b870e445-c0ee-4672-8666-a569dfea8af5",
+              "source_url": "http://127.0.0.1:9300/historical/B06",
+              "sha256": "780ee92f3146bc5a3c279014e999046d30a49e89decbab900ea7638dc7243e27",
+              "rank": 1,
+              "score": 10
+            },
+            {
+              "memory_id": "B03",
+              "actual_memory_id": "0b626471-34ad-4f89-9ab6-2e973c44e8a8",
+              "source_url": "http://127.0.0.1:9300/historical/B03",
+              "sha256": "d444d20eca43b3348142f6fcd50ff200fd7882647fc48429f7f26918fd5217f6",
+              "rank": 2,
+              "score": 8
+            },
+            {
+              "memory_id": "B10",
+              "actual_memory_id": "57ab31ea-03d8-403b-a31d-535d3e27d031",
+              "source_url": "http://127.0.0.1:9300/historical/B10",
+              "sha256": "8b7360dbde17764cbed7768817b0d28182617b05900cbabc6f85c64d50242361",
+              "rank": 3,
+              "score": 4
+            }
+          ]
+        },
+        {
+          "id": "B-Q4",
+          "retrieved": [],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        }
+      ]
+    },
+    "D_full_history_access": {
+      "positive_queries": 9,
+      "mean_history_size": 12.0,
+      "history_contains_relevant": 1.0,
+      "note": "Access control only; no result limit or ranking is applied."
+    }
+  },
+  "classification": "RETRIEVAL_ADVANTAGE_DEMONSTRATED",
+  "criteria": {
+    "crowding_regression": true,
+    "recall_at_3_improvement_over_recency": true,
+    "mrr_improvement_over_recency": true,
+    "missing_memory_failures_not_worse_than_recency": true,
+    "negative_queries_abstain": true
+  }
+}

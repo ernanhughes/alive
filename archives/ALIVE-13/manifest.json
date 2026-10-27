@@ -1,0 +1,82 @@
+{
+  "status": "ENGINEERING_PASS",
+  "native_synthetic": "NATIVE_SYNTHETIC_PASS",
+  "native_meta": "NOT_RUN",
+  "retrieval_advantage": "RETRIEVAL_ADVANTAGE_DEMONSTRATED",
+  "retrieval_scope": "frozen controlled lexical corpus",
+  "baseline": "af12bc88c91a85558873d01579dba93fdd6b1bbf",
+  "source_commit": "d963d267c219d49e4dfab23cf838946b64c4b190",
+  "archive_commit": "04adadb",
+  "pr": "https://github.com/ernanhughes/alive/pull/19",
+  "paid_calls": 0,
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "evidence/native-synthetic.json": {
+      "sha256": "26b0c9c9e53a163d33a90a40d69281fba92cd4f1d00931c2d114905703da7351",
+      "bytes": 2579
+    },
+    "evidence/pre-fix-defects.json": {
+      "sha256": "f2f453fa924c309d421a975ed13b09f3e207b638f0a4fb37143983987df31100",
+      "bytes": 3026
+    },
+    "evidence/research-memory.png": {
+      "sha256": "94bc2f10c70f3e7433c0642fc9829cececf5270d1bb99e35ddc76e5e27b51f49",
+      "bytes": 119435
+    },
+    "evidence/retrieval-comparison.json": {
+      "sha256": "1ee57067db281f900e6c1ad3f05b2fc9720464c145d42ce647b773be4be370d8",
+      "bytes": 154075
+    },
+    "evidence/withdrawal-target.json": {
+      "sha256": "987f3a729188eca6e99b42f775bd1bd7b9b99d606217b2382dc4c2f2aa7b7b6b",
+      "bytes": 863
+    },
+    "protocol.json": {
+      "sha256": "3cdbc67f6763b9a26e158f3b7e484a7a9465874235f0bcbee6b241ceee18d3ea",
+      "bytes": 20472
+    },
+    "README.md": {
+      "sha256": "688e20de804e14f88d075731d90def6455a8bec561210ce5dc3cee5adcfc7763",
+      "bytes": 3846
+    },
+    "validation/archive.txt": {
+      "sha256": "cb616a7ba933a87b74b7980c34bcb6ad6a93c60307e1f0725d9cdbce0ce54b15",
+      "bytes": 142
+    },
+    "validation/backend.txt": {
+      "sha256": "4d76bbc0c849f8ac1e2202633c2e91fc7e081159d0b1cee2a54e539af36ac22c",
+      "bytes": 1295
+    },
+    "validation/build.txt": {
+      "sha256": "1fb0b2cfa69823b2e2bd0695510baa6ab7d5379d0bdff650ce5e4929aa8519bb",
+      "bytes": 464
+    },
+    "validation/extension.txt": {
+      "sha256": "c733575fca9f2e57f9236d1ff987359734813ad8d645377f732530cb02936203",
+      "bytes": 1093
+    },
+    "validation/frontend.txt": {
+      "sha256": "05ae66476898ec5373a543ef050e34db5c42e406e86cd7230cd2ccd6fc0f4ff0",
+      "bytes": 287
+    },
+    "validation/native.txt": {
+      "sha256": "fd050366cff4420362715bbdf92b3a446e9cf4f00be2f83a1b41942501541534",
+      "bytes": 327
+    },
+    "validation/research-memory.txt": {
+      "sha256": "ad6e725b642d36deedc8409c69afbdcf2b26796b2a1440fe39f993ecf48fb771",
+      "bytes": 694
+    },
+    "validation/ruff.txt": {
+      "sha256": "9465f9fc53f74fc0d3b59a29cdc281bd859edb6c69a87202fb14fa00c0284027",
+      "bytes": 49
+    },
+    "validation/whitespace.txt": {
+      "sha256": "94cba043743fa3a0e70a8aed887ddfefbed2c7433b3d817e0b55a882bb87ecd3",
+      "bytes": 78
+    }
+  }
+}

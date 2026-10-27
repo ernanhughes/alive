@@ -15,6 +15,7 @@ from alive.models import Memory, record, uid
 
 EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 EMBED_REVISION = "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+GENERAL_MEMORY_TYPES = ("experience", "cognitive_analysis", "authorised_history")
 
 
 class EmbeddingProvider(Protocol):
@@ -156,10 +157,13 @@ class MemoryService:
             "revision": e.revision,
         }
 
-    async def retrieve(self, query, mode="text", top_k=5, exclude_event=None):
+    async def retrieve(self, query, mode="text", top_k=5, exclude_event=None, memory_types=None):
         if not 1 <= top_k <= 20:
-            raise ValueError("top_k must be 1–20")
+            raise ValueError("top_k must be 1-20")
         k, e = self.k, self.embedding
+        if memory_types is None:
+            memory_types = GENERAL_MEMORY_TYPES
+        memory_types = tuple(memory_types)
         if mode in ("vector", "hybrid") and not e.available:
             if mode == "vector":
                 raise ValueError(
@@ -169,6 +173,8 @@ class MemoryService:
         text_ids, vector_ids, rows_by_id = [], [], {}
         async with k.db.sessions() as session:
             base = select(Memory)
+            if memory_types:
+                base = base.where(Memory.memory_type.in_(memory_types))
             if exclude_event:
                 base = base.where(
                     (Memory.source_event_id != exclude_event) | Memory.source_event_id.is_(None)
