@@ -689,6 +689,36 @@ code {
   border-radius: 7px;
   border: 1px solid #dfe6d7;
 }
+.browser-provenance {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 14px 0;
+}
+.browser-provenance span {
+  display: grid;
+  gap: 4px;
+  padding: 9px;
+  border: 1px solid #e0e4d9;
+  border-radius: 6px;
+  min-width: 0;
+  font-size: 11px;
+}
+.browser-provenance b {
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: #7b8871;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.browser-provenance code {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 950px) {
+  .browser-provenance {
+    grid-template-columns: 1fr 1fr;
+  }
+}
 hr {
   border: 0;
   border-top: 1px solid #e3e8db;
