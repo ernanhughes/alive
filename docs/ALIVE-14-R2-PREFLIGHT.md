@@ -8,6 +8,8 @@ Baseline: `a4dbf25e6c4611ef4248297426b1cd6c267e0c72` (ALIVE-14-R1 merge).
 R2 product commit for evidence: `c31f4f57d2a6a8ca48ad1d0ec37be263ed8f484d`.
 Protocol commit: `2463da5`; canonical LF SHA-256:
 `bd08e2e6b9e7f4804af16daaca5b5a12a2d07d83eb19ae082527ef1da2add5dc`.
+PR: https://github.com/ernanhughes/alive/pull/22 (draft, review-only).
+CI: all eight PR checks passed (backend Ubuntu/Windows, dashboard, first-contact PostgreSQL).
 No paid inference was used.
 
 ## REVIEW-08 blockers corrected

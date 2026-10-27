@@ -9,7 +9,8 @@
 - No paid inference, merge or auto-merge.
 - Original ALIVE-14 and ALIVE-14-R1 archives preserved.
 
-PR/CI to be recorded after push.
+PR: https://github.com/ernanhughes/alive/pull/22 (draft, review-only; no merge or auto-merge).
+CI: all eight PR checks passed (backend Ubuntu/Windows, dashboard, first-contact PostgreSQL).
 
 ## 2. REVIEW-08 blockers
 

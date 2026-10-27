@@ -33,8 +33,8 @@
       "bytes": 11848
     },
     "README.md": {
-      "sha256": "5a184536e8a8b319a2b5064aba2275d262751296fc0c7b8ff85077f01d197d56",
-      "bytes": 3111
+      "sha256": "39aad27a1514cd09bd28bd4b00692a482ed1de2aaf3f20876b5e08fd5aee1eb5",
+      "bytes": 3276
     },
     "validation/archive.txt": {
       "sha256": "e583999cae6f4783d91d458a1b9c9e868f77ab40efb5452fcc2071c96ed85897",
@@ -76,5 +76,7 @@
       "sha256": "3b47751c8e83cb4154fb11e53693d9d52f9ac24f50fb334645f18b33391828c9",
       "bytes": 207
     }
-  }
+  },
+  "pr": "https://github.com/ernanhughes/alive/pull/22",
+  "ci": "all eight checks passed"
 }
