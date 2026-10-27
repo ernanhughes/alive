@@ -9,8 +9,8 @@
 | Branch | `opencode/alive-10-native-intelligence` |
 | Policy/UI/native harness | `77ee709` - corrected v2 policy, panel semantics, native harness |
 | Evidence builders | `021462b` - reproducible comparison, controlled evidence and archive scripts |
-| Archive/handoff commit | `_Pending archive commit._` |
-| PR | `_Pending creation._` |
+| Archive/handoff commit | `ca9a9cc` - frozen archive, manifest and handoff |
+| PR | [#14](https://github.com/ernanhughes/alive/pull/14); initial head `ca9a9cc`, review-only |
 
 Status names are deliberately separate:
 
