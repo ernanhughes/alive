@@ -10,6 +10,8 @@ Baseline: `3d81ce9a435d375ff6652bde07582d22a1eafdd6` (ALIVE-13 merge, `origin/ma
 Branch: `codex/alive-14-research-connections`.
 Protocol freeze commit: `bf0af924d75483fc1c06ea5f8621ab08c3950b98`.
 Implementation commit for the archived evidence: `83852b2bdcccdef041c3e440dce3a2b22906ad0c`.
+PR: https://github.com/ernanhughes/alive/pull/20 (draft, review-only).
+CI: all eight PR checks passed (backend Ubuntu/Windows, dashboard, first-contact PostgreSQL).
 No paid inference was used. No merge or auto-merge was requested.
 
 ## What changed

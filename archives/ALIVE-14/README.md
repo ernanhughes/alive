@@ -7,6 +7,9 @@ Status: **ENGINEERING_PASS**, **NATIVE_SYNTHETIC_PASS**, **NATIVE_META_NOT_RUN**
 Baseline: `3d81ce9a435d375ff6652bde07582d22a1eafdd6` (ALIVE-13 merge).
 Protocol commit: `bf0af924d75483fc1c06ea5f8621ab08c3950b98`.
 Implementation commit: `83852b2bdcccdef041c3e440dce3a2b22906ad0c`.
+Archive evidence commit: `a1b1040`; transcript normalization: `df5f91b`.
+PR: https://github.com/ernanhughes/alive/pull/20 (draft, review-only).
+CI: all eight PR checks passed (backend Ubuntu/Windows, dashboard, first-contact PostgreSQL).
 No paid inference was performed. No merge or auto-merge was requested.
 
 This archive preserves the frozen held-out protocol, retrieval comparison, ranker diagnostics,

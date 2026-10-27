@@ -7,9 +7,9 @@
 - Protocol freeze: `bf0af924d75483fc1c06ea5f8621ab08c3950b98`.
 - Implementation: `843f5b4f2c37d97ff40cd84623e0f8b87c8c1f7f`.
 - Race/quote-validation follow-up: `83852b2bdcccdef041c3e440dce3a2b22906ad0c`.
-- Archive commit: to be recorded after packaging.
-- PR: to be recorded after push. Review-only; no merge or auto-merge.
-- CI: to be recorded after push.
+- Archive evidence commit: `a1b1040`; transcript normalization: `df5f91b`.
+- PR: https://github.com/ernanhughes/alive/pull/20 (draft, review-only; no merge or auto-merge).
+- CI: all eight PR checks passed (backend Ubuntu/Windows, dashboard, first-contact PostgreSQL).
 - Paid inference: **0**.
 
 The primary checkout and frozen ALIVE-01 through ALIVE-13 archives were not modified.
