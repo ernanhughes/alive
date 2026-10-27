@@ -93,7 +93,7 @@ Chrome `155.0.8059.85`, genuine docked side panel:
 ## 9. Tests
 
 - Full backend: 192 passed.
-- Focused research-memory: 46 passed (before final revocation test; final rerun recorded in archive).
+- Focused research-memory: 46 passed.
 - Extension: 11 passed.
 - Frontend: 7 passed.
 - Production build: passed.
