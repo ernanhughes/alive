@@ -71,8 +71,17 @@ class Living:
                 journey.status = "interrupted"
                 journey.data = journey.data | {
                     "ledger": ledger,
+                    "allow": False,
                     "error": "Backend restarted; no action or paid inference is replayed",
                 }
+                self.k.add_event(
+                    session,
+                    "living.interrupted",
+                    {
+                        "journey_id": journey.id,
+                        "error": "Backend restarted; no action or paid inference is replayed",
+                    },
+                )
 
     async def create(self, provider, allow):
         if not allow:
@@ -191,6 +200,8 @@ class Living:
             row = await session.get(LivingJourney, journey_id)
             control = await session.get(CognitiveControl, self.k.instance_id)
             cfg = CognitiveConfiguration.model_validate(control.configuration)
+            if not row.data.get("allow"):
+                raise PermissionError("Controlled permission revoked before inference")
             reserve = (
                 len(
                     json.dumps(
@@ -427,6 +438,7 @@ class Living:
                             "relevant_experience": relevant,
                             "observation": observation,
                             "evidence": evidence,
+                            "sources": sources,
                             "feedback": feedback,
                             "model_output": output.model_dump(),
                             "model_call_id": call_id,
