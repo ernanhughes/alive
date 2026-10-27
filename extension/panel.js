@@ -82,7 +82,6 @@ $('stop').onclick = () => action(async () => {
   $('cost').textContent = '';
   $('status').textContent = 'Stopped - page observation revoked';
 });
-});
 $('send').onclick = () => action(async () => {
   const language = $('language').value;
   const result = await command('send', { reviewed, language });
