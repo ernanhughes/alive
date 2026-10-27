@@ -1,0 +1,24 @@
+{
+  "prior_manifests": {
+    "ALIVE-02": 15,
+    "ALIVE-03-P1": 22,
+    "ALIVE-03-P1-FULL": 16,
+    "ALIVE-03-P2-SIM": 48,
+    "ALIVE-03-P3": 76,
+    "ALIVE-04": 24,
+    "ALIVE-04-INTERIM": 10,
+    "ALIVE-05": 5,
+    "ALIVE-05-OPENCODE": 10,
+    "ALIVE-06-CONTEXTUAL-BROWSER": 10,
+    "ALIVE-07": 19,
+    "ALIVE-08": 33,
+    "ALIVE-09": 16,
+    "ALIVE-10": 22,
+    "ALIVE-10-CLOSEOUT": 11,
+    "ALIVE-10-REFINEMENT": 8,
+    "ALIVE-11": 3
+  },
+  "manifest_count": 17,
+  "payload_count": 348,
+  "primary_files_unchanged": 25
+}

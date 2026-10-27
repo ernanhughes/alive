@@ -962,6 +962,10 @@ class WebCompanion:
                         raise ValueError("Governor cumulative limit exhausted")
                 # A bounded, single-call note; failed/unknown calls consume their reservation.
                 check_spend([], reserve, cap=100000)
+                campaign_limit = self.k.settings.alive_companion_micro_usd_limit
+                if campaign_limit is not None:
+                    ledger = [n.data | {"status": n.status} for n in await self.rows(s, "note")]
+                    check_spend(ledger, reserve, cap=campaign_limit)
                 note = self.add(
                     s,
                     "note",
@@ -998,6 +1002,7 @@ class WebCompanion:
 
     async def execute(self, note_id, context, cfg, reserve):
         usage, output, error = None, None, None
+        raw_response, provider_error = None, None
         started = time.monotonic()
         try:
             async with self.k.lock, self.k.db.sessions.begin() as s:
@@ -1007,6 +1012,7 @@ class WebCompanion:
                 grant = await self.get(s, note.data["grant_id"], "grant")
                 if grant.status != "active" or grant.data["expires_at"] < now().isoformat():
                     raise PermissionError("Grant revoked or expired before inference")
+                note.data = note.data | {"dispatch_started_at": now().isoformat()}
             async with asyncio.timeout(cfg.wall_seconds):
                 result = await MetaProvider(self.k.settings).structured(
                     INSTRUCTION,
@@ -1017,12 +1023,14 @@ class WebCompanion:
                     correlation=note_id,
                 )
                 usage = result.usage
+                raw_response = result.text
                 output = DocumentationNote.model_validate_json(result.text).model_dump()
                 if output["evidence_quote"] not in context["untrusted_excerpt"]:
                     raise ValueError("Model citation is not an exact excerpt quote")
         except BaseException as exc:
             usage = getattr(exc, "usage", None) or usage
             error = type(exc).__name__
+            provider_error = getattr(exc, "category", None)
         charged = usage.get("total_tokens") if usage and not error else reserve
         if not isinstance(charged, int) or charged < 0:
             charged = reserve
@@ -1037,6 +1045,13 @@ class WebCompanion:
                 "estimated_usd": price(usage),
                 "output": output,
                 "error": error,
+                "provider_error": provider_error,
+                "raw_response": raw_response[:16384] if isinstance(raw_response, str) else None,
+                "raw_response_sha256": digest(raw_response)
+                if isinstance(raw_response, str)
+                else None,
+                "raw_response_truncated": isinstance(raw_response, str)
+                and len(raw_response) > 16384,
                 "latency_ms": (time.monotonic() - started) * 1000,
                 "completed_at": now().isoformat(),
             }

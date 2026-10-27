@@ -1,0 +1,68 @@
+{
+  "provider": "Meta Model API",
+  "model": "muse-spark-1.3",
+  "calls": 8,
+  "validated_calls": 8,
+  "charged_tokens": 4246,
+  "estimated_usd": 0.0113225,
+  "paid": true,
+  "per_note": [
+    {
+      "note_id": "509be1bd-d00c-4db1-9e15-ee9c05ff3cf5",
+      "charged_tokens": 483,
+      "estimated_usd": 0.00122475,
+      "error": null,
+      "started_at": "2026-10-27T16:10:21.048176+00:00"
+    },
+    {
+      "note_id": "b2ab3b7d-26dc-47c0-b527-dd20f380f96d",
+      "charged_tokens": 543,
+      "estimated_usd": 0.00147975,
+      "error": null,
+      "started_at": "2026-10-27T16:10:26.090531+00:00"
+    },
+    {
+      "note_id": "8d84d86e-1822-4aa6-9d98-97f971f594db",
+      "charged_tokens": 475,
+      "estimated_usd": 0.00118475,
+      "error": null,
+      "started_at": "2026-10-27T16:10:29.428450+00:00"
+    },
+    {
+      "note_id": "57795e17-a5c6-4a89-9311-f196f30aa774",
+      "charged_tokens": 575,
+      "estimated_usd": 0.00161275,
+      "error": null,
+      "started_at": "2026-10-27T16:10:35.597239+00:00"
+    },
+    {
+      "note_id": "ddd30996-eccb-4817-86af-07e553c970b6",
+      "charged_tokens": 596,
+      "estimated_usd": 0.001675,
+      "error": null,
+      "started_at": "2026-10-27T16:10:44.795832+00:00"
+    },
+    {
+      "note_id": "13e18504-1d0d-43db-bd90-c43210ac6a87",
+      "charged_tokens": 575,
+      "estimated_usd": 0.00159175,
+      "error": null,
+      "started_at": "2026-10-27T16:10:57.419501+00:00"
+    },
+    {
+      "note_id": "bb394c3b-197c-44a8-8ab8-005464453529",
+      "charged_tokens": 493,
+      "estimated_usd": 0.00126125,
+      "error": null,
+      "started_at": "2026-10-27T16:11:00.030194+00:00"
+    },
+    {
+      "note_id": "9c94d06d-9982-46a2-91ea-61440a2c123c",
+      "charged_tokens": 506,
+      "estimated_usd": 0.0012925,
+      "error": null,
+      "started_at": "2026-10-27T16:11:02.433270+00:00"
+    }
+  ],
+  "note": "Estimated with ALIVE's price() formula; not a provider invoice."
+}

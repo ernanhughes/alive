@@ -1,0 +1,10 @@
+{
+  "approval": "Explicit owner approval in this conversation",
+  "model": "muse-spark-1.3",
+  "max_calls": 8,
+  "max_charged_tokens": 12000,
+  "max_estimated_usd": 0.1,
+  "automatic_retries": 0,
+  "scope": "Five native adaptive analyses and three matched baseline analyses; controlled excerpts only",
+  "source_commit": "cb29c336760cb62e709da73a32553663ddde7e38"
+}

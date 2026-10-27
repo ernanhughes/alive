@@ -1,0 +1,16 @@
+✔ isolated extension rejects stale port 8000 before any fetch (1.2535ms)
+✔ connect records the authenticated backend identity before declaring connection (0.2817ms)
+✔ connect fails closed on an incompatible backend identity (0.1356ms)
+✔ a late validated reply cannot restore a feedback target after Stop (1.053ms)
+✔ a late reply cannot rate the previous excerpt after the preview changes (0.18ms)
+✔ an obsolete polling error cannot overwrite the stopped status (0.5676ms)
+✔ changing language requires a new reviewed snapshot and invalidates old feedback (0.224ms)
+✔ a current validated note still enables feedback (0.2722ms)
+ℹ tests 8
+ℹ suites 0
+ℹ pass 8
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 63.8896

@@ -1,0 +1,51 @@
+{
+  "kind": "native pipeline, three matched relevant excerpts",
+  "arms": [
+    "frozen_nonadaptive",
+    "constant_analyse_when_authorised"
+  ],
+  "identical_requests_share_responses": true,
+  "independent_arm_replications": false,
+  "responses": [
+    {
+      "case": "suppressed-1",
+      "sha256": "2f82ca8db8812afdcd839308e0a841d7dc02cb0db576a50abd00df5e80482618",
+      "note_id": "f44f9f4f-e6c2-420a-9fcd-e3c4e003a44d",
+      "usage": {
+        "prompt_tokens": 100,
+        "completion_tokens": 50,
+        "total_tokens": 150
+      },
+      "estimated_usd": 0.0003375,
+      "owner_usefulness": null,
+      "quote_valid": true
+    },
+    {
+      "case": "paused-2",
+      "sha256": "8c14657c5d8aaad6ef6f44d534618d1c9958c3fffc49ca960dc9952cd89602d5",
+      "note_id": "0f4193f0-e535-4688-8ef3-d5bf97b99f4f",
+      "usage": {
+        "prompt_tokens": 100,
+        "completion_tokens": 50,
+        "total_tokens": 150
+      },
+      "estimated_usd": 0.0003375,
+      "owner_usefulness": null,
+      "quote_valid": true
+    },
+    {
+      "case": "probe-1",
+      "sha256": "d76de6d5036a7ef4eae2004f7c4ad742d8875aa717ed0bd6bc679bf3b5169976",
+      "note_id": "9e871db2-7a04-4770-89b7-5e018b90e193",
+      "usage": {
+        "prompt_tokens": 100,
+        "completion_tokens": 50,
+        "total_tokens": 150
+      },
+      "estimated_usd": 0.0003375,
+      "owner_usefulness": null,
+      "quote_valid": true
+    }
+  ],
+  "utility_advantage_claim": false
+}

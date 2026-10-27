@@ -30,6 +30,7 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: node --test ../tests/extension-panel.test.cjs
+      - run: node --test ../tests/extension-background.test.cjs
       - run: npm run build
   first-contact-postgresql:
     runs-on: ubuntu-latest

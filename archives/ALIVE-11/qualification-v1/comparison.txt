@@ -1,0 +1,10 @@
+C:\Projects\alive-worktrees\alive-11\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+  self._get_loop()
+C:\Projects\alive-worktrees\alive-11\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+  self._get_loop()
+C:\Projects\alive-worktrees\alive-11\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+  self._get_loop()
+.alive\native11-comparison-6fd288be56a2.json
+adaptive {'calls': 7, 'source_adequate_opportunities_met': 4, 'missed_source_adequate_opportunities': 2, 'total_tokens': 1050, 'synthetic_model_price_estimate': 0.0023625}
+frozen_nonadaptive {'calls': 11, 'source_adequate_opportunities_met': 6, 'missed_source_adequate_opportunities': 0, 'total_tokens': 1650, 'synthetic_model_price_estimate': 0.0037125}
+constant {'calls': 12, 'source_adequate_opportunities_met': 6, 'missed_source_adequate_opportunities': 0, 'total_tokens': 1800, 'synthetic_model_price_estimate': 0.00405}

@@ -1,0 +1,47 @@
+[
+  {
+    "stage": "connected",
+    "at": "2026-10-27T15:30:14.354320+00:00",
+    "runtime_instance": "4b9a67da-73ef-4f82-bb31-967224223058"
+  },
+  {
+    "stage": "distinct-1",
+    "at": "2026-10-27T15:30:22.459766+00:00",
+    "runtime_instance": "4b9a67da-73ef-4f82-bb31-967224223058"
+  },
+  {
+    "stage": "distinct-2",
+    "at": "2026-10-27T15:30:26.478621+00:00",
+    "runtime_instance": "4b9a67da-73ef-4f82-bb31-967224223058"
+  },
+  {
+    "stage": "distinct-3",
+    "at": "2026-10-27T15:30:30.658506+00:00",
+    "runtime_instance": "4b9a67da-73ef-4f82-bb31-967224223058"
+  },
+  {
+    "stage": "suppressed",
+    "at": "2026-10-27T15:30:32.838934+00:00",
+    "runtime_instance": "4b9a67da-73ef-4f82-bb31-967224223058"
+  },
+  {
+    "stage": "probe_due",
+    "at": "2026-10-27T15:30:42.032693+00:00",
+    "runtime_instance": "4b9a67da-73ef-4f82-bb31-967224223058"
+  },
+  {
+    "stage": "recovered",
+    "at": "2026-10-27T15:30:46.318450+00:00",
+    "runtime_instance": "4b9a67da-73ef-4f82-bb31-967224223058"
+  },
+  {
+    "stage": "restarted",
+    "at": "2026-10-27T15:31:50.066201+00:00",
+    "runtime_instance": "b92b5099-c39e-4062-928e-71f691434459"
+  },
+  {
+    "stage": "finished",
+    "at": "2026-10-27T15:31:53.842758+00:00",
+    "runtime_instance": "b92b5099-c39e-4062-928e-71f691434459"
+  }
+]

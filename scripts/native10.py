@@ -27,6 +27,8 @@ from pathlib import Path
 import httpx
 from playwright.async_api import async_playwright
 
+from alive.experiment.metrics import price
+
 ROOT = Path(__file__).resolve().parents[1]
 TOKEN = "native10-" + uuid.uuid4().hex + uuid.uuid4().hex
 GOAL = "Help me understand Python memory management and reference counting."
@@ -220,6 +222,72 @@ class PagePanel:
         await self.page.screenshot(path=path, full_page=True)
 
 
+async def open_panel(context, cdp, extension_id, page, require_docked=False):
+    """Wait for MV3 registration before invoking the action; never disguise a tab."""
+    worker = None
+    for _ in range(100):
+        worker = next(
+            (
+                w
+                for w in context.service_workers
+                if w.url.startswith(f"chrome-extension://{extension_id}/")
+            ),
+            None,
+        )
+        if worker:
+            behavior = await worker.evaluate("chrome.sidePanel.getPanelBehavior()")
+            if behavior.get("openPanelOnActionClick"):
+                break
+        await asyncio.sleep(0.1)
+    else:
+        raise RuntimeError("Extension worker did not finish side-panel registration")
+    await page.bring_to_front()
+    targets = (await cdp.send("Target.getTargets", {"filter": [{"type": "tab"}]}))["targetInfos"]
+    target = next(t for t in targets if t["url"] == page.url)
+    await cdp.send("Extensions.triggerAction", {"id": extension_id, "targetId": target["targetId"]})
+    panel_url = f"chrome-extension://{extension_id}/panel.html"
+    panel_target = None
+    for _ in range(40):
+        targets = (await cdp.send("Target.getTargets", {"filter": [{}]}))["targetInfos"]
+        panel_target = next(
+            (t for t in targets if t["type"] == "page" and t["url"] == panel_url), None
+        )
+        if panel_target:
+            break
+        await asyncio.sleep(0.1)
+    if panel_target:
+        if any(p.url == panel_url for p in context.pages):
+            raise RuntimeError("Action target is an ordinary extension tab, not a docked panel")
+        session = (
+            await cdp.send(
+                "Target.attachToTarget", {"targetId": panel_target["targetId"], "flatten": False}
+            )
+        )["sessionId"]
+        panel = CdpPanel(cdp, session)
+        await panel.wait(
+            "document.readyState !== 'loading' && !!document.querySelector('#connect')"
+        )
+        return panel, {
+            "presentation": "native side panel target",
+            "side_panel_registration_ready": True,
+            "action_target_id": target["targetId"],
+            "panel_target_id": panel_target["targetId"],
+            "panel_opened_as_ordinary_tab": False,
+            "panel_behavior": behavior,
+        }
+    if require_docked:
+        raise RuntimeError(
+            "No docked side-panel target; explicit requirement cannot use tab fallback"
+        )
+    panel_page = await context.new_page()
+    await panel_page.goto(panel_url)
+    return PagePanel(panel_page), {
+        "presentation": "extension page fallback",
+        "side_panel_registration_ready": True,
+        "panel_opened_as_ordinary_tab": True,
+    }
+
+
 def prepare_extension(run_dir, backend, page_url):
     target = run_dir / "extension"
     shutil.copytree(ROOT / "extension", target)
@@ -343,13 +411,13 @@ def policy_context(policy):
     return next(iter(policy["contexts"].values()))
 
 
-async def send_observation(panel, page, marker, previous_id=None):
-    text = content(marker)
+async def send_observation(panel, page, marker, previous_id=None, content_fn=content):
+    text = content_fn(marker)
     await page.evaluate(
         "(text) => { document.querySelector('#content').textContent = text; }", text
     )
     await panel.wait(
-        "document.querySelector('#preview').textContent.includes(" + json.dumps(marker) + ")"
+        "(await chrome.storage.session.get('latest')).latest?.payload.text === " + json.dumps(text)
     )
     await panel.click("#send")
     await panel.wait(
@@ -400,7 +468,8 @@ async def connect_panel(panel, backend):
     await panel.wait("document.querySelector('#status').textContent.includes('Connected')")
 
 
-async def start_page(panel, page_url, marker):
+async def start_page(panel, page_url, marker, content_fn=content):
+    prior_grant = await panel.evaluate("(await chrome.storage.session.get('grantId')).grantId")
     await panel.evaluate(
         "(async () => { const tabs=await chrome.tabs.query({}); "
         "const tab=tabs.find(t=>t.url==="
@@ -410,14 +479,28 @@ async def start_page(panel, page_url, marker):
     )
     await panel.click("#start")
     await panel.wait(
-        "document.querySelector('#preview').textContent.includes(" + json.dumps(marker) + ")"
+        "(await chrome.storage.session.get('grantId')).grantId && "
+        "(await chrome.storage.session.get('grantId')).grantId !== " + json.dumps(prior_grant)
+    )
+    await panel.wait(
+        "(await chrome.storage.session.get('latest')).latest?.payload.text === "
+        + json.dumps(content_fn(marker))
     )
 
 
-async def main(args):
-    run_dir = ROOT / ".alive" / f"native10-{uuid.uuid4().hex[:12]}"
+async def main(
+    args,
+    *,
+    content_fn=content,
+    page_handler=PageHandler,
+    checkpoint=None,
+    environment_fn=backend_env,
+    goal=GOAL,
+):
+    run_name = getattr(args, "run_name", "native10")
+    run_dir = ROOT / ".alive" / f"{run_name}-{uuid.uuid4().hex[:12]}"
     run_dir.mkdir(parents=True, exist_ok=False)
-    page_server = ThreadingHTTPServer(("127.0.0.1", 0), PageHandler)
+    page_server = ThreadingHTTPServer(("127.0.0.1", 0), page_handler)
     page_port = page_server.server_address[1]
     page_url = f"http://127.0.0.1:{page_port}/native10"
     stub_server = ThreadingHTTPServer(("127.0.0.1", 0), StubHandler)
@@ -427,7 +510,12 @@ async def main(args):
         threading.Thread(target=server.serve_forever, daemon=True).start()
     backend_port = free_port()
     backend = f"http://127.0.0.1:{backend_port}"
-    env = backend_env(run_dir, backend, stub_port, page_url)
+    env = environment_fn(run_dir, backend, stub_port, page_url)
+    real_provider = getattr(args, "provider", "synthetic") == "meta"
+
+    def call_count():
+        return note_count(run_dir / "native.db") if real_provider else len(stub_server.calls)
+
     browser = None
     backend_process = None
     backend_log = None
@@ -435,9 +523,9 @@ async def main(args):
         "provenance": {
             "kind": "native Chrome extension with isolated current-branch backend",
             "chrome_native": True,
-            "provider": "local Meta-compatible synthetic HTTP stub",
-            "paid_calls": 0,
-            "meta_inference": False,
+            "provider": "Meta Model API" if real_provider else "local synthetic HTTP stub",
+            "paid_calls": None if real_provider else 0,
+            "meta_inference": real_provider,
             "source_commit": subprocess.check_output(
                 ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
             ).strip(),
@@ -479,53 +567,41 @@ async def main(args):
                 await page.goto(page_url, wait_until="domcontentloaded")
                 await page.evaluate(
                     "(text) => { document.querySelector('#content').textContent = text; }",
-                    content("initial"),
+                    content_fn("initial"),
                 )
-                await page.bring_to_front()
-                targets = (await cdp.send("Target.getTargets", {"filter": [{"type": "tab"}]}))[
-                    "targetInfos"
-                ]
-                target = next(t for t in targets if t["url"] == page_url)
-                await cdp.send(
-                    "Extensions.triggerAction",
-                    {"id": extension_id, "targetId": target["targetId"]},
+                panel, presentation = await open_panel(
+                    context,
+                    cdp,
+                    extension_id,
+                    page,
+                    require_docked=getattr(args, "require_docked", False),
                 )
-                await asyncio.sleep(0.8)
-                targets = (await cdp.send("Target.getTargets", {"filter": [{}]}))["targetInfos"]
-                panel_target = next(
-                    (
-                        t
-                        for t in targets
-                        if t["type"] == "page" and t["url"].endswith("/panel.html")
-                    ),
-                    None,
-                )
-                if panel_target:
-                    session = (
-                        await cdp.send(
-                            "Target.attachToTarget",
-                            {"targetId": panel_target["targetId"], "flatten": False},
-                        )
-                    )["sessionId"]
-                    panel = CdpPanel(cdp, session)
-                    evidence["environment"]["presentation"] = "native side panel target"
-                else:
-                    panel_page = await context.new_page()
-                    await panel_page.goto(f"chrome-extension://{extension_id}/panel.html")
-                    panel = PagePanel(panel_page)
-                    evidence["environment"]["presentation"] = "extension page fallback"
-                    evidence["environment"]["available_targets"] = [
-                        {"type": t["type"], "url": t["url"]} for t in targets
-                    ]
+                evidence["environment"].update(presentation)
                 evidence["environment"]["chrome"] = context.browser.version
                 evidence["environment"]["extension_id"] = extension_id
                 await connect_panel(panel, backend)
-                await panel.evaluate("document.querySelector('#goal').value=" + json.dumps(GOAL))
+
+                async def check(stage):
+                    if checkpoint:
+                        await checkpoint(
+                            stage,
+                            panel=panel,
+                            page=page,
+                            context=context,
+                            backend=backend,
+                            run_dir=run_dir,
+                            evidence=evidence,
+                            stub_server=stub_server,
+                            env=env,
+                        )
+
+                await check("connected")
+                await panel.evaluate("document.querySelector('#goal').value=" + json.dumps(goal))
                 await panel.click("#save-goal")
                 await panel.wait(
                     "document.querySelector('#status').textContent.includes('Goal saved')"
                 )
-                await start_page(panel, page_url, "initial")
+                await start_page(panel, page_url, "initial", content_fn)
                 grant = await panel.evaluate(
                     "(await chrome.storage.session.get('grantId')).grantId"
                 )
@@ -534,7 +610,7 @@ async def main(args):
                 # Three genuinely distinct controlled observations.
                 previous = None
                 for index, marker in enumerate(("distinct-1", "distinct-2", "distinct-3"), 1):
-                    selected, _ = await send_observation(panel, page, marker, previous)
+                    selected, _ = await send_observation(panel, page, marker, previous, content_fn)
                     previous = selected["snapshot"]["id"]
                     assert selected["decision"]["action"] == "analyse", selected["decision"]
                     assert selected["decision"]["adaptive_policy"]["support"] == index - 1
@@ -550,9 +626,9 @@ async def main(args):
                     assert (
                         policy_ctx["evidence"].keys()
                         == {
-                            digest(content("distinct-1")),
-                            digest(content("distinct-2")),
-                            digest(content("distinct-3")),
+                            digest(content_fn("distinct-1")),
+                            digest(content_fn("distinct-2")),
+                            digest(content_fn("distinct-3")),
                         }
                         if index == 3
                         else len(policy_ctx["evidence"]) == index
@@ -566,8 +642,11 @@ async def main(args):
                         }
                     )
 
-                # Suppression, then one bounded owner correction.
-                selected, _ = await send_observation(panel, page, "suppressed-1", previous)
+                    # Suppression, then one bounded owner correction.
+                    await check(f"distinct-{index}")
+                selected, _ = await send_observation(
+                    panel, page, "suppressed-1", previous, content_fn
+                )
                 previous = selected["snapshot"]["id"]
                 assert selected["decision"]["action"] == "no_action"
                 assert selected["decision"]["no_action_source"] == "feedback_policy"
@@ -575,18 +654,21 @@ async def main(args):
                 assert selected["decision"]["adaptive_policy"]["suppressions"] == 1
                 assert selected["decision"]["note"] is None
                 assert await panel.evaluate("document.querySelector('#useful').disabled")
-                assert len(stub_server.calls) == 3
+                assert call_count() == 3
                 evidence["steps"].append(
                     {
                         "name": "suppressed-1",
                         "action": "no_action",
                         "source": "feedback_policy",
                         "suppressions": 1,
-                        "provider_calls": len(stub_server.calls),
+                        "provider_calls": call_count(),
                     }
                 )
 
-                selected, _ = await send_observation(panel, page, "suppressed-2", previous)
+                await check("suppressed")
+                selected, _ = await send_observation(
+                    panel, page, "suppressed-2", previous, content_fn
+                )
                 previous = selected["snapshot"]["id"]
                 assert selected["decision"]["action"] == "no_action"
                 assert selected["decision"]["adaptive_policy"]["suppressions"] == 2
@@ -594,7 +676,7 @@ async def main(args):
                 correction_note = await settle_note(panel, backend, selected)
                 assert correction_note["status"] == "validated"
                 assert correction_note["data"]["owner_correction"] is True
-                assert len(stub_server.calls) == 4
+                assert call_count() == 4
                 state = (await api_json(backend, "GET", ROOT_API))[1]
                 assert state["corrections"]
                 assert state["corrections"][-1]["data"]["suppressions_reset"] is True
@@ -606,7 +688,7 @@ async def main(args):
                         "action": "analyse",
                         "correction": True,
                         "policy_version": policy["version"],
-                        "provider_calls": len(stub_server.calls),
+                        "provider_calls": call_count(),
                     }
                 )
 
@@ -614,15 +696,16 @@ async def main(args):
                 # is a bounded periodic re-evaluation rather than permanent suppression.
                 for index in range(3):
                     marker = f"paused-{index + 1}"
-                    selected, _ = await send_observation(panel, page, marker, previous)
+                    selected, _ = await send_observation(panel, page, marker, previous, content_fn)
                     previous = selected["snapshot"]["id"]
                     assert selected["decision"]["action"] == "no_action"
                     assert selected["decision"]["adaptive_policy"]["suppressions"] == index + 1
                 evidence["steps"].append(
-                    {"name": "three_paused_observations", "provider_calls": len(stub_server.calls)}
+                    {"name": "three_paused_observations", "provider_calls": call_count()}
                 )
 
-                selected, _ = await send_observation(panel, page, "probe-1", previous)
+                await check("probe_due")
+                selected, _ = await send_observation(panel, page, "probe-1", previous, content_fn)
                 previous = selected["snapshot"]["id"]
                 probe_snapshot = selected
                 assert selected["decision"]["action"] == "analyse"
@@ -632,7 +715,7 @@ async def main(args):
                 await panel.click("#analyse")
                 probe_note = await settle_note(panel, backend, selected)
                 assert probe_note["status"] == "validated"
-                assert len(stub_server.calls) == 5
+                assert call_count() == 5
                 policy = await rate(panel, backend, True)
                 policy_ctx = policy_context(policy)
                 assert len(policy_ctx["evidence"]) == 4
@@ -644,11 +727,14 @@ async def main(args):
                         "probe": True,
                         "policy_version": policy["version"],
                         "distinct_support": len(policy_ctx["evidence"]),
-                        "provider_calls": len(stub_server.calls),
+                        "provider_calls": call_count(),
                     }
                 )
 
-                selected, _ = await send_observation(panel, page, "restored-1", previous)
+                await check("recovered")
+                selected, _ = await send_observation(
+                    panel, page, "restored-1", previous, content_fn
+                )
                 previous = selected["snapshot"]["id"]
                 assert selected["decision"]["action"] == "analyse"
                 assert selected["decision"]["adaptive_policy"]["support"] == 4
@@ -658,7 +744,7 @@ async def main(args):
                         "name": "restored",
                         "action": "analyse",
                         "distinct_support": 4,
-                        "provider_calls": len(stub_server.calls),
+                        "provider_calls": call_count(),
                     }
                 )
 
@@ -673,10 +759,10 @@ async def main(args):
                     },
                 )
                 assert duplicate.status_code == 409, duplicate.text
-                assert len(stub_server.calls) == 5
+                assert call_count() == 5
                 evidence["negative_checks"] = {
                     "duplicate_analysis": duplicate.status_code,
-                    "provider_calls": len(stub_server.calls),
+                    "provider_calls": call_count(),
                 }
 
                 policy_before_restart = (await api_json(backend, "GET", ROOT_API))[1]["policy"][
@@ -688,13 +774,14 @@ async def main(args):
                 stop_backend(backend_process, backend_log)
                 backend_process, backend_log = start_backend(run_dir, env, backend_port)
                 await wait_backend(backend)
+                await check("restarted")
                 policy_after_restart = (await api_json(backend, "GET", ROOT_API))[1]["policy"][
                     "data"
                 ]
                 notes_after = note_count(run_dir / "native.db")
                 assert policy_after_restart["version"] == policy_before_restart["version"]
                 assert notes_after == notes_before
-                assert len(stub_server.calls) == 5
+                assert call_count() == 5
                 stale = await api(
                     backend,
                     "POST",
@@ -703,16 +790,18 @@ async def main(args):
                         "grant_id": grant,
                         "url": page_url,
                         "title": "Controlled page",
-                        "text": content("stale-grant"),
-                        "reviewed_sha256": digest(content("stale-grant")),
+                        "text": content_fn("stale-grant"),
+                        "reviewed_sha256": digest(content_fn("stale-grant")),
                     },
                 )
                 assert stale.status_code == 403, stale.text
-                await start_page(panel, page_url, "restored-1")
+                await start_page(panel, page_url, "restored-1", content_fn)
                 new_grant = await panel.evaluate(
                     "(await chrome.storage.session.get('grantId')).grantId"
                 )
-                selected, _ = await send_observation(panel, page, "post-restart", previous)
+                selected, _ = await send_observation(
+                    panel, page, "post-restart", previous, content_fn
+                )
                 assert selected["decision"]["action"] == "analyse"
                 assert selected["decision"]["adaptive_policy"]["support"] == 4
                 evidence["restart"] = {
@@ -721,8 +810,7 @@ async def main(args):
                     "notes_before": notes_before,
                     "notes_after": notes_after,
                     "stale_grant_status": stale.status_code,
-                    "duplicate_inference": notes_after != notes_before
-                    or len(stub_server.calls) != 5,
+                    "duplicate_inference": notes_after != notes_before or call_count() != 5,
                     "post_restart_action": selected["decision"]["action"],
                 }
 
@@ -745,11 +833,11 @@ async def main(args):
                         "grant_id": new_grant,
                         "url": page_url,
                         "title": "Controlled page",
-                        "text": content("bad-hash"),
+                        "text": content_fn("bad-hash"),
                         "reviewed_sha256": "0" * 64,
                     },
                 )
-                budget_text = content("budget-check")
+                budget_text = content_fn("budget-check")
                 budget_snapshot = await api(
                     backend,
                     "POST",
@@ -784,35 +872,57 @@ async def main(args):
                     },
                 )
                 assert budget_blocked.status_code == 409, budget_blocked.text
-                assert len(stub_server.calls) == 5
+                assert call_count() == 5
                 evidence["negative_checks"] |= {
                     "wrong_origin_grant": wrong.status_code,
                     "modified_hash_snapshot": bad_hash.status_code,
                     "budget_exhaustion": budget_blocked.status_code,
                 }
-                evidence["provider"] = {
-                    "kind": "local Meta-compatible synthetic HTTP stub",
-                    "calls": len(stub_server.calls),
-                    "prompt_tokens": 500,
-                    "completion_tokens": 250,
-                    "total_tokens": 750,
-                    "estimated_usd": 0.0016875,
-                    "paid": False,
-                    "note": "Estimated with ALIVE's price() formula; not a Meta charge.",
-                }
-                evidence["status"] = "NATIVE_SYNTHETIC_PASS"
-                print("VERIFIED native:", backend, "calls", len(stub_server.calls))
+                await check("finished")
+                evidence["status"] = (
+                    "NATIVE_META_PASS" if real_provider else "NATIVE_SYNTHETIC_PASS"
+                )
+                print("VERIFIED native:", backend, "calls", call_count())
             finally:
                 if browser:
                     await context.close()
     except Exception:
-        evidence["status"] = "NATIVE_SYNTHETIC_FAIL"
+        evidence["status"] = "NATIVE_META_FAIL" if real_provider else "NATIVE_SYNTHETIC_FAIL"
         evidence["error"] = traceback.format_exc()
         raise
     finally:
         stop_backend(backend_process, backend_log)
         page_server.shutdown()
         stub_server.shutdown()
+        if (run_dir / "native.db").exists():
+            with sqlite3.connect(run_dir / "native.db") as connection:
+                rows = [
+                    {"id": r[0], "kind": r[1], "status": r[2], "data": json.loads(r[3])}
+                    for r in connection.execute("SELECT id,kind,status,data FROM web_experiences")
+                ]
+            (run_dir / "persisted-experience.json").write_text(
+                json.dumps(rows, indent=2), encoding="utf-8"
+            )
+            notes = [r for r in rows if r["kind"] == "note"]
+            evidence["provider"] = {
+                "kind": "Meta Model API" if real_provider else "local synthetic HTTP stub",
+                "calls": len(notes),
+                "paid": real_provider,
+                "validated_calls": sum(r["status"] == "validated" for r in notes),
+                "total_tokens": sum(
+                    r["data"].get("usage", {}).get("total_tokens", 0)
+                    for r in notes
+                    if r["data"].get("usage")
+                ),
+                "estimated_usd_known": sum(price(r["data"].get("usage")) or 0 for r in notes),
+                "usage_complete": all(r["data"].get("usage") for r in notes),
+                "charged_tokens": sum(
+                    r["data"].get("charged_tokens", r["data"]["reserved_tokens"]) for r in notes
+                ),
+                "actual_http_requests_observed": None if real_provider else len(stub_server.calls),
+            }
+            if real_provider:
+                evidence["provenance"]["paid_request_attempts_upper_bound"] = len(notes)
         (run_dir / "evidence.json").write_text(
             json.dumps(evidence, indent=2) + "\n", encoding="utf-8"
         )

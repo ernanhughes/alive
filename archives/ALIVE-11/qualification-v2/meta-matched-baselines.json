@@ -1,0 +1,69 @@
+{
+  "kind": "native pipeline, three matched relevant excerpts",
+  "arms": [
+    "frozen_nonadaptive",
+    "constant_analyse_when_authorised"
+  ],
+  "identical_requests_share_responses": true,
+  "independent_arm_replications": false,
+  "responses": [
+    {
+      "case": "suppressed-1",
+      "sha256": "2f82ca8db8812afdcd839308e0a841d7dc02cb0db576a50abd00df5e80482618",
+      "note_id": "13e18504-1d0d-43db-bd90-c43210ac6a87",
+      "usage": {
+        "completion_tokens": 291,
+        "prompt_tokens": 284,
+        "total_tokens": 575,
+        "completion_tokens_details": {
+          "reasoning_tokens": 174
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "estimated_usd": 0.00159175,
+      "owner_usefulness": null,
+      "quote_valid": true
+    },
+    {
+      "case": "paused-2",
+      "sha256": "8c14657c5d8aaad6ef6f44d534618d1c9958c3fffc49ca960dc9952cd89602d5",
+      "note_id": "bb394c3b-197c-44a8-8ab8-005464453529",
+      "usage": {
+        "completion_tokens": 215,
+        "prompt_tokens": 278,
+        "total_tokens": 493,
+        "completion_tokens_details": {
+          "reasoning_tokens": 115
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "estimated_usd": 0.00126125,
+      "owner_usefulness": null,
+      "quote_valid": true
+    },
+    {
+      "case": "probe-1",
+      "sha256": "d76de6d5036a7ef4eae2004f7c4ad742d8875aa717ed0bd6bc679bf3b5169976",
+      "note_id": "9c94d06d-9982-46a2-91ea-61440a2c123c",
+      "usage": {
+        "completion_tokens": 220,
+        "prompt_tokens": 286,
+        "total_tokens": 506,
+        "completion_tokens_details": {
+          "reasoning_tokens": 128
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "estimated_usd": 0.0012925,
+      "owner_usefulness": null,
+      "quote_valid": true
+    }
+  ],
+  "utility_advantage_claim": false
+}

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ALIVE-11 — Native intelligence evidence replay</title>
+<style>
+body{margin:0;background:#111820;color:#edf3f8;font:18px/1.5 system-ui}main{max-width:1250px;margin:auto;padding:24px}h1{margin:0;font-size:28px}header p{color:#acc2d2}button{font:inherit;padding:8px 18px;margin:4px;border:0;border-radius:6px;cursor:pointer;background:#b9efce;color:#13231a}button:disabled{opacity:.4;cursor:default}figure{margin:18px 0;display:flex;justify-content:center;background:#080d12;border:1px solid #455665;border-radius:8px}img{max-width:100%;height:55vh;object-fit:contain}#caption{min-height:100px}progress{width:100%;accent-color:#b9efce}a{color:#b9efce}.tag{font-size:14px;color:#f1d397}footer{font-size:14px;color:#acc2d2}
+</style>
+<main>
+<header><h1>ALIVE-11 · Observe, adapt, recover, remember</h1>
+<p>Three-minute evidence replay · genuine native Chrome screenshots · captured 27 October 2026</p>
+<p class="tag">OFFLINE STILL-IMAGE REPLAY — not live inference or continuous video. Scripted feedback exercises policy branches; owner usefulness was not measured.</p></header>
+<nav aria-label="Replay controls"><button id="prev">Previous</button><button id="play">Play 3-minute replay</button><button id="next">Next</button><span id="position"></span></nav>
+<progress id="progress" max="180" value="0" aria-label="Replay elapsed seconds"></progress>
+<h2 id="heading"></h2><p id="caption" aria-live="polite"></p>
+<figure><img id="capture" alt=""></figure>
+<p><a id="full" target="_blank" rel="noopener">Open the original full-resolution capture</a></p>
+<footer>Qualified source cb29c33 · muse-spark-1.3 · 8 calls · 4,486 tokens · estimated $0.0123425.
+Approval: 8 calls / 12,000 tokens / $0.10. No further calls are available under this campaign.
+<p>Behaviour change demonstrated; utility advantage unestablished. The synthetic adaptive comparison saved calls but missed two adequate opportunities. <a href="README.md">Evidence and limitations</a> · <a href="manifest.json">Payload hashes</a></p></footer>
+</main>
+<script>
+const scenes = [
+ ['Native Chrome, actual Meta path','The genuine docked panel runs beside the controlled authorised page. Backend identity, reviewed excerpt and exact-page grant bind the observation. This is a captured window, not a reconstructed interface.','docked-meta-browser.png'],
+ ['Observe → reason → retain','The first reviewed excerpt produces a real Meta note. Schema and exact quotation validation pass, and usage is persisted. These checks do not establish the factual correctness of every sentence.','meta-distinct-1.png'],
+ ['Independent experience changes policy','Three distinct excerpt fingerprints receive predeclared negative operator ratings. Support reaches three. These scripted interventions demonstrate policy mechanics, not measured owner dissatisfaction.','meta-distinct-3.png'],
+ ['A changed decision: pause','The feedback-conditioned controller suppresses further analysis. Repeated evidence cannot inflate support. Saving a call can also miss useful information: the controlled comparison preserved two such misses.','meta-suppressed.png'],
+ ['Recover under the Governor','An explicit correction and a designated fresh snapshot-bound probe exercise recovery. Stale probe snapshots and a zero-budget correction were rejected. Scripted useful feedback yields support four, useful rate 0.25 and policy v11.','meta-recovered.png'],
+ ['Persist → recall, without another call','Original backend restart retained five core notes and policy v11, revoked the old grant and replayed no inference. This screenshot is a separate cold-recall backup-clone follow-up: the exact useful Meta note was recalled, eight notes stayed eight, and spend was unchanged with provider disabled.','recall-only.png']
+];
+let elapsed=0,timer=null;
+const el=id=>document.getElementById(id);
+function render(){const i=Math.min(5,Math.floor(elapsed/30));const s=scenes[i];el('heading').textContent=s[0];el('caption').textContent=s[1];el('capture').src=s[2];el('full').href=s[2];el('capture').alt=s[0]+' — actual captured native Chrome evidence';el('position').textContent=` ${i+1}/6 · ${Math.floor(elapsed/60)}:${String(elapsed%60).padStart(2,'0')} / 3:00`;el('progress').value=elapsed;el('prev').disabled=i===0;el('next').disabled=i===5;}
+function pause(){clearInterval(timer);timer=null;el('play').textContent='Play 3-minute replay';}
+el('play').onclick=()=>{if(timer){pause();return;}if(elapsed>=180)elapsed=0;el('play').textContent='Pause';render();timer=setInterval(()=>{elapsed++;render();if(elapsed>=180)pause();},1000);};
+el('prev').onclick=()=>{pause();elapsed=Math.max(0,(Math.floor(elapsed/30)-1)*30);render();};
+el('next').onclick=()=>{pause();elapsed=Math.min(150,(Math.floor(elapsed/30)+1)*30);render();};
+render();
+</script>
+</html>

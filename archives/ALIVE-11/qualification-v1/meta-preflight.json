@@ -1,0 +1,10 @@
+{
+  "kind": "metadata_only_no_inference",
+  "provider_origin": "https://api.meta.ai",
+  "status": "available",
+  "pinned_model": "muse-spark-1.3",
+  "pinned_model_available": true,
+  "model_count": 9,
+  "inference_calls": 0,
+  "paid_tokens": 0
+}

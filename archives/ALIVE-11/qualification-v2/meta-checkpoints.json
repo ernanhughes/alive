@@ -1,0 +1,47 @@
+[
+  {
+    "stage": "connected",
+    "at": "2026-10-27T16:10:18.440780+00:00",
+    "runtime_instance": "e6382a98-5946-4d34-a4b6-ceb356f4351c"
+  },
+  {
+    "stage": "distinct-1",
+    "at": "2026-10-27T16:10:25.022346+00:00",
+    "runtime_instance": "e6382a98-5946-4d34-a4b6-ceb356f4351c"
+  },
+  {
+    "stage": "distinct-2",
+    "at": "2026-10-27T16:10:28.372375+00:00",
+    "runtime_instance": "e6382a98-5946-4d34-a4b6-ceb356f4351c"
+  },
+  {
+    "stage": "distinct-3",
+    "at": "2026-10-27T16:10:32.396697+00:00",
+    "runtime_instance": "e6382a98-5946-4d34-a4b6-ceb356f4351c"
+  },
+  {
+    "stage": "suppressed",
+    "at": "2026-10-27T16:10:34.534362+00:00",
+    "runtime_instance": "e6382a98-5946-4d34-a4b6-ceb356f4351c"
+  },
+  {
+    "stage": "probe_due",
+    "at": "2026-10-27T16:10:43.458320+00:00",
+    "runtime_instance": "e6382a98-5946-4d34-a4b6-ceb356f4351c"
+  },
+  {
+    "stage": "recovered",
+    "at": "2026-10-27T16:10:47.879952+00:00",
+    "runtime_instance": "e6382a98-5946-4d34-a4b6-ceb356f4351c"
+  },
+  {
+    "stage": "restarted",
+    "at": "2026-10-27T16:10:50.963506+00:00",
+    "runtime_instance": "329e5c34-9c2b-4a5e-a008-dee4c63b1b4e"
+  },
+  {
+    "stage": "finished",
+    "at": "2026-10-27T16:10:54.612492+00:00",
+    "runtime_instance": "329e5c34-9c2b-4a5e-a008-dee4c63b1b4e"
+  }
+]
