@@ -106,6 +106,7 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
       const result = await send('/browser-experience/analyse', {
         snapshot_id: selected.snapshot.id, reviewed_sha256: selected.snapshot.data.sha256,
         send_to_meta: true, allow_uncertain_analysis: !!message.allow_uncertain_analysis,
+        owner_correction: !!message.owner_correction,
       });
       await chrome.storage.session.set({ noteId: result.id });
       return result;

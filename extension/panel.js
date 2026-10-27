@@ -78,31 +78,50 @@ $('send').onclick = () => action(async () => {
   if (result.decision) {
     const action = result.decision.action;
     const relevance = result.decision.goal_relevance;
+    const adaptive = result.decision.adaptive_policy;
     const uncertain = action === 'uncertain';
+    const suppressed = action === 'no_action' && result.decision.no_action_source === 'feedback_policy';
     $('decision-label').textContent = action === 'recall'
       ? 'Recall a note you found useful · no new inference'
       : action === 'no_action'
-        ? 'No action warranted · observation does not match your goal'
+        ? suppressed
+          ? 'No action recommended by owner feedback · analyse anyway if this matters'
+          : 'No action warranted · observation does not match your goal'
         : uncertain
           ? 'Language uncertain · choose a language or explicitly analyse'
           : 'Fresh analysis recommended · no useful matching experience yet';
     $('relevance').textContent = relevance
       ? `Language: ${relevance.language} (${relevance.language_source}) · policy ${result.decision.relevance_policy || relevance.policy} · ${relevance.relevant ? 'matched' : 'no match'}${relevance.matched_terms?.length ? ' · ' + relevance.matched_terms.join(', ') : ''}. ${relevance.basis}`
       : '';
+    $('policy').textContent = adaptive
+      ? `Decision policy v${result.decision.policy_version} · support ${adaptive.support} (${adaptive.useful} useful / ${adaptive.not_useful} not useful) · ${adaptive.recommendation}. ${adaptive.reason}`
+      : '';
     $('decision').textContent = JSON.stringify({ ...result.decision,
       note: result.decision.note?.id || null, candidate_note: result.decision.candidate_note?.id || null }, null, 2);
     $('fact').textContent = `${result.snapshot.data.text_status} · SHA-256 ${result.snapshot.data.sha256}. Observed text; not verified factual truth.`;
-    $('preference').textContent = action === 'no_action'
-      ? 'No Meta call was made. Revise the goal if this page should be analysed.'
-      : uncertain
-        ? 'No Meta call was made. Confirming the page language or using Analyse anyway is an explicit override.'
-        : result.decision.feedback_id
-          ? 'Recall follows your earlier useful rating. Feedback ' + result.decision.feedback_id + '.'
-          : 'No positive matching rating. A saved note alone does not enable reuse.';
-    $('analyse').disabled = action !== 'analyse' && action !== 'uncertain';
+    $('preference').textContent = suppressed
+      ? `Owner feedback for this goal and page has support ${adaptive.support} with ${adaptive.useful} useful. No Meta call was made. Policy v${result.decision.policy_version}.`
+      : action === 'no_action'
+        ? 'No Meta call was made. Revise the goal if this page should be analysed.'
+        : uncertain
+          ? 'No Meta call was made. Confirming the page language or using Analyse anyway is an explicit override.'
+          : result.decision.feedback_id
+            ? 'Recall follows your earlier useful rating. Feedback ' + result.decision.feedback_id + '.'
+            : 'No positive matching rating. A saved note alone does not enable reuse.';
+    $('analyse').disabled = action === 'recall';
+    $('analyse').textContent = action === 'recall'
+      ? 'Exact recall in use'
+      : action === 'uncertain'
+        ? 'Analyse anyway (language override)'
+        : action === 'no_action'
+          ? 'Analyse anyway (owner correction)'
+          : 'Send reviewed excerpt to Meta';
     if (action === 'uncertain') {
       $('note').textContent = 'No model note. Choose a language or use Analyse anyway.';
       $('status').textContent = 'Language uncertain · no automatic model call';
+    } else if (suppressed) {
+      $('note').textContent = 'No model note. Owner feedback suppressed analysis; Analyse anyway is an explicit correction.';
+      $('status').textContent = 'Analysis suppressed by owner feedback';
     } else if (action === 'no_action') {
       $('note').textContent = 'No model note. No Meta call was made.';
       $('status').textContent = 'No action warranted · the observation was not analysed';
@@ -113,7 +132,10 @@ $('send').onclick = () => action(async () => {
 });
 $('analyse').onclick = () => action(async () => {
   $('analyse').disabled = true;
-  await command('analyse', { allow_uncertain_analysis: currentDecision?.action === 'uncertain' });
+  await command('analyse', {
+    allow_uncertain_analysis: currentDecision?.action === 'uncertain',
+    owner_correction: currentDecision?.action === 'no_action',
+  });
   $('status').textContent = 'One bounded Meta request running; Stop cancels it.';
   polling = setInterval(() => action(pollNote), 750);
   await pollNote();
@@ -121,7 +143,8 @@ $('analyse').onclick = () => action(async () => {
 for (const [id, useful] of [['useful', true], ['needs-work', false]]) {
   $(id).onclick = () => action(async () => {
     const feedback = await command('feedback', { useful });
-    $('preference').textContent = `${useful ? 'Reuse recommended' : 'Fresh analysis recommended'} for this exact goal, URL and excerpt. Feedback ${feedback.id}.`;
+    const data = feedback.data || {};
+    $('preference').textContent = `${useful ? 'Reuse recommended' : 'Fresh analysis recommended'}. Feedback ${feedback.id}. Policy v${data.policy_version_before ?? '?'} -> v${data.policy_version_after ?? '?'}${data.revision ? ' (revised)' : ''}.`;
     $('status').textContent = 'Feedback saved. Future choices use this experience.';
   });
 }

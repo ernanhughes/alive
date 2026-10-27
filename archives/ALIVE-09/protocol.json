@@ -1,0 +1,43 @@
+{
+  "protocol_version": "alive09-v1",
+  "policy_id": "companion-feedback-usefulness-v1",
+  "decision_context": "goal_id|url|language",
+  "minimum_feedback_support": 3,
+  "maximum_useful_rate_for_suppression": 0.20,
+  "feedback_semantics": {
+    "duplicate_same_rating": "idempotent; no policy update",
+    "different_rating": "revision replaces prior evidence in the same context; one policy update",
+    "retraction": "not separately implemented; a different rating is a revision",
+    "factual_truth": "not inferred from usefulness; exact quotation validation remains separate"
+  },
+  "owner_correction": {
+    "applies_to": ["lexical_no_action", "feedback_policy_no_action", "uncertain_language"],
+    "requirements": [
+      "explicit request flag",
+      "active exact-page grant",
+      "Governor budget and tool checks",
+      "reviewed excerpt hash"
+    ],
+    "effect": "recorded correction row; does not grant permanent permission or imply usefulness"
+  },
+  "baselines": {
+    "frozen_companion": "analyse when relevance permits and no exact useful note; no feedback suppression",
+    "adaptive_companion": "current policy with minimum support and source/margin",
+    "simple_empirical": "same counts with minimum support 1",
+    "constant_analyse": "analyse whenever relevance permits; no suppression"
+  },
+  "metrics": [
+    "decision action",
+    "policy version and hash",
+    "feedback support/useful rate",
+    "owner corrections",
+    "provider calls",
+    "exact recall preservation",
+    "restart continuity",
+    "denied/revoked attempts"
+  ],
+  "acceptance": {
+    "engineering": "feedback causally updates a persisted policy; future decision consults it; correction and idempotency are enforced",
+    "research": "no native or statistically significant advantage is required or claimed"
+  }
+}

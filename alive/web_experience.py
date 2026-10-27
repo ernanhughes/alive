@@ -1,6 +1,7 @@
 """Read-only documentation companion. Experience changes reuse, never permissions."""
 
 import asyncio
+import copy
 import hashlib
 import json
 import time
@@ -16,6 +17,7 @@ from alive.cognitive_models import CognitiveControl
 from alive.cognitive_schema import CognitiveConfiguration
 from alive.experiment.metrics import price
 from alive.experiment_budget import check_spend
+from alive.living_policy import digest as policy_digest
 from alive.models import now, record, uid
 from alive.providers import MetaProvider
 from alive.relevance import evaluate_relevance, load_relevance_config
@@ -64,6 +66,7 @@ class AnalyseRequest(Strict):
     reviewed_sha256: str
     send_to_meta: Literal[True]
     allow_uncertain_analysis: bool = False
+    owner_correction: bool = False
 
 
 class FeedbackRequest(Strict):
@@ -82,6 +85,78 @@ def digest(text):
 
 
 goal_relevance = evaluate_relevance
+
+POLICY_ID = "companion-feedback-usefulness-v1"
+POLICY_KIND = "policy"
+POLICY_MIN_SUPPORT = 3
+POLICY_MAX_USEFUL_RATE = 0.20
+
+
+def new_policy():
+    return {
+        "policy_id": POLICY_ID,
+        "version": 0,
+        "contexts": {},
+        "history": [],
+        "minimum_support": POLICY_MIN_SUPPORT,
+        "maximum_useful_rate": POLICY_MAX_USEFUL_RATE,
+    }
+
+
+def policy_key(goal_id, url, language="auto"):
+    return f"{goal_id}|{url}|{language}"
+
+
+def policy_hash(policy):
+    return policy_digest(policy)
+
+
+def policy_context(policy, key):
+    return policy.get("contexts", {}).get(key, {})
+
+
+def adaptive_recommendation(
+    policy,
+    key,
+    minimum_support=POLICY_MIN_SUPPORT,
+    maximum_useful_rate=POLICY_MAX_USEFUL_RATE,
+):
+    context = policy_context(policy, key)
+    useful = int(context.get("useful", 0))
+    not_useful = int(context.get("not_useful", 0))
+    support = useful + not_useful
+    rate = useful / support if support else None
+    version = policy.get("version", 0)
+    common = {
+        "policy_id": POLICY_ID,
+        "policy_version": version,
+        "policy_hash": policy_hash(policy),
+        "context": key,
+        "useful": useful,
+        "not_useful": not_useful,
+        "support": support,
+        "useful_rate": rate,
+        "minimum_support": minimum_support,
+        "maximum_useful_rate": maximum_useful_rate,
+    }
+    if support < minimum_support:
+        return common | {
+            "recommendation": "analyse",
+            "reason": "Insufficient owner feedback; retain the default analysis recommendation.",
+        }
+    if rate is not None and rate <= maximum_useful_rate:
+        return common | {
+            "recommendation": "no_action",
+            "reason": (
+                "Owner feedback for this goal and page is consistently not useful; "
+                "analysis is suppressed until the owner corrects it or new feedback "
+                "changes the evidence."
+            ),
+        }
+    return common | {
+        "recommendation": "analyse",
+        "reason": "Owner feedback does not support suppressing analysis for this context.",
+    }
 
 
 class WebCompanion:
@@ -115,6 +190,21 @@ class WebCompanion:
             raise KeyError("Unknown " + kind)
         return row
 
+    async def policy_row(self, session):
+        row = await session.scalar(
+            select(WebExperience)
+            .where(
+                WebExperience.instance_id == self.k.instance_id,
+                WebExperience.kind == POLICY_KIND,
+            )
+            .order_by(WebExperience.created_at.desc())
+            .limit(1)
+        )
+        if not row:
+            row = self.add(session, POLICY_KIND, new_policy())
+            await session.flush()
+        return row
+
     def add(self, session, kind, data, parent=None, status="recorded"):
         row = WebExperience(
             id=uid(),
@@ -130,6 +220,7 @@ class WebCompanion:
 
     async def initialize(self):
         async with self.k.lock, self.k.db.sessions.begin() as s:
+            await self.policy_row(s)
             for grant in await self.rows(s, "grant"):
                 if grant.status == "active":
                     grant.status = "revoked_restart"
@@ -279,6 +370,7 @@ class WebCompanion:
                 sort_keys=True,
             )
         )
+        policy = await self.policy_row(s)
         base = {
             "same_state_sha256": same_state,
             "relevance_policy": relevance["policy"],
@@ -288,6 +380,8 @@ class WebCompanion:
             "language_source": relevance["language_source"],
             "language_supported": relevance["language_supported"],
             "goal_relevance": relevance,
+            "policy_version": policy.data.get("version", 0),
+            "policy_hash": policy_hash(policy.data),
             "inference_calls": 0,
         }
         if relevance["status"] == "uncertain":
@@ -299,6 +393,7 @@ class WebCompanion:
                 "note": None,
                 "candidate_note": None,
                 "reason": relevance["uncertainty_reason"],
+                "adaptive_policy": None,
             }
         if not relevance["relevant"]:
             return base | {
@@ -310,6 +405,8 @@ class WebCompanion:
                 "candidate_note": None,
                 "reason": "Observation does not match the owner goal by deterministic "
                 "configured-token overlap; no model call made.",
+                "adaptive_policy": None,
+                "no_action_source": "lexical_relevance",
             }
         notes = [
             n
@@ -327,16 +424,47 @@ class WebCompanion:
             if ratings and ratings[-1].data["useful"]:
                 chosen, basis = note, ratings[-1]
                 break
+        key = policy_key(goal.id, snapshot.data["url"], language_requested)
+        adaptive = adaptive_recommendation(policy.data, key)
+        if chosen:
+            return base | {
+                "action": "recall",
+                "policy": "explicit-usefulness-exact-excerpt-v1",
+                "without_feedback_action": "analyse",
+                "feedback_id": basis.id,
+                "note": record(chosen),
+                "candidate_note": record(notes[-1]) if notes else None,
+                "reason": "Owner rated this exact goal and excerpt note useful; exact recall "
+                "takes precedence over adaptive suppression.",
+                "adaptive_policy": adaptive
+                | {
+                    "recommendation": "recall",
+                    "reason": "Exact validated useful note takes precedence over adaptive "
+                    "suppression.",
+                },
+            }
+        if adaptive["recommendation"] == "no_action":
+            return base | {
+                "action": "no_action",
+                "policy": POLICY_ID,
+                "without_feedback_action": "no_action",
+                "feedback_id": None,
+                "note": None,
+                "candidate_note": record(notes[-1]) if notes else None,
+                "reason": adaptive["reason"],
+                "adaptive_policy": adaptive,
+                "no_action_source": "feedback_policy",
+            }
         return base | {
-            "action": "recall" if chosen else "analyse",
+            "action": "analyse",
             "policy": "explicit-usefulness-exact-excerpt-v1",
             "without_feedback_action": "analyse",
-            "feedback_id": basis.id if basis else None,
-            "note": record(chosen) if chosen else None,
+            "feedback_id": None,
+            "note": None,
             "candidate_note": record(notes[-1]) if notes else None,
-            "reason": "Owner rated this exact goal and excerpt note useful"
-            if chosen
-            else "No positively rated matching note",
+            "reason": "No positively rated exact match; analysis is permitted and the learned "
+            "feedback policy does not recommend abstention.",
+            "adaptive_policy": adaptive,
         }
 
     async def feedback(self, data):
@@ -344,18 +472,104 @@ class WebCompanion:
             note = await self.get(s, data.note_id, "note")
             if note.status != "validated":
                 raise ValueError("Only a validated note can receive usefulness feedback")
-            row = self.add(
-                s,
-                "feedback",
+            existing = next(
+                (f for f in reversed(await self.rows(s, "feedback")) if f.parent_id == note.id),
+                None,
+            )
+            if existing and bool(existing.data.get("useful")) == data.useful:
+                result = record(existing)
+                result["idempotent"] = True
+                return result
+            policy = await self.policy_row(s)
+            before = copy.deepcopy(policy.data)
+            before_hash = policy_hash(before)
+            language = note.data.get("language_requested", "auto")
+            key = policy_key(note.data["goal_id"], note.data["url"], language)
+            after = copy.deepcopy(before)
+            context = after.setdefault("contexts", {}).setdefault(
+                key,
                 {
-                    "useful": data.useful,
-                    "source": "explicit_local_operator_feedback",
-                    "scope": "exact goal, URL and excerpt only",
+                    "goal_id": note.data["goal_id"],
+                    "url": note.data["url"],
+                    "language": language,
+                    "useful": 0,
+                    "not_useful": 0,
+                    "feedback_ids": [],
                 },
-                note.id,
+            )
+            old_useful = bool(existing.data.get("useful")) if existing else None
+            revision = existing is not None
+            if existing:
+                if old_useful:
+                    context["useful"] = max(0, context.get("useful", 0) - 1)
+                else:
+                    context["not_useful"] = max(0, context.get("not_useful", 0) - 1)
+            if data.useful:
+                context["useful"] = context.get("useful", 0) + 1
+            else:
+                context["not_useful"] = context.get("not_useful", 0) + 1
+            if existing:
+                feedback = existing
+            else:
+                feedback = self.add(
+                    s,
+                    "feedback",
+                    {
+                        "useful": data.useful,
+                        "source": "explicit_local_operator_feedback",
+                        "scope": "exact goal, URL and excerpt for recall; goal, URL and "
+                        "language for the decision policy",
+                    },
+                    note.id,
+                )
+            context["feedback_ids"] = list(
+                dict.fromkeys([*context.get("feedback_ids", []), feedback.id])
+            )[-20:]
+            context["updated_at"] = now().isoformat()
+            after["version"] = before.get("version", 0) + 1
+            after["history"] = (
+                after.get("history", [])
+                + [
+                    {
+                        "version": after["version"],
+                        "context": key,
+                        "feedback_id": feedback.id,
+                        "useful": data.useful,
+                        "revision": revision,
+                        "previous_useful": old_useful,
+                        "at": now().isoformat(),
+                    }
+                ]
+            )[-50:]
+            after_hash = policy_hash(after)
+            feedback.data = feedback.data | {
+                "useful": data.useful,
+                "context": key,
+                "revision": revision,
+                "previous_useful": old_useful,
+                "policy_version_before": before.get("version", 0),
+                "policy_version_after": after["version"],
+                "policy_hash_before": before_hash,
+                "policy_hash_after": after_hash,
+                "owner_correction": bool(note.data.get("owner_correction")),
+            }
+            policy.data = after
+            self.k.add_event(
+                s,
+                "web.policy_updated",
+                {
+                    "policy_id": POLICY_ID,
+                    "version": after["version"],
+                    "context": key,
+                    "feedback_id": feedback.id,
+                    "useful": data.useful,
+                    "revision": revision,
+                    "before": before_hash,
+                    "after": after_hash,
+                },
             )
             await s.flush()
-            return record(row)
+            return record(feedback)
 
     async def analyse(self, data):
         async with self.lock:
@@ -378,15 +592,48 @@ class WebCompanion:
                     language=language_requested,
                     config=self.relevance_config,
                 )
+                policy = await self.policy_row(s)
+                key = policy_key(goal.id, snapshot.data["url"], language_requested)
+                adaptive = adaptive_recommendation(policy.data, key)
+                correction_required = False
                 if relevance["status"] == "uncertain":
                     if not data.allow_uncertain_analysis:
                         raise ValueError(
                             "Language uncertain: choose a language or explicitly allow "
                             "uncertain analysis"
                         )
+                    correction_required = True
                 elif not relevance["relevant"]:
-                    raise ValueError(
-                        "No action warranted: observation does not match the owner goal"
+                    correction_required = True
+                    if not data.owner_correction:
+                        raise ValueError(
+                            "No action warranted: observation does not match the owner goal; "
+                            "explicit owner correction is required"
+                        )
+                elif adaptive["recommendation"] == "no_action":
+                    correction_required = True
+                    if not data.owner_correction:
+                        raise ValueError(
+                            "Analysis suppressed by prior owner feedback; explicit owner "
+                            "correction is required"
+                        )
+                if correction_required:
+                    self.add(
+                        s,
+                        "correction",
+                        {
+                            "snapshot_id": snapshot.id,
+                            "prior_action": "uncertain"
+                            if relevance["status"] == "uncertain"
+                            else "no_action",
+                            "relevance_status": relevance["status"],
+                            "adaptive_policy": adaptive,
+                            "policy_version": policy.data.get("version", 0),
+                            "policy_hash": policy_hash(policy.data),
+                            "reason": "owner_requested_analysis",
+                            "at": now().isoformat(),
+                        },
+                        snapshot.id,
                     )
                 control = await s.get(CognitiveControl, self.k.instance_id)
                 cfg = CognitiveConfiguration.model_validate(control.configuration)
@@ -398,6 +645,7 @@ class WebCompanion:
                     "language_requested": language_requested,
                     "language": relevance["language"],
                     "language_uncertainty": relevance["status"] == "uncertain",
+                    "owner_correction": correction_required,
                 }
                 reserve = (
                     len(
@@ -435,6 +683,10 @@ class WebCompanion:
                         "goal_relevance": relevance,
                         "language_requested": language_requested,
                         "language_override": relevance["status"] == "uncertain",
+                        "owner_correction": correction_required,
+                        "adaptive_policy": adaptive,
+                        "policy_version": policy.data.get("version", 0),
+                        "policy_hash": policy_hash(policy.data),
                         "context": context,
                         "instructions": INSTRUCTION,
                         "started_at": now().isoformat(),
@@ -504,10 +756,13 @@ def router(app, ready):
     async def status():
         web = app.state.web
         async with web.k.db.sessions() as s:
+            policy = await web.policy_row(s)
             return {
                 "allowed_pages": sorted(PAGES),
                 "active": web.active,
                 "goals": [record(r) for r in await web.rows(s, "goal")],
+                "policy": record(policy),
+                "corrections": [record(r) for r in await web.rows(s, "correction")],
             }
 
     @api.post("/goals")

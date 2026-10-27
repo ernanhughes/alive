@@ -1,0 +1,44 @@
+{
+  "policy_id": "companion-feedback-usefulness-v1",
+  "minimum_support": 3,
+  "maximum_useful_rate": 0.2,
+  "cases": [
+    {
+      "case": "three_negative_then_useless",
+      "support": 3,
+      "adaptive": "no_action",
+      "simple_one_negative": "no_action",
+      "frozen_companion": "analyse",
+      "constant_analyse": "analyse",
+      "note": "Controlled policy replay; not native browser evidence."
+    },
+    {
+      "case": "three_negative_then_useful",
+      "support": 3,
+      "adaptive": "no_action",
+      "simple_one_negative": "no_action",
+      "frozen_companion": "analyse",
+      "constant_analyse": "analyse",
+      "note": "Controlled policy replay; not native browser evidence."
+    },
+    {
+      "case": "one_negative_then_useless",
+      "support": 1,
+      "adaptive": "analyse",
+      "simple_one_negative": "no_action",
+      "frozen_companion": "analyse",
+      "constant_analyse": "analyse",
+      "note": "Controlled policy replay; not native browser evidence."
+    },
+    {
+      "case": "positive_three",
+      "support": 3,
+      "adaptive": "analyse",
+      "simple_one_negative": "analyse",
+      "frozen_companion": "analyse",
+      "constant_analyse": "analyse",
+      "note": "Controlled policy replay; not native browser evidence."
+    }
+  ],
+  "caveat": "The replay compares decisions only. A suppressed analysis could have been useful; owner correction is required. No native outcome data is implied."
+}

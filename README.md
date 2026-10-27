@@ -29,6 +29,15 @@ stateless and fixed policies. Correct history beats no/shuffled history, but the
 did **not** show an advantage over the flat control. The negative result is preserved in the
 [ALIVE-08 report](docs/ALIVE-08.md) and its [evidence archive](archives/ALIVE-08/README.md).
 
+**ALIVE-09 connects feedback to future companion decisions.** A completed owner rating now updates a
+persisted, versioned usefulness policy for the exact goal, page and language. After three independent
+ratings showing at most 20% usefulness, the companion recommends no action and makes no Meta call;
+the owner can explicitly correct that abstention through the existing grant and Governor. Useful
+feedback can restore analysis. Exact useful-note recall still takes precedence. The evidence is a
+controlled companion API sequence with a synthetic provider, not native Chrome or Meta inference.
+See [the ALIVE-09 report](docs/ALIVE-09.md) and its
+[evidence archive](archives/ALIVE-09/README.md).
+
 ALIVE-01 is a working vertical slice: FastAPI + PostgreSQL/pgvector + ZeroMQ + React dashboard + managed Chrome + Manifest V3 extension + Pi RPC. Deterministic policies drive curiosity, coherence and commitment. They do not require recurring model calls or claim to be reinforcement learning.
 
 **ALIVE-02 adds a bounded autonomous cognitive loop.** Authorised browser changes compete for attention; structured Meta Observer/Proposer/Critic roles cooperate while a deterministic Investigator, Evaluator and Governor control evidence, permissions and budgets. Real ONNX embeddings, hybrid retrieval, human action approval, persistent experience and restart recovery are implemented. Open **Cognition** in the existing observatory to inspect real traces. Autonomy starts stopped and recovers paused.

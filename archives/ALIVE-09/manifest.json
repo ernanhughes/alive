@@ -1,0 +1,74 @@
+{
+  "evidence_kind": "controlled companion feedback-to-policy and owner-correction evidence",
+  "branch": "opencode/alive-09-living-research-companion",
+  "base_commit": "0ff4748d2186c7344d635fffaba25f159589fb71",
+  "feature_commit": "6aea954",
+  "protocol_sha256": "5f3f28b344073d1e61d17411ec133bc44d5071c22824ac26a00c7786ccc3aef9",
+  "policy": "companion-feedback-usefulness-v1",
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "evidence/baseline-replay.json": {
+      "sha256": "bbd64751b882e76f931f9692a8bd0dd23e4bbf1834aeca3856e8c626a024fbc6",
+      "bytes": 1493
+    },
+    "evidence/controlled-loop.json": {
+      "sha256": "2a6d144e359e9a1921068bc0824cfe495b884ee81c9eb571a99adf5144265c1e",
+      "bytes": 26391
+    },
+    "evidence/model-usage.json": {
+      "sha256": "dc05d7ed1e1325ec5aa5abfc1d80f0edabab64bfd7a58dd9b0bdf5f69cc75738",
+      "bytes": 228
+    },
+    "evidence/native-status.json": {
+      "sha256": "022daeeb1f1eb365b7c616cd58d92090a7bb4a07edfe4e8264899047da950d2c",
+      "bytes": 457
+    },
+    "evidence/prior-archive-integrity.json": {
+      "sha256": "440ad777fe932dfc3b8c7b036d1d2505ef900916ec3d3e027cd14113b91a77e3",
+      "bytes": 973
+    },
+    "evidence/restart-proof.json": {
+      "sha256": "d88022d9589709552350b182b7aa484194bcd049cee8b7a54535eaf870eaf477",
+      "bytes": 821
+    },
+    "protocol.json": {
+      "sha256": "5f3f28b344073d1e61d17411ec133bc44d5071c22824ac26a00c7786ccc3aef9",
+      "bytes": 1816
+    },
+    "README.md": {
+      "sha256": "0f44c74d26111d5d2c460d5d7093ec88c32491a6c4f02cc02b6b8f8d523b8f0c",
+      "bytes": 5650
+    },
+    "validation/backend.txt": {
+      "sha256": "6f16e5132d26d8bf70a6bd55bb2717489763a4336ed59313df5768c3e1671c13",
+      "bytes": 1106
+    },
+    "validation/companion-focused.txt": {
+      "sha256": "4be0d15d501bcabf01b9835446ba8759c8842158e7cab98f21e9ddcab1216f7e",
+      "bytes": 722
+    },
+    "validation/extension-js.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "validation/frontend-build.txt": {
+      "sha256": "26eacc08c542e88f3ef1459f8a9b90190ccb96f7e18d179d9bd568b61b8cac03",
+      "bytes": 464
+    },
+    "validation/frontend-tests.txt": {
+      "sha256": "f566ed562bdf170216397d56bf88aa340c98ac4085b8a68ac2df8f4466997714",
+      "bytes": 319
+    },
+    "validation/ruff.txt": {
+      "sha256": "22bb47bffe330f76798bb567c73b8a9a52a7719982748e8eb5d6d6fe28e1fc24",
+      "bytes": 48
+    },
+    "validation/whitespace.txt": {
+      "sha256": "b5cd2d61705ed6252e0b08397126975d2817e9249934a7dbe885a2c5c5aa0822",
+      "bytes": 465
+    }
+  }
+}

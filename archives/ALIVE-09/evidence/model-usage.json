@@ -1,0 +1,8 @@
+{
+  "provider_calls": 0,
+  "prompt_tokens": 0,
+  "completion_tokens": 0,
+  "total_tokens": 0,
+  "estimated_usd": 0.0,
+  "note": "The evidence script uses a synthetic local provider; no Meta provider request was made."
+}

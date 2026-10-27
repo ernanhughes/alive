@@ -1,0 +1,634 @@
+{
+  "provenance": {
+    "kind": "controlled companion API sequence",
+    "native_chrome": false,
+    "meta_inference": false,
+    "paid_calls": 0,
+    "provider": "synthetic local adapter",
+    "note": "Real ALIVE companion API and SQLite persistence; no browser or Meta request."
+  },
+  "goal_id": "1f35aa35-6221-46d1-b14e-377b41499342",
+  "decisions": [
+    {
+      "same_state_sha256": "655bf9294d23e3b49da64bb7d19fd743c60bd1976b32c550969565dc9bce82aa",
+      "relevance_policy": "deterministic-multilingual-relevance-v2",
+      "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+      "language_requested": "auto",
+      "language": "en",
+      "language_source": "detected",
+      "language_supported": true,
+      "goal_relevance": {
+        "policy": "deterministic-multilingual-relevance-v2",
+        "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+        "language_requested": "auto",
+        "language": "en",
+        "language_source": "detected",
+        "language_supported": true,
+        "goal_language": "en",
+        "goal_language_source": "detected",
+        "script_ratios": {
+          "latin": 1.0,
+          "han": 0.0,
+          "arabic": 0.0,
+          "cyrillic": 0.0,
+          "devanagari": 0.0
+        },
+        "status": "supported",
+        "relevant": true,
+        "matched_terms": [
+          "python"
+        ],
+        "strategy": "words",
+        "normalization": "nfkc_casefold",
+        "basis": "Exact content-token overlap after configured normalization; no semantic or model inference.",
+        "uncertainty_reason": null,
+        "goal_term_count": 4,
+        "excerpt_term_count": 9
+      },
+      "policy_version": 0,
+      "policy_hash": "a12aaf89161bc0944d3b423060f940016e971570ff9245836f9678cb6e62de4c",
+      "inference_calls": 0,
+      "action": "analyse",
+      "policy": "explicit-usefulness-exact-excerpt-v1",
+      "without_feedback_action": "analyse",
+      "feedback_id": null,
+      "note": null,
+      "candidate_note": null,
+      "reason": "No positively rated exact match; analysis is permitted and the learned feedback policy does not recommend abstention.",
+      "adaptive_policy": {
+        "policy_id": "companion-feedback-usefulness-v1",
+        "policy_version": 0,
+        "policy_hash": "a12aaf89161bc0944d3b423060f940016e971570ff9245836f9678cb6e62de4c",
+        "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+        "useful": 0,
+        "not_useful": 0,
+        "support": 0,
+        "useful_rate": null,
+        "minimum_support": 3,
+        "maximum_useful_rate": 0.2,
+        "recommendation": "analyse",
+        "reason": "Insufficient owner feedback; retain the default analysis recommendation."
+      }
+    },
+    {
+      "same_state_sha256": "043e5f92797c8087c8f6d584a1d3bcea3404b5ee63ccc4af89d71a4651ff6ae5",
+      "relevance_policy": "deterministic-multilingual-relevance-v2",
+      "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+      "language_requested": "auto",
+      "language": "en",
+      "language_source": "detected",
+      "language_supported": true,
+      "goal_relevance": {
+        "policy": "deterministic-multilingual-relevance-v2",
+        "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+        "language_requested": "auto",
+        "language": "en",
+        "language_source": "detected",
+        "language_supported": true,
+        "goal_language": "en",
+        "goal_language_source": "detected",
+        "script_ratios": {
+          "latin": 1.0,
+          "han": 0.0,
+          "arabic": 0.0,
+          "cyrillic": 0.0,
+          "devanagari": 0.0
+        },
+        "status": "supported",
+        "relevant": true,
+        "matched_terms": [
+          "python"
+        ],
+        "strategy": "words",
+        "normalization": "nfkc_casefold",
+        "basis": "Exact content-token overlap after configured normalization; no semantic or model inference.",
+        "uncertainty_reason": null,
+        "goal_term_count": 4,
+        "excerpt_term_count": 9
+      },
+      "policy_version": 1,
+      "policy_hash": "202d6d539e8286ef0a10c47241ef70b0078e53fd6fc0d21c5cf4b70155057552",
+      "inference_calls": 0,
+      "action": "analyse",
+      "policy": "explicit-usefulness-exact-excerpt-v1",
+      "without_feedback_action": "analyse",
+      "feedback_id": null,
+      "note": null,
+      "candidate_note": null,
+      "reason": "No positively rated exact match; analysis is permitted and the learned feedback policy does not recommend abstention.",
+      "adaptive_policy": {
+        "policy_id": "companion-feedback-usefulness-v1",
+        "policy_version": 1,
+        "policy_hash": "202d6d539e8286ef0a10c47241ef70b0078e53fd6fc0d21c5cf4b70155057552",
+        "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+        "useful": 0,
+        "not_useful": 1,
+        "support": 1,
+        "useful_rate": 0.0,
+        "minimum_support": 3,
+        "maximum_useful_rate": 0.2,
+        "recommendation": "analyse",
+        "reason": "Insufficient owner feedback; retain the default analysis recommendation."
+      }
+    },
+    {
+      "same_state_sha256": "d74e4fa66f92c1c0b5db7bb8730084e20d70e6dc698c51b2874aa24204b8076e",
+      "relevance_policy": "deterministic-multilingual-relevance-v2",
+      "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+      "language_requested": "auto",
+      "language": "en",
+      "language_source": "detected",
+      "language_supported": true,
+      "goal_relevance": {
+        "policy": "deterministic-multilingual-relevance-v2",
+        "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+        "language_requested": "auto",
+        "language": "en",
+        "language_source": "detected",
+        "language_supported": true,
+        "goal_language": "en",
+        "goal_language_source": "detected",
+        "script_ratios": {
+          "latin": 1.0,
+          "han": 0.0,
+          "arabic": 0.0,
+          "cyrillic": 0.0,
+          "devanagari": 0.0
+        },
+        "status": "supported",
+        "relevant": true,
+        "matched_terms": [
+          "python"
+        ],
+        "strategy": "words",
+        "normalization": "nfkc_casefold",
+        "basis": "Exact content-token overlap after configured normalization; no semantic or model inference.",
+        "uncertainty_reason": null,
+        "goal_term_count": 4,
+        "excerpt_term_count": 9
+      },
+      "policy_version": 2,
+      "policy_hash": "2cf5baf5eabb73e0f43702f076c06478eab8302d071cd94765982e3509274e1e",
+      "inference_calls": 0,
+      "action": "analyse",
+      "policy": "explicit-usefulness-exact-excerpt-v1",
+      "without_feedback_action": "analyse",
+      "feedback_id": null,
+      "note": null,
+      "candidate_note": null,
+      "reason": "No positively rated exact match; analysis is permitted and the learned feedback policy does not recommend abstention.",
+      "adaptive_policy": {
+        "policy_id": "companion-feedback-usefulness-v1",
+        "policy_version": 2,
+        "policy_hash": "2cf5baf5eabb73e0f43702f076c06478eab8302d071cd94765982e3509274e1e",
+        "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+        "useful": 0,
+        "not_useful": 2,
+        "support": 2,
+        "useful_rate": 0.0,
+        "minimum_support": 3,
+        "maximum_useful_rate": 0.2,
+        "recommendation": "analyse",
+        "reason": "Insufficient owner feedback; retain the default analysis recommendation."
+      }
+    }
+  ],
+  "feedback": [
+    {
+      "id": "f6081fe3-1941-4e65-a503-625ed91dc66d",
+      "instance_id": "dd8dad89-f476-4d25-8070-35058fc7715f",
+      "kind": "feedback",
+      "parent_id": "0b5a7fed-d2c2-477d-a81f-4fa32b2dab4a",
+      "status": "recorded",
+      "data": {
+        "useful": false,
+        "source": "explicit_local_operator_feedback",
+        "scope": "exact goal, URL and excerpt for recall; goal, URL and language for the decision policy",
+        "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+        "revision": false,
+        "previous_useful": null,
+        "policy_version_before": 0,
+        "policy_version_after": 1,
+        "policy_hash_before": "a12aaf89161bc0944d3b423060f940016e971570ff9245836f9678cb6e62de4c",
+        "policy_hash_after": "202d6d539e8286ef0a10c47241ef70b0078e53fd6fc0d21c5cf4b70155057552",
+        "owner_correction": false
+      },
+      "created_at": "2026-10-27T12:23:34.764639+00:00"
+    },
+    {
+      "id": "fd5208f0-9c70-48ee-aba0-e3bdc6c05316",
+      "instance_id": "dd8dad89-f476-4d25-8070-35058fc7715f",
+      "kind": "feedback",
+      "parent_id": "30d6d705-da44-4ea4-8cb4-ac17ce1e5dc2",
+      "status": "recorded",
+      "data": {
+        "useful": false,
+        "source": "explicit_local_operator_feedback",
+        "scope": "exact goal, URL and excerpt for recall; goal, URL and language for the decision policy",
+        "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+        "revision": false,
+        "previous_useful": null,
+        "policy_version_before": 1,
+        "policy_version_after": 2,
+        "policy_hash_before": "202d6d539e8286ef0a10c47241ef70b0078e53fd6fc0d21c5cf4b70155057552",
+        "policy_hash_after": "2cf5baf5eabb73e0f43702f076c06478eab8302d071cd94765982e3509274e1e",
+        "owner_correction": false
+      },
+      "created_at": "2026-10-27T12:23:34.822365+00:00"
+    },
+    {
+      "id": "e644f426-932a-46b0-87a8-c92b8b1ecb07",
+      "instance_id": "dd8dad89-f476-4d25-8070-35058fc7715f",
+      "kind": "feedback",
+      "parent_id": "f1353844-f4c2-4835-a718-7918b0369d2f",
+      "status": "recorded",
+      "data": {
+        "useful": false,
+        "source": "explicit_local_operator_feedback",
+        "scope": "exact goal, URL and excerpt for recall; goal, URL and language for the decision policy",
+        "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+        "revision": false,
+        "previous_useful": null,
+        "policy_version_before": 2,
+        "policy_version_after": 3,
+        "policy_hash_before": "2cf5baf5eabb73e0f43702f076c06478eab8302d071cd94765982e3509274e1e",
+        "policy_hash_after": "f8306e441a111d95de36cf6988ed7f5a74611af2844a6e4ae6c1b1e13ff0de5c",
+        "owner_correction": false
+      },
+      "created_at": "2026-10-27T12:23:34.878795+00:00"
+    }
+  ],
+  "suppressed_decision": {
+    "same_state_sha256": "417968d37c6486aecce868fde97a74b113fa299a1f10bfd5bdd7225701050686",
+    "relevance_policy": "deterministic-multilingual-relevance-v2",
+    "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+    "language_requested": "auto",
+    "language": "en",
+    "language_source": "detected",
+    "language_supported": true,
+    "goal_relevance": {
+      "policy": "deterministic-multilingual-relevance-v2",
+      "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+      "language_requested": "auto",
+      "language": "en",
+      "language_source": "detected",
+      "language_supported": true,
+      "goal_language": "en",
+      "goal_language_source": "detected",
+      "script_ratios": {
+        "latin": 1.0,
+        "han": 0.0,
+        "arabic": 0.0,
+        "cyrillic": 0.0,
+        "devanagari": 0.0
+      },
+      "status": "supported",
+      "relevant": true,
+      "matched_terms": [
+        "python"
+      ],
+      "strategy": "words",
+      "normalization": "nfkc_casefold",
+      "basis": "Exact content-token overlap after configured normalization; no semantic or model inference.",
+      "uncertainty_reason": null,
+      "goal_term_count": 4,
+      "excerpt_term_count": 9
+    },
+    "policy_version": 3,
+    "policy_hash": "f8306e441a111d95de36cf6988ed7f5a74611af2844a6e4ae6c1b1e13ff0de5c",
+    "inference_calls": 0,
+    "action": "no_action",
+    "policy": "companion-feedback-usefulness-v1",
+    "without_feedback_action": "no_action",
+    "feedback_id": null,
+    "note": null,
+    "candidate_note": null,
+    "reason": "Owner feedback for this goal and page is consistently not useful; analysis is suppressed until the owner corrects it or new feedback changes the evidence.",
+    "adaptive_policy": {
+      "policy_id": "companion-feedback-usefulness-v1",
+      "policy_version": 3,
+      "policy_hash": "f8306e441a111d95de36cf6988ed7f5a74611af2844a6e4ae6c1b1e13ff0de5c",
+      "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+      "useful": 0,
+      "not_useful": 3,
+      "support": 3,
+      "useful_rate": 0.0,
+      "minimum_support": 3,
+      "maximum_useful_rate": 0.2,
+      "recommendation": "no_action",
+      "reason": "Owner feedback for this goal and page is consistently not useful; analysis is suppressed until the owner corrects it or new feedback changes the evidence."
+    },
+    "no_action_source": "feedback_policy"
+  },
+  "owner_correction": {
+    "snapshot_id": "0e41d92d-45f8-4f7b-a979-f69faad2c7c0",
+    "note_id": "be468886-ecf5-41fb-8844-a2404b968055",
+    "owner_correction": true,
+    "correction_rows": [
+      {
+        "id": "8f0b9def-991d-4977-a192-c38b0cf53a63",
+        "instance_id": "dd8dad89-f476-4d25-8070-35058fc7715f",
+        "kind": "correction",
+        "parent_id": "0e41d92d-45f8-4f7b-a979-f69faad2c7c0",
+        "status": "recorded",
+        "data": {
+          "snapshot_id": "0e41d92d-45f8-4f7b-a979-f69faad2c7c0",
+          "prior_action": "no_action",
+          "relevance_status": "supported",
+          "adaptive_policy": {
+            "policy_id": "companion-feedback-usefulness-v1",
+            "policy_version": 3,
+            "policy_hash": "f8306e441a111d95de36cf6988ed7f5a74611af2844a6e4ae6c1b1e13ff0de5c",
+            "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+            "useful": 0,
+            "not_useful": 3,
+            "support": 3,
+            "useful_rate": 0.0,
+            "minimum_support": 3,
+            "maximum_useful_rate": 0.2,
+            "recommendation": "no_action",
+            "reason": "Owner feedback for this goal and page is consistently not useful; analysis is suppressed until the owner corrects it or new feedback changes the evidence."
+          },
+          "policy_version": 3,
+          "policy_hash": "f8306e441a111d95de36cf6988ed7f5a74611af2844a6e4ae6c1b1e13ff0de5c",
+          "reason": "owner_requested_analysis",
+          "at": "2026-10-27T12:23:34.927720+00:00"
+        },
+        "created_at": "2026-10-27T12:23:34.928311"
+      }
+    ],
+    "feedback": {
+      "id": "ecd922e0-b10e-4d68-90cc-1f368405d95d",
+      "instance_id": "dd8dad89-f476-4d25-8070-35058fc7715f",
+      "kind": "feedback",
+      "parent_id": "be468886-ecf5-41fb-8844-a2404b968055",
+      "status": "recorded",
+      "data": {
+        "useful": true,
+        "source": "explicit_local_operator_feedback",
+        "scope": "exact goal, URL and excerpt for recall; goal, URL and language for the decision policy",
+        "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+        "revision": false,
+        "previous_useful": null,
+        "policy_version_before": 3,
+        "policy_version_after": 4,
+        "policy_hash_before": "f8306e441a111d95de36cf6988ed7f5a74611af2844a6e4ae6c1b1e13ff0de5c",
+        "policy_hash_after": "2187c01b1c1e62e3864abf8ce12ff9611de25bd5b5864a2f0e0860ceb3c2561b",
+        "owner_correction": true
+      },
+      "created_at": "2026-10-27T12:23:34.966060+00:00"
+    }
+  },
+  "restored_decision": {
+    "same_state_sha256": "a8fbf6c4a5dc4d92fc476783e120317da2240c0abbd30eb8f295e66e9c4cb6be",
+    "relevance_policy": "deterministic-multilingual-relevance-v2",
+    "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+    "language_requested": "auto",
+    "language": "en",
+    "language_source": "detected",
+    "language_supported": true,
+    "goal_relevance": {
+      "policy": "deterministic-multilingual-relevance-v2",
+      "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+      "language_requested": "auto",
+      "language": "en",
+      "language_source": "detected",
+      "language_supported": true,
+      "goal_language": "en",
+      "goal_language_source": "detected",
+      "script_ratios": {
+        "latin": 1.0,
+        "han": 0.0,
+        "arabic": 0.0,
+        "cyrillic": 0.0,
+        "devanagari": 0.0
+      },
+      "status": "supported",
+      "relevant": true,
+      "matched_terms": [
+        "python"
+      ],
+      "strategy": "words",
+      "normalization": "nfkc_casefold",
+      "basis": "Exact content-token overlap after configured normalization; no semantic or model inference.",
+      "uncertainty_reason": null,
+      "goal_term_count": 4,
+      "excerpt_term_count": 9
+    },
+    "policy_version": 4,
+    "policy_hash": "2187c01b1c1e62e3864abf8ce12ff9611de25bd5b5864a2f0e0860ceb3c2561b",
+    "inference_calls": 0,
+    "action": "analyse",
+    "policy": "explicit-usefulness-exact-excerpt-v1",
+    "without_feedback_action": "analyse",
+    "feedback_id": null,
+    "note": null,
+    "candidate_note": null,
+    "reason": "No positively rated exact match; analysis is permitted and the learned feedback policy does not recommend abstention.",
+    "adaptive_policy": {
+      "policy_id": "companion-feedback-usefulness-v1",
+      "policy_version": 4,
+      "policy_hash": "2187c01b1c1e62e3864abf8ce12ff9611de25bd5b5864a2f0e0860ceb3c2561b",
+      "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+      "useful": 1,
+      "not_useful": 3,
+      "support": 4,
+      "useful_rate": 0.25,
+      "minimum_support": 3,
+      "maximum_useful_rate": 0.2,
+      "recommendation": "analyse",
+      "reason": "Owner feedback does not support suppressing analysis for this context."
+    }
+  },
+  "policy": {
+    "policy_id": "companion-feedback-usefulness-v1",
+    "version": 6,
+    "contexts": {
+      "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto": {
+        "goal_id": "1f35aa35-6221-46d1-b14e-377b41499342",
+        "url": "https://docs.python.org/3/tutorial/",
+        "language": "auto",
+        "useful": 1,
+        "not_useful": 3,
+        "feedback_ids": [
+          "f6081fe3-1941-4e65-a503-625ed91dc66d",
+          "fd5208f0-9c70-48ee-aba0-e3bdc6c05316",
+          "e644f426-932a-46b0-87a8-c92b8b1ecb07",
+          "ecd922e0-b10e-4d68-90cc-1f368405d95d"
+        ],
+        "updated_at": "2026-10-27T12:23:34.965047+00:00"
+      },
+      "3acba5ec-ac85-44b5-a7ad-845e8d805b47|https://docs.python.org/3/tutorial/|auto": {
+        "goal_id": "3acba5ec-ac85-44b5-a7ad-845e8d805b47",
+        "url": "https://docs.python.org/3/tutorial/",
+        "language": "auto",
+        "useful": 0,
+        "not_useful": 1,
+        "feedback_ids": [
+          "ca6634b2-e242-4b1f-8368-b66dadd8d190"
+        ],
+        "updated_at": "2026-10-27T12:23:35.052927+00:00"
+      }
+    },
+    "history": [
+      {
+        "version": 1,
+        "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+        "feedback_id": "f6081fe3-1941-4e65-a503-625ed91dc66d",
+        "useful": false,
+        "revision": false,
+        "previous_useful": null,
+        "at": "2026-10-27T12:23:34.762617+00:00"
+      },
+      {
+        "version": 2,
+        "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+        "feedback_id": "fd5208f0-9c70-48ee-aba0-e3bdc6c05316",
+        "useful": false,
+        "revision": false,
+        "previous_useful": null,
+        "at": "2026-10-27T12:23:34.820230+00:00"
+      },
+      {
+        "version": 3,
+        "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+        "feedback_id": "e644f426-932a-46b0-87a8-c92b8b1ecb07",
+        "useful": false,
+        "revision": false,
+        "previous_useful": null,
+        "at": "2026-10-27T12:23:34.877786+00:00"
+      },
+      {
+        "version": 4,
+        "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+        "feedback_id": "ecd922e0-b10e-4d68-90cc-1f368405d95d",
+        "useful": true,
+        "revision": false,
+        "previous_useful": null,
+        "at": "2026-10-27T12:23:34.965052+00:00"
+      },
+      {
+        "version": 5,
+        "context": "3acba5ec-ac85-44b5-a7ad-845e8d805b47|https://docs.python.org/3/tutorial/|auto",
+        "feedback_id": "ca6634b2-e242-4b1f-8368-b66dadd8d190",
+        "useful": true,
+        "revision": false,
+        "previous_useful": null,
+        "at": "2026-10-27T12:23:35.042559+00:00"
+      },
+      {
+        "version": 6,
+        "context": "3acba5ec-ac85-44b5-a7ad-845e8d805b47|https://docs.python.org/3/tutorial/|auto",
+        "feedback_id": "ca6634b2-e242-4b1f-8368-b66dadd8d190",
+        "useful": false,
+        "revision": true,
+        "previous_useful": true,
+        "at": "2026-10-27T12:23:35.052932+00:00"
+      }
+    ],
+    "minimum_support": 3,
+    "maximum_useful_rate": 0.2
+  },
+  "policy_contexts": {
+    "before_correction": {
+      "policy_id": "companion-feedback-usefulness-v1",
+      "policy_version": 3,
+      "policy_hash": "f8306e441a111d95de36cf6988ed7f5a74611af2844a6e4ae6c1b1e13ff0de5c",
+      "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+      "useful": 0,
+      "not_useful": 3,
+      "support": 3,
+      "useful_rate": 0.0,
+      "minimum_support": 3,
+      "maximum_useful_rate": 0.2,
+      "recommendation": "no_action",
+      "reason": "Owner feedback for this goal and page is consistently not useful; analysis is suppressed until the owner corrects it or new feedback changes the evidence."
+    },
+    "after_useful_correction": {
+      "policy_id": "companion-feedback-usefulness-v1",
+      "policy_version": 4,
+      "policy_hash": "2187c01b1c1e62e3864abf8ce12ff9611de25bd5b5864a2f0e0860ceb3c2561b",
+      "context": "1f35aa35-6221-46d1-b14e-377b41499342|https://docs.python.org/3/tutorial/|auto",
+      "useful": 1,
+      "not_useful": 3,
+      "support": 4,
+      "useful_rate": 0.25,
+      "minimum_support": 3,
+      "maximum_useful_rate": 0.2,
+      "recommendation": "analyse",
+      "reason": "Owner feedback does not support suppressing analysis for this context."
+    }
+  },
+  "idempotency": {
+    "first": {
+      "id": "ca6634b2-e242-4b1f-8368-b66dadd8d190",
+      "instance_id": "dd8dad89-f476-4d25-8070-35058fc7715f",
+      "kind": "feedback",
+      "parent_id": "b19244b2-83ca-47d4-bb62-a99e269687c8",
+      "status": "recorded",
+      "data": {
+        "useful": true,
+        "source": "explicit_local_operator_feedback",
+        "scope": "exact goal, URL and excerpt for recall; goal, URL and language for the decision policy",
+        "context": "3acba5ec-ac85-44b5-a7ad-845e8d805b47|https://docs.python.org/3/tutorial/|auto",
+        "revision": false,
+        "previous_useful": null,
+        "policy_version_before": 4,
+        "policy_version_after": 5,
+        "policy_hash_before": "2187c01b1c1e62e3864abf8ce12ff9611de25bd5b5864a2f0e0860ceb3c2561b",
+        "policy_hash_after": "4e087c2054ecc6a32ffce2a41fba7294176c2a8c153bd11294f33e138244a72d",
+        "owner_correction": false
+      },
+      "created_at": "2026-10-27T12:23:35.043728+00:00"
+    },
+    "duplicate": {
+      "id": "ca6634b2-e242-4b1f-8368-b66dadd8d190",
+      "instance_id": "dd8dad89-f476-4d25-8070-35058fc7715f",
+      "kind": "feedback",
+      "parent_id": "b19244b2-83ca-47d4-bb62-a99e269687c8",
+      "status": "recorded",
+      "data": {
+        "useful": true,
+        "source": "explicit_local_operator_feedback",
+        "scope": "exact goal, URL and excerpt for recall; goal, URL and language for the decision policy",
+        "context": "3acba5ec-ac85-44b5-a7ad-845e8d805b47|https://docs.python.org/3/tutorial/|auto",
+        "revision": false,
+        "previous_useful": null,
+        "policy_version_before": 4,
+        "policy_version_after": 5,
+        "policy_hash_before": "2187c01b1c1e62e3864abf8ce12ff9611de25bd5b5864a2f0e0860ceb3c2561b",
+        "policy_hash_after": "4e087c2054ecc6a32ffce2a41fba7294176c2a8c153bd11294f33e138244a72d",
+        "owner_correction": false
+      },
+      "created_at": "2026-10-27T12:23:35.043728",
+      "idempotent": true
+    },
+    "revision": {
+      "id": "ca6634b2-e242-4b1f-8368-b66dadd8d190",
+      "instance_id": "dd8dad89-f476-4d25-8070-35058fc7715f",
+      "kind": "feedback",
+      "parent_id": "b19244b2-83ca-47d4-bb62-a99e269687c8",
+      "status": "recorded",
+      "data": {
+        "useful": false,
+        "source": "explicit_local_operator_feedback",
+        "scope": "exact goal, URL and excerpt for recall; goal, URL and language for the decision policy",
+        "context": "3acba5ec-ac85-44b5-a7ad-845e8d805b47|https://docs.python.org/3/tutorial/|auto",
+        "revision": true,
+        "previous_useful": true,
+        "policy_version_before": 5,
+        "policy_version_after": 6,
+        "policy_hash_before": "4e087c2054ecc6a32ffce2a41fba7294176c2a8c153bd11294f33e138244a72d",
+        "policy_hash_after": "0200e9ed133400ae8c1066dac3707582a3d7ab1ffaa3210cdd95905a96235501",
+        "owner_correction": false
+      },
+      "created_at": "2026-10-27T12:23:35.043728"
+    }
+  },
+  "counts": {
+    "provider_calls": 5,
+    "final_useful_feedback": 1,
+    "final_not_useful_feedback": 4,
+    "owner_corrections": 1
+  }
+}

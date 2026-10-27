@@ -1,0 +1,23 @@
+{
+  "scope": "real companion SQLite persistence across a new app process",
+  "policy_version_before": 6,
+  "policy_version_after": 6,
+  "decision_after_restart": "analyse",
+  "adaptive_support_after_restart": 4,
+  "provider_calls_total": 5,
+  "notes_before_restart": 5,
+  "notes_after_restart": 5,
+  "duplicate_inference_detected": false,
+  "grants_revoked_on_restart": true,
+  "pre_restart_grant_attempt": {
+    "http_status": 403,
+    "detail": {
+      "error": {
+        "code": 403,
+        "message": "Tab consent expired or revoked; authorise this page again",
+        "correlation_id": "1ecdf3f7-f944-4edb-bb76-8f910d1f96bb"
+      }
+    }
+  },
+  "note": "The active pre-restart grant was revoked by startup. The fresh grant is required, and no completed note was replayed or re-inferred."
+}
