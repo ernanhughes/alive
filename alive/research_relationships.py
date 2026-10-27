@@ -522,10 +522,12 @@ class ResearchRelationships:
         current_exact = bool(current and current in payload["current_excerpt"])
         historical_exact = bool(historical and historical in payload["historical_excerpt"])
         needs_quotes = output.relationship != "insufficient_evidence"
+        if needs_quotes:
+            valid = current_exact and historical_exact
+        else:
+            valid = (current is None and historical is None) or (current_exact and historical_exact)
         return {
-            "valid": (current_exact and historical_exact)
-            if needs_quotes
-            else current_exact == historical_exact,
+            "valid": valid,
             "current_quote_exact": current_exact,
             "historical_quote_exact": historical_exact,
         }

@@ -423,6 +423,106 @@ def test_withdrawal_is_blocked_while_outbound_analysis_is_inflight(client, monke
     assert [row["id"] for row in rows] == [saved["id"]]
 
 
+def test_outbound_consent_rejects_a_changed_source(client, monkeypatch):
+    g, _, _, _, saved = historical(client, monkeypatch)
+    mdn_grant = grant(client, g["id"], MDN)
+    current = snapshot(client, mdn_grant, MDN, MDN_TEXT)
+    preview = post(
+        client,
+        "/research/outbound/preview",
+        {"snapshot_id": current["snapshot"]["id"], "research_id": saved["id"]},
+    )
+    post(
+        client,
+        "/research/outbound/authorize",
+        {
+            "consent_id": preview["id"],
+            "payload_sha256": preview["payload_sha256"],
+            "approved": True,
+        },
+    )
+
+    async def change_source():
+        async with client.app.state.kernel.db.sessions.begin() as session:
+            row = await session.get(WebExperience, current["snapshot"]["id"])
+            row.data = row.data | {"text": "The reviewed current source changed."}
+
+    client.portal.call(change_source)
+    post(
+        client,
+        "/research/relationships",
+        {"consent_id": preview["id"]},
+        403,
+    )
+
+
+def test_concurrent_withdrawal_cannot_interrupt_an_outbound_call(client, monkeypatch):
+    from types import SimpleNamespace
+
+    g, _, _, _, saved = historical(client, monkeypatch)
+    mdn_grant = grant(client, g["id"], MDN)
+    current = snapshot(client, mdn_grant, MDN, MDN_TEXT)
+    client.app.state.kernel.settings.alive_research_meta_enabled = True
+    preview = post(
+        client,
+        "/research/outbound/preview",
+        {
+            "snapshot_id": current["snapshot"]["id"],
+            "research_id": saved["id"],
+            "provider": "meta",
+        },
+    )
+    post(
+        client,
+        "/research/outbound/authorize",
+        {
+            "consent_id": preview["id"],
+            "payload_sha256": preview["payload_sha256"],
+            "approved": True,
+        },
+    )
+
+    async def scenario():
+        started = asyncio.Event()
+        release = asyncio.Event()
+
+        async def slow(*args, **kwargs):
+            started.set()
+            await release.wait()
+            payload = args[2]
+            return SimpleNamespace(
+                text=json.dumps(
+                    {
+                        "relationship": "possible_conceptual_connection",
+                        "explanation": "A controlled delayed hypothesis.",
+                        "current_quote": payload["current_excerpt"],
+                        "historical_quote": payload["historical_excerpt"],
+                        "limitations": "Controlled delayed fixture.",
+                        "confidence": 0.2,
+                    }
+                ),
+                usage={"prompt_tokens": 10, "completion_tokens": 10, "total_tokens": 20},
+            )
+
+        monkeypatch.setattr("alive.research_relationships.MetaProvider.structured", slow)
+        task = asyncio.create_task(client.app.state.relationships.analyze(preview["id"]))
+        await started.wait()
+        withdrawal_error = None
+        try:
+            await client.app.state.research.withdraw(saved["id"])
+        except ValueError as exc:
+            withdrawal_error = str(exc)
+        release.set()
+        result = await task
+        await client.app.state.research.withdraw(saved["id"])
+        return withdrawal_error, result
+
+    withdrawal_error, result = client.portal.call(scenario)
+    assert "outbound analysis" in withdrawal_error
+    assert result["analysis"]["status"] == "validated"
+    assert client.get(ROOT + "/research/memories").json()["memories"] == []
+
+
 def test_meta_relationship_preview_is_disabled_by_default(client, monkeypatch):
     g, _, _, _, saved = historical(client, monkeypatch)
     mdn_grant = grant(client, g["id"], MDN)
