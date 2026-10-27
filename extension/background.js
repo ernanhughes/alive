@@ -156,9 +156,8 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
       });
     }
     if (message.type === 'withdraw-research') {
-      const { researchId } = await chrome.storage.session.get('researchId');
-      if (!researchId) throw new Error('No research memory selected');
-      return send('/browser-experience/research/memories/' + researchId + '/withdraw', {});
+      if (!message.researchId) throw new Error('Select the research memory to withdraw');
+      return send('/browser-experience/research/memories/' + message.researchId + '/withdraw', {});
     }
     throw new Error('Unsupported extension command');
   })().then(data => reply({ data })).catch(error => reply({ error: error.message }));

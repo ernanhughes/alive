@@ -26,7 +26,7 @@ from alive.learning.api import router as learning_router
 from alive.living import Living
 from alive.living_api import public_router as living_world_router
 from alive.living_api import router as living_router
-from alive.memory import MemoryService
+from alive.memory import GENERAL_MEMORY_TYPES, MemoryService
 from alive.models import AgentRun, BrowserSession, Event, Goal, Memory, now, record
 from alive.provenance import runtime_identity
 from alive.providers import MetaProvider
@@ -287,7 +287,7 @@ def create_app(settings=None):
         if data.mode == "vector":
             raise HTTPException(409, "Semantic search unavailable: no embedding model configured")
         async with db.sessions() as session:
-            query = select(Memory)
+            query = select(Memory).where(Memory.memory_type.in_(GENERAL_MEMORY_TYPES))
             if db.pg:
                 document = literal_column("search_document")
                 terms = func.plainto_tsquery("english", data.query)

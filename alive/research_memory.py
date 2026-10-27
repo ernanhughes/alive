@@ -12,6 +12,7 @@ from sqlalchemy import select
 
 from alive.cognitive_models import MemoryVector
 from alive.models import Memory, now, record
+from alive.web_models import WebExperience
 
 RESEARCH_KIND = "research_memory"
 CONNECTION_KIND = "research_connection"
@@ -87,6 +88,8 @@ def _sentence(text, terms):
 
 
 class ResearchMemory:
+    MAX_RESEARCH_CANDIDATES = 5000
+
     def __init__(self, web, memory):
         self.web, self.memory = web, memory
         self.k = web.k
@@ -185,7 +188,14 @@ class ResearchMemory:
             }
             await session.flush()
             result = record(row)
-        index = await self.memory.index(limit=32)
+        try:
+            index = await self.memory.index(limit=32)
+        except Exception as exc:
+            index = {
+                "indexed": 0,
+                "available": self.memory.embedding.available,
+                "error": type(exc).__name__,
+            }
         result["index"] = index | {"available": self.memory.embedding.available}
         return result
 
@@ -244,6 +254,114 @@ class ResearchMemory:
             ]
             return {"memories": [record(row) for row in rows]}
 
+    async def repair_index(self):
+        active = created = refreshed = skipped = 0
+        async with self.k.lock, self.k.db.sessions.begin() as session:
+
+            def projection_metadata(row):
+                return {
+                    "research_memory_id": row.id,
+                    "goal_id": row.data["goal_id"],
+                    "url": row.data["url"],
+                    "note_id": row.parent_id,
+                    "snapshot_id": row.data.get("snapshot_id"),
+                    "sha256": row.data["sha256"],
+                    "source_kind": row.data.get("source_kind"),
+                    "index_version": INDEX_VERSION,
+                    "saved_at": row.data.get("saved_at"),
+                    "owner_useful": row.data.get("owner_useful"),
+                }
+
+            for row in await self.web.rows(session, RESEARCH_KIND):
+                if row.status != "active":
+                    skipped += 1
+                    projection_id = row.data.get("memory_projection_id")
+                    if projection_id:
+                        projection = await session.get(Memory, projection_id)
+                        if projection:
+                            for vector in (
+                                await session.scalars(
+                                    select(MemoryVector).where(
+                                        MemoryVector.memory_id == projection_id
+                                    )
+                                )
+                            ).all():
+                                await session.delete(vector)
+                            await session.delete(projection)
+                    continue
+                active += 1
+                projection_id = row.data.get("memory_projection_id") or _projection_id(
+                    self.k.instance_id, row.parent_id
+                )
+                projection = await session.get(Memory, projection_id)
+                metadata = projection_metadata(row)
+                if not projection:
+                    projection = Memory(
+                        id=projection_id,
+                        instance_id=self.k.instance_id,
+                        content=row.data["excerpt"],
+                        memory_type="research_memory",
+                        source_event_id=None,
+                        importance=0.5,
+                        confidence=1.0,
+                        metadata_json=metadata,
+                    )
+                    session.add(projection)
+                    created += 1
+                elif (
+                    projection.content != row.data["excerpt"]
+                    or (projection.metadata_json or {}).get("index_version") != INDEX_VERSION
+                    or (projection.metadata_json or {}).get("research_memory_id") != row.id
+                ):
+                    projection.content = row.data["excerpt"]
+                    projection.metadata_json = metadata
+                    projection.updated_at = now()
+                    for vector in (
+                        await session.scalars(
+                            select(MemoryVector).where(MemoryVector.memory_id == projection_id)
+                        )
+                    ).all():
+                        await session.delete(vector)
+                    refreshed += 1
+                row.data = row.data | {"memory_projection_id": projection_id}
+            await session.flush()
+        try:
+            index = await self.memory.index(limit=64)
+        except Exception as exc:
+            index = {
+                "indexed": 0,
+                "available": self.memory.embedding.available,
+                "error": type(exc).__name__,
+            }
+        return {
+            "active": active,
+            "projection_created": created,
+            "projection_refreshed": refreshed,
+            "withdrawn_skipped": skipped,
+            "index": index | {"available": self.memory.embedding.available},
+            "index_version": INDEX_VERSION,
+        }
+
+    async def _eligible_research_rows(self, session, goal_id):
+        """Load a bounded set already scoped by instance, kind, status and goal.
+
+        The bound is applied after eligibility filtering. A single goal with more than
+        MAX_RESEARCH_CANDIDATES active rows is outside the personal-memory envelope; the
+        newest rows are retained and the cap is reported to callers.
+        """
+        statement = (
+            select(WebExperience)
+            .where(
+                WebExperience.instance_id == self.k.instance_id,
+                WebExperience.kind == RESEARCH_KIND,
+                WebExperience.status == "active",
+                WebExperience.data["goal_id"].as_string() == goal_id,
+            )
+            .order_by(WebExperience.created_at.desc())
+            .limit(self.MAX_RESEARCH_CANDIDATES)
+        )
+        return (await session.scalars(statement)).all()
+
     async def retrieve(self, snapshot_id, top_k=3, mode="hybrid"):
         if not 1 <= top_k <= 5:
             raise ValueError("top_k must be 1-5")
@@ -253,61 +371,82 @@ class ResearchMemory:
             goal_id = goal.id
             current_url = snapshot.data["url"]
             current_sha = snapshot.data["sha256"]
-            query = goal.data["instruction"] + " " + snapshot.data["text"][:1200]
-            active = {
-                row.id: row
-                for row in await self.web.rows(session, RESEARCH_KIND)
-                if row.status == "active" and row.data["goal_id"] == goal_id
-            }
-        try:
-            retrieved = await self.memory.retrieve(query, mode=mode, top_k=top_k * 5)
-        except ValueError:
-            retrieved = await self.memory.retrieve(query, mode="text", top_k=top_k * 5)
-        results, seen = [], set()
-        for item in retrieved.get("results", []):
-            metadata = item.get("metadata") or {}
-            research_id = metadata.get("research_memory_id")
-            if (
-                item.get("memory_type") != "research_memory"
-                or item.get("instance_id") != self.k.instance_id
-                or metadata.get("goal_id") != goal_id
-                or metadata.get("url") == current_url
-                or metadata.get("sha256") == current_sha
-                or research_id not in active
-                or metadata.get("sha256") in seen
-            ):
-                continue
-            row = active[research_id]
-            seen.add(metadata.get("sha256"))
-            latest = await self._latest_feedback_for(row.parent_id)
-            results.append(
-                {
-                    "memory_id": row.id,
-                    "source_url": row.data["url"],
-                    "source_title": row.data.get("title"),
-                    "goal_id": row.data["goal_id"],
-                    "reviewed_at": row.data.get("reviewed_at"),
-                    "age_days": _age_days(row.data.get("reviewed_at")),
-                    "excerpt": row.data["excerpt"],
-                    "evidence_quote": row.data.get("evidence_quote"),
-                    "note_summary": row.data.get("note_summary"),
-                    "owner_useful": latest,
-                    "retrieval_score": item.get("retrieval_score"),
-                    "retrieval_method": retrieved.get("mode"),
-                    "same_source": False,
-                    "sha256": row.data["sha256"],
-                    "source_kind": row.data.get("source_kind"),
-                    "status": row.status,
-                }
+            current_terms = _tokens(snapshot.data["text"])
+            goal_terms = _tokens(goal.data["instruction"])
+            scoped_rows = await self._eligible_research_rows(session, goal_id)
+            candidates = []
+            for row in scoped_rows:
+                data = row.data
+                if data.get("url") == current_url or data.get("sha256") == current_sha:
+                    continue
+                historical_terms = _tokens(data.get("excerpt"))
+                overlap = current_terms & historical_terms
+                if not overlap:
+                    continue
+                goal_overlap = goal_terms & historical_terms
+                score = 2 * len(overlap) + len(goal_overlap - overlap)
+                candidates.append(
+                    (
+                        score,
+                        data.get("reviewed_at") or "",
+                        row.id,
+                        row,
+                        sorted(overlap)[:12],
+                        sorted(goal_overlap)[:12],
+                    )
+                )
+            candidate_count = len(candidates)
+            candidates.sort(
+                key=lambda item: (
+                    -item[0],
+                    _age_days(item[1]) if _age_days(item[1]) is not None else 10**9,
+                    item[2],
+                )
             )
-            if len(results) >= top_k:
-                break
+            # The cap is applied after goal/active/source eligibility filtering. It is a
+            # safety bound for local personal memory, not an unscoped SQL LIMIT.
+            candidates = candidates[: self.MAX_RESEARCH_CANDIDATES]
+            results, seen = [], set()
+            for score, reviewed_at, row_id, row, overlap, goal_overlap in candidates:
+                if row.data.get("sha256") in seen:
+                    continue
+                seen.add(row.data.get("sha256"))
+                results.append(
+                    {
+                        "memory_id": row.id,
+                        "source_url": row.data["url"],
+                        "source_title": row.data.get("title"),
+                        "goal_id": row.data["goal_id"],
+                        "reviewed_at": reviewed_at,
+                        "age_days": _age_days(reviewed_at),
+                        "excerpt": row.data["excerpt"],
+                        "evidence_quote": row.data.get("evidence_quote"),
+                        "note_summary": row.data.get("note_summary"),
+                        "owner_useful": await self._latest_feedback(session, row.parent_id),
+                        "retrieval_score": score,
+                        "retrieval_method": "scoped_lexical_v1",
+                        "ranking_version": "alive13-scoped-lexical-v1",
+                        "matched_terms": overlap,
+                        "goal_terms": goal_overlap,
+                        "same_source": False,
+                        "sha256": row.data["sha256"],
+                        "source_kind": row.data.get("source_kind"),
+                        "status": row.status,
+                        "rank": len(results) + 1,
+                    }
+                )
+                if len(results) >= top_k:
+                    break
         return {
             "current_snapshot_id": snapshot_id,
             "current_url": current_url,
             "goal_id": goal_id,
-            "mode": retrieved.get("mode"),
-            "embedding": retrieved.get("embedding"),
+            "mode": "scoped_lexical_v1",
+            "requested_mode": mode,
+            "embedding": None,
+            "scoped_count": len(scoped_rows),
+            "candidate_count": candidate_count,
+            "candidate_limit": self.MAX_RESEARCH_CANDIDATES,
             "results": results,
             "abstained": not results,
             "count": len(results),
@@ -323,6 +462,7 @@ class ResearchMemory:
     async def connect(self, snapshot_id, research_id):
         async with self.k.lock, self.k.db.sessions.begin() as session:
             snapshot = await self.web.get(session, snapshot_id, "snapshot")
+            await self.web.valid_grant(session, snapshot.parent_id)
             memory = await self._research_row(session, research_id)
             if memory.status != "active":
                 raise ValueError("Research memory is withdrawn")
@@ -334,29 +474,27 @@ class ResearchMemory:
             current_text = snapshot.data["text"]
             historical_text = memory.data["excerpt"]
             shared = sorted(_tokens(current_text) & _tokens(historical_text))
-            historical_quote = memory.data.get("evidence_quote")
-            if historical_quote and historical_quote not in historical_text:
-                historical_quote = None
+            model_quote = memory.data.get("evidence_quote")
+            historical_quote = _sentence(historical_text, shared) if shared else None
             current_quote = _sentence(current_text, shared) if shared else None
-            if historical_quote and not _sentence(historical_text, shared):
-                historical_quote = historical_quote if historical_quote in historical_text else None
             if len(shared) >= 2 and current_quote and historical_quote:
-                relation = "same_concept"
+                relation = "topic_overlap_candidate"
                 status = "candidate"
                 explanation = (
-                    "Both reviewed excerpts contain the shared terms "
+                    "The two reviewed excerpts share lexical content terms "
                     + ", ".join(shared[:6])
-                    + ". This is a retrieval candidate, not independent factual corroboration."
+                    + ". This is a topic-overlap candidate only; it does not establish agreement, "
+                    "support, contradiction or corroboration."
                 )
             elif len(shared) == 1 and current_quote and historical_quote:
-                relation = "complementary"
+                relation = "weak_lexical_overlap"
                 status = "candidate"
                 explanation = (
-                    f"The excerpts share the term '{shared[0]}'. The relationship is weak and "
-                    "requires owner review."
+                    f"The excerpts share only the term '{shared[0]}'. This is a weak lexical "
+                    "overlap and requires owner review; it does not establish a useful relation."
                 )
             else:
-                relation = "no_supported_connection"
+                relation = "insufficient_evidence"
                 status = "insufficient_evidence"
                 explanation = (
                     "No inspectable shared evidence supports a research connection between these "
@@ -375,10 +513,14 @@ class ResearchMemory:
                     "historical_url": memory.data["url"],
                     "historical_sha256": memory.data["sha256"],
                     "historical_quote": historical_quote,
+                    "model_evidence_quote": model_quote,
                     "shared_terms": shared[:12],
                     "relation_type": relation,
                     "explanation": explanation,
                     "status": status,
+                    "evidence_policy": (
+                        "exact source spans; shared words do not establish agreement"
+                    ),
                     "model": "deterministic-lexical-connection-v1",
                     "inference_calls": 0,
                     "owner_useful": None,

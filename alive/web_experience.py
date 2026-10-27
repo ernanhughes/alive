@@ -1217,4 +1217,8 @@ def router(app, ready):
     async def research_connection_feedback(connection_id: str, data: ConnectionFeedbackRequest):
         return await app.state.research.connection_feedback(connection_id, data.useful)
 
+    @api.post("/research/index/repair")
+    async def repair_research_index():
+        return await app.state.research.repair_index()
+
     return api

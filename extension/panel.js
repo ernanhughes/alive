@@ -273,8 +273,6 @@ $('find-research').onclick = () => action(async () => {
     return;
   }
   $('research-status').textContent = `${result.results.length} related historical source(s) via ${result.mode}. Historical evidence is distinct from the current page.`;
-  currentSavedResearchId = result.results[0].memory_id;
-  $('withdraw-research').disabled = false;
   for (const item of result.results) {
     const block = document.createElement('div');
     const heading = document.createElement('p');
@@ -290,19 +288,39 @@ $('find-research').onclick = () => action(async () => {
       const connection = await command('connection', { memoryId: item.memory_id });
       currentConnectionId = connection.id;
       const data = connection.data || {};
-      $('connection').textContent = `${data.status} · ${data.relation_type}. ${data.explanation}\nHistorical quote: ${data.historical_quote || 'unavailable'}\nCurrent quote: ${data.current_quote || 'unavailable'}`;
+      const modelQuote = data.model_evidence_quote
+        ? `\nHistorical model quotation (not a source span): ${data.model_evidence_quote}`
+        : '';
+      $('connection').textContent = `${data.status} · ${data.relation_type}. ${data.explanation}\nHistorical source quote: ${data.historical_quote || 'unavailable'}\nCurrent source quote: ${data.current_quote || 'unavailable'}${modelQuote}`;
       $('connection-useful').disabled = data.status !== 'candidate';
       $('connection-not-useful').disabled = data.status !== 'candidate';
       $('status').textContent = connection.abstained
-        ? 'Connection abstained: no supported shared evidence.'
+        ? 'Connection abstained: no inspectable shared source evidence.'
         : 'Connection candidate created; both sources remain distinct.';
     });
     block.append(heading, source, quote, button);
+    const withdraw = document.createElement('button');
+    withdraw.textContent = 'Withdraw this memory';
+    withdraw.onclick = () => action(async () => {
+      await command('withdraw-research', { researchId: item.memory_id });
+      if (currentSavedResearchId === item.memory_id) {
+        currentSavedResearchId = null;
+        $('withdraw-research').disabled = true;
+      }
+      currentConnectionId = null;
+      $('connection-useful').disabled = true;
+      $('connection-not-useful').disabled = true;
+      $('research-status').textContent = `Withdrew displayed memory ${item.memory_id}; it will not be retrieved.`;
+      $('research-results').replaceChildren();
+      $('connection').textContent = '';
+    });
+    block.append(withdraw);
     $('research-results').append(block);
   }
 });
 $('withdraw-research').onclick = () => action(async () => {
-  await command('withdraw-research');
+  if (!currentSavedResearchId) throw new Error('Save a research memory first');
+  await command('withdraw-research', { researchId: currentSavedResearchId });
   currentSavedResearchId = null;
   $('withdraw-research').disabled = true;
   $('research-results').replaceChildren();
