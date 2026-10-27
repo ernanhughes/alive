@@ -187,6 +187,29 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
         ...message.rubric,
       });
     }
+    if (message.type === 'blind-runs') return send('/browser-experience/research/blind/runs');
+    if (message.type === 'blind-view') {
+      if (!message.runId) throw new Error('Select a blind evaluation');
+      return send('/browser-experience/research/blind/runs/' + message.runId);
+    }
+    if (message.type === 'blind-rate') {
+      if (!message.runId || !message.outputId || !message.capability)
+        throw new Error('Select an assigned output and rating capability');
+      return send('/browser-experience/research/blind/runs/' + message.runId + '/ratings', {
+        output_id: message.outputId,
+        output_sha256: message.outputSha256,
+        capability: message.capability,
+        rubric: message.rubric,
+      });
+    }
+    if (message.type === 'blind-reveal') {
+      if (!message.runId) throw new Error('Select a blind evaluation');
+      return send('/browser-experience/research/blind/runs/' + message.runId + '/reveal', {});
+    }
+    if (message.type === 'blind-archive') {
+      if (!message.runId) throw new Error('Select a blind evaluation');
+      return send('/browser-experience/research/blind/runs/' + message.runId + '/archive', {});
+    }
     if (message.type === 'revoke-relationship') {
       if (!message.consentId) throw new Error('No outbound consent selected');
       return send('/browser-experience/research/outbound/' + message.consentId + '/revoke', {});

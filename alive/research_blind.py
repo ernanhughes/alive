@@ -1,8 +1,10 @@
 """Blind, provenance-aware owner ratings for the deferred relationship experiment."""
 
 import hashlib
+import hmac
 import json
 import random
+import secrets
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -52,13 +54,14 @@ class BlindTask(Strict):
 
 class BlindRunRequest(Strict):
     experiment_id: str = Field(min_length=1, max_length=100)
-    seed: int = Field(ge=0, le=1_000_000)
+    seed: int = Field(ge=0, le=2_147_483_647)
     tasks: list[BlindTask] = Field(min_length=1, max_length=30)
 
 
 class BlindRatingRequest(Strict):
     output_id: str
     output_sha256: str = Field(min_length=64, max_length=64)
+    capability: str = Field(min_length=20, max_length=200)
     rubric: BlindRubric
 
 
@@ -87,6 +90,12 @@ class ResearchBlind:
 
     async def create_run(self, experiment_id, seed, tasks):
         async with self.k.lock, self.k.db.sessions.begin() as session:
+            if any(
+                row.data.get("experiment_id") == experiment_id
+                for row in await self.rows(session, BLIND_RUN)
+            ):
+                raise ValueError("Experiment ID already exists")
+            capability = secrets.token_urlsafe(32)
             run = self.add(
                 session,
                 BLIND_RUN,
@@ -97,9 +106,13 @@ class ResearchBlind:
                     "task_count": len(tasks),
                     "conditions": list(CONDITIONS),
                     "created_at": now().isoformat(),
+                    "capability_hash": hashlib.sha256(capability.encode()).hexdigest(),
+                    "rating_capability": capability,
+                    "assignment_sha256": None,
+                    "revealed_at": None,
                 },
                 None,
-                "open",
+                "collecting",
             )
             await session.flush()
             assignment = {}
@@ -160,9 +173,27 @@ class ResearchBlind:
             run.data = run.data | {
                 "output_ids": output_ids,
                 "assignment_id": assignment_row.id,
+                "assignment_sha256": hashlib.sha256(
+                    json.dumps(assignment, sort_keys=True).encode()
+                ).hexdigest(),
             }
             await session.flush()
-            return record(run)
+            return record(run) | {"rating_capability": capability}
+
+    async def list_runs(self):
+        async with self.k.db.sessions() as session:
+            return {
+                "runs": [
+                    {
+                        "id": row.id,
+                        "experiment_id": row.data.get("experiment_id"),
+                        "status": row.status,
+                        "task_count": row.data.get("task_count"),
+                        "rubric_version": row.data.get("rubric_version"),
+                    }
+                    for row in await self.rows(session, BLIND_RUN)
+                ]
+            }
 
     async def rating_view(self, run_id):
         async with self.k.db.sessions() as session:
@@ -177,6 +208,7 @@ class ResearchBlind:
                 "blind_run_id": run.id,
                 "status": run.status,
                 "rubric_version": run.data["rubric_version"],
+                "rating_capability": self._capability(run),
                 "task_count": run.data["task_count"],
                 "outputs": [
                     {
@@ -195,13 +227,24 @@ class ResearchBlind:
                 ),
             }
 
-    async def rate(self, run_id, output_id, output_sha256, rubric, rater_type="owner"):
+    def _capability(self, run):
+        # The raw capability is only returned through the authenticated owner view;
+        # for an existing run without one (legacy fixture), use a stable internal value.
+        return run.data.get("rating_capability")
+
+    async def rate(
+        self, run_id, output_id, output_sha256, rubric, capability=None, rater_type="owner"
+    ):
         if rater_type not in ("owner", "scripted"):
             raise ValueError("Unknown rater type")
         async with self.k.lock, self.k.db.sessions.begin() as session:
             run = await self.web_get(session, run_id, BLIND_RUN)
-            if run.status != "open":
-                raise ValueError("Blind run is not open for ratings")
+            if run.status != "collecting":
+                raise ValueError("Blind run is not collecting ratings")
+            if rater_type == "owner":
+                supplied = hashlib.sha256((capability or "").encode()).hexdigest()
+                if not hmac.compare_digest(supplied, run.data.get("capability_hash", "")):
+                    raise PermissionError("Owner rating capability is invalid")
             output = await self.web_get(session, output_id, BLIND_OUTPUT)
             if output.data.get("blind_run_id") != run_id:
                 raise ValueError("Output does not belong to this blind run")
@@ -225,6 +268,13 @@ class ResearchBlind:
                     "output_sha256": output_sha256,
                     "rater_type": rater_type,
                     "rating_id": uid(),
+                    "experiment_id": run.data["experiment_id"],
+                    "provenance": (
+                        "authenticated_owner_interface"
+                        if rater_type == "owner"
+                        else "scripted_internal_test"
+                    ),
+                    "reveal_status": "hidden",
                     "rubric": rubric.model_dump() if hasattr(rubric, "model_dump") else rubric,
                     "rubric_version": RUBRIC_VERSION,
                     "revision": revision,
@@ -237,8 +287,10 @@ class ResearchBlind:
             return record(row)
 
     async def reveal(self, run_id):
-        async with self.k.db.sessions() as session:
+        async with self.k.lock, self.k.db.sessions.begin() as session:
             run = await self.web_get(session, run_id, BLIND_RUN)
+            if run.status != "collecting":
+                raise ValueError("Blind run has already been revealed or closed")
             assignment_row = await self.web_get(
                 session, run.data["assignment_id"], BLIND_ASSIGNMENT
             )
@@ -255,11 +307,20 @@ class ResearchBlind:
             rated = {row.data["output_id"] for row in ratings}
             if set(outputs) - rated:
                 raise ValueError("All outputs must be owner-rated before unblinding")
+            run.status = "revealed"
+            run.data = run.data | {
+                "revealed_at": now().isoformat(),
+                "reveal_assignment_sha256": run.data["assignment_sha256"],
+            }
+            for row in ratings:
+                row.data = row.data | {"reveal_status": "revealed"}
             return {
                 "blind_run_id": run_id,
                 "experiment_id": run.data["experiment_id"],
                 "seed": run.data["seed"],
                 "rubric_version": run.data["rubric_version"],
+                "assignment_sha256": run.data["assignment_sha256"],
+                "revealed_at": run.data["revealed_at"],
                 "outputs": [
                     {
                         "output_id": output_id,
@@ -281,6 +342,15 @@ class ResearchBlind:
                     and row.data.get("rater_type") == "scripted"
                 ],
             }
+
+    async def archive(self, run_id):
+        async with self.k.lock, self.k.db.sessions.begin() as session:
+            run = await self.web_get(session, run_id, BLIND_RUN)
+            if run.status != "revealed":
+                raise ValueError("Only a revealed run can be archived")
+            run.status = "archived"
+            run.data = run.data | {"archived_at": now().isoformat()}
+            return record(run)
 
     async def web_get(self, session, row_id, kind):
         row = await session.get(WebExperience, row_id)

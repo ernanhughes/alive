@@ -93,8 +93,10 @@ class ResearchConnectionRequest(Strict):
 
 class RelationshipPreviewRequest(Strict):
     snapshot_id: str
-    research_id: str
+    research_id: str | None = None
     provider: Literal["local_stub", "local_stub_invalid", "meta"] = "local_stub"
+    analysis_mode: Literal["current_only", "history_assisted"] = "history_assisted"
+    research_question: str | None = Field(default=None, max_length=1000)
 
 
 class RelationshipAuthorizeRequest(Strict):
@@ -1257,7 +1259,11 @@ def router(app, ready):
     @api.post("/research/outbound/preview")
     async def preview_research_outbound(data: RelationshipPreviewRequest):
         return await app.state.relationships.preview(
-            data.snapshot_id, data.research_id, data.provider
+            data.snapshot_id,
+            data.research_id,
+            data.provider,
+            data.analysis_mode,
+            data.research_question,
         )
 
     @api.post("/research/outbound/authorize")
@@ -1280,6 +1286,10 @@ def router(app, ready):
     async def create_blind_run(data: BlindRunRequest):
         return await app.state.blind.create_run(data.experiment_id, data.seed, data.tasks)
 
+    @api.get("/research/blind/runs")
+    async def list_blind_runs():
+        return await app.state.blind.list_runs()
+
     @api.get("/research/blind/runs/{run_id}")
     async def blind_rating_view(run_id: str):
         return await app.state.blind.rating_view(run_id)
@@ -1287,12 +1297,21 @@ def router(app, ready):
     @api.post("/research/blind/runs/{run_id}/ratings")
     async def blind_owner_rating(run_id: str, data: BlindRatingRequest):
         return await app.state.blind.rate(
-            run_id, data.output_id, data.output_sha256, data.rubric, rater_type="owner"
+            run_id,
+            data.output_id,
+            data.output_sha256,
+            data.rubric,
+            capability=data.capability,
+            rater_type="owner",
         )
 
-    @api.get("/research/blind/runs/{run_id}/reveal")
+    @api.post("/research/blind/runs/{run_id}/reveal")
     async def blind_reveal(run_id: str):
         return await app.state.blind.reveal(run_id)
+
+    @api.post("/research/blind/runs/{run_id}/archive")
+    async def blind_archive(run_id: str):
+        return await app.state.blind.archive(run_id)
 
     @api.post("/research/index/repair")
     async def repair_research_index():
