@@ -1,0 +1,75 @@
+{
+  "policy_version": "alive08-contextual-experience-v1",
+  "actions": [
+    "monitor",
+    "retrieve"
+  ],
+  "action_cost": {
+    "monitor": 0.0,
+    "retrieve": 0.2
+  },
+  "miss_penalty": 1.0,
+  "retrieve_gain": 1.0,
+  "feedback_noise": 0.1,
+  "age_factor": {
+    "recent": 0.5,
+    "day": 0.8,
+    "week": 1.2,
+    "stale": 1.8
+  },
+  "age_values": [
+    "recent",
+    "day",
+    "week",
+    "stale"
+  ],
+  "age_weights": [
+    0.3,
+    0.3,
+    0.25,
+    0.15
+  ],
+  "source_classes": {
+    "stable": {
+      "base_p": 0.04,
+      "cadence": {
+        "static": 0.6,
+        "weekly": 0.3,
+        "daily": 0.1
+      }
+    },
+    "episodic": {
+      "base_p": 0.22,
+      "cadence": {
+        "daily": 0.4,
+        "weekly": 0.4,
+        "hourly": 0.2
+      }
+    },
+    "volatile": {
+      "base_p": 0.45,
+      "cadence": {
+        "hourly": 0.5,
+        "daily": 0.3,
+        "weekly": 0.2
+      }
+    },
+    "novel": {
+      "base_p": 0.65,
+      "cadence": {
+        "daily": 0.5,
+        "weekly": 0.3,
+        "hourly": 0.2
+      }
+    }
+  },
+  "observation_keys": [
+    "cadence",
+    "claim",
+    "claim_age",
+    "goal",
+    "permitted_actions",
+    "source_id"
+  ],
+  "source_identity": "Random UUID-derived IDs; class is never encoded in the ID."
+}

@@ -23,6 +23,12 @@ scripts produce an explicit **uncertain** decision, with no automatic Meta call.
 A frozen 27-case corpus reports per-language precision, recall, false abstention
 and uncertainty against the ALIVE-06 baseline. See [the ALIVE-07 protocol](docs/ALIVE-07.md).
 
+**ALIVE-08 tests whether experience improves decisions.** A frozen sequential simulator compares
+ALIVE's empirical source memory with a flat contextual learner, no history, shuffled history,
+stateless and fixed policies. Correct history beats no/shuffled history, but the primary comparison
+did **not** show an advantage over the flat control. The negative result is preserved in the
+[ALIVE-08 report](docs/ALIVE-08.md) and its [evidence archive](archives/ALIVE-08/README.md).
+
 ALIVE-01 is a working vertical slice: FastAPI + PostgreSQL/pgvector + ZeroMQ + React dashboard + managed Chrome + Manifest V3 extension + Pi RPC. Deterministic policies drive curiosity, coherence and commitment. They do not require recurring model calls or claim to be reinforcement learning.
 
 **ALIVE-02 adds a bounded autonomous cognitive loop.** Authorised browser changes compete for attention; structured Meta Observer/Proposer/Critic roles cooperate while a deterministic Investigator, Evaluator and Governor control evidence, permissions and budgets. Real ONNX embeddings, hybrid retrieval, human action approval, persistent experience and restart recovery are implemented. Open **Cognition** in the existing observatory to inspect real traces. Autonomy starts stopped and recovers paused.
