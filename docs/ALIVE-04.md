@@ -104,7 +104,10 @@ uv run python -m scripts.living04 second
 The live qualifier refuses to overwrite its plan or manufacture a cold policy. It records the
 first result before restart and verifies persistence before the second. It never clears prior
 experience or automatically repeats a failed paid run. Tests use isolated database fixtures and
-explicitly empty provider credentials; native Chrome/Meta qualification is separate.
+explicitly empty provider credentials; native Chrome/Meta qualification is separate. Interim
+controlled regression evidence for the OpenCode handoff is archived in
+`archives/ALIVE-04-INTERIM`; it is not a native requalification and does not replace the original
+archive.
 
 This milestone uses controlled synthetic facts and rewards, exact-context memory and a tiny
 empirical policy. It is not a learned semantic history extractor, open-web autonomous agent,
