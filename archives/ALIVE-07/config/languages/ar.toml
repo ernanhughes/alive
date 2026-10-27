@@ -1,0 +1,13 @@
+schema_version = 1
+language = "ar"
+strategy = "words"
+normalization = "nfkc_casefold_arabic"
+minimum_token_length = 3
+ngram_size = 1
+stop_characters = []
+stopwords = [
+  "من", "في", "على", "إلى", "عن", "أن", "إن", "هذا", "هذه", "هو", "هي",
+  "كان", "كانت", "مع", "أو", "ثم", "لا", "ما", "قد", "كل", "بعض", "بين",
+  "عند", "حتى", "إذا", "كما", "لم", "لن", "له", "لها", "به", "بها", "التي",
+  "الذي", "الذين",
+]

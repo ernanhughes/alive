@@ -1,0 +1,30 @@
+{
+  "policy": "deterministic-multilingual-relevance-v2",
+  "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+  "supported_languages": [
+    "en",
+    "zh",
+    "ar"
+  ],
+  "default_language": "en",
+  "unsupported_behavior": "uncertain",
+  "files": {
+    "config/relevance/languages/ar.toml": {
+      "sha256": "f5d4fc565dbf78179076b641f926cfe438f8d633f8f39dac4f0238f4153d0eab",
+      "bytes": 502
+    },
+    "config/relevance/languages/en.toml": {
+      "sha256": "e8c30db6c958b4482bc5a55549839afa71267b162262506d40d8cdd8a37b88dd",
+      "bytes": 638
+    },
+    "config/relevance/languages/zh.toml": {
+      "sha256": "f009baac017e9ada0dea19591acfc92972c53635b0204b16b5e675a0bccc6b46",
+      "bytes": 344
+    },
+    "config/relevance/policy.toml": {
+      "sha256": "0cb5b39c26f36cc2ac3fe2061b9e5966a06e21d3462c525b17e578f647bf4d96",
+      "bytes": 170
+    }
+  },
+  "note": "Frozen copy of the configuration used for the ALIVE-07 evaluation."
+}
