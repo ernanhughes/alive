@@ -183,14 +183,16 @@ node --check extension/panel.js
 
 - Starting `origin/main`: `70e2639b0136da9c675c68a24598e96321d3e28a`.
 - Feature/config commit: `369055d`.
-- Evidence/handoff commit: the final commit containing this document.
+- Evidence/handoff commit: `f0e4eda`.
 - Branch: `opencode/alive-07-multilingual-relevance`.
 
 ## Branch and PR
 
 - Branch pushed: `opencode/alive-07-multilingual-relevance`.
-- PR: to be created after push; review-only, not auto-merged.
+- PR: [#11](https://github.com/ernanhughes/alive/pull/11)
+- Initial PR head: `f0e4eda`; this handoff update is the final docs-only tip.
 - Target: `main`.
+- State: open, review-only, not auto-merged.
 
 ## Integration notes
 
