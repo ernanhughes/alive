@@ -8,8 +8,8 @@
 | Starting `origin/main` | `ef99a827aec2f335952f9370cae4f57fb5db8942` (ALIVE-07 merged) |
 | Branch | `opencode/alive-08-experience-learning` |
 | Feature/protocol commit | `50f312a` |
-| Evidence/handoff commit | the final commit containing this document |
-| PR | to be created after push; review-only, not auto-merged |
+| Evidence/handoff commit | `716e399` |
+| PR | [#12](https://github.com/ernanhughes/alive/pull/12); initial head `716e399`, review-only |
 
 ## What was implemented
 
