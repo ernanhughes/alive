@@ -19,6 +19,7 @@ from fastapi.testclient import TestClient
 from alive.app import create_app
 from alive.config import Settings
 from alive.db import Database
+from alive.memory import ALL_MEMORY_TYPES
 from alive.models import Base, Memory, now, uid
 from alive.providers import MetaProvider
 from alive.web_experience import digest
@@ -291,10 +292,10 @@ def run():
                     for row in await web.rows(session, "research_memory")
                     if row.status == "active" and row.data["goal_id"] == goal_id
                 }
-            # Frozen ALIVE-12 query and ordering. memory_types=() disables the
+            # Frozen ALIVE-12 query and ordering. ALL_MEMORY_TYPES disables the
             # ALIVE-13 general-memory allowlist so the old candidate set is reproduced.
             retrieved = await research.memory.retrieve(
-                query, mode="hybrid", top_k=15, memory_types=()
+                query, mode="hybrid", top_k=15, memory_types=ALL_MEMORY_TYPES
             )
             results, seen = [], set()
             for item in retrieved.get("results", []):

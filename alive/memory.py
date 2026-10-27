@@ -16,6 +16,8 @@ from alive.models import Memory, record, uid
 EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 EMBED_REVISION = "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
 GENERAL_MEMORY_TYPES = ("experience", "cognitive_analysis", "authorised_history")
+# Explicit privileged selector. An empty collection is rejected rather than treated as "all".
+ALL_MEMORY_TYPES = object()
 
 
 class EmbeddingProvider(Protocol):
@@ -162,8 +164,16 @@ class MemoryService:
             raise ValueError("top_k must be 1-20")
         k, e = self.k, self.embedding
         if memory_types is None:
-            memory_types = GENERAL_MEMORY_TYPES
-        memory_types = tuple(memory_types)
+            allowed_types = GENERAL_MEMORY_TYPES
+        elif memory_types is ALL_MEMORY_TYPES:
+            allowed_types = None
+        else:
+            allowed_types = tuple(memory_types)
+            if not allowed_types:
+                raise ValueError(
+                    "memory_types must not be empty; use ALL_MEMORY_TYPES only for "
+                    "explicit privileged retrieval"
+                )
         if mode in ("vector", "hybrid") and not e.available:
             if mode == "vector":
                 raise ValueError(
@@ -173,8 +183,8 @@ class MemoryService:
         text_ids, vector_ids, rows_by_id = [], [], {}
         async with k.db.sessions() as session:
             base = select(Memory)
-            if memory_types:
-                base = base.where(Memory.memory_type.in_(memory_types))
+            if allowed_types is not None:
+                base = base.where(Memory.memory_type.in_(allowed_types))
             if exclude_event:
                 base = base.where(
                     (Memory.source_event_id != exclude_event) | Memory.source_event_id.is_(None)

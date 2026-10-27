@@ -5,7 +5,9 @@ MemoryVector tables are a rebuildable retrieval projection, not a second source 
 """
 
 import hashlib
+import math
 import re
+from collections import Counter
 from datetime import UTC, datetime
 
 from sqlalchemy import select
@@ -17,6 +19,12 @@ from alive.web_models import WebExperience
 RESEARCH_KIND = "research_memory"
 CONNECTION_KIND = "research_connection"
 INDEX_VERSION = "alive12-research-v1"
+ALIVE13_RANKING = "alive13-scoped-lexical-v1"
+ALIVE14_RANKING = "alive14-bm25-v1"
+BM25_K1 = 1.2
+BM25_B = 0.75
+MIN_RETRIEVAL_SCORE = 0.12
+MIN_DISCRIMINATING_IDF = 0.3
 STOPWORDS = {
     "about",
     "after",
@@ -62,8 +70,56 @@ STOPWORDS = {
 TOKEN = re.compile(r"[a-z0-9][a-z0-9_-]{2,}")
 
 
+def _token_counts(text):
+    return Counter(term for term in TOKEN.findall((text or "").lower()) if term not in STOPWORDS)
+
+
 def _tokens(text):
-    return {term for term in TOKEN.findall((text or "").lower()) if term not in STOPWORDS}
+    return set(_token_counts(text))
+
+
+def _bm25_scores(query_terms, documents):
+    """Return bounded BM25-style scores for (row, term-counts) documents.
+
+    Goal vocabulary is removed from the query before this function is called. The
+    corpus is the eligible same-goal research set, so inverse document frequency is
+    local and deterministic. A conservative floor keeps generic-only overlap from
+    becoming a retrieval result.
+    """
+    if not documents or not query_terms:
+        return {}
+    total = len(documents)
+    document_frequency = Counter()
+    lengths = {}
+    for row, counts in documents:
+        lengths[row.id] = sum(counts.values())
+        for term in counts:
+            document_frequency[term] += 1
+    average_length = sum(lengths.values()) / total or 1.0
+    scores = {}
+    for row, counts in documents:
+        overlap = query_terms & set(counts)
+        if not overlap:
+            continue
+        length = lengths[row.id]
+        score = 0.0
+        maximum_idf = 0.0
+        for term in overlap:
+            frequency = counts[term]
+            inverse_frequency = math.log(
+                1 + (total - document_frequency[term] + 0.5) / (document_frequency[term] + 0.5)
+            )
+            maximum_idf = max(maximum_idf, inverse_frequency)
+            denominator = frequency + BM25_K1 * (1 - BM25_B + BM25_B * length / average_length)
+            score += inverse_frequency * (frequency * (BM25_K1 + 1) / denominator)
+        if score < MIN_RETRIEVAL_SCORE:
+            continue
+        # In a tiny corpus, IDF cannot distinguish generic vocabulary. Once there
+        # are enough candidates, require at least one genuinely discriminating term.
+        if total >= 3 and maximum_idf < MIN_DISCRIMINATING_IDF:
+            continue
+        scores[row.id] = score
+    return scores
 
 
 def _projection_id(instance_id, note_id):
@@ -80,11 +136,45 @@ def _age_days(value):
         return None
 
 
-def _sentence(text, terms):
-    for sentence in re.split(r"(?<=[.!?])\s+", text or ""):
-        if any(term in _tokens(sentence) for term in terms):
-            return sentence.strip()[:300]
-    return None
+def _bounded_span(text, terms, limit=300):
+    if not text:
+        return None
+    if len(text) <= limit:
+        return text
+    lowered = text.lower()
+    positions = [lowered.find(term) for term in terms if lowered.find(term) >= 0]
+    start = max(0, (min(positions) if positions else 0) - 50)
+    return text[start : start + limit].strip()
+
+
+def _overlap_spans(current_text, historical_text, terms):
+    """Return the best pair of exact source sentences sharing displayed terms."""
+    current_sentences = re.split(r"(?<=[.!?])\s+", current_text or "")
+    historical_sentences = re.split(r"(?<=[.!?])\s+", historical_text or "")
+    best = None
+    for current_index, current_sentence in enumerate(current_sentences):
+        current_terms = _tokens(current_sentence)
+        for historical_index, historical_sentence in enumerate(historical_sentences):
+            common = sorted(current_terms & _tokens(historical_sentence) & set(terms))
+            if not common:
+                continue
+            candidate = (
+                len(common),
+                -abs(current_index - historical_index),
+                -current_index,
+                -historical_index,
+                current_sentence,
+                historical_sentence,
+                common,
+            )
+            if best is None or candidate[:4] > best[:4]:
+                best = candidate
+    if best is None:
+        return None, None, []
+    current_span = _bounded_span(best[4], best[6])
+    historical_span = _bounded_span(best[5], best[6])
+    shown = sorted(_tokens(current_span) & _tokens(historical_span) & set(terms))
+    return current_span, historical_span, shown
 
 
 class ResearchMemory:
@@ -93,6 +183,7 @@ class ResearchMemory:
     def __init__(self, web, memory):
         self.web, self.memory = web, memory
         self.k = web.k
+        self.outbound_inflight = set()
 
     async def _research_row(self, session, research_id):
         row = await self.web.get(session, research_id, RESEARCH_KIND)
@@ -218,6 +309,10 @@ class ResearchMemory:
 
     async def withdraw(self, research_id):
         async with self.k.lock, self.k.db.sessions.begin() as session:
+            if research_id in self.outbound_inflight:
+                raise ValueError(
+                    "Cannot withdraw a research memory while outbound analysis is in progress"
+                )
             row = await self._research_row(session, research_id)
             if row.status == "withdrawn":
                 return record(row) | {"idempotent": True}
@@ -362,9 +457,11 @@ class ResearchMemory:
         )
         return (await session.scalars(statement)).all()
 
-    async def retrieve(self, snapshot_id, top_k=3, mode="hybrid"):
+    async def retrieve(self, snapshot_id, top_k=3, mode="hybrid", ranker=ALIVE14_RANKING):
         if not 1 <= top_k <= 5:
             raise ValueError("top_k must be 1-5")
+        if ranker not in (ALIVE13_RANKING, ALIVE14_RANKING):
+            raise ValueError("Unknown research ranker")
         async with self.k.db.sessions() as session:
             snapshot = await self.web.get(session, snapshot_id, "snapshot")
             goal = await self.web.get(session, snapshot.data["goal_id"], "goal")
@@ -374,40 +471,58 @@ class ResearchMemory:
             current_terms = _tokens(snapshot.data["text"])
             goal_terms = _tokens(goal.data["instruction"])
             scoped_rows = await self._eligible_research_rows(session, goal_id)
-            candidates = []
-            for row in scoped_rows:
-                data = row.data
-                if data.get("url") == current_url or data.get("sha256") == current_sha:
-                    continue
-                historical_terms = _tokens(data.get("excerpt"))
-                overlap = current_terms & historical_terms
-                if not overlap:
-                    continue
-                goal_overlap = goal_terms & historical_terms
-                score = 2 * len(overlap) + len(goal_overlap - overlap)
-                candidates.append(
-                    (
-                        score,
-                        data.get("reviewed_at") or "",
-                        row.id,
-                        row,
-                        sorted(overlap)[:12],
-                        sorted(goal_overlap)[:12],
+            scoped = [
+                row
+                for row in scoped_rows
+                if row.data.get("url") != current_url and row.data.get("sha256") != current_sha
+            ]
+            if ranker == ALIVE13_RANKING:
+                candidates = []
+                for row in scoped:
+                    historical_terms = _tokens(row.data.get("excerpt"))
+                    overlap = current_terms & historical_terms
+                    if not overlap:
+                        continue
+                    goal_overlap = goal_terms & historical_terms
+                    score = 2 * len(overlap) + len(goal_overlap - overlap)
+                    candidates.append((score, row, sorted(overlap)[:12], sorted(goal_overlap)[:12]))
+                candidate_count = len(candidates)
+            else:
+                query_terms = current_terms - goal_terms
+                documents = [(row, _token_counts(row.data.get("excerpt"))) for row in scoped]
+                scores = _bm25_scores(query_terms, documents)
+                candidates = []
+                candidate_count = 0
+                for row, counts in documents:
+                    overlap = query_terms & set(counts)
+                    if not overlap:
+                        continue
+                    candidate_count += 1
+                    if row.id not in scores:
+                        continue
+                    candidates.append(
+                        (
+                            scores[row.id],
+                            row,
+                            sorted(overlap)[:12],
+                            sorted(goal_terms & set(counts))[:12],
+                        )
                     )
-                )
-            candidate_count = len(candidates)
+            qualified_count = len(candidates)
             candidates.sort(
                 key=lambda item: (
                     -item[0],
-                    _age_days(item[1]) if _age_days(item[1]) is not None else 10**9,
-                    item[2],
+                    _age_days(item[1].data.get("reviewed_at") or "")
+                    if _age_days(item[1].data.get("reviewed_at") or "") is not None
+                    else 10**9,
+                    item[1].id,
                 )
             )
             # The cap is applied after goal/active/source eligibility filtering. It is a
             # safety bound for local personal memory, not an unscoped SQL LIMIT.
             candidates = candidates[: self.MAX_RESEARCH_CANDIDATES]
             results, seen = [], set()
-            for score, reviewed_at, row_id, row, overlap, goal_overlap in candidates:
+            for score, row, overlap, goal_overlap in candidates:
                 if row.data.get("sha256") in seen:
                     continue
                 seen.add(row.data.get("sha256"))
@@ -417,15 +532,17 @@ class ResearchMemory:
                         "source_url": row.data["url"],
                         "source_title": row.data.get("title"),
                         "goal_id": row.data["goal_id"],
-                        "reviewed_at": reviewed_at,
-                        "age_days": _age_days(reviewed_at),
+                        "reviewed_at": row.data.get("reviewed_at"),
+                        "age_days": _age_days(row.data.get("reviewed_at")),
                         "excerpt": row.data["excerpt"],
                         "evidence_quote": row.data.get("evidence_quote"),
                         "note_summary": row.data.get("note_summary"),
                         "owner_useful": await self._latest_feedback(session, row.parent_id),
-                        "retrieval_score": score,
-                        "retrieval_method": "scoped_lexical_v1",
-                        "ranking_version": "alive13-scoped-lexical-v1",
+                        "retrieval_score": round(score, 6),
+                        "retrieval_method": (
+                            "scoped_bm25_v1" if ranker == ALIVE14_RANKING else "scoped_lexical_v1"
+                        ),
+                        "ranking_version": ranker,
                         "matched_terms": overlap,
                         "goal_terms": goal_overlap,
                         "same_source": False,
@@ -441,11 +558,14 @@ class ResearchMemory:
             "current_snapshot_id": snapshot_id,
             "current_url": current_url,
             "goal_id": goal_id,
-            "mode": "scoped_lexical_v1",
+            "mode": "scoped_bm25_v1" if ranker == ALIVE14_RANKING else "scoped_lexical_v1",
             "requested_mode": mode,
             "embedding": None,
-            "scoped_count": len(scoped_rows),
+            "ranking_version": ranker,
+            "scoped_count": len(scoped),
             "candidate_count": candidate_count,
+            "qualified_count": qualified_count,
+            "minimum_score": MIN_RETRIEVAL_SCORE if ranker == ALIVE14_RANKING else None,
             "candidate_limit": self.MAX_RESEARCH_CANDIDATES,
             "results": results,
             "abstained": not results,
@@ -473,32 +593,35 @@ class ResearchMemory:
             goal = await self.web.get(session, snapshot.data["goal_id"], "goal")
             current_text = snapshot.data["text"]
             historical_text = memory.data["excerpt"]
-            shared = sorted(_tokens(current_text) & _tokens(historical_text))
+            goal_terms = _tokens(goal.data["instruction"])
+            overlap = sorted((_tokens(current_text) & _tokens(historical_text)) - goal_terms)
             model_quote = memory.data.get("evidence_quote")
-            historical_quote = _sentence(historical_text, shared) if shared else None
-            current_quote = _sentence(current_text, shared) if shared else None
-            if len(shared) >= 2 and current_quote and historical_quote:
+            current_quote, historical_quote, shown_terms = _overlap_spans(
+                current_text, historical_text, overlap
+            )
+            if len(shown_terms) >= 2 and current_quote and historical_quote:
                 relation = "topic_overlap_candidate"
                 status = "candidate"
                 explanation = (
-                    "The two reviewed excerpts share lexical content terms "
-                    + ", ".join(shared[:6])
+                    "The displayed source spans share lexical content terms "
+                    + ", ".join(shown_terms[:6])
                     + ". This is a topic-overlap candidate only; it does not establish agreement, "
                     "support, contradiction or corroboration."
                 )
-            elif len(shared) == 1 and current_quote and historical_quote:
+            elif len(shown_terms) == 1 and current_quote and historical_quote:
                 relation = "weak_lexical_overlap"
                 status = "candidate"
                 explanation = (
-                    f"The excerpts share only the term '{shared[0]}'. This is a weak lexical "
-                    "overlap and requires owner review; it does not establish a useful relation."
+                    f"The displayed source spans share only the term '{shown_terms[0]}'. "
+                    "This is a weak lexical overlap and requires owner review; it does not "
+                    "establish a useful relation."
                 )
             else:
                 relation = "insufficient_evidence"
                 status = "insufficient_evidence"
                 explanation = (
                     "No inspectable shared evidence supports a research connection between these "
-                    "two reviewed sources."
+                    "two reviewed sources after goal vocabulary is excluded."
                 )
             row = self.web.add(
                 session,
@@ -514,12 +637,14 @@ class ResearchMemory:
                     "historical_sha256": memory.data["sha256"],
                     "historical_quote": historical_quote,
                     "model_evidence_quote": model_quote,
-                    "shared_terms": shared[:12],
+                    "shared_terms": shown_terms,
+                    "goal_terms_excluded": sorted(goal_terms),
                     "relation_type": relation,
                     "explanation": explanation,
                     "status": status,
                     "evidence_policy": (
-                        "exact source spans; shared words do not establish agreement"
+                        "displayed exact source spans; shared terms are limited to those spans; "
+                        "shared words do not establish agreement"
                     ),
                     "model": "deterministic-lexical-connection-v1",
                     "inference_calls": 0,
@@ -549,16 +674,43 @@ class ResearchMemory:
                 "abstained": status == "insufficient_evidence",
             }
 
-    async def connection_feedback(self, connection_id, useful):
+    async def connection_feedback(self, connection_id, feedback):
+        if isinstance(feedback, bool):
+            feedback = {"useful": feedback}
         async with self.k.lock, self.k.db.sessions.begin() as session:
             row = await self.web.get(session, connection_id, CONNECTION_KIND)
+            history = list(row.data.get("feedback_history", []))
+            revision = len(history) + 1
+            entry = {
+                "revision": revision,
+                "feedback": feedback,
+                "at": now().isoformat(),
+            }
+            history.append(entry)
+            useful = feedback.get("useful")
+            if useful is None:
+                if feedback.get("misleading") == "yes" or feedback.get("relevant_to_goal") == "no":
+                    useful = False
+                elif (
+                    feedback.get("relevant_to_goal") == "yes"
+                    and feedback.get("misleading") != "yes"
+                ):
+                    useful = True
             row.data = row.data | {
-                "owner_useful": bool(useful),
-                "feedback_at": now().isoformat(),
+                "owner_useful": useful,
+                "feedback": feedback,
+                "feedback_revision": revision,
+                "feedback_history": history[-20:],
+                "feedback_at": entry["at"],
             }
             self.k.add_event(
                 session,
                 "research.connection_feedback",
-                {"connection_id": row.id, "useful": bool(useful)},
+                {
+                    "connection_id": row.id,
+                    "revision": revision,
+                    "useful": useful,
+                    "feedback": feedback,
+                },
             )
             return record(row)

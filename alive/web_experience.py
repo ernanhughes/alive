@@ -82,6 +82,7 @@ class ResearchRetrieveRequest(Strict):
     snapshot_id: str
     top_k: int = Field(3, ge=1, le=5)
     mode: Literal["text", "hybrid", "vector"] = "hybrid"
+    ranker: Literal["alive14-bm25-v1", "alive13-scoped-lexical-v1"] = "alive14-bm25-v1"
 
 
 class ResearchConnectionRequest(Strict):
@@ -89,8 +90,30 @@ class ResearchConnectionRequest(Strict):
     memory_id: str
 
 
+class RelationshipPreviewRequest(Strict):
+    snapshot_id: str
+    research_id: str
+    provider: Literal["local_stub", "meta"] = "local_stub"
+
+
+class RelationshipAuthorizeRequest(Strict):
+    consent_id: str
+    payload_sha256: str = Field(min_length=64, max_length=64)
+    approved: Literal[True]
+
+
+class RelationshipAnalyzeRequest(Strict):
+    consent_id: str
+
+
 class ConnectionFeedbackRequest(Strict):
-    useful: bool
+    useful: bool | None = None
+    factually_supported: Literal["yes", "no", "uncertain"] | None = None
+    relevant_to_goal: Literal["yes", "no", "uncertain"] | None = None
+    revealed_new: Literal["yes", "no", "uncertain"] | None = None
+    already_obvious: Literal["yes", "no", "uncertain"] | None = None
+    would_act: Literal["yes", "no", "uncertain"] | None = None
+    misleading: Literal["yes", "no", "uncertain"] | None = None
 
 
 class DocumentationNote(Strict):
@@ -1174,7 +1197,9 @@ def router(app, ready):
 
     @api.post("/grants/{grant_id}/revoke")
     async def revoke(grant_id: str):
-        return await app.state.web.revoke(grant_id)
+        result = await app.state.web.revoke(grant_id)
+        await app.state.relationships.invalidate_for_grant(grant_id)
+        return result
 
     @api.post("/snapshots")
     async def snapshot(data: SnapshotRequest):
@@ -1203,11 +1228,15 @@ def router(app, ready):
 
     @api.post("/research/memories/{research_id}/withdraw")
     async def withdraw_research(research_id: str):
-        return await app.state.research.withdraw(research_id)
+        result = await app.state.research.withdraw(research_id)
+        await app.state.relationships.invalidate_for_memory(research_id)
+        return result
 
     @api.post("/research/retrieve")
     async def retrieve_research(data: ResearchRetrieveRequest):
-        return await app.state.research.retrieve(data.snapshot_id, data.top_k, data.mode)
+        return await app.state.research.retrieve(
+            data.snapshot_id, data.top_k, data.mode, data.ranker
+        )
 
     @api.post("/research/connections")
     async def research_connection(data: ResearchConnectionRequest):
@@ -1215,7 +1244,32 @@ def router(app, ready):
 
     @api.post("/research/connections/{connection_id}/feedback")
     async def research_connection_feedback(connection_id: str, data: ConnectionFeedbackRequest):
-        return await app.state.research.connection_feedback(connection_id, data.useful)
+        rubric = data.model_dump(exclude_none=True)
+        if not rubric:
+            raise ValueError("At least one feedback judgment is required")
+        return await app.state.research.connection_feedback(connection_id, rubric)
+
+    @api.post("/research/outbound/preview")
+    async def preview_research_outbound(data: RelationshipPreviewRequest):
+        return await app.state.relationships.preview(
+            data.snapshot_id, data.research_id, data.provider
+        )
+
+    @api.post("/research/outbound/authorize")
+    async def authorize_research_outbound(data: RelationshipAuthorizeRequest):
+        return await app.state.relationships.authorize(data.consent_id, data.payload_sha256)
+
+    @api.post("/research/outbound/{consent_id}/revoke")
+    async def revoke_research_outbound(consent_id: str):
+        return await app.state.relationships.revoke(consent_id)
+
+    @api.post("/research/relationships")
+    async def analyze_research_relationship(data: RelationshipAnalyzeRequest):
+        return await app.state.relationships.analyze(data.consent_id)
+
+    @api.get("/research/relationships")
+    async def list_research_relationships():
+        return await app.state.relationships.list()
 
     @api.post("/research/index/repair")
     async def repair_research_index():
