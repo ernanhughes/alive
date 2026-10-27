@@ -1,0 +1,25 @@
+{
+  "status": "PENDING_OWNER_APPROVAL",
+  "executed": false,
+  "meta_inference": false,
+  "paid_calls": 0,
+  "provider": "Meta Model API",
+  "endpoint": "configured ALIVE_META_BASE_URL / chat/completions",
+  "pinned_model": "muse-spark-1.3",
+  "planned_journey": [
+    "three distinct authorised observations, each analysed and rated",
+    "one related observation paused by policy",
+    "one explicit owner correction",
+    "bounded periodic re-evaluation after three paused observations",
+    "restart and stale-grant rejection"
+  ],
+  "requested_ceiling": {
+    "maximum_calls": 8,
+    "maximum_total_tokens": 12000,
+    "maximum_estimated_usd": 0.1
+  },
+  "retry_policy": "no automatic paid retry; failed or interrupted calls settle conservatively and are not replayed",
+  "isolation": "fresh database, fresh Chrome profile, isolated extension copy, no owner production data",
+  "redaction": "no credentials or raw browser profile in archive; only controlled excerpts, hashes, counts and sanitised provider usage",
+  "approval_note": "This milestone did not authorise or execute paid inference. Owner approval is required before dispatch."
+}

@@ -1,0 +1,9 @@
+{
+  "scope": "controlled companion SQLite across a new app process",
+  "policy_version_before": 11,
+  "policy_version_after": 11,
+  "decision_after_restart": "analyse",
+  "distinct_support_after_restart": 4,
+  "provider_calls_total": 8,
+  "duplicate_inference": false
+}

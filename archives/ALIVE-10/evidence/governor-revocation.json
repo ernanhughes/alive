@@ -1,0 +1,25 @@
+{
+  "native_checks": {
+    "duplicate_analysis": 409,
+    "provider_calls": 5,
+    "wrong_origin_grant": 403,
+    "modified_hash_snapshot": 403,
+    "budget_exhaustion": 409
+  },
+  "restart": {
+    "policy_version_before": 11,
+    "policy_version_after": 11,
+    "notes_before": 5,
+    "notes_after": 5,
+    "stale_grant_status": 403,
+    "duplicate_inference": false,
+    "post_restart_action": "analyse"
+  },
+  "unit_tests": [
+    "expired grant cannot be bypassed by owner correction",
+    "revoked grant cannot be bypassed by owner correction",
+    "failed Governor correction rolls back the policy reset",
+    "duplicate analysis is rejected before provider dispatch"
+  ],
+  "note": "Native checks use the isolated current-branch backend; unit checks are in the archived pytest transcript."
+}
