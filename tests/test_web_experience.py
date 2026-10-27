@@ -6,7 +6,7 @@ from types import SimpleNamespace
 from fastapi.testclient import TestClient
 
 from alive.app import create_app
-from alive.web_experience import WebCompanion, digest
+from alive.web_experience import WebCompanion, digest, goal_relevance
 from tests.conftest import TOKEN
 
 ROOT = "/api/v1/browser-experience"
@@ -130,6 +130,37 @@ def test_changed_excerpt_and_negative_feedback_prevent_reuse(client, monkeypatch
     assert changed["snapshot"]["data"]["text_status"] == "changed_excerpt"
     post(client, "/feedback", {"note_id": note["id"], "useful": False})
     assert snapshot(client, grant)["decision"]["action"] == "analyse"
+
+
+def test_goal_relevance_is_deterministic_and_explicit():
+    relevant = goal_relevance("Help me decide where to start learning Python", TEXT)
+    assert relevant["policy"] == "deterministic-goal-excerpt-overlap-v1"
+    assert relevant["relevant"] is True
+    assert "python" in relevant["matched_terms"]
+
+    irrelevant = goal_relevance("Check coolant temperature", TEXT)
+    assert irrelevant["relevant"] is False
+    assert irrelevant["matched_terms"] == []
+
+
+def test_unrelated_goal_returns_no_action_without_model_call(client, monkeypatch):
+    calls = fake_model(monkeypatch)
+    goal = post(client, "/goals", {"instruction": "Check coolant temperature"})
+    grant = consent(client, goal["id"])
+    shot = snapshot(client, grant)
+
+    decision = shot["decision"]
+    assert decision["action"] == "no_action"
+    assert decision["without_feedback_action"] == "no_action"
+    assert decision["goal_relevance"]["relevant"] is False
+    assert decision["inference_calls"] == 0
+    assert decision["note"] is None and decision["candidate_note"] is None
+    assert "does not match" in decision["reason"]
+    assert not calls
+
+    # The API must enforce the same gate, not rely on the panel disabling a button.
+    analyse(client, shot, expected=409)
+    assert not calls
 
 
 def test_exact_consent_hash_and_owner_goal_isolation(client, monkeypatch):

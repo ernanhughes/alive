@@ -9,6 +9,13 @@ See [installation, qualification and the three-minute demo](docs/ALIVE-05.md).
 This is exact-match experience reuse on two public documentation pages, not general
 website adaptation or evidence that predictive learning outperforms simpler policies.
 
+**ALIVE-06 adds contextual goal relevance to the documentation companion:** before any
+model call, a deterministic local check compares the owner's goal with the reviewed
+excerpt. If they share no content terms, ALIVE records **no action warranted**, creates
+no note and makes no Meta call. The side panel shows the match terms and the basis.
+This is transparent lexical relevance, not semantic understanding or open-web autonomy.
+See [the ALIVE-06 protocol](docs/ALIVE-06.md).
+
 ALIVE-01 is a working vertical slice: FastAPI + PostgreSQL/pgvector + ZeroMQ + React dashboard + managed Chrome + Manifest V3 extension + Pi RPC. Deterministic policies drive curiosity, coherence and commitment. They do not require recurring model calls or claim to be reinforcement learning.
 
 **ALIVE-02 adds a bounded autonomous cognitive loop.** Authorised browser changes compete for attention; structured Meta Observer/Proposer/Critic roles cooperate while a deterministic Investigator, Evaluator and Governor control evidence, permissions and budgets. Real ONNX embeddings, hybrid retrieval, human action approval, persistent experience and restart recovery are implemented. Open **Cognition** in the existing observatory to inspect real traces. Autonomy starts stopped and recovers paused.
