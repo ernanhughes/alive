@@ -115,14 +115,16 @@ No raw webpage, profile, token or API key is archived.
 
 - Starting `origin/main`: `7ad0642d457aec7cd196b9f11d6d484a566acdc5` (merge of PR #9).
 - Feature commit: `321139d` (add contextual goal relevance and no-action decisions).
-- Evidence/handoff commit: the final commit containing this document.
+- Evidence/handoff commit: `68f3b2c`.
 - Branch: `opencode/alive-06-contextual-browser`.
 
 ## 10. Branch and PR
 
 - Branch pushed: `opencode/alive-06-contextual-browser`
-- PR: to be created after push; review-only, not auto-merged.
-- PR target: `main`.
+- PR: [#10](https://github.com/ernanhughes/alive/pull/10)
+- Initial PR head: `68f3b2c`; this handoff update is the final docs-only tip.
+- PR target: `main`
+- State: open, review-only, not auto-merged.
 
 ## 11. Integration conflicts
 
