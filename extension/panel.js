@@ -5,6 +5,8 @@ $('token').value = saved.token || '';
 $('auto').checked = !!saved.autoSend;
 let reviewed = null;
 let polling = null;
+let currentDecision = null;
+let reviewedSignature = null;
 async function command(type, args = {}) {
   const response = await chrome.runtime.sendMessage({ type, ...args });
   if (response.error) throw new Error(response.error);
@@ -69,29 +71,39 @@ $('stop').onclick = () => action(async () => {
   $('status').textContent = 'Stopped · page observation revoked';
 });
 $('send').onclick = () => action(async () => {
-  const result = await command('send', { reviewed });
+  const language = $('language').value;
+  const result = await command('send', { reviewed, language });
+  currentDecision = result.decision || null;
   $('status').textContent = 'Observation persisted by ALIVE';
   if (result.decision) {
     const action = result.decision.action;
     const relevance = result.decision.goal_relevance;
+    const uncertain = action === 'uncertain';
     $('decision-label').textContent = action === 'recall'
       ? 'Recall a note you found useful · no new inference'
       : action === 'no_action'
         ? 'No action warranted · observation does not match your goal'
-        : 'Fresh analysis recommended · no useful matching experience yet';
+        : uncertain
+          ? 'Language uncertain · choose a language or explicitly analyse'
+          : 'Fresh analysis recommended · no useful matching experience yet';
     $('relevance').textContent = relevance
-      ? `Goal relevance: ${relevance.relevant ? 'matched' : 'no match'}${relevance.matched_terms?.length ? ' · ' + relevance.matched_terms.join(', ') : ''}. ${relevance.basis}`
+      ? `Language: ${relevance.language} (${relevance.language_source}) · policy ${result.decision.relevance_policy || relevance.policy} · ${relevance.relevant ? 'matched' : 'no match'}${relevance.matched_terms?.length ? ' · ' + relevance.matched_terms.join(', ') : ''}. ${relevance.basis}`
       : '';
     $('decision').textContent = JSON.stringify({ ...result.decision,
       note: result.decision.note?.id || null, candidate_note: result.decision.candidate_note?.id || null }, null, 2);
     $('fact').textContent = `${result.snapshot.data.text_status} · SHA-256 ${result.snapshot.data.sha256}. Observed text; not verified factual truth.`;
     $('preference').textContent = action === 'no_action'
       ? 'No Meta call was made. Revise the goal if this page should be analysed.'
-      : result.decision.feedback_id
-        ? 'Recall follows your earlier useful rating. Feedback ' + result.decision.feedback_id + '.'
-        : 'No positive matching rating. A saved note alone does not enable reuse.';
-    $('analyse').disabled = action !== 'analyse';
-    if (action === 'no_action') {
+      : uncertain
+        ? 'No Meta call was made. Confirming the page language or using Analyse anyway is an explicit override.'
+        : result.decision.feedback_id
+          ? 'Recall follows your earlier useful rating. Feedback ' + result.decision.feedback_id + '.'
+          : 'No positive matching rating. A saved note alone does not enable reuse.';
+    $('analyse').disabled = action !== 'analyse' && action !== 'uncertain';
+    if (action === 'uncertain') {
+      $('note').textContent = 'No model note. Choose a language or use Analyse anyway.';
+      $('status').textContent = 'Language uncertain · no automatic model call';
+    } else if (action === 'no_action') {
       $('note').textContent = 'No model note. No Meta call was made.';
       $('status').textContent = 'No action warranted · the observation was not analysed';
     } else if (result.decision.note) {
@@ -101,7 +113,7 @@ $('send').onclick = () => action(async () => {
 });
 $('analyse').onclick = () => action(async () => {
   $('analyse').disabled = true;
-  await command('analyse');
+  await command('analyse', { allow_uncertain_analysis: currentDecision?.action === 'uncertain' });
   $('status').textContent = 'One bounded Meta request running; Stop cancels it.';
   polling = setInterval(() => action(pollNote), 750);
   await pollNote();
@@ -116,6 +128,11 @@ for (const [id, useful] of [['useful', true], ['needs-work', false]]) {
 async function preview() {
   const { latest, selected } = await chrome.storage.session.get(['latest', 'selected']);
   reviewed = latest?.payload || null;
+  const signature = reviewed ? JSON.stringify(reviewed) : null;
+  if (signature !== reviewedSignature) {
+    reviewedSignature = signature;
+    currentDecision = null;
+  }
   $('preview').textContent = reviewed ? JSON.stringify(reviewed, null, 2) : 'No observation permission. Authorise this page to preview.';
   $('send').disabled = !reviewed;
   if (!reviewed) { $('analyse').disabled = true; return; }

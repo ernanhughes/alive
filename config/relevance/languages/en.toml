@@ -1,0 +1,16 @@
+schema_version = 1
+language = "en"
+strategy = "words"
+normalization = "nfkc_casefold"
+minimum_token_length = 4
+ngram_size = 1
+stop_characters = []
+stopwords = [
+  "about", "after", "again", "also", "and", "are", "because", "been", "before",
+  "being", "between", "both", "can", "could", "does", "each", "from", "have",
+  "help", "into", "its", "just", "more", "most", "other", "over", "should",
+  "some", "such", "than", "that", "the", "their", "them", "then", "there",
+  "these", "they", "this", "those", "through", "under", "very", "was", "were",
+  "what", "when", "where", "which", "while", "will", "with", "would", "your",
+  "you",
+]

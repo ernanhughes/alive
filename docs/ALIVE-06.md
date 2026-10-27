@@ -26,7 +26,7 @@ owner to revise the goal if the page should be analysed.
 | Field | Meaning |
 |---|---|
 | `action` | `recall`, `analyse` or `no_action` |
-| `goal_relevance.policy` | `deterministic-goal-excerpt-overlap-v1` |
+| `goal_relevance.policy` | `deterministic-multilingual-relevance-v2` (ALIVE-07; v1 remains historical) |
 | `goal_relevance.relevant` | Whether at least one content term overlaps |
 | `goal_relevance.matched_terms` | At most 20 sorted matched terms |
 | `goal_relevance.basis` | Explicit statement that this is lexical overlap, not inference |

@@ -34,7 +34,7 @@ def consent(client, goal_id):
     )
 
 
-def snapshot(client, grant, text=TEXT, expected=200):
+def snapshot(client, grant, text=TEXT, expected=200, language="auto"):
     return post(
         client,
         "/snapshots",
@@ -44,12 +44,13 @@ def snapshot(client, grant, text=TEXT, expected=200):
             "title": "Tutorial",
             "text": text,
             "reviewed_sha256": digest(text),
+            "language": language,
         },
         expected,
     )
 
 
-def analyse(client, shot, expected=200):
+def analyse(client, shot, expected=200, allow_uncertain=False):
     return post(
         client,
         "/analyse",
@@ -57,6 +58,7 @@ def analyse(client, shot, expected=200):
             "snapshot_id": shot["snapshot"]["id"],
             "reviewed_sha256": shot["snapshot"]["data"]["sha256"],
             "send_to_meta": True,
+            "allow_uncertain_analysis": allow_uncertain,
         },
         expected,
     )
@@ -134,13 +136,32 @@ def test_changed_excerpt_and_negative_feedback_prevent_reuse(client, monkeypatch
 
 def test_goal_relevance_is_deterministic_and_explicit():
     relevant = goal_relevance("Help me decide where to start learning Python", TEXT)
-    assert relevant["policy"] == "deterministic-goal-excerpt-overlap-v1"
+    assert relevant["policy"] == "deterministic-multilingual-relevance-v2"
+    assert relevant["status"] == "supported"
+    assert relevant["language"] == "en"
     assert relevant["relevant"] is True
     assert "python" in relevant["matched_terms"]
 
     irrelevant = goal_relevance("Check coolant temperature", TEXT)
     assert irrelevant["relevant"] is False
     assert irrelevant["matched_terms"] == []
+
+    chinese = goal_relevance(
+        "学习 Python 编程", "Python 是一种易于学习、功能强大的编程语言。", language="zh"
+    )
+    assert chinese["relevant"] is True
+    assert {"学习", "编程"} <= set(chinese["matched_terms"])
+
+    arabic = goal_relevance("تعلم البرمجة", "البرمجة سهلة التعلم.", language="ar")
+    assert arabic["relevant"] is True
+
+    mismatch = goal_relevance("Learn Python", TEXT, language="zh")
+    assert mismatch["status"] == "uncertain"
+    assert mismatch["relevant"] is None
+
+    unsupported = goal_relevance("Привет мир", "Python is a language", language="auto")
+    assert unsupported["status"] == "uncertain"
+    assert unsupported["language_supported"] is False
 
 
 def test_unrelated_goal_returns_no_action_without_model_call(client, monkeypatch):
@@ -161,6 +182,47 @@ def test_unrelated_goal_returns_no_action_without_model_call(client, monkeypatch
     # The API must enforce the same gate, not rely on the panel disabling a button.
     analyse(client, shot, expected=409)
     assert not calls
+
+
+def test_uncertain_language_requires_explicit_override(client, monkeypatch):
+    calls = fake_model(monkeypatch)
+    goal = post(client, "/goals", {"instruction": "Learn Python"})
+    grant = consent(client, goal["id"])
+    shot = snapshot(client, grant, language="zh")
+
+    decision = shot["decision"]
+    assert decision["action"] == "uncertain"
+    assert decision["language_source"] == "explicit_mismatch"
+    assert decision["goal_relevance"]["relevant"] is None
+    assert decision["inference_calls"] == 0
+    assert not calls
+
+    analyse(client, shot, expected=409)
+    assert not calls
+
+    analysed = analyse(client, shot, allow_uncertain=True)
+    note = wait(client, analysed["id"])
+    assert note["status"] == "validated"
+    assert note["data"]["language_override"] is True
+    assert len(calls) == 1
+
+
+def test_chinese_relevant_goal_analyses_and_recalls(client, monkeypatch):
+    calls = fake_model(monkeypatch, quote="Python 是一种易于学习")
+    text = "Python 是一种易于学习、功能强大的编程语言。"
+    goal = post(client, "/goals", {"instruction": "学习 Python 编程"})
+    grant = consent(client, goal["id"])
+    shot = snapshot(client, grant, text=text, language="zh")
+
+    assert shot["decision"]["action"] == "analyse"
+    assert shot["decision"]["language"] == "zh"
+    note = wait(client, analyse(client, shot)["id"])
+    assert note["status"] == "validated"
+    post(client, "/feedback", {"note_id": note["id"], "useful": True})
+    recalled = snapshot(client, grant, text=text, language="zh")
+    assert recalled["decision"]["action"] == "recall"
+    assert recalled["decision"]["note"]["id"] == note["id"]
+    assert len(calls) == 1
 
 
 def test_exact_consent_hash_and_owner_goal_isolation(client, monkeypatch):

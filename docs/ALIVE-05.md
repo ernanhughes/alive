@@ -62,11 +62,14 @@ fresh analysis. It does not compare the entire page, infer factual correctness,
 optimise a reward function, or transfer P2/P3 synthetic rewards to real websites.
 
 ALIVE-06 adds a pre-analysis goal-relevance gate. The companion computes exact
-lowercase content-word overlap between the owner goal and the reviewed excerpt. If
+configured content-token overlap between the owner goal and the reviewed excerpt. If
 there is no shared term, it records `no_action`, creates no note and makes no Meta
-call; the analysis endpoint independently rejects the same state with HTTP 409. A
-match is necessary but not sufficient for analysis, and this lexical check is not
-semantic understanding. See [the ALIVE-06 protocol](ALIVE-06.md).
+call; the analysis endpoint independently rejects the same state with HTTP 409.
+ALIVE-07 moves the language resources into `config/relevance/`, adds English, Chinese
+character n-grams and Arabic normalisation, and returns an explicit `uncertain`
+decision for unsupported or mixed scripts. A match is necessary but not sufficient
+for analysis, and none of these checks is semantic understanding. See the
+[ALIVE-07 protocol](ALIVE-07.md).
 
 Consent expires after 30 minutes and is revoked on navigation, tab closure,
 explicit Stop or backend restart. Restart preserves goals, notes, feedback and

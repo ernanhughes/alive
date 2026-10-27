@@ -1,0 +1,87 @@
+{
+  "evidence_kind": "controlled multilingual relevance evaluation",
+  "branch": "opencode/alive-07-multilingual-relevance",
+  "base_commit": "70e2639b0136da9c675c68a24598e96321d3e28a",
+  "policy": "deterministic-multilingual-relevance-v2",
+  "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+  "corpus_sha256": "eef4178558a9cc668e72e73d220f5544926b7abc64d1624653cd1bb2f8e353a5",
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "config/languages/ar.toml": {
+      "sha256": "f5d4fc565dbf78179076b641f926cfe438f8d633f8f39dac4f0238f4153d0eab",
+      "bytes": 502
+    },
+    "config/languages/en.toml": {
+      "sha256": "e8c30db6c958b4482bc5a55549839afa71267b162262506d40d8cdd8a37b88dd",
+      "bytes": 638
+    },
+    "config/languages/zh.toml": {
+      "sha256": "f009baac017e9ada0dea19591acfc92972c53635b0204b16b5e675a0bccc6b46",
+      "bytes": 344
+    },
+    "config/policy.toml": {
+      "sha256": "0cb5b39c26f36cc2ac3fe2061b9e5966a06e21d3462c525b17e578f647bf4d96",
+      "bytes": 170
+    },
+    "corpus/relevance.jsonl": {
+      "sha256": "eef4178558a9cc668e72e73d220f5544926b7abc64d1624653cd1bb2f8e353a5",
+      "bytes": 5239
+    },
+    "evaluation/relevance-metrics.json": {
+      "sha256": "58669fc77b1d854a8242eb9c84f9166aa2a84d7b89b910cd13c0ac93c6c52235",
+      "bytes": 65094
+    },
+    "evaluation/relevance-metrics.md": {
+      "sha256": "de47e3ae4ade3bcf3a84f0f1abc21612667eebda97020890186fc1e56cb55333",
+      "bytes": 1615
+    },
+    "evidence/config-provenance.json": {
+      "sha256": "8eef396b0727b12a37cc6e539ccd172f4c9371abed7ef0c99d850f05f9a20591",
+      "bytes": 1015
+    },
+    "evidence/native-status.json": {
+      "sha256": "fec68416815673aa6c05f54376834e95d6bef5fa6eabc999ff1edd91f784a266",
+      "bytes": 458
+    },
+    "evidence/prior-archive-integrity.json": {
+      "sha256": "1dae344a0363c7755f2dbffd046e79c54fbca3e6ea5459fe624a6f1a318c45d3",
+      "bytes": 821
+    },
+    "README.md": {
+      "sha256": "b099244d9bd2af2374401e5346a7575af1ce2c1a467bbf7edf2367e3a8deca04",
+      "bytes": 5775
+    },
+    "validation/backend.txt": {
+      "sha256": "4f2922051681ecb264fbb00bc0d18ed1b203defb1fb59ae98738dfde0ef35052",
+      "bytes": 1106
+    },
+    "validation/extension-js.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "validation/frontend-build.txt": {
+      "sha256": "d287cc71058ebd5280abdfd20965cdbe34e049d633b082f9cb8de99bed4b8bbe",
+      "bytes": 464
+    },
+    "validation/frontend-tests.txt": {
+      "sha256": "4af8f7f616e69805f29320ddbf95cefd8deb133ea15685d0cb6da7b6363eb93a",
+      "bytes": 319
+    },
+    "validation/relevance-web-living-focused.txt": {
+      "sha256": "197e137481c6a7d1fca88a59a006332a3d5d2d567c64a14340bcddca98cb8b55",
+      "bytes": 757
+    },
+    "validation/ruff.txt": {
+      "sha256": "2f20ae51e594e33158b3e3995be72144b6c414ea2d22b5b2de7dc08aa3cab21b",
+      "bytes": 48
+    },
+    "validation/whitespace.txt": {
+      "sha256": "fb8c84d6272796fcb3343b8d886d6450c7b81ad0a70b850118d09ad01eaa3999",
+      "bytes": 802
+    }
+  },
+  "feature_commit": "369055d"
+}

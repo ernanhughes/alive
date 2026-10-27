@@ -1,0 +1,11 @@
+schema_version = 1
+language = "zh"
+strategy = "character_ngrams"
+normalization = "nfkc"
+minimum_token_length = 1
+ngram_size = 2
+stop_characters = [
+  "的", "了", "是", "在", "和", "有", "我", "你", "他", "她", "它", "这", "那",
+  "不", "也", "就", "都", "而", "及", "与", "等", "着", "过", "吗", "呢",
+]
+stopwords = []

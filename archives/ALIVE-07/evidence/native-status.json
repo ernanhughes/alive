@@ -1,0 +1,13 @@
+{
+  "status": "blocked",
+  "native_chrome": false,
+  "meta_inference": false,
+  "paid_calls": 0,
+  "checked_at": "2026-10-27T10:57:16.716464+00:00",
+  "reason": "Standard local ports 8000 and 5173 were occupied by the primary development worktree; native qualification was not run to avoid interfering with it.",
+  "ports": {
+    "8000": "occupied",
+    "5173": "occupied"
+  },
+  "evidence_type": "controlled FastAPI/SQLite test harness only"
+}
