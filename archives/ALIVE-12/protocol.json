@@ -1,0 +1,105 @@
+{
+  "protocol_version": "alive12-retrieval-v1",
+  "frozen_at": "2026-10-27T17:55:00+00:00",
+  "kind": "controlled cross-page research-memory evaluation",
+  "paid_inference": false,
+  "goal_scope": "one goal per scenario; historical memory saved under the same goal",
+  "contexts": {
+    "historical": "explicitly reviewed historical excerpt",
+    "current": "explicitly reviewed current excerpt",
+    "labels": "independently predeclared by the evaluation designer; not produced by the connection generator"
+  },
+  "connection_policy": "deterministic lexical overlap with exact quotations; a candidate is never called validated factual support",
+  "scenarios": [
+    {
+      "id": "related-agent-memory",
+      "family": "related",
+      "goal": "Understand persistent memory for AI research agents",
+      "historical_url": "http://127.0.0.1:9300/historical/agent-memory",
+      "current_url": "http://127.0.0.1:9300/current/episodic-retrieval",
+      "historical_text": "Persistent agent memory stores research observations across sessions and retrieves them for later tasks.",
+      "current_text": "Episodic retrieval selects relevant past experiences for an agent current task.",
+      "expected_related": true,
+      "expected_connection": "candidate"
+    },
+    {
+      "id": "related-competing-policy",
+      "family": "related",
+      "goal": "Choose a retrieval policy for a research agent",
+      "historical_url": "http://127.0.0.1:9300/historical/deterministic-rule",
+      "current_url": "http://127.0.0.1:9300/current/learned-policy",
+      "historical_text": "A deterministic rule retrieves the most recent source for every agent task.",
+      "current_text": "A learned policy selects retrieval actions from observed feedback and task context.",
+      "expected_related": true,
+      "expected_connection": "candidate"
+    },
+    {
+      "id": "related-contradiction",
+      "family": "related",
+      "goal": "Determine whether persistent memory improves research agents",
+      "historical_url": "http://127.0.0.1:9300/historical/positive-claim",
+      "current_url": "http://127.0.0.1:9300/current/negative-result",
+      "historical_text": "Persistent memory improves agent task success in this controlled benchmark.",
+      "current_text": "A later benchmark found no improvement from persistent memory in agent task success.",
+      "expected_related": true,
+      "expected_connection": "candidate"
+    },
+    {
+      "id": "false-similarity",
+      "family": "negative",
+      "goal": "Compare memory concepts across computing and cognition",
+      "historical_url": "http://127.0.0.1:9300/historical/browser-cache",
+      "current_url": "http://127.0.0.1:9300/current/agent-context",
+      "historical_text": "Browser cache memory retains page assets for faster rendering.",
+      "current_text": "Agent context records previous tool observations for later decisions.",
+      "expected_related": false,
+      "expected_connection": "insufficient_evidence"
+    },
+    {
+      "id": "stale-research",
+      "family": "related",
+      "goal": "Review a changing recommendation for memory diagnostics",
+      "historical_url": "http://127.0.0.1:9300/historical/old-diagnostic",
+      "current_url": "http://127.0.0.1:9300/current/new-diagnostic",
+      "historical_text": "Older note: reset the diagnostic buffer manually every session to compare memory allocations.",
+      "current_text": "Current note: diagnostics now reset automatically when the memory trace starts.",
+      "expected_related": true,
+      "expected_connection": "candidate",
+      "stale_after_days": 7
+    },
+    {
+      "id": "no-relevant-memory",
+      "family": "negative",
+      "goal": "Understand quantum error correction",
+      "historical_url": null,
+      "current_url": "http://127.0.0.1:9300/current/quantum",
+      "historical_text": null,
+      "current_text": "Quantum error correction uses logical qubits and stabilizer codes.",
+      "expected_related": false,
+      "expected_connection": "insufficient_evidence"
+    }
+  ],
+  "arms": {
+    "A_current_page_only": "no historical retrieval",
+    "B_exact_match": "only same-URL exact validated recall; no cross-page research memory",
+    "C_cross_page_retrieval": "goal-scoped retrieval over saved research memory, no connection generation",
+    "D_retrieval_plus_connection": "C plus deterministic lexical connection candidate with exact quotations",
+    "history_access_control": "all active same-goal memories without ranking or connection synthesis"
+  },
+  "metrics": [
+    "target retrieved at top 3",
+    "retrieval precision at 3",
+    "retrieval recall at 3",
+    "correct source attribution",
+    "valid historical quote",
+    "valid current quote",
+    "unsupported connection",
+    "false connection",
+    "appropriate abstention",
+    "stale age reported",
+    "additional model calls",
+    "estimated cost"
+  ],
+  "adoption_rule": "Engineering qualification does not establish retrieval advantage. Do not claim superiority from this small controlled corpus.",
+  "caveat": "The false-similarity fixture may be retrieved lexically; connection abstention is a separate safety check. Labels are not model outputs or owner usefulness ratings."
+}

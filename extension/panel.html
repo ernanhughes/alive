@@ -38,7 +38,7 @@
       summary { cursor: pointer; color: #b3d68c; margin: 12px 0; }
       blockquote { margin: 12px 0; padding-left: 12px; border-left: 2px solid #c7ed9d; }
       #decision-label { font-size: 16px; color: #c7ed9d; }
-      #relevance, #policy, #feedback-help { font-size: 11px; color: #9caf92; line-height: 1.5; }
+      #relevance, #policy, #feedback-help, #research-status, #research-help, #research-results, #connection { font-size: 11px; color: #9caf92; line-height: 1.5; }
       #note { font-size: 13px; line-height: 1.65; }
       input[type="checkbox"] {
         width: auto;
@@ -127,6 +127,21 @@
     </p>
     <h2>Learned action policy</h2>
     <p id="preference">No feedback yet. The policy can pause automatic analysis, but never grants permissions.</p>
+    <h2>Research memory</h2>
+    <button id="save-research" disabled>Save current note for research</button>
+    <button id="find-research" disabled>Find related research</button>
+    <button id="withdraw-research" disabled>Withdraw this memory</button>
+    <p id="research-status">No saved research memory.</p>
+    <div id="research-results"></div>
+    <button id="connect-research" disabled>Explain connection</button>
+    <div id="connection"></div>
+    <button id="connection-useful" disabled>Connection useful</button>
+    <button id="connection-not-useful" disabled>Connection not useful</button>
+    <p id="research-help">
+      Research memory stores only the reviewed excerpt and its source/goal provenance.
+      Related material is historical evidence, never evidence for the current page. Nothing is
+      sent externally by retrieval alone.
+    </p>
     <details><summary>Runtime identity</summary><pre id="state">Awaiting connection.</pre></details>
     <script src="panel.js" type="module"></script>
   </body>

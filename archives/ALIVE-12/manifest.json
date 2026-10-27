@@ -1,0 +1,63 @@
+{
+  "status": "PASS",
+  "native_synthetic": "PASS",
+  "native_meta": "NOT_RUN",
+  "retrieval_advantage": "NOT_DEMONSTRATED",
+  "baseline": "d58c30748a5ec9273a0be86dc769d8c1b7dc6b23",
+  "source_commit": "cf7022cb168b4cbd65bbc0b98faafbb25b498c85",
+  "paid_calls": 0,
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "evidence/native-synthetic.json": {
+      "sha256": "70533e2f335d03735f884f57351d8151039436e3c11d58ea2428dbca597c0828",
+      "bytes": 1536
+    },
+    "evidence/research-memory.png": {
+      "sha256": "0d6ee94ccade409aaae751dd495952f6effec1fea72320e388b4b06be44b685c",
+      "bytes": 96684
+    },
+    "evidence/retrieval-comparison.json": {
+      "sha256": "ad93bd08971b36365287bcb9f30f44243a9a3594b300fa5eafe7d2c8e2d52be8",
+      "bytes": 33862
+    },
+    "protocol.json": {
+      "sha256": "65b91e5bb661de2da9cdcb4499246385f2cfe7992f2cf6afe473de2d457f6aa1",
+      "bytes": 5216
+    },
+    "README.md": {
+      "sha256": "169b388f86d013a196a64e701c5baaeafc88da2cd38be5064ddd52690e13d0a4",
+      "bytes": 4150
+    },
+    "validation/backend.txt": {
+      "sha256": "b607aed0c04ba96822f31ea2132cce5bb4c6f9e04ebe120bb06ac28ca6aad2d2",
+      "bytes": 1293
+    },
+    "validation/build.txt": {
+      "sha256": "ba3caa7419c223b60cd364b330334467a8e7feb960fc2ab68c94c65953860359",
+      "bytes": 464
+    },
+    "validation/extension.txt": {
+      "sha256": "99fcf8ae9d0654796bc1a98522d4b9dc8cb3178f61e7504de3a6dd3fde3ec4f9",
+      "bytes": 918
+    },
+    "validation/frontend.txt": {
+      "sha256": "fd4f594a72c5fc3566a3e9859f5d3cf491d02e748f23aba396222e08d982f394",
+      "bytes": 289
+    },
+    "validation/research-memory.txt": {
+      "sha256": "dbb1709ea8595d9e742acafa00c44a54597163efb953cda9e0fe06f8fb91ffe1",
+      "bytes": 1211
+    },
+    "validation/ruff.txt": {
+      "sha256": "54a71d6fad315cae68ede23ebb118c9ea91141f8d34716f257c94a1fe11940c6",
+      "bytes": 49
+    },
+    "validation/whitespace.txt": {
+      "sha256": "88469d0d44f3c6c242fbe77d0a03416fc7d0eaf055f980fce4426ecf02e8a389",
+      "bytes": 123
+    }
+  }
+}

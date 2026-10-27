@@ -50,6 +50,7 @@ test('a late validated reply cannot restore a feedback target after Stop', async
   await pending;
   assert.equal(p.element('useful').disabled, true);
   assert.equal(p.element('needs-work').disabled, true);
+  assert.equal(p.element('save-research').disabled, true);
   assert.equal(p.element('status').textContent, status);
   assert.equal(p.element('note').textContent, 'Observation stopped and permission revoked.');
 });
@@ -92,6 +93,7 @@ test('a current validated note still enables feedback', async () => {
   await pending;
   assert.equal(p.element('useful').disabled, false);
   assert.equal(p.element('needs-work').disabled, false);
+  assert.equal(p.element('save-research').disabled, false);
   assert.match(p.element('status').textContent, /Meta note ready/);
 });
 

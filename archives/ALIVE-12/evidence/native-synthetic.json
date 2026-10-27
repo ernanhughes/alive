@@ -1,0 +1,41 @@
+{
+  "provenance": {
+    "kind": "native Chrome extension with isolated current-branch backend",
+    "chrome_native": true,
+    "provider": "local synthetic HTTP stub",
+    "paid_calls": 0,
+    "meta_inference": false,
+    "source_commit": "cf7022cb168b4cbd65bbc0b98faafbb25b498c85"
+  },
+  "environment": {
+    "chrome": "155.0.8059.85",
+    "presentation": "native side panel target",
+    "panel_opened_as_ordinary_tab": false,
+    "pages": "two controlled loopback research pages",
+    "screenshot": "research-memory.png"
+  },
+  "steps": [
+    {
+      "name": "cross-page",
+      "historical_url": "http://127.0.0.1:59760/research/a",
+      "current_url": "http://127.0.0.1:59760/research/b",
+      "memory_id": "c131dd2b-2375-42f0-8c61-7e38659dfddf",
+      "connection": "candidate \u00b7 same_concept. Both reviewed excerpts contain the shared terms agent, memory, persistent, research, sources. This is a retrieval candidate, not independent factual corroboration.\nHistorical quote: Persistent agent memory retains reviewed research sources across sessions.\nCurrent quote: Persistent agent memory retrieval selects earlier research sources for a current goal.",
+      "provider_calls": 1
+    }
+  ],
+  "restart": {
+    "memory_persisted": true,
+    "withdrawn": true,
+    "active_after_withdraw": 0,
+    "provider_calls": 1
+  },
+  "negative_checks": {
+    "wrong_origin_grant": 403
+  },
+  "provider": {
+    "synthetic_calls": 1,
+    "paid": false
+  },
+  "status": "NATIVE_SYNTHETIC_PASS"
+}

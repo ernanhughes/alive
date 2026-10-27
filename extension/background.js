@@ -124,6 +124,42 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
       if (!noteId) throw new Error('Review and select a note before rating it');
       return send('/browser-experience/feedback', { note_id: noteId, useful: message.useful });
     }
+    if (message.type === 'save-research') {
+      const { noteId } = await chrome.storage.session.get('noteId');
+      if (!noteId) throw new Error('Review and select a validated note before saving research memory');
+      const result = await send('/browser-experience/research/memories', { note_id: noteId });
+      await chrome.storage.session.set({ researchId: result.id });
+      return result;
+    }
+    if (message.type === 'find-research') {
+      const { selected } = await chrome.storage.session.get('selected');
+      if (!selected?.snapshot?.id) throw new Error('Review an observation before finding related research');
+      return send('/browser-experience/research/retrieve', {
+        snapshot_id: selected.snapshot.id, top_k: 3, mode: 'hybrid',
+      });
+    }
+    if (message.type === 'connection') {
+      const { selected } = await chrome.storage.session.get('selected');
+      if (!selected?.snapshot?.id || !message.memoryId)
+        throw new Error('Select a historical research item first');
+      const result = await send('/browser-experience/research/connections', {
+        snapshot_id: selected.snapshot.id, memory_id: message.memoryId,
+      });
+      await chrome.storage.session.set({ connectionId: result.id });
+      return result;
+    }
+    if (message.type === 'connection-feedback') {
+      const { connectionId } = await chrome.storage.session.get('connectionId');
+      if (!connectionId) throw new Error('No research connection selected');
+      return send('/browser-experience/research/connections/' + connectionId + '/feedback', {
+        useful: message.useful,
+      });
+    }
+    if (message.type === 'withdraw-research') {
+      const { researchId } = await chrome.storage.session.get('researchId');
+      if (!researchId) throw new Error('No research memory selected');
+      return send('/browser-experience/research/memories/' + researchId + '/withdraw', {});
+    }
     throw new Error('Unsupported extension command');
   })().then(data => reply({ data })).catch(error => reply({ error: error.message }));
   return true;
