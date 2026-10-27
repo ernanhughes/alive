@@ -1,0 +1,6 @@
+Command: uv run python -m scripts.native14_r2
+Output:
+VERIFIED native research retrieval, authorised relationship analysis and explicit withdrawal; synthetic calls 3
+evidence: .alive/native14r2-8df6be95ca74/evidence.json
+Source commit in native evidence: c31f4f57d2a6a8ca48ad1d0ec37be263ed8f484d
+CT: browser-driven docked-panel interactions plus API-driven setup/verification; no real Meta endpoint.
