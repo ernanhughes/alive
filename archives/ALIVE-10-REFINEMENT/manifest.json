@@ -1,0 +1,38 @@
+{
+  "source_commit": "0ca6290873d64c2e2b66d0201229b5936bd7df4a",
+  "reviewed_head": "2686a8008d48b8932072a6d1b53b4379fed4a754",
+  "files": {
+    ".gitattributes": {
+      "sha256": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992",
+      "bytes": 9
+    },
+    "backend.txt": {
+      "sha256": "7cba7f2a8689660a5d56fbfd2cb0caba5b664261ff5e2d5a7f5387f77bfff089",
+      "bytes": 1134
+    },
+    "build.txt": {
+      "sha256": "296fd8f785d0502417b2b329ffb03186739e565ce0f9f21ca61603d371b866b3",
+      "bytes": 419
+    },
+    "frontend.txt": {
+      "sha256": "3bd296746265b850bcf5c2e01611720c4ceae72731d9b329b3383f2cfec7fc49",
+      "bytes": 301
+    },
+    "native-synthetic.json": {
+      "sha256": "59c415f56b219b135aa6dccda281bdaa81e941539c81111db7f4e3f6f8ed4cd0",
+      "bytes": 2373
+    },
+    "native.txt": {
+      "sha256": "ab86a725e304446cde8aa0f012a71e00a99200a555718ee2139fa078050fad14",
+      "bytes": 100
+    },
+    "prior-integrity.json": {
+      "sha256": "56f330681f63ffeda82a97fe427049a47f1ffc85fed7760f0fe7dc4d2aa7bbc1",
+      "bytes": 62
+    },
+    "README.md": {
+      "sha256": "166bc62dbda512027d8df973a64e6a273eeebe90da81f2843deac3686bdb5049",
+      "bytes": 2273
+    }
+  }
+}
