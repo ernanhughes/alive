@@ -1,0 +1,305 @@
+{
+  "protocol_version": "alive08-v1",
+  "status": "frozen",
+  "policy_version": "alive08-contextual-experience-v1",
+  "seeds": [
+    17,
+    23,
+    31,
+    43,
+    59
+  ],
+  "split_sizes": {
+    "development": 40,
+    "calibration": 100,
+    "training": 200,
+    "evaluation": 300
+  },
+  "actions": [
+    "monitor",
+    "retrieve"
+  ],
+  "action_cost": {
+    "monitor": 0.0,
+    "retrieve": 0.2
+  },
+  "primary_metric": "mean independent task utility per held-out episode",
+  "primary_comparison": [
+    "alive_hierarchical",
+    "flat_empirical"
+  ],
+  "secondary_comparisons": [
+    [
+      "alive_hierarchical",
+      "stateless_prior"
+    ],
+    [
+      "alive_hierarchical",
+      "fixed_heuristic"
+    ],
+    [
+      "alive_hierarchical",
+      "alive_no_history"
+    ],
+    [
+      "alive_hierarchical",
+      "alive_shuffled"
+    ],
+    [
+      "alive_hierarchical",
+      "history_proxy_not_meta"
+    ]
+  ],
+  "calibration_grid": {
+    "min_source_observations": [
+      2,
+      3,
+      4
+    ],
+    "source_margin": [
+      0.0,
+      0.05,
+      0.1,
+      0.2
+    ]
+  },
+  "selected_min_source_observations": 2,
+  "corpus_hashes": {
+    "development": "81b749fc8ff11b539db033e0709db6b557f59a938980122e8ba7d3c2eadfbc49",
+    "calibration": "ddf53f8f05a46de62c01f3a74a093a3790682dfbafafcb14045c393bd33fbb9a",
+    "training": "cf3d23ebc9d2b7664a937b18b7a9be84869e5514b01051f9bcba90b24979b3a5",
+    "evaluation": "3eb0cc7b8ad3bb23f7c708881ea7f07ba4fff0b099312c25f37070573dd1de67"
+  },
+  "acceptance": {
+    "advantage": "paired 95% cluster-bootstrap CI lower bound > 0 for alive_hierarchical minus flat_empirical, and mean difference >= 0.01",
+    "strong_advantage": "advantage plus CI lower bound > 0 versus no-history and shuffled-history",
+    "negative": "valid experiment with primary criterion not met"
+  },
+  "hypotheses": {
+    "H1": "Source-specific experience improves held-out utility over a flat context table.",
+    "H2": "Correct history improves utility over no history.",
+    "H3": "Correct history improves utility over shuffled history.",
+    "H4": "Simple empirical learning is comparable to fixed heuristics only when the hidden structure is not learnable."
+  },
+  "reward": {
+    "retrieve_changed": 0.8,
+    "retrieve_unchanged": -0.2,
+    "monitor_changed": -1.0,
+    "monitor_unchanged": 0.0
+  },
+  "hidden_parameters": {
+    "source_classes": {
+      "stable": {
+        "base_p": 0.04,
+        "cadence": {
+          "static": 0.6,
+          "weekly": 0.3,
+          "daily": 0.1
+        }
+      },
+      "episodic": {
+        "base_p": 0.22,
+        "cadence": {
+          "daily": 0.4,
+          "weekly": 0.4,
+          "hourly": 0.2
+        }
+      },
+      "volatile": {
+        "base_p": 0.45,
+        "cadence": {
+          "hourly": 0.5,
+          "daily": 0.3,
+          "weekly": 0.2
+        }
+      },
+      "novel": {
+        "base_p": 0.65,
+        "cadence": {
+          "daily": 0.5,
+          "weekly": 0.3,
+          "hourly": 0.2
+        }
+      }
+    },
+    "age_factor": {
+      "recent": 0.5,
+      "day": 0.8,
+      "week": 1.2,
+      "stale": 1.8
+    },
+    "feedback_noise": 0.1,
+    "age_values": [
+      "recent",
+      "day",
+      "week",
+      "stale"
+    ],
+    "age_weights": [
+      0.3,
+      0.3,
+      0.25,
+      0.15
+    ]
+  },
+  "selected_source_margin": 0.1,
+  "protocol_sha256": "f32bfad1e60c497b1e958f8ddce041fe3e1977d3cfd4987ac95cb92f8922dd92",
+  "calibration": [
+    {
+      "min_source_observations": 2,
+      "source_margin": 0.0,
+      "mean_utility": 0.057600000000000005,
+      "per_seed": [
+        0.084,
+        0.07800000000000001,
+        0.052000000000000005,
+        0.09200000000000001,
+        -0.018000000000000002
+      ]
+    },
+    {
+      "min_source_observations": 2,
+      "source_margin": 0.05,
+      "mean_utility": 0.06440000000000001,
+      "per_seed": [
+        0.084,
+        0.07200000000000001,
+        0.068,
+        0.11600000000000002,
+        -0.018000000000000002
+      ]
+    },
+    {
+      "min_source_observations": 2,
+      "source_margin": 0.1,
+      "mean_utility": 0.066,
+      "per_seed": [
+        0.09,
+        0.08600000000000002,
+        0.062,
+        0.11800000000000001,
+        -0.026000000000000002
+      ]
+    },
+    {
+      "min_source_observations": 2,
+      "source_margin": 0.2,
+      "mean_utility": 0.0656,
+      "per_seed": [
+        0.08200000000000002,
+        0.1,
+        0.068,
+        0.124,
+        -0.046000000000000006
+      ]
+    },
+    {
+      "min_source_observations": 3,
+      "source_margin": 0.0,
+      "mean_utility": 0.0488,
+      "per_seed": [
+        0.07200000000000001,
+        0.06200000000000001,
+        0.042,
+        0.09200000000000001,
+        -0.024000000000000004
+      ]
+    },
+    {
+      "min_source_observations": 3,
+      "source_margin": 0.05,
+      "mean_utility": 0.05720000000000001,
+      "per_seed": [
+        0.07200000000000001,
+        0.07200000000000001,
+        0.06,
+        0.10400000000000001,
+        -0.022000000000000002
+      ]
+    },
+    {
+      "min_source_observations": 3,
+      "source_margin": 0.1,
+      "mean_utility": 0.0632,
+      "per_seed": [
+        0.08800000000000001,
+        0.08600000000000002,
+        0.05600000000000001,
+        0.12,
+        -0.034
+      ]
+    },
+    {
+      "min_source_observations": 3,
+      "source_margin": 0.2,
+      "mean_utility": 0.06080000000000001,
+      "per_seed": [
+        0.08200000000000002,
+        0.1,
+        0.054000000000000006,
+        0.114,
+        -0.046000000000000006
+      ]
+    },
+    {
+      "min_source_observations": 4,
+      "source_margin": 0.0,
+      "mean_utility": 0.054000000000000006,
+      "per_seed": [
+        0.07400000000000001,
+        0.08,
+        0.062,
+        0.08200000000000002,
+        -0.028000000000000004
+      ]
+    },
+    {
+      "min_source_observations": 4,
+      "source_margin": 0.05,
+      "mean_utility": 0.055200000000000006,
+      "per_seed": [
+        0.07400000000000001,
+        0.09200000000000001,
+        0.06,
+        0.09,
+        -0.04
+      ]
+    },
+    {
+      "min_source_observations": 4,
+      "source_margin": 0.1,
+      "mean_utility": 0.0624,
+      "per_seed": [
+        0.09,
+        0.10400000000000001,
+        0.05600000000000001,
+        0.1,
+        -0.038000000000000006
+      ]
+    },
+    {
+      "min_source_observations": 4,
+      "source_margin": 0.2,
+      "mean_utility": 0.05720000000000001,
+      "per_seed": [
+        0.08200000000000002,
+        0.1,
+        0.054000000000000006,
+        0.11,
+        -0.06
+      ]
+    }
+  ],
+  "calibration_selected": {
+    "min_source_observations": 2,
+    "source_margin": 0.1,
+    "mean_utility": 0.066,
+    "per_seed": [
+      0.09,
+      0.08600000000000002,
+      0.062,
+      0.11800000000000001,
+      -0.026000000000000002
+    ]
+  }
+}

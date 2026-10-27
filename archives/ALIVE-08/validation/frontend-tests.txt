@@ -1,0 +1,13 @@
+
+> alive-dashboard@0.2.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Users/ernan/.local/share/opencode/worktree/f94c9e/nimble-sailor/dashboard
+
+
+ Test Files  3 passed (3)
+      Tests  7 passed (7)
+   Start at  11:27:54
+   Duration  1.10s (transform 88ms, setup 0ms, import 394ms, tests 103ms, environment 1.39s)
+

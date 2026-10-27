@@ -1,0 +1,56 @@
+{
+  "alive_hierarchical_vs_flat_empirical": {
+    "mean_difference": -0.024800000000000003,
+    "ci95": [
+      -0.0441591784338896,
+      -0.00895933838731909
+    ],
+    "clusters": 229,
+    "episodes": 1500
+  },
+  "alive_hierarchical_vs_stateless_prior": {
+    "mean_difference": 0.03213333333333333,
+    "ci95": [
+      0.0045143638850889175,
+      0.059519168291098115
+    ],
+    "clusters": 229,
+    "episodes": 1500
+  },
+  "alive_hierarchical_vs_fixed_heuristic": {
+    "mean_difference": 0.06826666666666667,
+    "ci95": [
+      0.03579088471849866,
+      0.10298102981029811
+    ],
+    "clusters": 229,
+    "episodes": 1500
+  },
+  "alive_hierarchical_vs_alive_no_history": {
+    "mean_difference": 0.3221333333333333,
+    "ci95": [
+      0.25755894590846046,
+      0.3874514877102199
+    ],
+    "clusters": 229,
+    "episodes": 1500
+  },
+  "alive_hierarchical_vs_alive_shuffled": {
+    "mean_difference": 0.14186666666666667,
+    "ci95": [
+      0.10045016077170417,
+      0.1842622950819672
+    ],
+    "clusters": 229,
+    "episodes": 1500
+  },
+  "alive_hierarchical_vs_history_proxy_not_meta": {
+    "mean_difference": 0.03666666666666667,
+    "ci95": [
+      0.008582574772431729,
+      0.06539408866995074
+    ],
+    "clusters": 229,
+    "episodes": 1500
+  }
+}

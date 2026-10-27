@@ -1,0 +1,21 @@
+{
+  "seeds": [
+    17,
+    23,
+    31,
+    43,
+    59
+  ],
+  "split_sizes": {
+    "development": 40,
+    "calibration": 100,
+    "training": 200,
+    "evaluation": 300
+  },
+  "corpus_hashes": {
+    "development": "81b749fc8ff11b539db033e0709db6b557f59a938980122e8ba7d3c2eadfbc49",
+    "calibration": "ddf53f8f05a46de62c01f3a74a093a3790682dfbafafcb14045c393bd33fbb9a",
+    "training": "cf3d23ebc9d2b7664a937b18b7a9be84869e5514b01051f9bcba90b24979b3a5",
+    "evaluation": "3eb0cc7b8ad3bb23f7c708881ea7f07ba4fff0b099312c25f37070573dd1de67"
+  }
+}
