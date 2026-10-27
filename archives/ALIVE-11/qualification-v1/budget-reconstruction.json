@@ -1,0 +1,79 @@
+{
+  "kind": "post-run guard reconstruction, not provider invoice",
+  "ceiling_micro_usd": 100000,
+  "token_ceiling": 12000,
+  "calls": [
+    {
+      "charged_micro_usd": 0,
+      "next_reserved_micro_usd": 11849,
+      "ceiling_micro_usd": 100000,
+      "note_id": "e838cf7f-1b27-4e9d-b53a-cceba7bfe9f0",
+      "prior_charged_tokens": 0,
+      "reserved_tokens": 2788,
+      "actual_tokens": 471
+    },
+    {
+      "charged_micro_usd": 1174,
+      "next_reserved_micro_usd": 11820,
+      "ceiling_micro_usd": 100000,
+      "note_id": "78c5de53-d6bf-4950-b3b6-aea4de5dfdc2",
+      "prior_charged_tokens": 471,
+      "reserved_tokens": 2781,
+      "actual_tokens": 641
+    },
+    {
+      "charged_micro_usd": 3071,
+      "next_reserved_micro_usd": 11811,
+      "ceiling_micro_usd": 100000,
+      "note_id": "fff90360-f691-4065-9a8b-36035beb6d9e",
+      "prior_charged_tokens": 1112,
+      "reserved_tokens": 2779,
+      "actual_tokens": 592
+    },
+    {
+      "charged_micro_usd": 4753,
+      "next_reserved_micro_usd": 11824,
+      "ceiling_micro_usd": 100000,
+      "note_id": "03d10ef3-fefd-486f-8c2e-2da1031b6e80",
+      "prior_charged_tokens": 1704,
+      "reserved_tokens": 2782,
+      "actual_tokens": 552
+    },
+    {
+      "charged_micro_usd": 6268,
+      "next_reserved_micro_usd": 12032,
+      "ceiling_micro_usd": 100000,
+      "note_id": "df0f23d0-513d-461e-8f7a-dccca9c7e0f6",
+      "prior_charged_tokens": 2256,
+      "reserved_tokens": 2831,
+      "actual_tokens": 634
+    },
+    {
+      "charged_micro_usd": 8105,
+      "next_reserved_micro_usd": 12007,
+      "ceiling_micro_usd": 100000,
+      "note_id": "e6ea2ca5-a9b1-4950-b6be-d622a7829af0",
+      "prior_charged_tokens": 2890,
+      "reserved_tokens": 2825,
+      "actual_tokens": 561
+    },
+    {
+      "charged_micro_usd": 9638,
+      "next_reserved_micro_usd": 11849,
+      "ceiling_micro_usd": 100000,
+      "note_id": "3502a015-1dc7-42d0-9b2d-cbd706556c0e",
+      "prior_charged_tokens": 3451,
+      "reserved_tokens": 2788,
+      "actual_tokens": 502
+    },
+    {
+      "charged_micro_usd": 10938,
+      "next_reserved_micro_usd": 12036,
+      "ceiling_micro_usd": 100000,
+      "note_id": "30c38f1b-3da5-4c59-b99e-928b1ff3aee3",
+      "prior_charged_tokens": 3953,
+      "reserved_tokens": 2832,
+      "actual_tokens": 533
+    }
+  ]
+}

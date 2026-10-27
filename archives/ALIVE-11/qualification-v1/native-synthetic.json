@@ -1,0 +1,195 @@
+{
+  "provenance": {
+    "kind": "native Chrome extension with isolated current-branch backend",
+    "chrome_native": true,
+    "provider": "local synthetic HTTP stub",
+    "paid_calls": 0,
+    "meta_inference": false,
+    "source_commit": "cb29c336760cb62e709da73a32553663ddde7e38"
+  },
+  "environment": {
+    "backend": "http://127.0.0.1:65180",
+    "page_url": "http://127.0.0.1:65178/native10",
+    "presentation": "native side panel target",
+    "side_panel_registration_ready": true,
+    "action_target_id": "137BBF2AA8EC040F7A0439B7AE412D99",
+    "panel_target_id": "C0F76CE5A89ED84000B60822FBE0834F",
+    "panel_opened_as_ordinary_tab": false,
+    "panel_behavior": {
+      "openPanelOnActionClick": true
+    },
+    "chrome": "155.0.8059.85",
+    "extension_id": "lnnafnnaechfnekenbniciepefdfcknm",
+    "grant_id": "287051ca-7258-4862-957b-dc0933b2a288"
+  },
+  "steps": [
+    {
+      "name": "distinct-1",
+      "action": "analyse",
+      "policy_version": 1,
+      "distinct_support": 1
+    },
+    {
+      "name": "distinct-2",
+      "action": "analyse",
+      "policy_version": 2,
+      "distinct_support": 2
+    },
+    {
+      "name": "distinct-3",
+      "action": "analyse",
+      "policy_version": 3,
+      "distinct_support": 3
+    },
+    {
+      "name": "suppressed-1",
+      "action": "no_action",
+      "source": "feedback_policy",
+      "suppressions": 1,
+      "provider_calls": 3
+    },
+    {
+      "name": "owner_correction",
+      "action": "analyse",
+      "correction": true,
+      "policy_version": 6,
+      "provider_calls": 4
+    },
+    {
+      "name": "three_paused_observations",
+      "provider_calls": 4
+    },
+    {
+      "name": "periodic_probe",
+      "action": "analyse",
+      "probe": true,
+      "policy_version": 11,
+      "distinct_support": 4,
+      "provider_calls": 5
+    },
+    {
+      "name": "restored",
+      "action": "analyse",
+      "distinct_support": 4,
+      "provider_calls": 5
+    }
+  ],
+  "isolation": {
+    "backend_identity": {
+      "protocol_version": 1,
+      "runtime_instance": "217aa094-31b1-41bb-8a6f-ccfbc43aceae",
+      "source_commit": "cb29c336760cb62e709da73a32553663ddde7e38",
+      "module_sha256": {
+        "alive/__init__.py": "b928b40d84d1ea22b50ca796127fc86f8c42a52766d51cfc23e3618838d8c84e",
+        "alive/agents.py": "5d1ed5a931ad63153e526db70361503e76ade8e0f48cb5de2c068d22b51ffb92",
+        "alive/app.py": "bee721102ebdff72eb2c09008f186d9454ae46b27196a795ff4f9b2b50b55e96",
+        "alive/attention.py": "174faae248fa31c5fd8f875ae5e63552c1a411b2cf908e97f29a4ec660612294",
+        "alive/browser.py": "9ab07cf80eca5cc2f29522cf013783520679bf889bee629447b875b7e3e46d9e",
+        "alive/cognition.py": "89237204286ec1e0f5b8d340e49a0fc4c5231afe12bc38aa052b8f48323a31a4",
+        "alive/cognitive_api.py": "64c99d5942cf00a352a247cf954dbdf915f3ce14a2939e8da884068cd358afa3",
+        "alive/cognitive_models.py": "f98e63ee854a0641eb9ad81cbf8696fbe5e4420c839a9dd48fbd6146406c8b45",
+        "alive/cognitive_schema.py": "705045a013fc4d21fd468c5473d86e17c63ac77ee4c911c9692cdeb076509437",
+        "alive/config.py": "1f105d3795de47592a178c30f8ca7fae3518be933920948065a346d6e6def706",
+        "alive/db.py": "ecc76571f68ce1eea585a6d71c16b8fb9b02ee16cf55a4542f4e453eb5ca9098",
+        "alive/experience_lab.py": "d1a9d92fecea2a8d57ec84ccd1e4a629aa92166777435e11a9fc584cc6e65768",
+        "alive/experiment/__init__.py": "e3bc0b1be87ada42f6966d5e96d29a8c09a423c8b7157ce00dec66cc01a1147d",
+        "alive/experiment/api.py": "a5196fdff307ed538c35d764f30e538d9242d3b81e909f401e850d51f1e5e0a9",
+        "alive/experiment/corpus.py": "c4e4014f5ab41bb3567fa7af96d5881e121ea63faa04da9a87bf07b375004803",
+        "alive/experiment/freeze.py": "96e30c5401e3255e60591ba91f8f75f319b8eb1baa421815a773800b7fd291b7",
+        "alive/experiment/metrics.py": "2a18f81215c444f4d8265d93cf3a9419531a0656f6d00f19cf6baca202f2f9b3",
+        "alive/experiment/policy.py": "2765fc3515f74b2fd2001e9f782ad6b3209a217a57eba63f01b292db33a45749",
+        "alive/experiment/prompts.py": "9bdeb8b11f577a3ed0633b172e60421059b67db5def75a6335d0f406c41ef59e",
+        "alive/experiment/schema.py": "80286c1f0cff29d31cdfe3c3906d9bdbb5e5ea5cf713e8ccca46b8ee9de4cec1",
+        "alive/experiment/scoring.py": "607f3aa9e1582c9a2b55ab71a4695b1f3e918133ccf1de4b120ae6dbd519cefc",
+        "alive/experiment/service.py": "dfd5c5dd8da81777988bb1c00cb24fa87e4ae7b104de70c9dbb426285deb2726",
+        "alive/experiment_budget.py": "30de4d1fb17334c356d501231cf3c269c8ccff12a263a0020f757a54484f9f86",
+        "alive/kernel.py": "34c2558b5ff1bf990d35b25b036f4be58cad1aff9a9fa7a779608a6fa7a0346d",
+        "alive/laboratory.py": "cea4a1732ec0ebc8609fe4efcc22ad22d415b6ec5b5eda2fd7bb2c9b10a415e2",
+        "alive/learning/__init__.py": "d0b7db7c30dc92ba50d3c8c0b41691178b6c79c0ded7845107acd03b58d2cc5b",
+        "alive/learning/api.py": "37b1db7525229174302ece69179044718c44a8cff10cef492fbc6e90a44a22d2",
+        "alive/learning/controller.py": "22ea42a30632241ec3762d00f76952be8aed1ce305387d03c96f1dc5e46c4386",
+        "alive/learning/environment.py": "95ff94d43afccd7b3b587c06047030558db1ec57c3d70c960b1ab33482178610",
+        "alive/learning/experiment.py": "60b445b31327456e85465531454fbab4aa19f1ec672b429c46ebf26c28190207",
+        "alive/learning/history_diagnostic.py": "387b41a0f51b800b16471cdfb8d74bbacbec34e68ff91be55705f10511da6465",
+        "alive/living.py": "b0075e514486d0df9f6f8115f251c1f8e64138287355a3897792d62be284d3c3",
+        "alive/living_api.py": "0d6f393e68270b33171a968454e6f788e9fef6bbab33e155e64b7bd2db791acc",
+        "alive/living_evaluation.py": "f9244f79885e3354e551620da8ef44e15c72005b870c84ad5a352a04b02e2944",
+        "alive/living_models.py": "3118546f6c29a355386c0094a5231de4bff82bbb01450718668f1927386b5dad",
+        "alive/living_policy.py": "6c446ef0e1f0457088abebcd63bbfb42663b20d1b09d9a1255cfec2a5e02d32c",
+        "alive/memory.py": "d71ba75b62f2fb182ad5b2b4cc4bf16b9e89b72dc40c73b25856a9e0a347125b",
+        "alive/models.py": "045c7c5f84ed4da8f675c0c77143c82e26e7cb2c92061181b3c8bf81bc93819c",
+        "alive/provenance.py": "48a76a64f019c1997c48100283a634ac3fd90ac4ca7a69991bb2f1a4a25aa9d0",
+        "alive/providers.py": "23c1784595740ef3fb1a79d02a3be6cc50daf30aea12ca2342564d1b4c1171c3",
+        "alive/relevance.py": "ac46ee6780294bf3de646d08b5e55caa72c085eb6cf6a5f1eb8bb5a5cfa3d3c6",
+        "alive/schemas.py": "a1a6873305581b09e1da7342bf317b8b33aaa33fc106c2e9d0ac10403dd485ae",
+        "alive/society.py": "e7802667d901e5cafc8d691f76f0a986d4eb50baccf18e1051ef7411e0df4a6f",
+        "alive/transport.py": "be232311e64f5ee950e83c297055eff1f07a052df83433e78fa73a4e06d13ac7",
+        "alive/web_experience.py": "0fd69ec97ae4446b6b85508973500937a60ae435bc20fdb033221b587eb19a94",
+        "alive/web_models.py": "06a8e11be3329c8a887f7f618647f5e03673209d48c7645070e1ae3d84918df0",
+        "alive/workflow_defaults.py": "63bf852a5dcb59c18116ef0222418b904120031b4482d3c718b1ffc1d5190192"
+      },
+      "runtime_sha256": "5dbba7ea932c5718f30845a72e1d63da599dbdaf93e2b631df97f1d96d9fe73e",
+      "database": {
+        "dialect": "sqlite",
+        "fingerprint": "35d2b707975b7019672217e42449f6089f231e474f675875046b6c2f065a3542"
+      },
+      "provider_origin": "http://127.0.0.1:65179"
+    },
+    "extension_sha256": {
+      "background.js": "c5cc55fee7d5bd4a65efbc8c7328b7e2ff5aaba25ad427699fef88c8cad7ef5c",
+      "config.js": "8f96a2eab7bc1771ebc1ae0efcd94d3b34a279e04fae7a1d8ae4c07ae0a764bb",
+      "manifest.json": "b67ff0b57a6ca0c49f7faab656d28be8aa958038a545947e273ec1a122a87016",
+      "observer.js": "e3c64dea98f5e4a2bdb88afe01f3e8c1a53fcbe3f30da12834b1b482107ec59e",
+      "panel.html": "70248a3629496197a0528e179475f3f2c56e1d30a23258ce8415c3aa8f04041a",
+      "panel.js": "6dec96427d43d9ff77dcfdc655cfe20ba62823d62cf2f0ebcfe54f5e2b2ace81"
+    },
+    "legacy_backend_not_in_allowed_config": true,
+    "provider_origin": "http://127.0.0.1:65179",
+    "started_at": "2026-10-27T15:27:25.110832+00:00"
+  },
+  "isolated_api_guard_probes": {
+    "expired_grant_correction": 403,
+    "revoked_grant_correction": 403
+  },
+  "repeat_evidence_probe": {
+    "unchanged_policy": true,
+    "support": 1
+  },
+  "rejected_correction": {
+    "http": 409,
+    "policy_unchanged": true,
+    "corrections_unchanged": true
+  },
+  "stale_probe_checks": {
+    "rejected_snapshots": 3,
+    "http": 409
+  },
+  "negative_checks": {
+    "duplicate_analysis": 409,
+    "provider_calls": 5,
+    "wrong_origin_grant": 403,
+    "modified_hash_snapshot": 403,
+    "budget_exhaustion": 409
+  },
+  "restart": {
+    "policy_version_before": 11,
+    "policy_version_after": 11,
+    "notes_before": 5,
+    "notes_after": 5,
+    "stale_grant_status": 403,
+    "duplicate_inference": false,
+    "post_restart_action": "analyse"
+  },
+  "status": "NATIVE_SYNTHETIC_PASS",
+  "provider": {
+    "kind": "local synthetic HTTP stub",
+    "calls": 8,
+    "paid": false,
+    "validated_calls": 8,
+    "total_tokens": 1200,
+    "estimated_usd_known": 0.0027,
+    "usage_complete": true,
+    "charged_tokens": 1200,
+    "actual_http_requests_observed": 8
+  }
+}

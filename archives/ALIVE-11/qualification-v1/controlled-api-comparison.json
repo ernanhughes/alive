@@ -1,0 +1,704 @@
+{
+  "kind": "controlled API + synthetic HTTP provider",
+  "native": false,
+  "paid_calls": 0,
+  "owner_usefulness_measured": false,
+  "arms": {
+    "adaptive": {
+      "rows": [
+        {
+          "index": 0,
+          "case": "distinct-1",
+          "source_sha256": "15fcbb58da0ef1bac58631d576cc03544b3cae908b0b97316d8355fefd655b49",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 1,
+          "case": "distinct-2",
+          "source_sha256": "af13cdfad01596a2f4c2d6e674dea99ce80ee5852ed7ff08ebd7f095713ffcc4",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 2,
+          "case": "distinct-3",
+          "source_sha256": "591b8d317ed56f6b803dd649a5ceed8b1648b7f14ee905fb08f42446178d3fe9",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 3,
+          "case": "suppressed-1",
+          "source_sha256": "2f82ca8db8812afdcd839308e0a841d7dc02cb0db576a50abd00df5e80482618",
+          "companion_recommendation": "no_action",
+          "controller_action": "no_action",
+          "call_made": false,
+          "quote_validated_note_available": false,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": true,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": null,
+          "estimated_usd": 0
+        },
+        {
+          "index": 4,
+          "case": "suppressed-2",
+          "source_sha256": "10a116ac672ee418cfca921d05c5794c96c439eb4129a766283dc54eaa41ac49",
+          "companion_recommendation": "no_action",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": true,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 5,
+          "case": "paused-1",
+          "source_sha256": "26ea9d100e8518a514053e1c7446e3c2e58fcd687a7dd8317059ed88a31a7283",
+          "companion_recommendation": "no_action",
+          "controller_action": "no_action",
+          "call_made": false,
+          "quote_validated_note_available": false,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": null,
+          "estimated_usd": 0
+        },
+        {
+          "index": 6,
+          "case": "paused-2",
+          "source_sha256": "8c14657c5d8aaad6ef6f44d534618d1c9958c3fffc49ca960dc9952cd89602d5",
+          "companion_recommendation": "no_action",
+          "controller_action": "no_action",
+          "call_made": false,
+          "quote_validated_note_available": false,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": true,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": null,
+          "estimated_usd": 0
+        },
+        {
+          "index": 7,
+          "case": "paused-3",
+          "source_sha256": "4bf6f26505eaf8590f1f56e6a8985e3108c8ce6de592b06e0d5b81f5808e0e69",
+          "companion_recommendation": "no_action",
+          "controller_action": "no_action",
+          "call_made": false,
+          "quote_validated_note_available": false,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": null,
+          "estimated_usd": 0
+        },
+        {
+          "index": 8,
+          "case": "probe-1",
+          "source_sha256": "d76de6d5036a7ef4eae2004f7c4ad742d8875aa717ed0bd6bc679bf3b5169976",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 9,
+          "case": "restored-1",
+          "source_sha256": "2394278f15fa71dfd197053b8932f882fd90bf027f7cd493754f8cdb81a50ddf",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 10,
+          "case": "irrelevant",
+          "source_sha256": "cb6b6b7452a2ee6de58a13bd5895751c37465dda0ffb72d35640287722fe18c9",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 11,
+          "case": "probe-1",
+          "source_sha256": "d76de6d5036a7ef4eae2004f7c4ad742d8875aa717ed0bd6bc679bf3b5169976",
+          "companion_recommendation": "recall",
+          "controller_action": "recall",
+          "call_made": false,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": null,
+          "estimated_usd": 0
+        }
+      ],
+      "summary": {
+        "calls": 7,
+        "source_adequate_opportunities_met": 4,
+        "missed_source_adequate_opportunities": 2,
+        "total_tokens": 1050,
+        "synthetic_model_price_estimate": 0.0023625
+      }
+    },
+    "frozen_nonadaptive": {
+      "rows": [
+        {
+          "index": 0,
+          "case": "distinct-1",
+          "source_sha256": "15fcbb58da0ef1bac58631d576cc03544b3cae908b0b97316d8355fefd655b49",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 1,
+          "case": "distinct-2",
+          "source_sha256": "af13cdfad01596a2f4c2d6e674dea99ce80ee5852ed7ff08ebd7f095713ffcc4",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 2,
+          "case": "distinct-3",
+          "source_sha256": "591b8d317ed56f6b803dd649a5ceed8b1648b7f14ee905fb08f42446178d3fe9",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 3,
+          "case": "suppressed-1",
+          "source_sha256": "2f82ca8db8812afdcd839308e0a841d7dc02cb0db576a50abd00df5e80482618",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 4,
+          "case": "suppressed-2",
+          "source_sha256": "10a116ac672ee418cfca921d05c5794c96c439eb4129a766283dc54eaa41ac49",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 5,
+          "case": "paused-1",
+          "source_sha256": "26ea9d100e8518a514053e1c7446e3c2e58fcd687a7dd8317059ed88a31a7283",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 6,
+          "case": "paused-2",
+          "source_sha256": "8c14657c5d8aaad6ef6f44d534618d1c9958c3fffc49ca960dc9952cd89602d5",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 7,
+          "case": "paused-3",
+          "source_sha256": "4bf6f26505eaf8590f1f56e6a8985e3108c8ce6de592b06e0d5b81f5808e0e69",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 8,
+          "case": "probe-1",
+          "source_sha256": "d76de6d5036a7ef4eae2004f7c4ad742d8875aa717ed0bd6bc679bf3b5169976",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 9,
+          "case": "restored-1",
+          "source_sha256": "2394278f15fa71dfd197053b8932f882fd90bf027f7cd493754f8cdb81a50ddf",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 10,
+          "case": "irrelevant",
+          "source_sha256": "cb6b6b7452a2ee6de58a13bd5895751c37465dda0ffb72d35640287722fe18c9",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 11,
+          "case": "probe-1",
+          "source_sha256": "d76de6d5036a7ef4eae2004f7c4ad742d8875aa717ed0bd6bc679bf3b5169976",
+          "companion_recommendation": "recall",
+          "controller_action": "recall",
+          "call_made": false,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": null,
+          "estimated_usd": 0
+        }
+      ],
+      "summary": {
+        "calls": 11,
+        "source_adequate_opportunities_met": 6,
+        "missed_source_adequate_opportunities": 0,
+        "total_tokens": 1650,
+        "synthetic_model_price_estimate": 0.0037125
+      }
+    },
+    "constant": {
+      "rows": [
+        {
+          "index": 0,
+          "case": "distinct-1",
+          "source_sha256": "15fcbb58da0ef1bac58631d576cc03544b3cae908b0b97316d8355fefd655b49",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 1,
+          "case": "distinct-2",
+          "source_sha256": "af13cdfad01596a2f4c2d6e674dea99ce80ee5852ed7ff08ebd7f095713ffcc4",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 2,
+          "case": "distinct-3",
+          "source_sha256": "591b8d317ed56f6b803dd649a5ceed8b1648b7f14ee905fb08f42446178d3fe9",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 3,
+          "case": "suppressed-1",
+          "source_sha256": "2f82ca8db8812afdcd839308e0a841d7dc02cb0db576a50abd00df5e80482618",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 4,
+          "case": "suppressed-2",
+          "source_sha256": "10a116ac672ee418cfca921d05c5794c96c439eb4129a766283dc54eaa41ac49",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 5,
+          "case": "paused-1",
+          "source_sha256": "26ea9d100e8518a514053e1c7446e3c2e58fcd687a7dd8317059ed88a31a7283",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 6,
+          "case": "paused-2",
+          "source_sha256": "8c14657c5d8aaad6ef6f44d534618d1c9958c3fffc49ca960dc9952cd89602d5",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 7,
+          "case": "paused-3",
+          "source_sha256": "4bf6f26505eaf8590f1f56e6a8985e3108c8ce6de592b06e0d5b81f5808e0e69",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 8,
+          "case": "probe-1",
+          "source_sha256": "d76de6d5036a7ef4eae2004f7c4ad742d8875aa717ed0bd6bc679bf3b5169976",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 9,
+          "case": "restored-1",
+          "source_sha256": "2394278f15fa71dfd197053b8932f882fd90bf027f7cd493754f8cdb81a50ddf",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 10,
+          "case": "irrelevant",
+          "source_sha256": "cb6b6b7452a2ee6de58a13bd5895751c37465dda0ffb72d35640287722fe18c9",
+          "companion_recommendation": "analyse",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": false,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        },
+        {
+          "index": 11,
+          "case": "probe-1",
+          "source_sha256": "d76de6d5036a7ef4eae2004f7c4ad742d8875aa717ed0bd6bc679bf3b5169976",
+          "companion_recommendation": "recall",
+          "controller_action": "analyse",
+          "call_made": true,
+          "quote_validated_note_available": true,
+          "predeclared_source_adequate": true,
+          "missed_source_adequate_opportunity": false,
+          "owner_usefulness_measured": false,
+          "owner_correction_applied": false,
+          "usage": {
+            "prompt_tokens": 100,
+            "completion_tokens": 50,
+            "total_tokens": 150
+          },
+          "estimated_usd": 0.0003375
+        }
+      ],
+      "summary": {
+        "calls": 12,
+        "source_adequate_opportunities_met": 6,
+        "missed_source_adequate_opportunities": 0,
+        "total_tokens": 1800,
+        "synthetic_model_price_estimate": 0.00405
+      }
+    }
+  },
+  "interpretation": "Source-adequacy fixture labels are not measured user utility. Do not claim utility superiority from these engineering cases.",
+  "actual_synthetic_http_requests": 30,
+  "status": "CONTROLLED_API_COMPARISON_PASS"
+}
