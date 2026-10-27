@@ -1,0 +1,19 @@
+{
+  "reviewed_pr_head": "f222a0613ccb1c338cfccd2d43a2cd864a0e5977",
+  "qualified_ui_source": "8e1b65ab4ac82c8a1bde5189e936aab145485ca4",
+  "backend_files_unchanged_from_reviewed_head": true,
+  "additional_finding": "Late note responses could restore stopped or obsolete feedback targets",
+  "correction": "Invalidate obsolete note generations on Stop, context or language changes",
+  "backend_tests": 137,
+  "focused_companion_tests": 27,
+  "frontend_tests": 7,
+  "extension_tests": 5,
+  "primary_files_inventoried": 25,
+  "primary_files_differing_or_absent_from_reviewed_head": 11,
+  "primary_files_preserved": true,
+  "owner_database_inspection": "read-only, PostgreSQL migration 0006; primary runtime is older code",
+  "paid_calls": 0,
+  "merge_performed": false,
+  "alive11_status": "PREPARATION_ONLY",
+  "alive12_status": "PROPOSAL_ONLY"
+}
