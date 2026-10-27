@@ -5,7 +5,7 @@ Branch: `codex/alive-11-live-native-intelligence`.
 PR: [#15](https://github.com/ernanhughes/alive/pull/15), review-only; initial head `2420fbf`.
 Qualified source: `cb29c336760cb62e709da73a32553663ddde7e38` (v1);
 second campaign `eb4c273a7922a558126e927d7951a7409ca1b444` (v2, identical
-`alive/` and `extension/` code).
+`alive/` and `extension/` code). Fresh v2 evidence archive commit: `5ec9206`.
 Worktree: `C:\Projects\alive-worktrees\alive-11`.
 Later evidence/tooling commits retain identical alive/ and extension/ content.
 
