@@ -1,0 +1,13 @@
+✔ a late validated reply cannot restore a feedback target after Stop (1.0743ms)
+✔ a late reply cannot rate the previous excerpt after the preview changes (0.1768ms)
+✔ an obsolete polling error cannot overwrite the stopped status (0.6039ms)
+✔ changing language requires a new reviewed snapshot and invalidates old feedback (0.2489ms)
+✔ a current validated note still enables feedback (0.2677ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 62.41

@@ -38,7 +38,7 @@
       summary { cursor: pointer; color: #b3d68c; margin: 12px 0; }
       blockquote { margin: 12px 0; padding-left: 12px; border-left: 2px solid #c7ed9d; }
       #decision-label { font-size: 16px; color: #c7ed9d; }
-      #relevance, #policy { font-size: 11px; color: #9caf92; line-height: 1.5; }
+      #relevance, #policy, #feedback-help { font-size: 11px; color: #9caf92; line-height: 1.5; }
       #note { font-size: 13px; line-height: 1.65; }
       input[type="checkbox"] {
         width: auto;
@@ -69,7 +69,7 @@
     </style>
   </head>
   <body>
-    <h1>ALIVE <small>05</small></h1>
+    <h1>ALIVE <small>10</small></h1>
     <p>A continuing documentation companion.</p>
     <details id="connection" open><summary>Local connection</summary><label
       >Local backend<input
@@ -112,13 +112,18 @@
     <p id="policy"></p>
     <details><summary>Why this choice?</summary><pre id="decision"></pre></details>
     <button id="analyse" disabled>Send reviewed excerpt to Meta</button>
-    <h2>Model interpretation / recalled note</h2>
+    <h2 id="note-heading">Current note - rate this note, not the subject</h2>
     <div id="note">No note yet.</div>
     <p id="cost"></p>
-    <button id="useful" disabled>Useful · reuse next time</button>
-    <button id="needs-work" disabled>Needs work · analyse next time</button>
-    <h2>Learned action preference</h2>
-    <p id="preference">No feedback yet. Preferences never grant browser permissions.</p>
+    <button id="useful" disabled>Useful - this note helped me</button>
+    <button id="needs-work" disabled>Not useful - this note did not help me</button>
+    <p id="feedback-help">
+      Ratings describe this note, not the page or subject. Repeated unhelpful notes may
+      temporarily pause automatic analysis for this goal and page. You can request analysis
+      again; feedback never grants browser permissions.
+    </p>
+    <h2>Learned action policy</h2>
+    <p id="preference">No feedback yet. The policy can pause automatic analysis, but never grants permissions.</p>
     <details><summary>Runtime identity</summary><pre id="state">Awaiting connection.</pre></details>
     <script src="panel.js" type="module"></script>
   </body>

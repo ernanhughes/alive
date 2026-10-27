@@ -1,0 +1,12 @@
+{
+  "status": "NATIVE_SYNTHETIC_PASS",
+  "chrome_native": true,
+  "presentation": "extension page fallback",
+  "side_panel_target_found": false,
+  "provider": "local Meta-compatible synthetic HTTP stub",
+  "meta_inference": false,
+  "paid_calls": 0,
+  "chrome_version": "155.0.8059.85",
+  "source_commit": "021462b480cb7ba33fa431cc949ba3a3db43a237",
+  "limitation": "Headless and headful runs exercised the extension page; Chrome did not produce a docked side-panel target under Extensions.triggerAction."
+}

@@ -1,0 +1,168 @@
+{
+  "kind": "controlled companion API",
+  "suppressed": [
+    {
+      "index": 1,
+      "suppressions": 1,
+      "policy_version": 5
+    },
+    {
+      "index": 2,
+      "suppressions": 2,
+      "policy_version": 6
+    },
+    {
+      "index": 3,
+      "suppressions": 3,
+      "policy_version": 7
+    }
+  ],
+  "probe": {
+    "same_state_sha256": "e07fc95180347c677831be1c9434dbfcfcf576abb42f5e5df317931fea66fedb",
+    "relevance_policy": "deterministic-multilingual-relevance-v2",
+    "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+    "language_requested": "auto",
+    "language": "en",
+    "language_source": "detected",
+    "language_supported": true,
+    "goal_relevance": {
+      "policy": "deterministic-multilingual-relevance-v2",
+      "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+      "language_requested": "auto",
+      "language": "en",
+      "language_source": "detected",
+      "language_supported": true,
+      "goal_language": "en",
+      "goal_language_source": "detected",
+      "script_ratios": {
+        "latin": 1.0,
+        "han": 0.0,
+        "arabic": 0.0,
+        "cyrillic": 0.0,
+        "devanagari": 0.0
+      },
+      "status": "supported",
+      "relevant": true,
+      "matched_terms": [
+        "python"
+      ],
+      "strategy": "words",
+      "normalization": "nfkc_casefold",
+      "basis": "Exact content-token overlap after configured normalization; no semantic or model inference.",
+      "uncertainty_reason": null,
+      "goal_term_count": 4,
+      "excerpt_term_count": 10
+    },
+    "policy_version": 8,
+    "policy_hash": "52c9f588035eb11c6720d686ac1465d7787d1963f5378db36428afa48b9bb886",
+    "inference_calls": 0,
+    "action": "analyse",
+    "policy": "companion-feedback-usefulness-v2",
+    "without_feedback_action": "analyse",
+    "feedback_id": null,
+    "note": null,
+    "candidate_note": null,
+    "reason": "Automatic analysis was paused for 3 related observations. This is a bounded periodic re-evaluation: one fresh analysis is eligible.",
+    "adaptive_policy": {
+      "policy_id": "companion-feedback-usefulness-v2",
+      "policy_version": 8,
+      "policy_hash": "52c9f588035eb11c6720d686ac1465d7787d1963f5378db36428afa48b9bb886",
+      "context": "a7a3a3c7-8c1b-4f6a-bcac-cc71db8ade57|https://docs.python.org/3/tutorial/|auto",
+      "useful": 0,
+      "not_useful": 3,
+      "support": 3,
+      "distinct_evidence": 3,
+      "evidence_hashes": [
+        "632810e1d88a30357eb80451e01cee91823a3e2338365a0aad38ebd04d04c10c",
+        "d09622b3ab5f6cc5ff7e1df2adec3f2d7621c09f86ea810d35a8b03d71d1fae5",
+        "fe5d82982a9a1779eb75a9daa4fba11084b861eee0b42d96e5268f82dbf12aef"
+      ],
+      "useful_rate": 0.0,
+      "minimum_support": 3,
+      "maximum_useful_rate": 0.2,
+      "suppressions": 0,
+      "probe_after_suppressions": 3,
+      "probes": 1,
+      "probe_due": true,
+      "recommendation": "analyse",
+      "probe": true,
+      "reason": "Automatic analysis was paused for 3 related observations. This is a bounded periodic re-evaluation: one fresh analysis is eligible.",
+      "policy_version_before": 7
+    },
+    "probe": true
+  },
+  "restored": {
+    "same_state_sha256": "8c64624ed98bd477bc67a647a7d0f6144d103a8ada7a8d59116f57f2f36c9b8c",
+    "relevance_policy": "deterministic-multilingual-relevance-v2",
+    "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+    "language_requested": "auto",
+    "language": "en",
+    "language_source": "detected",
+    "language_supported": true,
+    "goal_relevance": {
+      "policy": "deterministic-multilingual-relevance-v2",
+      "config_fingerprint": "dfba62bc4c5de72c9073162d66b8629e3edaa88e77af4b6a2bf220480c6dc205",
+      "language_requested": "auto",
+      "language": "en",
+      "language_source": "detected",
+      "language_supported": true,
+      "goal_language": "en",
+      "goal_language_source": "detected",
+      "script_ratios": {
+        "latin": 1.0,
+        "han": 0.0,
+        "arabic": 0.0,
+        "cyrillic": 0.0,
+        "devanagari": 0.0
+      },
+      "status": "supported",
+      "relevant": true,
+      "matched_terms": [
+        "python"
+      ],
+      "strategy": "words",
+      "normalization": "nfkc_casefold",
+      "basis": "Exact content-token overlap after configured normalization; no semantic or model inference.",
+      "uncertainty_reason": null,
+      "goal_term_count": 4,
+      "excerpt_term_count": 10
+    },
+    "policy_version": 9,
+    "policy_hash": "37790c3e0c683356b2ebddc4ab376e1458d10aeda72c059a7b163f5b083cb37e",
+    "inference_calls": 0,
+    "action": "analyse",
+    "policy": "explicit-usefulness-exact-excerpt-v1",
+    "without_feedback_action": "analyse",
+    "feedback_id": null,
+    "note": null,
+    "candidate_note": null,
+    "reason": "No positively rated exact evidence; analysis is permitted and the learned feedback policy does not recommend abstention.",
+    "adaptive_policy": {
+      "policy_id": "companion-feedback-usefulness-v2",
+      "policy_version": 9,
+      "policy_hash": "37790c3e0c683356b2ebddc4ab376e1458d10aeda72c059a7b163f5b083cb37e",
+      "context": "a7a3a3c7-8c1b-4f6a-bcac-cc71db8ade57|https://docs.python.org/3/tutorial/|auto",
+      "useful": 1,
+      "not_useful": 3,
+      "support": 4,
+      "distinct_evidence": 4,
+      "evidence_hashes": [
+        "3b559625702ce7964695cde0cf8e1970637e7ddf9da49387a9db842acd65ca32",
+        "632810e1d88a30357eb80451e01cee91823a3e2338365a0aad38ebd04d04c10c",
+        "d09622b3ab5f6cc5ff7e1df2adec3f2d7621c09f86ea810d35a8b03d71d1fae5",
+        "fe5d82982a9a1779eb75a9daa4fba11084b861eee0b42d96e5268f82dbf12aef"
+      ],
+      "useful_rate": 0.25,
+      "minimum_support": 3,
+      "maximum_useful_rate": 0.2,
+      "suppressions": 0,
+      "probe_after_suppressions": 3,
+      "probes": 1,
+      "probe_due": false,
+      "recommendation": "analyse",
+      "reason": "Owner feedback does not support pausing automatic analysis for this context."
+    }
+  },
+  "policy_version": 9,
+  "provider_calls": 8
+}

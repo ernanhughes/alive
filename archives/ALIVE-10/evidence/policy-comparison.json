@@ -1,0 +1,254 @@
+{
+  "kind": "frozen decision-level replay",
+  "source_commit": "021462b480cb7ba33fa431cc949ba3a3db43a237",
+  "not_native_outcome_evidence": true,
+  "caveat": "Eight predeclared observations with usefulness labels. No model was called. The sequence demonstrates decision and cost trade-offs, not task quality or Meta superiority. Suppressed observations are not independent native outcomes.",
+  "sequence": [
+    {
+      "id": "e1",
+      "useful": false
+    },
+    {
+      "id": "e2",
+      "useful": false
+    },
+    {
+      "id": "e3",
+      "useful": false
+    },
+    {
+      "id": "e4",
+      "useful": true
+    },
+    {
+      "id": "e5",
+      "useful": false
+    },
+    {
+      "id": "e6",
+      "useful": true
+    },
+    {
+      "id": "e7",
+      "useful": true
+    },
+    {
+      "id": "e8",
+      "useful": true
+    }
+  ],
+  "decisions": {
+    "corrected_adaptive_v2": [
+      {
+        "id": "e1",
+        "action": "analyse",
+        "label_useful": false
+      },
+      {
+        "id": "e2",
+        "action": "analyse",
+        "label_useful": false
+      },
+      {
+        "id": "e3",
+        "action": "analyse",
+        "label_useful": false
+      },
+      {
+        "id": "e4",
+        "action": "no_action",
+        "label_useful": true
+      },
+      {
+        "id": "e5",
+        "action": "no_action",
+        "label_useful": false
+      },
+      {
+        "id": "e6",
+        "action": "no_action",
+        "label_useful": true
+      },
+      {
+        "id": "e7",
+        "action": "analyse",
+        "label_useful": true
+      },
+      {
+        "id": "e8",
+        "action": "analyse",
+        "label_useful": true
+      }
+    ],
+    "alive09_v1_absorbing": [
+      {
+        "id": "e1",
+        "action": "analyse",
+        "label_useful": false
+      },
+      {
+        "id": "e2",
+        "action": "analyse",
+        "label_useful": false
+      },
+      {
+        "id": "e3",
+        "action": "analyse",
+        "label_useful": false
+      },
+      {
+        "id": "e4",
+        "action": "no_action",
+        "label_useful": true
+      },
+      {
+        "id": "e5",
+        "action": "no_action",
+        "label_useful": false
+      },
+      {
+        "id": "e6",
+        "action": "no_action",
+        "label_useful": true
+      },
+      {
+        "id": "e7",
+        "action": "no_action",
+        "label_useful": true
+      },
+      {
+        "id": "e8",
+        "action": "no_action",
+        "label_useful": true
+      }
+    ],
+    "simple_one_negative": [
+      {
+        "id": "e1",
+        "action": "analyse",
+        "label_useful": false
+      },
+      {
+        "id": "e2",
+        "action": "no_action",
+        "label_useful": false
+      },
+      {
+        "id": "e3",
+        "action": "no_action",
+        "label_useful": false
+      },
+      {
+        "id": "e4",
+        "action": "no_action",
+        "label_useful": true
+      },
+      {
+        "id": "e5",
+        "action": "no_action",
+        "label_useful": false
+      },
+      {
+        "id": "e6",
+        "action": "no_action",
+        "label_useful": true
+      },
+      {
+        "id": "e7",
+        "action": "no_action",
+        "label_useful": true
+      },
+      {
+        "id": "e8",
+        "action": "no_action",
+        "label_useful": true
+      }
+    ],
+    "constant_analyse": [
+      {
+        "id": "e1",
+        "action": "analyse",
+        "label_useful": false
+      },
+      {
+        "id": "e2",
+        "action": "analyse",
+        "label_useful": false
+      },
+      {
+        "id": "e3",
+        "action": "analyse",
+        "label_useful": false
+      },
+      {
+        "id": "e4",
+        "action": "analyse",
+        "label_useful": true
+      },
+      {
+        "id": "e5",
+        "action": "analyse",
+        "label_useful": false
+      },
+      {
+        "id": "e6",
+        "action": "analyse",
+        "label_useful": true
+      },
+      {
+        "id": "e7",
+        "action": "analyse",
+        "label_useful": true
+      },
+      {
+        "id": "e8",
+        "action": "analyse",
+        "label_useful": true
+      }
+    ]
+  },
+  "summary": {
+    "corrected_adaptive_v2": {
+      "calls": 5,
+      "useful_analyses": 2,
+      "useful_analyses_missed": 2,
+      "paused_observations": 3,
+      "probes": 1,
+      "calls_avoided_vs_constant": 3,
+      "estimated_counterfactual_cost_avoided_usd": 0.0010125
+    },
+    "alive09_v1_absorbing": {
+      "calls": 3,
+      "useful_analyses": 0,
+      "useful_analyses_missed": 4,
+      "paused_observations": 5,
+      "probes": 0,
+      "calls_avoided_vs_constant": 5,
+      "estimated_counterfactual_cost_avoided_usd": 0.0016875
+    },
+    "simple_one_negative": {
+      "calls": 1,
+      "useful_analyses": 0,
+      "useful_analyses_missed": 4,
+      "paused_observations": 7,
+      "probes": 0,
+      "calls_avoided_vs_constant": 7,
+      "estimated_counterfactual_cost_avoided_usd": 0.0023625
+    },
+    "constant_analyse": {
+      "calls": 8,
+      "useful_analyses": 4,
+      "useful_analyses_missed": 0,
+      "paused_observations": 0,
+      "probes": 0,
+      "calls_avoided_vs_constant": 0,
+      "estimated_counterfactual_cost_avoided_usd": 0.0
+    }
+  },
+  "cost_basis": {
+    "synthetic_tokens_per_call": 150,
+    "estimated_usd_per_call": 0.0003375,
+    "note": "Counterfactual estimate using ALIVE's price() formula; not a paid charge."
+  },
+  "interpretation": "The corrected policy recovers through a bounded probe, while the ALIVE-09 v1 policy remains paused. Constant analysis obtains more labelled useful analyses but makes more calls. The adaptive policy is not claimed superior."
+}

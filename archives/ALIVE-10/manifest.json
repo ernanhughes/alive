@@ -1,0 +1,98 @@
+{
+  "evidence_kind": "corrected companion policy, recovery and isolated native Chrome journey",
+  "branch": "opencode/alive-10-native-intelligence",
+  "base_commit": "5ee1031f36aa411e8675f208a794de13c478fea0",
+  "source_commit": "021462b480cb7ba33fa431cc949ba3a3db43a237",
+  "protocol_sha256": "d5aaff93e19acea983da197929f4c730c38f1ca6136148b8b2cf034c9c95068c",
+  "policy": "companion-feedback-usefulness-v2",
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "evidence/feedback-independence.json": {
+      "sha256": "2da29f263129c7b13d9761bdc5c8f935216fd81e0cd2a8be9e773706a76cbbb9",
+      "bytes": 18603
+    },
+    "evidence/governor-revocation.json": {
+      "sha256": "3dac3b59e58f77c74b34ed06a298f73b903ead408c1c2e0a5389ede9c8dabb22",
+      "bytes": 823
+    },
+    "evidence/meta-qualification-status.json": {
+      "sha256": "6655ca01b400fc1f78202c9fec1fde81e5ea7ba564d3c8a762c979caa6c46a6e",
+      "bytes": 1146
+    },
+    "evidence/model-usage.json": {
+      "sha256": "2f27bb973b2b8cd52df490c4d573b528f40b0e07ee4301ce802340576e9022bd",
+      "bytes": 418
+    },
+    "evidence/native-panel.png": {
+      "sha256": "346935078fc299d859df1efaccb911eec420e93b8cba6905c26128bcc906cd40",
+      "bytes": 76626
+    },
+    "evidence/native-status.json": {
+      "sha256": "7d0a95ae83ca2922003b922fcc6baeee24de19b664aeccf76836b5ad6de4f99e",
+      "bytes": 520
+    },
+    "evidence/native-synthetic-journey.json": {
+      "sha256": "482d0a8c2d7836c5ed43aa3df4cce0e27aa2f44692aed4fafd4eb8dbac54356f",
+      "bytes": 2943
+    },
+    "evidence/policy-comparison.json": {
+      "sha256": "a62d54f33274677c8abb7e0a0185c8cea48ac3dbcb06c6b2717a002a36b31547",
+      "bytes": 5851
+    },
+    "evidence/prior-archive-integrity.json": {
+      "sha256": "54920a608ae45c11eb6f9cceb505d932b9267870fc0b3defc42cf056c9d1495a",
+      "bytes": 1049
+    },
+    "evidence/restart-proof.json": {
+      "sha256": "b129f79bf8e16d6e95381b0772e3963e0d2f9d428a8676f34fc88157be72e43e",
+      "bytes": 279
+    },
+    "evidence/suppression-recovery.json": {
+      "sha256": "fb9e9dd70d2286765d29b5c8c6d7ec50591208d7d105b82d75b8defce0c22147",
+      "bytes": 6248
+    },
+    "protocol.json": {
+      "sha256": "d5aaff93e19acea983da197929f4c730c38f1ca6136148b8b2cf034c9c95068c",
+      "bytes": 2708
+    },
+    "README.md": {
+      "sha256": "582270c578b9fe51d780dbd80da68996c85eccaefec236edfde7feedc2ddf776",
+      "bytes": 7659
+    },
+    "validation/backend.txt": {
+      "sha256": "e90eeded9e2d8f818a8262311e61d6c3a632658b485f2626fdb454fccf38442b",
+      "bytes": 1106
+    },
+    "validation/companion-focused.txt": {
+      "sha256": "a2dfe1c978da2081c1b4fdb8340450e7d3a0e5544a56b8f70d362a350f029118",
+      "bytes": 723
+    },
+    "validation/extension-js.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "validation/frontend-build.txt": {
+      "sha256": "1cfe10c42ada2648fbad96a8e0cf341e29f77d43abf6597e6f9e0aad8d3f6e8e",
+      "bytes": 464
+    },
+    "validation/frontend-tests.txt": {
+      "sha256": "a8a8113f80fe08f8f425ff3c79562d99c460882994ccab3cd19c56326cbffe88",
+      "bytes": 319
+    },
+    "validation/native.txt": {
+      "sha256": "3ec6931bb041ce88026d76ce438d63acd14ef9488641152524dd798c4c3c3c6f",
+      "bytes": 170
+    },
+    "validation/ruff.txt": {
+      "sha256": "6f9d222159151dea7f5fe18de8918ed04fea177971eb66fa5e9ee3422c91cec6",
+      "bytes": 48
+    },
+    "validation/whitespace.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  }
+}

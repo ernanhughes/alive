@@ -1,0 +1,120 @@
+{
+  "provenance": {
+    "kind": "native Chrome extension with isolated current-branch backend",
+    "chrome_native": true,
+    "provider": "local Meta-compatible synthetic HTTP stub",
+    "paid_calls": 0,
+    "meta_inference": false,
+    "source_commit": "021462b480cb7ba33fa431cc949ba3a3db43a237"
+  },
+  "environment": {
+    "presentation": "extension page fallback",
+    "chrome": "155.0.8059.85",
+    "page_url": "http://127.0.0.1:65136/native10",
+    "backend": "isolated loopback port",
+    "database": "isolated SQLite",
+    "extension": "temporary unpacked copy",
+    "side_panel_target_found": false
+  },
+  "steps": [
+    {
+      "name": "distinct-1",
+      "action": "analyse",
+      "policy_version": 1,
+      "distinct_support": 1
+    },
+    {
+      "name": "distinct-2",
+      "action": "analyse",
+      "policy_version": 2,
+      "distinct_support": 2
+    },
+    {
+      "name": "distinct-3",
+      "action": "analyse",
+      "policy_version": 3,
+      "distinct_support": 3
+    },
+    {
+      "name": "suppressed-1",
+      "action": "no_action",
+      "source": "feedback_policy",
+      "suppressions": 1,
+      "provider_calls": 3
+    },
+    {
+      "name": "owner_correction",
+      "action": "analyse",
+      "correction": true,
+      "policy_version": 6,
+      "provider_calls": 4
+    },
+    {
+      "name": "three_paused_observations",
+      "provider_calls": 4
+    },
+    {
+      "name": "periodic_probe",
+      "action": "analyse",
+      "probe": true,
+      "policy_version": 11,
+      "distinct_support": 4,
+      "provider_calls": 5
+    },
+    {
+      "name": "restored",
+      "action": "analyse",
+      "distinct_support": 4,
+      "provider_calls": 5
+    }
+  ],
+  "negative_checks": {
+    "duplicate_analysis": 409,
+    "provider_calls": 5,
+    "wrong_origin_grant": 403,
+    "modified_hash_snapshot": 403,
+    "budget_exhaustion": 409
+  },
+  "restart": {
+    "policy_version_before": 11,
+    "policy_version_after": 11,
+    "notes_before": 5,
+    "notes_after": 5,
+    "stale_grant_status": 403,
+    "duplicate_inference": false,
+    "post_restart_action": "analyse"
+  },
+  "provider": {
+    "kind": "local Meta-compatible synthetic HTTP stub",
+    "calls": 5,
+    "prompt_tokens": 500,
+    "completion_tokens": 250,
+    "total_tokens": 750,
+    "estimated_usd": 0.0016875,
+    "paid": false,
+    "note": "Estimated with ALIVE's price() formula; not a Meta charge."
+  },
+  "status": "NATIVE_SYNTHETIC_PASS",
+  "provider_calls": [
+    {
+      "model": "muse-spark-1.3",
+      "total_tokens": 150
+    },
+    {
+      "model": "muse-spark-1.3",
+      "total_tokens": 150
+    },
+    {
+      "model": "muse-spark-1.3",
+      "total_tokens": 150
+    },
+    {
+      "model": "muse-spark-1.3",
+      "total_tokens": 150
+    },
+    {
+      "model": "muse-spark-1.3",
+      "total_tokens": 150
+    }
+  ]
+}

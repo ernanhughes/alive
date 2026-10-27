@@ -349,7 +349,8 @@ def test_feedback_policy_is_idempotent_and_revision_replaces_evidence(client, mo
     policy = client.get(ROOT).json()["policy"]["data"]
     assert policy["version"] == 2
     context = next(iter(policy["contexts"].values()))
-    assert context["useful"] == 0 and context["not_useful"] == 1
+    assert len(context["evidence"]) == 1
+    assert next(iter(context["evidence"].values()))["useful"] is False
 
 
 def test_three_negative_feedback_suppresses_analysis_and_owner_correction_restores(
@@ -454,5 +455,137 @@ def test_adaptive_policy_persists_across_restart(client, settings, monkeypatch):
         fourth = snapshot(reopened, fresh_grant, text=TEXT + " Restart fourth excerpt.")
         assert fourth["decision"]["action"] == "no_action"
         assert fourth["decision"]["adaptive_policy"]["support"] == 3
-        assert reopened.get(ROOT).json()["policy"]["data"]["version"] == 3
+        assert reopened.get(ROOT).json()["policy"]["data"]["version"] == 4
         assert len(calls) == 3
+
+
+def test_repeated_ratings_of_unchanged_excerpt_count_as_one_evidence_unit(client, monkeypatch):
+    calls = fake_model(monkeypatch)
+    _, grant = setup(client)
+    for _ in range(3):
+        shot = snapshot(client, grant)
+        note = wait(client, analyse(client, shot)["id"])
+        feedback = post(client, "/feedback", {"note_id": note["id"], "useful": False})
+        assert feedback["data"]["distinct_support"] == 1
+
+    decision = snapshot(client, grant)["decision"]
+    assert decision["action"] == "analyse"
+    assert decision["adaptive_policy"]["support"] == 1
+    assert decision["adaptive_policy"]["distinct_evidence"] == 1
+    assert len(calls) == 3
+    context = next(iter(client.get(ROOT).json()["policy"]["data"]["contexts"].values()))
+    assert len(context["evidence"]) == 1
+
+
+def test_three_distinct_excerpts_suppress_and_probe_recovers(client, monkeypatch):
+    calls = fake_model(monkeypatch)
+    _, grant = setup(client)
+    for index in range(3):
+        shot = snapshot(client, grant, text=TEXT + f" Distinct evidence {index}.")
+        note = wait(client, analyse(client, shot)["id"])
+        post(client, "/feedback", {"note_id": note["id"], "useful": False})
+
+    suppressed = []
+    for index in range(3):
+        shot = snapshot(client, grant, text=TEXT + f" Suppressed observation {index}.")
+        decision = shot["decision"]
+        assert decision["action"] == "no_action"
+        assert decision["no_action_source"] == "feedback_policy"
+        assert decision["without_feedback_action"] == "analyse"
+        assert decision["adaptive_policy"]["support"] == 3
+        suppressed.append(decision)
+    assert [d["adaptive_policy"]["suppressions"] for d in suppressed] == [1, 2, 3]
+    assert len(calls) == 3
+
+    probe = snapshot(client, grant, text=TEXT + " Probe recovery excerpt.")
+    decision = probe["decision"]
+    assert decision["action"] == "analyse"
+    assert decision["probe"] is True
+    assert decision["adaptive_policy"]["probe"] is True
+    assert decision["adaptive_policy"]["suppressions"] == 0
+    assert decision["adaptive_policy"]["probes"] == 1
+    note = wait(client, analyse(client, probe)["id"])
+    assert len(calls) == 4
+    post(client, "/feedback", {"note_id": note["id"], "useful": True})
+
+    restored = snapshot(client, grant, text=TEXT + " After probe excerpt.")
+    decision = restored["decision"]
+    assert decision["action"] == "analyse"
+    assert decision["adaptive_policy"]["support"] == 4
+    assert decision["adaptive_policy"]["useful"] == 1
+    assert decision["adaptive_policy"]["useful_rate"] == 0.25
+
+
+def test_exact_useful_recall_precedes_adaptive_pause(client, monkeypatch):
+    calls = fake_model(monkeypatch)
+    _, grant = setup(client)
+    first = snapshot(client, grant)
+    note = wait(client, analyse(client, first)["id"])
+    post(client, "/feedback", {"note_id": note["id"], "useful": True})
+    for index in range(4):
+        shot = snapshot(client, grant, text=TEXT + f" Negative evidence {index}.")
+        negative = wait(client, analyse(client, shot)["id"])
+        post(client, "/feedback", {"note_id": negative["id"], "useful": False})
+
+    exact = snapshot(client, grant)
+    decision = exact["decision"]
+    assert decision["action"] == "recall"
+    assert decision["note"]["id"] == note["id"]
+    assert decision["adaptive_policy"]["support"] == 5
+    assert decision["adaptive_policy"]["useful"] == 1
+    assert decision["adaptive_policy"]["useful_rate"] == 0.2
+    assert len(calls) == 5
+
+
+def test_failed_feedback_does_not_change_policy(client, monkeypatch):
+    fake_model(monkeypatch, "invented evidence")
+    _, grant = setup(client)
+    note = wait(client, analyse(client, snapshot(client, grant))["id"])
+    assert note["status"] == "failed"
+    before = client.get(ROOT).json()["policy"]["data"]
+    post(client, "/feedback", {"note_id": note["id"], "useful": True}, 409)
+    after = client.get(ROOT).json()["policy"]["data"]
+    assert after["version"] == before["version"]
+    assert after == before
+
+
+def test_failed_governor_correction_does_not_reset_suppression(client, monkeypatch):
+    calls = fake_model(monkeypatch)
+    _, grant = setup(client)
+    for index in range(3):
+        shot = snapshot(client, grant, text=TEXT + f" Governor evidence {index}.")
+        note = wait(client, analyse(client, shot)["id"])
+        post(client, "/feedback", {"note_id": note["id"], "useful": False})
+
+    fourth = snapshot(client, grant, text=TEXT + " Governor suppressed excerpt.")
+    assert fourth["decision"]["action"] == "no_action"
+    before = client.get(ROOT).json()["policy"]["data"]
+    assert next(iter(before["contexts"].values()))["suppressions"] == 1
+
+    assert (
+        client.post("/api/v1/cognition/configuration", json={"session_calls": 0}).status_code == 200
+    )
+    analyse(client, fourth, expected=409, owner_correction=True)
+    after = client.get(ROOT).json()["policy"]["data"]
+    assert after["version"] == before["version"]
+    assert after == before
+    assert client.get(ROOT).json()["corrections"] == []
+    assert len(calls) == 3
+
+
+def test_feedback_duplicate_evidence_does_not_increment_policy(client, monkeypatch):
+    fake_model(monkeypatch)
+    _, grant = setup(client)
+    first = snapshot(client, grant)
+    first_note = wait(client, analyse(client, first)["id"])
+    one = post(client, "/feedback", {"note_id": first_note["id"], "useful": False})
+    assert one["data"]["policy_version_after"] == 1
+
+    second = snapshot(client, grant)
+    second_note = wait(client, analyse(client, second)["id"])
+    duplicate = post(client, "/feedback", {"note_id": second_note["id"], "useful": False})
+    assert duplicate["data"]["duplicate_evidence"] is True
+    assert duplicate["data"]["policy_changed"] is False
+    assert duplicate["data"]["policy_version_after"] == 1
+    context = next(iter(client.get(ROOT).json()["policy"]["data"]["contexts"].values()))
+    assert len(context["evidence"]) == 1

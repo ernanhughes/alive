@@ -1,0 +1,50 @@
+{
+  "qualified_source": "8e1b65ab4ac82c8a1bde5189e936aab145485ca4",
+  "reviewed_pr_head": "f222a0613ccb1c338cfccd2d43a2cd864a0e5977",
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "backend.txt": {
+      "sha256": "63e6e18306c0b2fef1392907f1d277953c6dd607d8c98ef85ea448ff777ac882",
+      "bytes": 1112
+    },
+    "build.txt": {
+      "sha256": "ced6d8b17f20499ebf3e76db592dc60d5e22b54badf004c8018df2e31900040f",
+      "bytes": 405
+    },
+    "companion.txt": {
+      "sha256": "166a368e0709208e65e0d6647d6cf58117dcdf8ae9e5aed896391a025b033b52",
+      "bytes": 738
+    },
+    "extension.txt": {
+      "sha256": "0c7fe5c163fff693572937b76bc6ac84d7040ff7d624027df98f811909ca12bf",
+      "bytes": 514
+    },
+    "frontend.txt": {
+      "sha256": "e46c867bbbc796d4251550ace9c43b2d55929cb28a31ada0eee2ef999e21d49a",
+      "bytes": 283
+    },
+    "integrity.json": {
+      "sha256": "b957b83d32c7db78c23568157b9e68601776fc67c29be874f74b310ae8e2d25c",
+      "bytes": 89
+    },
+    "native-synthetic.json": {
+      "sha256": "1789bcb41bf5e322a9e7ebc6452159a1191c294b852cd98c5df9ab2f3df12283",
+      "bytes": 2279
+    },
+    "native.txt": {
+      "sha256": "96196fa8caee2769d576a6474d2cde2d276bff34c8fb5795d61ccea83d05c8c3",
+      "bytes": 98
+    },
+    "README.md": {
+      "sha256": "f482a913fc3c4a6a0fdcf9e7aed4b76dfc750b912a4b39bb310ee1f97ad16a47",
+      "bytes": 2126
+    },
+    "review.json": {
+      "sha256": "f0a33aa5a5321300693039b8a8656b39a483dd7d986df7ec57fd525f74f2101b",
+      "bytes": 845
+    }
+  }
+}

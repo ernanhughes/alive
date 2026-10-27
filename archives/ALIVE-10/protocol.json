@@ -1,0 +1,53 @@
+{
+  "protocol_version": "alive10-v1",
+  "base_commit": "5ee1031f36aa411e8675f208a794de13c478fea0",
+  "source_commit": "021462b480cb7ba33fa431cc949ba3a3db43a237",
+  "policy_id": "companion-feedback-usefulness-v2",
+  "decision_context": "goal_id|url|language",
+  "independent_evidence_unit": "sha256 of the reviewed excerpt within a goal/url/language context",
+  "minimum_distinct_support": 3,
+  "maximum_useful_rate_for_pause": 0.20,
+  "probe_after_suppressions": 3,
+  "feedback_semantics": {
+    "useful": "The owner says this note helped; it does not assert factual truth.",
+    "not_useful": "The owner says this note did not help; it does not assert the subject is irrelevant.",
+    "duplicate_same_note_same_rating": "idempotent; no policy update",
+    "duplicate_excerpt_different_note": "audited feedback row; no additional evidence unit or policy version",
+    "changed_rating_same_note": "one revision replaces the excerpt evidence count",
+    "contradictory_rating_different_note_same_excerpt": "latest effective rating for that excerpt",
+    "factual_support": "separate exact-quote validation; never inferred from usefulness"
+  },
+  "recovery": {
+    "mechanism": "bounded periodic re-evaluation plus explicit owner correction",
+    "trigger": "three consecutive no-action observations in the same context",
+    "probe_authority": "one snapshot only; still requires grant, reviewed hash and Governor budget",
+    "owner_correction": "reset suppression counter and record correction; never broadens permission"
+  },
+  "baselines": {
+    "corrected_adaptive_v2": "distinct-excerpt evidence with periodic probe",
+    "alive09_v1_absorbing": "rating-count support, no periodic recovery",
+    "simple_one_negative": "pause after one negative rating",
+    "constant_analyse": "analyse every observation when authorised"
+  },
+  "native_harness": {
+    "script": "scripts/native10.py",
+    "backend": "isolated current-branch uvicorn on a free loopback port",
+    "database": "isolated SQLite under .alive/native10-*",
+    "provider": "local Meta-compatible HTTP stub",
+    "browser": "system Chrome via Playwright, fresh profile",
+    "extension": "temporary unpacked copy with test-only loopback config",
+    "side_panel": "docked side-panel target was not produced; extension page was used"
+  },
+  "acceptance_status": {
+    "engineering": "PASS",
+    "native_synthetic": "PASS",
+    "native_meta": "NOT_RUN",
+    "research_advantage": "NOT_DEMONSTRATED"
+  },
+  "meta_ceiling": {
+    "maximum_calls": 8,
+    "maximum_estimated_usd": 0.10,
+    "maximum_total_tokens": 12000,
+    "approval": "required separately; not granted by this milestone"
+  }
+}

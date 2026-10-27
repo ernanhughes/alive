@@ -1,0 +1,11 @@
+{
+  "provider_calls": 5,
+  "prompt_tokens": 500,
+  "completion_tokens": 250,
+  "total_tokens": 750,
+  "estimated_usd": 0.0016875,
+  "paid_usd": 0.0,
+  "model_pin_used_by_companion": "muse-spark-1.3",
+  "note": "Synthetic local stub; the amount is ALIVE's price() estimate, not a Meta charge. No provider credential or paid request was used.",
+  "source_commit": "021462b480cb7ba33fa431cc949ba3a3db43a237"
+}

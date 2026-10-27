@@ -1,0 +1,27 @@
+{
+  "status": "PREPARATION_ONLY",
+  "protocol_version": "alive11-draft-v1",
+  "planning_baseline": "f222a0613ccb1c338cfccd2d43a2cd864a0e5977",
+  "panel_review_correction": "8e1b65a",
+  "accepted_integrated_baseline": null,
+  "implementation_started": false,
+  "paid_approval": "NOT_GRANTED_FOR_THIS_STAGE",
+  "model_proposal": "muse-spark-1.3",
+  "proposed_maximum_paid_calls": 8,
+  "proposed_core_paid_calls": 5,
+  "proposed_maximum_charged_tokens": 12000,
+  "proposed_maximum_estimated_usd": 0.1,
+  "automatic_retries": 0,
+  "executed_alive11_calls": 0,
+  "executed_alive11_tokens": 0,
+  "executed_alive11_paid_usd": 0,
+  "required_gates": [
+    "Owner acceptance and merge of ALIVE-10",
+    "Record actual integrated source commit",
+    "Freeze versioned protocol and pass isolated synthetic preflight",
+    "Verify provider pin, prices, credentials and aggregate budget enforcement",
+    "Separate explicit owner approval before real Meta inference"
+  ],
+  "feedback_interventions": "Scripted operator branch-coverage ratings must be distinct from independently assessed owner usefulness",
+  "qualification_claim": "NONE"
+}

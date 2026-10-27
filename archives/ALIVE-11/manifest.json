@@ -1,0 +1,19 @@
+{
+  "status": "PREPARATION_ONLY",
+  "planning_source": "8e1b65ab4ac82c8a1bde5189e936aab145485ca4",
+  "protocol_document_sha256": "932ea5916e2e9a12f509185e3b3f82570a1d3c253aeb4839a1bc27fbdb1a1b05",
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "protocol-draft-v1.json": {
+      "sha256": "2ef6cbbee9018b20ecda984348efc0d3d8cd3bf45898df202de19a700f700536",
+      "bytes": 1128
+    },
+    "README.md": {
+      "sha256": "dbbf2e4fb3965491fcd9b7f232554ba9504bce652b906b8ff2082af671ba9a93",
+      "bytes": 599
+    }
+  }
+}
