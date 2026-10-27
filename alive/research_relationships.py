@@ -8,6 +8,7 @@ payload, and the server revalidates every bound hash before dispatch.
 import asyncio
 import hashlib
 import json
+import re
 import time
 from datetime import timedelta
 from typing import Literal
@@ -17,7 +18,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from alive.cognitive_models import CognitiveControl
 from alive.cognitive_schema import CognitiveConfiguration
 from alive.experiment.metrics import price
-from alive.experiment_budget import check_spend, worst_micro_usd
+from alive.experiment_budget import charged_micro_usd, check_spend, worst_micro_usd
 from alive.models import now, record
 from alive.providers import MetaProvider
 from alive.research_memory import (
@@ -29,11 +30,48 @@ from alive.research_memory import (
 CONSENT_KIND = "research_outbound_consent"
 ATTEMPT_KIND = "research_relationship_analysis"
 ANALYSIS_VERSION = "alive14-relationship-v1"
+VALIDATOR_VERSION = "alive14r1-evidence-v1"
+MIN_QUOTE_CHARS = 16
+MIN_QUOTE_TERMS = 2
+MIN_SHARED_TERMS = 1
+MAX_ABSTENTION_CONFIDENCE = 0.2
 MAX_CURRENT_CHARS = 3000
 MAX_HISTORICAL_CHARS = 2000
 MAX_PAYLOAD_CHARS = 5000
 CONSENT_TTL_MINUTES = 10
 LOCAL_STUB_MODEL = "deterministic-local-stub-v1"
+GENERIC_EVIDENCE_TERMS = {
+    "about",
+    "approach",
+    "content",
+    "context",
+    "data",
+    "information",
+    "method",
+    "methods",
+    "note",
+    "notes",
+    "page",
+    "pages",
+    "process",
+    "record",
+    "records",
+    "result",
+    "results",
+    "source",
+    "sources",
+    "system",
+    "systems",
+    "text",
+    "value",
+    "values",
+    "work",
+}
+ASSERTIVE_EVIDENCE_LANGUAGE = re.compile(
+    r"\b(support(?:s|ed)?|confirm(?:s|ed)?|prove(?:s|n)?|demonstrat(?:e|es|ed)|"
+    r"contradict(?:s|ed)?|clearly|definitely|certainly|therefore)\b",
+    re.IGNORECASE,
+)
 
 RELATIONSHIP_INSTRUCTIONS = (
     "You are ALIVE's evidence-grounded research relationship assistant. The owner has "
@@ -69,6 +107,65 @@ def _digest(value):
     ).hexdigest()
 
 
+def validate_relationship_output(output, payload):
+    """Validate quote provenance and bounded evidence, not semantic truth."""
+    goal_terms = _tokens(payload.get("goal_instruction", ""))
+    current = output.current_quote
+    historical = output.historical_quote
+    current_exact = bool(current and current in payload["current_excerpt"])
+    historical_exact = bool(historical and historical in payload["historical_excerpt"])
+
+    def meaningful(quote):
+        terms = _tokens(quote or "") - goal_terms
+        return sorted(term for term in terms if term not in GENERIC_EVIDENCE_TERMS)
+
+    current_terms = meaningful(current)
+    historical_terms = meaningful(historical)
+    shared_terms = sorted(set(current_terms) & set(historical_terms))
+    reasons = []
+    if current is not None and len(current) < MIN_QUOTE_CHARS:
+        reasons.append("current_quote_too_short")
+    if historical is not None and len(historical) < MIN_QUOTE_CHARS:
+        reasons.append("historical_quote_too_short")
+    if current is not None and not current_exact:
+        reasons.append("current_quote_not_exact")
+    if historical is not None and not historical_exact:
+        reasons.append("historical_quote_not_exact")
+    if output.relationship == "insufficient_evidence":
+        if output.confidence > MAX_ABSTENTION_CONFIDENCE:
+            reasons.append("abstention_confidence_too_high")
+        if ASSERTIVE_EVIDENCE_LANGUAGE.search(output.explanation + " " + output.limitations):
+            reasons.append("abstention_contains_assertive_claim")
+    else:
+        if current is None or historical is None:
+            reasons.append("evidence_quotes_required")
+        if len(current_terms) < MIN_QUOTE_TERMS:
+            reasons.append("current_quote_lacks_meaningful_terms")
+        if len(historical_terms) < MIN_QUOTE_TERMS:
+            reasons.append("historical_quote_lacks_meaningful_terms")
+        if len(shared_terms) < MIN_SHARED_TERMS:
+            reasons.append("quotes_share_no_meaningful_terms")
+        if current is not None and current == historical:
+            reasons.append("identical_evidence_span")
+    quote_provenance = bool(current_exact and historical_exact)
+    return {
+        "validator_version": VALIDATOR_VERSION,
+        "valid": not reasons,
+        "reasons": reasons,
+        "quote_provenance": quote_provenance,
+        "semantic_verification": False,
+        "explanation_status": "unverified_model_interpretation",
+        "current_quote_exact": current_exact,
+        "historical_quote_exact": historical_exact,
+        "current_quote_length": len(current or ""),
+        "historical_quote_length": len(historical or ""),
+        "current_meaningful_terms": current_terms,
+        "historical_meaningful_terms": historical_terms,
+        "shared_meaningful_terms": shared_terms,
+        "same_evidence_span": bool(current and current == historical),
+    }
+
+
 class ResearchRelationships:
     def __init__(self, research, experiments, settings):
         self.research = research
@@ -82,6 +179,14 @@ class ResearchRelationships:
             return {
                 "id": "local_stub",
                 "model": LOCAL_STUB_MODEL,
+                "external": False,
+            }
+        if provider == "local_stub_invalid":
+            if not self.settings.alive_relationship_allow_test_providers:
+                raise PermissionError("Invalid-output test provider is not enabled")
+            return {
+                "id": "local_stub_invalid",
+                "model": "deterministic-local-stub-invalid-v1",
                 "external": False,
             }
         if provider == "meta":
@@ -111,6 +216,51 @@ class ResearchRelationships:
             + 1024
             + self.settings.alive_meta_max_output
         )
+
+    def _request(self, payload):
+        return {
+            "instructions": RELATIONSHIP_INSTRUCTIONS,
+            "input": payload,
+            "schema": RelationshipOutput.model_json_schema(),
+        }
+
+    def _request_sha256(self, payload):
+        return _digest(self._request(payload))
+
+    async def _allowance(self, session):
+        control = await session.get(CognitiveControl, self.k.instance_id)
+        cfg = CognitiveConfiguration.model_validate(control.configuration)
+        ledger = await self._ledger(session)
+        cap = self.settings.alive_relationship_micro_usd_limit
+        cap = cap if cap is not None else 100000
+        return {
+            "session_calls_remaining": max(
+                0,
+                cfg.session_calls
+                - control.spent.get("session_calls", 0)
+                - control.reserved.get("calls", 0),
+            ),
+            "session_tokens_remaining": max(
+                0,
+                cfg.session_tokens
+                - control.spent.get("session_tokens", 0)
+                - control.reserved.get("tokens", 0),
+            ),
+            "experiment_calls_remaining": max(
+                0,
+                cfg.experiment_calls
+                - control.spent.get("experiment_calls", 0)
+                - control.reserved.get("calls", 0),
+            ),
+            "experiment_tokens_remaining": max(
+                0,
+                cfg.experiment_tokens
+                - control.spent.get("experiment_tokens", 0)
+                - control.reserved.get("tokens", 0),
+            ),
+            "micro_usd_remaining": max(0, cap - charged_micro_usd(ledger)),
+            "micro_usd_ceiling": cap,
+        }
 
     def _payload(self, snapshot, memory, goal, provider, model):
         current_excerpt = snapshot.data["text"][:MAX_CURRENT_CHARS]
@@ -174,12 +324,16 @@ class ResearchRelationships:
                 raise ValueError("Outbound analysis requires different source pages")
             payload = self._payload(snapshot, memory, goal, provider, identity["model"])
             reserve = self._reserve(payload, identity["model"])
+            request = self._request(payload)
+            request_sha256 = _digest(request)
+            allowance = await self._allowance(session)
             row = self.web.add(
                 session,
                 CONSENT_KIND,
                 {
                     "payload": payload,
                     "payload_sha256": _digest(payload),
+                    "request_sha256": request_sha256,
                     "provider": identity,
                     "goal_id": goal.id,
                     "current_snapshot_id": snapshot.id,
@@ -220,6 +374,12 @@ class ResearchRelationships:
                 },
                 "estimated_max_tokens": reserve,
                 "estimated_max_micro_usd": worst_micro_usd(reserve),
+                "single_call_reservation": reserve,
+                "remaining_allowance": allowance,
+                "request": request,
+                "request_sha256": request_sha256,
+                "provider_operation": ("external_meta" if identity["external"] else "local_test"),
+                "payload_immutable": True,
                 "requires_owner_authorisation": True,
             }
 
@@ -256,7 +416,7 @@ class ResearchRelationships:
             consent.data = consent.data | {"revoked_at": now().isoformat()}
             return record(consent)
 
-    async def _ledger(self, session):
+    async def _ledger(self, session, exclude_attempt_id=None):
         rows = await self.web.rows(session, ATTEMPT_KIND)
         return [
             {
@@ -265,20 +425,29 @@ class ResearchRelationships:
                 "usage": row.data.get("usage"),
             }
             for row in rows
-            if row.status != "interrupted"
+            if row.id != exclude_attempt_id
         ]
 
-    async def _existing_connection(self, session, snapshot_id, memory_id):
-        return next(
-            (
-                row
-                for row in await self.web.rows(session, CONNECTION_KIND)
-                if row.data.get("current_snapshot_id") == snapshot_id
-                and row.data.get("historical_memory_id") == memory_id
-                and row.data.get("analysis_version") == ANALYSIS_VERSION
-            ),
-            None,
-        )
+    async def _existing_connection(self, session, consent):
+        payload = consent.data["payload"]
+        provider = consent.data["provider"]
+        for row in await self.web.rows(session, CONNECTION_KIND):
+            data = row.data
+            if (
+                data.get("analysis_version") == ANALYSIS_VERSION
+                and data.get("validator_version") == VALIDATOR_VERSION
+                and data.get("current_snapshot_id") == payload["current_snapshot_id"]
+                and data.get("historical_memory_id") == payload["historical_memory_id"]
+                and data.get("current_sha256") == payload["current_sha256"]
+                and data.get("historical_sha256") == payload["historical_sha256"]
+                and data.get("payload_sha256") == consent.data["payload_sha256"]
+                and data.get("request_sha256") == consent.data["request_sha256"]
+                and data.get("provider") == provider
+                and data.get("model") == provider["model"]
+                and row.status in ("candidate", "insufficient_evidence")
+            ):
+                return row
+        return None
 
     async def analyze(self, consent_id):
         async with self.k.lock, self.k.db.sessions.begin() as session:
@@ -289,14 +458,28 @@ class ResearchRelationships:
                 consent.status = "expired"
                 raise PermissionError("Outbound consent expired; preview the payload again")
             snapshot, memory, goal = await self._validate_sources(session, consent)
-            existing = await self._existing_connection(session, snapshot.id, memory.id)
+            existing = await self._existing_connection(session, consent)
             if existing:
-                consent.status = "consumed"
+                consent.status = "cached"
                 consent.data = consent.data | {
-                    "consumed_at": now().isoformat(),
+                    "cached_at": now().isoformat(),
                     "reused_connection_id": existing.id,
                 }
-                return record(existing) | {"idempotent": True, "reused": True}
+                self.k.add_event(
+                    session,
+                    "research.relationship_cached",
+                    {
+                        "consent_id": consent.id,
+                        "connection_id": existing.id,
+                        "payload_sha256": consent.data["payload_sha256"],
+                        "provider": consent.data["provider"]["id"],
+                    },
+                )
+                return record(existing) | {
+                    "idempotent": True,
+                    "reused": True,
+                    "cached": True,
+                }
             if memory.id in self.research.outbound_inflight:
                 raise ValueError("An outbound analysis for this memory is already in progress")
             control = await session.get(CognitiveControl, self.k.instance_id)
@@ -330,6 +513,7 @@ class ResearchRelationships:
                     "analysis_version": ANALYSIS_VERSION,
                     "provider": consent.data["provider"],
                     "payload_sha256": consent.data["payload_sha256"],
+                    "request_sha256": consent.data["request_sha256"],
                     "current_snapshot_id": snapshot.id,
                     "historical_memory_id": memory.id,
                     "current_sha256": snapshot.data["sha256"],
@@ -352,8 +536,38 @@ class ResearchRelationships:
         started = time.monotonic()
         try:
             async with asyncio.timeout(cfg.wall_seconds):
+                async with self.k.lock, self.k.db.sessions() as guard_session:
+                    if consent.data.get("request_sha256") != self._request_sha256(payload):
+                        raise PermissionError(
+                            "Outbound request representation changed; preview and authorise again"
+                        )
+                    current_provider = self._provider_identity(provider["id"])
+                    if current_provider != provider:
+                        raise PermissionError(
+                            "Provider or pinned model changed after authorisation; "
+                            "preview and authorise again"
+                        )
+                    guard_control = await guard_session.get(CognitiveControl, self.k.instance_id)
+                    if (
+                        guard_control.mode == "running"
+                        or guard_control.reserved.get("calls", 0) != 1
+                        or guard_control.reserved.get("tokens", 0) != reserve
+                    ):
+                        raise PermissionError(
+                            "Governor reservation changed before provider dispatch"
+                        )
+                    capped = self.settings.alive_relationship_micro_usd_limit
+                    check_spend(
+                        await self._ledger(guard_session, exclude_attempt_id=attempt_id),
+                        reserve,
+                        cap=capped if capped is not None else 100000,
+                    )
                 if provider["id"] == "local_stub":
                     output = self._local_stub(payload)
+                    raw = output.model_dump_json()
+                    usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
+                elif provider["id"] == "local_stub_invalid":
+                    output = self._local_stub_invalid(payload)
                     raw = output.model_dump_json()
                     usage = {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}
                 else:
@@ -370,7 +584,10 @@ class ResearchRelationships:
                     output = RelationshipOutput.model_validate_json(raw)
                     validation = self._quote_validation(output, payload)
                     if not validation["valid"]:
-                        raise ValueError("Model quotations are not exact source spans")
+                        raise ValueError(
+                            "Relationship output failed evidence validation: "
+                            + ", ".join(validation["reasons"])
+                        )
         except BaseException as exc:
             usage = getattr(exc, "usage", None) or usage
             error = type(exc).__name__
@@ -386,7 +603,12 @@ class ResearchRelationships:
                 self._quote_validation(output, payload)
                 if output
                 else {
+                    "validator_version": VALIDATOR_VERSION,
                     "valid": False,
+                    "reasons": ["no_structured_output"],
+                    "quote_provenance": False,
+                    "semantic_verification": False,
+                    "explanation_status": "unverified_model_interpretation",
                     "current_quote_exact": False,
                     "historical_quote_exact": False,
                 }
@@ -408,6 +630,7 @@ class ResearchRelationships:
                 else None,
                 "raw_response_truncated": isinstance(raw, str) and len(raw) > 16384,
                 "validation": validation,
+                "validator_version": VALIDATOR_VERSION,
                 "error": error,
                 "latency_ms": (time.monotonic() - started) * 1000,
                 "completed_at": now().isoformat(),
@@ -446,9 +669,15 @@ class ResearchRelationships:
                             "verified truth"
                         ),
                         "analysis_version": ANALYSIS_VERSION,
+                        "validator_version": VALIDATOR_VERSION,
+                        "payload_sha256": row.data["payload_sha256"],
+                        "request_sha256": row.data["request_sha256"],
                         "provider": provider,
+                        "model": provider["model"],
                         "consent_id": row.data["consent_id"],
                         "validation": validation,
+                        "evidence_status": "quote_provenance_only_unverified_interpretation",
+                        "explanation_status": "unverified_model_interpretation",
                         "usage": usage,
                         "estimated_usd": price(usage),
                         "inference_calls": 0 if provider["id"] == "local_stub" else 1,
@@ -516,21 +745,18 @@ class ResearchRelationships:
             confidence=0.0,
         )
 
+    def _local_stub_invalid(self, payload):
+        return RelationshipOutput(
+            relationship="possible_conceptual_connection",
+            explanation="A fabricated authority claim that is not supported by evidence.",
+            current_quote="a",
+            historical_quote="b",
+            limitations="Controlled invalid-output fixture.",
+            confidence=0.99,
+        )
+
     def _quote_validation(self, output, payload):
-        current = output.current_quote
-        historical = output.historical_quote
-        current_exact = bool(current and current in payload["current_excerpt"])
-        historical_exact = bool(historical and historical in payload["historical_excerpt"])
-        needs_quotes = output.relationship != "insufficient_evidence"
-        if needs_quotes:
-            valid = current_exact and historical_exact
-        else:
-            valid = (current is None and historical is None) or (current_exact and historical_exact)
-        return {
-            "valid": valid,
-            "current_quote_exact": current_exact,
-            "historical_quote_exact": historical_exact,
-        }
+        return validate_relationship_output(output, payload)
 
     async def invalidate_for_grant(self, grant_id):
         async with self.k.lock, self.k.db.sessions.begin() as session:

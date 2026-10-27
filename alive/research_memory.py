@@ -13,7 +13,7 @@ from datetime import UTC, datetime
 from sqlalchemy import select
 
 from alive.cognitive_models import MemoryVector
-from alive.models import Memory, now, record
+from alive.models import Memory, now, record, uid
 from alive.web_models import WebExperience
 
 RESEARCH_KIND = "research_memory"
@@ -674,7 +674,7 @@ class ResearchMemory:
                 "abstained": status == "insufficient_evidence",
             }
 
-    async def connection_feedback(self, connection_id, feedback):
+    async def connection_feedback(self, connection_id, feedback, rater_type="owner"):
         if isinstance(feedback, bool):
             feedback = {"useful": feedback}
         async with self.k.lock, self.k.db.sessions.begin() as session:
@@ -702,6 +702,9 @@ class ResearchMemory:
                 "feedback_revision": revision,
                 "feedback_history": history[-20:],
                 "feedback_at": entry["at"],
+                "rater_type": rater_type,
+                "rating_id": uid(),
+                "rubric_version": "alive14r1-rubric-v1",
             }
             self.k.add_event(
                 session,
@@ -711,6 +714,7 @@ class ResearchMemory:
                     "revision": revision,
                     "useful": useful,
                     "feedback": feedback,
+                    "rater_type": rater_type,
                 },
             )
             return record(row)

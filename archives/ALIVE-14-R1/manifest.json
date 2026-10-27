@@ -1,0 +1,88 @@
+{
+  "status": "ENGINEERING_PASS",
+  "native_synthetic": "NATIVE_SYNTHETIC_PASS",
+  "native_meta": "NOT_RUN",
+  "meta_readiness": "META_READY_FOR_APPROVAL",
+  "owner_usefulness": "OWNER_USEFULNESS_NOT_MEASURED",
+  "baseline": "777e4d99b6908d13875c9024dfb065cb3bfcaffa",
+  "source_commit": "9ff0e388cb7a874619e8acf3612beeb6260288c0",
+  "protocol_commit": "3bc28ba",
+  "protocol_sha256": "b0e255b2b0cf5325726cf1af652d307daeb56c1f227922e184c0235ac0cac349",
+  "paid_calls": 0,
+  "files": {
+    ".gitattributes": {
+      "sha256": "c089985639038cc07dc37c07a8d0d543df7ddf9b1873a948000494a6e230530d",
+      "bytes": 27
+    },
+    "evidence/native-synthetic.json": {
+      "sha256": "82c1dad547393bc07a2acb4dd300eeffd7617869c0ae58a7dbb130ef55847bbb",
+      "bytes": 13047
+    },
+    "evidence/pre-fix-defects.json": {
+      "sha256": "280067378b22df278d1131c1d835a5c13ec63a2c43aecd6826ae747b5c2a1612",
+      "bytes": 3033
+    },
+    "evidence/protocol-hash-reconciliation.json": {
+      "sha256": "03a495ee8f422234251c46a2215cb95192a4eb91cab1c96b08826504bcf8088f",
+      "bytes": 757
+    },
+    "evidence/provider-boundary.json": {
+      "sha256": "8f6dc2ebdc23f8a262c9b9e156c59cc4447a605ed3bbd945006c9ca51e6fa6f9",
+      "bytes": 1836
+    },
+    "evidence/research-relationship.png": {
+      "sha256": "f2f9338103753a1b4d28cd5e2fe92888cf7842971c38f1eafa75fdf00859db95",
+      "bytes": 178339
+    },
+    "evidence/validator-cases.json": {
+      "sha256": "e2a1dc2c5698fe96a50ad7386bb3aee16eb46507a2c6d0bea3a2aa4c690f8bd1",
+      "bytes": 5618
+    },
+    "protocol/relationship-experiment-v1.json": {
+      "sha256": "b0e255b2b0cf5325726cf1af652d307daeb56c1f227922e184c0235ac0cac349",
+      "bytes": 6973
+    },
+    "README.md": {
+      "sha256": "6964aba11d2ad04bece7df42f0c8704202cc4983f999088dc59b356b7ba082c1",
+      "bytes": 3907
+    },
+    "validation/archive.txt": {
+      "sha256": "bed167c368ff9874b23fd9f3204876ca7b2e7aa0d7d2d246504b1d5b1969db35",
+      "bytes": 145
+    },
+    "validation/backend.txt": {
+      "sha256": "db56aae3094bb1de78fa69028e3346f7422aaa38a5240a212fcb567fb454280e",
+      "bytes": 1278
+    },
+    "validation/build.txt": {
+      "sha256": "9017891e90b4203bf551bd7d8be346891e5a4bde11d65c3180e1cea250ccbc0f",
+      "bytes": 450
+    },
+    "validation/extension.txt": {
+      "sha256": "abf2187ec4c59b20112dd1996a189c63866cb1786690553edbbaca0782004881",
+      "bytes": 1074
+    },
+    "validation/frontend.txt": {
+      "sha256": "3a1265fd6350e3a480735db40809d93648bddb60b5f5615adab46b2cf115f13b",
+      "bytes": 278
+    },
+    "validation/native.txt": {
+      "sha256": "5d709ddeb75bd9aa4526b7865ae53d7fdba2e066a95cd27a3c56e9e719b80ded",
+      "bytes": 424
+    },
+    "validation/research-memory.txt": {
+      "sha256": "e1518e57d130e73d4bc77bee4548bcbb4225c2455b712cd46154ca0fc893d6d4",
+      "bytes": 689
+    },
+    "validation/ruff.txt": {
+      "sha256": "1b349097652796879414ed999801d6539c3b9c27a322cb72b8ac766ae14e62ee",
+      "bytes": 47
+    },
+    "validation/whitespace.txt": {
+      "sha256": "5968467b31bb18dd1281dfa8659a64b5b0e3c940991215aaa32440298630d4d8",
+      "bytes": 202
+    }
+  },
+  "pr": "https://github.com/ernanhughes/alive/pull/21",
+  "ci": "all eight checks passed"
+}

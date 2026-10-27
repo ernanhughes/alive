@@ -10,6 +10,11 @@ from alive.app import create_app
 from alive.cognitive_models import CognitiveControl, CognitiveObservation, Investigation
 from alive.memory import ALL_MEMORY_TYPES
 from alive.models import Event, Goal, Instance, Memory, now, uid
+from alive.research_relationships import (
+    ATTEMPT_KIND,
+    RelationshipOutput,
+    validate_relationship_output,
+)
 from alive.web_experience import digest
 from alive.web_models import WebExperience
 from tests.conftest import TOKEN
@@ -302,6 +307,209 @@ def ranked(client, snapshot_id, ranker=None):
     return post(client, "/research/retrieve", body)
 
 
+def _relationship_payload(current, historical, goal="Compare memory collectors"):
+    return {
+        "current_excerpt": current,
+        "historical_excerpt": historical,
+        "goal_instruction": goal,
+    }
+
+
+def test_relationship_validator_rejects_weak_or_generic_evidence():
+    current = "Reference counting frees unreachable objects and reclaims memory."
+    historical = "Reference counting cannot reclaim cyclic objects."
+    payload = _relationship_payload(current, historical)
+
+    def output(**overrides):
+        values = {
+            "relationship": "possible_disagreement",
+            "explanation": "The excerpts may describe different collector cases.",
+            "current_quote": "Reference counting frees unreachable objects",
+            "historical_quote": "Reference counting cannot reclaim cyclic objects",
+            "limitations": "Both are bounded historical excerpts.",
+            "confidence": 0.4,
+        }
+        values.update(overrides)
+        return RelationshipOutput(**values)
+
+    assert validate_relationship_output(output(), payload)["valid"] is True
+
+    short = validate_relationship_output(output(current_quote="a", historical_quote="b"), payload)
+    assert short["valid"] is False
+    assert "current_quote_too_short" in short["reasons"]
+
+    generic = validate_relationship_output(
+        output(
+            current_quote="System data information source",
+            historical_quote="System data information source",
+        ),
+        _relationship_payload(
+            "System data information source records.",
+            "System data information source records.",
+        ),
+    )
+    assert generic["valid"] is False
+    assert "current_quote_lacks_meaningful_terms" in generic["reasons"]
+
+    no_shared = validate_relationship_output(
+        output(
+            current_quote="Reference counting frees unreachable objects",
+            historical_quote="Tracing collectors mark reachable roots",
+        ),
+        payload,
+    )
+    assert no_shared["valid"] is False
+    assert "quotes_share_no_meaningful_terms" in no_shared["reasons"]
+
+    same = validate_relationship_output(
+        output(
+            current_quote="Reference counting leaks cycles.",
+            historical_quote="Reference counting leaks cycles.",
+        ),
+        _relationship_payload(
+            "Reference counting leaks cycles.",
+            "Reference counting leaks cycles.",
+        ),
+    )
+    assert same["valid"] is False
+    assert "identical_evidence_span" in same["reasons"]
+
+    abstention = validate_relationship_output(
+        output(
+            relationship="insufficient_evidence",
+            explanation="This clearly supports the claim.",
+            current_quote=None,
+            historical_quote=None,
+            confidence=0.99,
+        ),
+        payload,
+    )
+    assert abstention["valid"] is False
+    assert "abstention_confidence_too_high" in abstention["reasons"]
+    assert "abstention_contains_assertive_claim" in abstention["reasons"]
+
+    fabricated = validate_relationship_output(
+        output(explanation="A peer-reviewed study proves this definitive conclusion."),
+        payload,
+    )
+    assert fabricated["valid"] is True
+    assert fabricated["quote_provenance"] is True
+    assert fabricated["semantic_verification"] is False
+    assert fabricated["explanation_status"] == "unverified_model_interpretation"
+
+
+def test_blind_rating_view_hides_conditions_and_requires_owner_ratings(client):
+    current = "Reference counting frees objects and cannot reclaim cycles."
+    historical = "A tracing collector marks reachable objects from roots."
+    tasks = [
+        {
+            "task_id": "T1",
+            "question": "How do the two collectors differ?",
+            "current_excerpt": current,
+            "historical_excerpt": historical,
+            "current_url": "https://example.test/current",
+            "historical_url": "https://example.test/historical",
+            "current_sha256": digest(current),
+            "historical_sha256": digest(historical),
+            "outputs": {
+                "A_current_only": "A neutral current-only explanation.",
+                "B_current_plus_history": "A neutral history-assisted explanation.",
+                "C_history_without_synthesis": "A neutral direct-history display.",
+            },
+        },
+        {
+            "task_id": "T2",
+            "question": "What evidence supports the comparison?",
+            "current_excerpt": current,
+            "historical_excerpt": historical,
+            "current_url": "https://example.test/current-2",
+            "historical_url": "https://example.test/historical-2",
+            "current_sha256": digest(current),
+            "historical_sha256": digest(historical),
+            "outputs": {
+                "A_current_only": "Another neutral current-only explanation.",
+                "B_current_plus_history": "Another neutral history-assisted explanation.",
+                "C_history_without_synthesis": "Another neutral direct-history display.",
+            },
+        },
+    ]
+    run = post(
+        client,
+        "/research/blind/runs",
+        {"experiment_id": "alive14-r1-test", "seed": 19, "tasks": tasks},
+    )
+    assert run["status"] == "open"
+    view = client.get(ROOT + f"/research/blind/runs/{run['id']}").json()
+    assert len(view["outputs"]) == 6
+    serialized = json.dumps(view)
+    assert '"condition":' not in serialized
+    assert "A_current_only" not in serialized
+    assert "local_stub" not in serialized
+    assert "estimated_usd" not in serialized
+    assert client.get(ROOT + f"/research/blind/runs/{run['id']}/reveal").status_code == 409
+    rubric = {
+        "factually_supported": "yes",
+        "relevant_to_goal": "yes",
+        "revealed_new": "yes",
+        "already_obvious": "no",
+        "would_act": "yes",
+        "misleading": "no",
+        "uncertain": "no",
+    }
+    first = post(
+        client,
+        f"/research/blind/runs/{run['id']}/ratings",
+        {
+            "output_id": view["outputs"][0]["output_id"],
+            "output_sha256": view["outputs"][0]["output_sha256"],
+            "rubric": rubric,
+        },
+    )
+    assert first["data"]["rater_type"] == "owner"
+    assert first["data"]["revision"] == 1
+    post(
+        client,
+        f"/research/blind/runs/{run['id']}/ratings",
+        {
+            "output_id": view["outputs"][0]["output_id"],
+            "output_sha256": "0" * 64,
+            "rubric": rubric,
+        },
+        403,
+    )
+    for output in view["outputs"][1:]:
+        post(
+            client,
+            f"/research/blind/runs/{run['id']}/ratings",
+            {
+                "output_id": output["output_id"],
+                "output_sha256": output["output_sha256"],
+                "rubric": rubric,
+            },
+        )
+
+    async def scripted_rating():
+        return await client.app.state.blind.rate(
+            run["id"],
+            view["outputs"][0]["output_id"],
+            view["outputs"][0]["output_sha256"],
+            rubric,
+            rater_type="scripted",
+        )
+
+    scripted = client.portal.call(scripted_rating)
+    assert scripted["data"]["rater_type"] == "scripted"
+    reveal = client.get(ROOT + f"/research/blind/runs/{run['id']}/reveal").json()
+    assert len(reveal["scripted_ratings"]) == 1
+    assert {row["condition"] for row in reveal["outputs"]} == {
+        "A_current_only",
+        "B_current_plus_history",
+        "C_history_without_synthesis",
+    }
+    assert len(reveal["ratings"]) == 6
+    assert all(row["data"]["rater_type"] == "owner" for row in reveal["ratings"])
+
+
 def test_bm25_prefers_short_specific_source_over_newer_long_prose(client):
     g = goal(client, "Understand Python memory management and garbage collection")
     grant_py = grant(client, g["id"], PY)
@@ -405,6 +613,36 @@ def test_connection_feedback_records_revisions(client, monkeypatch):
     assert second["data"]["feedback_revision"] == 2
     assert second["data"]["owner_useful"] is False
     assert len(second["data"]["feedback_history"]) == 2
+
+
+def test_scripted_feedback_is_marked_separately(client, monkeypatch):
+    g, _, _, _, saved = historical(client, monkeypatch)
+    mdn_grant = grant(client, g["id"], MDN)
+    current = snapshot(client, mdn_grant, MDN, MDN_TEXT)
+    retrieved = post(client, "/research/retrieve", {"snapshot_id": current["snapshot"]["id"]})
+    connection = post(
+        client,
+        "/research/connections",
+        {
+            "snapshot_id": current["snapshot"]["id"],
+            "memory_id": retrieved["results"][0]["memory_id"],
+        },
+    )
+    result = post(
+        client,
+        f"/research/connections/{connection['id']}/feedback",
+        {
+            "scripted": True,
+            "factually_supported": "uncertain",
+            "relevant_to_goal": "uncertain",
+            "revealed_new": "uncertain",
+            "already_obvious": "uncertain",
+            "would_act": "uncertain",
+            "misleading": "uncertain",
+        },
+    )
+    assert result["data"]["rater_type"] == "scripted"
+    assert result["data"]["rubric_version"] == "alive14r1-rubric-v1"
 
 
 def test_withdrawal_is_blocked_while_outbound_analysis_is_inflight(client, monkeypatch):
@@ -523,6 +761,343 @@ def test_concurrent_withdrawal_cannot_interrupt_an_outbound_call(client, monkeyp
     assert client.get(ROOT + "/research/memories").json()["memories"] == []
 
 
+def test_simultaneous_requests_cannot_reuse_one_consent(client, monkeypatch):
+    from types import SimpleNamespace
+
+    g, _, _, _, saved = historical(client, monkeypatch)
+    mdn_grant = grant(client, g["id"], MDN)
+    current = snapshot(client, mdn_grant, MDN, MDN_TEXT)
+    client.app.state.kernel.settings.alive_research_meta_enabled = True
+    preview = post(
+        client,
+        "/research/outbound/preview",
+        {
+            "snapshot_id": current["snapshot"]["id"],
+            "research_id": saved["id"],
+            "provider": "meta",
+        },
+    )
+    post(
+        client,
+        "/research/outbound/authorize",
+        {
+            "consent_id": preview["id"],
+            "payload_sha256": preview["payload_sha256"],
+            "approved": True,
+        },
+    )
+
+    async def scenario():
+        started = asyncio.Event()
+        release = asyncio.Event()
+        calls = []
+
+        async def slow(*args, **kwargs):
+            calls.append(1)
+            payload = args[2]
+            started.set()
+            await release.wait()
+            return SimpleNamespace(
+                text=json.dumps(
+                    {
+                        "relationship": "possible_conceptual_connection",
+                        "explanation": "A controlled concurrent hypothesis.",
+                        "current_quote": payload["current_excerpt"],
+                        "historical_quote": payload["historical_excerpt"],
+                        "limitations": "Controlled concurrency fixture.",
+                        "confidence": 0.3,
+                    }
+                ),
+                usage={"prompt_tokens": 10, "completion_tokens": 10, "total_tokens": 20},
+            )
+
+        monkeypatch.setattr("alive.research_relationships.MetaProvider.structured", slow)
+        first_task = asyncio.create_task(client.app.state.relationships.analyze(preview["id"]))
+        await started.wait()
+        second_error = None
+        try:
+            await client.app.state.relationships.analyze(preview["id"])
+        except ValueError as exc:
+            second_error = str(exc)
+        release.set()
+        first = await first_task
+        return first, second_error, calls
+
+    first, second_error, calls = client.portal.call(scenario)
+    assert first["analysis"]["status"] == "validated"
+    assert "Owner authorisation is required" in second_error
+    assert calls == [1]
+
+
+def test_connection_reuse_matches_provider_model_and_payload(client, monkeypatch):
+    from types import SimpleNamespace
+
+    g, _, _, _, saved = historical(client, monkeypatch)
+    mdn_grant = grant(client, g["id"], MDN)
+    current = snapshot(client, mdn_grant, MDN, MDN_TEXT)
+    stub_preview = post(
+        client,
+        "/research/outbound/preview",
+        {"snapshot_id": current["snapshot"]["id"], "research_id": saved["id"]},
+    )
+    post(
+        client,
+        "/research/outbound/authorize",
+        {
+            "consent_id": stub_preview["id"],
+            "payload_sha256": stub_preview["payload_sha256"],
+            "approved": True,
+        },
+    )
+    stub_result = post(
+        client,
+        "/research/relationships",
+        {"consent_id": stub_preview["id"]},
+    )
+    assert stub_result["connection"]["data"]["provider"]["id"] == "local_stub"
+
+    client.app.state.kernel.settings.alive_research_meta_enabled = True
+    calls = []
+
+    async def valid_meta(*args, **kwargs):
+        calls.append(1)
+        payload = args[2]
+        return SimpleNamespace(
+            text=json.dumps(
+                {
+                    "relationship": "possible_conceptual_connection",
+                    "explanation": "The excerpts may share a memory-management theme.",
+                    "current_quote": payload["current_excerpt"],
+                    "historical_quote": payload["historical_excerpt"],
+                    "limitations": "Controlled provider fixture.",
+                    "confidence": 0.4,
+                }
+            ),
+            usage={"prompt_tokens": 10, "completion_tokens": 10, "total_tokens": 20},
+        )
+
+    monkeypatch.setattr("alive.research_relationships.MetaProvider.structured", valid_meta)
+    meta_preview = post(
+        client,
+        "/research/outbound/preview",
+        {
+            "snapshot_id": current["snapshot"]["id"],
+            "research_id": saved["id"],
+            "provider": "meta",
+        },
+    )
+    post(
+        client,
+        "/research/outbound/authorize",
+        {
+            "consent_id": meta_preview["id"],
+            "payload_sha256": meta_preview["payload_sha256"],
+            "approved": True,
+        },
+    )
+    meta_result = post(
+        client,
+        "/research/relationships",
+        {"consent_id": meta_preview["id"]},
+    )
+    assert len(calls) == 1
+    assert meta_result["analysis"]["data"]["charged_tokens"] == 20
+    assert meta_result["connection"]["data"]["provider"]["id"] == "meta"
+    assert meta_result["connection"]["id"] != stub_result["connection"]["id"]
+
+    cached_preview = post(
+        client,
+        "/research/outbound/preview",
+        {
+            "snapshot_id": current["snapshot"]["id"],
+            "research_id": saved["id"],
+            "provider": "meta",
+        },
+    )
+    post(
+        client,
+        "/research/outbound/authorize",
+        {
+            "consent_id": cached_preview["id"],
+            "payload_sha256": cached_preview["payload_sha256"],
+            "approved": True,
+        },
+    )
+    cached = post(
+        client,
+        "/research/relationships",
+        {"consent_id": cached_preview["id"]},
+    )
+    assert cached["cached"] is True
+    assert cached["id"] == meta_result["connection"]["id"]
+    assert len(calls) == 1
+
+
+def test_provider_timeout_is_charged_conservatively_and_not_replayed(client, monkeypatch):
+    g, _, _, _, saved = historical(client, monkeypatch)
+    mdn_grant = grant(client, g["id"], MDN)
+    current = snapshot(client, mdn_grant, MDN, MDN_TEXT)
+    client.app.state.kernel.settings.alive_research_meta_enabled = True
+    preview = post(
+        client,
+        "/research/outbound/preview",
+        {
+            "snapshot_id": current["snapshot"]["id"],
+            "research_id": saved["id"],
+            "provider": "meta",
+        },
+    )
+    post(
+        client,
+        "/research/outbound/authorize",
+        {
+            "consent_id": preview["id"],
+            "payload_sha256": preview["payload_sha256"],
+            "approved": True,
+        },
+    )
+    calls = []
+
+    async def timeout(*args, **kwargs):
+        calls.append(1)
+        raise TimeoutError("controlled timeout")
+
+    monkeypatch.setattr("alive.research_relationships.MetaProvider.structured", timeout)
+    result = post(
+        client,
+        "/research/relationships",
+        {"consent_id": preview["id"]},
+    )
+    assert calls == [1]
+    assert result["analysis"]["status"] == "failed"
+    assert result["analysis"]["data"]["charged_tokens"] == preview["single_call_reservation"]
+    assert result["connection"] is None
+    post(
+        client,
+        "/research/relationships",
+        {"consent_id": preview["id"]},
+        409,
+    )
+
+
+def test_controlled_invalid_provider_is_preserved_as_a_rejected_attempt(client, monkeypatch):
+    g, _, _, _, saved = historical(client, monkeypatch)
+    mdn_grant = grant(client, g["id"], MDN)
+    current = snapshot(client, mdn_grant, MDN, MDN_TEXT)
+    client.app.state.kernel.settings.alive_relationship_allow_test_providers = True
+    preview = post(
+        client,
+        "/research/outbound/preview",
+        {
+            "snapshot_id": current["snapshot"]["id"],
+            "research_id": saved["id"],
+            "provider": "local_stub_invalid",
+        },
+    )
+    post(
+        client,
+        "/research/outbound/authorize",
+        {
+            "consent_id": preview["id"],
+            "payload_sha256": preview["payload_sha256"],
+            "approved": True,
+        },
+    )
+    result = post(
+        client,
+        "/research/relationships",
+        {"consent_id": preview["id"]},
+    )
+    assert result["analysis"]["status"] == "rejected"
+    assert result["connection"] is None
+    assert "current_quote_too_short" in result["analysis"]["data"]["validation"]["reasons"]
+    assert result["analysis"]["data"]["raw_response"]
+
+
+def test_meta_kill_switch_is_rechecked_at_dispatch(client, monkeypatch):
+    g, _, _, _, saved = historical(client, monkeypatch)
+    mdn_grant = grant(client, g["id"], MDN)
+    current = snapshot(client, mdn_grant, MDN, MDN_TEXT)
+    client.app.state.kernel.settings.alive_research_meta_enabled = True
+    preview = post(
+        client,
+        "/research/outbound/preview",
+        {
+            "snapshot_id": current["snapshot"]["id"],
+            "research_id": saved["id"],
+            "provider": "meta",
+        },
+    )
+    post(
+        client,
+        "/research/outbound/authorize",
+        {
+            "consent_id": preview["id"],
+            "payload_sha256": preview["payload_sha256"],
+            "approved": True,
+        },
+    )
+    calls = []
+
+    async def should_not_run(*args, **kwargs):
+        calls.append(1)
+        raise AssertionError("Meta provider was called after the kill switch was disabled")
+
+    monkeypatch.setattr("alive.research_relationships.MetaProvider.structured", should_not_run)
+    client.app.state.kernel.settings.alive_research_meta_enabled = False
+    result = post(
+        client,
+        "/research/relationships",
+        {"consent_id": preview["id"]},
+    )
+    assert calls == []
+    assert result["analysis"]["status"] == "failed"
+    assert result["analysis"]["data"]["charged_tokens"] == preview["single_call_reservation"]
+    assert result["connection"] is None
+
+
+def test_meta_model_change_after_authorisation_is_rejected(client, monkeypatch):
+    g, _, _, _, saved = historical(client, monkeypatch)
+    mdn_grant = grant(client, g["id"], MDN)
+    current = snapshot(client, mdn_grant, MDN, MDN_TEXT)
+    client.app.state.kernel.settings.alive_research_meta_enabled = True
+    preview = post(
+        client,
+        "/research/outbound/preview",
+        {
+            "snapshot_id": current["snapshot"]["id"],
+            "research_id": saved["id"],
+            "provider": "meta",
+        },
+    )
+    post(
+        client,
+        "/research/outbound/authorize",
+        {
+            "consent_id": preview["id"],
+            "payload_sha256": preview["payload_sha256"],
+            "approved": True,
+        },
+    )
+    calls = []
+
+    async def should_not_run(*args, **kwargs):
+        calls.append(1)
+        raise AssertionError("Meta provider was called after the model changed")
+
+    monkeypatch.setattr("alive.research_relationships.MetaProvider.structured", should_not_run)
+    client.app.state.kernel.settings.alive_meta_model = "different-pinned-model"
+    result = post(
+        client,
+        "/research/relationships",
+        {"consent_id": preview["id"]},
+    )
+    assert calls == []
+    assert result["analysis"]["status"] == "failed"
+    assert result["analysis"]["data"]["charged_tokens"] == preview["single_call_reservation"]
+    assert result["connection"] is None
+
+
 def test_meta_relationship_preview_is_disabled_by_default(client, monkeypatch):
     g, _, _, _, saved = historical(client, monkeypatch)
     mdn_grant = grant(client, g["id"], MDN)
@@ -553,6 +1128,12 @@ def test_outbound_preview_and_authorisation_bind_the_exact_payload(client, monke
     assert preview["preview"]["historical_excerpt"] == saved["data"]["excerpt"]
     assert preview["provider"]["external"] is False
     assert preview["requires_owner_authorisation"] is True
+    assert preview["request"]["input"] == preview["preview"]
+    assert preview["request"]["schema"]["title"] == "RelationshipOutput"
+    assert len(preview["request_sha256"]) == 64
+    assert "micro_usd_remaining" in preview["remaining_allowance"]
+    assert preview["provider_operation"] == "local_test"
+    assert preview["payload_immutable"] is True
     post(
         client,
         "/research/relationships",
@@ -658,6 +1239,63 @@ def test_outbound_consent_rejects_a_revoked_grant(client, monkeypatch):
         {"consent_id": preview["id"]},
         409,
     )
+
+
+def test_interrupted_attempts_remain_in_the_usd_ledger_after_restart(client, settings, monkeypatch):
+    g, _, _, _, saved = historical(client, monkeypatch)
+    mdn_grant = grant(client, g["id"], MDN)
+    current = snapshot(client, mdn_grant, MDN, MDN_TEXT)
+    preview = post(
+        client,
+        "/research/outbound/preview",
+        {"snapshot_id": current["snapshot"]["id"], "research_id": saved["id"]},
+    )
+    post(
+        client,
+        "/research/outbound/authorize",
+        {
+            "consent_id": preview["id"],
+            "payload_sha256": preview["payload_sha256"],
+            "approved": True,
+        },
+    )
+
+    async def seed_interrupted():
+        async with client.app.state.kernel.db.sessions.begin() as session:
+            session.add(
+                WebExperience(
+                    id=uid(),
+                    instance_id=client.app.state.kernel.instance_id,
+                    kind=ATTEMPT_KIND,
+                    status="interrupted",
+                    data={
+                        "reserved_tokens": 4860,
+                        "charged_tokens": 4860,
+                        "provider": {"id": "local_stub"},
+                    },
+                )
+            )
+
+    client.portal.call(seed_interrupted)
+    client.app.state.kernel.settings.alive_relationship_micro_usd_limit = 25000
+    post(
+        client,
+        "/research/relationships",
+        {"consent_id": preview["id"]},
+        409,
+    )
+
+    client.__exit__(None, None, None)
+    with TestClient(create_app(settings), headers={"Authorization": f"Bearer {TOKEN}"}) as reopened:
+        rows = reopened.get(ROOT + "/research/relationships").json()["analyses"]
+        interrupted = [row for row in rows if row["status"] == "interrupted"]
+        assert interrupted and interrupted[0]["data"]["reserved_tokens"] == 4860
+        post(
+            reopened,
+            "/research/relationships",
+            {"consent_id": preview["id"]},
+            403,
+        )
 
 
 def test_outbound_analysis_respects_the_governor_budget(client, monkeypatch):
