@@ -938,6 +938,14 @@ hr {
 .living-outcome { border-top: 1px solid #dfe5d6; border-bottom: 1px solid #dfe5d6; padding: 18px 0; display: grid; grid-template-columns: 1fr auto; gap: 8px; }
 .living-outcome strong { font-size: 22px; font-weight: 500; }
 .living-outcome small { grid-column: 2; font-size: 9px; color: #829174; }
+.living-reason { margin: 0 0 10px; font-size: 12px; line-height: 1.6; }
+.living-recall { background: #f6f7f2; border-left: 2px solid #a9bd8c; padding: 12px 14px; margin: 10px 0 0; }
+.living-recall small { font-size: 9px; letter-spacing: 1px; color: #7b8871; }
+.living-recall p { margin: 7px 0 0; font-size: 11px; }
+.living-recall code { font-size: 10px; color: #70855a; }
+.living-provenance { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 14px 0 0; }
+.living-provenance span { display: grid; gap: 5px; padding: 10px; border: 1px solid #e0e4d9; border-radius: 6px; font-size: 11px; }
+.living-provenance small { font-size: 8px; letter-spacing: 1px; color: #7b8871; }
 .living-experience details summary { cursor: pointer; font-size: 12px; color: #5e7550; }
 .living-controls label { margin: 0; }
 .living-create > label:first-child { width: 220px; }
@@ -949,4 +957,4 @@ hr {
 .living-carry h2 { font-size: 22px; font-weight: 450; margin: 10px 0; }
 .living-carry .living-predictions { margin: 0; }
 .living-experience pre { max-height: 420px; overflow: auto; font-size: 10px; }
-@media(max-width: 950px) { .living-encounters, .living-carry { grid-template-columns: 1fr; } .living-process { grid-template-columns: repeat(4, 1fr); row-gap: 20px; } .living-hero { padding: 25px; } }
+@media(max-width: 950px) { .living-encounters, .living-carry { grid-template-columns: 1fr; } .living-process { grid-template-columns: repeat(4, 1fr); row-gap: 20px; } .living-hero { padding: 25px; } .living-provenance { grid-template-columns: 1fr; } }
