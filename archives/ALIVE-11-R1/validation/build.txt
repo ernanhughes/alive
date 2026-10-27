@@ -11,4 +11,4 @@ dist/index.html                   0.47 kB Γöé gzip:  0.31 kB
 dist/assets/index-6M59oFcG.css   16.57 kB Γöé gzip:  4.63 kB
 dist/assets/index-CFzc3MgN.js   281.42 kB Γöé gzip: 85.75 kB
 
-[32mΓ£ô built in 196ms[39m
+[32mΓ£ô built in 193ms[39m

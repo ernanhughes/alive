@@ -5,11 +5,11 @@
     "provider": "local synthetic HTTP stub",
     "paid_calls": 0,
     "meta_inference": false,
-    "source_commit": "1bc947152098ff82918c4247074fe9b76b48c3f5"
+    "source_commit": "22ef627fa5a9b430c17271fbe65bf6a69e6ce56f"
   },
   "environment": {
-    "backend": "http://127.0.0.1:61145",
-    "page_url": "http://127.0.0.1:61143/native10",
+    "backend": "http://127.0.0.1:54353",
+    "page_url": "http://127.0.0.1:54351/native10",
     "presentation": "native side panel target",
     "side_panel_registration_ready": true,
     "panel_opened_as_ordinary_tab": false,

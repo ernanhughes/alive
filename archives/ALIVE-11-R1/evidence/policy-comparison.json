@@ -1,7 +1,7 @@
 {
   "protocol_version": "alive11-r1-policy-v1",
   "kind": "frozen decision-level policy replay, not native outcome evidence",
-  "source_commit": "1bc947152098ff82918c4247074fe9b76b48c3f5",
+  "source_commit": "22ef627fa5a9b430c17271fbe65bf6a69e6ce56f",
   "protocol_sha256": "a8f52fb616d5eba5ee9bf34821f31dd3b0c078ee12cdf9da90316a9847c6db6f",
   "paid_inference": false,
   "caveat": "Predeclared labels are not owner ratings, model outputs, or native task outcomes. The replay must not be presented as evidence of semantic generalisation.",

@@ -1,3 +1,0 @@
-warning: in the working copy of 'docs/ALIVE-11-DEMO.md', LF will be replaced by CRLF the next time Git touches it
-warning: in the working copy of 'docs/ALIVE-11.md', LF will be replaced by CRLF the next time Git touches it
-warning: in the working copy of 'docs/CODEX-ALIVE11-HANDOFF.md', LF will be replaced by CRLF the next time Git touches it
