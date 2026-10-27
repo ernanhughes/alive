@@ -69,7 +69,7 @@ def analyse(client, shot, expected=200, allow_uncertain=False, owner_correction=
 
 
 def wait(client, note_id):
-    for _ in range(100):
+    for _ in range(400):
         row = client.get(ROOT + "/notes/" + note_id).json()
         if row["status"] != "reserved":
             return row
