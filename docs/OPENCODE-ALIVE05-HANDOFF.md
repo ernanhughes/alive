@@ -29,7 +29,9 @@ Qualification repeated on the publication branch:
 - Ruff check and format passed.
 - Frozen ALIVE-04 replay and prior archives unchanged.
 
-CI results and final PR state are in GitHub. The PR was not merged and auto-merge was not enabled.
+CI results and final PR state are in GitHub. All completed workflow checks passed (backend on
+Ubuntu and Windows, dashboard, and first-contact PostgreSQL). The PR was not merged and
+auto-merge was not enabled.
 
 ## Phase B - ALIVE-05 browser continuity
 
@@ -49,6 +51,9 @@ CI results and final PR state are in GitHub. The PR was not merged and auto-merg
 - New branch: `opencode/alive-05-browser-continuity`
 - Base: `origin/main` at `3580bdf04d5168afd85cdfae1122843cc9774871`
 - Feature commit: `87e913f`
+- PR: [#8](https://github.com/ernanhughes/alive/pull/8)
+- Initial PR head: `dd05f9667abd35488d815143e7fb76a98433ed18`
+- State: open, not merged, no auto-merge
 
 This branch is deliberately independent of the uncommitted ALIVE-05 companion. It does not copy
 or duplicate that implementation. It improves the shared managed-Chrome observation path that
@@ -136,8 +141,10 @@ These were inspected but deliberately **not edited**:
 | Commit | Purpose |
 |---|---|
 | `87e913f` | Add managed Chrome observation provenance and origin recheck |
-| (this docs/evidence commit) | ALIVE-05 handoff, controlled archive and manifest |
+| `dd05f9667abd35488d815143e7fb76a98433ed18` | Controlled archive and initial Phase B handoff |
+| final local tip | PR link and CI-status update to this handoff |
 
-The Phase B branch will be pushed only after the archive and handoff are committed. The remote
-head must match the local branch tip. No force-push, merge, rebase of shared branches or change to
-`main` is permitted.
+The Phase B branch is pushed at `opencode/alive-05-browser-continuity`; PR
+[#8](https://github.com/ernanhughes/alive/pull/8) is open and not merged. The remote head matched
+the local head at `dd05f9667abd35488d815143e7fb76a98433ed18` before the final handoff-only update.
+No force-push, merge, rebase of shared branches or change to `main` was performed.
