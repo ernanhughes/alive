@@ -1,0 +1,361 @@
+task_id,category,family,policy,initial_correct,correct,correct_abstention,unsupported_claim_acceptance,critic_invoked,allocated_tokens,estimated_path_usd,path_latency_ms,error,score_reason,selection_reason,critic_call_ref
+0006c489fa79d28aecf1bb33,adversarial,rate,never,True,True,False,False,False,1332,0.002916,3399.421500042081,,verified_numeric_with_citations,Fixed no-review policy,
+0006c489fa79d28aecf1bb33,adversarial,rate,always,True,True,False,False,True,2877,0.00621825,6240.624200028833,,verified_numeric_with_citations,Fixed review policy,f4e2a66c-29fa-463b-8128-4b33f88f5fd1
+0006c489fa79d28aecf1bb33,adversarial,rate,selective,True,True,False,False,False,1332,0.002916,3399.4538000551984,,verified_numeric_with_citations,General signal value 0.1159 minus anticipated cost 0.0103,
+00c294433d9d861f05784956,adversarial,weighted_mean,never,True,True,False,False,False,1567,0.00341975,3258.7244999594986,,verified_numeric_with_citations,Fixed no-review policy,
+00c294433d9d861f05784956,adversarial,weighted_mean,always,True,True,False,False,True,3358,0.0071825,7862.524799944367,,verified_numeric_with_citations,Fixed review policy,8ebf6ed3-ebf0-4b90-b508-d23053d229cb
+00c294433d9d861f05784956,adversarial,weighted_mean,selective,True,True,False,False,False,1567,0.00341975,3258.72199999867,,verified_numeric_with_citations,General signal value 0.1185 minus anticipated cost 0.0117,
+01292b22e9d1cffffdbd7168,contradictory,weighted_mean,never,True,True,True,False,False,1286,0.0023935,2143.7665999983437,,correct_abstention,Fixed no-review policy,
+01292b22e9d1cffffdbd7168,contradictory,weighted_mean,always,True,True,True,False,True,2792,0.005212,4912.670999998227,,correct_abstention,Fixed review policy,58485c37-101c-44cd-8e39-19e026792e0a
+01292b22e9d1cffffdbd7168,contradictory,weighted_mean,selective,True,True,True,False,False,1286,0.0023935,2143.7719000387006,,correct_abstention,General signal value 0.1059 minus anticipated cost 0.0115,
+015a1f0be817601d6ee81024,straightforward,rate,never,True,True,False,False,False,1280,0.002998,3820.486599986907,,verified_numeric_with_citations,Fixed no-review policy,
+015a1f0be817601d6ee81024,straightforward,rate,always,True,True,False,False,True,2720,0.0061329999999999996,6379.456900001969,,verified_numeric_with_citations,Fixed review policy,00cfb078-e47b-4332-b192-58ba4809f52d
+015a1f0be817601d6ee81024,straightforward,rate,selective,True,True,False,False,False,1280,0.002998,3820.4907000181265,,verified_numeric_with_citations,General signal value 0.0914 minus anticipated cost 0.0095,
+015a569c5361c22151635290,adversarial,ratio,never,True,True,False,False,False,1271,0.00265375,2263.07079999242,,verified_numeric_with_citations,Fixed no-review policy,
+015a569c5361c22151635290,adversarial,ratio,always,True,True,False,False,True,2695,0.0054477499999999995,4415.56070005754,,verified_numeric_with_citations,Fixed review policy,6d160429-2c4c-4bc6-b848-a4cf9cd97046
+015a569c5361c22151635290,adversarial,ratio,selective,True,True,False,False,False,1271,0.00265375,2263.0781000480056,,verified_numeric_with_citations,General signal value 0.0429 minus anticipated cost 0.0104,
+0413617764defc97fa5782ca,contradictory,rate,never,True,True,True,False,False,1191,0.00175525,3319.937199994456,,correct_abstention,Fixed no-review policy,
+0413617764defc97fa5782ca,contradictory,rate,always,True,True,True,False,True,2486,0.004196,4918.957099958789,,correct_abstention,Fixed review policy,fdb7ce74-aa65-4ddb-8c21-afdfa7966c44
+0413617764defc97fa5782ca,contradictory,rate,selective,True,True,True,False,False,1191,0.00175525,3319.946599949617,,correct_abstention,General signal value 0.2619 minus anticipated cost 0.0103,
+052ffd28e7c2408360c4a863,adversarial,ratio,never,True,True,False,False,False,1364,0.003037,2957.6591000077315,,verified_numeric_with_citations,Fixed no-review policy,
+052ffd28e7c2408360c4a863,adversarial,ratio,always,True,True,False,False,True,2892,0.0058311000000000005,5808.675599982962,,verified_numeric_with_citations,Fixed review policy,9eacda40-856b-4705-822c-abf7615f5196
+052ffd28e7c2408360c4a863,adversarial,ratio,selective,True,True,False,False,False,1364,0.003037,2957.6497999951243,,verified_numeric_with_citations,General signal value 0.0602 minus anticipated cost 0.0104,
+05ae8ffa6a72c610fd81e934,ambiguous,ratio,never,True,True,True,False,False,992,0.001951,1730.465400032699,,correct_abstention,Fixed no-review policy,
+05ae8ffa6a72c610fd81e934,ambiguous,ratio,always,True,True,True,False,True,2138,0.004151500000000001,3727.771700010635,,correct_abstention,Fixed review policy,eec4b144-abed-4a85-a6f0-866bada95237
+05ae8ffa6a72c610fd81e934,ambiguous,ratio,selective,True,True,True,False,False,992,0.001951,1730.456100020092,,correct_abstention,General signal value 0.1193 minus anticipated cost 0.0091,
+07f3957d843176a6a3af51bb,adversarial,count_at_least,never,True,True,False,False,False,1661,0.00329725,2780.8831000584178,,verified_numeric_with_citations,Fixed no-review policy,
+07f3957d843176a6a3af51bb,adversarial,count_at_least,always,True,True,False,False,True,3676,0.0073549999999999996,5602.39770001499,,verified_numeric_with_citations,Fixed review policy,0080ae7f-001f-4a7b-93d5-e2784f698734
+07f3957d843176a6a3af51bb,adversarial,count_at_least,selective,True,True,False,False,False,1661,0.00329725,2780.882300052326,,verified_numeric_with_citations,General signal value 0.0852 minus anticipated cost 0.0128,
+08c79c2e7fd8e0dc028b0218,ambiguous,fahrenheit,never,True,True,True,False,False,925,0.00140735,2801.4644000213593,,correct_abstention,Fixed no-review policy,
+08c79c2e7fd8e0dc028b0218,ambiguous,fahrenheit,always,True,True,True,False,True,2062,0.0030621,4883.658099977765,,correct_abstention,Fixed review policy,883a2d80-4468-4b9a-80dc-bdeb96855726
+08c79c2e7fd8e0dc028b0218,ambiguous,fahrenheit,selective,True,True,True,False,False,925,0.00140735,2801.4623999479227,,correct_abstention,General signal value 0.5202 minus anticipated cost 0.0085,
+0b74b34b51a60366447739c1,ambiguous,median,never,True,True,True,False,False,1065,0.00206625,1605.2696999977343,,correct_abstention,Fixed no-review policy,
+0b74b34b51a60366447739c1,ambiguous,median,always,True,True,True,False,True,2289,0.00438525,3698.0964000103995,,correct_abstention,Fixed review policy,76517fdf-8226-4bc5-baa4-69106ef9c0f7
+0b74b34b51a60366447739c1,ambiguous,median,selective,True,True,True,False,False,1065,0.00206625,1605.276699992828,,correct_abstention,General signal value 0.1218 minus anticipated cost 0.0094,
+110489ed5d66a9d79aa085d7,ambiguous,median,never,True,True,True,False,False,1103,0.00222475,2097.068600007333,,correct_abstention,Fixed no-review policy,
+110489ed5d66a9d79aa085d7,ambiguous,median,always,True,True,True,False,True,2357,0.00419335,3818.8818999915384,,correct_abstention,Fixed review policy,90ee8526-b8b8-406e-a44f-669bd9ebdda4
+110489ed5d66a9d79aa085d7,ambiguous,median,selective,True,True,True,False,False,1103,0.00222475,2097.074400051497,,correct_abstention,General signal value 0.1683 minus anticipated cost 0.0096,
+141604de15c69d08492ab6dc,straightforward,count_at_least,never,True,True,False,False,False,1556,0.0027005,2326.4600000111386,,verified_numeric_with_citations,Fixed no-review policy,
+141604de15c69d08492ab6dc,straightforward,count_at_least,always,True,True,False,False,True,3230,0.005864,5283.990100026131,,verified_numeric_with_citations,Fixed review policy,827fe209-885d-40df-bf00-1e38727dbe14
+141604de15c69d08492ab6dc,straightforward,count_at_least,selective,True,True,False,False,False,1556,0.0027005,2326.4920000219718,,verified_numeric_with_citations,General signal value 0.0466 minus anticipated cost 0.0116,
+163055b957538e0abb903ab5,ambiguous,fahrenheit,never,True,True,True,False,False,888,0.001662,1925.3724999143742,,correct_abstention,Fixed no-review policy,
+163055b957538e0abb903ab5,ambiguous,fahrenheit,always,True,True,True,False,True,1963,0.00370775,3588.8023999286816,,correct_abstention,Fixed review policy,77ff72d5-c872-48d2-a2fa-45579de42c18
+163055b957538e0abb903ab5,ambiguous,fahrenheit,selective,True,True,True,False,False,888,0.001662,1925.3631999599747,,correct_abstention,General signal value 0.5894 minus anticipated cost 0.0087,
+18663e596491f0039f4e2873,ambiguous,rate,never,True,True,True,False,False,1028,0.00211,2389.685600006487,,correct_abstention,Fixed no-review policy,
+18663e596491f0039f4e2873,ambiguous,rate,always,True,True,True,False,True,2246,0.0046075000000000005,4356.917100027204,,correct_abstention,Fixed review policy,bfe6ec0f-2f93-4ac3-a73c-b8f095666479
+18663e596491f0039f4e2873,ambiguous,rate,selective,True,True,True,False,False,1028,0.00211,2389.6934000076726,,correct_abstention,General signal value 0.2131 minus anticipated cost 0.0091,
+1cf2ce7d72d1891bb4f0a47f,straightforward,ratio,never,True,True,False,False,False,1293,0.00233275,2721.449400007259,,verified_numeric_with_citations,Fixed no-review policy,
+1cf2ce7d72d1891bb4f0a47f,straightforward,ratio,always,True,True,False,False,True,2618,0.004955,4621.252299984917,,verified_numeric_with_citations,Fixed review policy,c67cb2dd-5a84-4890-b87a-36b076ad6539
+1cf2ce7d72d1891bb4f0a47f,straightforward,ratio,selective,True,True,False,False,False,1293,0.00233275,2721.463699999731,,verified_numeric_with_citations,General signal value 0.0259 minus anticipated cost 0.0095,
+1d371a3661948fe22f0a16d3,ambiguous,fahrenheit,never,True,True,True,False,False,1001,0.00173635,2242.9085999610834,,correct_abstention,Fixed no-review policy,
+1d371a3661948fe22f0a16d3,ambiguous,fahrenheit,always,True,True,True,False,True,2047,0.0037098499999999998,3898.9380999701098,,correct_abstention,Fixed review policy,37d3052a-e785-453d-a9d7-8823d7a01464
+1d371a3661948fe22f0a16d3,ambiguous,fahrenheit,selective,True,True,True,False,False,1001,0.00173635,2242.9022999713197,,correct_abstention,General signal value 0.2147 minus anticipated cost 0.0085,
+1d5663ea0ca52feb6839de4d,adversarial,fahrenheit,never,True,True,False,False,False,1260,0.002793,2100.239000050351,,verified_numeric_with_citations,Fixed no-review policy,
+1d5663ea0ca52feb6839de4d,adversarial,fahrenheit,always,True,True,False,False,True,2573,0.00532825,4246.233600017149,,verified_numeric_with_citations,Fixed review policy,049cdce8-f32a-4392-a6b1-200e2f328bd6
+1d5663ea0ca52feb6839de4d,adversarial,fahrenheit,selective,True,True,False,False,False,1260,0.002793,2100.1644000061788,,verified_numeric_with_citations,General signal value 0.0903 minus anticipated cost 0.0098,
+1e9fbf3b164b35a0cbc10fcd,contradictory,ratio,never,True,True,True,False,False,1222,0.0024995,2314.6647000103258,,correct_abstention,Fixed no-review policy,
+1e9fbf3b164b35a0cbc10fcd,contradictory,ratio,always,True,True,True,False,True,2547,0.00431125,4086.2423999933526,,correct_abstention,Fixed review policy,b726750b-8567-40c4-bae6-213464a95f46
+1e9fbf3b164b35a0cbc10fcd,contradictory,ratio,selective,True,True,True,False,False,1222,0.0024995,2314.658800023608,,correct_abstention,General signal value 0.1960 minus anticipated cost 0.0103,
+1fb3e79fedddb9439e7162c3,contradictory,weighted_mean,never,True,True,True,False,False,1264,0.0018761,1507.7000000164844,,correct_abstention,Fixed no-review policy,
+1fb3e79fedddb9439e7162c3,contradictory,weighted_mean,always,True,True,True,False,True,2670,0.0043446000000000005,2894.836999999825,,correct_abstention,Fixed review policy,760e68b9-a0c2-4167-8042-f8bddd5d93f6
+1fb3e79fedddb9439e7162c3,contradictory,weighted_mean,selective,True,True,True,False,False,1264,0.0018761,1507.6930000213906,,correct_abstention,General signal value 0.1457 minus anticipated cost 0.0112,
+20b81f637214cea208e40db2,adversarial,fahrenheit,never,True,True,False,False,False,1297,0.00226875,2337.1958999778144,,verified_numeric_with_citations,Fixed no-review policy,
+20b81f637214cea208e40db2,adversarial,fahrenheit,always,True,True,False,False,True,2688,0.0051205,4532.43309998652,,verified_numeric_with_citations,Fixed review policy,4c3f86e6-a0d3-4962-9617-58bc0a2e4bd7
+20b81f637214cea208e40db2,adversarial,fahrenheit,selective,True,True,False,False,False,1297,0.00226875,2337.1983999968506,,verified_numeric_with_citations,General signal value 0.0840 minus anticipated cost 0.0099,
+222e18c8ceb6df64cafe4cfd,adversarial,ratio,never,True,True,False,False,False,1371,0.00265785,2357.0465999655426,,verified_numeric_with_citations,Fixed no-review policy,
+222e18c8ceb6df64cafe4cfd,adversarial,ratio,always,True,True,False,False,True,2992,0.0062621,5009.790599986445,,verified_numeric_with_citations,Fixed review policy,aa6168fe-9393-4362-bfd3-8d5c8c00117e
+222e18c8ceb6df64cafe4cfd,adversarial,ratio,selective,True,True,False,False,False,1371,0.00265785,2357.04450000776,,verified_numeric_with_citations,General signal value 0.0573 minus anticipated cost 0.0104,
+23a82991229f760a405590d4,adversarial,fahrenheit,never,True,True,False,False,False,1354,0.0032015,3212.6950999954715,,verified_numeric_with_citations,Fixed no-review policy,
+23a82991229f760a405590d4,adversarial,fahrenheit,always,True,True,False,False,True,2729,0.005315749999999999,5642.986399994697,,verified_numeric_with_citations,Fixed review policy,83fd6b4d-19c2-41d8-9173-809c4616c243
+23a82991229f760a405590d4,adversarial,fahrenheit,selective,True,True,False,False,False,1354,0.0032015,3212.6883000019006,,verified_numeric_with_citations,General signal value 0.0720 minus anticipated cost 0.0098,
+27b9c9969e9a303e5a4929ab,straightforward,count_at_least,never,True,True,False,False,False,1537,0.00322925,1921.3543999940157,,verified_numeric_with_citations,Fixed no-review policy,
+27b9c9969e9a303e5a4929ab,straightforward,count_at_least,always,True,True,False,False,True,3320,0.0060455000000000005,3762.944799964316,,verified_numeric_with_citations,Fixed review policy,925bcc78-3697-4764-90c5-91e9531e5f56
+27b9c9969e9a303e5a4929ab,straightforward,count_at_least,selective,True,True,False,False,False,1537,0.00322925,1921.3643999537453,,verified_numeric_with_citations,General signal value 0.0530 minus anticipated cost 0.0116,
+29d9fe1f89c2855c7f01d1b4,straightforward,weighted_mean,never,True,True,False,False,False,1275,0.00181525,2135.0155999534763,,verified_numeric_with_citations,Fixed no-review policy,
+29d9fe1f89c2855c7f01d1b4,straightforward,weighted_mean,always,True,True,False,False,True,2851,0.00491925,4276.1637000367045,,verified_numeric_with_citations,Fixed review policy,192c8bb3-0ed7-411f-a452-200155795c34
+29d9fe1f89c2855c7f01d1b4,straightforward,weighted_mean,selective,True,True,False,False,False,1275,0.00181525,2135.0065000005998,,verified_numeric_with_citations,General signal value 0.0205 minus anticipated cost 0.0106,
+2c76a153f2058f523d5e7e0d,ambiguous,median,never,True,True,True,False,False,1007,0.00111125,1279.4817000394687,,correct_abstention,Fixed no-review policy,
+2c76a153f2058f523d5e7e0d,ambiguous,median,always,True,True,True,False,True,2223,0.00274775,3121.9888000632636,,correct_abstention,Fixed review policy,ceac6259-8fa1-4f93-9644-ee179bbb8c0c
+2c76a153f2058f523d5e7e0d,ambiguous,median,selective,True,True,True,False,False,1007,0.00111125,1279.474700044375,,correct_abstention,General signal value 0.0819 minus anticipated cost 0.0093,
+2e83db38e4d59a26f9c4ca61,ambiguous,count_at_least,never,True,True,True,False,False,1296,0.0016975,1552.9164000181481,,correct_abstention,Fixed no-review policy,
+2e83db38e4d59a26f9c4ca61,ambiguous,count_at_least,always,True,True,True,False,True,2706,0.0038101000000000003,2986.4089000038803,,correct_abstention,Fixed review policy,ee679032-742d-4ec9-95e7-7e10354a84f4
+2e83db38e4d59a26f9c4ca61,ambiguous,count_at_least,selective,True,True,True,False,False,1296,0.0016975,1552.9194999835454,,correct_abstention,General signal value 0.0417 minus anticipated cost 0.0107,
+3411dccf3a50a33133f0089a,ambiguous,weighted_mean,never,True,True,True,False,False,1208,0.0020371,2059.388299996499,,correct_abstention,Fixed no-review policy,
+3411dccf3a50a33133f0089a,ambiguous,weighted_mean,always,True,True,True,False,True,2497,0.00442835,3659.52660003677,,correct_abstention,Fixed review policy,f0e188cb-9052-46ea-8eec-4626414c734d
+3411dccf3a50a33133f0089a,ambiguous,weighted_mean,selective,True,True,True,False,False,1208,0.0020371,2059.395600052085,,correct_abstention,General signal value 0.1476 minus anticipated cost 0.0101,
+38f3f2f6f62783d0c00bbe1a,ambiguous,count_at_least,never,True,True,True,False,False,1303,0.00200585,1893.2368000387214,,correct_abstention,Fixed no-review policy,
+38f3f2f6f62783d0c00bbe1a,ambiguous,count_at_least,always,True,True,True,False,True,2716,0.0045041000000000005,3242.224499990698,,correct_abstention,Fixed review policy,d8d156b5-4270-416a-ac9b-1bc04473f66a
+38f3f2f6f62783d0c00bbe1a,ambiguous,count_at_least,selective,True,True,True,False,False,1303,0.00200585,1893.246000050567,,correct_abstention,General signal value 0.1053 minus anticipated cost 0.0108,
+3a528b29ca071c2dd62e5d8a,straightforward,ratio,never,True,True,False,False,False,1122,0.0022935,1899.9794000410475,,verified_numeric_with_citations,Fixed no-review policy,
+3a528b29ca071c2dd62e5d8a,straightforward,ratio,always,True,True,False,False,True,2535,0.00528675,4167.488000006415,,verified_numeric_with_citations,Fixed review policy,dd5c1c17-ebfb-433a-8832-4e82a2597ce6
+3a528b29ca071c2dd62e5d8a,straightforward,ratio,selective,True,True,False,False,False,1122,0.0022935,1899.9756000121124,,verified_numeric_with_citations,General signal value 0.0207 minus anticipated cost 0.0095,
+3a7e035292b618797265c168,adversarial,ratio,never,True,True,False,False,False,1302,0.002092,2088.354999956209,,verified_numeric_with_citations,Fixed no-review policy,
+3a7e035292b618797265c168,adversarial,ratio,always,True,True,False,False,True,2664,0.003926,4512.644800008275,,verified_numeric_with_citations,Fixed review policy,e0a92b10-f50e-4a39-bb79-c81f24d4e07c
+3a7e035292b618797265c168,adversarial,ratio,selective,True,True,False,False,False,1302,0.002092,2088.3653999771923,,verified_numeric_with_citations,General signal value 0.1250 minus anticipated cost 0.0104,
+3aa4bee4be1f9d50f7f5caa9,straightforward,ratio,never,True,True,False,False,False,1218,0.0027015,1690.1416000328027,,verified_numeric_with_citations,Fixed no-review policy,
+3aa4bee4be1f9d50f7f5caa9,straightforward,ratio,always,True,True,False,False,True,2615,0.00560875,3791.8906999984756,,verified_numeric_with_citations,Fixed review policy,d8bb5682-1965-4ed4-9265-4febc6759a29
+3aa4bee4be1f9d50f7f5caa9,straightforward,ratio,selective,True,True,False,False,False,1218,0.0027015,1690.129299997352,,verified_numeric_with_citations,General signal value 0.0652 minus anticipated cost 0.0095,
+3b05d9e3ba2ddb263731fc1c,contradictory,fahrenheit,never,True,True,True,False,False,1078,0.0020735,1884.6230000490323,,correct_abstention,Fixed no-review policy,
+3b05d9e3ba2ddb263731fc1c,contradictory,fahrenheit,always,True,True,True,False,True,2370,0.003946,3558.5717000067234,,correct_abstention,Fixed review policy,712aeee3-34c3-4386-9421-cd840e644df5
+3b05d9e3ba2ddb263731fc1c,contradictory,fahrenheit,selective,True,True,True,False,False,1078,0.0020735,1884.6257000113837,,correct_abstention,General signal value 0.4129 minus anticipated cost 0.0099,
+431235a8f4af6ee636778afc,adversarial,weighted_mean,never,True,True,False,False,False,1418,0.0023626,1735.5998000130057,,verified_numeric_with_citations,Fixed no-review policy,
+431235a8f4af6ee636778afc,adversarial,weighted_mean,always,True,True,False,False,True,3205,0.00567245,4562.186399998609,,verified_numeric_with_citations,Fixed review policy,b4c6b9b9-b15d-4315-a835-1e95079cd4de
+431235a8f4af6ee636778afc,adversarial,weighted_mean,selective,True,True,False,False,False,1418,0.0023626,1735.6140000047162,,verified_numeric_with_citations,General signal value 0.1009 minus anticipated cost 0.0117,
+4336e93786a9e6b5fef17428,straightforward,rate,never,True,True,False,False,False,1235,0.00240085,2504.177100083325,,verified_numeric_with_citations,Fixed no-review policy,
+4336e93786a9e6b5fef17428,straightforward,rate,always,True,True,False,False,True,2559,0.00466095,4761.406500067096,,verified_numeric_with_citations,Fixed review policy,b391b613-6642-4d96-ac22-18c546c25366
+4336e93786a9e6b5fef17428,straightforward,rate,selective,True,True,False,False,False,1235,0.00240085,2504.178600036539,,verified_numeric_with_citations,General signal value 0.0561 minus anticipated cost 0.0094,
+43623720d3dd54fab7967ff1,ambiguous,weighted_mean,never,True,True,True,False,False,1178,0.0019336,1896.4781999820843,,correct_abstention,Fixed no-review policy,
+43623720d3dd54fab7967ff1,ambiguous,weighted_mean,always,True,True,True,False,True,2417,0.00367645,3803.2030999311246,,correct_abstention,Fixed review policy,9200f364-c712-4ad9-942b-cd96d91eb436
+43623720d3dd54fab7967ff1,ambiguous,weighted_mean,selective,True,True,True,False,False,1178,0.0019336,1896.484299970325,,correct_abstention,General signal value 0.1170 minus anticipated cost 0.0102,
+47076fd5f5d3b30bd9f93ac5,straightforward,count_at_least,never,True,True,False,False,False,1576,0.0027045,2534.530500008259,,verified_numeric_with_citations,Fixed no-review policy,
+47076fd5f5d3b30bd9f93ac5,straightforward,count_at_least,always,True,True,False,False,True,3361,0.00550225,4525.492099986877,,verified_numeric_with_citations,Fixed review policy,0e8762fd-cacf-402b-aa97-5c304b8c257a
+47076fd5f5d3b30bd9f93ac5,straightforward,count_at_least,selective,True,True,False,False,False,1576,0.0027045,2534.5390000147745,,verified_numeric_with_citations,General signal value 0.0989 minus anticipated cost 0.0116,
+47b326d283a442ae71158bbb,contradictory,median,never,True,True,True,False,False,1267,0.00257675,2324.9902999959886,,correct_abstention,Fixed no-review policy,
+47b326d283a442ae71158bbb,contradictory,median,always,True,True,True,False,True,2724,0.005529,4510.149800044019,,correct_abstention,Fixed review policy,aee89cb2-d728-442c-9827-1a1f4a18fb13
+47b326d283a442ae71158bbb,contradictory,median,selective,True,True,True,False,False,1267,0.00257675,2325.001000019256,,correct_abstention,General signal value 0.1644 minus anticipated cost 0.0106,
+47d46089f189185530fe19d4,adversarial,ratio,never,True,True,False,False,False,1396,0.0024945,2447.36659998307,,verified_numeric_with_citations,Fixed no-review policy,
+47d46089f189185530fe19d4,adversarial,ratio,always,True,True,False,False,True,2823,0.00460175,4806.583800003864,,verified_numeric_with_citations,Fixed review policy,1a8ddbec-0d50-4a2b-b4e5-5f39996aeb16
+47d46089f189185530fe19d4,adversarial,ratio,selective,True,True,False,False,False,1396,0.0024945,2447.358100034762,,verified_numeric_with_citations,General signal value 0.1219 minus anticipated cost 0.0104,
+48e2c54e007aa9fd7f449e24,contradictory,count_at_least,never,True,True,True,False,False,1397,0.00176375,1918.9633000642061,,correct_abstention,Fixed no-review policy,
+48e2c54e007aa9fd7f449e24,contradictory,count_at_least,always,True,True,True,False,True,2960,0.0038189999999999995,3556.1137000331655,,correct_abstention,Fixed review policy,6079ef14-750b-4d1e-9514-b8fb09c40b9b
+48e2c54e007aa9fd7f449e24,contradictory,count_at_least,selective,True,True,True,False,False,1397,0.00176375,1918.9561000675894,,correct_abstention,General signal value 0.0940 minus anticipated cost 0.0119,
+4a28efd1aadc07f3c0dc4102,ambiguous,ratio,never,True,True,True,False,False,981,0.0014833499999999998,1420.0166000518948,,correct_abstention,Fixed no-review policy,
+4a28efd1aadc07f3c0dc4102,ambiguous,ratio,always,True,True,True,False,True,2211,0.00361095,3073.8651000428945,,correct_abstention,Fixed review policy,dec6f2f4-a328-42a1-9673-9eeff05c54f3
+4a28efd1aadc07f3c0dc4102,ambiguous,ratio,selective,True,True,True,False,False,981,0.0014833499999999998,1420.0086999917403,,correct_abstention,General signal value 0.1554 minus anticipated cost 0.0092,
+4c0a1939889577948496b67c,straightforward,weighted_mean,never,True,True,False,False,False,1307,0.00200225,1558.9252999634482,,verified_numeric_with_citations,Fixed no-review policy,
+4c0a1939889577948496b67c,straightforward,weighted_mean,always,True,True,False,False,True,2867,0.004449750000000001,3203.7111999234185,,verified_numeric_with_citations,Fixed review policy,edb577ed-a1e0-4457-b26b-63afe1fe3c70
+4c0a1939889577948496b67c,straightforward,weighted_mean,selective,True,True,False,False,False,1307,0.00200225,1558.9166999561712,,verified_numeric_with_citations,General signal value 0.0106 minus anticipated cost 0.0106,
+50423b07dd6ab4f96d2e07fc,ambiguous,ratio,never,True,True,True,False,False,979,0.00119625,1676.7448000027798,,correct_abstention,Fixed no-review policy,
+50423b07dd6ab4f96d2e07fc,ambiguous,ratio,always,True,True,True,False,True,2117,0.00267225,3129.843099974096,,correct_abstention,Fixed review policy,095f6378-4bf2-456b-82fb-1906f5485c2a
+50423b07dd6ab4f96d2e07fc,ambiguous,ratio,selective,True,True,True,False,False,979,0.00119625,1676.7483999719843,,correct_abstention,General signal value 0.1203 minus anticipated cost 0.0091,
+53c9bd8375cd7a4dd1bdb1df,straightforward,median,never,True,True,False,False,False,1183,0.00167925,1500.434999994468,,verified_numeric_with_citations,Fixed no-review policy,
+53c9bd8375cd7a4dd1bdb1df,straightforward,median,always,True,True,False,False,True,2732,0.0046256,3291.0547999781556,,verified_numeric_with_citations,Fixed review policy,660ddf7a-c8a5-4144-a213-712305d0eefe
+53c9bd8375cd7a4dd1bdb1df,straightforward,median,selective,True,True,False,False,False,1183,0.00167925,1500.432400032878,,verified_numeric_with_citations,General signal value 0.0091 minus anticipated cost 0.0098,
+5455b3850e84d759b97913e7,contradictory,fahrenheit,never,True,True,True,False,False,1095,0.00174285,1627.3983999853954,,correct_abstention,Fixed no-review policy,
+5455b3850e84d759b97913e7,contradictory,fahrenheit,always,True,True,True,False,True,2312,0.0039751,2982.349300000351,,correct_abstention,Fixed review policy,cbeff6e2-d170-4d98-97e9-8d742d13eb6a
+5455b3850e84d759b97913e7,contradictory,fahrenheit,selective,True,True,True,False,False,1095,0.00174285,1627.3879999644123,,correct_abstention,General signal value 0.3604 minus anticipated cost 0.0099,
+58369a4b6f96935b66ca532e,ambiguous,rate,never,True,True,True,False,False,1016,0.0013715,1489.203599980101,,correct_abstention,Fixed no-review policy,
+58369a4b6f96935b66ca532e,ambiguous,rate,always,True,True,True,False,True,2185,0.00298825,3246.960200020112,,correct_abstention,Fixed review policy,89baa8d1-b832-4946-9e8b-3546c57c31c4
+58369a4b6f96935b66ca532e,ambiguous,rate,selective,True,True,True,False,False,1016,0.0013715,1489.2025999724865,,correct_abstention,General signal value 0.1472 minus anticipated cost 0.0091,
+58a1ccbe2a974ee56d198464,adversarial,rate,never,True,True,False,False,False,1349,0.00230075,2065.5001000268385,,verified_numeric_with_citations,Fixed no-review policy,
+58a1ccbe2a974ee56d198464,adversarial,rate,always,True,True,False,False,True,2855,0.0047167500000000005,4277.979600068647,,verified_numeric_with_citations,Fixed review policy,cf99f3fc-1680-45e8-95c0-0191469167af
+58a1ccbe2a974ee56d198464,adversarial,rate,selective,True,True,False,False,False,1349,0.00230075,2065.4911000165157,,verified_numeric_with_citations,General signal value 0.0468 minus anticipated cost 0.0104,
+5a542ffc8517f275e652086e,straightforward,fahrenheit,never,True,True,False,False,False,1240,0.002984,2225.9580999962054,,verified_numeric_with_citations,Fixed no-review policy,
+5a542ffc8517f275e652086e,straightforward,fahrenheit,always,True,True,False,False,True,2439,0.00461125,3641.444800014142,,verified_numeric_with_citations,Fixed review policy,8ad07670-5898-4e02-8222-1195e40198d4
+5a542ffc8517f275e652086e,straightforward,fahrenheit,selective,True,True,False,False,False,1240,0.002984,2225.9680000133812,,verified_numeric_with_citations,General signal value 0.0601 minus anticipated cost 0.0090,
+5bb7b5c4a6ac2427f9e27f43,straightforward,rate,never,True,True,False,False,False,1327,0.00248925,2829.950799990911,,verified_numeric_with_citations,Fixed no-review policy,
+5bb7b5c4a6ac2427f9e27f43,straightforward,rate,always,True,True,False,False,True,2771,0.00518735,4587.755399988964,,verified_numeric_with_citations,Fixed review policy,38abe556-8bbc-492f-953c-425c873992ac
+5bb7b5c4a6ac2427f9e27f43,straightforward,rate,selective,True,True,False,False,False,1327,0.00248925,2829.967600002419,,verified_numeric_with_citations,General signal value 0.0505 minus anticipated cost 0.0096,
+5c9e30ae8675e54d9af2c0e6,ambiguous,weighted_mean,never,True,True,True,False,False,1195,0.00167025,1886.470100027509,,correct_abstention,Fixed no-review policy,
+5c9e30ae8675e54d9af2c0e6,ambiguous,weighted_mean,always,True,True,True,False,True,2496,0.0036946,3808.7020000675693,,correct_abstention,Fixed review policy,d11e322f-2d54-4aa8-a11b-a390b3932941
+5c9e30ae8675e54d9af2c0e6,ambiguous,weighted_mean,selective,True,True,True,False,False,1195,0.00167025,1886.4726000465453,,correct_abstention,General signal value 0.0833 minus anticipated cost 0.0100,
+5ca1cbb334d4efeb55dbf9d4,ambiguous,rate,never,True,True,True,False,False,969,0.00185025,1474.5185999781825,,correct_abstention,Fixed no-review policy,
+5ca1cbb334d4efeb55dbf9d4,ambiguous,rate,always,True,True,True,False,True,2125,0.00343875,4196.18399994215,,correct_abstention,Fixed review policy,4dcee5ae-c366-4875-a6ed-5b5cfd7ab293
+5ca1cbb334d4efeb55dbf9d4,ambiguous,rate,selective,True,True,True,False,False,969,0.00185025,1474.5237999595702,,correct_abstention,General signal value 0.1534 minus anticipated cost 0.0089,
+5dfcca9c5fce65c268d61e7f,ambiguous,ratio,never,True,True,True,False,False,989,0.00123875,1288.750900013838,,correct_abstention,Fixed no-review policy,
+5dfcca9c5fce65c268d61e7f,ambiguous,ratio,always,True,True,True,False,True,2193,0.00327385,3268.1881000171416,,correct_abstention,Fixed review policy,342dea47-850e-4ff5-8ac8-b5efed6143bf
+5dfcca9c5fce65c268d61e7f,ambiguous,ratio,selective,True,True,True,False,False,989,0.00123875,1288.7440000195056,,correct_abstention,General signal value 0.1644 minus anticipated cost 0.0090,
+5f3190116d0b56d58e074043,contradictory,weighted_mean,never,True,True,True,False,False,1333,0.00217535,2332.5079000205733,,correct_abstention,Fixed no-review policy,
+5f3190116d0b56d58e074043,contradictory,weighted_mean,always,True,True,True,False,True,2879,0.00451235,4269.094399991445,,correct_abstention,Fixed review policy,524ad411-e960-45f2-bc6d-c0c8b9b28a76
+5f3190116d0b56d58e074043,contradictory,weighted_mean,selective,True,True,True,False,False,1333,0.00217535,2332.516599970404,,correct_abstention,General signal value 0.1117 minus anticipated cost 0.0114,
+61413869b67e7f25924f0d86,straightforward,rate,never,True,True,False,False,False,1305,0.00310125,3202.0647999597713,,verified_numeric_with_citations,Fixed no-review policy,
+61413869b67e7f25924f0d86,straightforward,rate,always,True,True,False,False,True,2664,0.0051865,4883.051600016188,,verified_numeric_with_citations,Fixed review policy,96873467-a2fa-4546-85b3-b3127da2753e
+61413869b67e7f25924f0d86,straightforward,rate,selective,True,True,False,False,False,1305,0.00310125,3202.0771999959834,,verified_numeric_with_citations,General signal value 0.0396 minus anticipated cost 0.0096,
+62f9a5355ca2927c57af3c6a,straightforward,weighted_mean,never,True,True,False,False,False,1485,0.00272875,2645.214800024405,,verified_numeric_with_citations,Fixed no-review policy,
+62f9a5355ca2927c57af3c6a,straightforward,weighted_mean,always,True,True,False,False,True,3134,0.0054645,5222.26240002783,,verified_numeric_with_citations,Fixed review policy,1359c2f3-8f31-4bef-a261-0726131bcca6
+62f9a5355ca2927c57af3c6a,straightforward,weighted_mean,selective,True,True,False,False,False,1485,0.00272875,2645.2246999833733,,verified_numeric_with_citations,General signal value 0.1000 minus anticipated cost 0.0106,
+634c18a67fe79503074ff190,ambiguous,ratio,never,True,True,True,False,False,1050,0.001507,3320.856000005733,,correct_abstention,Fixed no-review policy,
+634c18a67fe79503074ff190,ambiguous,ratio,always,True,True,True,False,True,2204,0.0030600000000000002,5716.273300000466,,correct_abstention,Fixed review policy,3a0fed9c-924b-4cf8-b270-9e82b16f98c6
+634c18a67fe79503074ff190,ambiguous,ratio,selective,True,True,True,False,False,1050,0.001507,3320.861500047613,,correct_abstention,General signal value 0.1377 minus anticipated cost 0.0091,
+663193e5f8de18dae41692aa,adversarial,count_at_least,never,True,True,False,False,False,1594,0.002367,1660.773399984464,,verified_numeric_with_citations,Fixed no-review policy,
+663193e5f8de18dae41692aa,adversarial,count_at_least,always,True,True,False,False,True,3443,0.00538235,3658.0134999821894,,verified_numeric_with_citations,Fixed review policy,f6a5a2ba-ae0b-4e8f-9cd1-c7857227d736
+663193e5f8de18dae41692aa,adversarial,count_at_least,selective,True,True,False,False,False,1594,0.002367,1660.7827999978326,,verified_numeric_with_citations,General signal value 0.0530 minus anticipated cost 0.0128,
+669bf5d00df69e42be3a49e5,straightforward,median,never,True,True,False,False,False,1262,0.002021,1935.4704999714158,,verified_numeric_with_citations,Fixed no-review policy,
+669bf5d00df69e42be3a49e5,straightforward,median,always,True,False,False,True,True,3012,0.005504,5583.975100016687,,answer_requires_proceed_recommendation,Fixed review policy,17125509-4a77-4fbc-b56b-d0de398cc69c
+669bf5d00df69e42be3a49e5,straightforward,median,selective,True,True,False,False,False,1262,0.002021,1935.4828999494202,,verified_numeric_with_citations,General signal value 0.0598 minus anticipated cost 0.0099,
+66c75cfb02fafde9aac66378,contradictory,ratio,never,True,True,True,False,False,1244,0.0019505,2732.310999999754,,correct_abstention,Fixed no-review policy,
+66c75cfb02fafde9aac66378,contradictory,ratio,always,True,True,True,False,True,2571,0.00443425,4701.858399959747,,correct_abstention,Fixed review policy,71877fe2-53e8-420c-9b20-a5c458f5ad8e
+66c75cfb02fafde9aac66378,contradictory,ratio,selective,True,True,True,False,False,1244,0.0019505,2732.3026999947615,,correct_abstention,General signal value 0.1919 minus anticipated cost 0.0105,
+66e8a0f67a031640c073740a,contradictory,median,never,True,True,True,False,False,1188,0.0017931,1726.667700044345,,correct_abstention,Fixed no-review policy,
+66e8a0f67a031640c073740a,contradictory,median,always,True,True,True,False,True,2506,0.0034641,3409.8912000772543,,correct_abstention,Fixed review policy,cceaabfb-c946-4210-831a-4d16d4594f74
+66e8a0f67a031640c073740a,contradictory,median,selective,True,True,True,False,False,1188,0.0017931,1726.6694000572897,,correct_abstention,General signal value 0.1721 minus anticipated cost 0.0104,
+6879b6e2dc71e11c1955a3e5,straightforward,fahrenheit,never,True,True,False,False,False,1216,0.0021825,2202.2424999740906,,verified_numeric_with_citations,Fixed no-review policy,
+6879b6e2dc71e11c1955a3e5,straightforward,fahrenheit,always,True,True,False,False,True,2553,0.00467185,4818.36720003048,,verified_numeric_with_citations,Fixed review policy,be2ad60d-485c-49e8-b7df-6d4e9554ebe1
+6879b6e2dc71e11c1955a3e5,straightforward,fahrenheit,selective,True,True,False,False,False,1216,0.0021825,2202.210900024511,,verified_numeric_with_citations,General signal value 0.0790 minus anticipated cost 0.0090,
+694e692508cee5ea3895cb8a,ambiguous,median,never,True,True,True,False,False,1034,0.0019465,1655.0322000402957,,correct_abstention,Fixed no-review policy,
+694e692508cee5ea3895cb8a,ambiguous,median,always,True,True,True,False,True,2268,0.004374,3785.6346999760717,,correct_abstention,Fixed review policy,8e56c08a-684e-45d0-a3bf-159ba19ae0a6
+694e692508cee5ea3895cb8a,ambiguous,median,selective,True,True,True,False,False,1034,0.0019465,1655.0158999743871,,correct_abstention,General signal value 0.1609 minus anticipated cost 0.0093,
+6989775c45e7b29bcd7cdb8f,adversarial,rate,never,True,True,False,False,False,1432,0.003317,3040.8999999635853,,verified_numeric_with_citations,Fixed no-review policy,
+6989775c45e7b29bcd7cdb8f,adversarial,rate,always,True,True,False,False,True,3100,0.007103,6166.604799975175,,verified_numeric_with_citations,Fixed review policy,f1e8294b-c861-4d46-b38d-6b2e365e332f
+6989775c45e7b29bcd7cdb8f,adversarial,rate,selective,True,True,False,False,False,1432,0.003317,3040.892399963923,,verified_numeric_with_citations,General signal value 0.0908 minus anticipated cost 0.0103,
+6a8066ed8a3f8c7327fffcf5,contradictory,fahrenheit,never,True,True,True,False,False,1046,0.0019345,2471.549400012009,,correct_abstention,Fixed no-review policy,
+6a8066ed8a3f8c7327fffcf5,contradictory,fahrenheit,always,True,True,True,False,True,2293,0.00433025,4569.333099992946,,correct_abstention,Fixed review policy,3fd8f078-24e6-456b-9c04-4884d8c637b7
+6a8066ed8a3f8c7327fffcf5,contradictory,fahrenheit,selective,True,True,True,False,False,1046,0.0019345,2471.554499992635,,correct_abstention,General signal value 0.4135 minus anticipated cost 0.0097,
+6bb6a37aef03bb6f4b79939a,straightforward,fahrenheit,never,True,True,False,False,False,1183,0.00273275,2337.2640000307,,verified_numeric_with_citations,Fixed no-review policy,
+6bb6a37aef03bb6f4b79939a,straightforward,fahrenheit,always,True,True,False,False,True,2530,0.0057125000000000006,5560.913300025277,,verified_numeric_with_citations,Fixed review policy,4cad4719-29c8-4172-b684-b4050f08048a
+6bb6a37aef03bb6f4b79939a,straightforward,fahrenheit,selective,True,True,False,False,False,1183,0.00273275,2337.276800069958,,verified_numeric_with_citations,General signal value 0.0105 minus anticipated cost 0.0089,
+6dab41629840af2042bc791c,ambiguous,median,never,True,True,True,False,False,1115,0.00229975,2197.6963999914005,,correct_abstention,Fixed no-review policy,
+6dab41629840af2042bc791c,ambiguous,median,always,True,True,True,False,True,2354,0.004739500000000001,4342.151599994395,,correct_abstention,Fixed review policy,2b849ccd-58e7-404d-81df-ec47bc5b014d
+6dab41629840af2042bc791c,ambiguous,median,selective,True,True,True,False,False,1115,0.00229975,2197.68549996661,,correct_abstention,General signal value 0.1152 minus anticipated cost 0.0094,
+6e75d579351292f6a895887e,adversarial,median,never,True,True,False,False,False,1408,0.002999,2214.624800020829,,verified_numeric_with_citations,Fixed no-review policy,
+6e75d579351292f6a895887e,adversarial,median,always,True,True,False,False,True,3065,0.00648625,4849.5634000282735,,verified_numeric_with_citations,Fixed review policy,6187122f-a4c5-4bee-91c1-921931fb0392
+6e75d579351292f6a895887e,adversarial,median,selective,True,True,False,False,False,1408,0.002999,2214.6095000207424,,verified_numeric_with_citations,General signal value 0.1202 minus anticipated cost 0.0108,
+70ad258fb187cdb30174342f,contradictory,count_at_least,never,True,True,True,False,False,1423,0.00263375,2164.5911000086926,,correct_abstention,Fixed no-review policy,
+70ad258fb187cdb30174342f,contradictory,count_at_least,always,True,True,True,False,True,3117,0.00525475,4575.0082999584265,,correct_abstention,Fixed review policy,e07816ac-d996-4dab-90f1-a27b7e4992e1
+70ad258fb187cdb30174342f,contradictory,count_at_least,selective,True,True,True,False,False,1423,0.00263375,2164.5931000239216,,correct_abstention,General signal value 0.1585 minus anticipated cost 0.0120,
+7187251016b78afd441767f3,ambiguous,weighted_mean,never,True,True,True,False,False,1122,0.0021105,1440.1198999839835,,correct_abstention,Fixed no-review policy,
+7187251016b78afd441767f3,ambiguous,weighted_mean,always,True,True,True,False,True,2366,0.003665,3191.0801000194624,,correct_abstention,Fixed review policy,3cce91d6-ec5b-4e5e-bbee-4b578a0e5ab4
+7187251016b78afd441767f3,ambiguous,weighted_mean,selective,True,True,True,False,False,1122,0.0021105,1440.119099977892,,correct_abstention,General signal value 0.1593 minus anticipated cost 0.0101,
+7669fd78502ce4ecd8f7f68b,adversarial,median,never,True,True,False,False,False,1349,0.00273325,1893.0916999815963,,verified_numeric_with_citations,Fixed no-review policy,
+7669fd78502ce4ecd8f7f68b,adversarial,median,always,True,True,False,False,True,2899,0.0057357499999999995,3919.490000058431,,verified_numeric_with_citations,Fixed review policy,25f30309-82e1-4b66-b18a-5dfbc4a4f3a8
+7669fd78502ce4ecd8f7f68b,adversarial,median,selective,True,True,False,False,False,1349,0.00273325,1893.0816000211053,,verified_numeric_with_citations,General signal value 0.0623 minus anticipated cost 0.0108,
+7698fb10fd7dfc3d2446514f,ambiguous,rate,never,True,True,True,False,False,1006,0.0020075,1503.3450999762863,,correct_abstention,Fixed no-review policy,
+7698fb10fd7dfc3d2446514f,ambiguous,rate,always,True,True,True,False,True,2126,0.0041035,2801.879699982237,,correct_abstention,Fixed review policy,6390eb6d-6960-45a7-b9ce-7cd2d3b58abc
+7698fb10fd7dfc3d2446514f,ambiguous,rate,selective,True,True,True,False,False,1006,0.0020075,1503.3387999865226,,correct_abstention,General signal value 0.1337 minus anticipated cost 0.0090,
+7a54aa5509a58891ce3106dc,contradictory,ratio,never,True,True,True,False,False,1129,0.00214025,1632.147399999667,,correct_abstention,Fixed no-review policy,
+7a54aa5509a58891ce3106dc,contradictory,ratio,always,True,True,True,False,True,2455,0.004661749999999999,3466.880299965851,,correct_abstention,Fixed review policy,dd73c27d-bfd6-42f7-8e0b-cfd93a20c265
+7a54aa5509a58891ce3106dc,contradictory,ratio,selective,True,True,True,False,False,1129,0.00214025,1632.1404000045732,,correct_abstention,General signal value 0.1903 minus anticipated cost 0.0103,
+7d74cb281eb9adb6a7ccd5ea,ambiguous,rate,never,True,True,True,False,False,953,0.00110075,1551.1472999933176,,correct_abstention,Fixed no-review policy,
+7d74cb281eb9adb6a7ccd5ea,ambiguous,rate,always,True,True,True,False,True,2050,0.003129,3270.6085999961942,,correct_abstention,Fixed review policy,4efa7f7f-30fe-42c1-b662-a07332a92ede
+7d74cb281eb9adb6a7ccd5ea,ambiguous,rate,selective,True,True,True,False,False,953,0.00110075,1551.1536999838427,,correct_abstention,General signal value 0.1448 minus anticipated cost 0.0089,
+7d7bd73803b5c1a154b90c51,contradictory,ratio,never,True,True,True,False,False,1144,0.00218,2146.121099940501,,correct_abstention,Fixed no-review policy,
+7d7bd73803b5c1a154b90c51,contradictory,ratio,always,True,True,True,False,True,2522,0.004253,4499.033399973996,,correct_abstention,Fixed review policy,e80d73de-8d62-4857-b17d-6bab9a1e18e0
+7d7bd73803b5c1a154b90c51,contradictory,ratio,selective,True,True,True,False,False,1144,0.00218,2146.1196999880485,,correct_abstention,General signal value 0.1684 minus anticipated cost 0.0102,
+7dd842e74854697945207b9a,contradictory,fahrenheit,never,True,True,True,False,False,1093,0.00174935,1879.0217000059783,,correct_abstention,Fixed no-review policy,
+7dd842e74854697945207b9a,contradictory,fahrenheit,always,True,True,True,False,True,2348,0.0041131,3671.5474000084214,,correct_abstention,Fixed review policy,c62c1d83-724a-4912-87fc-d6bc23bdbda4
+7dd842e74854697945207b9a,contradictory,fahrenheit,selective,True,True,True,False,False,1093,0.00174935,1879.0437999996357,,correct_abstention,General signal value 0.3630 minus anticipated cost 0.0101,
+7e606436cf53002538d1e021,straightforward,count_at_least,never,True,True,False,False,False,1417,0.00279425,1929.2833000072278,,verified_numeric_with_citations,Fixed no-review policy,
+7e606436cf53002538d1e021,straightforward,count_at_least,always,True,True,False,False,True,3172,0.0063230000000000005,4037.409700045828,,verified_numeric_with_citations,Fixed review policy,cb137efa-63e6-403d-a726-1fd08b05d0e9
+7e606436cf53002538d1e021,straightforward,count_at_least,selective,True,True,False,False,False,1417,0.00279425,1929.2797000380233,,verified_numeric_with_citations,General signal value 0.0879 minus anticipated cost 0.0116,
+8109ebb27c13c17de5d38202,straightforward,count_at_least,never,True,True,False,False,False,1483,0.00236625,2450.956400076393,,verified_numeric_with_citations,Fixed no-review policy,
+8109ebb27c13c17de5d38202,straightforward,count_at_least,always,True,True,False,False,True,3283,0.00566235,4923.833100066986,,verified_numeric_with_citations,Fixed review policy,639f9def-dce9-4335-a4f3-cbcae1d7f797
+8109ebb27c13c17de5d38202,straightforward,count_at_least,selective,True,True,False,False,False,1483,0.00236625,2450.944700045511,,verified_numeric_with_citations,General signal value 0.0127 minus anticipated cost 0.0116,
+8239cb5e297db9e3468e2bbf,contradictory,median,never,True,True,True,False,False,1127,0.00193375,1255.3678000112996,,correct_abstention,Fixed no-review policy,
+8239cb5e297db9e3468e2bbf,contradictory,median,always,True,True,True,False,True,2533,0.00464825,3011.370899970643,,correct_abstention,Fixed review policy,b7c0d880-8c44-48a0-919e-8df95e3ffa27
+8239cb5e297db9e3468e2bbf,contradictory,median,selective,True,True,True,False,False,1127,0.00193375,1255.3755000117235,,correct_abstention,General signal value 0.2124 minus anticipated cost 0.0104,
+8375153b4333eca7237eecca,contradictory,count_at_least,never,True,True,True,False,False,1361,0.00196735,1540.5102000222541,,correct_abstention,Fixed no-review policy,
+8375153b4333eca7237eecca,contradictory,count_at_least,always,True,True,True,False,True,2889,0.0046453499999999995,2862.3853999888524,,correct_abstention,Fixed review policy,52614a64-f9a0-4906-a37c-713f21127024
+8375153b4333eca7237eecca,contradictory,count_at_least,selective,True,True,True,False,False,1361,0.00196735,1540.5064999940805,,correct_abstention,General signal value 0.1447 minus anticipated cost 0.0118,
+853e8dcf3eab71deab78d295,ambiguous,fahrenheit,never,True,True,True,False,False,901,0.00102975,1632.32519995654,,correct_abstention,Fixed no-review policy,
+853e8dcf3eab71deab78d295,ambiguous,fahrenheit,always,True,True,True,False,True,1954,0.0023065000000000004,3267.7969000069425,,correct_abstention,Fixed review policy,a7f63cbc-e1da-4dfd-97de-11469b1b5cf5
+853e8dcf3eab71deab78d295,ambiguous,fahrenheit,selective,True,True,True,False,False,901,0.00102975,1632.3299999930896,,correct_abstention,General signal value 0.2921 minus anticipated cost 0.0087,
+86912e8594b00c98408d6196,adversarial,count_at_least,never,True,True,False,False,False,1656,0.0026095,2242.541900021024,,verified_numeric_with_citations,Fixed no-review policy,
+86912e8594b00c98408d6196,adversarial,count_at_least,always,True,True,False,False,True,3678,0.006739,5323.2216000324115,,verified_numeric_with_citations,Fixed review policy,188dfd2d-99a9-4d29-9c84-925602196a6a
+86912e8594b00c98408d6196,adversarial,count_at_least,selective,True,True,False,False,False,1656,0.0026095,2242.5291999825276,,verified_numeric_with_citations,General signal value 0.0726 minus anticipated cost 0.0127,
+86d97b4c4d3d4235d2a53f97,adversarial,rate,never,True,True,False,False,False,1219,0.00239375,1660.5440999264829,,verified_numeric_with_citations,Fixed no-review policy,
+86d97b4c4d3d4235d2a53f97,adversarial,rate,always,True,True,False,False,True,2720,0.0047525,3668.2599999476224,,verified_numeric_with_citations,Fixed review policy,f70ba0fb-a384-45f5-93cb-5c6e168fdec1
+86d97b4c4d3d4235d2a53f97,adversarial,rate,selective,True,True,False,False,False,1219,0.00239375,1660.5500999721698,,verified_numeric_with_citations,General signal value 0.1338 minus anticipated cost 0.0104,
+8cf0e5493fc0e2f12c3839a4,contradictory,fahrenheit,never,True,True,True,False,False,1098,0.0017376,1578.1434999662451,,correct_abstention,Fixed no-review policy,
+8cf0e5493fc0e2f12c3839a4,contradictory,fahrenheit,always,True,True,True,False,True,2392,0.0043151,3450.0926999608055,,correct_abstention,Fixed review policy,973905dd-2efc-4cd5-b66b-6f8beefe7ed0
+8cf0e5493fc0e2f12c3839a4,contradictory,fahrenheit,selective,True,True,True,False,False,1098,0.0017376,1578.1520999153145,,correct_abstention,General signal value 0.3653 minus anticipated cost 0.0097,
+8e07762c81ae52366e2a15c8,straightforward,median,never,True,True,False,False,False,1365,0.00315225,1956.6603999701329,,verified_numeric_with_citations,Fixed no-review policy,
+8e07762c81ae52366e2a15c8,straightforward,median,always,True,True,False,False,True,3248,0.0071795,5458.727499993984,,verified_numeric_with_citations,Fixed review policy,ce40bc18-3af9-49d9-bbb9-dab1939bbb8e
+8e07762c81ae52366e2a15c8,straightforward,median,selective,True,True,False,False,False,1365,0.00315225,1956.6519999643788,,verified_numeric_with_citations,General signal value 0.0981 minus anticipated cost 0.0099,
+94845ab334d56d652c9dbdd2,adversarial,fahrenheit,never,True,True,False,False,False,1219,0.00193425,2054.981100023724,,verified_numeric_with_citations,Fixed no-review policy,
+94845ab334d56d652c9dbdd2,adversarial,fahrenheit,always,True,True,False,False,True,2551,0.00389575,4005.4276999435388,,verified_numeric_with_citations,Fixed review policy,ac5c45c7-51be-4c69-8591-bacab370a2a9
+94845ab334d56d652c9dbdd2,adversarial,fahrenheit,selective,True,True,False,False,False,1219,0.00193425,2054.971600009594,,verified_numeric_with_citations,General signal value 0.0965 minus anticipated cost 0.0097,
+95f8a3029926a8024dadd72e,contradictory,rate,never,True,True,True,False,False,1133,0.00217225,1702.8047000057995,,correct_abstention,Fixed no-review policy,
+95f8a3029926a8024dadd72e,contradictory,rate,always,True,True,True,False,True,2438,0.003959,3122.596099972725,,correct_abstention,Fixed review policy,bb413270-5dba-4d1e-bd50-048bd5d15ebb
+95f8a3029926a8024dadd72e,contradictory,rate,selective,True,True,True,False,False,1133,0.00217225,1702.79800001299,,correct_abstention,General signal value 0.2167 minus anticipated cost 0.0101,
+9cea7a80d9e0f3eabdb71dc9,adversarial,weighted_mean,never,True,True,False,False,False,1548,0.0028550999999999997,2072.4439000478014,,verified_numeric_with_citations,Fixed no-review policy,
+9cea7a80d9e0f3eabdb71dc9,adversarial,weighted_mean,always,True,True,False,False,True,3456,0.0062926,6153.532100026496,,verified_numeric_with_citations,Fixed review policy,0aea5f50-852c-4c05-979b-7d5a0650f3e8
+9cea7a80d9e0f3eabdb71dc9,adversarial,weighted_mean,selective,True,True,False,False,False,1548,0.0028550999999999997,2072.479000024032,,verified_numeric_with_citations,General signal value 0.0598 minus anticipated cost 0.0117,
+a232934034f8a94f10af0c94,adversarial,fahrenheit,never,True,True,False,False,False,1292,0.002929,2218.851200072095,,verified_numeric_with_citations,Fixed no-review policy,
+a232934034f8a94f10af0c94,adversarial,fahrenheit,always,True,True,False,False,True,2767,0.00565685,4362.877000065055,,verified_numeric_with_citations,Fixed review policy,a23a5218-15c8-44e6-9145-054823fb3950
+a232934034f8a94f10af0c94,adversarial,fahrenheit,selective,True,True,False,False,False,1292,0.002929,2218.8610000303015,,verified_numeric_with_citations,General signal value 0.0700 minus anticipated cost 0.0101,
+a27da77f8bad09685fb680b3,contradictory,ratio,never,True,True,True,False,False,1219,0.00252875,2033.9824000257067,,correct_abstention,Fixed no-review policy,
+a27da77f8bad09685fb680b3,contradictory,ratio,always,True,True,True,False,True,2526,0.0050115,3753.9691000129096,,correct_abstention,Fixed review policy,aecca053-984c-42c0-8b5c-c8f69fcae76e
+a27da77f8bad09685fb680b3,contradictory,ratio,selective,True,True,True,False,False,1219,0.00252875,2033.9900000253692,,correct_abstention,General signal value 0.2002 minus anticipated cost 0.0101,
+a2a7cb62d38afb5e5539ee07,contradictory,median,never,True,True,True,False,False,1161,0.00205725,1443.310999951791,,correct_abstention,Fixed no-review policy,
+a2a7cb62d38afb5e5539ee07,contradictory,median,always,True,True,True,False,True,2634,0.004324,3304.9807000206783,,correct_abstention,Fixed review policy,985a8ff5-3ae9-4ba2-a850-5312573d61d6
+a2a7cb62d38afb5e5539ee07,contradictory,median,selective,True,True,True,False,False,1161,0.00205725,1443.3194000157528,,correct_abstention,General signal value 0.1635 minus anticipated cost 0.0106,
+a2fedc2cab523ba5fb0f3961,straightforward,weighted_mean,never,True,True,False,False,False,1352,0.0024721,1798.357799940277,,verified_numeric_with_citations,Fixed no-review policy,
+a2fedc2cab523ba5fb0f3961,straightforward,weighted_mean,always,True,True,False,False,True,2802,0.0051275999999999995,3768.233800015878,,verified_numeric_with_citations,Fixed review policy,2a47c91b-26cb-494e-8797-ff1c2025c976
+a2fedc2cab523ba5fb0f3961,straightforward,weighted_mean,selective,True,True,False,False,False,1352,0.0024721,1798.352799960412,,verified_numeric_with_citations,General signal value 0.0884 minus anticipated cost 0.0106,
+a32d4ff59eb0aa8bf335a834,straightforward,weighted_mean,never,True,True,False,False,False,1273,0.00254225,2421.6573999729007,,verified_numeric_with_citations,Fixed no-review policy,
+a32d4ff59eb0aa8bf335a834,straightforward,weighted_mean,always,True,True,False,False,True,2831,0.005253849999999999,4667.606799979694,,verified_numeric_with_citations,Fixed review policy,db55e4d6-1f79-4286-89ad-daddf0b646fa
+a32d4ff59eb0aa8bf335a834,straightforward,weighted_mean,selective,True,True,False,False,False,1273,0.00254225,2421.638699946925,,verified_numeric_with_citations,General signal value 0.0492 minus anticipated cost 0.0106,
+a6e544469ef5df8f7fb280f6,contradictory,rate,never,True,True,True,False,False,1178,0.001664,1906.2429000041448,,correct_abstention,Fixed no-review policy,
+a6e544469ef5df8f7fb280f6,contradictory,rate,always,True,True,True,False,True,2490,0.004135,3982.968299998902,,correct_abstention,Fixed review policy,1f8c4ff0-ec68-4d69-8366-0275408f063c
+a6e544469ef5df8f7fb280f6,contradictory,rate,selective,True,True,True,False,False,1178,0.001664,1906.274500011932,,correct_abstention,General signal value 0.2573 minus anticipated cost 0.0103,
+a75336dabd994456f6d2351f,ambiguous,count_at_least,never,True,True,True,False,False,1275,0.00234675,1806.7552999709733,,correct_abstention,Fixed no-review policy,
+a75336dabd994456f6d2351f,ambiguous,count_at_least,always,True,True,True,False,True,2652,0.0043041,3550.2663999795914,,correct_abstention,Fixed review policy,8ea12ffa-39cd-47a9-842f-8398985cd6cd
+a75336dabd994456f6d2351f,ambiguous,count_at_least,selective,True,True,True,False,False,1275,0.00234675,1806.7485999781638,,correct_abstention,General signal value 0.1163 minus anticipated cost 0.0111,
+a81f18bf2a78168238a46a45,contradictory,weighted_mean,never,True,True,True,False,False,1254,0.0022545,1600.0160000403412,,correct_abstention,Fixed no-review policy,
+a81f18bf2a78168238a46a45,contradictory,weighted_mean,always,True,True,True,False,True,2646,0.0046815,3187.3530000448227,,correct_abstention,Fixed review policy,9a77669f-9cce-4fce-b8c3-fed6c6943d9a
+a81f18bf2a78168238a46a45,contradictory,weighted_mean,selective,True,True,True,False,False,1254,0.0022545,1600.024100043811,,correct_abstention,General signal value 0.0953 minus anticipated cost 0.0111,
+ac97fda9ea516a217d650900,adversarial,weighted_mean,never,True,True,False,False,False,1410,0.002062,1702.152300043963,,verified_numeric_with_citations,Fixed no-review policy,
+ac97fda9ea516a217d650900,adversarial,weighted_mean,always,True,True,False,False,True,3349,0.00604185,5092.5115999998525,,verified_numeric_with_citations,Fixed review policy,c601bbd5-c177-489f-ae98-0e562ae9a878
+ac97fda9ea516a217d650900,adversarial,weighted_mean,selective,True,True,False,False,False,1410,0.002062,1702.1620000014082,,verified_numeric_with_citations,General signal value 0.0843 minus anticipated cost 0.0117,
+b18287d19901b3a98fc94317,straightforward,ratio,never,True,True,False,False,False,1201,0.00224435,2473.082499986049,,verified_numeric_with_citations,Fixed no-review policy,
+b18287d19901b3a98fc94317,straightforward,ratio,always,True,True,False,False,True,2644,0.0047166,4680.088899971452,,verified_numeric_with_citations,Fixed review policy,032f73ee-d5bc-4df1-be09-8c3caf5b4562
+b18287d19901b3a98fc94317,straightforward,ratio,selective,True,True,False,False,False,1201,0.00224435,2473.07309997268,,verified_numeric_with_citations,General signal value 0.0685 minus anticipated cost 0.0095,
+b203c4b53ed4910679169668,ambiguous,fahrenheit,never,True,True,True,False,False,943,0.00120225,1566.2584999809042,,correct_abstention,Fixed no-review policy,
+b203c4b53ed4910679169668,ambiguous,fahrenheit,always,True,True,True,False,True,1988,0.002487,4947.7192999911495,,correct_abstention,Fixed review policy,300f1379-20a9-4f0e-90ee-8a2a788c60c8
+b203c4b53ed4910679169668,ambiguous,fahrenheit,selective,True,True,True,False,False,943,0.00120225,1566.2518999888562,,correct_abstention,General signal value 0.2837 minus anticipated cost 0.0085,
+b2f2b2bc0a4d4b09b5d54def,straightforward,ratio,never,True,True,False,False,False,1337,0.00250775,2701.6521000186913,,verified_numeric_with_citations,Fixed no-review policy,
+b2f2b2bc0a4d4b09b5d54def,straightforward,ratio,always,True,True,False,False,True,2745,0.00474725,4773.72410002863,,verified_numeric_with_citations,Fixed review policy,1897bb7e-bf03-42ec-8b74-3eb1188d661e
+b2f2b2bc0a4d4b09b5d54def,straightforward,ratio,selective,True,True,False,False,False,1337,0.00250775,2701.66220003739,,verified_numeric_with_citations,General signal value 0.0658 minus anticipated cost 0.0096,
+b463eb69b4c4bb7c5f887755,straightforward,rate,never,True,True,False,False,False,1159,0.00207485,1525.8911000564694,,verified_numeric_with_citations,Fixed no-review policy,
+b463eb69b4c4bb7c5f887755,straightforward,rate,always,True,True,False,False,True,2529,0.00491835,3259.0622999705374,,verified_numeric_with_citations,Fixed review policy,7783456e-dad5-46c7-9860-7527997e7f2d
+b463eb69b4c4bb7c5f887755,straightforward,rate,selective,True,True,False,False,False,1159,0.00207485,1525.8821000461467,,verified_numeric_with_citations,General signal value 0.0051 minus anticipated cost 0.0095,
+b5cbcac61222a5fee19c2289,contradictory,weighted_mean,never,True,True,True,False,False,1341,0.00221535,1988.5010999860242,,correct_abstention,Fixed no-review policy,
+b5cbcac61222a5fee19c2289,contradictory,weighted_mean,always,True,True,True,False,True,2879,0.00523885,4034.533799975179,,correct_abstention,Fixed review policy,83d26d60-5821-46a7-8935-c1f3b6fca1b8
+b5cbcac61222a5fee19c2289,contradictory,weighted_mean,selective,True,True,True,False,False,1341,0.00221535,1988.510099996347,,correct_abstention,General signal value 0.0993 minus anticipated cost 0.0113,
+b5ce0825cf2d3a6fd394bed6,adversarial,rate,never,True,True,False,False,False,1317,0.00282825,2068.9193999860436,,verified_numeric_with_citations,Fixed no-review policy,
+b5ce0825cf2d3a6fd394bed6,adversarial,rate,always,True,True,False,False,True,2832,0.0054861,4466.377499978989,,verified_numeric_with_citations,Fixed review policy,acf01075-f9e3-49e5-9840-536223ea6c6c
+b5ce0825cf2d3a6fd394bed6,adversarial,rate,selective,True,True,False,False,False,1317,0.00282825,2068.9106999197975,,verified_numeric_with_citations,General signal value 0.0833 minus anticipated cost 0.0106,
+b74f96cba8b6fd9a523804aa,straightforward,fahrenheit,never,True,True,False,False,False,1190,0.002072,2534.121899981983,,verified_numeric_with_citations,Fixed no-review policy,
+b74f96cba8b6fd9a523804aa,straightforward,fahrenheit,always,True,True,False,False,True,2450,0.004676,4565.615099971183,,verified_numeric_with_citations,Fixed review policy,aca21abb-4b12-4ce6-8c32-9cc43b184560
+b74f96cba8b6fd9a523804aa,straightforward,fahrenheit,selective,True,True,False,False,False,1190,0.002072,2534.113800036721,,verified_numeric_with_citations,General signal value 0.0506 minus anticipated cost 0.0089,
+c4082d5dadd41ee8026d6f5a,adversarial,median,never,True,True,False,False,False,1309,0.00213335,1302.8195000370033,,verified_numeric_with_citations,Fixed no-review policy,
+c4082d5dadd41ee8026d6f5a,adversarial,median,always,True,True,False,False,True,2846,0.004348100000000001,3378.4864000044763,,verified_numeric_with_citations,Fixed review policy,37e3b600-90db-4459-99af-22a431f3cb6e
+c4082d5dadd41ee8026d6f5a,adversarial,median,selective,True,True,False,False,False,1309,0.00213335,1302.8074000030756,,verified_numeric_with_citations,General signal value 0.0948 minus anticipated cost 0.0108,
+c8996a025b670c832e666c5a,adversarial,weighted_mean,never,True,True,False,False,False,1593,0.00281275,2158.1361000426114,,verified_numeric_with_citations,Fixed no-review policy,
+c8996a025b670c832e666c5a,adversarial,weighted_mean,always,True,True,False,False,True,3357,0.0064097500000000005,4809.143299993593,,verified_numeric_with_citations,Fixed review policy,775573e5-f62c-4c7f-8363-6f49842e7b5f
+c8996a025b670c832e666c5a,adversarial,weighted_mean,selective,True,True,False,False,False,1593,0.00281275,2158.140799961984,,verified_numeric_with_citations,General signal value 0.0420 minus anticipated cost 0.0117,
+ca75bb3c402232c2e87ce609,adversarial,median,never,True,True,False,False,False,1284,0.0020691,1863.1148000131361,,verified_numeric_with_citations,Fixed no-review policy,
+ca75bb3c402232c2e87ce609,adversarial,median,always,True,True,False,False,True,2808,0.0043126,4426.6469000140205,,verified_numeric_with_citations,Fixed review policy,47d3f493-dad1-481f-a2b8-8714a6fc5300
+ca75bb3c402232c2e87ce609,adversarial,median,selective,True,True,False,False,False,1284,0.0020691,1863.0856000236236,,verified_numeric_with_citations,General signal value 0.0840 minus anticipated cost 0.0108,
+cd84e6d0b058f7aa91166859,adversarial,count_at_least,never,True,True,False,False,False,1615,0.00310775,1794.5473999716341,,verified_numeric_with_citations,Fixed no-review policy,
+cd84e6d0b058f7aa91166859,adversarial,count_at_least,always,True,True,False,False,True,3734,0.0072166,4633.031099976506,,verified_numeric_with_citations,Fixed review policy,5f3a1b60-149c-43b7-ab0b-dff34280267a
+cd84e6d0b058f7aa91166859,adversarial,count_at_least,selective,True,True,False,False,False,1615,0.00310775,1794.5533000165597,,verified_numeric_with_citations,General signal value 0.0246 minus anticipated cost 0.0127,
+cde30142d17af37a70d40ac6,ambiguous,weighted_mean,never,True,True,True,False,False,1176,0.0016285,2113.9788999571465,,correct_abstention,Fixed no-review policy,
+cde30142d17af37a70d40ac6,ambiguous,weighted_mean,always,True,True,True,False,True,2481,0.00412675,3801.4257999602705,,correct_abstention,Fixed review policy,6cb66f12-c7fa-4fca-9ebf-539fd67a3b7c
+cde30142d17af37a70d40ac6,ambiguous,weighted_mean,selective,True,True,True,False,False,1176,0.0016285,2113.9722999650985,,correct_abstention,General signal value 0.0597 minus anticipated cost 0.0099,
+cf49d29b561cbb54e4f6c9af,contradictory,rate,never,True,True,True,False,False,1212,0.0020811,1667.582499969285,,correct_abstention,Fixed no-review policy,
+cf49d29b561cbb54e4f6c9af,contradictory,rate,always,True,True,True,False,True,2539,0.00392835,3792.3449999652803,,correct_abstention,Fixed review policy,1f609650-8f72-4d56-90fd-b1728612e213
+cf49d29b561cbb54e4f6c9af,contradictory,rate,selective,True,True,True,False,False,1212,0.0020811,1667.5834999186918,,correct_abstention,General signal value 0.2569 minus anticipated cost 0.0102,
+d1463727584befa2517c01aa,adversarial,count_at_least,never,True,True,False,False,False,1637,0.00255575,2270.5446000327356,,verified_numeric_with_citations,Fixed no-review policy,
+d1463727584befa2517c01aa,adversarial,count_at_least,always,True,True,False,False,True,3821,0.00675525,5992.141200054903,,verified_numeric_with_citations,Fixed review policy,17718b4b-3d78-481f-ad1b-1c50086a2599
+d1463727584befa2517c01aa,adversarial,count_at_least,selective,True,True,False,False,False,1637,0.00255575,2270.5320000532083,,verified_numeric_with_citations,General signal value 0.0853 minus anticipated cost 0.0127,
+d37f519f1a45c8db4b93b3ae,contradictory,count_at_least,never,True,True,True,False,False,1448,0.0019265,1923.0238000163808,,correct_abstention,Fixed no-review policy,
+d37f519f1a45c8db4b93b3ae,contradictory,count_at_least,always,True,True,True,False,True,3101,0.00426225,4135.056800034363,,correct_abstention,Fixed review policy,bdb3dee0-5bb0-47ba-9a1c-11d483982ce9
+d37f519f1a45c8db4b93b3ae,contradictory,count_at_least,selective,True,True,True,False,False,1448,0.0019265,1923.0357000487857,,correct_abstention,General signal value 0.1588 minus anticipated cost 0.0121,
+d838b88253452f487ee3ca83,straightforward,median,never,True,True,False,False,False,1171,0.0019458499999999998,2193.8203000463545,,verified_numeric_with_citations,Fixed no-review policy,
+d838b88253452f487ee3ca83,straightforward,median,always,True,True,False,False,True,2667,0.00442435,4181.288900028449,,verified_numeric_with_citations,Fixed review policy,2d1b309f-e957-41ce-b47c-7021ac8c952c
+d838b88253452f487ee3ca83,straightforward,median,selective,True,True,False,False,False,1171,0.0019458499999999998,2193.811100034509,,verified_numeric_with_citations,General signal value 0.0190 minus anticipated cost 0.0099,
+e6505841800737db9b2de294,ambiguous,count_at_least,never,True,True,True,False,False,1240,0.0015345,1568.799400003627,,correct_abstention,Fixed no-review policy,
+e6505841800737db9b2de294,ambiguous,count_at_least,always,True,True,True,False,True,2630,0.003983,3385.9587000333704,,correct_abstention,Fixed review policy,40ad8b70-a50a-4624-97b1-eeb4f0d692a9
+e6505841800737db9b2de294,ambiguous,count_at_least,selective,True,True,True,False,False,1240,0.0015345,1568.796299980022,,correct_abstention,General signal value 0.0742 minus anticipated cost 0.0110,
+e9fccc35726cd1de1f86a584,contradictory,count_at_least,never,True,True,True,False,False,1373,0.0019583499999999998,1643.642400042154,,correct_abstention,Fixed no-review policy,
+e9fccc35726cd1de1f86a584,contradictory,count_at_least,always,True,True,True,False,True,2953,0.0041128499999999995,3688.5879000183195,,correct_abstention,Fixed review policy,7bda2966-21a9-49c4-89b8-8923ceb3dbb3
+e9fccc35726cd1de1f86a584,contradictory,count_at_least,selective,True,True,True,False,False,1373,0.0019583499999999998,1643.6353000462987,,correct_abstention,General signal value 0.0900 minus anticipated cost 0.0118,
+ea3c708a72c96d155810ef66,ambiguous,count_at_least,never,True,True,True,False,False,1264,0.002309,2101.99780005496,,correct_abstention,Fixed no-review policy,
+ea3c708a72c96d155810ef66,ambiguous,count_at_least,always,True,True,True,False,True,2786,0.004621999999999999,4103.927500080317,,correct_abstention,Fixed review policy,2cd2d507-f3a5-4498-9cb6-d5ce1890fc44
+ea3c708a72c96d155810ef66,ambiguous,count_at_least,selective,True,True,True,False,False,1264,0.002309,2101.9794000312686,,correct_abstention,General signal value 0.0800 minus anticipated cost 0.0108,
+f1d6f443b3070e884d24296e,straightforward,fahrenheit,never,True,True,False,False,False,1174,0.002007,2522.4532000138424,,verified_numeric_with_citations,Fixed no-review policy,
+f1d6f443b3070e884d24296e,straightforward,fahrenheit,always,True,True,False,False,True,2487,0.00413675,4690.006499993615,,verified_numeric_with_citations,Fixed review policy,b75f3859-66b4-4d52-a7a3-38d58b2c1db5
+f1d6f443b3070e884d24296e,straightforward,fahrenheit,selective,True,True,False,False,False,1174,0.002007,2522.451800003182,,verified_numeric_with_citations,General signal value 0.0529 minus anticipated cost 0.0089,
+f4f0b3b1082f9c6b415e80bc,contradictory,median,never,True,True,True,False,False,1239,0.00168625,1777.5657999445684,,correct_abstention,Fixed no-review policy,
+f4f0b3b1082f9c6b415e80bc,contradictory,median,always,True,True,True,False,True,2719,0.00393775,4114.35089999577,,correct_abstention,Fixed review policy,4926b8e2-7972-4587-b89a-6fc90b507c46
+f4f0b3b1082f9c6b415e80bc,contradictory,median,selective,True,True,True,False,False,1239,0.00168625,1777.560899965465,,correct_abstention,General signal value 0.1741 minus anticipated cost 0.0107,
+fc32fe243154ac0918eef1bf,straightforward,median,never,True,True,False,False,False,1235,0.00193925,2150.633100012783,,verified_numeric_with_citations,Fixed no-review policy,
+fc32fe243154ac0918eef1bf,straightforward,median,always,True,True,False,False,True,2697,0.00456085,4066.47449999582,,verified_numeric_with_citations,Fixed review policy,bcf7a62a-0ac8-48f0-b431-8ff481176630
+fc32fe243154ac0918eef1bf,straightforward,median,selective,True,True,False,False,False,1235,0.00193925,2150.6445999839343,,verified_numeric_with_citations,General signal value 0.0622 minus anticipated cost 0.0099,
+fce8f93cdf09ff9f9c3b33c7,adversarial,median,never,True,True,False,False,False,1293,0.00247425,1855.3752000443637,,verified_numeric_with_citations,Fixed no-review policy,
+fce8f93cdf09ff9f9c3b33c7,adversarial,median,always,True,True,False,False,True,2840,0.0047495,4106.030000024475,,verified_numeric_with_citations,Fixed review policy,3952c80b-8662-4ed0-b40c-3be3b59f461f
+fce8f93cdf09ff9f9c3b33c7,adversarial,median,selective,True,True,False,False,False,1293,0.00247425,1855.354100058321,,verified_numeric_with_citations,General signal value 0.1231 minus anticipated cost 0.0108,
+fcfe4959a080d9b4ceca3250,contradictory,rate,never,True,True,True,False,False,1173,0.00165175,2246.643199934624,,correct_abstention,Fixed no-review policy,
+fcfe4959a080d9b4ceca3250,contradictory,rate,always,True,True,True,False,True,2459,0.00339975,4136.123599950224,,correct_abstention,Fixed review policy,f567312b-6aee-4e52-a9a4-af4a862cdd79
+fcfe4959a080d9b4ceca3250,contradictory,rate,selective,True,True,True,False,False,1173,0.00165175,2246.6258999775164,,correct_abstention,General signal value 0.1811 minus anticipated cost 0.0100,

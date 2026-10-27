@@ -1,0 +1,14 @@
+{
+  "source": "https://dev.meta.ai/docs/pricing-rate-limits",
+  "model": "muse-spark-1.3",
+  "usd_per_million": {
+    "input": 1.25,
+    "cached_input": 0.15,
+    "output": 4.25
+  },
+  "estimate_only": true,
+  "checked_on": "2026-10-26",
+  "confirmed_provider_billing": null,
+  "reasoning_tokens": "Already included in completion_tokens; never added again",
+  "availability": "Pinned model passed live discovery and 24 structured calls"
+}

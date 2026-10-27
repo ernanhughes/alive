@@ -1,0 +1,66 @@
+{
+  "owner_authorized": true,
+  "maximum_usd": 1.0,
+  "maximum_calls": 350,
+  "maximum_tokens": 500000,
+  "freeze_id": "549774ba2c72105b0c075ac9dc2eb486a2b21dd59d911aeb83bbaa080f80cd5d",
+  "execution_commit": "a4adcb9b0f64a2e1f4214df3b83a9b58bd5eae41",
+  "execution_overlay": {
+    "alive/experiment_budget.py": "03cf7250caf5624ea6874565d70ee3f030eab8f028f5287aa2fd04a5e6d34cd4",
+    "alive/app.py": "5a1160330d605bbd2ed09e6c597ffb1cd0c1670175cb538515cd7176443b0ce4",
+    "scripts/run_frozen03.py": "9157598476c6ba16c755831fac0e07cd02b6460cf68e92073a0d9fe471ff73e9"
+  },
+  "budget_before": {
+    "session_calls": 3,
+    "session_tools": 2,
+    "session_tokens": 0,
+    "experiment_calls": 63,
+    "experiment_tools": 22,
+    "experiment_tokens": 69097
+  },
+  "governor_configuration": {
+    "depth": 1,
+    "retries": 0,
+    "threshold": 0.45,
+    "lab_writes": false,
+    "tool_calls": 3,
+    "use_critic": true,
+    "concurrency": 1,
+    "wall_seconds": 90,
+    "output_tokens": 1536,
+    "session_calls": 180,
+    "request_tokens": 18000,
+    "session_tokens": 500000,
+    "experiment_calls": 413,
+    "experiment_tokens": 569097,
+    "investigation_calls": 4,
+    "investigation_tokens": 50000
+  },
+  "experimental_specification_changed": false,
+  "pricing_source": "https://dev.meta.ai/docs/pricing-rate-limits",
+  "retry_policy": "No retries; preserve errors and stop at the first applicable ceiling",
+  "authorization": {
+    "id": "63e3f798-9110-48dd-a4dc-c26a2ec525a3",
+    "freeze_id": "549774ba2c72105b0c075ac9dc2eb486a2b21dd59d911aeb83bbaa080f80cd5d",
+    "limits": {
+      "max_calls": 350,
+      "max_tokens": 500000,
+      "session_plan": "TWO_60_TASK_SESSIONS",
+      "owner_confirmation": "AUTHORIZE FROZEN 120 TASK META EVALUATION",
+      "max_usd": 1.0,
+      "ceiling_micro_usd": 1000000,
+      "spending_guard_sha256": "03cf7250caf5624ea6874565d70ee3f030eab8f028f5287aa2fd04a5e6d34cd4",
+      "spending_guard_source": "alive/experiment_budget.py",
+      "pricing_source": "https://dev.meta.ai/docs/pricing-rate-limits",
+      "pricing_usd_per_million": {
+        "input": 1.25,
+        "cached_input": 0.15,
+        "output": 4.25
+      },
+      "owner_instruction": "Authorized full 120-task evaluation capped at $1.00, 350 calls and 500000 tokens; no automatic retries"
+    },
+    "consumed": false,
+    "created_at": "2026-10-26T23:55:28.941908+00:00"
+  },
+  "run_id": "966bce12-4260-4100-ac5c-5aa5f56630b5"
+}

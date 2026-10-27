@@ -19,6 +19,8 @@ from alive.cognition import Cognition
 from alive.cognitive_api import public_router, router
 from alive.config import Settings, prepare_local
 from alive.db import Database
+from alive.experiment.api import router as experiment_router
+from alive.experiment_budget import BudgetedExperiments as Experiments
 from alive.kernel import Kernel, envelope
 from alive.memory import MemoryService
 from alive.models import AgentRun, BrowserSession, Event, Goal, Memory, now, record
@@ -58,11 +60,14 @@ def create_app(settings=None):
         app.state.browsers = Browsers(kernel)
         app.state.memory = MemoryService(kernel)
         app.state.cognition = Cognition(kernel, app.state.memory)
+        app.state.experiments = Experiments(kernel)
         if kernel.ready:
             await app.state.cognition.initialize()
+            await app.state.experiments.initialize()
         try:
             yield
         finally:
+            await app.state.experiments.close()
             await app.state.cognition.close()
             await app.state.agents.close()
             await app.state.browsers.close()
@@ -148,6 +153,7 @@ def create_app(settings=None):
 
     secured = [Depends(ready)]
     app.include_router(router(app, ready))
+    app.include_router(experiment_router(app, ready))
     app.include_router(public_router(app))
 
     @app.exception_handler(ValueError)
@@ -208,6 +214,7 @@ def create_app(settings=None):
     async def stop():
         from alive.cognitive_schema import AutonomyCommand
 
+        await app.state.experiments.cancel()
         await app.state.cognition.command(AutonomyCommand(command="pause"))
         for session_id in list(app.state.browsers.watchers):
             await app.state.browsers.watch(session_id, False)

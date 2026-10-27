@@ -895,3 +895,8 @@ hr {
 .form-row select {
   max-width: 180px;
 }
+.experiment-panel { margin-top: 24px; }
+.experiment-scroll { overflow-x: auto; }
+.experiment-panel table { width: 100%; border-collapse: collapse; text-align: left; }
+.experiment-panel th, .experiment-panel td { padding: 12px; border-bottom: 1px solid #d5d5ca; }
+.experiment-panel select { max-width: 100%; margin: 12px; padding: 8px; }

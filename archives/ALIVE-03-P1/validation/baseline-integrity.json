@@ -1,0 +1,37 @@
+{
+  "required_baseline": "72b2e4c12b1864bb94136af96a82fd96a6a6bbe2",
+  "all_15_payload_checksums_verified": true,
+  "checked_payloads": [
+    "acceptance.png",
+    "qualification-report.md",
+    "results/controlled-critic-only.json",
+    "results/controlled-proposer-only.json",
+    "results/engineering-meta-ledger.json",
+    "results/engineering-meta.json",
+    "results/first-thought-summary.json",
+    "results/meta-smoke.json",
+    "results/primary-meta-ledger.json",
+    "results/primary-meta.json",
+    "specification/engineering-cases.json",
+    "specification/heldout-cases.json",
+    "specification/role-prompts.json",
+    "usage/meta-usage.jsonl",
+    "usage/summary.json"
+  ],
+  "baseline_before_changes": {
+    "backend": 33,
+    "frontend": 4,
+    "browser_e2e": 2
+  },
+  "final": {
+    "backend_existing": 33,
+    "backend_new": 22,
+    "backend_total": 55,
+    "frontend": 4,
+    "browser_e2e_existing": 2,
+    "browser_e2e_new": 1
+  },
+  "production_build": "passed",
+  "ruff_check_and_format": "passed",
+  "warning": "Windows ZeroMQ uses a tornado selector thread; tests pass"
+}
