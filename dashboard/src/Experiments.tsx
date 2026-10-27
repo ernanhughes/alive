@@ -45,7 +45,7 @@ export function Experiments({ token }: { token: string }) {
     return () => { cancelled = true; };
   }, [selected, runs, token]);
   const summary = detail?.data.summary;
-  return <section className="panel experiment-panel">
+  return <section className="panel experiment-panel" data-testid="policy-comparison">
     <div className="panel-top"><h2>Selective cognition experiment</h2>
       <span className="tag subtle">ALIVE-03-P1</span></div>
     <p className="muted">Paired evidence, one shared initial decision, separate critical reviews.

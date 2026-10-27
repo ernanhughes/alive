@@ -12,6 +12,7 @@ test("autonomous DOM observation, role exchange, approval and hard budget contro
     fs.readFileSync(path.resolve("../.alive/token"), "utf8").trim();
   const headers = { Authorization: "Bearer " + token };
   const base = "http://127.0.0.1:8000/api/v1";
+  const previous = (await (await api.get(base + "/cognition", { headers })).json()).control.configuration;
   await api.post(base + "/cognition/control", {
     headers,
     data: { command: "pause" },
@@ -22,7 +23,7 @@ test("autonomous DOM observation, role exchange, approval and hard budget contro
   });
   await api.post(base + "/cognition/configuration", {
     headers,
-    data: { preferred_action: "lab_draft" },
+    data: { ...previous, preferred_action: "lab_draft", use_critic: true, session_calls: 30 },
   });
   await page.addInitScript(
     (t) => sessionStorage.setItem("alive-token", t),
@@ -156,5 +157,5 @@ test("autonomous DOM observation, role exchange, approval and hard budget contro
     path: "../.alive/cognition-e2e.png",
     fullPage: true,
   });
-  await api.post(base + "/cognition/configuration", { headers, data: {} });
+  await api.post(base + "/cognition/configuration", { headers, data: previous });
 });

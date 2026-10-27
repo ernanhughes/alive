@@ -22,6 +22,7 @@ from alive.db import Database
 from alive.experiment.api import router as experiment_router
 from alive.experiment_budget import BudgetedExperiments as Experiments
 from alive.kernel import Kernel, envelope
+from alive.learning.api import router as learning_router
 from alive.memory import MemoryService
 from alive.models import AgentRun, BrowserSession, Event, Goal, Memory, now, record
 from alive.providers import MetaProvider
@@ -154,6 +155,7 @@ def create_app(settings=None):
     secured = [Depends(ready)]
     app.include_router(router(app, ready))
     app.include_router(experiment_router(app, ready))
+    app.include_router(learning_router(ready))
     app.include_router(public_router(app))
 
     @app.exception_handler(ValueError)

@@ -1,0 +1,14 @@
+
+> alive-dashboard@0.2.0 test:e2e
+> playwright test
+
+
+Running 5 tests using 1 worker
+
+  ok 1 e2e\cognition.spec.ts:5:1 › autonomous DOM observation, role exchange, approval and hard budget controls (5.9s)
+  ok 2 e2e\experiments.spec.ts:5:1 › policy comparison renders persisted outcomes and preserves the full-run gate (878ms)
+  ok 3 e2e\first-contact.spec.ts:4:1 › dashboard renders persisted data, errors, agent progress and browser controls (6.8s)
+  ok 4 e2e\full-evaluation.spec.ts:5:1 › authorized full evaluation displays persisted paired results (18.8s)
+  ok 5 e2e\learning.spec.ts:5:1 › predictive learning displays checked simulator evidence and pre-action predictions (18.7s)
+
+  5 passed (52.0s)
