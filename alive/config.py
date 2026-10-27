@@ -31,6 +31,7 @@ class Settings(BaseSettings):
     )
     alive_meta_timeout: float = Field(30, ge=1, le=120)
     alive_meta_max_output: int = Field(1536, ge=64, le=4096)
+    alive_native_test_pages: str = ""
     alive_role_models: dict[str, str] = {}
     alive_embedding_enabled: bool = False
     alive_embedding_path: str = ".alive/models/minilm"

@@ -1,6 +1,7 @@
+import { DEFAULT_BACKEND } from './config.js';
 const $ = id => document.getElementById(id);
 const saved = await chrome.storage.local.get(['backend', 'token', 'autoSend', 'goalId']);
-$('backend').value = saved.backend || 'http://127.0.0.1:8000';
+$('backend').value = saved.backend || DEFAULT_BACKEND;
 $('token').value = saved.token || '';
 $('auto').checked = !!saved.autoSend;
 let reviewed = null;
@@ -15,7 +16,11 @@ async function command(type, args = {}) {
 async function action(fn) {
   try { await fn(); } catch (e) { $('status').textContent = e.message; }
 }
-function showNote(note) {
+function setFeedback(note, allowFeedback = true) {
+  const enabled = allowFeedback && note?.status === 'validated';
+  $('useful').disabled = $('needs-work').disabled = !enabled;
+}
+function showNote(note, allowFeedback = true) {
   $('note').replaceChildren();
   const output = note?.data?.output;
   if (output) {
@@ -23,7 +28,10 @@ function showNote(note) {
       const element = document.createElement(tag); element.textContent = text; $('note').append(element);
     }
   } else $('note').textContent = note ? 'Note ' + note.status : 'No note yet.';
-  $('useful').disabled = $('needs-work').disabled = note?.status !== 'validated';
+  $('note-heading').textContent = allowFeedback
+    ? 'Current note - rate this note, not the subject'
+    : 'Previous note - not a feedback target';
+  setFeedback(note, allowFeedback);
   $('cost').textContent = note ? `${note.status} · ${note.data.model} · ${note.data.usage?.total_tokens ?? 'pending'} tokens · estimated $${note.data.estimated_usd ?? '?'} · ${Math.round(note.data.latency_ms || 0)} ms` : '';
 }
 async function pollNote() {
@@ -68,7 +76,12 @@ $('start').onclick = () => action(async () => {
 $('stop').onclick = () => action(async () => {
   clearInterval(polling);
   await command('stop');
-  $('status').textContent = 'Stopped · page observation revoked';
+  setFeedback(null, false);
+  $('note-heading').textContent = 'No current note';
+  $('note').textContent = 'Observation stopped and permission revoked.';
+  $('cost').textContent = '';
+  $('status').textContent = 'Stopped - page observation revoked';
+});
 });
 $('send').onclick = () => action(async () => {
   const language = $('language').value;
@@ -80,34 +93,40 @@ $('send').onclick = () => action(async () => {
     const relevance = result.decision.goal_relevance;
     const adaptive = result.decision.adaptive_policy;
     const uncertain = action === 'uncertain';
+    const probe = !!(result.decision.probe || adaptive?.probe);
     const suppressed = action === 'no_action' && result.decision.no_action_source === 'feedback_policy';
+    setFeedback(null, false);
     $('decision-label').textContent = action === 'recall'
-      ? 'Recall a note you found useful · no new inference'
+      ? 'Recall a note you rated useful - no new inference'
       : action === 'no_action'
         ? suppressed
-          ? 'No action recommended by owner feedback · analyse anyway if this matters'
-          : 'No action warranted · observation does not match your goal'
+          ? 'Automatic analysis paused by feedback - analyse anyway if this matters'
+          : 'No action warranted - observation does not match your goal'
         : uncertain
-          ? 'Language uncertain · choose a language or explicitly analyse'
-          : 'Fresh analysis recommended · no useful matching experience yet';
+          ? 'Language uncertain - choose a language or explicitly analyse'
+          : probe
+            ? 'Periodic re-evaluation - one fresh analysis is eligible'
+            : 'Fresh analysis recommended - no useful exact evidence yet';
     $('relevance').textContent = relevance
-      ? `Language: ${relevance.language} (${relevance.language_source}) · policy ${result.decision.relevance_policy || relevance.policy} · ${relevance.relevant ? 'matched' : 'no match'}${relevance.matched_terms?.length ? ' · ' + relevance.matched_terms.join(', ') : ''}. ${relevance.basis}`
+      ? `Language: ${relevance.language} (${relevance.language_source}) - policy ${result.decision.relevance_policy || relevance.policy} - ${relevance.relevant ? 'matched' : 'no match'}${relevance.matched_terms?.length ? ' - ' + relevance.matched_terms.join(', ') : ''}. ${relevance.basis}`
       : '';
     $('policy').textContent = adaptive
-      ? `Decision policy v${result.decision.policy_version} · support ${adaptive.support} (${adaptive.useful} useful / ${adaptive.not_useful} not useful) · ${adaptive.recommendation}. ${adaptive.reason}`
+      ? `Decision policy v${result.decision.policy_version} - ${adaptive.distinct_evidence} distinct rated excerpt(s) (${adaptive.useful} useful / ${adaptive.not_useful} not useful) - ${adaptive.suppressions}/${adaptive.probe_after_suppressions} paused observations. ${adaptive.reason}`
       : '';
     $('decision').textContent = JSON.stringify({ ...result.decision,
       note: result.decision.note?.id || null, candidate_note: result.decision.candidate_note?.id || null }, null, 2);
-    $('fact').textContent = `${result.snapshot.data.text_status} · SHA-256 ${result.snapshot.data.sha256}. Observed text; not verified factual truth.`;
+    $('fact').textContent = `${result.snapshot.data.text_status} - SHA-256 ${result.snapshot.data.sha256}. Observed text; not verified factual truth.`;
     $('preference').textContent = suppressed
-      ? `Owner feedback for this goal and page has support ${adaptive.support} with ${adaptive.useful} useful. No Meta call was made. Policy v${result.decision.policy_version}.`
-      : action === 'no_action'
-        ? 'No Meta call was made. Revise the goal if this page should be analysed.'
-        : uncertain
-          ? 'No Meta call was made. Confirming the page language or using Analyse anyway is an explicit override.'
-          : result.decision.feedback_id
-            ? 'Recall follows your earlier useful rating. Feedback ' + result.decision.feedback_id + '.'
-            : 'No positive matching rating. A saved note alone does not enable reuse.';
+      ? `Automatic analysis is paused for this goal and page. ${adaptive.suppressions}/${adaptive.probe_after_suppressions} paused observations; a periodic re-evaluation follows after the limit. You can analyse anyway now.`
+      : probe
+        ? 'The pause limit was reached. This bounded re-evaluation gives the context one fresh chance without changing permissions or budgets.'
+        : action === 'no_action'
+          ? 'No model call was made. Revise the goal or use the explicit owner correction if this page matters.'
+          : uncertain
+            ? 'No model call was made. Confirming the page language or using Analyse anyway is an explicit override.'
+            : result.decision.feedback_id
+              ? 'Recall follows exact useful evidence. No new model call was made.'
+              : 'No useful exact evidence yet. Fresh analysis is eligible.';
     $('analyse').disabled = action === 'recall';
     $('analyse').textContent = action === 'recall'
       ? 'Exact recall in use'
@@ -115,23 +134,39 @@ $('send').onclick = () => action(async () => {
         ? 'Analyse anyway (language override)'
         : action === 'no_action'
           ? 'Analyse anyway (owner correction)'
-          : 'Send reviewed excerpt to Meta';
+          : probe
+            ? 'Run periodic re-evaluation'
+            : 'Send reviewed excerpt to Meta';
     if (action === 'uncertain') {
+      $('note-heading').textContent = 'No current note';
       $('note').textContent = 'No model note. Choose a language or use Analyse anyway.';
-      $('status').textContent = 'Language uncertain · no automatic model call';
+      $('status').textContent = 'Language uncertain - no automatic model call';
     } else if (suppressed) {
-      $('note').textContent = 'No model note. Owner feedback suppressed analysis; Analyse anyway is an explicit correction.';
-      $('status').textContent = 'Analysis suppressed by owner feedback';
+      $('note-heading').textContent = 'No current note';
+      $('note').textContent = 'No model note. Automatic analysis is paused; Analyse anyway is an explicit correction.';
+      $('status').textContent = 'Analysis paused by owner feedback';
     } else if (action === 'no_action') {
+      $('note-heading').textContent = 'No current note';
       $('note').textContent = 'No model note. No Meta call was made.';
-      $('status').textContent = 'No action warranted · the observation was not analysed';
+      $('status').textContent = 'No action warranted - the observation was not analysed';
     } else if (result.decision.note) {
-      showNote(result.decision.note); $('status').textContent = 'Recalled useful experience · 0 new Meta calls';
-    } else showNote(result.decision.candidate_note);
+      showNote(result.decision.note, true); $('status').textContent = 'Recalled useful evidence - 0 new Meta calls';
+    } else if (result.decision.candidate_note) {
+      showNote(result.decision.candidate_note, false);
+      $('status').textContent = probe ? 'Periodic re-evaluation is ready' : 'Fresh analysis is eligible';
+    } else {
+      $('note-heading').textContent = 'No current note';
+      $('note').textContent = 'No note yet.';
+      $('cost').textContent = '';
+      $('status').textContent = probe ? 'Periodic re-evaluation is ready' : 'Fresh analysis is eligible';
+    }
   }
 });
 $('analyse').onclick = () => action(async () => {
   $('analyse').disabled = true;
+  setFeedback(null, false);
+  $('note-heading').textContent = 'Analysis running';
+  $('note').textContent = 'One bounded model request is running.';
   await command('analyse', {
     allow_uncertain_analysis: currentDecision?.action === 'uncertain',
     owner_correction: currentDecision?.action === 'no_action',
@@ -144,8 +179,20 @@ for (const [id, useful] of [['useful', true], ['needs-work', false]]) {
   $(id).onclick = () => action(async () => {
     const feedback = await command('feedback', { useful });
     const data = feedback.data || {};
-    $('preference').textContent = `${useful ? 'Reuse recommended' : 'Fresh analysis recommended'}. Feedback ${feedback.id}. Policy v${data.policy_version_before ?? '?'} -> v${data.policy_version_after ?? '?'}${data.revision ? ' (revised)' : ''}.`;
-    $('status').textContent = 'Feedback saved. Future choices use this experience.';
+    if (feedback.idempotent) {
+      $('preference').textContent = 'This rating is already saved. No duplicate policy update was made.';
+      $('status').textContent = 'Feedback unchanged';
+      return;
+    }
+    if (data.duplicate_evidence) {
+      $('preference').textContent = `This excerpt is already counted as one evidence unit (${data.distinct_support} distinct). No policy update was made.`;
+      $('status').textContent = 'Duplicate excerpt evidence ignored';
+      return;
+    }
+    $('preference').textContent = `${useful ? 'This note helped.' : 'This note did not help.'} Distinct evidence: ${data.distinct_support}. Policy v${data.policy_version_before ?? '?'} -> v${data.policy_version_after ?? '?'}${data.revision ? ' (revised)' : ''}.`;
+    $('status').textContent = useful
+      ? 'Feedback saved. This evidence supports future analysis.'
+      : 'Feedback saved. Repeated unhelpful notes may pause automatic analysis; Analyse anyway remains available.';
   });
 }
 async function preview() {
@@ -155,10 +202,11 @@ async function preview() {
   if (signature !== reviewedSignature) {
     reviewedSignature = signature;
     currentDecision = null;
+    setFeedback(null, false);
   }
   $('preview').textContent = reviewed ? JSON.stringify(reviewed, null, 2) : 'No observation permission. Authorise this page to preview.';
   $('send').disabled = !reviewed;
-  if (!reviewed) { $('analyse').disabled = true; return; }
+  if (!reviewed) { $('analyse').disabled = true; setFeedback(null, false); return; }
   if (selected && selected.snapshot.data.text !== reviewed.text) $('analyse').disabled = true;
 }
 chrome.storage.onChanged.addListener(preview);

@@ -1,13 +1,11 @@
+import { AUTHORISED_PAGES, DEFAULT_BACKEND, DEFAULT_BACKENDS, isLocalDemo } from './config.js';
 chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
-const pages = new Set([
-  'https://docs.python.org/3/tutorial/',
-  'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide',
-]);
-const backends = new Set(['http://127.0.0.1:8000', 'http://localhost:8000']);
-const localDemo = url => /^http:\/\/(127\.0\.0\.1|localhost):8000\/demo$/.test(url || '');
+const pages = new Set(AUTHORISED_PAGES);
+const backends = new Set(DEFAULT_BACKENDS);
+const localDemo = isLocalDemo;
 async function send(path, body) {
-  const { backend = 'http://127.0.0.1:8000', token = '' } = await chrome.storage.local.get(['backend', 'token']);
-  if (!backends.has(backend)) throw new Error('Use the local backend on port 8000');
+  const { backend = DEFAULT_BACKEND, token = '' } = await chrome.storage.local.get(['backend', 'token']);
+  if (!backends.has(backend)) throw new Error('Configured local backend is not allowed');
   const response = await fetch(backend + '/api/v1' + path, {
     method: body ? 'POST' : 'GET',
     headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json' },
@@ -94,7 +92,7 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
         language: message.language || 'auto',
       });
       await chrome.storage.session.set({ selected: result,
-        noteId: result.decision.note?.id || result.decision.candidate_note?.id || null });
+        noteId: result.decision.note?.id || null });
       return result;
     }
     if (message.type === 'analyse') {

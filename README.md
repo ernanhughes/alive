@@ -30,13 +30,24 @@ did **not** show an advantage over the flat control. The negative result is pres
 [ALIVE-08 report](docs/ALIVE-08.md) and its [evidence archive](archives/ALIVE-08/README.md).
 
 **ALIVE-09 connects feedback to future companion decisions.** A completed owner rating now updates a
-persisted, versioned usefulness policy for the exact goal, page and language. After three independent
-ratings showing at most 20% usefulness, the companion recommends no action and makes no Meta call;
+persisted, versioned usefulness policy for the exact goal, page and language. After three ratings
+showing at most 20% usefulness, the companion recommends no action and makes no Meta call;
 the owner can explicitly correct that abstention through the existing grant and Governor. Useful
 feedback can restore analysis. Exact useful-note recall still takes precedence. The evidence is a
 controlled companion API sequence with a synthetic provider, not native Chrome or Meta inference.
 See [the ALIVE-09 report](docs/ALIVE-09.md) and its
 [evidence archive](archives/ALIVE-09/README.md).
+
+**ALIVE-10 corrects the ALIVE-09 loop and qualifies it in real Chrome.** Support now counts distinct
+reviewed-excerpt fingerprints, so repeated observations of unchanged content cannot inflate
+evidence. The feedback copy describes what the buttons actually do. After three paused observations,
+one bounded periodic re-evaluation gives the context a fresh chance; owner correction remains
+available. An isolated native Chrome extension journey against a current-branch backend, isolated
+SQLite database and synthetic HTTP provider exercised analysis, suppression, correction, recovery,
+restart and negative authorisation checks. It made five synthetic calls and **no Meta or paid
+calls**. This is not a docked side-panel qualification and not evidence of Meta behaviour. See
+[the ALIVE-10 report](docs/ALIVE-10.md) and its
+[evidence archive](archives/ALIVE-10/README.md).
 
 ALIVE-01 is a working vertical slice: FastAPI + PostgreSQL/pgvector + ZeroMQ + React dashboard + managed Chrome + Manifest V3 extension + Pi RPC. Deterministic policies drive curiosity, coherence and commitment. They do not require recurring model calls or claim to be reinforcement learning.
 

@@ -86,10 +86,23 @@ def digest(text):
 
 goal_relevance = evaluate_relevance
 
-POLICY_ID = "companion-feedback-usefulness-v1"
+POLICY_ID = "companion-feedback-usefulness-v2"
 POLICY_KIND = "policy"
 POLICY_MIN_SUPPORT = 3
 POLICY_MAX_USEFUL_RATE = 0.20
+POLICY_PROBE_AFTER = 3
+
+
+def new_context(goal_id, url, language):
+    return {
+        "goal_id": goal_id,
+        "url": url,
+        "language": language,
+        "evidence": {},
+        "suppressions": 0,
+        "probes": 0,
+        "updated_at": None,
+    }
 
 
 def new_policy():
@@ -100,6 +113,7 @@ def new_policy():
         "history": [],
         "minimum_support": POLICY_MIN_SUPPORT,
         "maximum_useful_rate": POLICY_MAX_USEFUL_RATE,
+        "probe_after_suppressions": POLICY_PROBE_AFTER,
     }
 
 
@@ -115,17 +129,37 @@ def policy_context(policy, key):
     return policy.get("contexts", {}).get(key, {})
 
 
+def effective_evidence(context, sha256):
+    return (context.get("evidence") or {}).get(sha256)
+
+
+def evidence_counts(context):
+    evidence = context.get("evidence") or {}
+    useful = sum(1 for unit in evidence.values() if unit.get("useful"))
+    return useful, len(evidence) - useful, len(evidence)
+
+
 def adaptive_recommendation(
     policy,
     key,
-    minimum_support=POLICY_MIN_SUPPORT,
-    maximum_useful_rate=POLICY_MAX_USEFUL_RATE,
+    minimum_support=None,
+    maximum_useful_rate=None,
 ):
     context = policy_context(policy, key)
-    useful = int(context.get("useful", 0))
-    not_useful = int(context.get("not_useful", 0))
-    support = useful + not_useful
+    minimum_support = (
+        policy.get("minimum_support", POLICY_MIN_SUPPORT)
+        if minimum_support is None
+        else minimum_support
+    )
+    maximum_useful_rate = (
+        policy.get("maximum_useful_rate", POLICY_MAX_USEFUL_RATE)
+        if maximum_useful_rate is None
+        else maximum_useful_rate
+    )
+    probe_after = policy.get("probe_after_suppressions", POLICY_PROBE_AFTER)
+    useful, not_useful, support = evidence_counts(context)
     rate = useful / support if support else None
+    suppressions = int(context.get("suppressions", 0))
     version = policy.get("version", 0)
     common = {
         "policy_id": POLICY_ID,
@@ -135,27 +169,45 @@ def adaptive_recommendation(
         "useful": useful,
         "not_useful": not_useful,
         "support": support,
+        "distinct_evidence": support,
+        "evidence_hashes": sorted((context.get("evidence") or {}).keys()),
         "useful_rate": rate,
         "minimum_support": minimum_support,
         "maximum_useful_rate": maximum_useful_rate,
+        "suppressions": suppressions,
+        "probe_after_suppressions": probe_after,
+        "probes": int(context.get("probes", 0)),
+        "probe_due": False,
     }
     if support < minimum_support:
         return common | {
             "recommendation": "analyse",
-            "reason": "Insufficient owner feedback; retain the default analysis recommendation.",
+            "reason": "Insufficient distinct owner-rated excerpts; retain the default "
+            "analysis recommendation.",
         }
     if rate is not None and rate <= maximum_useful_rate:
+        if suppressions >= probe_after:
+            return common | {
+                "recommendation": "analyse",
+                "probe": True,
+                "probe_due": True,
+                "reason": (
+                    f"Automatic analysis was paused for {suppressions} related observations. "
+                    "This is a bounded periodic re-evaluation: one fresh analysis is eligible."
+                ),
+            }
         return common | {
             "recommendation": "no_action",
             "reason": (
-                "Owner feedback for this goal and page is consistently not useful; "
-                "analysis is suppressed until the owner corrects it or new feedback "
-                "changes the evidence."
+                "Distinct owner-rated excerpts for this goal, page and language are consistently "
+                "not useful; automatic analysis is paused temporarily. It resumes after "
+                f"{probe_after} paused observations, a material owner correction, or new useful "
+                "feedback."
             ),
         }
     return common | {
         "recommendation": "analyse",
-        "reason": "Owner feedback does not support suppressing analysis for this context.",
+        "reason": "Owner feedback does not support pausing automatic analysis for this context.",
     }
 
 
@@ -167,6 +219,14 @@ class WebCompanion:
         self.note_id = None
         self.lock = asyncio.Lock()
         self.relevance_config = load_relevance_config()
+        extra = {
+            page.strip()
+            for page in (kernel.settings.alive_native_test_pages or "").split(",")
+            if page.strip()
+        }
+        if any(not page.startswith("http://127.0.0.1:") for page in extra):
+            raise ValueError("Native test pages must be explicit loopback URLs")
+        self.pages = set(PAGES) | extra
 
     @property
     def active(self):
@@ -200,9 +260,41 @@ class WebCompanion:
             .order_by(WebExperience.created_at.desc())
             .limit(1)
         )
-        if not row:
-            row = self.add(session, POLICY_KIND, new_policy())
-            await session.flush()
+        if row and row.data.get("policy_id") == POLICY_ID:
+            return row
+        migrated = new_policy()
+        migrated["migrated_from"] = (
+            {
+                "policy_id": row.data.get("policy_id", "unknown"),
+                "version": row.data.get("version", 0),
+                "row_id": row.id,
+                "hash": policy_hash(row.data),
+                "feedback_units": 0,
+            }
+            if row
+            else None
+        )
+        for feedback in await self.rows(session, "feedback"):
+            note = await session.get(WebExperience, feedback.parent_id)
+            if not note or note.kind != "note" or note.status != "validated":
+                continue
+            language = note.data.get("language_requested", "auto")
+            key = policy_key(note.data["goal_id"], note.data["url"], language)
+            context = migrated["contexts"].setdefault(
+                key,
+                new_context(note.data["goal_id"], note.data["url"], language),
+            )
+            context["evidence"][note.data["sha256"]] = {
+                "useful": bool(feedback.data.get("useful")),
+                "feedback_id": feedback.id,
+                "note_id": note.id,
+                "updated_at": (feedback.created_at.isoformat() if feedback.created_at else None),
+            }
+            context["updated_at"] = feedback.created_at.isoformat() if feedback.created_at else None
+            if migrated["migrated_from"]:
+                migrated["migrated_from"]["feedback_units"] += 1
+        row = self.add(session, POLICY_KIND, migrated)
+        await session.flush()
         return row
 
     def add(self, session, kind, data, parent=None, status="recorded"):
@@ -291,7 +383,7 @@ class WebCompanion:
             return record(row)
 
     async def grant(self, data):
-        if data.url not in PAGES:
+        if data.url not in self.pages:
             raise PermissionError(
                 "Only the two explicitly authorised documentation pages are allowed"
             )
@@ -317,7 +409,7 @@ class WebCompanion:
             raise PermissionError("Reviewed text hash does not match")
         async with self.k.lock, self.k.db.sessions.begin() as s:
             grant = await self.valid_grant(s, data.grant_id)
-            if data.url not in PAGES or data.url != grant.data["url"]:
+            if data.url not in self.pages or data.url != grant.data["url"]:
                 raise PermissionError("Consent is bound to the exact page")
             prior = [
                 r
@@ -349,6 +441,149 @@ class WebCompanion:
             decision = await self.decide(s, row)
             self.add(s, "decision", jsonable_encoder(decision), row.id)
             return {"snapshot": record(row), "decision": decision}
+
+    async def record_suppression(self, s, policy, key, adaptive, snapshot):
+        before = copy.deepcopy(policy.data)
+        after = copy.deepcopy(before)
+        context = after["contexts"].setdefault(
+            key,
+            new_context(
+                snapshot.data["goal_id"],
+                snapshot.data["url"],
+                snapshot.data.get("language_requested", "auto"),
+            ),
+        )
+        context["suppressions"] = int(context.get("suppressions", 0)) + 1
+        context["last_suppressed_at"] = now().isoformat()
+        context["updated_at"] = context["last_suppressed_at"]
+        after["version"] = before.get("version", 0) + 1
+        after["history"] = (
+            after.get("history", [])
+            + [
+                {
+                    "version": after["version"],
+                    "event": "suppression",
+                    "context": key,
+                    "support": adaptive["support"],
+                    "suppressions": context["suppressions"],
+                    "probe_after_suppressions": adaptive["probe_after_suppressions"],
+                    "at": context["updated_at"],
+                }
+            ]
+        )[-50:]
+        policy.data = after
+        self.k.add_event(
+            s,
+            "web.policy_suppressed",
+            {
+                "policy_id": POLICY_ID,
+                "version": after["version"],
+                "context": key,
+                "suppressions": context["suppressions"],
+                "support": adaptive["support"],
+            },
+        )
+        return adaptive | {
+            "policy_version_before": before.get("version", 0),
+            "policy_version": after["version"],
+            "policy_hash": policy_hash(after),
+            "suppressions": context["suppressions"],
+        }
+
+    async def record_probe(self, s, policy, key, adaptive, snapshot):
+        before = copy.deepcopy(policy.data)
+        after = copy.deepcopy(before)
+        context = after["contexts"].setdefault(
+            key,
+            new_context(
+                snapshot.data["goal_id"],
+                snapshot.data["url"],
+                snapshot.data.get("language_requested", "auto"),
+            ),
+        )
+        context["suppressions"] = 0
+        context["probes"] = int(context.get("probes", 0)) + 1
+        context["last_probe_at"] = now().isoformat()
+        context["updated_at"] = context["last_probe_at"]
+        after["version"] = before.get("version", 0) + 1
+        after["history"] = (
+            after.get("history", [])
+            + [
+                {
+                    "version": after["version"],
+                    "event": "periodic_probe",
+                    "context": key,
+                    "support": adaptive["support"],
+                    "probes": context["probes"],
+                    "at": context["updated_at"],
+                }
+            ]
+        )[-50:]
+        policy.data = after
+        snapshot.data = snapshot.data | {
+            "probe_authorized": True,
+            "probe_policy_version": after["version"],
+        }
+        self.k.add_event(
+            s,
+            "web.policy_probe",
+            {
+                "policy_id": POLICY_ID,
+                "version": after["version"],
+                "context": key,
+                "probes": context["probes"],
+                "support": adaptive["support"],
+            },
+        )
+        return adaptive | {
+            "policy_version_before": before.get("version", 0),
+            "policy_version": after["version"],
+            "policy_hash": policy_hash(after),
+            "suppressions": 0,
+            "probe": True,
+            "probes": context["probes"],
+        }
+
+    async def reset_suppressions(self, s, policy, key, adaptive):
+        context = policy_context(policy.data, key)
+        if int(context.get("suppressions", 0)) <= 0:
+            return adaptive
+        before = copy.deepcopy(policy.data)
+        after = copy.deepcopy(before)
+        current = after["contexts"][key]
+        current["suppressions"] = 0
+        current["owner_correction_resets"] = int(current.get("owner_correction_resets", 0)) + 1
+        current["updated_at"] = now().isoformat()
+        after["version"] = before.get("version", 0) + 1
+        after["history"] = (
+            after.get("history", [])
+            + [
+                {
+                    "version": after["version"],
+                    "event": "owner_correction_reset",
+                    "context": key,
+                    "support": adaptive["support"],
+                    "at": current["updated_at"],
+                }
+            ]
+        )[-50:]
+        policy.data = after
+        self.k.add_event(
+            s,
+            "web.policy_correction_reset",
+            {
+                "policy_id": POLICY_ID,
+                "version": after["version"],
+                "context": key,
+            },
+        )
+        return adaptive | {
+            "policy_version_before": before.get("version", 0),
+            "policy_version": after["version"],
+            "policy_hash": policy_hash(after),
+            "suppressions": 0,
+            "owner_correction_reset": True,
+        }
 
     async def decide(self, s, snapshot):
         goal = await self.get(s, snapshot.data["goal_id"], "goal")
@@ -417,43 +652,60 @@ class WebCompanion:
             and n.data["sha256"] == snapshot.data["sha256"]
             and n.data.get("language_requested", "auto") == language_requested
         ]
-        feedback = await self.rows(s, "feedback")
-        chosen, basis = None, None
-        for note in reversed(notes):
-            ratings = [f for f in feedback if f.parent_id == note.id]
-            if ratings and ratings[-1].data["useful"]:
-                chosen, basis = note, ratings[-1]
-                break
         key = policy_key(goal.id, snapshot.data["url"], language_requested)
         adaptive = adaptive_recommendation(policy.data, key)
-        if chosen:
+        context = policy_context(policy.data, key)
+        unit = effective_evidence(context, snapshot.data["sha256"])
+        if unit and unit.get("useful") and notes:
+            chosen = next(
+                (n for n in reversed(notes) if n.id == unit.get("note_id")),
+                notes[-1],
+            )
             return base | {
                 "action": "recall",
                 "policy": "explicit-usefulness-exact-excerpt-v1",
                 "without_feedback_action": "analyse",
-                "feedback_id": basis.id,
+                "feedback_id": unit["feedback_id"],
                 "note": record(chosen),
-                "candidate_note": record(notes[-1]) if notes else None,
-                "reason": "Owner rated this exact goal and excerpt note useful; exact recall "
+                "candidate_note": record(notes[-1]),
+                "reason": "Owner rated this exact goal and excerpt useful; exact recall "
                 "takes precedence over adaptive suppression.",
                 "adaptive_policy": adaptive
                 | {
                     "recommendation": "recall",
-                    "reason": "Exact validated useful note takes precedence over adaptive "
+                    "reason": "Exact validated useful evidence takes precedence over adaptive "
                     "suppression.",
                 },
             }
         if adaptive["recommendation"] == "no_action":
+            adaptive = await self.record_suppression(s, policy, key, adaptive, snapshot)
             return base | {
                 "action": "no_action",
                 "policy": POLICY_ID,
-                "without_feedback_action": "no_action",
+                "without_feedback_action": "analyse",
                 "feedback_id": None,
                 "note": None,
                 "candidate_note": record(notes[-1]) if notes else None,
                 "reason": adaptive["reason"],
                 "adaptive_policy": adaptive,
                 "no_action_source": "feedback_policy",
+                "policy_version": adaptive["policy_version"],
+                "policy_hash": adaptive["policy_hash"],
+            }
+        if adaptive.get("probe"):
+            adaptive = await self.record_probe(s, policy, key, adaptive, snapshot)
+            return base | {
+                "action": "analyse",
+                "policy": POLICY_ID,
+                "without_feedback_action": "analyse",
+                "feedback_id": None,
+                "note": None,
+                "candidate_note": record(notes[-1]) if notes else None,
+                "reason": adaptive["reason"],
+                "adaptive_policy": adaptive,
+                "probe": True,
+                "policy_version": adaptive["policy_version"],
+                "policy_hash": adaptive["policy_hash"],
             }
         return base | {
             "action": "analyse",
@@ -462,8 +714,8 @@ class WebCompanion:
             "feedback_id": None,
             "note": None,
             "candidate_note": record(notes[-1]) if notes else None,
-            "reason": "No positively rated exact match; analysis is permitted and the learned "
-            "feedback policy does not recommend abstention.",
+            "reason": "No positively rated exact evidence; analysis is permitted and the "
+            "learned feedback policy does not recommend abstention.",
             "adaptive_policy": adaptive,
         }
 
@@ -485,29 +737,17 @@ class WebCompanion:
             before_hash = policy_hash(before)
             language = note.data.get("language_requested", "auto")
             key = policy_key(note.data["goal_id"], note.data["url"], language)
+            sha256 = note.data["sha256"]
             after = copy.deepcopy(before)
             context = after.setdefault("contexts", {}).setdefault(
                 key,
-                {
-                    "goal_id": note.data["goal_id"],
-                    "url": note.data["url"],
-                    "language": language,
-                    "useful": 0,
-                    "not_useful": 0,
-                    "feedback_ids": [],
-                },
+                new_context(note.data["goal_id"], note.data["url"], language),
             )
-            old_useful = bool(existing.data.get("useful")) if existing else None
-            revision = existing is not None
-            if existing:
-                if old_useful:
-                    context["useful"] = max(0, context.get("useful", 0) - 1)
-                else:
-                    context["not_useful"] = max(0, context.get("not_useful", 0) - 1)
-            if data.useful:
-                context["useful"] = context.get("useful", 0) + 1
-            else:
-                context["not_useful"] = context.get("not_useful", 0) + 1
+            evidence = context.setdefault("evidence", {})
+            unit = evidence.get(sha256)
+            old_useful = bool(unit.get("useful")) if unit else None
+            evidence_changed = unit is None or old_useful != data.useful
+            revision = bool(unit is not None and old_useful != data.useful)
             if existing:
                 feedback = existing
             else:
@@ -517,57 +757,79 @@ class WebCompanion:
                     {
                         "useful": data.useful,
                         "source": "explicit_local_operator_feedback",
-                        "scope": "exact goal, URL and excerpt for recall; goal, URL and "
-                        "language for the decision policy",
+                        "scope": "exact goal, URL and excerpt for recall; distinct excerpts "
+                        "for the goal/URL/language decision policy",
                     },
                     note.id,
                 )
-            context["feedback_ids"] = list(
-                dict.fromkeys([*context.get("feedback_ids", []), feedback.id])
-            )[-20:]
-            context["updated_at"] = now().isoformat()
-            after["version"] = before.get("version", 0) + 1
-            after["history"] = (
-                after.get("history", [])
-                + [
+            if evidence_changed:
+                evidence[sha256] = {
+                    "useful": data.useful,
+                    "feedback_id": feedback.id,
+                    "note_id": note.id,
+                    "updated_at": now().isoformat(),
+                    "revisions": int(unit.get("revisions", 0)) + 1 if unit else 0,
+                }
+                context["feedback_ids"] = list(
+                    dict.fromkeys([*context.get("feedback_ids", []), feedback.id])
+                )[-20:]
+                context["updated_at"] = now().isoformat()
+                after["version"] = before.get("version", 0) + 1
+                after["history"] = (
+                    after.get("history", [])
+                    + [
+                        {
+                            "version": after["version"],
+                            "event": "feedback",
+                            "context": key,
+                            "evidence_sha256": sha256,
+                            "feedback_id": feedback.id,
+                            "useful": data.useful,
+                            "revision": revision,
+                            "previous_useful": old_useful,
+                            "distinct_support": evidence_counts(context)[2],
+                            "at": context["updated_at"],
+                        }
+                    ]
+                )[-50:]
+                after_hash = policy_hash(after)
+                policy.data = after
+                self.k.add_event(
+                    s,
+                    "web.policy_updated",
                     {
+                        "policy_id": POLICY_ID,
                         "version": after["version"],
                         "context": key,
+                        "evidence_sha256": sha256,
                         "feedback_id": feedback.id,
                         "useful": data.useful,
                         "revision": revision,
-                        "previous_useful": old_useful,
-                        "at": now().isoformat(),
-                    }
-                ]
-            )[-50:]
-            after_hash = policy_hash(after)
+                        "distinct_support": evidence_counts(context)[2],
+                        "before": before_hash,
+                        "after": after_hash,
+                    },
+                )
+            else:
+                after_hash = before_hash
+            useful, not_useful, support = evidence_counts(context)
             feedback.data = feedback.data | {
                 "useful": data.useful,
                 "context": key,
+                "evidence_sha256": sha256,
                 "revision": revision,
                 "previous_useful": old_useful,
+                "policy_changed": evidence_changed,
+                "duplicate_evidence": not evidence_changed,
+                "distinct_support": support,
+                "useful_evidence": useful,
+                "not_useful_evidence": not_useful,
                 "policy_version_before": before.get("version", 0),
-                "policy_version_after": after["version"],
+                "policy_version_after": after.get("version", 0),
                 "policy_hash_before": before_hash,
                 "policy_hash_after": after_hash,
                 "owner_correction": bool(note.data.get("owner_correction")),
             }
-            policy.data = after
-            self.k.add_event(
-                s,
-                "web.policy_updated",
-                {
-                    "policy_id": POLICY_ID,
-                    "version": after["version"],
-                    "context": key,
-                    "feedback_id": feedback.id,
-                    "useful": data.useful,
-                    "revision": revision,
-                    "before": before_hash,
-                    "after": after_hash,
-                },
-            )
             await s.flush()
             return record(feedback)
 
@@ -595,6 +857,7 @@ class WebCompanion:
                 policy = await self.policy_row(s)
                 key = policy_key(goal.id, snapshot.data["url"], language_requested)
                 adaptive = adaptive_recommendation(policy.data, key)
+                probe_authorized = bool(snapshot.data.get("probe_authorized"))
                 correction_required = False
                 if relevance["status"] == "uncertain":
                     if not data.allow_uncertain_analysis:
@@ -610,13 +873,14 @@ class WebCompanion:
                             "No action warranted: observation does not match the owner goal; "
                             "explicit owner correction is required"
                         )
-                elif adaptive["recommendation"] == "no_action":
+                elif adaptive["recommendation"] == "no_action" and not probe_authorized:
                     correction_required = True
                     if not data.owner_correction:
                         raise ValueError(
-                            "Analysis suppressed by prior owner feedback; explicit owner "
+                            "Analysis paused by distinct owner feedback; explicit owner "
                             "correction is required"
                         )
+                    adaptive = await self.reset_suppressions(s, policy, key, adaptive)
                 if correction_required:
                     self.add(
                         s,
@@ -628,8 +892,11 @@ class WebCompanion:
                             else "no_action",
                             "relevance_status": relevance["status"],
                             "adaptive_policy": adaptive,
-                            "policy_version": policy.data.get("version", 0),
-                            "policy_hash": policy_hash(policy.data),
+                            "policy_version": adaptive.get(
+                                "policy_version", policy.data.get("version", 0)
+                            ),
+                            "policy_hash": adaptive.get("policy_hash", policy_hash(policy.data)),
+                            "suppressions_reset": bool(adaptive.get("owner_correction_reset")),
                             "reason": "owner_requested_analysis",
                             "at": now().isoformat(),
                         },
@@ -646,6 +913,7 @@ class WebCompanion:
                     "language": relevance["language"],
                     "language_uncertainty": relevance["status"] == "uncertain",
                     "owner_correction": correction_required,
+                    "probe_authorized": probe_authorized,
                 }
                 reserve = (
                     len(
@@ -684,6 +952,7 @@ class WebCompanion:
                         "language_requested": language_requested,
                         "language_override": relevance["status"] == "uncertain",
                         "owner_correction": correction_required,
+                        "probe_authorized": probe_authorized,
                         "adaptive_policy": adaptive,
                         "policy_version": policy.data.get("version", 0),
                         "policy_hash": policy_hash(policy.data),
@@ -758,7 +1027,7 @@ def router(app, ready):
         async with web.k.db.sessions() as s:
             policy = await web.policy_row(s)
             return {
-                "allowed_pages": sorted(PAGES),
+                "allowed_pages": sorted(web.pages),
                 "active": web.active,
                 "goals": [record(r) for r in await web.rows(s, "goal")],
                 "policy": record(policy),
