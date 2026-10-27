@@ -1,0 +1,10 @@
+Command: uv run python -m scripts.alive14r2_preflight
+Output summary:
+- 8 paired tasks
+- 24 anonymous A/B/C outputs
+- 24 owner-endpoint ratings exercised synthetically
+- reveal assignment hash and revealed_at recorded
+- archive status archived
+- paid calls 0
+Evidence: archives/ALIVE-14-R2/evidence/preflight.json
+The owner endpoint was exercised by a script; these are not human owner ratings.

@@ -1,0 +1,3 @@
+Command: uv run python scripts/verify_archive.py archives/ALIVE-14-R2
+Output:
+VERIFIED 16 payloads and no unlisted files in archives/ALIVE-14-R2

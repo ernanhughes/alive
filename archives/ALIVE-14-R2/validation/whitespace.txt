@@ -1,0 +1,6 @@
+?? archives/ALIVE-14-R2/README.md
+?? archives/ALIVE-14-R2/evidence/
+?? archives/ALIVE-14-R2/validation/
+?? docs/ALIVE-14-R2-EXPERIMENT.md
+?? docs/ALIVE-14-R2-PREFLIGHT.md
+?? docs/CODEX-ALIVE14-R2-HANDOFF.md

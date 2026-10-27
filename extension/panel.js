@@ -369,6 +369,99 @@ function renderRelationshipRubric(connectionId) {
     target.append(row);
   }
 }
+let blindView = null;
+const blindRated = new Set();
+const blindFields = [
+  ['Factually supported', 'factually_supported'],
+  ['Relevant to goal', 'relevant_to_goal'],
+  ['New useful insight', 'revealed_new'],
+  ['Already known', 'already_obvious'],
+  ['Would act', 'would_act'],
+  ['Misleading or wrong', 'misleading'],
+  ['Insufficient evidence', 'uncertain'],
+];
+async function refreshBlindRuns() {
+  const { runs } = await command('blind-runs');
+  $('blind-run').replaceChildren(new Option('Choose an evaluation', ''));
+  for (const run of runs) $('blind-run').add(new Option(`${run.experiment_id} · ${run.status}`, run.id));
+  $('blind-status').textContent = `${runs.length} evaluation(s) available.`;
+}
+async function loadBlindRun() {
+  const runId = $('blind-run').value;
+  if (!runId) throw new Error('Choose a blind evaluation');
+  blindView = await command('blind-view', { runId });
+  blindRated.clear();
+  $('blind-status').textContent = `${blindView.task_count} task(s), ${blindView.outputs.length} anonymous output(s). Conditions remain hidden until all ratings are complete.`;
+  $('blind-reveal').disabled = true;
+  $('blind-archive').disabled = true;
+  renderBlindOutputs();
+}
+function renderBlindOutputs() {
+  const target = $('blind-outputs');
+  target.replaceChildren();
+  for (const output of blindView.outputs) {
+    const block = document.createElement('div');
+    block.append(outboundText('p', `Question: ${output.question}`));
+    const answer = document.createElement('pre');
+    answer.textContent = output.output_text;
+    block.append(answer);
+    const rubric = {};
+    for (const [label, field] of blindFields) {
+      const row = document.createElement('p');
+      row.textContent = label + ': ';
+      for (const value of ['yes', 'no', 'uncertain']) {
+        const button = document.createElement('button');
+        button.textContent = value;
+        button.onclick = () => {
+          rubric[field] = value;
+          row.dataset.selected = value;
+          $('blind-status').textContent = `Selected ${label}: ${value}.`;
+          submit.disabled = Object.keys(rubric).length !== blindFields.length;
+        };
+        row.append(button);
+      }
+      block.append(row);
+    }
+    const submit = document.createElement('button');
+    submit.textContent = 'Save assessment';
+    submit.disabled = true;
+    submit.onclick = () => action(async () => {
+      await command('blind-rate', {
+        runId: blindView.blind_run_id,
+        outputId: output.output_id,
+        outputSha256: output.output_sha256,
+        capability: blindView.rating_capability,
+        rubric,
+      });
+      blindRated.add(output.output_id);
+      submit.disabled = true;
+      submit.textContent = 'Assessment saved';
+      $('blind-status').textContent = `${blindRated.size}/${blindView.outputs.length} outputs rated.`;
+      $('blind-reveal').disabled = blindRated.size !== blindView.outputs.length;
+    });
+    block.append(submit);
+    target.append(block);
+  }
+}
+$('blind-refresh').onclick = () => action(refreshBlindRuns);
+$('blind-load').onclick = () => action(loadBlindRun);
+$('blind-reveal').onclick = () => action(async () => {
+  const reveal = await command('blind-reveal', { runId: blindView.blind_run_id });
+  $('blind-status').textContent = `Revealed at ${reveal.revealed_at}. Conditions are now visible.`;
+  const target = $('blind-outputs');
+  target.replaceChildren();
+  for (const output of reveal.outputs) {
+    target.append(outboundText('p', `${output.task_id} · ${output.condition}`));
+    target.append(outboundText('pre', output.output_text));
+  }
+  $('blind-reveal').disabled = true;
+  $('blind-archive').disabled = false;
+});
+$('blind-archive').onclick = () => action(async () => {
+  await command('blind-archive', { runId: blindView.blind_run_id });
+  $('blind-status').textContent = 'Blind evaluation archived.';
+  $('blind-archive').disabled = true;
+});
 $('find-research').onclick = () => action(async () => {
   const result = await command('find-research');
   $('research-results').replaceChildren();

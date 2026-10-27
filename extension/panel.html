@@ -38,7 +38,7 @@
       summary { cursor: pointer; color: #b3d68c; margin: 12px 0; }
       blockquote { margin: 12px 0; padding-left: 12px; border-left: 2px solid #c7ed9d; }
       #decision-label { font-size: 16px; color: #c7ed9d; }
-      #relevance, #policy, #feedback-help, #research-status, #research-help, #research-results, #connection, #outbound, #relationship-feedback { font-size: 11px; color: #9caf92; line-height: 1.5; }
+      #relevance, #policy, #feedback-help, #research-status, #research-help, #research-results, #connection, #outbound, #relationship-feedback, #blind-status, #blind-outputs { font-size: 11px; color: #9caf92; line-height: 1.5; }
       #note { font-size: 13px; line-height: 1.65; }
       input[type="checkbox"] {
         width: auto;
@@ -144,6 +144,14 @@
       Related material is historical evidence, never evidence for the current page. Nothing is
       sent externally by retrieval alone.
     </p>
+    <h2>Blind evaluation</h2>
+    <select id="blind-run"></select>
+    <button id="blind-refresh">Refresh evaluations</button>
+    <button id="blind-load">Open selected evaluation</button>
+    <p id="blind-status">No blind evaluation loaded.</p>
+    <div id="blind-outputs"></div>
+    <button id="blind-reveal" disabled>Reveal after all ratings</button>
+    <button id="blind-archive" disabled>Archive revealed evaluation</button>
     <details><summary>Runtime identity</summary><pre id="state">Awaiting connection.</pre></details>
     <script src="panel.js" type="module"></script>
   </body>
