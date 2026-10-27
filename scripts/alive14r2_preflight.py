@@ -70,6 +70,9 @@ def run():
     asyncio.run(schema())
     result = {
         "protocol_version": protocol["protocol_version"],
+        "source_commit": subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+        ).strip(),
         "protocol_sha256": hashlib.sha256(
             PROTOCOL.read_bytes().replace(b"\r\n", b"\n")
         ).hexdigest(),
