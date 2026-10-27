@@ -1,0 +1,8 @@
+{
+  "scope": "simulator policy JSON round-trip, not a live runtime restart",
+  "policy_sha256_before": "cfce377bab36883f3d05233f97df4756c1f3be8a7ab9e0c206f9a4c1657d4e9f",
+  "policy_sha256_after": "cfce377bab36883f3d05233f97df4756c1f3be8a7ab9e0c206f9a4c1657d4e9f",
+  "decisions_match": true,
+  "sample_size": 20,
+  "paid_work_replayed": false
+}

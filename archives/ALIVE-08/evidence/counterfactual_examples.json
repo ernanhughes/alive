@@ -1,0 +1,35 @@
+{
+  "scenario_id": "evaluation-17-00000",
+  "source_status": "seen",
+  "source_class": "stable",
+  "observation": {
+    "cadence": "weekly",
+    "goal": "Keep the source's current measurement accurate.",
+    "claim": 33.5,
+    "claim_age": "day",
+    "source_id": "src-4d2533abecce",
+    "permitted_actions": [
+      "monitor",
+      "retrieve"
+    ]
+  },
+  "true_changed": false,
+  "alive_action": "retrieve",
+  "no_history_action": "monitor",
+  "alive_utility": -0.2,
+  "no_history_utility": 0.0,
+  "counterfactual_utilities": {
+    "monitor": 0.0,
+    "retrieve": -0.2
+  },
+  "alive_context": "class:weekly:day",
+  "alive_recalled_ids": [
+    "alive_hierarchical:training-17-00196",
+    "alive_hierarchical:training-17-00197",
+    "alive_hierarchical:training-17-00198",
+    "alive_hierarchical:training-17-00199"
+  ],
+  "policy_hash_before": "cfce377bab36883f3d05233f97df4756c1f3be8a7ab9e0c206f9a4c1657d4e9f",
+  "policy_hash_after": "cfce377bab36883f3d05233f97df4756c1f3be8a7ab9e0c206f9a4c1657d4e9f",
+  "note": "Simulator-defined counterfactual; not a real-world outcome."
+}

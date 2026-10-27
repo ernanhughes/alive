@@ -1,0 +1,46 @@
+{
+  "ALIVE-02": {
+    "payloads_verified": 15,
+    "unchanged": true
+  },
+  "ALIVE-03-P1": {
+    "payloads_verified": 22,
+    "unchanged": true
+  },
+  "ALIVE-03-P1-FULL": {
+    "payloads_verified": 16,
+    "unchanged": true
+  },
+  "ALIVE-03-P2-SIM": {
+    "payloads_verified": 48,
+    "unchanged": true
+  },
+  "ALIVE-03-P3": {
+    "payloads_verified": 76,
+    "unchanged": true
+  },
+  "ALIVE-04": {
+    "payloads_verified": 24,
+    "unchanged": true
+  },
+  "ALIVE-04-INTERIM": {
+    "payloads_verified": 10,
+    "unchanged": true
+  },
+  "ALIVE-05": {
+    "payloads_verified": 5,
+    "unchanged": true
+  },
+  "ALIVE-05-OPENCODE": {
+    "payloads_verified": 10,
+    "unchanged": true
+  },
+  "ALIVE-06-CONTEXTUAL-BROWSER": {
+    "payloads_verified": 10,
+    "unchanged": true
+  },
+  "ALIVE-07": {
+    "payloads_verified": 19,
+    "unchanged": true
+  }
+}

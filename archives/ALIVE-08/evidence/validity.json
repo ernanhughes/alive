@@ -1,0 +1,9 @@
+{
+  "protocol_frozen": true,
+  "selected_parameter_present": true,
+  "corpus_hashes_match": true,
+  "observations_exclude_hidden_fields": true,
+  "all_arms_use_same_scenarios": true,
+  "zero_provider_calls_and_tokens": true,
+  "all_actions_governor_allowed": true
+}
