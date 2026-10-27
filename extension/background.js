@@ -51,7 +51,13 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
     }
     if (sender.id !== chrome.runtime.id || !sender.url?.startsWith(chrome.runtime.getURL('')))
       throw new Error('Only extension UI may control the connection');
-    if (message.type === 'connect') return send('/alive');
+    if (message.type === 'connect') {
+      const provenance = await send('/provenance');
+      if (provenance.protocol_version !== 1 || !provenance.runtime_sha256)
+        throw new Error('Backend identity is unavailable; update the local runtime');
+      await chrome.storage.session.set({ backendProvenance: provenance });
+      return { ...await send('/alive'), provenance };
+    }
     if (message.type === 'goals') return send('/browser-experience');
     if (message.type === 'goal') {
       const goal = await send('/browser-experience/goals', { instruction: message.instruction });

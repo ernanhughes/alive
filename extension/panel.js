@@ -55,7 +55,9 @@ async function pollNote(generation = noteGeneration) {
 $('connect').onclick = () => action(async () => {
   await chrome.storage.local.set({ backend: $('backend').value.replace(/\/$/, ''), token: $('token').value });
   const state = await command('connect');
-  $('state').textContent = JSON.stringify({ identity: state.identity, lifecycle: state.lifecycle }, null, 2);
+  $('state').textContent = JSON.stringify({ identity: state.identity, lifecycle: state.lifecycle,
+    provenance: state.provenance }, null, 2);
+  $('connection-proof').textContent = 'Verified local runtime · ' + (state.provenance.source_commit?.slice(0, 7) || 'source fingerprint available');
   $('status').textContent = 'Connected · ' + state.identity.name;
   const { goals } = await command('goals');
   $('resume').replaceChildren(new Option('Choose a saved goal', ''));
@@ -223,6 +225,7 @@ for (const [id, useful] of [['useful', true], ['needs-work', false]]) {
 async function preview() {
   const { latest, selected } = await chrome.storage.session.get(['latest', 'selected']);
   reviewed = latest?.payload || null;
+  $('source').textContent = reviewed ? 'Reviewed page: ' + reviewed.url : 'No page authorised.';
   const signature = reviewed ? JSON.stringify(reviewed) : null;
   if (signature !== reviewedSignature) {
     reviewedSignature = signature;

@@ -69,7 +69,7 @@
     </style>
   </head>
   <body>
-    <h1>ALIVE <small>10</small></h1>
+    <h1>ALIVE <small>11</small></h1>
     <p>A continuing documentation companion.</p>
     <details id="connection" open><summary>Local connection</summary><label
       >Local backend<input
@@ -79,6 +79,8 @@
     ><label>Local token<input id="token" type="password" disabled /></label
     ><button id="connect" disabled>Save & connect</button></details>
     <p id="status" role="status">Not connected</p>
+    <p id="connection-proof"></p>
+    <p id="source">No page authorised.</p>
     <h2>Your instruction</h2>
     <label>Resume a saved goal <select id="resume"></select></label>
     <label>Goal <input id="goal" maxlength="500" placeholder="What do you want to understand?" /></label>
@@ -105,7 +107,8 @@
       </select>
     </label>
     <button id="send">Send selected observation</button>
-    <p id="fact">Page text is evidence of what was displayed, not verified truth.</p>
+    <details><summary>Reviewed snapshot provenance</summary>
+    <p id="fact">Page text is evidence of what was displayed, not verified truth.</p></details>
     <h2>Contextual choice</h2>
     <p id="decision-label">Awaiting a reviewed observation.</p>
     <p id="relevance"></p>

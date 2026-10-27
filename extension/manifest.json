@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ALIVE · Browser Perception",
-  "version": "0.6.0",
+  "version": "0.11.0",
   "description": "Explicit, revocable observation for a local ALIVE runtime.",
   "permissions": ["activeTab", "scripting", "storage", "sidePanel"],
   "host_permissions": [

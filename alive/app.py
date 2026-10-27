@@ -28,6 +28,7 @@ from alive.living_api import public_router as living_world_router
 from alive.living_api import router as living_router
 from alive.memory import MemoryService
 from alive.models import AgentRun, BrowserSession, Event, Goal, Memory, now, record
+from alive.provenance import runtime_identity
 from alive.providers import MetaProvider
 from alive.schemas import (
     BrowserAction,
@@ -62,6 +63,7 @@ def create_app(settings=None):
         await kernel.initialize()
         transport.task.add_done_callback(kernel.background_completed)
         app.state.kernel = kernel
+        app.state.provenance = runtime_identity(db, settings)
         app.state.agents = Agents(kernel)
         app.state.browsers = Browsers(kernel)
         app.state.memory = MemoryService(kernel)
@@ -221,6 +223,10 @@ def create_app(settings=None):
     @app.get("/api/v1/alive", dependencies=secured)
     async def alive():
         return await kernel.state()
+
+    @app.get("/api/v1/provenance", dependencies=secured)
+    async def provenance():
+        return app.state.provenance
 
     @app.post("/api/v1/alive/start", dependencies=secured)
     async def start():
