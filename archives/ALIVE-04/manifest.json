@@ -1,0 +1,102 @@
+{
+  "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976",
+  "implementation_commit": "62be48adcc63794ceb65263cfccbf84d0b662cc5",
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "acceptance.png": {
+      "sha256": "4639452dd58dcea7bdecece819be7eaeeb8117eaf6fa32f893cfac3b6bb08148",
+      "bytes": 395105
+    },
+    "encounters.png": {
+      "sha256": "5f331cefffbd396f0257c446af9e664a02adb29f8c654d3d8cdf8e4020c6393a",
+      "bytes": 75874
+    },
+    "integration-baseline.json": {
+      "sha256": "b6777842a71a7e5a98bc2d5398b436d88d58644b50837c21af4e083b29ca79dc",
+      "bytes": 270
+    },
+    "live/completed-journey.json": {
+      "sha256": "720ac0da0add824b44a2ab95ea0cfbb8e31362a618ed29cd24c1c87aa717d4f6",
+      "bytes": 31128
+    },
+    "live/database-evidence.json": {
+      "sha256": "28c33e23afd0da1452f0bb700ef9a4ab3ebc0251c20fbaf98aaf88d91bbf0c17",
+      "bytes": 49229
+    },
+    "live/first-encounter.json": {
+      "sha256": "2949dff49f99d82272f04e3fd2ff2d43e1e7879c9f1bdc8a3712f0c6c71a9760",
+      "bytes": 14108
+    },
+    "live/qualification-plan.json": {
+      "sha256": "2c6301e31dfb866b89572961aa5bdb9be31b9a8c2d44368877c2ec0c74294d30",
+      "bytes": 1017
+    },
+    "live/redacted-usage-ledger.json": {
+      "sha256": "a00c062ff00873b6f8b52c359f79d59bb9688c42bcd8406e75b1660deefef1c2",
+      "bytes": 6800
+    },
+    "live/release-evaluation-replay.json": {
+      "sha256": "e3d67d31dca53fb2cc988714db3a306ba051d114a43bda426c86d9da8167b227",
+      "bytes": 531
+    },
+    "live/restart-proof.json": {
+      "sha256": "1b706ebb612aac8211e6ecf996656985f6a028cc637a58d76856033a656f6362",
+      "bytes": 243
+    },
+    "prior-evidence-integrity.json": {
+      "sha256": "871f34dfda44a0500831a24b7d9ad24bddfb99a85f7fdeca9a1847829ce607fc",
+      "bytes": 384
+    },
+    "protocol.md": {
+      "sha256": "bcb41ba19679383ed8e8056152e60356c6dc1abaaa23d7ab9196590484714a2b",
+      "bytes": 7126
+    },
+    "README.md": {
+      "sha256": "c460fbc10cd72b98755cd92063358487df3dde05590efb87c83bbb25ffed34ca",
+      "bytes": 8437
+    },
+    "release-source-hashes.json": {
+      "sha256": "130322bf739c4c84cbddc0dbb3bab95439f3d6d41d9d0c4a42f25dee2a4497a6",
+      "bytes": 477
+    },
+    "validation/backend.txt": {
+      "sha256": "8bb109d0527523d9875a0ad32f70ce6a27d0007ec98cc6daff8c5095d089a911",
+      "bytes": 1013
+    },
+    "validation/baseline-backend.txt": {
+      "sha256": "396ad6a180e4435804db69b919c9c678f455e25efa0baf982a27e74d1f0bf2f8",
+      "bytes": 979
+    },
+    "validation/baseline-browser.txt": {
+      "sha256": "3b9495a12cf4d675b093746c2a7832c4cd47e750318dbbea6b987aa350369dd7",
+      "bytes": 728
+    },
+    "validation/baseline-build.txt": {
+      "sha256": "adc1e6cffb366cdbde91da61b0ee7eae28b4777d3befe3aa493444f05699059b",
+      "bytes": 419
+    },
+    "validation/baseline-frontend.txt": {
+      "sha256": "d4d548cdb9ad80162d3995d5dad5a5e774188d94ceffc132f403ffdd505c6c4c",
+      "bytes": 265
+    },
+    "validation/browser.txt": {
+      "sha256": "3e666ce045bb4dd32fc01e896f2f5b33b2b010597c767ac957f497e3d3c87dba",
+      "bytes": 856
+    },
+    "validation/build.txt": {
+      "sha256": "1615921dfb1437217803f2da880d628162080f524367a4dc047a7de2c8dcdbc6",
+      "bytes": 419
+    },
+    "validation/final-living-browser.txt": {
+      "sha256": "2987189460e599149faf2524fd37807886ab61cfa93fcb09105efb29e49df979",
+      "bytes": 183
+    },
+    "validation/frontend.txt": {
+      "sha256": "1aae5494a10e93a79f8192755c7d194566d3452e6b2e0b0c42354a0099f3eb78",
+      "bytes": 265
+    }
+  }
+}

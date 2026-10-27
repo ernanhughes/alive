@@ -1,0 +1,13 @@
+
+> alive-dashboard@0.2.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Projects/alive/dashboard
+
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  00:47:50
+   Duration  193ms (transform 20ms, setup 0ms, import 29ms, tests 4ms, environment 0ms)
+

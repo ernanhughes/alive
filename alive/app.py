@@ -23,6 +23,9 @@ from alive.experiment.api import router as experiment_router
 from alive.experiment_budget import BudgetedExperiments as Experiments
 from alive.kernel import Kernel, envelope
 from alive.learning.api import router as learning_router
+from alive.living import Living
+from alive.living_api import public_router as living_world_router
+from alive.living_api import router as living_router
 from alive.memory import MemoryService
 from alive.models import AgentRun, BrowserSession, Event, Goal, Memory, now, record
 from alive.providers import MetaProvider
@@ -62,12 +65,15 @@ def create_app(settings=None):
         app.state.memory = MemoryService(kernel)
         app.state.cognition = Cognition(kernel, app.state.memory)
         app.state.experiments = Experiments(kernel)
+        app.state.living = Living(app, kernel)
         if kernel.ready:
             await app.state.cognition.initialize()
             await app.state.experiments.initialize()
+            await app.state.living.initialize()
         try:
             yield
         finally:
+            await app.state.living.close()
             await app.state.experiments.close()
             await app.state.cognition.close()
             await app.state.agents.close()
@@ -156,6 +162,8 @@ def create_app(settings=None):
     app.include_router(router(app, ready))
     app.include_router(experiment_router(app, ready))
     app.include_router(learning_router(ready))
+    app.include_router(living_router(app, ready))
+    app.include_router(living_world_router(app))
     app.include_router(public_router(app))
 
     @app.exception_handler(ValueError)
@@ -216,6 +224,7 @@ def create_app(settings=None):
     async def stop():
         from alive.cognitive_schema import AutonomyCommand
 
+        await app.state.living.cancel()
         await app.state.experiments.cancel()
         await app.state.cognition.command(AutonomyCommand(command="pause"))
         for session_id in list(app.state.browsers.watchers):

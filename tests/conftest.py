@@ -12,6 +12,7 @@ TOKEN = "test-token-for-alive-tests-123456789"
 def settings(tmp_path):
     return Settings(
         _env_file=None,
+        alive_meta_api_key="",
         database_url=f"sqlite+aiosqlite:///{tmp_path}/test.db",
         alive_api_token=TOKEN,
         alive_heartbeat_seconds=0.1,
