@@ -7,8 +7,11 @@
 - Branch: `codex/alive-14-r3-experimental-integrity`.
 - Isolated worktree: `C:\Projects\alive-worktrees\alive-14-r3`.
 - Protocol freeze commit: `8828302e286d4b7607bc38274a1972c4d4dcd18b`.
-- Implementation commit, PR and CI: to be recorded after push. Review-only; no
-  merge or auto-merge.
+- Implementation head: `ccf5d18f11493385564590e6ae751c3af402e8a8`.
+- PR: https://github.com/ernanhughes/alive/pull/23 (draft, review-only; no
+  merge or auto-merge).
+- CI: all eight checks passed on `ccf5d18` (backend Ubuntu/Windows, dashboard,
+  first-contact PostgreSQL).
 - Prior ALIVE-01-14 archives, including ALIVE-14-R2, are unchanged.
 - Paid Meta calls: **0**.
 

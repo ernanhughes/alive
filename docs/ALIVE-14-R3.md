@@ -7,6 +7,9 @@ independent audit and explicit owner approval), **NATIVE_META_NOT_RUN**,
 
 Baseline: `767b2951552a9ee89836040c9bccd52869f4e1af` (ALIVE-14-R2 merge).
 Branch: `codex/alive-14-r3-experimental-integrity`.
+Implementation head: `ccf5d18f11493385564590e6ae751c3af402e8a8`.
+PR: https://github.com/ernanhughes/alive/pull/23 (draft, review-only).
+CI: all eight checks passed on `ccf5d18`.
 No paid inference was performed. No merge or auto-merge was requested.
 
 Frozen protocol: `archives/ALIVE-14-R3/protocol/relationship-experiment-v3.json`
