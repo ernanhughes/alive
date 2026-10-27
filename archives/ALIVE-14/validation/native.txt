@@ -1,0 +1,8 @@
+Command: uv run python -m scripts.native14
+Output:
+VERIFIED native research retrieval, authorised relationship analysis and explicit withdrawal; synthetic calls 3
+evidence: .alive/native14-2e79416275d5/evidence.json
+
+Archived evidence:
+archives/ALIVE-14/evidence/native-synthetic.json
+archives/ALIVE-14/evidence/research-relationship.png

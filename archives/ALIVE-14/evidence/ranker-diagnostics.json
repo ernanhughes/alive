@@ -1,0 +1,93 @@
+{
+  "protocol_commit": "bf0af924d75483fc1c06ea5f8621ab08c3950b98",
+  "protocol_sha256": "56a85e66219425387ca42465ad2f3435be0b9af1652ba484fd7e5836cf54baf5",
+  "source_commit": "83852b2bdcccdef041c3e440dce3a2b22906ad0c",
+  "long_excerpt_cases": [
+    {
+      "query_id": "Q1",
+      "relevant": [
+        "H01",
+        "H03"
+      ],
+      "long_excerpt_memory": "H04",
+      "alive13_top3": [
+        "H04",
+        "H01",
+        "H03"
+      ],
+      "alive14_top3": [
+        "H01",
+        "H04",
+        "H03"
+      ],
+      "alive13_rank1": "H04",
+      "alive14_rank1": "H01",
+      "target_expected": "H01",
+      "alive14_target_at_rank1": true
+    },
+    {
+      "query_id": "Q4",
+      "relevant": [
+        "H07"
+      ],
+      "long_excerpt_memory": "H10",
+      "alive13_top3": [
+        "H10",
+        "H07",
+        "H09"
+      ],
+      "alive14_top3": [
+        "H07",
+        "H09",
+        "H10"
+      ],
+      "alive13_rank1": "H10",
+      "alive14_rank1": "H07",
+      "target_expected": "H07",
+      "alive14_target_at_rank1": true
+    },
+    {
+      "query_id": "Q7",
+      "relevant": [
+        "H13",
+        "H17"
+      ],
+      "long_excerpt_memory": "H16",
+      "alive13_top3": [
+        "H16",
+        "H13",
+        "H17"
+      ],
+      "alive14_top3": [
+        "H13",
+        "H16",
+        "H17"
+      ],
+      "alive13_rank1": "H16",
+      "alive14_rank1": "H13",
+      "target_expected": "H13",
+      "alive14_target_at_rank1": true
+    }
+  ],
+  "generic_overlap_cases": [
+    {
+      "query_id": "Q3",
+      "alive13_result_count": 0,
+      "alive14_result_count": 0,
+      "alive14_abstained": true
+    },
+    {
+      "query_id": "Q6",
+      "alive13_result_count": 0,
+      "alive14_result_count": 0,
+      "alive14_abstained": true
+    },
+    {
+      "query_id": "Q9",
+      "alive13_result_count": 0,
+      "alive14_result_count": 0,
+      "alive14_abstained": true
+    }
+  ],
+  "note": "Held-out diagnostics only; no ranker tuning after these results."
+}

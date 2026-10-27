@@ -1,0 +1,2228 @@
+{
+  "protocol_version": "alive14-heldout-v1",
+  "protocol_sha256": "56a85e66219425387ca42465ad2f3435be0b9af1652ba484fd7e5836cf54baf5",
+  "protocol_commit": "bf0af924d75483fc1c06ea5f8621ab08c3950b98",
+  "dataset": "held_out",
+  "source_commit": "83852b2bdcccdef041c3e440dce3a2b22906ad0c",
+  "paid_inference": false,
+  "paid_calls": 0,
+  "queries": [
+    {
+      "id": "Q1",
+      "goal_id": "gc",
+      "snapshot_id": "49d546ea-3e55-482d-961d-99f5ed7204d3",
+      "deterministic": true,
+      "relevant": [
+        "H01",
+        "H03"
+      ],
+      "label_rationale": "H01 explains the cycle leak; H03 names the separate cycle detector needed to reclaim it.",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "actual_memory_id": "H04",
+              "source_url": "http://127.0.0.1:9400/historical/H04",
+              "sha256": "40f8e93d5af8fd7763b0e68d6d99aed9755ea933717155f5ee7f27195d654d9c",
+              "rank": 1,
+              "corpus_memory_id": "H04"
+            },
+            {
+              "actual_memory_id": "H03",
+              "source_url": "http://127.0.0.1:9400/historical/H03",
+              "sha256": "d8bb9c0c313c3c87f3371ade74eb88e69cb3738d240cf7069686fe1da3745d50",
+              "rank": 2,
+              "corpus_memory_id": "H03"
+            },
+            {
+              "actual_memory_id": "H06",
+              "source_url": "http://127.0.0.1:9400/historical/H06",
+              "sha256": "f20b7d669a794d1ce3189e4fb34d854b2286f5ab1802c0ef3d09034a4a7546c0",
+              "rank": 3,
+              "corpus_memory_id": "H06"
+            }
+          ],
+          "latency_ms": 1.367
+        },
+        "B_alive13": {
+          "results": [
+            {
+              "actual_memory_id": "3f991445-9bb6-4b88-bb6b-b0a68ae3e45c",
+              "source_url": "http://127.0.0.1:9400/historical/H04",
+              "sha256": "40f8e93d5af8fd7763b0e68d6d99aed9755ea933717155f5ee7f27195d654d9c",
+              "rank": 1,
+              "score": 12,
+              "corpus_memory_id": "H04"
+            },
+            {
+              "actual_memory_id": "9a6973a8-a8e8-4b2f-bee8-fd757f4a9c3e",
+              "source_url": "http://127.0.0.1:9400/historical/H01",
+              "sha256": "b55e421debf24e41a5d34e9b060d200295cb7b34da17c04818e6a10eac62ed72",
+              "rank": 2,
+              "score": 12,
+              "corpus_memory_id": "H01"
+            },
+            {
+              "actual_memory_id": "f579674d-894f-4234-adb8-ed1f4f2b27aa",
+              "source_url": "http://127.0.0.1:9400/historical/H03",
+              "sha256": "d8bb9c0c313c3c87f3371ade74eb88e69cb3738d240cf7069686fe1da3745d50",
+              "rank": 3,
+              "score": 6,
+              "corpus_memory_id": "H03"
+            }
+          ],
+          "latency_ms": 5.79,
+          "ranking_version": "alive13-scoped-lexical-v1",
+          "candidate_count": 3
+        },
+        "C_alive14_bm25": {
+          "results": [
+            {
+              "actual_memory_id": "9a6973a8-a8e8-4b2f-bee8-fd757f4a9c3e",
+              "source_url": "http://127.0.0.1:9400/historical/H01",
+              "sha256": "b55e421debf24e41a5d34e9b060d200295cb7b34da17c04818e6a10eac62ed72",
+              "rank": 1,
+              "score": 4.051843,
+              "corpus_memory_id": "H01"
+            },
+            {
+              "actual_memory_id": "3f991445-9bb6-4b88-bb6b-b0a68ae3e45c",
+              "source_url": "http://127.0.0.1:9400/historical/H04",
+              "sha256": "40f8e93d5af8fd7763b0e68d6d99aed9755ea933717155f5ee7f27195d654d9c",
+              "rank": 2,
+              "score": 2.296391,
+              "corpus_memory_id": "H04"
+            },
+            {
+              "actual_memory_id": "f579674d-894f-4234-adb8-ed1f4f2b27aa",
+              "source_url": "http://127.0.0.1:9400/historical/H03",
+              "sha256": "d8bb9c0c313c3c87f3371ade74eb88e69cb3738d240cf7069686fe1da3745d50",
+              "rank": 3,
+              "score": 0.817603,
+              "corpus_memory_id": "H03"
+            }
+          ],
+          "latency_ms": 6.609,
+          "ranking_version": "alive14-bm25-v1",
+          "candidate_count": 3,
+          "qualified_count": 3
+        },
+        "D_full_history": {
+          "results": [
+            {
+              "actual_memory_id": "H04",
+              "source_url": "http://127.0.0.1:9400/historical/H04",
+              "sha256": "40f8e93d5af8fd7763b0e68d6d99aed9755ea933717155f5ee7f27195d654d9c",
+              "rank": 1,
+              "corpus_memory_id": "H04"
+            },
+            {
+              "actual_memory_id": "H03",
+              "source_url": "http://127.0.0.1:9400/historical/H03",
+              "sha256": "d8bb9c0c313c3c87f3371ade74eb88e69cb3738d240cf7069686fe1da3745d50",
+              "rank": 2,
+              "corpus_memory_id": "H03"
+            },
+            {
+              "actual_memory_id": "H06",
+              "source_url": "http://127.0.0.1:9400/historical/H06",
+              "sha256": "f20b7d669a794d1ce3189e4fb34d854b2286f5ab1802c0ef3d09034a4a7546c0",
+              "rank": 3,
+              "corpus_memory_id": "H06"
+            },
+            {
+              "actual_memory_id": "H05",
+              "source_url": "http://127.0.0.1:9400/historical/H05",
+              "sha256": "fb4e9c76ffd9b12920a49d887272036bbecebb57918ea5307aa282dbffd61429",
+              "rank": 4,
+              "corpus_memory_id": "H05"
+            },
+            {
+              "actual_memory_id": "H02",
+              "source_url": "http://127.0.0.1:9400/historical/H02",
+              "sha256": "773ec19dd2726cb1b4d1702a4333674dc418b5983c528a2af48482c879a0b1f4",
+              "rank": 5,
+              "corpus_memory_id": "H02"
+            },
+            {
+              "actual_memory_id": "H01",
+              "source_url": "http://127.0.0.1:9400/historical/H01",
+              "sha256": "b55e421debf24e41a5d34e9b060d200295cb7b34da17c04818e6a10eac62ed72",
+              "rank": 6,
+              "corpus_memory_id": "H01"
+            }
+          ],
+          "latency_ms": 1.197
+        }
+      }
+    },
+    {
+      "id": "Q2",
+      "goal_id": "gc",
+      "snapshot_id": "ab8105df-392a-4fbd-9162-35ce60effd4b",
+      "deterministic": true,
+      "relevant": [
+        "H02"
+      ],
+      "label_rationale": "H02 describes root tracing, reachability marking and sweeping.",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "actual_memory_id": "H04",
+              "source_url": "http://127.0.0.1:9400/historical/H04",
+              "sha256": "40f8e93d5af8fd7763b0e68d6d99aed9755ea933717155f5ee7f27195d654d9c",
+              "rank": 1,
+              "corpus_memory_id": "H04"
+            },
+            {
+              "actual_memory_id": "H03",
+              "source_url": "http://127.0.0.1:9400/historical/H03",
+              "sha256": "d8bb9c0c313c3c87f3371ade74eb88e69cb3738d240cf7069686fe1da3745d50",
+              "rank": 2,
+              "corpus_memory_id": "H03"
+            },
+            {
+              "actual_memory_id": "H06",
+              "source_url": "http://127.0.0.1:9400/historical/H06",
+              "sha256": "f20b7d669a794d1ce3189e4fb34d854b2286f5ab1802c0ef3d09034a4a7546c0",
+              "rank": 3,
+              "corpus_memory_id": "H06"
+            }
+          ],
+          "latency_ms": 1.186
+        },
+        "B_alive13": {
+          "results": [
+            {
+              "actual_memory_id": "9bbcddad-2bad-4097-a2ba-9bafcc5ede91",
+              "source_url": "http://127.0.0.1:9400/historical/H02",
+              "sha256": "773ec19dd2726cb1b4d1702a4333674dc418b5983c528a2af48482c879a0b1f4",
+              "rank": 1,
+              "score": 18,
+              "corpus_memory_id": "H02"
+            },
+            {
+              "actual_memory_id": "d21d9c00-f604-4a0a-8b00-880059836ce2",
+              "source_url": "http://127.0.0.1:9400/historical/H05",
+              "sha256": "fb4e9c76ffd9b12920a49d887272036bbecebb57918ea5307aa282dbffd61429",
+              "rank": 2,
+              "score": 6,
+              "corpus_memory_id": "H05"
+            }
+          ],
+          "latency_ms": 5.43,
+          "ranking_version": "alive13-scoped-lexical-v1",
+          "candidate_count": 2
+        },
+        "C_alive14_bm25": {
+          "results": [
+            {
+              "actual_memory_id": "9bbcddad-2bad-4097-a2ba-9bafcc5ede91",
+              "source_url": "http://127.0.0.1:9400/historical/H02",
+              "sha256": "773ec19dd2726cb1b4d1702a4333674dc418b5983c528a2af48482c879a0b1f4",
+              "rank": 1,
+              "score": 12.896992,
+              "corpus_memory_id": "H02"
+            },
+            {
+              "actual_memory_id": "d21d9c00-f604-4a0a-8b00-880059836ce2",
+              "source_url": "http://127.0.0.1:9400/historical/H05",
+              "sha256": "fb4e9c76ffd9b12920a49d887272036bbecebb57918ea5307aa282dbffd61429",
+              "rank": 2,
+              "score": 2.5136,
+              "corpus_memory_id": "H05"
+            }
+          ],
+          "latency_ms": 4.964,
+          "ranking_version": "alive14-bm25-v1",
+          "candidate_count": 2,
+          "qualified_count": 2
+        },
+        "D_full_history": {
+          "results": [
+            {
+              "actual_memory_id": "H04",
+              "source_url": "http://127.0.0.1:9400/historical/H04",
+              "sha256": "40f8e93d5af8fd7763b0e68d6d99aed9755ea933717155f5ee7f27195d654d9c",
+              "rank": 1,
+              "corpus_memory_id": "H04"
+            },
+            {
+              "actual_memory_id": "H03",
+              "source_url": "http://127.0.0.1:9400/historical/H03",
+              "sha256": "d8bb9c0c313c3c87f3371ade74eb88e69cb3738d240cf7069686fe1da3745d50",
+              "rank": 2,
+              "corpus_memory_id": "H03"
+            },
+            {
+              "actual_memory_id": "H06",
+              "source_url": "http://127.0.0.1:9400/historical/H06",
+              "sha256": "f20b7d669a794d1ce3189e4fb34d854b2286f5ab1802c0ef3d09034a4a7546c0",
+              "rank": 3,
+              "corpus_memory_id": "H06"
+            },
+            {
+              "actual_memory_id": "H05",
+              "source_url": "http://127.0.0.1:9400/historical/H05",
+              "sha256": "fb4e9c76ffd9b12920a49d887272036bbecebb57918ea5307aa282dbffd61429",
+              "rank": 4,
+              "corpus_memory_id": "H05"
+            },
+            {
+              "actual_memory_id": "H02",
+              "source_url": "http://127.0.0.1:9400/historical/H02",
+              "sha256": "773ec19dd2726cb1b4d1702a4333674dc418b5983c528a2af48482c879a0b1f4",
+              "rank": 5,
+              "corpus_memory_id": "H02"
+            },
+            {
+              "actual_memory_id": "H01",
+              "source_url": "http://127.0.0.1:9400/historical/H01",
+              "sha256": "b55e421debf24e41a5d34e9b060d200295cb7b34da17c04818e6a10eac62ed72",
+              "rank": 6,
+              "corpus_memory_id": "H01"
+            }
+          ],
+          "latency_ms": 1.119
+        }
+      }
+    },
+    {
+      "id": "Q3",
+      "goal_id": "gc",
+      "snapshot_id": "5bd5f55b-8678-463c-8b64-1a22d7f16033",
+      "deterministic": true,
+      "relevant": [],
+      "label_rationale": "No garbage-collector source discusses quantum error correction; abstain.",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "actual_memory_id": "H04",
+              "source_url": "http://127.0.0.1:9400/historical/H04",
+              "sha256": "40f8e93d5af8fd7763b0e68d6d99aed9755ea933717155f5ee7f27195d654d9c",
+              "rank": 1,
+              "corpus_memory_id": "H04"
+            },
+            {
+              "actual_memory_id": "H03",
+              "source_url": "http://127.0.0.1:9400/historical/H03",
+              "sha256": "d8bb9c0c313c3c87f3371ade74eb88e69cb3738d240cf7069686fe1da3745d50",
+              "rank": 2,
+              "corpus_memory_id": "H03"
+            },
+            {
+              "actual_memory_id": "H06",
+              "source_url": "http://127.0.0.1:9400/historical/H06",
+              "sha256": "f20b7d669a794d1ce3189e4fb34d854b2286f5ab1802c0ef3d09034a4a7546c0",
+              "rank": 3,
+              "corpus_memory_id": "H06"
+            }
+          ],
+          "latency_ms": 1.146
+        },
+        "B_alive13": {
+          "results": [],
+          "latency_ms": 6.346,
+          "ranking_version": "alive13-scoped-lexical-v1",
+          "candidate_count": 0
+        },
+        "C_alive14_bm25": {
+          "results": [],
+          "latency_ms": 3.894,
+          "ranking_version": "alive14-bm25-v1",
+          "candidate_count": 0,
+          "qualified_count": 0
+        },
+        "D_full_history": {
+          "results": [
+            {
+              "actual_memory_id": "H04",
+              "source_url": "http://127.0.0.1:9400/historical/H04",
+              "sha256": "40f8e93d5af8fd7763b0e68d6d99aed9755ea933717155f5ee7f27195d654d9c",
+              "rank": 1,
+              "corpus_memory_id": "H04"
+            },
+            {
+              "actual_memory_id": "H03",
+              "source_url": "http://127.0.0.1:9400/historical/H03",
+              "sha256": "d8bb9c0c313c3c87f3371ade74eb88e69cb3738d240cf7069686fe1da3745d50",
+              "rank": 2,
+              "corpus_memory_id": "H03"
+            },
+            {
+              "actual_memory_id": "H06",
+              "source_url": "http://127.0.0.1:9400/historical/H06",
+              "sha256": "f20b7d669a794d1ce3189e4fb34d854b2286f5ab1802c0ef3d09034a4a7546c0",
+              "rank": 3,
+              "corpus_memory_id": "H06"
+            },
+            {
+              "actual_memory_id": "H05",
+              "source_url": "http://127.0.0.1:9400/historical/H05",
+              "sha256": "fb4e9c76ffd9b12920a49d887272036bbecebb57918ea5307aa282dbffd61429",
+              "rank": 4,
+              "corpus_memory_id": "H05"
+            },
+            {
+              "actual_memory_id": "H02",
+              "source_url": "http://127.0.0.1:9400/historical/H02",
+              "sha256": "773ec19dd2726cb1b4d1702a4333674dc418b5983c528a2af48482c879a0b1f4",
+              "rank": 5,
+              "corpus_memory_id": "H02"
+            },
+            {
+              "actual_memory_id": "H01",
+              "source_url": "http://127.0.0.1:9400/historical/H01",
+              "sha256": "b55e421debf24e41a5d34e9b060d200295cb7b34da17c04818e6a10eac62ed72",
+              "rank": 6,
+              "corpus_memory_id": "H01"
+            }
+          ],
+          "latency_ms": 1.057
+        }
+      }
+    },
+    {
+      "id": "Q4",
+      "goal_id": "http",
+      "snapshot_id": "72ca152f-427e-4208-921d-287869a303b4",
+      "deterministic": true,
+      "relevant": [
+        "H07"
+      ],
+      "label_rationale": "H07 describes ETag revalidation with If-None-Match and 304 reuse.",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "actual_memory_id": "H10",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 1,
+              "corpus_memory_id": "H10"
+            },
+            {
+              "actual_memory_id": "H12",
+              "source_url": "http://127.0.0.1:9400/historical/H12",
+              "sha256": "96707dd7cdeb31c79d06d1aedaad34049e224d505abc07f4651ec4ab983518db",
+              "rank": 2,
+              "corpus_memory_id": "H12"
+            },
+            {
+              "actual_memory_id": "H08",
+              "source_url": "http://127.0.0.1:9400/historical/H08",
+              "sha256": "2412bcbc33610af89d7356c6bc7a9828e8b9b307fbb1b2f7d2bb61e5643af500",
+              "rank": 3,
+              "corpus_memory_id": "H08"
+            }
+          ],
+          "latency_ms": 1.085
+        },
+        "B_alive13": {
+          "results": [
+            {
+              "actual_memory_id": "b10f4bd9-d631-41bf-8fa9-5f450069ba72",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 1,
+              "score": 4,
+              "corpus_memory_id": "H10"
+            },
+            {
+              "actual_memory_id": "3d606f04-27b5-4700-b72d-a0134ef8fc80",
+              "source_url": "http://127.0.0.1:9400/historical/H07",
+              "sha256": "1d7f7f7fbaab20c82c93222cf4d7fdb6e6548244ece57ff9341f87f15690294e",
+              "rank": 2,
+              "score": 4,
+              "corpus_memory_id": "H07"
+            },
+            {
+              "actual_memory_id": "06a5756d-d7fd-47d8-bb98-d36e56b70fea",
+              "source_url": "http://127.0.0.1:9400/historical/H09",
+              "sha256": "b99e127c525c5487756a1dc5f2778d0ef3d91bc8ef5345d03fca74a72a13b307",
+              "rank": 3,
+              "score": 3,
+              "corpus_memory_id": "H09"
+            }
+          ],
+          "latency_ms": 5.459,
+          "ranking_version": "alive13-scoped-lexical-v1",
+          "candidate_count": 4
+        },
+        "C_alive14_bm25": {
+          "results": [
+            {
+              "actual_memory_id": "3d606f04-27b5-4700-b72d-a0134ef8fc80",
+              "source_url": "http://127.0.0.1:9400/historical/H07",
+              "sha256": "1d7f7f7fbaab20c82c93222cf4d7fdb6e6548244ece57ff9341f87f15690294e",
+              "rank": 1,
+              "score": 2.167367,
+              "corpus_memory_id": "H07"
+            },
+            {
+              "actual_memory_id": "06a5756d-d7fd-47d8-bb98-d36e56b70fea",
+              "source_url": "http://127.0.0.1:9400/historical/H09",
+              "sha256": "b99e127c525c5487756a1dc5f2778d0ef3d91bc8ef5345d03fca74a72a13b307",
+              "rank": 2,
+              "score": 1.239942,
+              "corpus_memory_id": "H09"
+            },
+            {
+              "actual_memory_id": "b10f4bd9-d631-41bf-8fa9-5f450069ba72",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 3,
+              "score": 1.212424,
+              "corpus_memory_id": "H10"
+            }
+          ],
+          "latency_ms": 5.875,
+          "ranking_version": "alive14-bm25-v1",
+          "candidate_count": 4,
+          "qualified_count": 4
+        },
+        "D_full_history": {
+          "results": [
+            {
+              "actual_memory_id": "H10",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 1,
+              "corpus_memory_id": "H10"
+            },
+            {
+              "actual_memory_id": "H12",
+              "source_url": "http://127.0.0.1:9400/historical/H12",
+              "sha256": "96707dd7cdeb31c79d06d1aedaad34049e224d505abc07f4651ec4ab983518db",
+              "rank": 2,
+              "corpus_memory_id": "H12"
+            },
+            {
+              "actual_memory_id": "H08",
+              "source_url": "http://127.0.0.1:9400/historical/H08",
+              "sha256": "2412bcbc33610af89d7356c6bc7a9828e8b9b307fbb1b2f7d2bb61e5643af500",
+              "rank": 3,
+              "corpus_memory_id": "H08"
+            },
+            {
+              "actual_memory_id": "H11",
+              "source_url": "http://127.0.0.1:9400/historical/H11",
+              "sha256": "776c180772fea2cbc7e68bff7853b6e340866ff9fa0d377df065447af2771122",
+              "rank": 4,
+              "corpus_memory_id": "H11"
+            },
+            {
+              "actual_memory_id": "H07",
+              "source_url": "http://127.0.0.1:9400/historical/H07",
+              "sha256": "1d7f7f7fbaab20c82c93222cf4d7fdb6e6548244ece57ff9341f87f15690294e",
+              "rank": 5,
+              "corpus_memory_id": "H07"
+            },
+            {
+              "actual_memory_id": "H09",
+              "source_url": "http://127.0.0.1:9400/historical/H09",
+              "sha256": "b99e127c525c5487756a1dc5f2778d0ef3d91bc8ef5345d03fca74a72a13b307",
+              "rank": 6,
+              "corpus_memory_id": "H09"
+            }
+          ],
+          "latency_ms": 1.004
+        }
+      }
+    },
+    {
+      "id": "Q5",
+      "goal_id": "http",
+      "snapshot_id": "3a826271-dbdb-4adc-ae2e-a7a7053a66d3",
+      "deterministic": true,
+      "relevant": [
+        "H08"
+      ],
+      "label_rationale": "H08 defines the freshness lifetime and reuse without origin contact.",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "actual_memory_id": "H10",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 1,
+              "corpus_memory_id": "H10"
+            },
+            {
+              "actual_memory_id": "H12",
+              "source_url": "http://127.0.0.1:9400/historical/H12",
+              "sha256": "96707dd7cdeb31c79d06d1aedaad34049e224d505abc07f4651ec4ab983518db",
+              "rank": 2,
+              "corpus_memory_id": "H12"
+            },
+            {
+              "actual_memory_id": "H08",
+              "source_url": "http://127.0.0.1:9400/historical/H08",
+              "sha256": "2412bcbc33610af89d7356c6bc7a9828e8b9b307fbb1b2f7d2bb61e5643af500",
+              "rank": 3,
+              "corpus_memory_id": "H08"
+            }
+          ],
+          "latency_ms": 1.036
+        },
+        "B_alive13": {
+          "results": [
+            {
+              "actual_memory_id": "ba50c79c-c66d-4432-bd02-8dd100b3e841",
+              "source_url": "http://127.0.0.1:9400/historical/H08",
+              "sha256": "2412bcbc33610af89d7356c6bc7a9828e8b9b307fbb1b2f7d2bb61e5643af500",
+              "rank": 1,
+              "score": 12,
+              "corpus_memory_id": "H08"
+            },
+            {
+              "actual_memory_id": "06a5756d-d7fd-47d8-bb98-d36e56b70fea",
+              "source_url": "http://127.0.0.1:9400/historical/H09",
+              "sha256": "b99e127c525c5487756a1dc5f2778d0ef3d91bc8ef5345d03fca74a72a13b307",
+              "rank": 2,
+              "score": 3,
+              "corpus_memory_id": "H09"
+            },
+            {
+              "actual_memory_id": "b10f4bd9-d631-41bf-8fa9-5f450069ba72",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 3,
+              "score": 2,
+              "corpus_memory_id": "H10"
+            }
+          ],
+          "latency_ms": 5.247,
+          "ranking_version": "alive13-scoped-lexical-v1",
+          "candidate_count": 4
+        },
+        "C_alive14_bm25": {
+          "results": [
+            {
+              "actual_memory_id": "ba50c79c-c66d-4432-bd02-8dd100b3e841",
+              "source_url": "http://127.0.0.1:9400/historical/H08",
+              "sha256": "2412bcbc33610af89d7356c6bc7a9828e8b9b307fbb1b2f7d2bb61e5643af500",
+              "rank": 1,
+              "score": 8.298554,
+              "corpus_memory_id": "H08"
+            },
+            {
+              "actual_memory_id": "06a5756d-d7fd-47d8-bb98-d36e56b70fea",
+              "source_url": "http://127.0.0.1:9400/historical/H09",
+              "sha256": "b99e127c525c5487756a1dc5f2778d0ef3d91bc8ef5345d03fca74a72a13b307",
+              "rank": 2,
+              "score": 1.239942,
+              "corpus_memory_id": "H09"
+            },
+            {
+              "actual_memory_id": "3d606f04-27b5-4700-b72d-a0134ef8fc80",
+              "source_url": "http://127.0.0.1:9400/historical/H07",
+              "sha256": "1d7f7f7fbaab20c82c93222cf4d7fdb6e6548244ece57ff9341f87f15690294e",
+              "rank": 3,
+              "score": 0.729543,
+              "corpus_memory_id": "H07"
+            }
+          ],
+          "latency_ms": 4.739,
+          "ranking_version": "alive14-bm25-v1",
+          "candidate_count": 4,
+          "qualified_count": 4
+        },
+        "D_full_history": {
+          "results": [
+            {
+              "actual_memory_id": "H10",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 1,
+              "corpus_memory_id": "H10"
+            },
+            {
+              "actual_memory_id": "H12",
+              "source_url": "http://127.0.0.1:9400/historical/H12",
+              "sha256": "96707dd7cdeb31c79d06d1aedaad34049e224d505abc07f4651ec4ab983518db",
+              "rank": 2,
+              "corpus_memory_id": "H12"
+            },
+            {
+              "actual_memory_id": "H08",
+              "source_url": "http://127.0.0.1:9400/historical/H08",
+              "sha256": "2412bcbc33610af89d7356c6bc7a9828e8b9b307fbb1b2f7d2bb61e5643af500",
+              "rank": 3,
+              "corpus_memory_id": "H08"
+            },
+            {
+              "actual_memory_id": "H11",
+              "source_url": "http://127.0.0.1:9400/historical/H11",
+              "sha256": "776c180772fea2cbc7e68bff7853b6e340866ff9fa0d377df065447af2771122",
+              "rank": 4,
+              "corpus_memory_id": "H11"
+            },
+            {
+              "actual_memory_id": "H07",
+              "source_url": "http://127.0.0.1:9400/historical/H07",
+              "sha256": "1d7f7f7fbaab20c82c93222cf4d7fdb6e6548244ece57ff9341f87f15690294e",
+              "rank": 5,
+              "corpus_memory_id": "H07"
+            },
+            {
+              "actual_memory_id": "H09",
+              "source_url": "http://127.0.0.1:9400/historical/H09",
+              "sha256": "b99e127c525c5487756a1dc5f2778d0ef3d91bc8ef5345d03fca74a72a13b307",
+              "rank": 6,
+              "corpus_memory_id": "H09"
+            }
+          ],
+          "latency_ms": 1.175
+        }
+      }
+    },
+    {
+      "id": "Q6",
+      "goal_id": "http",
+      "snapshot_id": "e05e348f-f3df-436f-a5ac-c3b55900a034",
+      "deterministic": true,
+      "relevant": [],
+      "label_rationale": "No HTTP cache source discusses compilers or tail calls; abstain.",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "actual_memory_id": "H10",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 1,
+              "corpus_memory_id": "H10"
+            },
+            {
+              "actual_memory_id": "H12",
+              "source_url": "http://127.0.0.1:9400/historical/H12",
+              "sha256": "96707dd7cdeb31c79d06d1aedaad34049e224d505abc07f4651ec4ab983518db",
+              "rank": 2,
+              "corpus_memory_id": "H12"
+            },
+            {
+              "actual_memory_id": "H08",
+              "source_url": "http://127.0.0.1:9400/historical/H08",
+              "sha256": "2412bcbc33610af89d7356c6bc7a9828e8b9b307fbb1b2f7d2bb61e5643af500",
+              "rank": 3,
+              "corpus_memory_id": "H08"
+            }
+          ],
+          "latency_ms": 0.967
+        },
+        "B_alive13": {
+          "results": [],
+          "latency_ms": 3.923,
+          "ranking_version": "alive13-scoped-lexical-v1",
+          "candidate_count": 0
+        },
+        "C_alive14_bm25": {
+          "results": [],
+          "latency_ms": 3.469,
+          "ranking_version": "alive14-bm25-v1",
+          "candidate_count": 0,
+          "qualified_count": 0
+        },
+        "D_full_history": {
+          "results": [
+            {
+              "actual_memory_id": "H10",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 1,
+              "corpus_memory_id": "H10"
+            },
+            {
+              "actual_memory_id": "H12",
+              "source_url": "http://127.0.0.1:9400/historical/H12",
+              "sha256": "96707dd7cdeb31c79d06d1aedaad34049e224d505abc07f4651ec4ab983518db",
+              "rank": 2,
+              "corpus_memory_id": "H12"
+            },
+            {
+              "actual_memory_id": "H08",
+              "source_url": "http://127.0.0.1:9400/historical/H08",
+              "sha256": "2412bcbc33610af89d7356c6bc7a9828e8b9b307fbb1b2f7d2bb61e5643af500",
+              "rank": 3,
+              "corpus_memory_id": "H08"
+            },
+            {
+              "actual_memory_id": "H11",
+              "source_url": "http://127.0.0.1:9400/historical/H11",
+              "sha256": "776c180772fea2cbc7e68bff7853b6e340866ff9fa0d377df065447af2771122",
+              "rank": 4,
+              "corpus_memory_id": "H11"
+            },
+            {
+              "actual_memory_id": "H07",
+              "source_url": "http://127.0.0.1:9400/historical/H07",
+              "sha256": "1d7f7f7fbaab20c82c93222cf4d7fdb6e6548244ece57ff9341f87f15690294e",
+              "rank": 5,
+              "corpus_memory_id": "H07"
+            },
+            {
+              "actual_memory_id": "H09",
+              "source_url": "http://127.0.0.1:9400/historical/H09",
+              "sha256": "b99e127c525c5487756a1dc5f2778d0ef3d91bc8ef5345d03fca74a72a13b307",
+              "rank": 6,
+              "corpus_memory_id": "H09"
+            }
+          ],
+          "latency_ms": 0.983
+        }
+      }
+    },
+    {
+      "id": "Q7",
+      "goal_id": "sw",
+      "snapshot_id": "ef5cbe40-c801-4c75-a7a5-c27222d40b1c",
+      "deterministic": true,
+      "relevant": [
+        "H13",
+        "H17"
+      ],
+      "label_rationale": "H13 describes precaching and offline serving; H17 states the control condition for serving offline.",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "actual_memory_id": "H16",
+              "source_url": "http://127.0.0.1:9400/historical/H16",
+              "sha256": "b8b1126bd510e8defcb162943a3c64b92d8ba9de70abfff87b9fddd01583a48e",
+              "rank": 1,
+              "corpus_memory_id": "H16"
+            },
+            {
+              "actual_memory_id": "H13",
+              "source_url": "http://127.0.0.1:9400/historical/H13",
+              "sha256": "17ad99afba0a2dbb59eedc0488058f618c2c659638eb44e6f1bc6a6a878a46e6",
+              "rank": 2,
+              "corpus_memory_id": "H13"
+            },
+            {
+              "actual_memory_id": "H15",
+              "source_url": "http://127.0.0.1:9400/historical/H15",
+              "sha256": "b2f739f08214d14abd5a737084ba3189cda89bdd5951473f04f56dc0f0799102",
+              "rank": 3,
+              "corpus_memory_id": "H15"
+            }
+          ],
+          "latency_ms": 1.077
+        },
+        "B_alive13": {
+          "results": [
+            {
+              "actual_memory_id": "bbec7ad2-1f08-4436-a34e-50a5fd52ab8b",
+              "source_url": "http://127.0.0.1:9400/historical/H16",
+              "sha256": "b8b1126bd510e8defcb162943a3c64b92d8ba9de70abfff87b9fddd01583a48e",
+              "rank": 1,
+              "score": 14,
+              "corpus_memory_id": "H16"
+            },
+            {
+              "actual_memory_id": "dd540635-d609-4a54-9d86-122cadeaac1b",
+              "source_url": "http://127.0.0.1:9400/historical/H13",
+              "sha256": "17ad99afba0a2dbb59eedc0488058f618c2c659638eb44e6f1bc6a6a878a46e6",
+              "rank": 2,
+              "score": 14,
+              "corpus_memory_id": "H13"
+            },
+            {
+              "actual_memory_id": "72d01a41-34f1-4c07-bbaf-4b1de770d1e0",
+              "source_url": "http://127.0.0.1:9400/historical/H17",
+              "sha256": "35f93e2ed5890e8f7daf5289c596be51168b37f7355e30106031b943b59410ec",
+              "rank": 3,
+              "score": 10,
+              "corpus_memory_id": "H17"
+            }
+          ],
+          "latency_ms": 5.034,
+          "ranking_version": "alive13-scoped-lexical-v1",
+          "candidate_count": 5
+        },
+        "C_alive14_bm25": {
+          "results": [
+            {
+              "actual_memory_id": "dd540635-d609-4a54-9d86-122cadeaac1b",
+              "source_url": "http://127.0.0.1:9400/historical/H13",
+              "sha256": "17ad99afba0a2dbb59eedc0488058f618c2c659638eb44e6f1bc6a6a878a46e6",
+              "rank": 1,
+              "score": 3.654186,
+              "corpus_memory_id": "H13"
+            },
+            {
+              "actual_memory_id": "bbec7ad2-1f08-4436-a34e-50a5fd52ab8b",
+              "source_url": "http://127.0.0.1:9400/historical/H16",
+              "sha256": "b8b1126bd510e8defcb162943a3c64b92d8ba9de70abfff87b9fddd01583a48e",
+              "rank": 2,
+              "score": 1.923256,
+              "corpus_memory_id": "H16"
+            },
+            {
+              "actual_memory_id": "72d01a41-34f1-4c07-bbaf-4b1de770d1e0",
+              "source_url": "http://127.0.0.1:9400/historical/H17",
+              "sha256": "35f93e2ed5890e8f7daf5289c596be51168b37f7355e30106031b943b59410ec",
+              "rank": 3,
+              "score": 1.21121,
+              "corpus_memory_id": "H17"
+            }
+          ],
+          "latency_ms": 5.576,
+          "ranking_version": "alive14-bm25-v1",
+          "candidate_count": 4,
+          "qualified_count": 4
+        },
+        "D_full_history": {
+          "results": [
+            {
+              "actual_memory_id": "H16",
+              "source_url": "http://127.0.0.1:9400/historical/H16",
+              "sha256": "b8b1126bd510e8defcb162943a3c64b92d8ba9de70abfff87b9fddd01583a48e",
+              "rank": 1,
+              "corpus_memory_id": "H16"
+            },
+            {
+              "actual_memory_id": "H13",
+              "source_url": "http://127.0.0.1:9400/historical/H13",
+              "sha256": "17ad99afba0a2dbb59eedc0488058f618c2c659638eb44e6f1bc6a6a878a46e6",
+              "rank": 2,
+              "corpus_memory_id": "H13"
+            },
+            {
+              "actual_memory_id": "H15",
+              "source_url": "http://127.0.0.1:9400/historical/H15",
+              "sha256": "b2f739f08214d14abd5a737084ba3189cda89bdd5951473f04f56dc0f0799102",
+              "rank": 3,
+              "corpus_memory_id": "H15"
+            },
+            {
+              "actual_memory_id": "H17",
+              "source_url": "http://127.0.0.1:9400/historical/H17",
+              "sha256": "35f93e2ed5890e8f7daf5289c596be51168b37f7355e30106031b943b59410ec",
+              "rank": 4,
+              "corpus_memory_id": "H17"
+            },
+            {
+              "actual_memory_id": "H18",
+              "source_url": "http://127.0.0.1:9400/historical/H18",
+              "sha256": "d43b9f1641617fa1a31eb6dc56fd4763b7ea4a5597d1708a3ab7ee4b97f967b7",
+              "rank": 5,
+              "corpus_memory_id": "H18"
+            },
+            {
+              "actual_memory_id": "H14",
+              "source_url": "http://127.0.0.1:9400/historical/H14",
+              "sha256": "a19b1c7d113a60e8c3098e8ae6017debe82d0f6706f226aadc23b089de7e62d6",
+              "rank": 6,
+              "corpus_memory_id": "H14"
+            }
+          ],
+          "latency_ms": 1.084
+        }
+      }
+    },
+    {
+      "id": "Q8",
+      "goal_id": "sw",
+      "snapshot_id": "20f33281-9cd2-42a4-9d37-2b25996e04ff",
+      "deterministic": true,
+      "relevant": [
+        "H14"
+      ],
+      "label_rationale": "H14 describes origin-scoped Cache API request-response storage.",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "actual_memory_id": "H16",
+              "source_url": "http://127.0.0.1:9400/historical/H16",
+              "sha256": "b8b1126bd510e8defcb162943a3c64b92d8ba9de70abfff87b9fddd01583a48e",
+              "rank": 1,
+              "corpus_memory_id": "H16"
+            },
+            {
+              "actual_memory_id": "H13",
+              "source_url": "http://127.0.0.1:9400/historical/H13",
+              "sha256": "17ad99afba0a2dbb59eedc0488058f618c2c659638eb44e6f1bc6a6a878a46e6",
+              "rank": 2,
+              "corpus_memory_id": "H13"
+            },
+            {
+              "actual_memory_id": "H15",
+              "source_url": "http://127.0.0.1:9400/historical/H15",
+              "sha256": "b2f739f08214d14abd5a737084ba3189cda89bdd5951473f04f56dc0f0799102",
+              "rank": 3,
+              "corpus_memory_id": "H15"
+            }
+          ],
+          "latency_ms": 1.156
+        },
+        "B_alive13": {
+          "results": [
+            {
+              "actual_memory_id": "31b59e09-7efd-4cb2-8861-93e8a1838422",
+              "source_url": "http://127.0.0.1:9400/historical/H14",
+              "sha256": "a19b1c7d113a60e8c3098e8ae6017debe82d0f6706f226aadc23b089de7e62d6",
+              "rank": 1,
+              "score": 8,
+              "corpus_memory_id": "H14"
+            },
+            {
+              "actual_memory_id": "57ce71ff-bcd6-4252-83aa-d6cdbf19a22c",
+              "source_url": "http://127.0.0.1:9400/historical/H18",
+              "sha256": "d43b9f1641617fa1a31eb6dc56fd4763b7ea4a5597d1708a3ab7ee4b97f967b7",
+              "rank": 2,
+              "score": 3,
+              "corpus_memory_id": "H18"
+            },
+            {
+              "actual_memory_id": "c81ba9af-153e-4881-9ffb-3c2aeefa9fb3",
+              "source_url": "http://127.0.0.1:9400/historical/H15",
+              "sha256": "b2f739f08214d14abd5a737084ba3189cda89bdd5951473f04f56dc0f0799102",
+              "rank": 3,
+              "score": 3,
+              "corpus_memory_id": "H15"
+            }
+          ],
+          "latency_ms": 5.331,
+          "ranking_version": "alive13-scoped-lexical-v1",
+          "candidate_count": 3
+        },
+        "C_alive14_bm25": {
+          "results": [
+            {
+              "actual_memory_id": "31b59e09-7efd-4cb2-8861-93e8a1838422",
+              "source_url": "http://127.0.0.1:9400/historical/H14",
+              "sha256": "a19b1c7d113a60e8c3098e8ae6017debe82d0f6706f226aadc23b089de7e62d6",
+              "rank": 1,
+              "score": 6.836656,
+              "corpus_memory_id": "H14"
+            },
+            {
+              "actual_memory_id": "c81ba9af-153e-4881-9ffb-3c2aeefa9fb3",
+              "source_url": "http://127.0.0.1:9400/historical/H15",
+              "sha256": "b2f739f08214d14abd5a737084ba3189cda89bdd5951473f04f56dc0f0799102",
+              "rank": 2,
+              "score": 1.898997,
+              "corpus_memory_id": "H15"
+            },
+            {
+              "actual_memory_id": "57ce71ff-bcd6-4252-83aa-d6cdbf19a22c",
+              "source_url": "http://127.0.0.1:9400/historical/H18",
+              "sha256": "d43b9f1641617fa1a31eb6dc56fd4763b7ea4a5597d1708a3ab7ee4b97f967b7",
+              "rank": 3,
+              "score": 1.221872,
+              "corpus_memory_id": "H18"
+            }
+          ],
+          "latency_ms": 5.085,
+          "ranking_version": "alive14-bm25-v1",
+          "candidate_count": 3,
+          "qualified_count": 3
+        },
+        "D_full_history": {
+          "results": [
+            {
+              "actual_memory_id": "H16",
+              "source_url": "http://127.0.0.1:9400/historical/H16",
+              "sha256": "b8b1126bd510e8defcb162943a3c64b92d8ba9de70abfff87b9fddd01583a48e",
+              "rank": 1,
+              "corpus_memory_id": "H16"
+            },
+            {
+              "actual_memory_id": "H13",
+              "source_url": "http://127.0.0.1:9400/historical/H13",
+              "sha256": "17ad99afba0a2dbb59eedc0488058f618c2c659638eb44e6f1bc6a6a878a46e6",
+              "rank": 2,
+              "corpus_memory_id": "H13"
+            },
+            {
+              "actual_memory_id": "H15",
+              "source_url": "http://127.0.0.1:9400/historical/H15",
+              "sha256": "b2f739f08214d14abd5a737084ba3189cda89bdd5951473f04f56dc0f0799102",
+              "rank": 3,
+              "corpus_memory_id": "H15"
+            },
+            {
+              "actual_memory_id": "H17",
+              "source_url": "http://127.0.0.1:9400/historical/H17",
+              "sha256": "35f93e2ed5890e8f7daf5289c596be51168b37f7355e30106031b943b59410ec",
+              "rank": 4,
+              "corpus_memory_id": "H17"
+            },
+            {
+              "actual_memory_id": "H18",
+              "source_url": "http://127.0.0.1:9400/historical/H18",
+              "sha256": "d43b9f1641617fa1a31eb6dc56fd4763b7ea4a5597d1708a3ab7ee4b97f967b7",
+              "rank": 5,
+              "corpus_memory_id": "H18"
+            },
+            {
+              "actual_memory_id": "H14",
+              "source_url": "http://127.0.0.1:9400/historical/H14",
+              "sha256": "a19b1c7d113a60e8c3098e8ae6017debe82d0f6706f226aadc23b089de7e62d6",
+              "rank": 6,
+              "corpus_memory_id": "H14"
+            }
+          ],
+          "latency_ms": 1.073
+        }
+      }
+    },
+    {
+      "id": "Q9",
+      "goal_id": "sw",
+      "snapshot_id": "1a64b769-e0c1-403d-8020-df76cbec4413",
+      "deterministic": true,
+      "relevant": [],
+      "label_rationale": "No service-worker source discusses relational normalization; abstain.",
+      "arms": {
+        "A_recency": {
+          "results": [
+            {
+              "actual_memory_id": "H16",
+              "source_url": "http://127.0.0.1:9400/historical/H16",
+              "sha256": "b8b1126bd510e8defcb162943a3c64b92d8ba9de70abfff87b9fddd01583a48e",
+              "rank": 1,
+              "corpus_memory_id": "H16"
+            },
+            {
+              "actual_memory_id": "H13",
+              "source_url": "http://127.0.0.1:9400/historical/H13",
+              "sha256": "17ad99afba0a2dbb59eedc0488058f618c2c659638eb44e6f1bc6a6a878a46e6",
+              "rank": 2,
+              "corpus_memory_id": "H13"
+            },
+            {
+              "actual_memory_id": "H15",
+              "source_url": "http://127.0.0.1:9400/historical/H15",
+              "sha256": "b2f739f08214d14abd5a737084ba3189cda89bdd5951473f04f56dc0f0799102",
+              "rank": 3,
+              "corpus_memory_id": "H15"
+            }
+          ],
+          "latency_ms": 1.002
+        },
+        "B_alive13": {
+          "results": [],
+          "latency_ms": 3.504,
+          "ranking_version": "alive13-scoped-lexical-v1",
+          "candidate_count": 0
+        },
+        "C_alive14_bm25": {
+          "results": [],
+          "latency_ms": 3.469,
+          "ranking_version": "alive14-bm25-v1",
+          "candidate_count": 0,
+          "qualified_count": 0
+        },
+        "D_full_history": {
+          "results": [
+            {
+              "actual_memory_id": "H16",
+              "source_url": "http://127.0.0.1:9400/historical/H16",
+              "sha256": "b8b1126bd510e8defcb162943a3c64b92d8ba9de70abfff87b9fddd01583a48e",
+              "rank": 1,
+              "corpus_memory_id": "H16"
+            },
+            {
+              "actual_memory_id": "H13",
+              "source_url": "http://127.0.0.1:9400/historical/H13",
+              "sha256": "17ad99afba0a2dbb59eedc0488058f618c2c659638eb44e6f1bc6a6a878a46e6",
+              "rank": 2,
+              "corpus_memory_id": "H13"
+            },
+            {
+              "actual_memory_id": "H15",
+              "source_url": "http://127.0.0.1:9400/historical/H15",
+              "sha256": "b2f739f08214d14abd5a737084ba3189cda89bdd5951473f04f56dc0f0799102",
+              "rank": 3,
+              "corpus_memory_id": "H15"
+            },
+            {
+              "actual_memory_id": "H17",
+              "source_url": "http://127.0.0.1:9400/historical/H17",
+              "sha256": "35f93e2ed5890e8f7daf5289c596be51168b37f7355e30106031b943b59410ec",
+              "rank": 4,
+              "corpus_memory_id": "H17"
+            },
+            {
+              "actual_memory_id": "H18",
+              "source_url": "http://127.0.0.1:9400/historical/H18",
+              "sha256": "d43b9f1641617fa1a31eb6dc56fd4763b7ea4a5597d1708a3ab7ee4b97f967b7",
+              "rank": 5,
+              "corpus_memory_id": "H18"
+            },
+            {
+              "actual_memory_id": "H14",
+              "source_url": "http://127.0.0.1:9400/historical/H14",
+              "sha256": "a19b1c7d113a60e8c3098e8ae6017debe82d0f6706f226aadc23b089de7e62d6",
+              "rank": 6,
+              "corpus_memory_id": "H14"
+            }
+          ],
+          "latency_ms": 1.024
+        }
+      }
+    }
+  ],
+  "arms": {
+    "A_recency": {
+      "positive_queries": 6,
+      "negative_queries": 3,
+      "precision_at_3": 0.1667,
+      "recall_at_3": 0.3333,
+      "mean_reciprocal_rank": 0.2222,
+      "relevant_at_rank_1": 0.0,
+      "false_positive_results": 24,
+      "correct_abstentions": 0,
+      "decoy_rate": 0.8889,
+      "missing_memory_failures": 3,
+      "latency_ms_p50": 1.085,
+      "per_query": [
+        {
+          "id": "Q1",
+          "retrieved": [
+            "H04",
+            "H03",
+            "H06"
+          ],
+          "relevant": [
+            "H01",
+            "H03"
+          ],
+          "rank_of_first_relevant": 2,
+          "raw_results": [
+            {
+              "actual_memory_id": "H04",
+              "source_url": "http://127.0.0.1:9400/historical/H04",
+              "sha256": "40f8e93d5af8fd7763b0e68d6d99aed9755ea933717155f5ee7f27195d654d9c",
+              "rank": 1,
+              "corpus_memory_id": "H04"
+            },
+            {
+              "actual_memory_id": "H03",
+              "source_url": "http://127.0.0.1:9400/historical/H03",
+              "sha256": "d8bb9c0c313c3c87f3371ade74eb88e69cb3738d240cf7069686fe1da3745d50",
+              "rank": 2,
+              "corpus_memory_id": "H03"
+            },
+            {
+              "actual_memory_id": "H06",
+              "source_url": "http://127.0.0.1:9400/historical/H06",
+              "sha256": "f20b7d669a794d1ce3189e4fb34d854b2286f5ab1802c0ef3d09034a4a7546c0",
+              "rank": 3,
+              "corpus_memory_id": "H06"
+            }
+          ]
+        },
+        {
+          "id": "Q2",
+          "retrieved": [
+            "H04",
+            "H03",
+            "H06"
+          ],
+          "relevant": [
+            "H02"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": [
+            {
+              "actual_memory_id": "H04",
+              "source_url": "http://127.0.0.1:9400/historical/H04",
+              "sha256": "40f8e93d5af8fd7763b0e68d6d99aed9755ea933717155f5ee7f27195d654d9c",
+              "rank": 1,
+              "corpus_memory_id": "H04"
+            },
+            {
+              "actual_memory_id": "H03",
+              "source_url": "http://127.0.0.1:9400/historical/H03",
+              "sha256": "d8bb9c0c313c3c87f3371ade74eb88e69cb3738d240cf7069686fe1da3745d50",
+              "rank": 2,
+              "corpus_memory_id": "H03"
+            },
+            {
+              "actual_memory_id": "H06",
+              "source_url": "http://127.0.0.1:9400/historical/H06",
+              "sha256": "f20b7d669a794d1ce3189e4fb34d854b2286f5ab1802c0ef3d09034a4a7546c0",
+              "rank": 3,
+              "corpus_memory_id": "H06"
+            }
+          ]
+        },
+        {
+          "id": "Q3",
+          "retrieved": [
+            "H04",
+            "H03",
+            "H06"
+          ],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": [
+            {
+              "actual_memory_id": "H04",
+              "source_url": "http://127.0.0.1:9400/historical/H04",
+              "sha256": "40f8e93d5af8fd7763b0e68d6d99aed9755ea933717155f5ee7f27195d654d9c",
+              "rank": 1,
+              "corpus_memory_id": "H04"
+            },
+            {
+              "actual_memory_id": "H03",
+              "source_url": "http://127.0.0.1:9400/historical/H03",
+              "sha256": "d8bb9c0c313c3c87f3371ade74eb88e69cb3738d240cf7069686fe1da3745d50",
+              "rank": 2,
+              "corpus_memory_id": "H03"
+            },
+            {
+              "actual_memory_id": "H06",
+              "source_url": "http://127.0.0.1:9400/historical/H06",
+              "sha256": "f20b7d669a794d1ce3189e4fb34d854b2286f5ab1802c0ef3d09034a4a7546c0",
+              "rank": 3,
+              "corpus_memory_id": "H06"
+            }
+          ]
+        },
+        {
+          "id": "Q4",
+          "retrieved": [
+            "H10",
+            "H12",
+            "H08"
+          ],
+          "relevant": [
+            "H07"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": [
+            {
+              "actual_memory_id": "H10",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 1,
+              "corpus_memory_id": "H10"
+            },
+            {
+              "actual_memory_id": "H12",
+              "source_url": "http://127.0.0.1:9400/historical/H12",
+              "sha256": "96707dd7cdeb31c79d06d1aedaad34049e224d505abc07f4651ec4ab983518db",
+              "rank": 2,
+              "corpus_memory_id": "H12"
+            },
+            {
+              "actual_memory_id": "H08",
+              "source_url": "http://127.0.0.1:9400/historical/H08",
+              "sha256": "2412bcbc33610af89d7356c6bc7a9828e8b9b307fbb1b2f7d2bb61e5643af500",
+              "rank": 3,
+              "corpus_memory_id": "H08"
+            }
+          ]
+        },
+        {
+          "id": "Q5",
+          "retrieved": [
+            "H10",
+            "H12",
+            "H08"
+          ],
+          "relevant": [
+            "H08"
+          ],
+          "rank_of_first_relevant": 3,
+          "raw_results": [
+            {
+              "actual_memory_id": "H10",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 1,
+              "corpus_memory_id": "H10"
+            },
+            {
+              "actual_memory_id": "H12",
+              "source_url": "http://127.0.0.1:9400/historical/H12",
+              "sha256": "96707dd7cdeb31c79d06d1aedaad34049e224d505abc07f4651ec4ab983518db",
+              "rank": 2,
+              "corpus_memory_id": "H12"
+            },
+            {
+              "actual_memory_id": "H08",
+              "source_url": "http://127.0.0.1:9400/historical/H08",
+              "sha256": "2412bcbc33610af89d7356c6bc7a9828e8b9b307fbb1b2f7d2bb61e5643af500",
+              "rank": 3,
+              "corpus_memory_id": "H08"
+            }
+          ]
+        },
+        {
+          "id": "Q6",
+          "retrieved": [
+            "H10",
+            "H12",
+            "H08"
+          ],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": [
+            {
+              "actual_memory_id": "H10",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 1,
+              "corpus_memory_id": "H10"
+            },
+            {
+              "actual_memory_id": "H12",
+              "source_url": "http://127.0.0.1:9400/historical/H12",
+              "sha256": "96707dd7cdeb31c79d06d1aedaad34049e224d505abc07f4651ec4ab983518db",
+              "rank": 2,
+              "corpus_memory_id": "H12"
+            },
+            {
+              "actual_memory_id": "H08",
+              "source_url": "http://127.0.0.1:9400/historical/H08",
+              "sha256": "2412bcbc33610af89d7356c6bc7a9828e8b9b307fbb1b2f7d2bb61e5643af500",
+              "rank": 3,
+              "corpus_memory_id": "H08"
+            }
+          ]
+        },
+        {
+          "id": "Q7",
+          "retrieved": [
+            "H16",
+            "H13",
+            "H15"
+          ],
+          "relevant": [
+            "H13",
+            "H17"
+          ],
+          "rank_of_first_relevant": 2,
+          "raw_results": [
+            {
+              "actual_memory_id": "H16",
+              "source_url": "http://127.0.0.1:9400/historical/H16",
+              "sha256": "b8b1126bd510e8defcb162943a3c64b92d8ba9de70abfff87b9fddd01583a48e",
+              "rank": 1,
+              "corpus_memory_id": "H16"
+            },
+            {
+              "actual_memory_id": "H13",
+              "source_url": "http://127.0.0.1:9400/historical/H13",
+              "sha256": "17ad99afba0a2dbb59eedc0488058f618c2c659638eb44e6f1bc6a6a878a46e6",
+              "rank": 2,
+              "corpus_memory_id": "H13"
+            },
+            {
+              "actual_memory_id": "H15",
+              "source_url": "http://127.0.0.1:9400/historical/H15",
+              "sha256": "b2f739f08214d14abd5a737084ba3189cda89bdd5951473f04f56dc0f0799102",
+              "rank": 3,
+              "corpus_memory_id": "H15"
+            }
+          ]
+        },
+        {
+          "id": "Q8",
+          "retrieved": [
+            "H16",
+            "H13",
+            "H15"
+          ],
+          "relevant": [
+            "H14"
+          ],
+          "rank_of_first_relevant": null,
+          "raw_results": [
+            {
+              "actual_memory_id": "H16",
+              "source_url": "http://127.0.0.1:9400/historical/H16",
+              "sha256": "b8b1126bd510e8defcb162943a3c64b92d8ba9de70abfff87b9fddd01583a48e",
+              "rank": 1,
+              "corpus_memory_id": "H16"
+            },
+            {
+              "actual_memory_id": "H13",
+              "source_url": "http://127.0.0.1:9400/historical/H13",
+              "sha256": "17ad99afba0a2dbb59eedc0488058f618c2c659638eb44e6f1bc6a6a878a46e6",
+              "rank": 2,
+              "corpus_memory_id": "H13"
+            },
+            {
+              "actual_memory_id": "H15",
+              "source_url": "http://127.0.0.1:9400/historical/H15",
+              "sha256": "b2f739f08214d14abd5a737084ba3189cda89bdd5951473f04f56dc0f0799102",
+              "rank": 3,
+              "corpus_memory_id": "H15"
+            }
+          ]
+        },
+        {
+          "id": "Q9",
+          "retrieved": [
+            "H16",
+            "H13",
+            "H15"
+          ],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": [
+            {
+              "actual_memory_id": "H16",
+              "source_url": "http://127.0.0.1:9400/historical/H16",
+              "sha256": "b8b1126bd510e8defcb162943a3c64b92d8ba9de70abfff87b9fddd01583a48e",
+              "rank": 1,
+              "corpus_memory_id": "H16"
+            },
+            {
+              "actual_memory_id": "H13",
+              "source_url": "http://127.0.0.1:9400/historical/H13",
+              "sha256": "17ad99afba0a2dbb59eedc0488058f618c2c659638eb44e6f1bc6a6a878a46e6",
+              "rank": 2,
+              "corpus_memory_id": "H13"
+            },
+            {
+              "actual_memory_id": "H15",
+              "source_url": "http://127.0.0.1:9400/historical/H15",
+              "sha256": "b2f739f08214d14abd5a737084ba3189cda89bdd5951473f04f56dc0f0799102",
+              "rank": 3,
+              "corpus_memory_id": "H15"
+            }
+          ]
+        }
+      ]
+    },
+    "B_alive13": {
+      "positive_queries": 6,
+      "negative_queries": 3,
+      "precision_at_3": 0.4444,
+      "recall_at_3": 1.0,
+      "mean_reciprocal_rank": 0.75,
+      "relevant_at_rank_1": 0.5,
+      "false_positive_results": 9,
+      "correct_abstentions": 3,
+      "decoy_rate": 0.5294,
+      "missing_memory_failures": 0,
+      "latency_ms_p50": 5.331,
+      "per_query": [
+        {
+          "id": "Q1",
+          "retrieved": [
+            "H04",
+            "H01",
+            "H03"
+          ],
+          "relevant": [
+            "H01",
+            "H03"
+          ],
+          "rank_of_first_relevant": 2,
+          "raw_results": [
+            {
+              "actual_memory_id": "3f991445-9bb6-4b88-bb6b-b0a68ae3e45c",
+              "source_url": "http://127.0.0.1:9400/historical/H04",
+              "sha256": "40f8e93d5af8fd7763b0e68d6d99aed9755ea933717155f5ee7f27195d654d9c",
+              "rank": 1,
+              "score": 12,
+              "corpus_memory_id": "H04"
+            },
+            {
+              "actual_memory_id": "9a6973a8-a8e8-4b2f-bee8-fd757f4a9c3e",
+              "source_url": "http://127.0.0.1:9400/historical/H01",
+              "sha256": "b55e421debf24e41a5d34e9b060d200295cb7b34da17c04818e6a10eac62ed72",
+              "rank": 2,
+              "score": 12,
+              "corpus_memory_id": "H01"
+            },
+            {
+              "actual_memory_id": "f579674d-894f-4234-adb8-ed1f4f2b27aa",
+              "source_url": "http://127.0.0.1:9400/historical/H03",
+              "sha256": "d8bb9c0c313c3c87f3371ade74eb88e69cb3738d240cf7069686fe1da3745d50",
+              "rank": 3,
+              "score": 6,
+              "corpus_memory_id": "H03"
+            }
+          ]
+        },
+        {
+          "id": "Q2",
+          "retrieved": [
+            "H02",
+            "H05"
+          ],
+          "relevant": [
+            "H02"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "actual_memory_id": "9bbcddad-2bad-4097-a2ba-9bafcc5ede91",
+              "source_url": "http://127.0.0.1:9400/historical/H02",
+              "sha256": "773ec19dd2726cb1b4d1702a4333674dc418b5983c528a2af48482c879a0b1f4",
+              "rank": 1,
+              "score": 18,
+              "corpus_memory_id": "H02"
+            },
+            {
+              "actual_memory_id": "d21d9c00-f604-4a0a-8b00-880059836ce2",
+              "source_url": "http://127.0.0.1:9400/historical/H05",
+              "sha256": "fb4e9c76ffd9b12920a49d887272036bbecebb57918ea5307aa282dbffd61429",
+              "rank": 2,
+              "score": 6,
+              "corpus_memory_id": "H05"
+            }
+          ]
+        },
+        {
+          "id": "Q3",
+          "retrieved": [],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "Q4",
+          "retrieved": [
+            "H10",
+            "H07",
+            "H09"
+          ],
+          "relevant": [
+            "H07"
+          ],
+          "rank_of_first_relevant": 2,
+          "raw_results": [
+            {
+              "actual_memory_id": "b10f4bd9-d631-41bf-8fa9-5f450069ba72",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 1,
+              "score": 4,
+              "corpus_memory_id": "H10"
+            },
+            {
+              "actual_memory_id": "3d606f04-27b5-4700-b72d-a0134ef8fc80",
+              "source_url": "http://127.0.0.1:9400/historical/H07",
+              "sha256": "1d7f7f7fbaab20c82c93222cf4d7fdb6e6548244ece57ff9341f87f15690294e",
+              "rank": 2,
+              "score": 4,
+              "corpus_memory_id": "H07"
+            },
+            {
+              "actual_memory_id": "06a5756d-d7fd-47d8-bb98-d36e56b70fea",
+              "source_url": "http://127.0.0.1:9400/historical/H09",
+              "sha256": "b99e127c525c5487756a1dc5f2778d0ef3d91bc8ef5345d03fca74a72a13b307",
+              "rank": 3,
+              "score": 3,
+              "corpus_memory_id": "H09"
+            }
+          ]
+        },
+        {
+          "id": "Q5",
+          "retrieved": [
+            "H08",
+            "H09",
+            "H10"
+          ],
+          "relevant": [
+            "H08"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "actual_memory_id": "ba50c79c-c66d-4432-bd02-8dd100b3e841",
+              "source_url": "http://127.0.0.1:9400/historical/H08",
+              "sha256": "2412bcbc33610af89d7356c6bc7a9828e8b9b307fbb1b2f7d2bb61e5643af500",
+              "rank": 1,
+              "score": 12,
+              "corpus_memory_id": "H08"
+            },
+            {
+              "actual_memory_id": "06a5756d-d7fd-47d8-bb98-d36e56b70fea",
+              "source_url": "http://127.0.0.1:9400/historical/H09",
+              "sha256": "b99e127c525c5487756a1dc5f2778d0ef3d91bc8ef5345d03fca74a72a13b307",
+              "rank": 2,
+              "score": 3,
+              "corpus_memory_id": "H09"
+            },
+            {
+              "actual_memory_id": "b10f4bd9-d631-41bf-8fa9-5f450069ba72",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 3,
+              "score": 2,
+              "corpus_memory_id": "H10"
+            }
+          ]
+        },
+        {
+          "id": "Q6",
+          "retrieved": [],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "Q7",
+          "retrieved": [
+            "H16",
+            "H13",
+            "H17"
+          ],
+          "relevant": [
+            "H13",
+            "H17"
+          ],
+          "rank_of_first_relevant": 2,
+          "raw_results": [
+            {
+              "actual_memory_id": "bbec7ad2-1f08-4436-a34e-50a5fd52ab8b",
+              "source_url": "http://127.0.0.1:9400/historical/H16",
+              "sha256": "b8b1126bd510e8defcb162943a3c64b92d8ba9de70abfff87b9fddd01583a48e",
+              "rank": 1,
+              "score": 14,
+              "corpus_memory_id": "H16"
+            },
+            {
+              "actual_memory_id": "dd540635-d609-4a54-9d86-122cadeaac1b",
+              "source_url": "http://127.0.0.1:9400/historical/H13",
+              "sha256": "17ad99afba0a2dbb59eedc0488058f618c2c659638eb44e6f1bc6a6a878a46e6",
+              "rank": 2,
+              "score": 14,
+              "corpus_memory_id": "H13"
+            },
+            {
+              "actual_memory_id": "72d01a41-34f1-4c07-bbaf-4b1de770d1e0",
+              "source_url": "http://127.0.0.1:9400/historical/H17",
+              "sha256": "35f93e2ed5890e8f7daf5289c596be51168b37f7355e30106031b943b59410ec",
+              "rank": 3,
+              "score": 10,
+              "corpus_memory_id": "H17"
+            }
+          ]
+        },
+        {
+          "id": "Q8",
+          "retrieved": [
+            "H14",
+            "H18",
+            "H15"
+          ],
+          "relevant": [
+            "H14"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "actual_memory_id": "31b59e09-7efd-4cb2-8861-93e8a1838422",
+              "source_url": "http://127.0.0.1:9400/historical/H14",
+              "sha256": "a19b1c7d113a60e8c3098e8ae6017debe82d0f6706f226aadc23b089de7e62d6",
+              "rank": 1,
+              "score": 8,
+              "corpus_memory_id": "H14"
+            },
+            {
+              "actual_memory_id": "57ce71ff-bcd6-4252-83aa-d6cdbf19a22c",
+              "source_url": "http://127.0.0.1:9400/historical/H18",
+              "sha256": "d43b9f1641617fa1a31eb6dc56fd4763b7ea4a5597d1708a3ab7ee4b97f967b7",
+              "rank": 2,
+              "score": 3,
+              "corpus_memory_id": "H18"
+            },
+            {
+              "actual_memory_id": "c81ba9af-153e-4881-9ffb-3c2aeefa9fb3",
+              "source_url": "http://127.0.0.1:9400/historical/H15",
+              "sha256": "b2f739f08214d14abd5a737084ba3189cda89bdd5951473f04f56dc0f0799102",
+              "rank": 3,
+              "score": 3,
+              "corpus_memory_id": "H15"
+            }
+          ]
+        },
+        {
+          "id": "Q9",
+          "retrieved": [],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        }
+      ]
+    },
+    "C_alive14_bm25": {
+      "positive_queries": 6,
+      "negative_queries": 3,
+      "precision_at_3": 0.4444,
+      "recall_at_3": 1.0,
+      "mean_reciprocal_rank": 1.0,
+      "relevant_at_rank_1": 1.0,
+      "false_positive_results": 9,
+      "correct_abstentions": 3,
+      "decoy_rate": 0.5294,
+      "missing_memory_failures": 0,
+      "latency_ms_p50": 4.964,
+      "per_query": [
+        {
+          "id": "Q1",
+          "retrieved": [
+            "H01",
+            "H04",
+            "H03"
+          ],
+          "relevant": [
+            "H01",
+            "H03"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "actual_memory_id": "9a6973a8-a8e8-4b2f-bee8-fd757f4a9c3e",
+              "source_url": "http://127.0.0.1:9400/historical/H01",
+              "sha256": "b55e421debf24e41a5d34e9b060d200295cb7b34da17c04818e6a10eac62ed72",
+              "rank": 1,
+              "score": 4.051843,
+              "corpus_memory_id": "H01"
+            },
+            {
+              "actual_memory_id": "3f991445-9bb6-4b88-bb6b-b0a68ae3e45c",
+              "source_url": "http://127.0.0.1:9400/historical/H04",
+              "sha256": "40f8e93d5af8fd7763b0e68d6d99aed9755ea933717155f5ee7f27195d654d9c",
+              "rank": 2,
+              "score": 2.296391,
+              "corpus_memory_id": "H04"
+            },
+            {
+              "actual_memory_id": "f579674d-894f-4234-adb8-ed1f4f2b27aa",
+              "source_url": "http://127.0.0.1:9400/historical/H03",
+              "sha256": "d8bb9c0c313c3c87f3371ade74eb88e69cb3738d240cf7069686fe1da3745d50",
+              "rank": 3,
+              "score": 0.817603,
+              "corpus_memory_id": "H03"
+            }
+          ]
+        },
+        {
+          "id": "Q2",
+          "retrieved": [
+            "H02",
+            "H05"
+          ],
+          "relevant": [
+            "H02"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "actual_memory_id": "9bbcddad-2bad-4097-a2ba-9bafcc5ede91",
+              "source_url": "http://127.0.0.1:9400/historical/H02",
+              "sha256": "773ec19dd2726cb1b4d1702a4333674dc418b5983c528a2af48482c879a0b1f4",
+              "rank": 1,
+              "score": 12.896992,
+              "corpus_memory_id": "H02"
+            },
+            {
+              "actual_memory_id": "d21d9c00-f604-4a0a-8b00-880059836ce2",
+              "source_url": "http://127.0.0.1:9400/historical/H05",
+              "sha256": "fb4e9c76ffd9b12920a49d887272036bbecebb57918ea5307aa282dbffd61429",
+              "rank": 2,
+              "score": 2.5136,
+              "corpus_memory_id": "H05"
+            }
+          ]
+        },
+        {
+          "id": "Q3",
+          "retrieved": [],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "Q4",
+          "retrieved": [
+            "H07",
+            "H09",
+            "H10"
+          ],
+          "relevant": [
+            "H07"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "actual_memory_id": "3d606f04-27b5-4700-b72d-a0134ef8fc80",
+              "source_url": "http://127.0.0.1:9400/historical/H07",
+              "sha256": "1d7f7f7fbaab20c82c93222cf4d7fdb6e6548244ece57ff9341f87f15690294e",
+              "rank": 1,
+              "score": 2.167367,
+              "corpus_memory_id": "H07"
+            },
+            {
+              "actual_memory_id": "06a5756d-d7fd-47d8-bb98-d36e56b70fea",
+              "source_url": "http://127.0.0.1:9400/historical/H09",
+              "sha256": "b99e127c525c5487756a1dc5f2778d0ef3d91bc8ef5345d03fca74a72a13b307",
+              "rank": 2,
+              "score": 1.239942,
+              "corpus_memory_id": "H09"
+            },
+            {
+              "actual_memory_id": "b10f4bd9-d631-41bf-8fa9-5f450069ba72",
+              "source_url": "http://127.0.0.1:9400/historical/H10",
+              "sha256": "d8a668ebbb0ef1b19bdc0faddde962f3b2a8505e51103475b64f87f4ee31720d",
+              "rank": 3,
+              "score": 1.212424,
+              "corpus_memory_id": "H10"
+            }
+          ]
+        },
+        {
+          "id": "Q5",
+          "retrieved": [
+            "H08",
+            "H09",
+            "H07"
+          ],
+          "relevant": [
+            "H08"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "actual_memory_id": "ba50c79c-c66d-4432-bd02-8dd100b3e841",
+              "source_url": "http://127.0.0.1:9400/historical/H08",
+              "sha256": "2412bcbc33610af89d7356c6bc7a9828e8b9b307fbb1b2f7d2bb61e5643af500",
+              "rank": 1,
+              "score": 8.298554,
+              "corpus_memory_id": "H08"
+            },
+            {
+              "actual_memory_id": "06a5756d-d7fd-47d8-bb98-d36e56b70fea",
+              "source_url": "http://127.0.0.1:9400/historical/H09",
+              "sha256": "b99e127c525c5487756a1dc5f2778d0ef3d91bc8ef5345d03fca74a72a13b307",
+              "rank": 2,
+              "score": 1.239942,
+              "corpus_memory_id": "H09"
+            },
+            {
+              "actual_memory_id": "3d606f04-27b5-4700-b72d-a0134ef8fc80",
+              "source_url": "http://127.0.0.1:9400/historical/H07",
+              "sha256": "1d7f7f7fbaab20c82c93222cf4d7fdb6e6548244ece57ff9341f87f15690294e",
+              "rank": 3,
+              "score": 0.729543,
+              "corpus_memory_id": "H07"
+            }
+          ]
+        },
+        {
+          "id": "Q6",
+          "retrieved": [],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        },
+        {
+          "id": "Q7",
+          "retrieved": [
+            "H13",
+            "H16",
+            "H17"
+          ],
+          "relevant": [
+            "H13",
+            "H17"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "actual_memory_id": "dd540635-d609-4a54-9d86-122cadeaac1b",
+              "source_url": "http://127.0.0.1:9400/historical/H13",
+              "sha256": "17ad99afba0a2dbb59eedc0488058f618c2c659638eb44e6f1bc6a6a878a46e6",
+              "rank": 1,
+              "score": 3.654186,
+              "corpus_memory_id": "H13"
+            },
+            {
+              "actual_memory_id": "bbec7ad2-1f08-4436-a34e-50a5fd52ab8b",
+              "source_url": "http://127.0.0.1:9400/historical/H16",
+              "sha256": "b8b1126bd510e8defcb162943a3c64b92d8ba9de70abfff87b9fddd01583a48e",
+              "rank": 2,
+              "score": 1.923256,
+              "corpus_memory_id": "H16"
+            },
+            {
+              "actual_memory_id": "72d01a41-34f1-4c07-bbaf-4b1de770d1e0",
+              "source_url": "http://127.0.0.1:9400/historical/H17",
+              "sha256": "35f93e2ed5890e8f7daf5289c596be51168b37f7355e30106031b943b59410ec",
+              "rank": 3,
+              "score": 1.21121,
+              "corpus_memory_id": "H17"
+            }
+          ]
+        },
+        {
+          "id": "Q8",
+          "retrieved": [
+            "H14",
+            "H15",
+            "H18"
+          ],
+          "relevant": [
+            "H14"
+          ],
+          "rank_of_first_relevant": 1,
+          "raw_results": [
+            {
+              "actual_memory_id": "31b59e09-7efd-4cb2-8861-93e8a1838422",
+              "source_url": "http://127.0.0.1:9400/historical/H14",
+              "sha256": "a19b1c7d113a60e8c3098e8ae6017debe82d0f6706f226aadc23b089de7e62d6",
+              "rank": 1,
+              "score": 6.836656,
+              "corpus_memory_id": "H14"
+            },
+            {
+              "actual_memory_id": "c81ba9af-153e-4881-9ffb-3c2aeefa9fb3",
+              "source_url": "http://127.0.0.1:9400/historical/H15",
+              "sha256": "b2f739f08214d14abd5a737084ba3189cda89bdd5951473f04f56dc0f0799102",
+              "rank": 2,
+              "score": 1.898997,
+              "corpus_memory_id": "H15"
+            },
+            {
+              "actual_memory_id": "57ce71ff-bcd6-4252-83aa-d6cdbf19a22c",
+              "source_url": "http://127.0.0.1:9400/historical/H18",
+              "sha256": "d43b9f1641617fa1a31eb6dc56fd4763b7ea4a5597d1708a3ab7ee4b97f967b7",
+              "rank": 3,
+              "score": 1.221872,
+              "corpus_memory_id": "H18"
+            }
+          ]
+        },
+        {
+          "id": "Q9",
+          "retrieved": [],
+          "relevant": [],
+          "rank_of_first_relevant": null,
+          "raw_results": []
+        }
+      ]
+    },
+    "D_full_history": {
+      "positive_queries": 6,
+      "mean_history_size": 6,
+      "history_contains_relevant": 1.0,
+      "per_query": [
+        {
+          "id": "Q1",
+          "retrieved": [
+            "H04",
+            "H03",
+            "H06",
+            "H05",
+            "H02",
+            "H01"
+          ],
+          "relevant": [
+            "H01",
+            "H03"
+          ]
+        },
+        {
+          "id": "Q2",
+          "retrieved": [
+            "H04",
+            "H03",
+            "H06",
+            "H05",
+            "H02",
+            "H01"
+          ],
+          "relevant": [
+            "H02"
+          ]
+        },
+        {
+          "id": "Q3",
+          "retrieved": [
+            "H04",
+            "H03",
+            "H06",
+            "H05",
+            "H02",
+            "H01"
+          ],
+          "relevant": []
+        },
+        {
+          "id": "Q4",
+          "retrieved": [
+            "H10",
+            "H12",
+            "H08",
+            "H11",
+            "H07",
+            "H09"
+          ],
+          "relevant": [
+            "H07"
+          ]
+        },
+        {
+          "id": "Q5",
+          "retrieved": [
+            "H10",
+            "H12",
+            "H08",
+            "H11",
+            "H07",
+            "H09"
+          ],
+          "relevant": [
+            "H08"
+          ]
+        },
+        {
+          "id": "Q6",
+          "retrieved": [
+            "H10",
+            "H12",
+            "H08",
+            "H11",
+            "H07",
+            "H09"
+          ],
+          "relevant": []
+        },
+        {
+          "id": "Q7",
+          "retrieved": [
+            "H16",
+            "H13",
+            "H15",
+            "H17",
+            "H18",
+            "H14"
+          ],
+          "relevant": [
+            "H13",
+            "H17"
+          ]
+        },
+        {
+          "id": "Q8",
+          "retrieved": [
+            "H16",
+            "H13",
+            "H15",
+            "H17",
+            "H18",
+            "H14"
+          ],
+          "relevant": [
+            "H14"
+          ]
+        },
+        {
+          "id": "Q9",
+          "retrieved": [
+            "H16",
+            "H13",
+            "H15",
+            "H17",
+            "H18",
+            "H14"
+          ],
+          "relevant": []
+        }
+      ]
+    }
+  },
+  "criteria": {
+    "long_excerpt_regression": true,
+    "generic_overlap_abstention": true,
+    "recall_at_3_not_worse_than_alive13": true,
+    "mrr_not_worse_than_alive13": true,
+    "deterministic": true,
+    "no_provider_call_for_retrieval": true
+  },
+  "classification": "RETRIEVAL_ADVANTAGE_DEMONSTRATED",
+  "relationship_dry_run": {
+    "provider": "local_stub",
+    "external": false,
+    "paid_calls": 0,
+    "conditions": {
+      "A_current_only": "prepared in the protocol; not scored because no owner ratings were collected",
+      "B_current_plus_retrieved_history": "local-stub consent and analysis path exercised",
+      "C_history_without_synthesis": "historical source remains directly inspectable"
+    },
+    "owner_ratings": "SCRIPTED_ONLY",
+    "owner_rating_note": "Only scripted plumbing feedback was exercised natively; no human owner ratings were collected.",
+    "records": [
+      {
+        "query_id": "Q1",
+        "consent_id": "8ca1364b-3afa-41b1-a161-59899c89bc11",
+        "authorized_status": "authorized",
+        "external": false,
+        "provider": {
+          "id": "local_stub",
+          "model": "deterministic-local-stub-v1",
+          "external": false
+        },
+        "preview_payload_sha256": "f9af1494eb572eae50c78299f3593d981bb097186d685664a13547be01c4abd5",
+        "analysis_status": "validated",
+        "validation": {
+          "valid": true,
+          "current_quote_exact": true,
+          "historical_quote_exact": true
+        },
+        "connection_relation": "possible_conceptual_connection",
+        "connection_quotes_exact": true
+      },
+      {
+        "query_id": "Q4",
+        "consent_id": "7599af5f-00fc-46c1-b235-f410e6cd086a",
+        "authorized_status": "authorized",
+        "external": false,
+        "provider": {
+          "id": "local_stub",
+          "model": "deterministic-local-stub-v1",
+          "external": false
+        },
+        "preview_payload_sha256": "3a4dad48a765c34430c26aa9d5d594a292c84d9108c0c266f117e396ce0189c1",
+        "analysis_status": "validated",
+        "validation": {
+          "valid": true,
+          "current_quote_exact": true,
+          "historical_quote_exact": true
+        },
+        "connection_relation": "possible_conceptual_connection",
+        "connection_quotes_exact": true
+      },
+      {
+        "query_id": "Q7",
+        "consent_id": "0dea2d89-4849-44c4-9d20-b52df1ba70cc",
+        "authorized_status": "authorized",
+        "external": false,
+        "provider": {
+          "id": "local_stub",
+          "model": "deterministic-local-stub-v1",
+          "external": false
+        },
+        "preview_payload_sha256": "c6ea45d39966b8b9b15f3bb7761b1cc12b132a8eba015ebca69f5fa3f5cca9e6",
+        "analysis_status": "validated",
+        "validation": {
+          "valid": true,
+          "current_quote_exact": true,
+          "historical_quote_exact": true
+        },
+        "connection_relation": "possible_conceptual_connection",
+        "connection_quotes_exact": true
+      }
+    ],
+    "note": "The local stub validates consent, payload binding, structured output, quotation validation and persistence. It does not measure relationship usefulness."
+  }
+}
