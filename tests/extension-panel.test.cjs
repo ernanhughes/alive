@@ -19,18 +19,22 @@ async function panel() {
   let resolveNote;
   let changed;
   let stored = {};
+  let sendResult = { decision: null, snapshot: { data: { text_status: 'first_excerpt',
+    sha256: 'fixture', text: 'fixture' } } };
   const document = { getElementById: element, createElement: () => ({}) };
   const chrome = { storage: {
     local: { get: async () => ({}), set: async () => {} },
     session: { get: async () => stored },
     onChanged: { addListener: listener => { changed = listener; } },
   }, runtime: { sendMessage: async message => message.type === 'note'
-    ? new Promise(resolve => { resolveNote = resolve; }) : { data: { ok: true } } } };
+    ? new Promise(resolve => { resolveNote = resolve; })
+    : message.type === 'send' ? { data: sendResult } : { data: { ok: true } } } };
   const load = new AsyncFunction('chrome', 'document', 'clearInterval',
     source + '\nreturn { pollNote, action };');
   const api = await load(chrome, document, () => {});
   return { element, api,
     reply: response => resolveNote(response),
+    setSend: value => { sendResult = value; },
     change: async text => {
       stored = { latest: { payload: { text, url: 'https://docs.python.org/3/tutorial/' } } };
       await changed();
@@ -89,4 +93,32 @@ test('a current validated note still enables feedback', async () => {
   assert.equal(p.element('useful').disabled, false);
   assert.equal(p.element('needs-work').disabled, false);
   assert.match(p.element('status').textContent, /Meta note ready/);
+});
+
+test('a no-action decision clears the previous note cost and feedback target', async () => {
+  const p = await panel();
+  p.element('cost').textContent = 'Previous note usage: stale cost';
+  p.element('useful').disabled = false;
+  p.element('needs-work').disabled = false;
+  p.setSend({
+    decision: {
+      action: 'no_action',
+      no_action_source: 'feedback_policy',
+      goal_relevance: { language: 'en', language_source: 'detected', policy: 'fixture',
+        relevant: true, basis: 'fixture', matched_terms: [] },
+      adaptive_policy: { distinct_evidence: 3, useful: 0, not_useful: 3,
+        suppressions: 1, probe_after_suppressions: 3, probe: false,
+        recommendation: 'no_action', reason: 'fixture pause' },
+      note: null,
+      candidate_note: note,
+    },
+    snapshot: { data: { text_status: 'changed_excerpt', sha256: 'fixture', text: 'fixture' } },
+  });
+  await p.change('A new reviewed observation.');
+  await p.element('send').onclick();
+  assert.equal(p.element('cost').textContent, '');
+  assert.equal(p.element('useful').disabled, true);
+  assert.equal(p.element('needs-work').disabled, true);
+  assert.equal(p.element('note-heading').textContent, 'No current note');
+  assert.match(p.element('note').textContent, /No model note/);
 });

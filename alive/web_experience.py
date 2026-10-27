@@ -99,6 +99,8 @@ def new_context(goal_id, url, language):
         "url": url,
         "language": language,
         "evidence": {},
+        "suppressed_excerpts": {},
+        "probed_excerpts": {},
         "suppressions": 0,
         "probes": 0,
         "updated_at": None,
@@ -168,7 +170,9 @@ def adaptive_recommendation(
     probe_after = policy.get("probe_after_suppressions", POLICY_PROBE_AFTER)
     useful, not_useful, support = evidence_counts(context)
     rate = useful / support if support else None
-    suppressions = int(context.get("suppressions", 0))
+    tracked = context.get("suppressed_excerpts")
+    suppression_tracking = isinstance(tracked, dict)
+    suppressions = len(tracked) if suppression_tracking else int(context.get("suppressions", 0))
     version = policy.get("version", 0)
     common = {
         "policy_id": POLICY_ID,
@@ -184,6 +188,7 @@ def adaptive_recommendation(
         "minimum_support": minimum_support,
         "maximum_useful_rate": maximum_useful_rate,
         "suppressions": suppressions,
+        "suppression_tracking": suppression_tracking,
         "probe_after_suppressions": probe_after,
         "probes": int(context.get("probes", 0)),
         "probe_due": False,
@@ -195,7 +200,7 @@ def adaptive_recommendation(
             "analysis recommendation.",
         }
     if rate is not None and rate <= maximum_useful_rate:
-        if suppressions >= probe_after:
+        if suppression_tracking and suppressions >= probe_after:
             return common | {
                 "recommendation": "analyse",
                 "probe": True,
@@ -475,7 +480,24 @@ class WebCompanion:
                 snapshot.data.get("language_requested", "auto"),
             ),
         )
-        context["suppressions"] = int(context.get("suppressions", 0)) + 1
+        sha256 = snapshot.data["sha256"]
+        suppressed = context.setdefault("suppressed_excerpts", {})
+        if not isinstance(suppressed, dict):
+            suppressed = {}
+            context["suppressed_excerpts"] = suppressed
+        if sha256 in suppressed:
+            return adaptive | {
+                "policy_version": before.get("version", 0),
+                "policy_hash": policy_hash(before),
+                "suppressions": len(suppressed),
+                "repeated_suppression": True,
+                "reason": (
+                    "This exact excerpt was already paused. Repeated observations do not "
+                    "advance the recovery probe counter."
+                ),
+            }
+        suppressed[sha256] = now().isoformat()
+        context["suppressions"] = len(suppressed)
         context["last_suppressed_at"] = now().isoformat()
         context["updated_at"] = context["last_suppressed_at"]
         after["version"] = before.get("version", 0) + 1
@@ -486,6 +508,7 @@ class WebCompanion:
                     "version": after["version"],
                     "event": "suppression",
                     "context": key,
+                    "evidence_sha256": sha256,
                     "support": adaptive["support"],
                     "suppressions": context["suppressions"],
                     "probe_after_suppressions": adaptive["probe_after_suppressions"],
@@ -501,6 +524,7 @@ class WebCompanion:
                 "policy_id": POLICY_ID,
                 "version": after["version"],
                 "context": key,
+                "evidence_sha256": sha256,
                 "suppressions": context["suppressions"],
                 "support": adaptive["support"],
             },
@@ -523,6 +547,10 @@ class WebCompanion:
                 snapshot.data.get("language_requested", "auto"),
             ),
         )
+        sha256 = snapshot.data["sha256"]
+        context["suppressed_excerpts"] = {}
+        context["probed_excerpts"] = context.get("probed_excerpts") or {}
+        context["probed_excerpts"][sha256] = now().isoformat()
         context["suppressions"] = 0
         context["probes"] = int(context.get("probes", 0)) + 1
         context["last_probe_at"] = now().isoformat()
@@ -535,6 +563,7 @@ class WebCompanion:
                     "version": after["version"],
                     "event": "periodic_probe",
                     "context": key,
+                    "evidence_sha256": sha256,
                     "support": adaptive["support"],
                     "probes": context["probes"],
                     "at": context["updated_at"],
@@ -553,6 +582,7 @@ class WebCompanion:
                 "policy_id": POLICY_ID,
                 "version": after["version"],
                 "context": key,
+                "evidence_sha256": sha256,
                 "probes": context["probes"],
                 "support": adaptive["support"],
             },
@@ -568,11 +598,13 @@ class WebCompanion:
 
     async def reset_suppressions(self, s, policy, key, adaptive):
         context = policy_context(policy.data, key)
-        if int(context.get("suppressions", 0)) <= 0:
+        legacy = int(context.get("suppressions", 0))
+        if legacy <= 0 and not context.get("suppressed_excerpts"):
             return adaptive
         before = copy.deepcopy(policy.data)
         after = copy.deepcopy(before)
         current = after["contexts"][key]
+        current["suppressed_excerpts"] = {}
         current["suppressions"] = 0
         current["owner_correction_resets"] = int(current.get("owner_correction_resets", 0)) + 1
         current["updated_at"] = now().isoformat()
@@ -701,6 +733,13 @@ class WebCompanion:
             }
         if adaptive["recommendation"] == "no_action":
             adaptive = await self.record_suppression(s, policy, key, adaptive, snapshot)
+            if adaptive.get("repeated_suppression"):
+                adaptive = adaptive | {
+                    "reason": (
+                        "This exact excerpt was already paused. Repeated observations do not "
+                        "advance the recovery probe counter."
+                    )
+                }
             return base | {
                 "action": "no_action",
                 "policy": POLICY_ID,
@@ -711,10 +750,38 @@ class WebCompanion:
                 "reason": adaptive["reason"],
                 "adaptive_policy": adaptive,
                 "no_action_source": "feedback_policy",
+                "repeated_suppression": bool(adaptive.get("repeated_suppression")),
                 "policy_version": adaptive["policy_version"],
                 "policy_hash": adaptive["policy_hash"],
             }
         if adaptive.get("probe"):
+            sha256 = snapshot.data["sha256"]
+            suppressed = context.get("suppressed_excerpts")
+            probed = context.get("probed_excerpts")
+            suppressed = suppressed if isinstance(suppressed, dict) else {}
+            probed = probed if isinstance(probed, dict) else {}
+            if unit is not None or sha256 in suppressed or sha256 in probed:
+                adaptive = adaptive | {
+                    "recommendation": "no_action",
+                    "probe": False,
+                    "probe_blocked": "excerpt_not_fresh",
+                    "reason": (
+                        "A periodic probe is due, but this exact excerpt has already been "
+                        "paused, rated, or probed. A new reviewed excerpt is required."
+                    ),
+                }
+                return base | {
+                    "action": "no_action",
+                    "policy": POLICY_ID,
+                    "without_feedback_action": "analyse",
+                    "feedback_id": None,
+                    "note": None,
+                    "candidate_note": record(notes[-1]) if notes else None,
+                    "reason": adaptive["reason"],
+                    "adaptive_policy": adaptive,
+                    "no_action_source": "feedback_policy",
+                    "probe_blocked": "excerpt_not_fresh",
+                }
             adaptive = await self.record_probe(s, policy, key, adaptive, snapshot)
             return base | {
                 "action": "analyse",
