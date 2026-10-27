@@ -8,6 +8,7 @@ let reviewed = null;
 let polling = null;
 let currentDecision = null;
 let reviewedSignature = null;
+let noteGeneration = 0;
 async function command(type, args = {}) {
   const response = await chrome.runtime.sendMessage({ type, ...args });
   if (response.error) throw new Error(response.error);
@@ -19,6 +20,14 @@ async function action(fn) {
 function setFeedback(note, allowFeedback = true) {
   const enabled = allowFeedback && note?.status === 'validated';
   $('useful').disabled = $('needs-work').disabled = !enabled;
+}
+function invalidateNote() {
+  noteGeneration += 1;
+  clearInterval(polling);
+  polling = null;
+  setFeedback(null, false);
+  $('analyse').disabled = true;
+  return noteGeneration;
 }
 function showNote(note, allowFeedback = true) {
   $('note').replaceChildren();
@@ -34,8 +43,11 @@ function showNote(note, allowFeedback = true) {
   setFeedback(note, allowFeedback);
   $('cost').textContent = note ? `${note.status} · ${note.data.model} · ${note.data.usage?.total_tokens ?? 'pending'} tokens · estimated $${note.data.estimated_usd ?? '?'} · ${Math.round(note.data.latency_ms || 0)} ms` : '';
 }
-async function pollNote() {
-  const note = await command('note');
+async function pollNote(generation = noteGeneration) {
+  let note;
+  try { note = await command('note'); }
+  catch (error) { if (generation !== noteGeneration) return; throw error; }
+  if (generation !== noteGeneration) return;
   showNote(note);
   if (note && note.status !== 'reserved') { clearInterval(polling); polling = null;
     $('status').textContent = note.status === 'validated' ? 'Meta note ready · review its evidence and limitations' : 'Meta note failed · failure retained in ledger'; }
@@ -56,6 +68,7 @@ $('connect').onclick = () => action(async () => {
   }
 });
 $('resume').onchange = () => action(async () => {
+  invalidateNote();
   await command('stop');
   await chrome.storage.local.set({ goalId: $('resume').value });
   $('goal').value = $('resume').selectedOptions[0].textContent;
@@ -63,18 +76,25 @@ $('resume').onchange = () => action(async () => {
   $('status').textContent = 'Goal resumed; authorise this tab again.';
 });
 $('save-goal').onclick = () => action(async () => {
+  invalidateNote();
   await command('stop');
   const goal = await command('goal', { instruction: $('goal').value });
   $('instruction').textContent = goal.data.instruction;
   $('status').textContent = 'Goal saved locally. It survives browser and backend restarts.';
 });
 $('auto').onchange = () => chrome.storage.local.set({ autoSend: $('auto').checked });
+$('language').onchange = () => {
+  invalidateNote();
+  currentDecision = null;
+  $('status').textContent = 'Language changed - save the reviewed observation again';
+};
 $('start').onclick = () => action(async () => {
+  invalidateNote();
   await command('start');
   $('status').textContent = 'Observing this page · explicit permission active for up to 30 minutes';
 });
 $('stop').onclick = () => action(async () => {
-  clearInterval(polling);
+  invalidateNote();
   await command('stop');
   setFeedback(null, false);
   $('note-heading').textContent = 'No current note';
@@ -83,8 +103,10 @@ $('stop').onclick = () => action(async () => {
   $('status').textContent = 'Stopped - page observation revoked';
 });
 $('send').onclick = () => action(async () => {
+  const generation = invalidateNote();
   const language = $('language').value;
   const result = await command('send', { reviewed, language });
+  if (generation !== noteGeneration) return;
   currentDecision = result.decision || null;
   $('status').textContent = 'Observation persisted by ALIVE';
   if (result.decision) {
@@ -162,6 +184,7 @@ $('send').onclick = () => action(async () => {
   }
 });
 $('analyse').onclick = () => action(async () => {
+  const generation = invalidateNote();
   $('analyse').disabled = true;
   setFeedback(null, false);
   $('note-heading').textContent = 'Analysis running';
@@ -170,13 +193,16 @@ $('analyse').onclick = () => action(async () => {
     allow_uncertain_analysis: currentDecision?.action === 'uncertain',
     owner_correction: currentDecision?.action === 'no_action',
   });
+  if (generation !== noteGeneration) return;
   $('status').textContent = 'One bounded Meta request running; Stop cancels it.';
-  polling = setInterval(() => action(pollNote), 750);
-  await pollNote();
+  polling = setInterval(() => action(() => pollNote(generation)), 750);
+  await pollNote(generation);
 });
 for (const [id, useful] of [['useful', true], ['needs-work', false]]) {
   $(id).onclick = () => action(async () => {
+    const generation = noteGeneration;
     const feedback = await command('feedback', { useful });
+    if (generation !== noteGeneration) return;
     const data = feedback.data || {};
     if (feedback.idempotent) {
       $('preference').textContent = 'This rating is already saved. No duplicate policy update was made.';
@@ -201,7 +227,7 @@ async function preview() {
   if (signature !== reviewedSignature) {
     reviewedSignature = signature;
     currentDecision = null;
-    setFeedback(null, false);
+    invalidateNote();
   }
   $('preview').textContent = reviewed ? JSON.stringify(reviewed, null, 2) : 'No observation permission. Authorise this page to preview.';
   $('send').disabled = !reviewed;
