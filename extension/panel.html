@@ -38,7 +38,7 @@
       summary { cursor: pointer; color: #b3d68c; margin: 12px 0; }
       blockquote { margin: 12px 0; padding-left: 12px; border-left: 2px solid #c7ed9d; }
       #decision-label { font-size: 16px; color: #c7ed9d; }
-      #relevance { font-size: 11px; color: #9caf92; line-height: 1.5; }
+      #relevance, #policy { font-size: 11px; color: #9caf92; line-height: 1.5; }
       #note { font-size: 13px; line-height: 1.65; }
       input[type="checkbox"] {
         width: auto;
@@ -109,6 +109,7 @@
     <h2>Contextual choice</h2>
     <p id="decision-label">Awaiting a reviewed observation.</p>
     <p id="relevance"></p>
+    <p id="policy"></p>
     <details><summary>Why this choice?</summary><pre id="decision"></pre></details>
     <button id="analyse" disabled>Send reviewed excerpt to Meta</button>
     <h2>Model interpretation / recalled note</h2>

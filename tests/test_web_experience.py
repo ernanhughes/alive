@@ -1,12 +1,15 @@
 import asyncio
 import json
 import time
+from datetime import timedelta
 from types import SimpleNamespace
 
 from fastapi.testclient import TestClient
 
 from alive.app import create_app
+from alive.models import now
 from alive.web_experience import WebCompanion, digest, goal_relevance
+from alive.web_models import WebExperience
 from tests.conftest import TOKEN
 
 ROOT = "/api/v1/browser-experience"
@@ -50,7 +53,7 @@ def snapshot(client, grant, text=TEXT, expected=200, language="auto"):
     )
 
 
-def analyse(client, shot, expected=200, allow_uncertain=False):
+def analyse(client, shot, expected=200, allow_uncertain=False, owner_correction=False):
     return post(
         client,
         "/analyse",
@@ -59,6 +62,7 @@ def analyse(client, shot, expected=200, allow_uncertain=False):
             "reviewed_sha256": shot["snapshot"]["data"]["sha256"],
             "send_to_meta": True,
             "allow_uncertain_analysis": allow_uncertain,
+            "owner_correction": owner_correction,
         },
         expected,
     )
@@ -322,3 +326,133 @@ def test_revocation_before_inference_prevents_provider_call(client, monkeypatch)
     assert row["data"]["charged_tokens"] == row["data"]["reserved_tokens"]
     assert not calls
     assert client.get(ROOT).json()["active"] is False
+
+
+def test_feedback_policy_is_idempotent_and_revision_replaces_evidence(client, monkeypatch):
+    fake_model(monkeypatch)
+    _, grant = setup(client)
+    shot = snapshot(client, grant)
+    note = wait(client, analyse(client, shot)["id"])
+
+    first = post(client, "/feedback", {"note_id": note["id"], "useful": True})
+    assert first["data"]["policy_version_before"] == 0
+    assert first["data"]["policy_version_after"] == 1
+    duplicate = post(client, "/feedback", {"note_id": note["id"], "useful": True})
+    assert duplicate["idempotent"] is True
+    assert duplicate["data"]["policy_version_after"] == 1
+
+    revised = post(client, "/feedback", {"note_id": note["id"], "useful": False})
+    assert revised["data"]["revision"] is True
+    assert revised["data"]["policy_version_before"] == 1
+    assert revised["data"]["policy_version_after"] == 2
+
+    policy = client.get(ROOT).json()["policy"]["data"]
+    assert policy["version"] == 2
+    context = next(iter(policy["contexts"].values()))
+    assert context["useful"] == 0 and context["not_useful"] == 1
+
+
+def test_three_negative_feedback_suppresses_analysis_and_owner_correction_restores(
+    client, monkeypatch
+):
+    calls = fake_model(monkeypatch)
+    _, grant = setup(client)
+    texts = [TEXT, TEXT + " Extra one.", TEXT + " Extra two."]
+    for text in texts:
+        shot = snapshot(client, grant, text=text)
+        assert shot["decision"]["action"] == "analyse"
+        note = wait(client, analyse(client, shot)["id"])
+        post(client, "/feedback", {"note_id": note["id"], "useful": False})
+    assert len(calls) == 3
+
+    fourth_text = TEXT + " Fourth distinct excerpt."
+    fourth = snapshot(client, grant, text=fourth_text)
+    decision = fourth["decision"]
+    assert decision["action"] == "no_action"
+    assert decision["no_action_source"] == "feedback_policy"
+    assert decision["adaptive_policy"]["support"] == 3
+    assert decision["adaptive_policy"]["useful"] == 0
+    assert len(calls) == 3
+
+    analyse(client, fourth, expected=409)
+    assert len(calls) == 3
+
+    analysed = analyse(client, fourth, owner_correction=True)
+    note = wait(client, analysed["id"])
+    assert note["data"]["owner_correction"] is True
+    assert len(calls) == 4
+    post(client, "/feedback", {"note_id": note["id"], "useful": True})
+
+    fifth = snapshot(client, grant, text=TEXT + " Fifth distinct excerpt.")
+    assert fifth["decision"]["action"] == "analyse"
+    assert fifth["decision"]["adaptive_policy"]["support"] == 4
+    assert fifth["decision"]["adaptive_policy"]["useful"] == 1
+    assert fifth["decision"]["adaptive_policy"]["useful_rate"] == 0.25
+
+    corrections = client.get(ROOT).json()["corrections"]
+    assert any(row["data"]["snapshot_id"] == fourth["snapshot"]["id"] for row in corrections)
+
+
+def test_lexical_no_action_requires_explicit_owner_correction(client, monkeypatch):
+    calls = fake_model(monkeypatch)
+    goal = post(client, "/goals", {"instruction": "Check coolant temperature"})
+    grant = consent(client, goal["id"])
+    shot = snapshot(client, grant)
+    assert shot["decision"]["action"] == "no_action"
+    assert shot["decision"]["no_action_source"] == "lexical_relevance"
+
+    analyse(client, shot, expected=409)
+    assert not calls
+    analysed = analyse(client, shot, owner_correction=True)
+    note = wait(client, analysed["id"])
+    assert note["data"]["owner_correction"] is True
+    assert len(calls) == 1
+    corrections = client.get(ROOT).json()["corrections"]
+    assert corrections[-1]["data"]["prior_action"] == "no_action"
+
+
+def test_owner_correction_cannot_bypass_revoked_grant(client, monkeypatch):
+    calls = fake_model(monkeypatch)
+    goal = post(client, "/goals", {"instruction": "Check coolant temperature"})
+    grant = consent(client, goal["id"])
+    shot = snapshot(client, grant)
+    post(client, "/grants/" + grant["id"] + "/revoke", {})
+    analyse(client, shot, expected=403, owner_correction=True)
+    assert not calls
+
+
+def test_owner_correction_cannot_bypass_expired_grant(client, monkeypatch):
+    calls = fake_model(monkeypatch)
+    goal = post(client, "/goals", {"instruction": "Check coolant temperature"})
+    grant = consent(client, goal["id"])
+    shot = snapshot(client, grant)
+
+    async def expire():
+        async with client.app.state.kernel.db.sessions.begin() as session:
+            row = await session.get(WebExperience, grant["id"])
+            row.data = row.data | {"expires_at": (now() - timedelta(minutes=1)).isoformat()}
+
+    asyncio.run(expire())
+    analyse(client, shot, expected=403, owner_correction=True)
+    assert not calls
+
+
+def test_adaptive_policy_persists_across_restart(client, settings, monkeypatch):
+    calls = fake_model(monkeypatch)
+    goal, grant = setup(client)
+    texts = [TEXT, TEXT + " Restart one.", TEXT + " Restart two."]
+    for text in texts:
+        shot = snapshot(client, grant, text=text)
+        note = wait(client, analyse(client, shot)["id"])
+        post(client, "/feedback", {"note_id": note["id"], "useful": False})
+    assert client.get(ROOT).json()["policy"]["data"]["version"] == 3
+    assert len(calls) == 3
+
+    client.__exit__(None, None, None)
+    with TestClient(create_app(settings), headers={"Authorization": f"Bearer {TOKEN}"}) as reopened:
+        fresh_grant = consent(reopened, goal["id"])
+        fourth = snapshot(reopened, fresh_grant, text=TEXT + " Restart fourth excerpt.")
+        assert fourth["decision"]["action"] == "no_action"
+        assert fourth["decision"]["adaptive_policy"]["support"] == 3
+        assert reopened.get(ROOT).json()["policy"]["data"]["version"] == 3
+        assert len(calls) == 3
