@@ -37,7 +37,8 @@ async def demonstrate(provider, restart):
         assert (await get("/capabilities"))["database"]["backend"] == "postgresql"
         await post("/cognition/control", {"command": "pause"})
         await post("/cognition/control", {"command": "new_session"})
-        await post("/cognition/configuration", {})
+        # This ALIVE-02 regression explicitly exercises the optional Critic.
+        await post("/cognition/configuration", {"use_critic": True})
         identity = (await get("/alive"))["identity"]["id"]
         await post("/cognition/control", {"command": "start", "provider": provider})
         results = []
