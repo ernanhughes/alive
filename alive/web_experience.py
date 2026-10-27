@@ -139,6 +139,15 @@ def evidence_counts(context):
     return useful, len(evidence) - useful, len(evidence)
 
 
+def feedback_revision_order(feedback):
+    """v1 revisions kept their row's creation time but advanced the policy version."""
+    version = feedback.data.get("policy_version_after")
+    if type(version) is not int or version < 0:
+        version = -1  # Feedback predating the adaptive policy has no version.
+    timestamp = feedback.data.get("updated_at") or feedback.created_at.isoformat()
+    return version, timestamp, feedback.id
+
+
 def adaptive_recommendation(
     policy,
     key,
@@ -274,7 +283,9 @@ class WebCompanion:
             if row
             else None
         )
-        for feedback in await self.rows(session, "feedback"):
+        feedback_rows = sorted(await self.rows(session, "feedback"), key=feedback_revision_order)
+        history = row.data.get("history", []) if row else []
+        for feedback in feedback_rows:
             note = await session.get(WebExperience, feedback.parent_id)
             if not note or note.kind != "note" or note.status != "validated":
                 continue
@@ -284,13 +295,24 @@ class WebCompanion:
                 key,
                 new_context(note.data["goal_id"], note.data["url"], language),
             )
+            effective_at = feedback.data.get("updated_at") or next(
+                (
+                    entry.get("at")
+                    for entry in reversed(history)
+                    if entry.get("feedback_id") == feedback.id
+                ),
+                None,
+            )
+            if not effective_at and not feedback.data.get("revision"):
+                effective_at = feedback.created_at.isoformat()
             context["evidence"][note.data["sha256"]] = {
                 "useful": bool(feedback.data.get("useful")),
                 "feedback_id": feedback.id,
                 "note_id": note.id,
-                "updated_at": (feedback.created_at.isoformat() if feedback.created_at else None),
+                "updated_at": effective_at,
+                "effective_policy_version": feedback.data.get("policy_version_after"),
             }
-            context["updated_at"] = feedback.created_at.isoformat() if feedback.created_at else None
+            context["updated_at"] = effective_at
             if migrated["migrated_from"]:
                 migrated["migrated_from"]["feedback_units"] += 1
         row = self.add(session, POLICY_KIND, migrated)
@@ -815,6 +837,7 @@ class WebCompanion:
             useful, not_useful, support = evidence_counts(context)
             feedback.data = feedback.data | {
                 "useful": data.useful,
+                "updated_at": now().isoformat(),
                 "context": key,
                 "evidence_sha256": sha256,
                 "revision": revision,
@@ -873,7 +896,9 @@ class WebCompanion:
                             "No action warranted: observation does not match the owner goal; "
                             "explicit owner correction is required"
                         )
-                elif adaptive["recommendation"] == "no_action" and not probe_authorized:
+                elif (
+                    adaptive["recommendation"] == "no_action" or adaptive.get("probe")
+                ) and not probe_authorized:
                     correction_required = True
                     if not data.owner_correction:
                         raise ValueError(
