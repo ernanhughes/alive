@@ -39,6 +39,11 @@ The frozen pre-fix evidence is in `archives/ALIVE-13/evidence/pre-fix-defects.js
   `complementary` or `no_supported_connection`; the corrected labels are
   `topic_overlap_candidate`, `weak_lexical_overlap` and `insufficient_evidence`.
 
+These controlled reproductions reconstruct the pre-fix algorithm against a fresh database: the
+old query, top-k and post-filter are copied from `af12bc8`, and the ALIVE-13 type allowlist is
+explicitly disabled. They are faithful reproductions of the defect, not a literal execution from a
+checkout made before the edits.
+
 ## Retrieval contract
 
 Research retrieval now operates in this order:

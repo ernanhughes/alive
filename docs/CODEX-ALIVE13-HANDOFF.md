@@ -27,6 +27,10 @@ archives were not modified.
 | Relation labels overstated semantics | Old labels were `same_concept`, `complementary`, `no_supported_connection` for lexical overlap | New labels are `topic_overlap_candidate`, `weak_lexical_overlap`, `insufficient_evidence`; exact source spans and a separate model quotation are stored |
 | Interrupted indexing could strand an active record | Missing projection test | `/research/index/repair` recreates missing projections, refreshes stale content/version, removes stale vectors and deletes withdrawn leftovers without resurrection |
 
+The pre-fix reproductions reconstruct the old query, top-k and post-filter from `af12bc8` against a
+fresh database, with the ALIVE-13 allowlist deliberately disabled. They are faithful reproductions,
+not a literal pre-change checkout run.
+
 ## 3. Memory scope and outbound consent
 
 - General memory types: `experience`, `cognitive_analysis`, `authorised_history`.
