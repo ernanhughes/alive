@@ -1,0 +1,714 @@
+{
+  "protocol_version": "alive12-retrieval-v1",
+  "kind": "controlled cross-page research-memory evaluation",
+  "source_commit": "cf7022cb168b4cbd65bbc0b98faafbb25b498c85",
+  "paid_inference": false,
+  "provider_calls": 5,
+  "scenarios": [
+    {
+      "id": "related-agent-memory",
+      "family": "related",
+      "expected_related": true,
+      "expected_connection": "candidate",
+      "historical_url": "http://127.0.0.1:9300/historical/agent-memory",
+      "current_url": "http://127.0.0.1:9300/current/episodic-retrieval",
+      "historical_memory_id": "6be8d938-126a-4dcd-9864-3ac66ced41f8",
+      "retrieval": {
+        "current_snapshot_id": "cc23952a-12b8-4bd0-b0a5-ec6e7331a6bd",
+        "current_url": "http://127.0.0.1:9300/current/episodic-retrieval",
+        "goal_id": "5c66a93a-50ab-41fa-964a-46a0cd2eb205",
+        "mode": "sqlite_substring",
+        "embedding": null,
+        "results": [
+          {
+            "memory_id": "6be8d938-126a-4dcd-9864-3ac66ced41f8",
+            "source_url": "http://127.0.0.1:9300/historical/agent-memory",
+            "source_title": "Historical controlled source",
+            "goal_id": "5c66a93a-50ab-41fa-964a-46a0cd2eb205",
+            "reviewed_at": "2026-10-27T17:55:08.297912",
+            "age_days": 8.516087962962963e-07,
+            "excerpt": "Persistent agent memory stores research observations across sessions and retrieves them for later tasks.",
+            "evidence_quote": "Persistent agent memory stores research observations across sessions and retrieves them for later tasks.",
+            "note_summary": "Controlled historical research note.",
+            "owner_useful": null,
+            "retrieval_score": 0.01639344262295082,
+            "retrieval_method": "sqlite_substring",
+            "same_source": false,
+            "sha256": "a1b89c15fe3c3310fc92a01f77ec289110d41a1d6aa1c58eb7bde649ca839aff",
+            "source_kind": "reviewed_browser_excerpt",
+            "status": "active"
+          }
+        ],
+        "abstained": false,
+        "count": 1,
+        "message": "Related historical evidence is distinct from current-page evidence."
+      },
+      "connection": {
+        "id": "47182cae-e1e8-4f87-a6ca-24b387eb324e",
+        "instance_id": "448fea78-3bff-4809-9025-38a17d1a84b5",
+        "kind": "research_connection",
+        "parent_id": "cc23952a-12b8-4bd0-b0a5-ec6e7331a6bd",
+        "status": "candidate",
+        "data": {
+          "goal_id": "5c66a93a-50ab-41fa-964a-46a0cd2eb205",
+          "current_snapshot_id": "cc23952a-12b8-4bd0-b0a5-ec6e7331a6bd",
+          "current_url": "http://127.0.0.1:9300/current/episodic-retrieval",
+          "current_sha256": "5950af2bd107bc20d648118d2bc2603252d9e7d6baf8032dfd754104f9cf149f",
+          "current_quote": "Episodic retrieval selects relevant past experiences for an agent current task.",
+          "historical_memory_id": "6be8d938-126a-4dcd-9864-3ac66ced41f8",
+          "historical_url": "http://127.0.0.1:9300/historical/agent-memory",
+          "historical_sha256": "a1b89c15fe3c3310fc92a01f77ec289110d41a1d6aa1c58eb7bde649ca839aff",
+          "historical_quote": "Persistent agent memory stores research observations across sessions and retrieves them for later tasks.",
+          "shared_terms": [
+            "agent"
+          ],
+          "relation_type": "complementary",
+          "explanation": "The excerpts share the term 'agent'. The relationship is weak and requires owner review.",
+          "status": "candidate",
+          "model": "deterministic-lexical-connection-v1",
+          "inference_calls": 0,
+          "owner_useful": null,
+          "quote_validation": {
+            "current_exact": true,
+            "historical_exact": true
+          },
+          "created_at": "2026-10-27T17:55:08.374506+00:00"
+        },
+        "created_at": "2026-10-27T17:55:08.374892+00:00",
+        "current_source": {
+          "url": "http://127.0.0.1:9300/current/episodic-retrieval",
+          "sha256": "5950af2bd107bc20d648118d2bc2603252d9e7d6baf8032dfd754104f9cf149f"
+        },
+        "historical_source": {
+          "url": "http://127.0.0.1:9300/historical/agent-memory",
+          "sha256": "a1b89c15fe3c3310fc92a01f77ec289110d41a1d6aa1c58eb7bde649ca839aff",
+          "reviewed_at": "2026-10-27T17:55:08.297912"
+        },
+        "abstained": false
+      },
+      "history_access": [
+        {
+          "id": "6be8d938-126a-4dcd-9864-3ac66ced41f8",
+          "instance_id": "448fea78-3bff-4809-9025-38a17d1a84b5",
+          "kind": "research_memory",
+          "parent_id": "21d59485-96d4-4b05-a735-9aa6db4040c2",
+          "status": "active",
+          "data": {
+            "goal_id": "5c66a93a-50ab-41fa-964a-46a0cd2eb205",
+            "url": "http://127.0.0.1:9300/historical/agent-memory",
+            "title": "Historical controlled source",
+            "note_id": "21d59485-96d4-4b05-a735-9aa6db4040c2",
+            "snapshot_id": "10aa4518-7eb1-4a57-b68e-1e27fe41ba76",
+            "sha256": "a1b89c15fe3c3310fc92a01f77ec289110d41a1d6aa1c58eb7bde649ca839aff",
+            "language_requested": "auto",
+            "source_kind": "reviewed_browser_excerpt",
+            "excerpt": "Persistent agent memory stores research observations across sessions and retrieves them for later tasks.",
+            "evidence_quote": "Persistent agent memory stores research observations across sessions and retrieves them for later tasks.",
+            "note_summary": "Controlled historical research note.",
+            "note_limitations": "Only the controlled excerpt was read.",
+            "owner_useful": null,
+            "model": "muse-spark-1.3",
+            "model_policy_version": 0,
+            "saved_at": "2026-10-27T17:55:08.342482+00:00",
+            "reviewed_at": "2026-10-27T17:55:08.297912",
+            "status": "active",
+            "index_version": "alive12-research-v1",
+            "withdrawn_at": null,
+            "memory_projection_id": "rm-5916a0ca6d77d436d262d517c79a536c1",
+            "index_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "index_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+          },
+          "created_at": "2026-10-27T17:55:08.342958"
+        }
+      ],
+      "stale_after_days": null
+    },
+    {
+      "id": "related-competing-policy",
+      "family": "related",
+      "expected_related": true,
+      "expected_connection": "candidate",
+      "historical_url": "http://127.0.0.1:9300/historical/deterministic-rule",
+      "current_url": "http://127.0.0.1:9300/current/learned-policy",
+      "historical_memory_id": "dcf1a75b-52aa-4b50-9654-59af1d8507cb",
+      "retrieval": {
+        "current_snapshot_id": "c71e5c73-8c2b-4f67-ae54-184d366ce37a",
+        "current_url": "http://127.0.0.1:9300/current/learned-policy",
+        "goal_id": "dfbce318-5f0a-4f5e-98fb-be6f69c2722b",
+        "mode": "sqlite_substring",
+        "embedding": null,
+        "results": [
+          {
+            "memory_id": "dcf1a75b-52aa-4b50-9654-59af1d8507cb",
+            "source_url": "http://127.0.0.1:9300/historical/deterministic-rule",
+            "source_title": "Historical controlled source",
+            "goal_id": "dfbce318-5f0a-4f5e-98fb-be6f69c2722b",
+            "reviewed_at": "2026-10-27T17:55:08.392936",
+            "age_days": 8.239699074074075e-07,
+            "excerpt": "A deterministic rule retrieves the most recent source for every agent task.",
+            "evidence_quote": "A deterministic rule retrieves the most recent source for every agent task.",
+            "note_summary": "Controlled historical research note.",
+            "owner_useful": null,
+            "retrieval_score": 0.016129032258064516,
+            "retrieval_method": "sqlite_substring",
+            "same_source": false,
+            "sha256": "618fb4a407bdcc69c2f0cc77598ba9a87a150aed3ba6b6b679ea622ea5eb0dfe",
+            "source_kind": "reviewed_browser_excerpt",
+            "status": "active"
+          }
+        ],
+        "abstained": false,
+        "count": 1,
+        "message": "Related historical evidence is distinct from current-page evidence."
+      },
+      "connection": {
+        "id": "83bd8f1c-a05c-4166-a6e2-572ebaf3cdbe",
+        "instance_id": "448fea78-3bff-4809-9025-38a17d1a84b5",
+        "kind": "research_connection",
+        "parent_id": "c71e5c73-8c2b-4f67-ae54-184d366ce37a",
+        "status": "candidate",
+        "data": {
+          "goal_id": "dfbce318-5f0a-4f5e-98fb-be6f69c2722b",
+          "current_snapshot_id": "c71e5c73-8c2b-4f67-ae54-184d366ce37a",
+          "current_url": "http://127.0.0.1:9300/current/learned-policy",
+          "current_sha256": "4eea01d57d36c79300219037543981c28e3937ddfc7da6cc537f917feb14310c",
+          "current_quote": "A learned policy selects retrieval actions from observed feedback and task context.",
+          "historical_memory_id": "dcf1a75b-52aa-4b50-9654-59af1d8507cb",
+          "historical_url": "http://127.0.0.1:9300/historical/deterministic-rule",
+          "historical_sha256": "618fb4a407bdcc69c2f0cc77598ba9a87a150aed3ba6b6b679ea622ea5eb0dfe",
+          "historical_quote": "A deterministic rule retrieves the most recent source for every agent task.",
+          "shared_terms": [
+            "task"
+          ],
+          "relation_type": "complementary",
+          "explanation": "The excerpts share the term 'task'. The relationship is weak and requires owner review.",
+          "status": "candidate",
+          "model": "deterministic-lexical-connection-v1",
+          "inference_calls": 0,
+          "owner_useful": null,
+          "quote_validation": {
+            "current_exact": true,
+            "historical_exact": true
+          },
+          "created_at": "2026-10-27T17:55:08.467432+00:00"
+        },
+        "created_at": "2026-10-27T17:55:08.467852+00:00",
+        "current_source": {
+          "url": "http://127.0.0.1:9300/current/learned-policy",
+          "sha256": "4eea01d57d36c79300219037543981c28e3937ddfc7da6cc537f917feb14310c"
+        },
+        "historical_source": {
+          "url": "http://127.0.0.1:9300/historical/deterministic-rule",
+          "sha256": "618fb4a407bdcc69c2f0cc77598ba9a87a150aed3ba6b6b679ea622ea5eb0dfe",
+          "reviewed_at": "2026-10-27T17:55:08.392936"
+        },
+        "abstained": false
+      },
+      "history_access": [
+        {
+          "id": "dcf1a75b-52aa-4b50-9654-59af1d8507cb",
+          "instance_id": "448fea78-3bff-4809-9025-38a17d1a84b5",
+          "kind": "research_memory",
+          "parent_id": "8b338c8c-9d51-40e7-9ef9-1c6f0fd34028",
+          "status": "active",
+          "data": {
+            "goal_id": "dfbce318-5f0a-4f5e-98fb-be6f69c2722b",
+            "url": "http://127.0.0.1:9300/historical/deterministic-rule",
+            "title": "Historical controlled source",
+            "note_id": "8b338c8c-9d51-40e7-9ef9-1c6f0fd34028",
+            "snapshot_id": "97469439-710f-4f0b-a4a4-6907961e5550",
+            "sha256": "618fb4a407bdcc69c2f0cc77598ba9a87a150aed3ba6b6b679ea622ea5eb0dfe",
+            "language_requested": "auto",
+            "source_kind": "reviewed_browser_excerpt",
+            "excerpt": "A deterministic rule retrieves the most recent source for every agent task.",
+            "evidence_quote": "A deterministic rule retrieves the most recent source for every agent task.",
+            "note_summary": "Controlled historical research note.",
+            "note_limitations": "Only the controlled excerpt was read.",
+            "owner_useful": null,
+            "model": "muse-spark-1.3",
+            "model_policy_version": 0,
+            "saved_at": "2026-10-27T17:55:08.440004+00:00",
+            "reviewed_at": "2026-10-27T17:55:08.392936",
+            "status": "active",
+            "index_version": "alive12-research-v1",
+            "withdrawn_at": null,
+            "memory_projection_id": "rm-017bdcc5a198d9d8f1bb3b69a218756f7",
+            "index_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "index_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+          },
+          "created_at": "2026-10-27T17:55:08.440412"
+        }
+      ],
+      "stale_after_days": null
+    },
+    {
+      "id": "related-contradiction",
+      "family": "related",
+      "expected_related": true,
+      "expected_connection": "candidate",
+      "historical_url": "http://127.0.0.1:9300/historical/positive-claim",
+      "current_url": "http://127.0.0.1:9300/current/negative-result",
+      "historical_memory_id": "a9df3224-4aff-47f2-ba8a-8961caf6a4ec",
+      "retrieval": {
+        "current_snapshot_id": "d6154db2-daf9-4e57-9baf-e48e23c48995",
+        "current_url": "http://127.0.0.1:9300/current/negative-result",
+        "goal_id": "5e7c4acf-cf02-4b7f-9d0c-20002a68ed0b",
+        "mode": "sqlite_substring",
+        "embedding": null,
+        "results": [
+          {
+            "memory_id": "a9df3224-4aff-47f2-ba8a-8961caf6a4ec",
+            "source_url": "http://127.0.0.1:9300/historical/positive-claim",
+            "source_title": "Historical controlled source",
+            "goal_id": "5e7c4acf-cf02-4b7f-9d0c-20002a68ed0b",
+            "reviewed_at": "2026-10-27T17:55:08.486219",
+            "age_days": 7.582175925925926e-07,
+            "excerpt": "Persistent memory improves agent task success in this controlled benchmark.",
+            "evidence_quote": "Persistent memory improves agent task success in this controlled benchmark.",
+            "note_summary": "Controlled historical research note.",
+            "owner_useful": null,
+            "retrieval_score": 0.015873015873015872,
+            "retrieval_method": "sqlite_substring",
+            "same_source": false,
+            "sha256": "ede3e003b30993e7538abbc2bf6af560d0b386084d9acb787a83198c09842849",
+            "source_kind": "reviewed_browser_excerpt",
+            "status": "active"
+          }
+        ],
+        "abstained": false,
+        "count": 1,
+        "message": "Related historical evidence is distinct from current-page evidence."
+      },
+      "connection": {
+        "id": "36b0f368-5d9e-4589-9eff-8925c73d1cb1",
+        "instance_id": "448fea78-3bff-4809-9025-38a17d1a84b5",
+        "kind": "research_connection",
+        "parent_id": "d6154db2-daf9-4e57-9baf-e48e23c48995",
+        "status": "candidate",
+        "data": {
+          "goal_id": "5e7c4acf-cf02-4b7f-9d0c-20002a68ed0b",
+          "current_snapshot_id": "d6154db2-daf9-4e57-9baf-e48e23c48995",
+          "current_url": "http://127.0.0.1:9300/current/negative-result",
+          "current_sha256": "f595bbc8da597c1218b196c9122cf86c23a3a0b4ab86c04872829b09eb5cd355",
+          "current_quote": "A later benchmark found no improvement from persistent memory in agent task success.",
+          "historical_memory_id": "a9df3224-4aff-47f2-ba8a-8961caf6a4ec",
+          "historical_url": "http://127.0.0.1:9300/historical/positive-claim",
+          "historical_sha256": "ede3e003b30993e7538abbc2bf6af560d0b386084d9acb787a83198c09842849",
+          "historical_quote": "Persistent memory improves agent task success in this controlled benchmark.",
+          "shared_terms": [
+            "agent",
+            "benchmark",
+            "memory",
+            "persistent",
+            "success",
+            "task"
+          ],
+          "relation_type": "same_concept",
+          "explanation": "Both reviewed excerpts contain the shared terms agent, benchmark, memory, persistent, success, task. This is a retrieval candidate, not independent factual corroboration.",
+          "status": "candidate",
+          "model": "deterministic-lexical-connection-v1",
+          "inference_calls": 0,
+          "owner_useful": null,
+          "quote_validation": {
+            "current_exact": true,
+            "historical_exact": true
+          },
+          "created_at": "2026-10-27T17:55:08.554639+00:00"
+        },
+        "created_at": "2026-10-27T17:55:08.555063+00:00",
+        "current_source": {
+          "url": "http://127.0.0.1:9300/current/negative-result",
+          "sha256": "f595bbc8da597c1218b196c9122cf86c23a3a0b4ab86c04872829b09eb5cd355"
+        },
+        "historical_source": {
+          "url": "http://127.0.0.1:9300/historical/positive-claim",
+          "sha256": "ede3e003b30993e7538abbc2bf6af560d0b386084d9acb787a83198c09842849",
+          "reviewed_at": "2026-10-27T17:55:08.486219"
+        },
+        "abstained": false
+      },
+      "history_access": [
+        {
+          "id": "a9df3224-4aff-47f2-ba8a-8961caf6a4ec",
+          "instance_id": "448fea78-3bff-4809-9025-38a17d1a84b5",
+          "kind": "research_memory",
+          "parent_id": "9b48f4c7-3a6a-4b00-992a-b6e06a87a37f",
+          "status": "active",
+          "data": {
+            "goal_id": "5e7c4acf-cf02-4b7f-9d0c-20002a68ed0b",
+            "url": "http://127.0.0.1:9300/historical/positive-claim",
+            "title": "Historical controlled source",
+            "note_id": "9b48f4c7-3a6a-4b00-992a-b6e06a87a37f",
+            "snapshot_id": "3d65c2e3-077b-4eae-95d9-3ca1a5ae5939",
+            "sha256": "ede3e003b30993e7538abbc2bf6af560d0b386084d9acb787a83198c09842849",
+            "language_requested": "auto",
+            "source_kind": "reviewed_browser_excerpt",
+            "excerpt": "Persistent memory improves agent task success in this controlled benchmark.",
+            "evidence_quote": "Persistent memory improves agent task success in this controlled benchmark.",
+            "note_summary": "Controlled historical research note.",
+            "note_limitations": "Only the controlled excerpt was read.",
+            "owner_useful": null,
+            "model": "muse-spark-1.3",
+            "model_policy_version": 0,
+            "saved_at": "2026-10-27T17:55:08.528441+00:00",
+            "reviewed_at": "2026-10-27T17:55:08.486219",
+            "status": "active",
+            "index_version": "alive12-research-v1",
+            "withdrawn_at": null,
+            "memory_projection_id": "rm-3d0500dd5e6cbda5377abdb4c3c9eb539",
+            "index_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "index_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+          },
+          "created_at": "2026-10-27T17:55:08.528992"
+        }
+      ],
+      "stale_after_days": null
+    },
+    {
+      "id": "false-similarity",
+      "family": "negative",
+      "expected_related": false,
+      "expected_connection": "insufficient_evidence",
+      "historical_url": "http://127.0.0.1:9300/historical/browser-cache",
+      "current_url": "http://127.0.0.1:9300/current/agent-context",
+      "historical_memory_id": "7cf28b0d-80b3-4ecf-a878-d30c29108c86",
+      "retrieval": {
+        "current_snapshot_id": "fa1fa66a-3ca4-464b-acd2-82185947c620",
+        "current_url": "http://127.0.0.1:9300/current/agent-context",
+        "goal_id": "479c22e9-d4e9-4d0d-a7da-e293f4b238c5",
+        "mode": "sqlite_substring",
+        "embedding": null,
+        "results": [
+          {
+            "memory_id": "7cf28b0d-80b3-4ecf-a878-d30c29108c86",
+            "source_url": "http://127.0.0.1:9300/historical/browser-cache",
+            "source_title": "Historical controlled source",
+            "goal_id": "479c22e9-d4e9-4d0d-a7da-e293f4b238c5",
+            "reviewed_at": "2026-10-27T17:55:08.577826",
+            "age_days": 7.631944444444445e-07,
+            "excerpt": "Browser cache memory retains page assets for faster rendering.",
+            "evidence_quote": "Browser cache memory retains page assets for faster rendering.",
+            "note_summary": "Controlled historical research note.",
+            "owner_useful": null,
+            "retrieval_score": 0.015625,
+            "retrieval_method": "sqlite_substring",
+            "same_source": false,
+            "sha256": "682af95de44a368c673deb61f5bee3e36f8b489905bbca861187971718c96c99",
+            "source_kind": "reviewed_browser_excerpt",
+            "status": "active"
+          }
+        ],
+        "abstained": false,
+        "count": 1,
+        "message": "Related historical evidence is distinct from current-page evidence."
+      },
+      "connection": {
+        "id": "6ed50d99-2c1a-4447-9584-0e6140574235",
+        "instance_id": "448fea78-3bff-4809-9025-38a17d1a84b5",
+        "kind": "research_connection",
+        "parent_id": "fa1fa66a-3ca4-464b-acd2-82185947c620",
+        "status": "insufficient_evidence",
+        "data": {
+          "goal_id": "479c22e9-d4e9-4d0d-a7da-e293f4b238c5",
+          "current_snapshot_id": "fa1fa66a-3ca4-464b-acd2-82185947c620",
+          "current_url": "http://127.0.0.1:9300/current/agent-context",
+          "current_sha256": "5a785c04c0e0b81d7025d52609418f813c70d8e79e5d6028d7ba03bc466b9d3e",
+          "current_quote": null,
+          "historical_memory_id": "7cf28b0d-80b3-4ecf-a878-d30c29108c86",
+          "historical_url": "http://127.0.0.1:9300/historical/browser-cache",
+          "historical_sha256": "682af95de44a368c673deb61f5bee3e36f8b489905bbca861187971718c96c99",
+          "historical_quote": "Browser cache memory retains page assets for faster rendering.",
+          "shared_terms": [],
+          "relation_type": "no_supported_connection",
+          "explanation": "No inspectable shared evidence supports a research connection between these two reviewed sources.",
+          "status": "insufficient_evidence",
+          "model": "deterministic-lexical-connection-v1",
+          "inference_calls": 0,
+          "owner_useful": null,
+          "quote_validation": {
+            "current_exact": false,
+            "historical_exact": true
+          },
+          "created_at": "2026-10-27T17:55:08.646698+00:00"
+        },
+        "created_at": "2026-10-27T17:55:08.647078+00:00",
+        "current_source": {
+          "url": "http://127.0.0.1:9300/current/agent-context",
+          "sha256": "5a785c04c0e0b81d7025d52609418f813c70d8e79e5d6028d7ba03bc466b9d3e"
+        },
+        "historical_source": {
+          "url": "http://127.0.0.1:9300/historical/browser-cache",
+          "sha256": "682af95de44a368c673deb61f5bee3e36f8b489905bbca861187971718c96c99",
+          "reviewed_at": "2026-10-27T17:55:08.577826"
+        },
+        "abstained": true
+      },
+      "history_access": [
+        {
+          "id": "7cf28b0d-80b3-4ecf-a878-d30c29108c86",
+          "instance_id": "448fea78-3bff-4809-9025-38a17d1a84b5",
+          "kind": "research_memory",
+          "parent_id": "3244f113-726a-4b92-bfe9-cb566cc9d983",
+          "status": "active",
+          "data": {
+            "goal_id": "479c22e9-d4e9-4d0d-a7da-e293f4b238c5",
+            "url": "http://127.0.0.1:9300/historical/browser-cache",
+            "title": "Historical controlled source",
+            "note_id": "3244f113-726a-4b92-bfe9-cb566cc9d983",
+            "snapshot_id": "f08e50ab-be6f-4a62-87c0-479092992e75",
+            "sha256": "682af95de44a368c673deb61f5bee3e36f8b489905bbca861187971718c96c99",
+            "language_requested": "auto",
+            "source_kind": "reviewed_browser_excerpt",
+            "excerpt": "Browser cache memory retains page assets for faster rendering.",
+            "evidence_quote": "Browser cache memory retains page assets for faster rendering.",
+            "note_summary": "Controlled historical research note.",
+            "note_limitations": "Only the controlled excerpt was read.",
+            "owner_useful": null,
+            "model": "muse-spark-1.3",
+            "model_policy_version": 0,
+            "saved_at": "2026-10-27T17:55:08.621920+00:00",
+            "reviewed_at": "2026-10-27T17:55:08.577826",
+            "status": "active",
+            "index_version": "alive12-research-v1",
+            "withdrawn_at": null,
+            "memory_projection_id": "rm-bbc69088616ce013f51ef8b0774bb3c73",
+            "index_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "index_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+          },
+          "created_at": "2026-10-27T17:55:08.622372"
+        }
+      ],
+      "stale_after_days": null
+    },
+    {
+      "id": "stale-research",
+      "family": "related",
+      "expected_related": true,
+      "expected_connection": "candidate",
+      "historical_url": "http://127.0.0.1:9300/historical/old-diagnostic",
+      "current_url": "http://127.0.0.1:9300/current/new-diagnostic",
+      "historical_memory_id": "cfe7ab21-c521-4617-8f90-974e005ec327",
+      "retrieval": {
+        "current_snapshot_id": "8d54ff53-2451-444b-a486-e0955869f192",
+        "current_url": "http://127.0.0.1:9300/current/new-diagnostic",
+        "goal_id": "c0f4b303-bf02-4b54-97be-5f0703de98d0",
+        "mode": "sqlite_substring",
+        "embedding": null,
+        "results": [
+          {
+            "memory_id": "cfe7ab21-c521-4617-8f90-974e005ec327",
+            "source_url": "http://127.0.0.1:9300/historical/old-diagnostic",
+            "source_title": "Historical controlled source",
+            "goal_id": "c0f4b303-bf02-4b54-97be-5f0703de98d0",
+            "reviewed_at": "2026-09-27T17:55:08.719261+00:00",
+            "age_days": 30.00000023347222,
+            "excerpt": "Older note: reset the diagnostic buffer manually every session to compare memory allocations.",
+            "evidence_quote": "Older note: reset the diagnostic buffer manually every session to compare memory allocations.",
+            "note_summary": "Controlled historical research note.",
+            "owner_useful": null,
+            "retrieval_score": 0.015384615384615385,
+            "retrieval_method": "sqlite_substring",
+            "same_source": false,
+            "sha256": "f99e42249affb524f33fa3dec55ece1f4880e60e0368023c4c6a62c5acc33c69",
+            "source_kind": "reviewed_browser_excerpt",
+            "status": "active"
+          }
+        ],
+        "abstained": false,
+        "count": 1,
+        "message": "Related historical evidence is distinct from current-page evidence."
+      },
+      "connection": {
+        "id": "b4592aa2-22f3-4d91-a2a3-6317e0ac6132",
+        "instance_id": "448fea78-3bff-4809-9025-38a17d1a84b5",
+        "kind": "research_connection",
+        "parent_id": "8d54ff53-2451-444b-a486-e0955869f192",
+        "status": "candidate",
+        "data": {
+          "goal_id": "c0f4b303-bf02-4b54-97be-5f0703de98d0",
+          "current_snapshot_id": "8d54ff53-2451-444b-a486-e0955869f192",
+          "current_url": "http://127.0.0.1:9300/current/new-diagnostic",
+          "current_sha256": "57b187b32d3dd163ac9766662ce97a555186e0de9c5517558aa513461225213e",
+          "current_quote": "Current note: diagnostics now reset automatically when the memory trace starts.",
+          "historical_memory_id": "cfe7ab21-c521-4617-8f90-974e005ec327",
+          "historical_url": "http://127.0.0.1:9300/historical/old-diagnostic",
+          "historical_sha256": "f99e42249affb524f33fa3dec55ece1f4880e60e0368023c4c6a62c5acc33c69",
+          "historical_quote": "Older note: reset the diagnostic buffer manually every session to compare memory allocations.",
+          "shared_terms": [
+            "memory",
+            "note",
+            "reset"
+          ],
+          "relation_type": "same_concept",
+          "explanation": "Both reviewed excerpts contain the shared terms memory, note, reset. This is a retrieval candidate, not independent factual corroboration.",
+          "status": "candidate",
+          "model": "deterministic-lexical-connection-v1",
+          "inference_calls": 0,
+          "owner_useful": null,
+          "quote_validation": {
+            "current_exact": true,
+            "historical_exact": true
+          },
+          "created_at": "2026-10-27T17:55:08.742160+00:00"
+        },
+        "created_at": "2026-10-27T17:55:08.742572+00:00",
+        "current_source": {
+          "url": "http://127.0.0.1:9300/current/new-diagnostic",
+          "sha256": "57b187b32d3dd163ac9766662ce97a555186e0de9c5517558aa513461225213e"
+        },
+        "historical_source": {
+          "url": "http://127.0.0.1:9300/historical/old-diagnostic",
+          "sha256": "f99e42249affb524f33fa3dec55ece1f4880e60e0368023c4c6a62c5acc33c69",
+          "reviewed_at": "2026-09-27T17:55:08.719261+00:00"
+        },
+        "abstained": false
+      },
+      "history_access": [
+        {
+          "id": "cfe7ab21-c521-4617-8f90-974e005ec327",
+          "instance_id": "448fea78-3bff-4809-9025-38a17d1a84b5",
+          "kind": "research_memory",
+          "parent_id": "4c669666-bc50-4548-b156-c3b6cb9d0548",
+          "status": "active",
+          "data": {
+            "goal_id": "c0f4b303-bf02-4b54-97be-5f0703de98d0",
+            "url": "http://127.0.0.1:9300/historical/old-diagnostic",
+            "title": "Historical controlled source",
+            "note_id": "4c669666-bc50-4548-b156-c3b6cb9d0548",
+            "snapshot_id": "2f2f45bb-3012-4e7d-aee0-8e6932ab2de4",
+            "sha256": "f99e42249affb524f33fa3dec55ece1f4880e60e0368023c4c6a62c5acc33c69",
+            "language_requested": "auto",
+            "source_kind": "reviewed_browser_excerpt",
+            "excerpt": "Older note: reset the diagnostic buffer manually every session to compare memory allocations.",
+            "evidence_quote": "Older note: reset the diagnostic buffer manually every session to compare memory allocations.",
+            "note_summary": "Controlled historical research note.",
+            "note_limitations": "Only the controlled excerpt was read.",
+            "owner_useful": null,
+            "model": "muse-spark-1.3",
+            "model_policy_version": 0,
+            "saved_at": "2026-10-27T17:55:08.712750+00:00",
+            "reviewed_at": "2026-09-27T17:55:08.719261+00:00",
+            "status": "active",
+            "index_version": "alive12-research-v1",
+            "withdrawn_at": null,
+            "memory_projection_id": "rm-978bbab86c492242cb7e0650b87424290",
+            "index_model": "sentence-transformers/all-MiniLM-L6-v2",
+            "index_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+          },
+          "created_at": "2026-10-27T17:55:08.713243"
+        }
+      ],
+      "stale_after_days": 7
+    },
+    {
+      "id": "no-relevant-memory",
+      "family": "negative",
+      "expected_related": false,
+      "expected_connection": "insufficient_evidence",
+      "historical_url": null,
+      "current_url": "http://127.0.0.1:9300/current/quantum",
+      "historical_memory_id": null,
+      "retrieval": {
+        "current_snapshot_id": "b79ac6f4-a061-4fa8-a14f-7eaf5c8a1d17",
+        "current_url": "http://127.0.0.1:9300/current/quantum",
+        "goal_id": "eaaef672-6d1d-498a-b3eb-38ae87912b2a",
+        "mode": "sqlite_substring",
+        "embedding": null,
+        "results": [],
+        "abstained": true,
+        "count": 0,
+        "message": "No related authorised research memory found."
+      },
+      "connection": null,
+      "history_access": [],
+      "stale_after_days": null
+    }
+  ],
+  "arms": {
+    "A_current_page_only": {
+      "calls": 0,
+      "estimated_cost": 0.0,
+      "results": 0,
+      "relevant_results": 0,
+      "precision_at_3": null,
+      "targets_retrieved": 0,
+      "recall_at_3": 0.0,
+      "false_retrievals": 0,
+      "appropriate_abstentions": 2,
+      "connection_candidates": 0,
+      "unsupported_connections": 0,
+      "false_connections": 0,
+      "connection_abstentions": 0,
+      "valid_quotes": 0,
+      "stale_age_days": null
+    },
+    "B_exact_match": {
+      "calls": 0,
+      "estimated_cost": 0.0,
+      "results": 0,
+      "relevant_results": 0,
+      "precision_at_3": null,
+      "targets_retrieved": 0,
+      "recall_at_3": 0.0,
+      "false_retrievals": 0,
+      "appropriate_abstentions": 2,
+      "connection_candidates": 0,
+      "unsupported_connections": 0,
+      "false_connections": 0,
+      "connection_abstentions": 0,
+      "valid_quotes": 0,
+      "stale_age_days": null
+    },
+    "C_cross_page_retrieval": {
+      "calls": 0,
+      "estimated_cost": 0.0,
+      "results": 5,
+      "relevant_results": 4,
+      "precision_at_3": 0.8,
+      "targets_retrieved": 4,
+      "recall_at_3": 1.0,
+      "false_retrievals": 1,
+      "appropriate_abstentions": 1,
+      "connection_candidates": 0,
+      "unsupported_connections": 0,
+      "false_connections": 0,
+      "connection_abstentions": 0,
+      "valid_quotes": 0,
+      "stale_age_days": 30.00000023347222
+    },
+    "D_retrieval_plus_connection": {
+      "calls": 0,
+      "estimated_cost": 0.0,
+      "results": 5,
+      "relevant_results": 4,
+      "precision_at_3": 0.8,
+      "targets_retrieved": 4,
+      "recall_at_3": 1.0,
+      "false_retrievals": 1,
+      "appropriate_abstentions": 1,
+      "connection_candidates": 4,
+      "unsupported_connections": 0,
+      "false_connections": 0,
+      "connection_abstentions": 1,
+      "valid_quotes": 4,
+      "stale_age_days": 30.00000023347222
+    },
+    "history_access_control": {
+      "calls": 0,
+      "estimated_cost": 0.0,
+      "results": 5,
+      "relevant_results": 4,
+      "precision_at_3": 0.8,
+      "targets_retrieved": 4,
+      "recall_at_3": 1.0,
+      "false_retrievals": 1,
+      "appropriate_abstentions": 1,
+      "connection_candidates": 0,
+      "unsupported_connections": 0,
+      "false_connections": 0,
+      "connection_abstentions": 0,
+      "valid_quotes": 0,
+      "stale_age_days": null
+    }
+  }
+}

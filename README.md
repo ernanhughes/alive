@@ -49,6 +49,21 @@ calls**. This is not a docked side-panel qualification and not evidence of Meta 
 [the ALIVE-10 report](docs/ALIVE-10.md) and its
 [evidence archive](archives/ALIVE-10/README.md).
 
+**ALIVE-11 and R1 qualify the companion with real Chrome and bounded Meta evidence, then correct
+feedback and recovery semantics.** The branch records two separately approved paid campaigns and
+preserves the fact that feedback was scripted and utility advantage was not established. See
+[ALIVE-11](docs/ALIVE-11.md), [ALIVE-11-R1](docs/ALIVE-11-R1.md), and the
+[qualification archive](archives/ALIVE-11/README.md).
+
+**ALIVE-12 adds goal-scoped cross-page research memory.** A reviewed note can be explicitly saved
+with its source and goal, then retrieved as historical evidence when a different authorised page is
+reviewed. Connections are evidence-linked candidates, not proof of corroboration; false similarity
+can be retrieved lexically but the connection abstains when no shared evidence supports it.
+Withdrawal removes the memory and its retrieval projection across restart. The controlled
+comparison includes no-memory, exact-match, cross-page retrieval, connection and history-access
+controls; no ranking advantage is claimed. See [the ALIVE-12 report](docs/ALIVE-12.md) and its
+[evidence archive](archives/ALIVE-12/README.md).
+
 ALIVE-01 is a working vertical slice: FastAPI + PostgreSQL/pgvector + ZeroMQ + React dashboard + managed Chrome + Manifest V3 extension + Pi RPC. Deterministic policies drive curiosity, coherence and commitment. They do not require recurring model calls or claim to be reinforcement learning.
 
 **ALIVE-02 adds a bounded autonomous cognitive loop.** Authorised browser changes compete for attention; structured Meta Observer/Proposer/Critic roles cooperate while a deterministic Investigator, Evaluator and Governor control evidence, permissions and budgets. Real ONNX embeddings, hybrid retrieval, human action approval, persistent experience and restart recovery are implemented. Open **Cognition** in the existing observatory to inspect real traces. Autonomy starts stopped and recovers paused.

@@ -238,7 +238,10 @@ def summarize(scenarios):
         results = [(s, retrieval(s)) for s in scenarios]
         all_retrieved = sum(len(items) for _, items in results)
         relevant = sum(
-            1 for s, items in results for item in items if item["source_url"] == s["historical_url"]
+            1
+            for s, items in results
+            for item in items
+            if s["expected_related"] and item["source_url"] == s["historical_url"]
         )
         target_hits = sum(
             1
