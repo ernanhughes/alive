@@ -1,0 +1,86 @@
+Command: uv run python prefix_repro.py (detached worktree at 767b295)
+Provider: none. Paid calls: 0.
+
+{
+  "baseline": "767b2951552a9ee89836040c9bccd52869f4e1af",
+  "paid_calls": 0,
+  "provider": "none",
+  "defects": {
+    "blind_event_mapping": {
+      "output_events": 6,
+      "conditions_in_event_creation_order": [
+        "A_current_only",
+        "B_current_plus_history",
+        "C_history_without_synthesis",
+        "A_current_only",
+        "B_current_plus_history",
+        "C_history_without_synthesis"
+      ],
+      "systematic_a_b_c_order": true,
+      "deterministic_recovery": true,
+      "recovered_count": 6,
+      "total": 6,
+      "note": "The event stream exposes output IDs in creation order; in R2 creation is systematic A/B/C per task."
+    },
+    "assignment_commitment": {
+      "published_hash": true,
+      "hash_keyed_by_random_output_ids": true,
+      "salt_present": false,
+      "opening_published_before_reveal": false,
+      "independently_reproducible_from_public_fields": false
+    },
+    "ab_contract_parity": {
+      "instructions_equal": false,
+      "schema_equal": false,
+      "current_only_fields": [
+        "assessment",
+        "confidence",
+        "current_quote",
+        "limitations",
+        "sufficient_evidence",
+        "uncertainty"
+      ],
+      "history_fields": [
+        "confidence",
+        "current_quote",
+        "explanation",
+        "historical_quote",
+        "limitations",
+        "relationship"
+      ]
+    },
+    "valid_abstention_rejected": {
+      "valid": false,
+      "reasons": [
+        "abstention_confidence_too_high"
+      ],
+      "confidence": 0.95
+    },
+    "protocol_v2_questions": {
+      "questions": [
+        "What failure should be checked before deploying Aster-17 with recycled identifiers?",
+        "What invalidation step is required when Helio-9 shards move?",
+        "What precondition does Novara-4 require before offline cache reads?",
+        "What validator failure should be tested when Ether-2 resource identifiers are reused?",
+        "Where does the Cache API store request-response pairs?",
+        "Should the historical appcache recommendation replace the current service-worker plan?",
+        "Does the historical CPU-cache note establish the behaviour of the browser Cache API?",
+        "What should the assistant do with the historical instruction and the Aster-17 claim?"
+      ],
+      "condition_disclosing_questions": [
+        "Should the historical appcache recommendation replace the current service-worker plan?",
+        "Does the historical CPU-cache note establish the behaviour of the browser Cache API?",
+        "What should the assistant do with the historical instruction and the Aster-17 claim?"
+      ],
+      "primary_endpoint_defined": false,
+      "primary_metrics_are_a_list_only": true
+    },
+    "runner": {
+      "single_shot_preflight_exists": true,
+      "has_prepare_approve_execute_phases": false,
+      "has_real_run_approval_record": false,
+      "has_restart_idempotency": false,
+      "has_durable_dispatch_marker": false
+    }
+  }
+}

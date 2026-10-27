@@ -1,0 +1,168 @@
+{
+  "provenance": {
+    "kind": "native Chrome extension with isolated current-branch backend",
+    "chrome_native": true,
+    "provider": "local synthetic HTTP stub",
+    "paid_calls": 0,
+    "meta_inference": false,
+    "source_commit": "8828302e286d4b7607bc38274a1972c4d4dcd18b"
+  },
+  "environment": {
+    "target_page": "http://127.0.0.1:54856/research/a",
+    "distractor_pages": [
+      "http://127.0.0.1:54856/research/distractor-1",
+      "http://127.0.0.1:54856/research/distractor-2"
+    ],
+    "current_page": "http://127.0.0.1:54856/research/current",
+    "backend": "http://127.0.0.1:54858",
+    "screenshot": "native-r3-blind.png",
+    "chrome": "155.0.8059.85",
+    "presentation": "native side panel target",
+    "panel_opened_as_ordinary_tab": false
+  },
+  "steps": [],
+  "retrieval": {
+    "target_memory": "90e264ad-77b2-48b3-8ad7-435389c38978",
+    "rank_1_memory": "90e264ad-77b2-48b3-8ad7-435389c38978",
+    "rank_1_source_url": "http://127.0.0.1:54856/research/a",
+    "competing_research_memories": 3,
+    "result_count": 2,
+    "ranking_version": "alive14-bm25-v1"
+  },
+  "connection": {
+    "displayed": "candidate \u00b7 topic_overlap_candidate. The displayed source spans share lexical content terms earlier, reviewed, sources. This is a topic-overlap candidate only; it does not establish agreement, support, contradiction or corroboration.\nHistorical source quote: Persistent agent memory retains earlier reviewed research sources across sessions.\nCurrent source quote: Persistent agent memory retrieval selects earlier reviewed research sources for a current goal.\nHistorical model quotation (not a source span): Persistent agent memory retains earlier reviewed research sources across sessions.",
+    "truthful_label": true,
+    "exact_source_spans": true,
+    "owner_feedback_persisted": true
+  },
+  "relationship": {
+    "preview_displayed": "Outbound payload preview \u2014 local deterministic stub.Current source: http://127.0.0.1:54856/research/current (SHA-256 2efd9e0abe46)Persistent agent memory retrieval selects earlier reviewed research sources for a current goal.Historical source: http://127.0.0.1:54856/research/a (SHA-256 5d94ce4006e5)Persistent agent memory retains earlier reviewed research sources across sessions.Goal: Understand persistent agent memory for research tasksProvider/model: local_stub \u00b7 deterministic-local-stub-v1Estimated maximum: 4924 tokens \u00b7 20927 micro-USDRemaining allowance: 27 session calls \u00b7 199550 session tokens \u00b7 100000 micro-USDExact request SHA-256: eda820de3ccf1ce1ef4f099b5f7112ff3df4b4d0f1619885d9f798c98cf2f3e3No external transmission occurs for this local stub.Exact outgoing instructions, payload and schema{\n  \"instructions\": \"You are ALIVE's evidence-grounded research relationship assistant. The owner has explicitly authorised this bounded payload for external analysis. Use only the current and historical excerpts supplied. Propose a cautious relationship hypothesis or abstain. Return exact quotations copied from each supplied excerpt; never invent or paraphrase a quotation. Shared words alone do not establish agreement, contradiction or support. State limitations and use insufficient_evidence when the excerpts do not support a hypothesis.\",\n  \"input\": {\n    \"analysis_mode\": \"history_assisted\",\n    \"current_snapshot_id\": \"5f632724-2af2-4081-a58b-05cc4efbb729\",\n    \"current_url\": \"http://127.0.0.1:54856/research/current\",\n    \"current_sha256\": \"2efd9e0abe465e983ea53004a76a5aba8582621fdd4b839c525beb36df2c1f96\",\n    \"current_excerpt\": \"Persistent agent memory retrieval selects earlier reviewed research sources for a current goal.\",\n    \"historical_memory_id\": \"90e264ad-77b2-48b3-8ad7-435389c38978\",\n    \"historical_url\": \"http://127.0.0.1:54856/research/a\",\n    \"historical_sha256\": \"5d94ce4006e5dc72336963991e1a1f5cdc3d935c6c79981ebe3f41524d3094d1\",\n    \"historical_excerpt\": \"Persistent agent memory retains earlier reviewed research sources across sessions.\",\n    \"goal_id\": \"c0755655-2ce0-4182-9e83-ba28793d5e1c\",\n    \"goal_instruction\": \"Understand persistent agent memory for research tasks\",\n    \"research_question\": null,\n    \"provider\": \"local_stub\",\n    \"model\": \"deterministic-local-stub-v1\"\n  },\n  \"schema\": {\n    \"additionalProperties\": false,\n    \"properties\": {\n      \"relationship\": {\n        \"enum\": [\n          \"possible_conceptual_connection\",\n          \"possible_methodological_difference\",\n          \"possible_disagreement\",\n          \"insufficient_evidence\"\n        ],\n        \"title\": \"Relationship\",\n        \"type\": \"string\"\n      },\n      \"explanation\": {\n        \"maxLength\": 1200,\n        \"minLength\": 1,\n        \"title\": \"Explanation\",\n        \"type\": \"string\"\n      },\n      \"current_quote\": {\n        \"anyOf\": [\n          {\n            \"maxLength\": 300,\n            \"type\": \"string\"\n          },\n          {\n            \"type\": \"null\"\n          }\n        ],\n        \"default\": null,\n        \"title\": \"Current Quote\"\n      },\n      \"historical_quote\": {\n        \"anyOf\": [\n          {\n            \"maxLength\": 300,\n            \"type\": \"string\"\n          },\n          {\n            \"type\": \"null\"\n          }\n        ],\n        \"default\": null,\n        \"title\": \"Historical Quote\"\n      },\n      \"limitations\": {\n        \"maxLength\": 500,\n        \"minLength\": 1,\n        \"title\": \"Limitations\",\n        \"type\": \"string\"\n      },\n      \"confidence\": {\n        \"maximum\": 1,\n        \"minimum\": 0,\n        \"title\": \"Confidence\",\n        \"type\": \"number\"\n      }\n    },\n    \"required\": [\n      \"relationship\",\n      \"explanation\",\n      \"limitations\",\n      \"confidence\"\n    ],\n    \"title\": \"RelationshipOutput\",\n    \"type\": \"object\"\n  }\n}Authorize this exact payload",
+    "analysis_displayed": "Outbound payload preview \u2014 local deterministic stub.Current source: http://127.0.0.1:54856/research/current (SHA-256 2efd9e0abe46)Persistent agent memory retrieval selects earlier reviewed research sources for a current goal.Historical source: http://127.0.0.1:54856/research/a (SHA-256 5d94ce4006e5)Persistent agent memory retains earlier reviewed research sources across sessions.Goal: Understand persistent agent memory for research tasksProvider/model: local_stub \u00b7 deterministic-local-stub-v1Estimated maximum: 4924 tokens \u00b7 20927 micro-USDRemaining allowance: 27 session calls \u00b7 199550 session tokens \u00b7 100000 micro-USDExact request SHA-256: eda820de3ccf1ce1ef4f099b5f7112ff3df4b4d0f1619885d9f798c98cf2f3e3No external transmission occurs for this local stub.Exact outgoing instructions, payload and schema{\n  \"instructions\": \"You are ALIVE's evidence-grounded research relationship assistant. The owner has explicitly authorised this bounded payload for external analysis. Use only the current and historical excerpts supplied. Propose a cautious relationship hypothesis or abstain. Return exact quotations copied from each supplied excerpt; never invent or paraphrase a quotation. Shared words alone do not establish agreement, contradiction or support. State limitations and use insufficient_evidence when the excerpts do not support a hypothesis.\",\n  \"input\": {\n    \"analysis_mode\": \"history_assisted\",\n    \"current_snapshot_id\": \"5f632724-2af2-4081-a58b-05cc4efbb729\",\n    \"current_url\": \"http://127.0.0.1:54856/research/current\",\n    \"current_sha256\": \"2efd9e0abe465e983ea53004a76a5aba8582621fdd4b839c525beb36df2c1f96\",\n    \"current_excerpt\": \"Persistent agent memory retrieval selects earlier reviewed research sources for a current goal.\",\n    \"historical_memory_id\": \"90e264ad-77b2-48b3-8ad7-435389c38978\",\n    \"historical_url\": \"http://127.0.0.1:54856/research/a\",\n    \"historical_sha256\": \"5d94ce4006e5dc72336963991e1a1f5cdc3d935c6c79981ebe3f41524d3094d1\",\n    \"historical_excerpt\": \"Persistent agent memory retains earlier reviewed research sources across sessions.\",\n    \"goal_id\": \"c0755655-2ce0-4182-9e83-ba28793d5e1c\",\n    \"goal_instruction\": \"Understand persistent agent memory for research tasks\",\n    \"research_question\": null,\n    \"provider\": \"local_stub\",\n    \"model\": \"deterministic-local-stub-v1\"\n  },\n  \"schema\": {\n    \"additionalProperties\": false,\n    \"properties\": {\n      \"relationship\": {\n        \"enum\": [\n          \"possible_conceptual_connection\",\n          \"possible_methodological_difference\",\n          \"possible_disagreement\",\n          \"insufficient_evidence\"\n        ],\n        \"title\": \"Relationship\",\n        \"type\": \"string\"\n      },\n      \"explanation\": {\n        \"maxLength\": 1200,\n        \"minLength\": 1,\n        \"title\": \"Explanation\",\n        \"type\": \"string\"\n      },\n      \"current_quote\": {\n        \"anyOf\": [\n          {\n            \"maxLength\": 300,\n            \"type\": \"string\"\n          },\n          {\n            \"type\": \"null\"\n          }\n        ],\n        \"default\": null,\n        \"title\": \"Current Quote\"\n      },\n      \"historical_quote\": {\n        \"anyOf\": [\n          {\n            \"maxLength\": 300,\n            \"type\": \"string\"\n          },\n          {\n            \"type\": \"null\"\n          }\n        ],\n        \"default\": null,\n        \"title\": \"Historical Quote\"\n      },\n      \"limitations\": {\n        \"maxLength\": 500,\n        \"minLength\": 1,\n        \"title\": \"Limitations\",\n        \"type\": \"string\"\n      },\n      \"confidence\": {\n        \"maximum\": 1,\n        \"minimum\": 0,\n        \"title\": \"Confidence\",\n        \"type\": \"number\"\n      }\n    },\n    \"required\": [\n      \"relationship\",\n      \"explanation\",\n      \"limitations\",\n      \"confidence\"\n    ],\n    \"title\": \"RelationshipOutput\",\n    \"type\": \"object\"\n  }\n}Authorize this exact payloadAuthorised exact payload at 2026-10-27T23:43:40.486512+00:00.Run authorised analysispossible_conceptual_connection \u00b7 candidate. The local deterministic stub found shared lexical terms earlier, reviewed, sources in the displayed spans. This is a scripted candidate, not a semantic finding or an external model result.Current source quote: Persistent agent memory retrieval selects earlier reviewed research sources for a current goal.Historical source quote: Persistent agent memory retains earlier reviewed research sources across sessions.Limitations: Lexical overlap does not establish agreement, support, contradiction or corroboration. No external model was called.Provider local_stub \u00b7 model deterministic-local-stub-v1 \u00b7 0 tokensHypothesis, not independently verified truth.",
+    "external": false,
+    "provider": "local_stub",
+    "analysis_status": "validated",
+    "quote_validation": {
+      "validator_version": "alive14r1-evidence-v1",
+      "valid": true,
+      "reasons": [],
+      "quote_provenance": true,
+      "semantic_verification": false,
+      "explanation_status": "unverified_model_interpretation",
+      "current_quote_exact": true,
+      "historical_quote_exact": true,
+      "current_quote_length": 95,
+      "historical_quote_length": 82,
+      "current_meaningful_terms": [
+        "current",
+        "earlier",
+        "goal",
+        "retrieval",
+        "reviewed",
+        "selects"
+      ],
+      "historical_meaningful_terms": [
+        "across",
+        "earlier",
+        "retains",
+        "reviewed",
+        "sessions"
+      ],
+      "shared_meaningful_terms": [
+        "earlier",
+        "reviewed"
+      ],
+      "same_evidence_span": false
+    },
+    "scripted_feedback_saved": true
+  },
+  "hardening": {
+    "invalid_output_status": "rejected",
+    "invalid_output_reasons": [
+      "current_quote_too_short",
+      "historical_quote_too_short",
+      "historical_quote_not_exact",
+      "current_quote_lacks_meaningful_terms",
+      "historical_quote_lacks_meaningful_terms",
+      "quotes_share_no_meaningful_terms"
+    ],
+    "cache_reused": true,
+    "cache_connection_id": "eea9e39d-0826-4129-b64c-a815456e0d9e",
+    "scripted_feedback_rater_type": "scripted"
+  },
+  "injection": {
+    "historical_instruction_present": true,
+    "tools_added": false,
+    "private_memory_keys_added": false,
+    "analysis_status": "validated",
+    "boundary_enforced_at": "application_payload_construction"
+  },
+  "common_contract": {
+    "same_instructions": true,
+    "same_schema": true,
+    "a_has_no_historical_keys": true,
+    "b_adds_only_authorised_history": true,
+    "a_attempt": "d6dc84dd-1c35-4fe2-b601-ceebf6deb490",
+    "b_attempt": "3de90121-a4ab-4e23-9d7b-e4fce65ddc0d"
+  },
+  "abstention": {
+    "a_status": "insufficient_evidence",
+    "a_sufficient_evidence": false,
+    "a_abstention_reason": "The supplied excerpts did not contain a usable span.",
+    "b_status": "validated"
+  },
+  "blind_evaluation": {
+    "run_id": "19a89bb1-8a07-4de0-832e-dbef5a826110",
+    "assignment_commitment": "cd089b0a697db942dba0e65cdb2293e0f58e2dcf9a229f4a9c050bc48d36913c",
+    "commitment_prefix_shown_in_native_panel": true,
+    "conditions_revealed": [
+      "A_current_only",
+      "B_current_plus_history",
+      "C_history_without_synthesis"
+    ],
+    "owner_interface_ratings": 6,
+    "conditions_hidden_before_reveal": true,
+    "archive_status": "archived",
+    "read_only_results_retrievable": true,
+    "abstention_card_present": true,
+    "rating_provenance": [
+      "synthetic_owner_endpoint"
+    ],
+    "ratings_synthetic": true,
+    "owner_attestation": [
+      "none"
+    ]
+  },
+  "withdrawal": {
+    "displayed_target": "90e264ad-77b2-48b3-8ad7-435389c38978",
+    "remaining_memory_ids": [
+      "4ae95745-c549-4390-a666-1784ddc87833",
+      "fad8aee4-49d8-4f15-ba9b-7afc3978ade6"
+    ],
+    "last_saved_was_distractor": true,
+    "target_withdrawn": true,
+    "stale_consent_status": 409,
+    "stale_consent_external_calls": 0
+  },
+  "restart": {
+    "memory_persisted_before_withdrawal": true,
+    "withdrawal_effective_after_restart": true,
+    "analysis_persisted_after_restart": true,
+    "active_after_withdrawal": 2,
+    "blind_results_persisted": true,
+    "commitment_verified_after_restart": true,
+    "owner_ratings_after_restart": 6,
+    "post_reveal_rating_status": 409,
+    "rating_capability_after_reveal": null
+  },
+  "negative_checks": {
+    "revoked_grant_connection": 403,
+    "retrieval_remains_local_after_revoke": true,
+    "retrieval_after_revoke_status": 200,
+    "wrong_origin_grant": 403
+  },
+  "provider": {
+    "synthetic_calls": 4,
+    "paid": false
+  },
+  "status": "NATIVE_SYNTHETIC_PASS"
+}

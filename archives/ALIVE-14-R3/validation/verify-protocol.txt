@@ -1,0 +1,2 @@
+VERIFIED ALIVE-14-R3 protocol canonical LF hash 85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b
+VERIFIED ALIVE-14-R3 answer-key canonical LF hash 255e706dd569634d1710a50831f65a6dd6eb7dabc5ee56e1cd763b382554b43d

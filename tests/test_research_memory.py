@@ -10,9 +10,13 @@ from alive.app import create_app
 from alive.cognitive_models import CognitiveControl, CognitiveObservation, Investigation
 from alive.memory import ALL_MEMORY_TYPES
 from alive.models import Event, Goal, Instance, Memory, now, uid
+from alive.research_blind import verify_commitment
 from alive.research_relationships import (
     ATTEMPT_KIND,
+    EvidenceItem,
+    PairedAnswerOutput,
     RelationshipOutput,
+    validate_paired_output,
     validate_relationship_output,
 )
 from alive.web_experience import digest
@@ -483,6 +487,18 @@ def test_blind_rating_view_hides_conditions_and_requires_owner_ratings(client):
         },
         403,
     )
+    post(
+        client,
+        f"/research/blind/runs/{run['id']}/ratings",
+        {
+            "output_id": view["outputs"][0]["output_id"],
+            "output_sha256": view["outputs"][0]["output_sha256"],
+            "capability": view["rating_capability"],
+            "rubric": rubric,
+            "synthetic": True,
+        },
+        403,
+    )
     for output in view["outputs"][1:]:
         post(
             client,
@@ -517,7 +533,11 @@ def test_blind_rating_view_hides_conditions_and_requires_owner_ratings(client):
     assert len(reveal["ratings"]) == 6
     assert all(row["data"]["rater_type"] == "owner" for row in reveal["ratings"])
     assert reveal["revealed_at"]
-    assert reveal["assignment_sha256"]
+    assert reveal["assignment_commitment"]
+    assert reveal["commitment_salt"]
+    assert reveal["commitment_payload"]["experiment_id"] == "alive14-r1-test"
+    assert reveal["commitment_verified"] is True
+    assert run["assignment_commitment"] == reveal["assignment_commitment"]
     post(
         client,
         f"/research/blind/runs/{run['id']}/ratings",
@@ -538,6 +558,192 @@ def test_blind_rating_view_hides_conditions_and_requires_owner_ratings(client):
     archived = post(client, f"/research/blind/runs/{run['id']}/archive", {})
     assert archived["status"] == "archived"
     post(client, f"/research/blind/runs/{run['id']}/reveal", {}, 409)
+
+
+def test_owner_attestation_and_synthetic_provenance_are_distinct(client):
+    current = "Controlled current evidence for attestation."
+    historical = "Controlled historical evidence for attestation."
+    run = post(
+        client,
+        "/research/blind/runs",
+        {
+            "experiment_id": "attestation-provenance",
+            "seed": 20261101,
+            "synthetic": True,
+            "tasks": [
+                {
+                    "task_id": "T-attest",
+                    "question": "What does the evidence support?",
+                    "current_excerpt": current,
+                    "historical_excerpt": historical,
+                    "current_url": "https://example.test/current-attest",
+                    "historical_url": "https://example.test/historical-attest",
+                    "current_sha256": digest(current),
+                    "historical_sha256": digest(historical),
+                    "outputs": {
+                        "A_current_only": "Attestation answer A.",
+                        "B_current_plus_history": "Attestation answer B.",
+                        "C_history_without_synthesis": "Attestation answer C.",
+                    },
+                }
+            ],
+        },
+    )
+    view = client.get(ROOT + f"/research/blind/runs/{run['id']}").json()
+    rubric = {
+        "factually_supported": "yes",
+        "relevant_to_goal": "yes",
+        "revealed_new": "no",
+        "already_obvious": "yes",
+        "would_act": "uncertain",
+        "misleading": "no",
+        "uncertain": "no",
+    }
+    attested = post(
+        client,
+        f"/research/blind/runs/{run['id']}/ratings",
+        {
+            "output_id": view["outputs"][0]["output_id"],
+            "output_sha256": view["outputs"][0]["output_sha256"],
+            "capability": view["rating_capability"],
+            "rubric": rubric,
+            "attestation": "human_reviewed",
+        },
+    )
+    assert attested["data"]["owner_attestation"] == "human_reviewed"
+    assert attested["data"]["provenance"] == "authenticated_owner_interface"
+    assert attested["data"]["synthetic"] is False
+    refreshed = client.get(ROOT + f"/research/blind/runs/{run['id']}").json()
+    assert view["outputs"][0]["output_id"] in refreshed["rated_output_ids"]
+    synthetic = post(
+        client,
+        f"/research/blind/runs/{run['id']}/ratings",
+        {
+            "output_id": view["outputs"][0]["output_id"],
+            "output_sha256": view["outputs"][0]["output_sha256"],
+            "capability": view["rating_capability"],
+            "rubric": rubric,
+            "synthetic": True,
+        },
+    )
+    assert synthetic["data"]["provenance"] == "synthetic_owner_endpoint"
+    assert synthetic["data"]["synthetic"] is True
+    assert synthetic["data"]["owner_attestation"] == "none"
+    assert synthetic["data"]["revision"] == 2
+
+
+def test_blind_run_does_not_leak_condition_order_or_assignment(client):
+    tasks = []
+    for index in range(3):
+        current = f"Current controlled page {index} describes option {index}."
+        historical = f"Historical controlled note {index} describes mechanism {index}."
+        tasks.append(
+            {
+                "task_id": f"T{index}",
+                "question": f"Which risk is supported for option {index}?",
+                "current_excerpt": current,
+                "historical_excerpt": historical,
+                "current_url": f"https://example.test/current-{index}",
+                "historical_url": f"https://example.test/historical-{index}",
+                "current_sha256": digest(current),
+                "historical_sha256": digest(historical),
+                "outputs": {
+                    "A_current_only": f"Current-only answer {index}",
+                    "B_current_plus_history": f"History-assisted answer {index}",
+                    "C_history_without_synthesis": f"Direct historical answer {index}",
+                },
+            }
+        )
+    run = post(
+        client,
+        "/research/blind/runs",
+        {"experiment_id": "leak-regression", "seed": 20261101, "tasks": tasks},
+    )
+    assert "output_ids" not in run
+    assert "output_ids" not in run["data"]
+    assert run["assignment_commitment"]
+
+    async def fetch_rows():
+        async with client.app.state.kernel.db.sessions() as session:
+            return [
+                (row.id, row.data["task_id"], row.data["condition"])
+                for row in await client.app.state.blind.rows(session, "research_blind_output")
+            ]
+
+    rows = client.portal.call(fetch_rows)
+    assert len(rows) == 9
+    by_task = {}
+    for output_id, task_id, condition in rows:
+        by_task.setdefault(task_id, []).append(condition)
+    systematic = [
+        "A_current_only",
+        "B_current_plus_history",
+        "C_history_without_synthesis",
+    ]
+    assert any(order != systematic for order in by_task.values())
+    assert len({output_id for output_id, _, _ in rows}) == 9
+
+    events = client.get("/api/v1/events?limit=500").json()
+    serialized_events = json.dumps(events)
+    for output_id, _, _ in rows:
+        assert output_id not in serialized_events
+    assert "A_current_only" not in serialized_events
+    assert "B_current_plus_history" not in serialized_events
+    assert all("blind_output" not in row["event_type"] for row in events)
+    assert all("blind_assignment" not in row["event_type"] for row in events)
+
+    view = client.get(ROOT + f"/research/blind/runs/{run['id']}").json()
+    assert "commitment_salt" not in view
+    assert "assignment_id" not in json.dumps(view)
+    assert '"condition":' not in json.dumps(view)
+    assert "A_current_only" not in json.dumps(view)
+    assert client.get(ROOT + f"/research/blind/runs/{run['id']}/results").status_code == 409
+
+    rubric = {
+        "factually_supported": "uncertain",
+        "relevant_to_goal": "yes",
+        "revealed_new": "uncertain",
+        "already_obvious": "uncertain",
+        "would_act": "uncertain",
+        "misleading": "no",
+        "uncertain": "yes",
+    }
+    for output in view["outputs"]:
+        post(
+            client,
+            f"/research/blind/runs/{run['id']}/ratings",
+            {
+                "output_id": output["output_id"],
+                "output_sha256": output["output_sha256"],
+                "capability": view["rating_capability"],
+                "rubric": rubric,
+            },
+        )
+    reveal = post(client, f"/research/blind/runs/{run['id']}/reveal", {})
+    assert verify_commitment(
+        reveal["assignment_commitment"],
+        reveal["commitment_salt"],
+        reveal["commitment_payload"],
+    )
+    results = client.get(ROOT + f"/research/blind/runs/{run['id']}/results").json()
+    assert results["status"] == "revealed"
+    assert len(results["ratings"]) == 9
+    assert {row["condition"] for row in results["outputs"]} == set(systematic)
+    post(client, f"/research/blind/runs/{run['id']}/archive", {})
+    archived = client.get(ROOT + f"/research/blind/runs/{run['id']}/results").json()
+    assert archived["status"] == "archived"
+    assert len(archived["ratings"]) == 9
+    post(
+        client,
+        f"/research/blind/runs/{run['id']}/ratings",
+        {
+            "output_id": view["outputs"][0]["output_id"],
+            "output_sha256": view["outputs"][0]["output_sha256"],
+            "capability": "z" * 43,
+            "rubric": rubric,
+        },
+        409,
+    )
 
 
 def test_bm25_prefers_short_specific_source_over_newer_long_prose(client):
@@ -1364,6 +1570,281 @@ def test_historical_prompt_injection_remains_bounded_source_data(client, monkeyp
     )
     assert result["analysis"]["status"] in {"validated", "rejected"}
     assert result["connection"] is None or "tools" not in json.dumps(result["connection"])
+
+
+def test_paired_conditions_share_instruction_schema_and_isolation(client, monkeypatch):
+    fake_model(monkeypatch)
+    g = goal(client)
+    mdn_grant = grant(client, g["id"], MDN)
+    current = snapshot(client, mdn_grant, MDN, MDN_TEXT)
+    research_ids = seed_research_rows(
+        client,
+        g["id"],
+        [{"url": PY, "text": PY_TEXT, "reviewed_at": now().isoformat()}],
+    )
+    question = "What evidence supports the proposed memory-management comparison?"
+    a = post(
+        client,
+        "/research/outbound/preview",
+        {
+            "snapshot_id": current["snapshot"]["id"],
+            "analysis_mode": "paired",
+            "research_question": question,
+        },
+    )
+    b = post(
+        client,
+        "/research/outbound/preview",
+        {
+            "snapshot_id": current["snapshot"]["id"],
+            "research_id": research_ids[0],
+            "analysis_mode": "paired",
+            "research_question": question,
+        },
+    )
+    assert a["analysis_mode"] == b["analysis_mode"] == "paired"
+    assert a["request"]["instructions"] == b["request"]["instructions"]
+    assert a["request"]["schema"] == b["request"]["schema"]
+    assert a["request"]["input"]["research_question"] == question
+    assert b["request"]["input"]["research_question"] == question
+    assert "historical_excerpt" not in a["preview"]
+    assert "historical_memory_id" not in a["preview"]
+    assert "historical_url" not in a["preview"]
+    assert b["preview"]["historical_excerpt"] == PY_TEXT
+    for key in ("historical_excerpt", "historical_url", "historical_sha256"):
+        assert key not in a["preview"]
+    assert set(a["request"]["input"]) | {
+        "historical_memory_id",
+        "historical_url",
+        "historical_sha256",
+        "historical_excerpt",
+    } == set(b["request"]["input"])
+    for preview in (a, b):
+        post(
+            client,
+            "/research/outbound/authorize",
+            {
+                "consent_id": preview["id"],
+                "payload_sha256": preview["payload_sha256"],
+                "approved": True,
+            },
+        )
+        result = post(
+            client,
+            "/research/relationships",
+            {"consent_id": preview["id"]},
+        )
+        assert result["analysis"]["status"] == "validated"
+        assert result["paired_analysis"]["data"]["analysis_mode"] == "paired"
+        assert result["paired_analysis"]["data"]["research_question"] == question
+        assert result["connection"] is None
+    assert result["analysis"]["status"] == "validated"
+
+
+def test_paired_valid_abstention_is_stored_and_rateable(client, monkeypatch):
+    fake_model(monkeypatch)
+    g = goal(client)
+    mdn_grant = grant(client, g["id"], MDN)
+    current = snapshot(client, mdn_grant, MDN, "Short page.")
+    question = "Which historical mechanism applies?"
+    preview = post(
+        client,
+        "/research/outbound/preview",
+        {
+            "snapshot_id": current["snapshot"]["id"],
+            "analysis_mode": "paired",
+            "research_question": question,
+        },
+    )
+    post(
+        client,
+        "/research/outbound/authorize",
+        {
+            "consent_id": preview["id"],
+            "payload_sha256": preview["payload_sha256"],
+            "approved": True,
+        },
+    )
+    result = post(client, "/research/relationships", {"consent_id": preview["id"]})
+    assert result["analysis"]["status"] == "validated"
+    assert result["abstained"] is True
+    stored = result["paired_analysis"]
+    assert stored["status"] == "insufficient_evidence"
+    assert stored["data"]["sufficient_evidence"] is False
+    assert stored["data"]["abstention_reason"]
+    assert stored["data"]["validation"]["valid"] is True
+    assert stored["data"]["validation"]["semantic_verification"] is False
+    blind = post(
+        client,
+        "/research/blind/runs",
+        {
+            "experiment_id": "abstention-rateable",
+            "seed": 20261101,
+            "tasks": [
+                {
+                    "task_id": "T-abstain",
+                    "question": question,
+                    "current_excerpt": "Short page.",
+                    "historical_excerpt": "Short history.",
+                    "current_url": MDN,
+                    "historical_url": PY,
+                    "current_sha256": digest("Short page."),
+                    "historical_sha256": digest("Short history."),
+                    "outputs": {
+                        "A_current_only": json.dumps(stored["data"]),
+                        "B_current_plus_history": "A neutral history-assisted abstention.",
+                        "C_history_without_synthesis": "Short history.",
+                    },
+                }
+            ],
+        },
+    )
+    view = client.get(ROOT + f"/research/blind/runs/{blind['id']}").json()
+    collecting_relationships = client.get(ROOT + "/research/relationships").json()
+    assert all(
+        row["data"] == {"redacted_during_collecting": True}
+        for row in collecting_relationships["paired_analyses"]
+    )
+    for row in collecting_relationships["analyses"]:
+        if row["data"].get("analysis_mode") == "paired":
+            assert row["data"].get("redacted_during_collecting") is True
+            assert "answer" not in row["data"]
+            assert "historical_memory_id" not in row["data"]
+    rubric = {
+        "factually_supported": "uncertain",
+        "relevant_to_goal": "yes",
+        "revealed_new": "no",
+        "already_obvious": "no",
+        "would_act": "no",
+        "misleading": "no",
+        "uncertain": "yes",
+    }
+    for output in view["outputs"]:
+        post(
+            client,
+            f"/research/blind/runs/{blind['id']}/ratings",
+            {
+                "output_id": output["output_id"],
+                "output_sha256": output["output_sha256"],
+                "capability": view["rating_capability"],
+                "rubric": rubric,
+            },
+        )
+    reveal = post(client, f"/research/blind/runs/{blind['id']}/reveal", {})
+    assert len(reveal["ratings"]) == 3
+    revealed_relationships = client.get(ROOT + "/research/relationships").json()
+    assert revealed_relationships["paired_analyses"]
+    assert all("answer" in row["data"] for row in revealed_relationships["paired_analyses"])
+
+
+def test_paired_validator_accepts_cross_vocabulary_and_one_source():
+    payload = {
+        "current_excerpt": "The deployment plan recycles identifiers after deletion.",
+        "historical_excerpt": "Aster-17 returns stale index entries when identifiers are reused.",
+    }
+    one_source = PairedAnswerOutput(
+        answer="Identifier reuse is the relevant check.",
+        evidence=[
+            EvidenceItem(
+                source="current",
+                quote="The deployment plan recycles identifiers",
+            )
+        ],
+        limitations="Only the current plan is quoted.",
+        uncertainty="The failure mechanism is not established by this source.",
+        sufficient_evidence=True,
+        confidence=0.4,
+    )
+    result = validate_paired_output(one_source, payload)
+    assert result["valid"] is True
+    assert result["semantic_verification"] is False
+
+    two_source = one_source.model_copy(
+        update={
+            "evidence": one_source.evidence
+            + [
+                EvidenceItem(
+                    source="historical",
+                    quote="returns stale index entries when identifiers are reused",
+                )
+            ]
+        }
+    )
+    assert validate_paired_output(two_source, payload)["valid"] is True
+
+    abstention = PairedAnswerOutput(
+        answer="The evidence is insufficient.",
+        evidence=[],
+        limitations="No source establishes the mechanism.",
+        uncertainty="High.",
+        sufficient_evidence=False,
+        confidence=0.95,
+        abstention_reason="The supplied evidence does not establish the failure mechanism.",
+    )
+    result = validate_paired_output(abstention, payload)
+    assert result["valid"] is True
+    assert result["quote_provenance"] is True
+
+    invalid = one_source.model_copy(
+        update={"evidence": [EvidenceItem(source="current", quote="fabricated authority claim")]}
+    )
+    result = validate_paired_output(invalid, payload)
+    assert result["valid"] is False
+    assert "current_quote_not_exact" in result["reasons"]
+
+    unauthorised = one_source.model_copy(
+        update={
+            "evidence": [
+                EvidenceItem(
+                    source="historical",
+                    quote="returns stale index entries when identifiers are reused",
+                )
+            ]
+        }
+    )
+    result = validate_paired_output(unauthorised, {"current_excerpt": payload["current_excerpt"]})
+    assert result["valid"] is False
+    assert "historical_source_not_authorised" in result["reasons"]
+
+    missing_reason = abstention.model_copy(update={"abstention_reason": None})
+    result = validate_paired_output(missing_reason, payload)
+    assert result["valid"] is False
+    assert "abstention_reason_required" in result["reasons"]
+
+
+def test_paired_invalid_output_is_rejected_without_crashing(client, monkeypatch):
+    fake_model(monkeypatch)
+    g = goal(client)
+    mdn_grant = grant(client, g["id"], MDN)
+    current = snapshot(client, mdn_grant, MDN, MDN_TEXT)
+    previous = client.app.state.kernel.settings.alive_relationship_allow_test_providers
+    client.app.state.kernel.settings.alive_relationship_allow_test_providers = True
+    try:
+        preview = post(
+            client,
+            "/research/outbound/preview",
+            {
+                "snapshot_id": current["snapshot"]["id"],
+                "analysis_mode": "paired",
+                "research_question": "What does the source support?",
+                "provider": "local_stub_invalid",
+            },
+        )
+        post(
+            client,
+            "/research/outbound/authorize",
+            {
+                "consent_id": preview["id"],
+                "payload_sha256": preview["payload_sha256"],
+                "approved": True,
+            },
+        )
+        result = post(client, "/research/relationships", {"consent_id": preview["id"]})
+    finally:
+        client.app.state.kernel.settings.alive_relationship_allow_test_providers = previous
+    assert result["analysis"]["status"] == "rejected"
+    assert result["paired_analysis"] is None
+    assert "current_quote_not_exact" in result["analysis"]["data"]["validation"]["reasons"]
 
 
 def test_outbound_preview_and_authorisation_bind_the_exact_payload(client, monkeypatch):
