@@ -1,0 +1,49 @@
+{
+  "review_basis": "ALIVE-REVIEW-07",
+  "source_baseline": "777e4d99b6908d13875c9024dfb065cb3bfcaffa",
+  "reproduced_defects": [
+    {
+      "id": "weak_quote_validation",
+      "old_behaviour": "A one-character exact quotation and a fabricated explanation could pass quote validation and become a validated connection.",
+      "new_behaviour": "Versioned validator rejects quotes shorter than 16 characters, quotes without two meaningful non-goal terms, quotes without shared meaningful terms, identical evidence spans, and overconfident/assertive insufficient_evidence output.",
+      "evidence": "archives/ALIVE-14-R1/evidence/validator-cases.json",
+      "tests": [
+        "test_relationship_validator_rejects_weak_or_generic_evidence",
+        "test_controlled_invalid_provider_is_preserved_as_a_rejected_attempt"
+      ]
+    },
+    {
+      "id": "interrupted_usd_liability",
+      "old_behaviour": "The relationship USD ledger excluded rows with status interrupted even though their reserved tokens had been charged by the Governor.",
+      "new_behaviour": "Interrupted and ambiguous-settlement attempts are included in conservative worst-case liability; validated usage is priced from actual usage; restart does not reset liability.",
+      "tests": [
+        "test_interrupted_attempts_remain_in_the_usd_ledger_after_restart",
+        "test_provider_timeout_is_charged_conservatively_and_not_replayed"
+      ]
+    },
+    {
+      "id": "kill_switch_not_rechecked",
+      "old_behaviour": "A consent authorised while Meta was enabled could dispatch after the runtime disabled Meta.",
+      "new_behaviour": "Immediately before dispatch the service re-evaluates provider enablement, provider identity and pinned model against the authorised consent, and rechecks the Governor reservation and USD cap.",
+      "tests": [
+        "test_meta_kill_switch_is_rechecked_at_dispatch",
+        "test_meta_model_change_after_authorisation_is_rejected"
+      ]
+    },
+    {
+      "id": "reuse_ignored_provider_and_payload",
+      "old_behaviour": "Connection reuse matched only current snapshot, historical memory and analysis version, so a local-stub result could satisfy a Meta request.",
+      "new_behaviour": "Reuse requires current snapshot, historical memory, both source fingerprints, exact payload SHA-256, provider identity, pinned model and validator version. Cache hits are marked cached and do not consume a provider dispatch.",
+      "tests": [
+        "test_connection_reuse_matches_provider_model_and_payload",
+        "test_simultaneous_requests_cannot_reuse_one_consent"
+      ]
+    },
+    {
+      "id": "protocol_hash_line_endings",
+      "old_behaviour": "ALIVE-14 recorded the CRLF working-tree protocol hash while the Git blob is LF.",
+      "new_behaviour": "Original archive preserved; supplementary reconciliation records both hashes and bytes; future R1 archive hashes use LF bytes; CI verifies reconciliation.",
+      "evidence": "archives/ALIVE-14-R1/evidence/protocol-hash-reconciliation.json"
+    }
+  ]
+}

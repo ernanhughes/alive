@@ -1,0 +1,196 @@
+{
+  "validator_version": "alive14r1-evidence-v1",
+  "cases": {
+    "valid_candidate": {
+      "validator_version": "alive14r1-evidence-v1",
+      "valid": true,
+      "reasons": [],
+      "quote_provenance": true,
+      "semantic_verification": false,
+      "explanation_status": "unverified_model_interpretation",
+      "current_quote_exact": true,
+      "historical_quote_exact": true,
+      "current_quote_length": 44,
+      "historical_quote_length": 48,
+      "current_meaningful_terms": [
+        "counting",
+        "frees",
+        "objects",
+        "reference",
+        "unreachable"
+      ],
+      "historical_meaningful_terms": [
+        "cannot",
+        "counting",
+        "cyclic",
+        "objects",
+        "reclaim",
+        "reference"
+      ],
+      "shared_meaningful_terms": [
+        "counting",
+        "objects",
+        "reference"
+      ],
+      "same_evidence_span": false
+    },
+    "one_character": {
+      "validator_version": "alive14r1-evidence-v1",
+      "valid": false,
+      "reasons": [
+        "current_quote_too_short",
+        "historical_quote_too_short",
+        "current_quote_lacks_meaningful_terms",
+        "historical_quote_lacks_meaningful_terms",
+        "quotes_share_no_meaningful_terms"
+      ],
+      "quote_provenance": true,
+      "semantic_verification": false,
+      "explanation_status": "unverified_model_interpretation",
+      "current_quote_exact": true,
+      "historical_quote_exact": true,
+      "current_quote_length": 1,
+      "historical_quote_length": 1,
+      "current_meaningful_terms": [],
+      "historical_meaningful_terms": [],
+      "shared_meaningful_terms": [],
+      "same_evidence_span": false
+    },
+    "generic_exact": {
+      "validator_version": "alive14r1-evidence-v1",
+      "valid": false,
+      "reasons": [
+        "current_quote_lacks_meaningful_terms",
+        "historical_quote_lacks_meaningful_terms",
+        "quotes_share_no_meaningful_terms",
+        "identical_evidence_span"
+      ],
+      "quote_provenance": true,
+      "semantic_verification": false,
+      "explanation_status": "unverified_model_interpretation",
+      "current_quote_exact": true,
+      "historical_quote_exact": true,
+      "current_quote_length": 30,
+      "historical_quote_length": 30,
+      "current_meaningful_terms": [],
+      "historical_meaningful_terms": [],
+      "shared_meaningful_terms": [],
+      "same_evidence_span": true
+    },
+    "no_shared_terms": {
+      "validator_version": "alive14r1-evidence-v1",
+      "valid": false,
+      "reasons": [
+        "historical_quote_not_exact",
+        "quotes_share_no_meaningful_terms"
+      ],
+      "quote_provenance": false,
+      "semantic_verification": false,
+      "explanation_status": "unverified_model_interpretation",
+      "current_quote_exact": true,
+      "historical_quote_exact": false,
+      "current_quote_length": 44,
+      "historical_quote_length": 39,
+      "current_meaningful_terms": [
+        "counting",
+        "frees",
+        "objects",
+        "reference",
+        "unreachable"
+      ],
+      "historical_meaningful_terms": [
+        "mark",
+        "reachable",
+        "roots",
+        "tracing"
+      ],
+      "shared_meaningful_terms": [],
+      "same_evidence_span": false
+    },
+    "same_sentence": {
+      "validator_version": "alive14r1-evidence-v1",
+      "valid": false,
+      "reasons": [
+        "identical_evidence_span"
+      ],
+      "quote_provenance": true,
+      "semantic_verification": false,
+      "explanation_status": "unverified_model_interpretation",
+      "current_quote_exact": true,
+      "historical_quote_exact": true,
+      "current_quote_length": 32,
+      "historical_quote_length": 32,
+      "current_meaningful_terms": [
+        "counting",
+        "cycles",
+        "leaks",
+        "reference"
+      ],
+      "historical_meaningful_terms": [
+        "counting",
+        "cycles",
+        "leaks",
+        "reference"
+      ],
+      "shared_meaningful_terms": [
+        "counting",
+        "cycles",
+        "leaks",
+        "reference"
+      ],
+      "same_evidence_span": true
+    },
+    "abstention_overconfident": {
+      "validator_version": "alive14r1-evidence-v1",
+      "valid": false,
+      "reasons": [
+        "abstention_confidence_too_high",
+        "abstention_contains_assertive_claim"
+      ],
+      "quote_provenance": false,
+      "semantic_verification": false,
+      "explanation_status": "unverified_model_interpretation",
+      "current_quote_exact": false,
+      "historical_quote_exact": false,
+      "current_quote_length": 0,
+      "historical_quote_length": 0,
+      "current_meaningful_terms": [],
+      "historical_meaningful_terms": [],
+      "shared_meaningful_terms": [],
+      "same_evidence_span": false
+    },
+    "fabricated_explanation_with_valid_quotes": {
+      "validator_version": "alive14r1-evidence-v1",
+      "valid": true,
+      "reasons": [],
+      "quote_provenance": true,
+      "semantic_verification": false,
+      "explanation_status": "unverified_model_interpretation",
+      "current_quote_exact": true,
+      "historical_quote_exact": true,
+      "current_quote_length": 44,
+      "historical_quote_length": 48,
+      "current_meaningful_terms": [
+        "counting",
+        "frees",
+        "objects",
+        "reference",
+        "unreachable"
+      ],
+      "historical_meaningful_terms": [
+        "cannot",
+        "counting",
+        "cyclic",
+        "objects",
+        "reclaim",
+        "reference"
+      ],
+      "shared_meaningful_terms": [
+        "counting",
+        "objects",
+        "reference"
+      ],
+      "same_evidence_span": false
+    }
+  }
+}

@@ -1,0 +1,9 @@
+Command: uv run python -m scripts.native14_r1
+Output:
+VERIFIED native research retrieval, authorised relationship analysis and explicit withdrawal; synthetic calls 3
+evidence: .alive/native14r1-04ebecf5e4fa/evidence.json
+
+Source commit in native evidence: 9ff0e388cb7a874619e8acf3612beeb6260288c0
+Archived evidence:
+archives/ALIVE-14-R1/evidence/native-synthetic.json
+archives/ALIVE-14-R1/evidence/research-relationship.png

@@ -1,0 +1,41 @@
+{
+  "source_commit": "9ff0e388cb7a874619e8acf3612beeb6260288c0",
+  "checks": {
+    "kill_switch": {
+      "behaviour": "Provider enablement, identity, pinned model, request hash, Governor reservation and USD cap rechecked immediately before dispatch.",
+      "tests": [
+        "test_meta_kill_switch_is_rechecked_at_dispatch",
+        "test_meta_model_change_after_authorisation_is_rejected"
+      ]
+    },
+    "usd_ledger": {
+      "behaviour": "Interrupted, failed, rejected and validated attempts contribute to conservative liability; interrupted rows survive restart.",
+      "tests": [
+        "test_interrupted_attempts_remain_in_the_usd_ledger_after_restart",
+        "test_provider_timeout_is_charged_conservatively_and_not_replayed",
+        "test_outbound_analysis_respects_the_governor_budget"
+      ]
+    },
+    "reuse_identity": {
+      "behaviour": "Reuse requires current/historical fingerprints, payload SHA-256, request SHA-256, provider, model and validator version; cache hits do not dispatch.",
+      "tests": [
+        "test_connection_reuse_matches_provider_model_and_payload",
+        "test_repeated_analysis_reuses_the_same_connection"
+      ]
+    },
+    "concurrency": {
+      "behaviour": "One consent can dispatch at most once; simultaneous attempts receive 409; withdrawal cannot interrupt an in-flight call.",
+      "tests": [
+        "test_simultaneous_requests_cannot_reuse_one_consent",
+        "test_concurrent_withdrawal_cannot_interrupt_an_outbound_call"
+      ]
+    },
+    "invalid_output": {
+      "behaviour": "Malformed or weak evidence is rejected, raw output is retained, and no connection is created.",
+      "tests": [
+        "test_controlled_invalid_provider_is_preserved_as_a_rejected_attempt",
+        "test_invalid_model_quotations_are_rejected_without_a_connection"
+      ]
+    }
+  }
+}
