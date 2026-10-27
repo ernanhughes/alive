@@ -4,6 +4,7 @@ No model is called. Labels and policy definitions are read from the archived pro
 """
 
 import json
+import subprocess
 from pathlib import Path
 
 from alive.experiment.metrics import price
@@ -154,6 +155,9 @@ def main():
     result = {
         "protocol_version": protocol["protocol_version"],
         "kind": protocol["kind"],
+        "source_commit": subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=ROOT, text=True
+        ).strip(),
         "protocol_sha256": __import__("hashlib").sha256(PROTOCOL.read_bytes()).hexdigest(),
         "paid_inference": False,
         "caveat": protocol["caveat"],
