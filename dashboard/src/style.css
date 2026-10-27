@@ -900,3 +900,44 @@ hr {
 .experiment-panel table { width: 100%; border-collapse: collapse; text-align: left; }
 .experiment-panel th, .experiment-panel td { padding: 12px; border-bottom: 1px solid #d5d5ca; }
 .experiment-panel select { max-width: 100%; margin: 12px; padding: 8px; }
+.living-experience { display: grid; gap: 24px; padding-bottom: 36px; }
+.living-hero { background: radial-gradient(ellipse at 90% 15%, #344a2f, transparent 60%), #14271f; color: #edf3df; padding: 38px; border-radius: 14px; }
+.living-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; letter-spacing: 1.7px; color: #7e965f; font-weight: 600; }
+.living-hero .living-eyebrow { color: #b0cd8e; }
+.living-hero h1 { font: 400 clamp(30px, 3vw, 44px)/1.18 'Space Grotesk', sans-serif; letter-spacing: -1.6px; margin: 20px 0; }
+.living-hero h1 em { font-style: normal; color: #c8e49d; }
+.living-hero > p { max-width: 690px; line-height: 1.7; color: #becdb8; }
+.living-hero-stats { display: flex; gap: 36px; flex-wrap: wrap; border-top: 1px solid #3b4d3d; margin-top: 28px; padding-top: 24px; }
+.living-hero-stats span { display: grid; gap: 7px; font-size: 11px; color: #b6c7ad; }
+.living-hero-stats strong { color: #edf5db; font-size: 23px; font-weight: 500; }
+.living-controls { display: grid; gap: 16px; }
+.living-create { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.living-create label { max-width: 440px; font-size: 12px; line-height: 1.6; }
+.living-create select, .living-controls > label select { padding: 10px; border: 1px solid #d5ddd2; border-radius: 6px; margin-left: 10px; max-width: 100%; }
+.living-consent { display: flex; gap: 8px; align-items: flex-start; }
+.living-process { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+.living-process span { border-top: 2px solid #d9dfd2; padding-top: 12px; color: #899286; font-size: 11px; }
+.living-process b { display: block; font-size: 9px; margin-bottom: 6px; font-weight: 400; }
+.living-process .reached { border-color: #718d48; color: #3e5d2d; }
+.living-state-bar { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; font-size: 12px; }
+.living-change { background: #e8efda; border: 1px solid #c2d0aa; border-radius: 8px; padding: 20px; display: flex; gap: 15px; color: #365327; }
+.living-change p { margin: 6px 0 0; line-height: 1.6; }
+.living-encounters { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+.living-encounter { min-width: 0; }
+.living-encounter h2 { font-size: 23px; font-weight: 450; letter-spacing: -.7px; margin-bottom: 25px; }
+.living-observation { display: flex; gap: 12px; background: #f3f5ee; padding: 18px; border-radius: 6px; }
+.living-observation small { font-size: 9px; letter-spacing: 1px; color: #7b8871; }
+.living-observation p { margin: 8px 0 0; font-size: 12px; }
+.living-action { font-size: 20px; margin: 25px 0 8px; color: #486337; }
+.living-predictions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 18px 0; }
+.living-predictions > div { padding: 12px; border: 1px solid #e0e4d9; border-radius: 6px; display: grid; gap: 8px; }
+.living-predictions span { text-transform: uppercase; font-size: 9px; letter-spacing: 1px; color: #6e7f62; }
+.living-predictions strong { font-size: 15px; font-weight: 500; }
+.living-predictions small { font-size: 10px; color: #839077; }
+.living-encounter blockquote { border-left: 2px solid #b6c59e; padding-left: 15px; margin: 24px 0; font-size: 13px; line-height: 1.7; color: #5b6b51; }
+.living-outcome { border-top: 1px solid #dfe5d6; border-bottom: 1px solid #dfe5d6; padding: 18px 0; display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.living-outcome strong { font-size: 22px; font-weight: 500; }
+.living-outcome small { grid-column: 2; font-size: 9px; color: #829174; }
+.living-experience details summary { cursor: pointer; font-size: 12px; color: #5e7550; }
+.living-experience pre { max-height: 420px; overflow: auto; font-size: 10px; }
+@media(max-width: 950px) { .living-encounters { grid-template-columns: 1fr; } .living-process { grid-template-columns: repeat(4, 1fr); row-gap: 20px; } .living-hero { padding: 25px; } }

@@ -42,6 +42,8 @@ def router(app, ready):
 
     @routes.post("/runs")
     async def start(data: RunRequest):
+        if app.state.living.active:
+            raise ValueError("Stop the living journey before starting an experiment")
         return await app.state.experiments.start(data)
 
     @routes.post("/authorize-full")

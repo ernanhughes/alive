@@ -8,6 +8,7 @@ import {
   Command,
   Globe2,
   Layers3,
+  Leaf,
   Pause,
   Play,
   Radio,
@@ -28,9 +29,11 @@ import type {
 } from "./api";
 import "./style.css";
 import { CognitionPane } from "./Cognition";
+import { LivingPane } from "./Living";
 
 const tabs = [
   "Overview",
+  "Living",
   "Live events",
   "Memory",
   "Agents",
@@ -41,6 +44,7 @@ const tabs = [
 type Tab = (typeof tabs)[number];
 const icons = [
   Layers3,
+  Leaf,
   Radio,
   BrainCircuit,
   Terminal,
@@ -270,14 +274,14 @@ export function App() {
           <div className="page-heading">
             <div>
               <div className="eyebrow">
-                {tab === "Cognition"
+                {tab === "Living" ? "ALIVE-04 / CONTINUING EXPERIENCE" : tab === "Cognition"
                   ? "ALIVE-02 / COGNITIVE SOCIETY"
                   : "ALIVE-01 / FIRST CONTACT"}
               </div>
               <h1>
                 {tab === "Overview"
                   ? "Something is becoming."
-                  : tab === "Live events"
+                  : tab === "Living" ? "The living experience." : tab === "Live events"
                     ? "The stream of experience."
                     : tab === "Memory"
                       ? "Experience, remembered."
@@ -864,6 +868,7 @@ export function App() {
             </section>
           )}
           {tab === "Cognition" && token && <CognitionPane token={token} />}
+          {tab === "Living" && token && <LivingPane token={token} />}
           <footer>
             <span>
               <span className="dot" /> ALIVE / ADAPTIVE LIVING INTELLIGENCE
