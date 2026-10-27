@@ -10,7 +10,7 @@
 | Evidence tooling commit | `1bc947152098ff82918c4247074fe9b76b48c3f5` |
 | Archive/handoff commit | `d948bf5` |
 | Worktree | `C:\Projects\alive-worktrees\alive-11` |
-| PR | [#16](https://github.com/ernanhughes/alive/pull/16) |
+| PR | [#17](https://github.com/ernanhughes/alive/pull/17) — follow-up; #16 was merged externally before the final guard |
 | Paid inference | **None** |
 
 The primary checkout and its 25 local changes were not touched. The prior ALIVE-11 qualification
