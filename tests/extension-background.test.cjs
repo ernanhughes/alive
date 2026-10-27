@@ -22,8 +22,11 @@ function worker(backend, identity = { protocol_version: 1, runtime_sha256: 'fing
     calls.push(url);
     return { ok: true, json: async () => url.endsWith('/provenance') ? identity : { identity: { name: 'Fixture' } } };
   });
-  return { calls, session, connect: () => new Promise(resolve => listener({ type: 'connect' },
-    { id: 'test', url: 'chrome-extension://test/panel.html' }, resolve)) };
+  return { calls, session,
+    connect: () => new Promise(resolve => listener({ type: 'connect' },
+      { id: 'test', url: 'chrome-extension://test/panel.html' }, resolve)),
+    command: message => new Promise(resolve => listener(message,
+      { id: 'test', url: 'chrome-extension://test/panel.html' }, resolve)) };
 }
 
 test('isolated extension rejects stale port 8000 before any fetch', async () => {
@@ -47,4 +50,24 @@ test('connect fails closed on an incompatible backend identity', async () => {
   assert.match(result.error, /identity is unavailable/);
   assert.equal(w.calls.length, 1);
   assert.equal(w.session.backendProvenance, undefined);
+});
+
+test('withdraw sends the displayed research id, not the most recently saved id', async () => {
+  const w = worker('http://127.0.0.1:61001');
+  w.session.researchId = 'research-B-last-saved';
+  const result = await w.command({ type: 'withdraw-research', researchId: 'research-A-displayed' });
+  assert.equal(result.data.identity.name, 'Fixture');
+  assert.deepEqual(w.calls, [
+    'http://127.0.0.1:61001/api/v1/browser-experience/research/memories/' +
+      'research-A-displayed/withdraw',
+  ]);
+  assert.ok(!w.calls.some(url => url.includes('research-B-last-saved')));
+});
+
+test('withdraw without an explicit research id fails before any fetch', async () => {
+  const w = worker('http://127.0.0.1:61001');
+  w.session.researchId = 'research-B-last-saved';
+  const result = await w.command({ type: 'withdraw-research' });
+  assert.match(result.error, /Select the research memory to withdraw/);
+  assert.deepEqual(w.calls, []);
 });
