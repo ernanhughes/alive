@@ -8,8 +8,9 @@
 | Branch | `codex/alive-11-r1-safe-experience-reuse` |
 | Product code commit | `9f05a625de54d1810e863209186557db7a15e9cc` |
 | Evidence tooling commit | `1bc947152098ff82918c4247074fe9b76b48c3f5` |
+| Archive/handoff commit | `e8e2398` |
 | Worktree | `C:\Projects\alive-worktrees\alive-11` |
-| PR | `_Pending creation._` |
+| PR | [#16](https://github.com/ernanhughes/alive/pull/16) |
 | Paid inference | **None** |
 
 The primary checkout and its 25 local changes were not touched. The prior ALIVE-11 qualification
