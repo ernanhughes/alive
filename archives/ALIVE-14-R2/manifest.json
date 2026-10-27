@@ -53,8 +53,8 @@
       "bytes": 1078
     },
     "validation/frontend.txt": {
-      "sha256": "dbbf14fdbf4f0246bdb7b1979b6ce8678c57af84343c37735bb69e6acc9300d2",
-      "bytes": 280
+      "sha256": "14fbc98fb408a8eca22786c8c159449e0d2889d9fba506c7f6bd820ca28f10d9",
+      "bytes": 279
     },
     "validation/native.txt": {
       "sha256": "fc7c580fb78491723164361835127b9ad88300b3e3d2d3e3f264bbdf2e85b2f9",
