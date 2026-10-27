@@ -1,0 +1,13 @@
+{
+  "status": "blocked",
+  "native_chrome": false,
+  "meta_inference": false,
+  "paid_calls": 0,
+  "checked_at": "2026-10-27T12:25:01.283243+00:00",
+  "reason": "Standard local ports 8000 and 5173 were occupied by the primary development worktree; no native Chrome/Meta qualification was run.",
+  "ports": {
+    "8000": "occupied",
+    "5173": "occupied"
+  },
+  "evidence_type": "controlled companion API and SQLite, synthetic provider only"
+}
