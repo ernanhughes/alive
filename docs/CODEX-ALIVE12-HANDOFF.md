@@ -7,8 +7,8 @@
 | Baseline `origin/main` | `d58c30748a5ec9273a0be86dc769d8c1b7dc6b23` |
 | Branch | `codex/alive-12-research-intelligence` |
 | Product code commit | `cf7022cb168b4cbd65bbc0b98faafbb25b498c85` |
-| Archive/handoff commit | `_Pending._` |
-| PR | `_Pending creation._` |
+| Archive/handoff commit | `cce792b` |
+| PR | [#18](https://github.com/ernanhughes/alive/pull/18) |
 | Worktree | `C:\Projects\alive-worktrees\alive-11` |
 | Paid inference | **None** |
 
