@@ -40,6 +40,14 @@ two opportunities. Paid baseline arms share three responses; they are not indepe
 trials. Lexical relevance can misread negation. Exact quotes do not prove whole-note
 truth. Historical negative results remain intact.
 
+ALIVE-REVIEW-04 corrections: feedback is scripted, not a user study; all pages are
+controlled excerpts; the synthetic comparison demonstrates missed opportunities,
+not superiority; runtime identity is reported and hash-compared, not inherently
+trusted because the backend states it; lexical relevance accepts one matching
+content token, with negation as one observed failure. The cost display is cleared
+on no-action/suppression/uncertainty, and repeated snapshots no longer advance
+probe counting. See `docs/ALIVE-11-R1.md` for the comparison and recommendation.
+
 See ALIVE-11.md, ALIVE-11-DEMO.md and the qualification archive README. The archive
 retains diagnostic failures, preparation, approval, screenshots and usage; no
 profiles, keys, env files or private history. The executed recall runner is archived

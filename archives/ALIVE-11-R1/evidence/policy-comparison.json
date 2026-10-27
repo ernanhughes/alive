@@ -1,0 +1,578 @@
+{
+  "protocol_version": "alive11-r1-policy-v1",
+  "kind": "frozen decision-level policy replay, not native outcome evidence",
+  "source_commit": "1bc947152098ff82918c4247074fe9b76b48c3f5",
+  "protocol_sha256": "a8f52fb616d5eba5ee9bf34821f31dd3b0c078ee12cdf9da90316a9847c6db6f",
+  "paid_inference": false,
+  "caveat": "Predeclared labels are not owner ratings, model outputs, or native task outcomes. The replay must not be presented as evidence of semantic generalisation.",
+  "arms": {
+    "A_frozen_context_wide": {
+      "summary": {
+        "calls": 7,
+        "useful_opportunities_met": 3,
+        "missed_opportunities": 2,
+        "wasted_calls": 4,
+        "repeated_work": 1,
+        "owner_corrections": 0,
+        "paused_observations": 7,
+        "probes": 2,
+        "estimated_synthetic_usd": 0.0023625,
+        "restart_boundary_roundtrip": "new-useful-2"
+      },
+      "decisions": [
+        {
+          "id": "neg-1",
+          "sha": "neg-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-2",
+          "sha": "neg-2",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-3",
+          "sha": "neg-3",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-1",
+          "sha": "new-useful-1",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useless-1",
+          "sha": "new-useless-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-1-repeat",
+          "sha": "neg-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-2",
+          "sha": "new-useful-2",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": true,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-2-repeat",
+          "sha": "neg-2",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-3",
+          "sha": "new-useful-3",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "irrelevant",
+          "sha": "irrelevant",
+          "eligible": false,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useless-2",
+          "sha": "new-useless-2",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-4",
+          "sha": "new-useful-4",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": true,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-1-repeat-2",
+          "sha": "neg-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-5",
+          "sha": "new-useful-5",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        }
+      ]
+    },
+    "B_exact_negative_reuse": {
+      "summary": {
+        "calls": 10,
+        "useful_opportunities_met": 5,
+        "missed_opportunities": 0,
+        "wasted_calls": 5,
+        "repeated_work": 0,
+        "owner_corrections": 0,
+        "paused_observations": 4,
+        "probes": 0,
+        "estimated_synthetic_usd": 0.003375,
+        "restart_boundary_roundtrip": "new-useful-2"
+      },
+      "decisions": [
+        {
+          "id": "neg-1",
+          "sha": "neg-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-2",
+          "sha": "neg-2",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-3",
+          "sha": "neg-3",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-1",
+          "sha": "new-useful-1",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useless-1",
+          "sha": "new-useless-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-1-repeat",
+          "sha": "neg-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-2",
+          "sha": "new-useful-2",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-2-repeat",
+          "sha": "neg-2",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-3",
+          "sha": "new-useful-3",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "irrelevant",
+          "sha": "irrelevant",
+          "eligible": false,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useless-2",
+          "sha": "new-useless-2",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-4",
+          "sha": "new-useful-4",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-1-repeat-2",
+          "sha": "neg-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-5",
+          "sha": "new-useful-5",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        }
+      ]
+    },
+    "C_evidence_aware_contextual": {
+      "summary": {
+        "calls": 5,
+        "useful_opportunities_met": 2,
+        "missed_opportunities": 3,
+        "wasted_calls": 3,
+        "repeated_work": 0,
+        "owner_corrections": 1,
+        "paused_observations": 9,
+        "probes": 1,
+        "estimated_synthetic_usd": 0.0016875,
+        "restart_boundary_roundtrip": "new-useful-2"
+      },
+      "decisions": [
+        {
+          "id": "neg-1",
+          "sha": "neg-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-2",
+          "sha": "neg-2",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-3",
+          "sha": "neg-3",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-1",
+          "sha": "new-useful-1",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useless-1",
+          "sha": "new-useless-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-1-repeat",
+          "sha": "neg-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-2",
+          "sha": "new-useful-2",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": true
+        },
+        {
+          "id": "neg-2-repeat",
+          "sha": "neg-2",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-3",
+          "sha": "new-useful-3",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "irrelevant",
+          "sha": "irrelevant",
+          "eligible": false,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useless-2",
+          "sha": "new-useless-2",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-4",
+          "sha": "new-useful-4",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-1-repeat-2",
+          "sha": "neg-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-5",
+          "sha": "new-useful-5",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": true,
+          "owner_correction": false
+        }
+      ]
+    },
+    "D_constant_analyse": {
+      "summary": {
+        "calls": 13,
+        "useful_opportunities_met": 5,
+        "missed_opportunities": 0,
+        "wasted_calls": 8,
+        "repeated_work": 3,
+        "owner_corrections": 0,
+        "paused_observations": 1,
+        "probes": 0,
+        "estimated_synthetic_usd": 0.0043875,
+        "restart_boundary_roundtrip": "new-useful-2"
+      },
+      "decisions": [
+        {
+          "id": "neg-1",
+          "sha": "neg-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-2",
+          "sha": "neg-2",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-3",
+          "sha": "neg-3",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-1",
+          "sha": "new-useful-1",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useless-1",
+          "sha": "new-useless-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-1-repeat",
+          "sha": "neg-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-2",
+          "sha": "new-useful-2",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-2-repeat",
+          "sha": "neg-2",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-3",
+          "sha": "new-useful-3",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "irrelevant",
+          "sha": "irrelevant",
+          "eligible": false,
+          "source_adequate": false,
+          "action": "no_action",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useless-2",
+          "sha": "new-useless-2",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-4",
+          "sha": "new-useful-4",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "neg-1-repeat-2",
+          "sha": "neg-1",
+          "eligible": true,
+          "source_adequate": false,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        },
+        {
+          "id": "new-useful-5",
+          "sha": "new-useful-5",
+          "eligible": true,
+          "source_adequate": true,
+          "action": "analyse",
+          "probe": false,
+          "owner_correction": false
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "provenance": {
+    "kind": "native Chrome extension with isolated current-branch backend",
+    "chrome_native": true,
+    "provider": "local synthetic HTTP stub",
+    "paid_calls": 0,
+    "meta_inference": false,
+    "source_commit": "1bc947152098ff82918c4247074fe9b76b48c3f5"
+  },
+  "environment": {
+    "backend": "http://127.0.0.1:61145",
+    "page_url": "http://127.0.0.1:61143/native10",
+    "presentation": "native side panel target",
+    "side_panel_registration_ready": true,
+    "panel_opened_as_ordinary_tab": false,
+    "panel_behavior": {
+      "openPanelOnActionClick": true
+    },
+    "chrome": "155.0.8059.85"
+  },
+  "steps": [
+    {
+      "name": "distinct-1",
+      "action": "analyse",
+      "policy_version": 1,
+      "distinct_support": 1
+    },
+    {
+      "name": "distinct-2",
+      "action": "analyse",
+      "policy_version": 2,
+      "distinct_support": 2
+    },
+    {
+      "name": "distinct-3",
+      "action": "analyse",
+      "policy_version": 3,
+      "distinct_support": 3
+    },
+    {
+      "name": "suppressed-1",
+      "action": "no_action",
+      "source": "feedback_policy",
+      "suppressions": 1,
+      "provider_calls": 3
+    },
+    {
+      "name": "owner_correction",
+      "action": "analyse",
+      "correction": true,
+      "policy_version": 6,
+      "provider_calls": 4
+    },
+    {
+      "name": "three_paused_observations",
+      "provider_calls": 4
+    },
+    {
+      "name": "periodic_probe",
+      "action": "analyse",
+      "probe": true,
+      "policy_version": 11,
+      "distinct_support": 4,
+      "provider_calls": 5
+    },
+    {
+      "name": "restored",
+      "action": "analyse",
+      "distinct_support": 4,
+      "provider_calls": 5
+    }
+  ],
+  "negative_checks": {
+    "duplicate_analysis": 409,
+    "provider_calls": 5,
+    "wrong_origin_grant": 403,
+    "modified_hash_snapshot": 403,
+    "budget_exhaustion": 409
+  },
+  "restart": {
+    "policy_version_before": 11,
+    "policy_version_after": 11,
+    "notes_before": 5,
+    "notes_after": 5,
+    "stale_grant_status": 403,
+    "duplicate_inference": false,
+    "post_restart_action": "analyse"
+  },
+  "repeated_suppression": {
+    "unchanged_policy": true,
+    "support": 1
+  },
+  "status": "NATIVE_SYNTHETIC_PASS",
+  "provider": {
+    "kind": "local synthetic HTTP stub",
+    "calls": 8,
+    "paid": false,
+    "validated_calls": 8,
+    "total_tokens": 1200,
+    "estimated_usd_known": 0.0027,
+    "usage_complete": true,
+    "charged_tokens": 1200,
+    "actual_http_requests_observed": 8
+  }
+}

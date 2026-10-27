@@ -13,15 +13,19 @@ fresh inference run and makes no model/network requests.
 | 2:00–2:30 | Recovery note: correction and fresh snapshot-bound probe work under the Governor. |
 | 2:30–3:00 | Cold recall screenshot plus restart report: original restart retained five core notes/v11 without replay. Separate backup-clone recall retained eight notes and unchanged spend with provider disabled. |
 
-Close with eight calls, 4,486 tokens, estimated $0.0123425 under the separately
-approved eight-call/12,000-token/$0.10 ceiling. All approved calls are consumed.
-Shared paid baseline responses are not independent trials. The broader synthetic
-comparison saves calls but misses two adequate opportunities.
+Close with **two separately approved campaigns**: v1 eight calls, 4,486 tokens,
+$0.0123425; v2 eight calls, 4,246 tokens, $0.0113225. Combined recorded total:
+**16 calls, 8,732 tokens, approximately $0.023665 estimated**. Both allowances
+are consumed. Shared paid baseline responses are not independent trials. The
+broader synthetic comparison saves calls but misses adequate opportunities; it is
+not evidence of adaptive superiority.
 
-A second separately approved campaign is frozen in
-[`archives/ALIVE-11/qualification-v2/`](../archives/ALIVE-11/qualification-v2/README.md):
-eight calls, 4,246 tokens and $0.0113225 estimated, with five fresh screenshots.
-It reproduces the same native loop and is not spliced into the v1 replay.
+The v1 replay above uses only v1 screenshots. A second campaign with five fresh
+screenshots is frozen separately in
+[`archives/ALIVE-11/qualification-v2/`](../archives/ALIVE-11/qualification-v2/README.md)
+and is not spliced into the v1 replay. Feedback in both journeys was scripted
+operator intervention, not a measured owner study; all pages were controlled
+excerpts, not arbitrary browsing.
 
 For a new live walkthrough use the synthetic native command in ALIVE-11.md,
 clearly labelled synthetic, from a clean source checkout. Optional stage holds
