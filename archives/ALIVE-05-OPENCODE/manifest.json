@@ -1,0 +1,48 @@
+{
+  "evidence_kind": "controlled test-harness observation",
+  "branch": "opencode/alive-05-browser-continuity",
+  "base_commit": "3580bdf04d5168afd85cdfae1122843cc9774871",
+  "implementation_commit": "87e913f",
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "evidence/managed-chrome-observation.json": {
+      "sha256": "71e7bb9cce6a07e25c0c12d7c424d7e6613849f89bdff1808305dc606b157399",
+      "bytes": 2190
+    },
+    "evidence/prior-archive-integrity.json": {
+      "sha256": "c3a198810ab7a3fc92f1079138923b098fbf013373163efdbeac6bdfec59d815",
+      "bytes": 482
+    },
+    "README.md": {
+      "sha256": "cb750d1124b1b371ac18808a0d8b0eccd7df0a7eb64d1c86337d67d0caa96f47",
+      "bytes": 3523
+    },
+    "validation/backend.txt": {
+      "sha256": "eb450e0b232b3556a2b137b5de5e00cb57fb96e82b871e63892d705f8468be37",
+      "bytes": 1062
+    },
+    "validation/browser-provenance-focused.txt": {
+      "sha256": "9741c89b38261c91432f2c86bb1ef362192f48714ea328b1e42f446e480af771",
+      "bytes": 1167
+    },
+    "validation/frontend-build.txt": {
+      "sha256": "74dbdf2bd77b9fcb49b00336cc7ecc18d925ac7d0e855672d3a31f9cf85a5613",
+      "bytes": 464
+    },
+    "validation/frontend-tests.txt": {
+      "sha256": "d3e5f87f2ffc924a52e048375cb24d985f7943c478f8c392c4f7ed6a5b5d5dc3",
+      "bytes": 318
+    },
+    "validation/ruff.txt": {
+      "sha256": "999967a5d8d3c4c8698987034c938d1689521632aab2e7313448e11b28e860fb",
+      "bytes": 48
+    },
+    "validation/whitespace.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "provenance": {
+    "kind": "controlled test-harness observation",
+    "native_chrome": false,
+    "meta_inference": false,
+    "paid_calls": 0,
+    "note": "Synthetic page adapter; no Playwright, Chrome or network request."
+  },
+  "implementation_commit": "87e913f07fb9a13cf90627912e64a3097f5322ce",
+  "source_hashes": {
+    "alive/browser.py": "9ab07cf80eca5cc2f29522cf013783520679bf889bee629447b875b7e3e46d9e",
+    "dashboard/src/BrowserProvenance.tsx": "39a885be3ce2ac696a7252f9773438fe37b2fdab94200ce95bc556d4daacd626",
+    "dashboard/src/main.tsx": "8751dc8f4fef740c38768c77c1b92e5f0ecfb2ae15510803cfdc363c013e645e",
+    "tests/test_browser_provenance.py": "48cc5af07039955ff0dc31e27d7e93a5a3c06a3aafa4806b5dd45a21515ef7dd"
+  },
+  "observed": {
+    "observation_id": "a938a415-bf3a-409a-aab3-5ecf01729da0",
+    "url": "http://127.0.0.1:8000/demo",
+    "title": "First Contact habitat",
+    "text": "A green light appeared in the habitat.",
+    "session_id": "session-evidence",
+    "source_kind": "managed_chrome_dom",
+    "trust_level": "observed_page_text_not_verified_fact",
+    "observed_at": "2026-10-27T09:41:28.444150+00:00",
+    "selector": "body",
+    "text_sha256": "917b0ad6f52a0d212d3dd488b5777512937bd3f0ad236e2be4575868bd888a4e",
+    "text_chars": 38,
+    "permission_scope": "ALIVE_BROWSER_ORIGINS exact-origin allowlist",
+    "permission_origin": "http://127.0.0.1:8000",
+    "permission_read_only": true
+  },
+  "denied_disallowed_origin": {
+    "denied": true,
+    "error": "Current page is not authorised for observation",
+    "events_ingested": 0
+  },
+  "denied_origin_change_during_read": {
+    "denied": true,
+    "error": "Page left the authorised origin during observation",
+    "events_ingested": 0
+  },
+  "assertions": {
+    "query_and_fragment_removed": true,
+    "source_kind": "managed_chrome_dom",
+    "trust_level": "observed_page_text_not_verified_fact",
+    "permission_origin": "http://127.0.0.1:8000",
+    "permission_read_only": true,
+    "text_sha256_matches": true,
+    "event_id_matches_observation_id": true,
+    "disallowed_origin_blocked": true,
+    "origin_change_blocked": true
+  }
+}
