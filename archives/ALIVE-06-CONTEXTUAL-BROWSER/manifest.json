@@ -1,0 +1,48 @@
+{
+  "evidence_kind": "controlled contextual test harness",
+  "branch": "opencode/alive-06-contextual-browser",
+  "base_commit": "7ad0642d457aec7cd196b9f11d6d484a566acdc5",
+  "feature_commit": "321139d",
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "evidence/contextual-decisions.json": {
+      "sha256": "033b8a26b87a1f2a6f11d207f45fd3c8e0adf2eb6442dbad6c2b936b9c5dd67b",
+      "bytes": 11437
+    },
+    "evidence/prior-archive-integrity.json": {
+      "sha256": "cf65e55c1a7d2891f0c832053bf14b7de7199540a9d0b63235e70eb92fbe6fe0",
+      "bytes": 726
+    },
+    "README.md": {
+      "sha256": "cea245bdc811ab1ad24874e9d1667a4bf4be9703c46f6aa6df430efb91107ca3",
+      "bytes": 3490
+    },
+    "validation/backend.txt": {
+      "sha256": "73875f92e95c87a680aa86b84b71f2a499a99a10245430a7dbb1d0c62ba28ac3",
+      "bytes": 1104
+    },
+    "validation/frontend-build.txt": {
+      "sha256": "729c228e5ff33bcca492e7fe3c928be60d53d1abec3a0ffa9f35edea6722fcc7",
+      "bytes": 464
+    },
+    "validation/frontend-tests.txt": {
+      "sha256": "f0914785f0673a59d4f438cbcc4a808279ba19f787da75bc8a2ce4de0bd15827",
+      "bytes": 319
+    },
+    "validation/ruff.txt": {
+      "sha256": "5b46dc0583905956ee76cd84676dce9b0797c44a7046fd0ed5ee3eabc1e0ecce",
+      "bytes": 48
+    },
+    "validation/web-living-focused.txt": {
+      "sha256": "c0260729020c8fccbb16c481bd06665bab74008825fc30c492edeadf55ae2e01",
+      "bytes": 756
+    },
+    "validation/whitespace.txt": {
+      "sha256": "736c9dbe8c7b2013b50f9b0b7bd1a0ca45045cbbe59d1cce020bacaf195e755e",
+      "bytes": 465
+    }
+  }
+}

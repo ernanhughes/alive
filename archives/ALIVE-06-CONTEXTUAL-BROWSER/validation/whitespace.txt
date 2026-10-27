@@ -1,0 +1,4 @@
+warning: in the working copy of 'alive/web_experience.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'extension/panel.html', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'extension/panel.js', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'tests/test_web_experience.py', LF will be replaced by CRLF the next time Git touches it
