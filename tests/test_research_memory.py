@@ -1044,6 +1044,71 @@ def test_controlled_invalid_provider_is_preserved_as_a_rejected_attempt(client, 
     assert result["analysis"]["data"]["raw_response"]
 
 
+def test_grant_revocation_between_reservation_and_dispatch_blocks_call(client, monkeypatch):
+    g, _, _, _, saved = historical(client, monkeypatch)
+    mdn_grant = grant(client, g["id"], MDN)
+    current = snapshot(client, mdn_grant, MDN, MDN_TEXT)
+    client.app.state.kernel.settings.alive_research_meta_enabled = True
+    preview = post(
+        client,
+        "/research/outbound/preview",
+        {
+            "snapshot_id": current["snapshot"]["id"],
+            "research_id": saved["id"],
+            "provider": "meta",
+            "research_question": "What relationship is supported?",
+        },
+    )
+    post(
+        client,
+        "/research/outbound/authorize",
+        {
+            "consent_id": preview["id"],
+            "payload_sha256": preview["payload_sha256"],
+            "approved": True,
+        },
+    )
+    calls = []
+
+    async def should_not_run(*args, **kwargs):
+        calls.append(1)
+        raise AssertionError("provider dispatched after revocation")
+
+    monkeypatch.setattr("alive.research_relationships.MetaProvider.structured", should_not_run)
+
+    async def scenario():
+        gate = asyncio.Event()
+        release = asyncio.Event()
+        original = client.app.state.relationships._validate_sources
+        calls_to_validate = 0
+
+        async def wrapped(session, consent):
+            nonlocal calls_to_validate
+            calls_to_validate += 1
+            if calls_to_validate == 2:
+                gate.set()
+                await release.wait()
+            return await original(session, consent)
+
+        client.app.state.relationships._validate_sources = wrapped
+        task = asyncio.create_task(client.app.state.relationships.analyze(preview["id"]))
+        await gate.wait()
+
+        async def revoke_direct():
+            async with client.app.state.kernel.db.sessions.begin() as session:
+                grant_row = await session.get(WebExperience, mdn_grant["id"])
+                grant_row.status = "revoked"
+
+        await revoke_direct()
+        release.set()
+        return await task
+
+    result = client.portal.call(scenario)
+    assert calls == []
+    assert result["analysis"]["status"] == "failed"
+    assert result["connection"] is None
+
+
 def test_meta_kill_switch_is_rechecked_at_dispatch(client, monkeypatch):
     g, _, _, _, saved = historical(client, monkeypatch)
     mdn_grant = grant(client, g["id"], MDN)
