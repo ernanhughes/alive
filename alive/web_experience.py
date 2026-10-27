@@ -3,7 +3,6 @@
 import asyncio
 import hashlib
 import json
-import re
 import time
 from datetime import timedelta
 from typing import Literal
@@ -19,6 +18,7 @@ from alive.experiment.metrics import price
 from alive.experiment_budget import check_spend
 from alive.models import now, record, uid
 from alive.providers import MetaProvider
+from alive.relevance import evaluate_relevance, load_relevance_config
 from alive.web_models import WebExperience
 
 PAGES = {
@@ -56,12 +56,14 @@ class SnapshotRequest(Strict):
     title: str = Field(max_length=200)
     text: str = Field(min_length=10, max_length=3000)
     reviewed_sha256: str
+    language: Literal["auto", "en", "zh", "ar"] = "auto"
 
 
 class AnalyseRequest(Strict):
     snapshot_id: str
     reviewed_sha256: str
     send_to_meta: Literal[True]
+    allow_uncertain_analysis: bool = False
 
 
 class FeedbackRequest(Strict):
@@ -79,88 +81,7 @@ def digest(text):
     return hashlib.sha256(text.encode()).hexdigest()
 
 
-RELEVANCE_POLICY = "deterministic-goal-excerpt-overlap-v1"
-RELEVANCE_STOPWORDS = frozenset(
-    {
-        "about",
-        "after",
-        "again",
-        "also",
-        "and",
-        "are",
-        "because",
-        "been",
-        "before",
-        "being",
-        "between",
-        "both",
-        "can",
-        "could",
-        "does",
-        "each",
-        "from",
-        "have",
-        "help",
-        "into",
-        "its",
-        "just",
-        "more",
-        "most",
-        "other",
-        "over",
-        "should",
-        "some",
-        "such",
-        "than",
-        "that",
-        "the",
-        "their",
-        "them",
-        "then",
-        "there",
-        "these",
-        "they",
-        "this",
-        "those",
-        "through",
-        "under",
-        "very",
-        "was",
-        "were",
-        "what",
-        "when",
-        "where",
-        "which",
-        "while",
-        "will",
-        "with",
-        "would",
-        "your",
-        "you",
-    }
-)
-
-
-def content_terms(text):
-    return {
-        term
-        for term in re.findall(r"[a-z0-9_]+", text.lower())
-        if len(term) >= 4 and term not in RELEVANCE_STOPWORDS
-    }
-
-
-def goal_relevance(goal, excerpt):
-    goal_terms = content_terms(goal)
-    excerpt_terms = content_terms(excerpt)
-    matched = sorted(goal_terms & excerpt_terms)
-    return {
-        "policy": RELEVANCE_POLICY,
-        "relevant": bool(matched),
-        "matched_terms": matched[:20],
-        "goal_term_count": len(goal_terms),
-        "excerpt_term_count": len(excerpt_terms),
-        "basis": "Exact lowercase content-word overlap; no semantic or model inference.",
-    }
+goal_relevance = evaluate_relevance
 
 
 class WebCompanion:
@@ -170,6 +91,7 @@ class WebCompanion:
         self.grant_id = None
         self.note_id = None
         self.lock = asyncio.Lock()
+        self.relevance_config = load_relevance_config()
 
     @property
     def active(self):
@@ -321,6 +243,7 @@ class WebCompanion:
                     "text": data.text,
                     "sha256": data.reviewed_sha256,
                     "goal_id": grant.parent_id,
+                    "language_requested": data.language,
                     "source": "observed_page_text",
                     "verified_fact": False,
                     "text_status": "changed_excerpt"
@@ -338,23 +261,55 @@ class WebCompanion:
 
     async def decide(self, s, snapshot):
         goal = await self.get(s, snapshot.data["goal_id"], "goal")
-        relevance = goal_relevance(goal.data["instruction"], snapshot.data["text"])
-        same_state = digest(
-            json.dumps({k: snapshot.data[k] for k in ["url", "goal_id", "sha256"]}, sort_keys=True)
+        language_requested = snapshot.data.get("language_requested", "auto")
+        relevance = evaluate_relevance(
+            goal.data["instruction"],
+            snapshot.data["text"],
+            language=language_requested,
+            config=self.relevance_config,
         )
+        same_state = digest(
+            json.dumps(
+                {
+                    "url": snapshot.data["url"],
+                    "goal_id": snapshot.data["goal_id"],
+                    "sha256": snapshot.data["sha256"],
+                    "language_requested": language_requested,
+                },
+                sort_keys=True,
+            )
+        )
+        base = {
+            "same_state_sha256": same_state,
+            "relevance_policy": relevance["policy"],
+            "config_fingerprint": relevance["config_fingerprint"],
+            "language_requested": language_requested,
+            "language": relevance["language"],
+            "language_source": relevance["language_source"],
+            "language_supported": relevance["language_supported"],
+            "goal_relevance": relevance,
+            "inference_calls": 0,
+        }
+        if relevance["status"] == "uncertain":
+            return base | {
+                "action": "uncertain",
+                "policy": relevance["policy"],
+                "without_feedback_action": "uncertain",
+                "feedback_id": None,
+                "note": None,
+                "candidate_note": None,
+                "reason": relevance["uncertainty_reason"],
+            }
         if not relevance["relevant"]:
-            return {
+            return base | {
                 "action": "no_action",
                 "policy": relevance["policy"],
                 "without_feedback_action": "no_action",
-                "same_state_sha256": same_state,
                 "feedback_id": None,
                 "note": None,
                 "candidate_note": None,
                 "reason": "Observation does not match the owner goal by deterministic "
-                "content-word overlap; no model call made.",
-                "goal_relevance": relevance,
-                "inference_calls": 0,
+                "configured-token overlap; no model call made.",
             }
         notes = [
             n
@@ -363,6 +318,7 @@ class WebCompanion:
             and n.data["url"] == snapshot.data["url"]
             and n.data["goal_id"] == snapshot.data["goal_id"]
             and n.data["sha256"] == snapshot.data["sha256"]
+            and n.data.get("language_requested", "auto") == language_requested
         ]
         feedback = await self.rows(s, "feedback")
         chosen, basis = None, None
@@ -371,19 +327,16 @@ class WebCompanion:
             if ratings and ratings[-1].data["useful"]:
                 chosen, basis = note, ratings[-1]
                 break
-        return {
+        return base | {
             "action": "recall" if chosen else "analyse",
             "policy": "explicit-usefulness-exact-excerpt-v1",
             "without_feedback_action": "analyse",
-            "same_state_sha256": same_state,
             "feedback_id": basis.id if basis else None,
             "note": record(chosen) if chosen else None,
             "candidate_note": record(notes[-1]) if notes else None,
             "reason": "Owner rated this exact goal and excerpt note useful"
             if chosen
             else "No positively rated matching note",
-            "goal_relevance": relevance,
-            "inference_calls": 0,
         }
 
     async def feedback(self, data):
@@ -418,8 +371,20 @@ class WebCompanion:
                 if data.reviewed_sha256 != snapshot.data["sha256"]:
                     raise PermissionError("Review the exact excerpt before Meta inference")
                 goal = await self.get(s, grant.parent_id, "goal")
-                relevance = goal_relevance(goal.data["instruction"], snapshot.data["text"])
-                if not relevance["relevant"]:
+                language_requested = snapshot.data.get("language_requested", "auto")
+                relevance = evaluate_relevance(
+                    goal.data["instruction"],
+                    snapshot.data["text"],
+                    language=language_requested,
+                    config=self.relevance_config,
+                )
+                if relevance["status"] == "uncertain":
+                    if not data.allow_uncertain_analysis:
+                        raise ValueError(
+                            "Language uncertain: choose a language or explicitly allow "
+                            "uncertain analysis"
+                        )
+                elif not relevance["relevant"]:
                     raise ValueError(
                         "No action warranted: observation does not match the owner goal"
                     )
@@ -430,6 +395,9 @@ class WebCompanion:
                 context = {
                     "owner_goal": goal.data["instruction"],
                     "untrusted_excerpt": snapshot.data["text"],
+                    "language_requested": language_requested,
+                    "language": relevance["language"],
+                    "language_uncertainty": relevance["status"] == "uncertain",
                 }
                 reserve = (
                     len(
@@ -465,6 +433,8 @@ class WebCompanion:
                         "model": MODEL,
                         "source": "model_interpretation",
                         "goal_relevance": relevance,
+                        "language_requested": language_requested,
+                        "language_override": relevance["status"] == "uncertain",
                         "context": context,
                         "instructions": INSTRUCTION,
                         "started_at": now().isoformat(),

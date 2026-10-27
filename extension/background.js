@@ -91,6 +91,7 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
       const result = await send('/browser-experience/snapshots', {
         grant_id: grantId, url: latest.payload.url, title: latest.payload.title,
         text: latest.payload.text, reviewed_sha256: await sha(latest.payload.text),
+        language: message.language || 'auto',
       });
       await chrome.storage.session.set({ selected: result,
         noteId: result.decision.note?.id || result.decision.candidate_note?.id || null });
@@ -103,7 +104,8 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
           (await chrome.tabs.get(observedTab)).url !== observedUrl)
         throw new Error('Page changed. Review the current excerpt again');
       const result = await send('/browser-experience/analyse', {
-        snapshot_id: selected.snapshot.id, reviewed_sha256: selected.snapshot.data.sha256, send_to_meta: true,
+        snapshot_id: selected.snapshot.id, reviewed_sha256: selected.snapshot.data.sha256,
+        send_to_meta: true, allow_uncertain_analysis: !!message.allow_uncertain_analysis,
       });
       await chrome.storage.session.set({ noteId: result.id });
       return result;

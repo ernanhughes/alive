@@ -1,0 +1,27 @@
+{"id":"en-dev-1","split":"dev","language":"en","goal":"Learn Python","excerpt":"Python is an easy to learn, powerful programming language.","label":"relevant","notes":"literal overlap"}
+{"id":"en-dev-2","split":"dev","language":"en","goal":"Check coolant temperature","excerpt":"Python is an easy to learn, powerful programming language.","label":"irrelevant","notes":"unrelated goal"}
+{"id":"en-cal-1","split":"calibration","language":"en","goal":"How do I get started with coding?","excerpt":"Python is a programming language used for many tasks.","label":"relevant","notes":"relevant without literal content-word overlap"}
+{"id":"en-cal-2","split":"calibration","language":"en","goal":"Weather forecast","excerpt":"Python is a programming language used for many tasks.","label":"irrelevant","notes":"unrelated goal"}
+{"id":"en-held-1","split":"heldout","language":"en","goal":"Python tutorial for beginners","excerpt":"This guide introduces Python programming.","label":"relevant","notes":"literal overlap"}
+{"id":"en-held-2","split":"heldout","language":"en","goal":"Battery endurance","excerpt":"This guide introduces Python programming.","label":"irrelevant","notes":"unrelated goal"}
+{"id":"en-held-3","split":"heldout","language":"en","goal":"Find the right tool","excerpt":"Python is a programming language used for many tasks.","label":"uncertain","notes":"goal is too broad to decide from overlap alone"}
+{"id":"zh-dev-1","split":"dev","language":"zh","goal":"学习 Python 编程","excerpt":"Python 是一种易于学习、功能强大的编程语言。","label":"relevant","notes":"character bigram overlap"}
+{"id":"zh-dev-2","split":"dev","language":"zh","goal":"天气预报","excerpt":"Python 是一种易于学习、功能强大的编程语言。","label":"irrelevant","notes":"unrelated goal"}
+{"id":"zh-cal-1","split":"calibration","language":"zh","goal":"如何开始编程","excerpt":"Python 是一种编程语言。","label":"relevant","notes":"shared bigram 编程"}
+{"id":"zh-cal-2","split":"calibration","language":"zh","goal":"今天天气很好","excerpt":"Python 是一种编程语言。","label":"irrelevant","notes":"unrelated goal"}
+{"id":"zh-held-1","split":"heldout","language":"zh","goal":"Python 学习指南","excerpt":"本教程介绍如何学习 Python 编程。","label":"relevant","notes":"shared bigrams 学习 and 编程"}
+{"id":"zh-held-2","split":"heldout","language":"zh","goal":"汽车维修","excerpt":"本教程介绍如何学习 Python 编程。","label":"irrelevant","notes":"unrelated goal"}
+{"id":"zh-held-3","split":"heldout","language":"zh","goal":"怎样入门写程序","excerpt":"Python 是一种编程语言。","label":"relevant","notes":"relevant without literal bigram overlap"}
+{"id":"ar-dev-1","split":"dev","language":"ar","goal":"تعلم البرمجة","excerpt":"البرمجة سهلة التعلم.","label":"relevant","notes":"normalized word overlap"}
+{"id":"ar-dev-2","split":"dev","language":"ar","goal":"حالة الطقس","excerpt":"البرمجة سهلة التعلم.","label":"irrelevant","notes":"unrelated goal"}
+{"id":"ar-cal-1","split":"calibration","language":"ar","goal":"كيف أبدأ في تعلم البرمجة؟","excerpt":"البرمجة سهلة التعلم.","label":"relevant","notes":"shared normalized words"}
+{"id":"ar-cal-2","split":"calibration","language":"ar","goal":"أسعار السيارات","excerpt":"البرمجة سهلة التعلم.","label":"irrelevant","notes":"unrelated goal"}
+{"id":"ar-held-1","split":"heldout","language":"ar","goal":"دليل تعلم البرمجة","excerpt":"تعلم البرمجة خطوة بخطوة.","label":"relevant","notes":"shared normalized words"}
+{"id":"ar-held-2","split":"heldout","language":"ar","goal":"الطقس اليوم","excerpt":"تعلم البرمجة خطوة بخطوة.","label":"irrelevant","notes":"unrelated goal"}
+{"id":"ar-held-3","split":"heldout","language":"ar","goal":"كيف أبدأ في البرمجة","excerpt":"تعلم البرمجة خطوة بخطوة.","label":"relevant","notes":"shared normalized word"}
+{"id":"mixed-dev-1","split":"dev","language":"auto","goal":"Learn Python","excerpt":"学习 Python 编程","label":"uncertain","notes":"goal and excerpt scripts differ"}
+{"id":"mixed-cal-1","split":"calibration","language":"auto","goal":"تعلم Python","excerpt":"Python 是一种编程语言。","label":"uncertain","notes":"goal and excerpt languages differ"}
+{"id":"mixed-held-1","split":"heldout","language":"auto","goal":"Python 学习","excerpt":"Python is a programming language.","label":"uncertain","notes":"goal mixes scripts"}
+{"id":"unsupported-dev-1","split":"dev","language":"auto","goal":"Привет мир","excerpt":"Python is a programming language.","label":"uncertain","notes":"unsupported Cyrillic"}
+{"id":"unsupported-cal-1","split":"calibration","language":"auto","goal":"नमस्ते दुनिया","excerpt":"Python is a programming language.","label":"uncertain","notes":"unsupported Devanagari"}
+{"id":"unsupported-held-1","split":"heldout","language":"auto","goal":"Γεια σου κόσμε","excerpt":"Python is a programming language.","label":"uncertain","notes":"unsupported Greek script"}

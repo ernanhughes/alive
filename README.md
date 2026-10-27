@@ -16,6 +16,13 @@ no note and makes no Meta call. The side panel shows the match terms and the bas
 This is transparent lexical relevance, not semantic understanding or open-web autonomy.
 See [the ALIVE-06 protocol](docs/ALIVE-06.md).
 
+**ALIVE-07 externalises relevance language resources and adds a versioned multilingual policy:**
+English, Chinese character n-grams and Arabic normalisation are configured in
+`config/relevance/` rather than hard-coded in the decision loop. Unsupported or mixed
+scripts produce an explicit **uncertain** decision, with no automatic Meta call.
+A frozen 27-case corpus reports per-language precision, recall, false abstention
+and uncertainty against the ALIVE-06 baseline. See [the ALIVE-07 protocol](docs/ALIVE-07.md).
+
 ALIVE-01 is a working vertical slice: FastAPI + PostgreSQL/pgvector + ZeroMQ + React dashboard + managed Chrome + Manifest V3 extension + Pi RPC. Deterministic policies drive curiosity, coherence and commitment. They do not require recurring model calls or claim to be reinforcement learning.
 
 **ALIVE-02 adds a bounded autonomous cognitive loop.** Authorised browser changes compete for attention; structured Meta Observer/Proposer/Critic roles cooperate while a deterministic Investigator, Evaluator and Governor control evidence, permissions and budgets. Real ONNX embeddings, hybrid retrieval, human action approval, persistent experience and restart recovery are implemented. Open **Cognition** in the existing observatory to inspect real traces. Autonomy starts stopped and recovers paused.

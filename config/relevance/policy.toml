@@ -1,0 +1,5 @@
+schema_version = 1
+policy = "deterministic-multilingual-relevance-v2"
+default_language = "en"
+supported_languages = ["en", "zh", "ar"]
+unsupported_behavior = "uncertain"
