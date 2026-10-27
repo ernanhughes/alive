@@ -1,0 +1,138 @@
+{
+  "protocol_version": "alive14r2-usefulness-v1",
+  "frozen_at": "2026-10-27T22:00:00+00:00",
+  "experiment_id": "alive14-r2",
+  "baseline": "777e4d99b6908d13875c9024dfb065cb3bfcaffa",
+  "purpose": "Compare current-only, history-assisted and direct-history conditions for relationship usefulness.",
+  "seed": 20261101,
+  "paired_tasks": [
+    {
+      "task_id": "T01",
+      "goal": "Compare reference counting and tracing garbage collectors",
+      "question": "Which failure mode of reference counting does the current source leave unresolved, and does the historical source address it?",
+      "current_url": "http://127.0.0.1:9400/current/Q1",
+      "current_sha256": "872b6a3b6c446986db5aed15d4888029082d3fdf876a1709b6e0716bca29e557",
+      "current_excerpt": "Why does reference counting leak cycles even after the last object reference disappears?",
+      "historical_url": "http://127.0.0.1:9400/historical/H01",
+      "historical_sha256": "b55e421debf24e41a5d34e9b060d200295cb7b34da17c04818e6a10eac62ed72",
+      "historical_excerpt": "Reference counting frees an object immediately when its last reference disappears, but it cannot reclaim isolated cycles.",
+      "history_expectation": "may_help"
+    },
+    {
+      "task_id": "T02",
+      "goal": "Compare reference counting and tracing garbage collectors",
+      "question": "What does the historical source add to the current description of generational collection?",
+      "current_url": "http://127.0.0.1:9400/current/Q2",
+      "current_sha256": "b1203a24dc203063f45d89923b9a3c317e6c246fcd05534253f38280d58eeffe",
+      "current_excerpt": "A tracing collector marks reachable objects from roots before sweeping unreachable ones.",
+      "historical_url": "http://127.0.0.1:9400/historical/H02",
+      "historical_sha256": "773ec19dd2726cb1b4d1702a4333674dc418b5983c528a2af48482c879a0b1f4",
+      "historical_excerpt": "A tracing collector starts from roots and marks reachable objects before sweeping unreachable ones.",
+      "history_expectation": "may_help"
+    },
+    {
+      "task_id": "T03",
+      "goal": "Evaluate HTTP cache revalidation strategies",
+      "question": "Does the historical source explain how an unchanged response can avoid a body download?",
+      "current_url": "http://127.0.0.1:9400/current/Q4",
+      "current_sha256": "452e93bb9ec33859d65690200d24789ad58bd111d4d75152a1e896b9db025eb5",
+      "current_excerpt": "How does an ETag avoid downloading an unchanged response body?",
+      "historical_url": "http://127.0.0.1:9400/historical/H07",
+      "historical_sha256": "1d7f7f7fbaab20c82c93222cf4d7fdb6e6548244ece57ff9341f87f15690294e",
+      "historical_excerpt": "An ETag validator lets a client send If-None-Match and reuse the cached body when the origin returns 304.",
+      "history_expectation": "may_help"
+    },
+    {
+      "task_id": "T04",
+      "goal": "Evaluate HTTP cache revalidation strategies",
+      "question": "What is the relationship between freshness lifetime and origin contact in the two sources?",
+      "current_url": "http://127.0.0.1:9400/current/Q5",
+      "current_sha256": "0d7850d8ca530bfd7d0ef07b3fc3f3703bcd9e70f82cd799bd055e25b4ed90dc",
+      "current_excerpt": "How long can a max-age response be reused without contacting the origin?",
+      "historical_url": "http://127.0.0.1:9400/historical/H08",
+      "historical_sha256": "2412bcbc33610af89d7356c6bc7a9828e8b9b307fbb1b2f7d2bb61e5643af500",
+      "historical_excerpt": "A max-age directive lets a response be reused without contacting the origin until the freshness lifetime expires.",
+      "history_expectation": "may_help"
+    },
+    {
+      "task_id": "T05",
+      "goal": "Assess service worker offline caching",
+      "question": "Does the historical source qualify the current claim about serving cached content offline?",
+      "current_url": "http://127.0.0.1:9400/current/Q7",
+      "current_sha256": "71fe3762c5c5c24d5eb7afba7ee69fabe43b70ba291e6f3846674bd7b9cf7c7f",
+      "current_excerpt": "A service worker precaches the application shell during installation and serves it offline.",
+      "historical_url": "http://127.0.0.1:9400/historical/H17",
+      "historical_sha256": "35f93e2ed5890e8f7daf5289c596be51168b37f7355e30106031b943b59410ec",
+      "historical_excerpt": "A service worker cannot serve an application shell offline unless the page is controlled by that worker.",
+      "history_expectation": "may_help"
+    },
+    {
+      "task_id": "T06",
+      "goal": "Assess service worker offline caching",
+      "question": "Is the historical source relevant to the current Cache API question?",
+      "current_url": "http://127.0.0.1:9400/current/Q8",
+      "current_sha256": "6a99bcec76d0952fcb4a8f1f0f8da77fcbed97894793009ba4343289c7a42f5a",
+      "current_excerpt": "Where does the Cache API store request-response pairs for an origin?",
+      "historical_url": "http://127.0.0.1:9400/historical/H18",
+      "historical_sha256": "d43b9f1641617fa1a31eb6dc56fd4763b7ea4a5597d1708a3ab7ee4b97f967b7",
+      "historical_excerpt": "An older application cache manifest listed assets for offline use.",
+      "history_expectation": "irrelevant_or_misleading"
+    }
+  ],
+  "conditions": {
+    "A_current_only": "Model analyses only the reviewed current excerpt.",
+    "B_current_plus_history": "Model analyses the reviewed current excerpt plus the explicitly authorised historical excerpt.",
+    "C_history_without_synthesis": "The historical excerpt is displayed directly without model-generated relationship synthesis."
+  },
+  "model_plan": {
+    "provider": "meta",
+    "model": "muse-spark-1.3",
+    "pinned": true,
+    "calls": 12,
+    "tasks": 6,
+    "conditions": 2,
+    "retries": 0,
+    "real_calls_authorised": false
+  },
+  "budget_plan": {
+    "expected_usd": 0.02,
+    "worst_case_reserve_usd": 0.25,
+    "ceiling_usd": 0.3,
+    "input_token_cap": 18000,
+    "output_token_cap": 1536,
+    "note": "Planning estimate only; verify current pricing before requesting approval."
+  },
+  "rubric_version": "alive14-r2-rubric-v1",
+  "rubric": [
+    "factually_supported",
+    "relevant_to_goal",
+    "revealed_new",
+    "already_obvious",
+    "would_act",
+    "misleading",
+    "uncertain"
+  ],
+  "blinding": {
+    "presentation": "equal text-only format",
+    "hidden_before_ratings": [
+      "condition",
+      "provider",
+      "model",
+      "tokens",
+      "cost"
+    ],
+    "order": "per-task seeded shuffle",
+    "assignment": "separate protected record",
+    "owner_auth": "authenticated owner endpoint",
+    "output_hash": "immutable before rating",
+    "revisions": "append-only"
+  },
+  "stopping_rules": [
+    "Stop if any exact-payload consent check fails.",
+    "Stop if provider is disabled or model changes.",
+    "Stop if cumulative USD liability exceeds the approved ceiling.",
+    "Stop if an invalid output is promoted to a validated connection.",
+    "Do not retry an ambiguous call.",
+    "Report a null or negative usefulness result."
+  ]
+}
