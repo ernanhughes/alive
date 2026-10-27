@@ -1,0 +1,24 @@
+[
+  {
+    "episode": 1,
+    "assessment": {
+      "resolved": false,
+      "safe_abstention": true,
+      "factual_correct": null,
+      "conclusion_contract_correct": true
+    },
+    "original_classification_retained": true,
+    "policy_update_retained": true
+  },
+  {
+    "episode": 2,
+    "assessment": {
+      "resolved": true,
+      "safe_abstention": false,
+      "factual_correct": true,
+      "conclusion_contract_correct": true
+    },
+    "original_classification_retained": true,
+    "policy_update_retained": true
+  }
+]

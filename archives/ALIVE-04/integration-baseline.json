@@ -1,0 +1,13 @@
+{
+  "main": "a060a6c",
+  "p2": "f257cbc",
+  "p3": "930fb23",
+  "qualified_integration": "3719cf461e839c6af8aee3681725f43bd265d74d",
+  "p2_p3_published": true,
+  "new_main_merges": false,
+  "baseline_tests": {
+    "backend": 76,
+    "frontend": 4,
+    "browser": 5
+  }
+}

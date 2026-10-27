@@ -1,0 +1,1179 @@
+{
+  "backend": "postgresql",
+  "events": [
+    {
+      "sequence_number": 3369,
+      "id": "4cfbbfc6-4623-4542-9b2f-07f7aa1a3b34",
+      "event_type": "living.journey_created",
+      "source": "kernel",
+      "correlation_id": "102e3313-8311-41cb-8407-510adb60e238",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "scope": "controlled local habitat read/click only",
+        "provider": "meta",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:34:59.506711+00:00",
+      "recorded_at": "2026-10-27 07:34:59.508301+00:00",
+      "published_at": "2026-10-27 07:34:59.573886+00:00"
+    },
+    {
+      "sequence_number": 3370,
+      "id": "d2eeb1b6-5bdb-4b96-93cb-6fa0e626cce9",
+      "event_type": "browser.session_opened",
+      "source": "kernel",
+      "correlation_id": "38307a68-7904-469f-9e49-600324caa2dc",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "session_id": "ac7d130e-ec98-474f-bdd6-3848e85ecf46"
+      },
+      "occurred_at": "2026-10-27 07:35:00.796997+00:00",
+      "recorded_at": "2026-10-27 07:35:00.822633+00:00",
+      "published_at": "2026-10-27 07:35:00.826676+00:00"
+    },
+    {
+      "sequence_number": 3371,
+      "id": "67dbf10b-6717-4bfc-8127-51c29e8fac4c",
+      "event_type": "living.observing",
+      "source": "kernel",
+      "correlation_id": "aca9d1d5-f60a-424c-8ad2-bf62e041f8cd",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:35:00.830271+00:00",
+        "data": {
+          "episode": 1
+        },
+        "stage": "observing",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:35:00.830331+00:00",
+      "recorded_at": "2026-10-27 07:35:00.831739+00:00",
+      "published_at": "2026-10-27 07:35:00.934897+00:00"
+    },
+    {
+      "sequence_number": 3372,
+      "id": "546b6bb5-d065-4b52-bf25-9e5e237848f7",
+      "event_type": "living.governor_tool_permitted",
+      "source": "kernel",
+      "correlation_id": "5f44118a-2de1-471c-abd5-882f76ee3511",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "episode": 1,
+        "operation": "observe",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:35:00.965803+00:00",
+      "recorded_at": "2026-10-27 07:35:00.967686+00:00",
+      "published_at": "2026-10-27 07:35:01.145564+00:00"
+    },
+    {
+      "sequence_number": 3373,
+      "id": "37cd8da6-9f7d-4157-a09c-dcd664e16843",
+      "event_type": "browser.navigation_completed",
+      "source": "kernel",
+      "correlation_id": "12a59236-4044-41e1-8bc7-e39007121380",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/1",
+        "session_id": "ac7d130e-ec98-474f-bdd6-3848e85ecf46"
+      },
+      "occurred_at": "2026-10-27 07:35:01.019842+00:00",
+      "recorded_at": "2026-10-27 07:35:01.021645+00:00",
+      "published_at": "2026-10-27 07:35:01.145687+00:00"
+    },
+    {
+      "sequence_number": 3374,
+      "id": "db1bfcaa-c43f-4fb0-b6be-c3bbf3e40138",
+      "event_type": "browser.page_opened",
+      "source": "user",
+      "correlation_id": "538cfa77-d90b-4220-ae5f-18dee4f2a0cb",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/1",
+        "text": "A claim, an action, an experience. Controlled synthetic public research habitat. Claim: Aster endurance_hours 32; History event: source_replaced; the measurement source has changed. Prior results do not establish the current measurement. Retrieve the current instrument evidence Publish the independent end-of-episode feedback",
+        "title": "ALIVE \u00b7 Living research habitat",
+        "session_id": "ac7d130e-ec98-474f-bdd6-3848e85ecf46"
+      },
+      "occurred_at": "2026-10-27 07:35:01.035114+00:00",
+      "recorded_at": "2026-10-27 07:35:01.035838+00:00",
+      "published_at": "2026-10-27 07:35:01.145814+00:00"
+    },
+    {
+      "sequence_number": 3377,
+      "id": "7ee072f3-b666-4157-aec5-2d03b9c66030",
+      "event_type": "living.observed",
+      "source": "kernel",
+      "correlation_id": "a559e608-4ab8-4827-9bf4-a464e64861a4",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:35:01.150112+00:00",
+        "data": {
+          "state": {
+            "goal": "resolve-current-claim",
+            "claim": "32",
+            "context": "controlled-source-replaced/resolve-current-claim/v1",
+            "subject": "Aster",
+            "predicate": "endurance_hours",
+            "feature_hash": "3c6a7cfbeac50f515a66332e4ab09fb55ac2afa6df204cab5079fff5078a2568",
+            "recent_event": "source_replaced"
+          },
+          "observation": {
+            "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/1",
+            "text": "A claim, an action, an experience. Controlled synthetic public research habitat. Claim: Aster endurance_hours 32; History event: source_replaced; the measurement source has changed. Prior results do not establish the current measurement. Retrieve the current instrument evidence Publish the independent end-of-episode feedback",
+            "title": "ALIVE \u00b7 Living research habitat",
+            "session_id": "ac7d130e-ec98-474f-bdd6-3848e85ecf46"
+          }
+        },
+        "stage": "observed",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:35:01.150164+00:00",
+      "recorded_at": "2026-10-27 07:35:01.150995+00:00",
+      "published_at": "2026-10-27 07:35:01.254720+00:00"
+    },
+    {
+      "sequence_number": 3378,
+      "id": "0e4ac184-6376-4ab4-bb6d-3f8cf081b459",
+      "event_type": "living.remembering",
+      "source": "kernel",
+      "correlation_id": "39274973-b78f-4c1b-b090-1d20bcef9e7a",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:35:01.293076+00:00",
+        "data": {
+          "memory_ids": []
+        },
+        "stage": "remembering",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:35:01.293178+00:00",
+      "recorded_at": "2026-10-27 07:35:01.294332+00:00",
+      "published_at": "2026-10-27 07:35:01.366450+00:00"
+    },
+    {
+      "sequence_number": 3379,
+      "id": "1a1ef1cf-6064-465c-a902-6cc9a12cd6db",
+      "event_type": "living.predicting",
+      "source": "kernel",
+      "correlation_id": "a1fdfe0f-0bd9-4fa3-8813-86bd4165e28e",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:35:01.421014+00:00",
+        "data": {
+          "action": "monitor",
+          "reason": "Highest observed mean reward; unseen actions use zero prior. Ties prefer lower-resource monitoring. No model-generated choice.",
+          "algorithm": "empirical-outcome-mean-v1",
+          "policy_hash": "1018fe8111fd6f2f8db199a78b49842f57ee3503af8083bc441078cc6cf4a076",
+          "predictions": {
+            "monitor": {
+              "n": 0,
+              "mean": 0.0,
+              "status": "unknown; zero prior"
+            },
+            "retrieve": {
+              "n": 0,
+              "mean": 0.0,
+              "status": "unknown; zero prior"
+            }
+          },
+          "policy_version": 0
+        },
+        "stage": "predicting",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:35:01.421072+00:00",
+      "recorded_at": "2026-10-27 07:35:01.422315+00:00",
+      "published_at": "2026-10-27 07:35:01.475723+00:00"
+    },
+    {
+      "sequence_number": 3380,
+      "id": "9427edb8-7be7-428d-a122-f7de74e4dc86",
+      "event_type": "living.choosing",
+      "source": "kernel",
+      "correlation_id": "dff0e6f0-a94c-4230-a4eb-6a43d552a7bc",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:35:01.553812+00:00",
+        "data": {
+          "action": "monitor",
+          "feature_hash": "3c6a7cfbeac50f515a66332e4ab09fb55ac2afa6df204cab5079fff5078a2568",
+          "initial_policy_counterfactual": "monitor"
+        },
+        "stage": "choosing",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:35:01.553871+00:00",
+      "recorded_at": "2026-10-27 07:35:01.557823+00:00",
+      "published_at": "2026-10-27 07:35:01.584696+00:00"
+    },
+    {
+      "sequence_number": 3381,
+      "id": "cab2dac8-a33f-4287-a0c2-12c2370a1231",
+      "event_type": "living.acting",
+      "source": "kernel",
+      "correlation_id": "559d9183-7b9d-42ff-9a15-c56876f15134",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:35:01.694983+00:00",
+        "data": {
+          "action": "monitor",
+          "sources": [],
+          "evidence": null
+        },
+        "stage": "acting",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:35:01.695035+00:00",
+      "recorded_at": "2026-10-27 07:35:01.695739+00:00",
+      "published_at": "2026-10-27 07:35:01.697581+00:00"
+    },
+    {
+      "sequence_number": 3382,
+      "id": "2e9560ac-5a4b-4882-9f5a-ec721365b466",
+      "event_type": "living.reasoning",
+      "source": "kernel",
+      "correlation_id": "c2db7e4b-3e05-480c-b3f8-39701873c25b",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:35:01.820498+00:00",
+        "data": {
+          "action_already_selected": "monitor"
+        },
+        "stage": "reasoning",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:35:01.820557+00:00",
+      "recorded_at": "2026-10-27 07:35:01.821130+00:00",
+      "published_at": "2026-10-27 07:35:01.904771+00:00"
+    },
+    {
+      "sequence_number": 3383,
+      "id": "af63ec63-e3e8-4334-87d9-9e9a6edec027",
+      "event_type": "living.governor_tool_permitted",
+      "source": "kernel",
+      "correlation_id": "97adae18-0401-4b67-a100-667d29cbb7e9",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "episode": 1,
+        "operation": "feedback",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:35:05.148383+00:00",
+      "recorded_at": "2026-10-27 07:35:05.150173+00:00",
+      "published_at": "2026-10-27 07:35:05.217755+00:00"
+    },
+    {
+      "sequence_number": 3384,
+      "id": "05d532c4-cbd7-4f13-b45b-472ea6775b7b",
+      "event_type": "action.executed",
+      "source": "kernel",
+      "correlation_id": "2d107624-95f8-45e4-9db2-4d3aedb85186",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "operation": "click",
+        "session_id": "ac7d130e-ec98-474f-bdd6-3848e85ecf46"
+      },
+      "occurred_at": "2026-10-27 07:35:05.228879+00:00",
+      "recorded_at": "2026-10-27 07:35:05.229517+00:00",
+      "published_at": "2026-10-27 07:35:05.333341+00:00"
+    },
+    {
+      "sequence_number": 3385,
+      "id": "ae410217-c31f-45f1-8cbd-e307b7a72d6e",
+      "event_type": "browser.dom_changed",
+      "source": "user",
+      "correlation_id": "e4a503d9-32b6-4651-9e72-9623ce6722b9",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/1",
+        "text": "A claim, an action, an experience. Controlled synthetic public research habitat. Claim: Aster endurance_hours 32; History event: source_replaced; the measurement source has changed. Prior results do not establish the current measurement. Retrieve the current instrument evidence Publish the independent end-of-episode feedback Feedback measurement: 20 hours; The current claim needed verification. A supported current conclusion resolves the goal. Synthetic goal reward: resolved +1, unresolved -0.5; retrieval cost 0.15 resource units.",
+        "title": "ALIVE \u00b7 Living research habitat",
+        "session_id": "ac7d130e-ec98-474f-bdd6-3848e85ecf46"
+      },
+      "occurred_at": "2026-10-27 07:35:05.235807+00:00",
+      "recorded_at": "2026-10-27 07:35:05.236070+00:00",
+      "published_at": "2026-10-27 07:35:05.333419+00:00"
+    },
+    {
+      "sequence_number": 3388,
+      "id": "ce306baa-eb88-4588-a8bb-91f0ab3074d1",
+      "event_type": "living.feedback",
+      "source": "kernel",
+      "correlation_id": "e818dba9-575f-44f9-b70d-7dad471e7cdf",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:35:05.300965+00:00",
+        "data": {
+          "resolved": false,
+          "measurement": "20",
+          "resource_cost": 0,
+          "factual_correct": null,
+          "safe_abstention": true,
+          "synthetic_goal_reward": -0.5
+        },
+        "stage": "feedback",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:35:05.301034+00:00",
+      "recorded_at": "2026-10-27 07:35:05.307388+00:00",
+      "published_at": "2026-10-27 07:35:05.333619+00:00"
+    },
+    {
+      "sequence_number": 3389,
+      "id": "0ded351b-9574-4ff6-aba5-79b192b6a96a",
+      "event_type": "living.experience_learned",
+      "source": "kernel",
+      "correlation_id": "f34eca9e-87c7-4619-9612-5792fc1388e0",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976",
+        "policy_after": "d7c176c18528c46f82c29a233c9bc0f0fd057090e91468f743f34f5f0e2714a2",
+        "policy_before": "1018fe8111fd6f2f8db199a78b49842f57ee3503af8083bc441078cc6cf4a076",
+        "transition_id": "ad1a1125-7b09-433a-930f-d6480bb817e4"
+      },
+      "occurred_at": "2026-10-27 07:35:05.447521+00:00",
+      "recorded_at": "2026-10-27 07:35:05.448613+00:00",
+      "published_at": "2026-10-27 07:35:05.454039+00:00"
+    },
+    {
+      "sequence_number": 3390,
+      "id": "0557ac42-ad7d-4f1c-9985-72abde17ae4c",
+      "event_type": "browser.session_closed",
+      "source": "kernel",
+      "correlation_id": "5e57686a-675d-411b-924f-64445edf1667",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "session_id": "ac7d130e-ec98-474f-bdd6-3848e85ecf46"
+      },
+      "occurred_at": "2026-10-27 07:35:05.463075+00:00",
+      "recorded_at": "2026-10-27 07:35:05.464207+00:00",
+      "published_at": "2026-10-27 07:35:05.568272+00:00"
+    },
+    {
+      "sequence_number": 3404,
+      "id": "8dc50ca4-f897-45f7-a03a-4c2b543f271c",
+      "event_type": "browser.session_opened",
+      "source": "kernel",
+      "correlation_id": "dd565fe3-43db-4577-9846-e948c60c1b20",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "session_id": "51f6cd69-41f3-4a88-bded-e5e0447b937f"
+      },
+      "occurred_at": "2026-10-27 07:37:05.435487+00:00",
+      "recorded_at": "2026-10-27 07:37:05.439692+00:00",
+      "published_at": "2026-10-27 07:37:05.531674+00:00"
+    },
+    {
+      "sequence_number": 3405,
+      "id": "1e386336-2459-4219-8680-538507a52d42",
+      "event_type": "living.observing",
+      "source": "kernel",
+      "correlation_id": "1685d4f2-eb9e-459d-85e5-947ebcb410e2",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:37:05.442454+00:00",
+        "data": {
+          "episode": 2
+        },
+        "stage": "observing",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:37:05.442511+00:00",
+      "recorded_at": "2026-10-27 07:37:05.444456+00:00",
+      "published_at": "2026-10-27 07:37:05.531792+00:00"
+    },
+    {
+      "sequence_number": 3406,
+      "id": "2912c9f4-9c21-4da9-93c8-c83eba0eaa6e",
+      "event_type": "living.governor_tool_permitted",
+      "source": "kernel",
+      "correlation_id": "e80d99a6-f77a-4ea3-a2f1-a833989f89c3",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "episode": 2,
+        "operation": "observe",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:37:05.582051+00:00",
+      "recorded_at": "2026-10-27 07:37:05.584030+00:00",
+      "published_at": "2026-10-27 07:37:05.641910+00:00"
+    },
+    {
+      "sequence_number": 3407,
+      "id": "53f3033a-87a7-4919-b8c2-c10aa3945a50",
+      "event_type": "browser.navigation_completed",
+      "source": "kernel",
+      "correlation_id": "44bc1565-b091-4004-93fd-b989347f80d8",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/2",
+        "session_id": "51f6cd69-41f3-4a88-bded-e5e0447b937f"
+      },
+      "occurred_at": "2026-10-27 07:37:05.646786+00:00",
+      "recorded_at": "2026-10-27 07:37:05.647895+00:00",
+      "published_at": "2026-10-27 07:37:05.753529+00:00"
+    },
+    {
+      "sequence_number": 3408,
+      "id": "5991e574-366a-4ab3-98f1-c36772b6766f",
+      "event_type": "browser.page_opened",
+      "source": "user",
+      "correlation_id": "e04e5968-0042-4bbf-8a0e-5ec1ce842ac3",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/2",
+        "text": "A claim, an action, an experience. Controlled synthetic public research habitat. Claim: Aster endurance_hours 32; History event: source_replaced; the measurement source has changed. Prior results do not establish the current measurement. Retrieve the current instrument evidence Publish the independent end-of-episode feedback",
+        "title": "ALIVE \u00b7 Living research habitat",
+        "session_id": "51f6cd69-41f3-4a88-bded-e5e0447b937f"
+      },
+      "occurred_at": "2026-10-27 07:37:05.662297+00:00",
+      "recorded_at": "2026-10-27 07:37:05.662507+00:00",
+      "published_at": "2026-10-27 07:37:05.753622+00:00"
+    },
+    {
+      "sequence_number": 3410,
+      "id": "db1c100d-7500-432c-8b33-8adbe4e2e023",
+      "event_type": "living.observed",
+      "source": "kernel",
+      "correlation_id": "dcb4294a-c7c7-4d50-863f-ed4ebfc5d757",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:37:05.668757+00:00",
+        "data": {
+          "state": {
+            "goal": "resolve-current-claim",
+            "claim": "32",
+            "context": "controlled-source-replaced/resolve-current-claim/v1",
+            "subject": "Aster",
+            "predicate": "endurance_hours",
+            "feature_hash": "3c6a7cfbeac50f515a66332e4ab09fb55ac2afa6df204cab5079fff5078a2568",
+            "recent_event": "source_replaced"
+          },
+          "observation": {
+            "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/2",
+            "text": "A claim, an action, an experience. Controlled synthetic public research habitat. Claim: Aster endurance_hours 32; History event: source_replaced; the measurement source has changed. Prior results do not establish the current measurement. Retrieve the current instrument evidence Publish the independent end-of-episode feedback",
+            "title": "ALIVE \u00b7 Living research habitat",
+            "session_id": "51f6cd69-41f3-4a88-bded-e5e0447b937f"
+          }
+        },
+        "stage": "observed",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:37:05.668800+00:00",
+      "recorded_at": "2026-10-27 07:37:05.669897+00:00",
+      "published_at": "2026-10-27 07:37:05.753796+00:00"
+    },
+    {
+      "sequence_number": 3411,
+      "id": "ee9fb0ab-40d7-4a79-bf5d-ed65f379170f",
+      "event_type": "living.remembering",
+      "source": "kernel",
+      "correlation_id": "8fab3a14-1d83-4406-9e9f-c9c25e16dfb8",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:37:05.810286+00:00",
+        "data": {
+          "memory_ids": [
+            "ad1a1125-7b09-433a-930f-d6480bb817e4"
+          ]
+        },
+        "stage": "remembering",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:37:05.810337+00:00",
+      "recorded_at": "2026-10-27 07:37:05.811172+00:00",
+      "published_at": "2026-10-27 07:37:05.865049+00:00"
+    },
+    {
+      "sequence_number": 3412,
+      "id": "a8beb3b7-619b-4d36-a524-413c524daeab",
+      "event_type": "living.predicting",
+      "source": "kernel",
+      "correlation_id": "a0076838-01f6-450c-9248-a2cda1356315",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:37:05.944905+00:00",
+        "data": {
+          "action": "retrieve",
+          "reason": "Highest observed mean reward; unseen actions use zero prior. Ties prefer lower-resource monitoring. No model-generated choice.",
+          "algorithm": "empirical-outcome-mean-v1",
+          "policy_hash": "d7c176c18528c46f82c29a233c9bc0f0fd057090e91468f743f34f5f0e2714a2",
+          "predictions": {
+            "monitor": {
+              "n": 1,
+              "mean": -0.5,
+              "status": "observed mean; small-sample uncertainty"
+            },
+            "retrieve": {
+              "n": 0,
+              "mean": 0.0,
+              "status": "unknown; zero prior"
+            }
+          },
+          "policy_version": 1
+        },
+        "stage": "predicting",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:37:05.944960+00:00",
+      "recorded_at": "2026-10-27 07:37:05.945817+00:00",
+      "published_at": "2026-10-27 07:37:05.976485+00:00"
+    },
+    {
+      "sequence_number": 3413,
+      "id": "0d8df7c1-58c9-4c6f-812a-71a006e75cb6",
+      "event_type": "living.choosing",
+      "source": "kernel",
+      "correlation_id": "d7b28e65-eece-469b-80b0-95eb893c3eda",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:37:06.069840+00:00",
+        "data": {
+          "action": "retrieve",
+          "feature_hash": "3c6a7cfbeac50f515a66332e4ab09fb55ac2afa6df204cab5079fff5078a2568",
+          "initial_policy_counterfactual": "monitor"
+        },
+        "stage": "choosing",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:37:06.069886+00:00",
+      "recorded_at": "2026-10-27 07:37:06.070838+00:00",
+      "published_at": "2026-10-27 07:37:06.084279+00:00"
+    },
+    {
+      "sequence_number": 3414,
+      "id": "7a6f6e04-84d8-48f3-82e5-3d13ad08584f",
+      "event_type": "living.governor_tool_permitted",
+      "source": "kernel",
+      "correlation_id": "025516d0-7d4e-4427-9263-e950e7153804",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "episode": 2,
+        "operation": "retrieve",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:37:06.195292+00:00",
+      "recorded_at": "2026-10-27 07:37:06.196321+00:00",
+      "published_at": "2026-10-27 07:37:06.308739+00:00"
+    },
+    {
+      "sequence_number": 3415,
+      "id": "89deb577-493c-43aa-862b-d049f09c4b1a",
+      "event_type": "action.executed",
+      "source": "kernel",
+      "correlation_id": "921db20b-725c-40fd-89ce-d5bf4ed6a6f8",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "operation": "click",
+        "session_id": "51f6cd69-41f3-4a88-bded-e5e0447b937f"
+      },
+      "occurred_at": "2026-10-27 07:37:06.243369+00:00",
+      "recorded_at": "2026-10-27 07:37:06.244010+00:00",
+      "published_at": "2026-10-27 07:37:06.308863+00:00"
+    },
+    {
+      "sequence_number": 3416,
+      "id": "d4313068-8345-4382-878e-64b038814755",
+      "event_type": "browser.dom_changed",
+      "source": "user",
+      "correlation_id": "c7251566-f415-4bab-8177-0be1cd901c7f",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/2",
+        "text": "A claim, an action, an experience. Controlled synthetic public research habitat. Claim: Aster endurance_hours 32; History event: source_replaced; the measurement source has changed. Prior results do not establish the current measurement. Retrieve the current instrument evidence Instrument reading: 20 hours; Source: current controlled measurement. This is synthetic instrument evidence. Publish the independent end-of-episode feedback",
+        "title": "ALIVE \u00b7 Living research habitat",
+        "session_id": "51f6cd69-41f3-4a88-bded-e5e0447b937f"
+      },
+      "occurred_at": "2026-10-27 07:37:06.248035+00:00",
+      "recorded_at": "2026-10-27 07:37:06.248187+00:00",
+      "published_at": "2026-10-27 07:37:06.308983+00:00"
+    },
+    {
+      "sequence_number": 3419,
+      "id": "dc192919-fe80-411b-89de-86a60f71ff80",
+      "event_type": "living.acting",
+      "source": "kernel",
+      "correlation_id": "8664a615-d8cc-4db9-8581-e130e4a7bf83",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:37:06.257855+00:00",
+        "data": {
+          "action": "retrieve",
+          "sources": [
+            {
+              "id": "measurement:b77f9e7d-5ea1-4c26-889e-655cc0918976:2",
+              "value": "20",
+              "provenance": "Visible current Chrome DOM after permitted retrieval"
+            }
+          ],
+          "evidence": {
+            "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/2",
+            "text": "A claim, an action, an experience. Controlled synthetic public research habitat. Claim: Aster endurance_hours 32; History event: source_replaced; the measurement source has changed. Prior results do not establish the current measurement. Retrieve the current instrument evidence Instrument reading: 20 hours; Source: current controlled measurement. This is synthetic instrument evidence. Publish the independent end-of-episode feedback",
+            "title": "ALIVE \u00b7 Living research habitat",
+            "session_id": "51f6cd69-41f3-4a88-bded-e5e0447b937f"
+          }
+        },
+        "stage": "acting",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:37:06.257898+00:00",
+      "recorded_at": "2026-10-27 07:37:06.258630+00:00",
+      "published_at": "2026-10-27 07:37:06.309129+00:00"
+    },
+    {
+      "sequence_number": 3420,
+      "id": "dfb7a4d6-d582-42fc-8e9d-6a5e88fc72e1",
+      "event_type": "living.reasoning",
+      "source": "kernel",
+      "correlation_id": "11b9f557-d328-4ddb-a557-49c777b45291",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:37:06.382979+00:00",
+        "data": {
+          "action_already_selected": "retrieve"
+        },
+        "stage": "reasoning",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:37:06.383035+00:00",
+      "recorded_at": "2026-10-27 07:37:06.383895+00:00",
+      "published_at": "2026-10-27 07:37:06.413844+00:00"
+    },
+    {
+      "sequence_number": 3421,
+      "id": "a492d58c-b51d-4968-9ccc-5701e62a09e3",
+      "event_type": "living.governor_tool_permitted",
+      "source": "kernel",
+      "correlation_id": "292599b9-0399-453a-a1b9-31339211cabb",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "episode": 2,
+        "operation": "feedback",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:37:09.438890+00:00",
+      "recorded_at": "2026-10-27 07:37:09.441380+00:00",
+      "published_at": "2026-10-27 07:37:09.443942+00:00"
+    },
+    {
+      "sequence_number": 3422,
+      "id": "8082f4d7-20ce-41d7-823d-7bb2c50c5bd7",
+      "event_type": "action.executed",
+      "source": "kernel",
+      "correlation_id": "39df235c-13f8-47e3-bab4-e25a9ccb4965",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "operation": "click",
+        "session_id": "51f6cd69-41f3-4a88-bded-e5e0447b937f"
+      },
+      "occurred_at": "2026-10-27 07:37:09.463982+00:00",
+      "recorded_at": "2026-10-27 07:37:09.464578+00:00",
+      "published_at": "2026-10-27 07:37:09.556437+00:00"
+    },
+    {
+      "sequence_number": 3423,
+      "id": "a8225c16-755d-44ee-961f-d49982ef5b97",
+      "event_type": "browser.dom_changed",
+      "source": "user",
+      "correlation_id": "b7265b9e-95c2-4ff2-aa92-912eb49fd7c5",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/2",
+        "text": "A claim, an action, an experience. Controlled synthetic public research habitat. Claim: Aster endurance_hours 32; History event: source_replaced; the measurement source has changed. Prior results do not establish the current measurement. Retrieve the current instrument evidence Instrument reading: 20 hours; Source: current controlled measurement. This is synthetic instrument evidence. Publish the independent end-of-episode feedback Feedback measurement: 20 hours; The current claim needed verification. A supported current conclusion resolves the goal. Synthetic goal reward: resolved +1, unresolved -0.5; retrieval cost 0.15 resource units.",
+        "title": "ALIVE \u00b7 Living research habitat",
+        "session_id": "51f6cd69-41f3-4a88-bded-e5e0447b937f"
+      },
+      "occurred_at": "2026-10-27 07:37:09.468179+00:00",
+      "recorded_at": "2026-10-27 07:37:09.468332+00:00",
+      "published_at": "2026-10-27 07:37:09.556518+00:00"
+    },
+    {
+      "sequence_number": 3426,
+      "id": "89245c24-87be-472c-9ee0-630b6d3e678d",
+      "event_type": "living.feedback",
+      "source": "kernel",
+      "correlation_id": "e412db3a-1cff-491a-8b5d-1cf61e2a3999",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "at": "2026-10-27T07:37:09.473737+00:00",
+        "data": {
+          "resolved": true,
+          "measurement": "20",
+          "resource_cost": 0.15,
+          "factual_correct": true,
+          "safe_abstention": false,
+          "synthetic_goal_reward": 0.85
+        },
+        "stage": "feedback",
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976"
+      },
+      "occurred_at": "2026-10-27 07:37:09.473853+00:00",
+      "recorded_at": "2026-10-27 07:37:09.475403+00:00",
+      "published_at": "2026-10-27 07:37:09.556720+00:00"
+    },
+    {
+      "sequence_number": 3427,
+      "id": "bb106fe2-8f9d-4ee9-94ed-dfdf243127fd",
+      "event_type": "living.experience_learned",
+      "source": "kernel",
+      "correlation_id": "497f79a1-6836-45c3-9ac4-826cbdb1a645",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976",
+        "policy_after": "0dc592b4c9b10b6d97d65b0747986371dc441c3569afd3fffad50c1cae53929f",
+        "policy_before": "d7c176c18528c46f82c29a233c9bc0f0fd057090e91468f743f34f5f0e2714a2",
+        "transition_id": "7243bfbd-768a-4bd3-aa7e-e288b8ce3056"
+      },
+      "occurred_at": "2026-10-27 07:37:09.608995+00:00",
+      "recorded_at": "2026-10-27 07:37:09.610401+00:00",
+      "published_at": "2026-10-27 07:37:09.664444+00:00"
+    },
+    {
+      "sequence_number": 3428,
+      "id": "b24f0a2f-888d-4e2c-8073-2dec345791a3",
+      "event_type": "browser.session_closed",
+      "source": "kernel",
+      "correlation_id": "b28762f2-8d58-46ef-acef-6235d6011c37",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "session_id": "51f6cd69-41f3-4a88-bded-e5e0447b937f"
+      },
+      "occurred_at": "2026-10-27 07:37:09.627301+00:00",
+      "recorded_at": "2026-10-27 07:37:09.628775+00:00",
+      "published_at": "2026-10-27 07:37:09.664511+00:00"
+    }
+  ],
+  "restarts_between_calls": [
+    {
+      "sequence_number": 3403,
+      "id": "62082b2c-8c0e-4913-8278-65434a7c8642",
+      "event_type": "alive.started",
+      "source": "kernel",
+      "correlation_id": "119a3577-8911-43b3-8e80-438b81ed142f",
+      "causation_id": null,
+      "schema_version": 1,
+      "payload": {
+        "identity_sha256": "77aba3967e36a9a3f7c117a1866eb017863f86f28dfb91f964b25e33dd24742c"
+      },
+      "occurred_at": "2026-10-27 07:37:03.965893+00:00",
+      "recorded_at": "2026-10-27 07:37:03.967338+00:00",
+      "published_at": "2026-10-27 07:37:03.985993+00:00"
+    }
+  ],
+  "browsers": [
+    {
+      "id": "ac7d130e-ec98-474f-bdd6-3848e85ecf46",
+      "session_type": "managed",
+      "status": "closed",
+      "current_url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/1",
+      "created_at": "2026-10-27 07:35:00.800307+00:00",
+      "updated_at": "2026-10-27 07:35:05.463019+00:00"
+    },
+    {
+      "id": "51f6cd69-41f3-4a88-bded-e5e0447b937f",
+      "session_type": "managed",
+      "status": "closed",
+      "current_url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/2",
+      "created_at": "2026-10-27 07:37:05.437192+00:00",
+      "updated_at": "2026-10-27 07:37:09.627237+00:00"
+    }
+  ],
+  "memory_records": [
+    {
+      "id": "98517717-a00d-4fc4-8911-744705ce8ec7",
+      "content": "Living experience: source_replaced; monitor returned -0.5; current-goal resolved=False.",
+      "memory_type": "experience",
+      "source_event_id": "0ded351b-9574-4ff6-aba5-79b192b6a96a",
+      "importance": 0.5,
+      "confidence": 1.0,
+      "metadata": {
+        "context": "controlled-source-replaced/resolve-current-claim/v1",
+        "provenance": "Observed controlled-browser feedback",
+        "transition_id": "ad1a1125-7b09-433a-930f-d6480bb817e4"
+      },
+      "created_at": "2026-10-27 07:35:05.449192+00:00",
+      "updated_at": "2026-10-27 07:35:05.449194+00:00"
+    },
+    {
+      "id": "e36ee49b-2af5-450a-9330-292ffdbcbb17",
+      "content": "Living experience: source_replaced; retrieve returned 0.85; current-goal resolved=True.",
+      "memory_type": "experience",
+      "source_event_id": "bb106fe2-8f9d-4ee9-94ed-dfdf243127fd",
+      "importance": 0.5,
+      "confidence": 1.0,
+      "metadata": {
+        "context": "controlled-source-replaced/resolve-current-claim/v1",
+        "provenance": "Observed controlled-browser feedback",
+        "transition_id": "7243bfbd-768a-4bd3-aa7e-e288b8ce3056"
+      },
+      "created_at": "2026-10-27 07:37:09.610976+00:00",
+      "updated_at": "2026-10-27 07:37:09.610978+00:00"
+    }
+  ],
+  "stored_transitions": [
+    {
+      "id": "ad1a1125-7b09-433a-930f-d6480bb817e4",
+      "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976",
+      "episode": 1,
+      "context": "controlled-source-replaced/resolve-current-claim/v1",
+      "data": {
+        "state": {
+          "goal": "resolve-current-claim",
+          "claim": "32",
+          "context": "controlled-source-replaced/resolve-current-claim/v1",
+          "subject": "Aster",
+          "predicate": "endurance_hours",
+          "feature_hash": "3c6a7cfbeac50f515a66332e4ab09fb55ac2afa6df204cab5079fff5078a2568",
+          "recent_event": "source_replaced"
+        },
+        "choice": {
+          "action": "monitor",
+          "reason": "Highest observed mean reward; unseen actions use zero prior. Ties prefer lower-resource monitoring. No model-generated choice.",
+          "algorithm": "empirical-outcome-mean-v1",
+          "policy_hash": "1018fe8111fd6f2f8db199a78b49842f57ee3503af8083bc441078cc6cf4a076",
+          "predictions": {
+            "monitor": {
+              "n": 0,
+              "mean": 0.0,
+              "status": "unknown; zero prior"
+            },
+            "retrieve": {
+              "n": 0,
+              "mean": 0.0,
+              "status": "unknown; zero prior"
+            }
+          },
+          "policy_version": 0
+        },
+        "reward": -0.5,
+        "episode": 1,
+        "outcome": {
+          "resolved": false,
+          "measurement": "20",
+          "resource_cost": 0,
+          "factual_correct": null,
+          "safe_abstention": true,
+          "synthetic_goal_reward": -0.5
+        },
+        "evidence": null,
+        "feedback": {
+          "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/1",
+          "text": "A claim, an action, an experience. Controlled synthetic public research habitat. Claim: Aster endurance_hours 32; History event: source_replaced; the measurement source has changed. Prior results do not establish the current measurement. Retrieve the current instrument evidence Publish the independent end-of-episode feedback Feedback measurement: 20 hours; The current claim needed verification. A supported current conclusion resolves the goal. Synthetic goal reward: resolved +1, unresolved -0.5; retrieval cost 0.15 resource units.",
+          "title": "ALIVE \u00b7 Living research habitat",
+          "session_id": "ac7d130e-ec98-474f-bdd6-3848e85ecf46"
+        },
+        "after_hash": "d7c176c18528c46f82c29a233c9bc0f0fd057090e91468f743f34f5f0e2714a2",
+        "memory_ids": [],
+        "before_hash": "1018fe8111fd6f2f8db199a78b49842f57ee3503af8083bc441078cc6cf4a076",
+        "next_choice": {
+          "action": "retrieve",
+          "reason": "Highest observed mean reward; unseen actions use zero prior. Ties prefer lower-resource monitoring. No model-generated choice.",
+          "algorithm": "empirical-outcome-mean-v1",
+          "policy_hash": "d7c176c18528c46f82c29a233c9bc0f0fd057090e91468f743f34f5f0e2714a2",
+          "predictions": {
+            "monitor": {
+              "n": 1,
+              "mean": -0.5,
+              "status": "observed mean; small-sample uncertainty"
+            },
+            "retrieve": {
+              "n": 0,
+              "mean": 0.0,
+              "status": "unknown; zero prior"
+            }
+          },
+          "policy_version": 1
+        },
+        "observation": {
+          "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/1",
+          "text": "A claim, an action, an experience. Controlled synthetic public research habitat. Claim: Aster endurance_hours 32; History event: source_replaced; the measurement source has changed. Prior results do not establish the current measurement. Retrieve the current instrument evidence Publish the independent end-of-episode feedback",
+          "title": "ALIVE \u00b7 Living research habitat",
+          "session_id": "ac7d130e-ec98-474f-bdd6-3848e85ecf46"
+        },
+        "model_output": {
+          "claims": [],
+          "actions": [],
+          "summary": "No sources provided. Cannot verify Aster endurance_hours 32 as current instrument evidence. Source replacement invalidates prior results. Abstaining pending retrieval.",
+          "confidence": 1.0,
+          "criticisms": [
+            "No current instrument evidence supplied to verify endurance_hours claim",
+            "History shows source_replaced so prior results cannot establish current measurement"
+          ],
+          "uncertainties": [
+            "Current endurance_hours value unknown without measurement",
+            "Whether observed page claim matches instrument is unverified"
+          ],
+          "recommendation": "abstain"
+        },
+        "policy_after": {
+          "version": 1,
+          "contexts": {
+            "controlled-source-replaced/resolve-current-claim/v1": {
+              "monitor": {
+                "n": 1,
+                "sum": -0.5
+              }
+            }
+          }
+        },
+        "model_call_id": "c7a5326b-be9e-4639-98e2-4f472022e1f2",
+        "policy_before": {
+          "version": 0,
+          "contexts": {}
+        },
+        "prediction_error": -0.5,
+        "reward_provenance": "Published end-of-episode Chrome DOM, checked against the current observed instrument conclusion; synthetic goal utility",
+        "browser_session_id": "ac7d130e-ec98-474f-bdd6-3848e85ecf46",
+        "relevant_experience": [],
+        "initial_policy_counterfactual": {
+          "action": "monitor",
+          "reason": "Highest observed mean reward; unseen actions use zero prior. Ties prefer lower-resource monitoring. No model-generated choice.",
+          "algorithm": "empirical-outcome-mean-v1",
+          "policy_hash": "1018fe8111fd6f2f8db199a78b49842f57ee3503af8083bc441078cc6cf4a076",
+          "predictions": {
+            "monitor": {
+              "n": 0,
+              "mean": 0.0,
+              "status": "unknown; zero prior"
+            },
+            "retrieve": {
+              "n": 0,
+              "mean": 0.0,
+              "status": "unknown; zero prior"
+            }
+          },
+          "policy_version": 0
+        }
+      },
+      "created_at": "2026-10-27 07:35:05.444527+00:00"
+    },
+    {
+      "id": "7243bfbd-768a-4bd3-aa7e-e288b8ce3056",
+      "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976",
+      "episode": 2,
+      "context": "controlled-source-replaced/resolve-current-claim/v1",
+      "data": {
+        "state": {
+          "goal": "resolve-current-claim",
+          "claim": "32",
+          "context": "controlled-source-replaced/resolve-current-claim/v1",
+          "subject": "Aster",
+          "predicate": "endurance_hours",
+          "feature_hash": "3c6a7cfbeac50f515a66332e4ab09fb55ac2afa6df204cab5079fff5078a2568",
+          "recent_event": "source_replaced"
+        },
+        "choice": {
+          "action": "retrieve",
+          "reason": "Highest observed mean reward; unseen actions use zero prior. Ties prefer lower-resource monitoring. No model-generated choice.",
+          "algorithm": "empirical-outcome-mean-v1",
+          "policy_hash": "d7c176c18528c46f82c29a233c9bc0f0fd057090e91468f743f34f5f0e2714a2",
+          "predictions": {
+            "monitor": {
+              "n": 1,
+              "mean": -0.5,
+              "status": "observed mean; small-sample uncertainty"
+            },
+            "retrieve": {
+              "n": 0,
+              "mean": 0.0,
+              "status": "unknown; zero prior"
+            }
+          },
+          "policy_version": 1
+        },
+        "reward": 0.85,
+        "episode": 2,
+        "outcome": {
+          "resolved": true,
+          "measurement": "20",
+          "resource_cost": 0.15,
+          "factual_correct": true,
+          "safe_abstention": false,
+          "synthetic_goal_reward": 0.85
+        },
+        "evidence": {
+          "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/2",
+          "text": "A claim, an action, an experience. Controlled synthetic public research habitat. Claim: Aster endurance_hours 32; History event: source_replaced; the measurement source has changed. Prior results do not establish the current measurement. Retrieve the current instrument evidence Instrument reading: 20 hours; Source: current controlled measurement. This is synthetic instrument evidence. Publish the independent end-of-episode feedback",
+          "title": "ALIVE \u00b7 Living research habitat",
+          "session_id": "51f6cd69-41f3-4a88-bded-e5e0447b937f"
+        },
+        "feedback": {
+          "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/2",
+          "text": "A claim, an action, an experience. Controlled synthetic public research habitat. Claim: Aster endurance_hours 32; History event: source_replaced; the measurement source has changed. Prior results do not establish the current measurement. Retrieve the current instrument evidence Instrument reading: 20 hours; Source: current controlled measurement. This is synthetic instrument evidence. Publish the independent end-of-episode feedback Feedback measurement: 20 hours; The current claim needed verification. A supported current conclusion resolves the goal. Synthetic goal reward: resolved +1, unresolved -0.5; retrieval cost 0.15 resource units.",
+          "title": "ALIVE \u00b7 Living research habitat",
+          "session_id": "51f6cd69-41f3-4a88-bded-e5e0447b937f"
+        },
+        "after_hash": "0dc592b4c9b10b6d97d65b0747986371dc441c3569afd3fffad50c1cae53929f",
+        "memory_ids": [
+          "ad1a1125-7b09-433a-930f-d6480bb817e4"
+        ],
+        "before_hash": "d7c176c18528c46f82c29a233c9bc0f0fd057090e91468f743f34f5f0e2714a2",
+        "next_choice": {
+          "action": "retrieve",
+          "reason": "Highest observed mean reward; unseen actions use zero prior. Ties prefer lower-resource monitoring. No model-generated choice.",
+          "algorithm": "empirical-outcome-mean-v1",
+          "policy_hash": "0dc592b4c9b10b6d97d65b0747986371dc441c3569afd3fffad50c1cae53929f",
+          "predictions": {
+            "monitor": {
+              "n": 1,
+              "mean": -0.5,
+              "status": "observed mean; small-sample uncertainty"
+            },
+            "retrieve": {
+              "n": 1,
+              "mean": 0.85,
+              "status": "observed mean; small-sample uncertainty"
+            }
+          },
+          "policy_version": 2
+        },
+        "observation": {
+          "url": "http://127.0.0.1:8000/living/world/b77f9e7d-5ea1-4c26-889e-655cc0918976/2",
+          "text": "A claim, an action, an experience. Controlled synthetic public research habitat. Claim: Aster endurance_hours 32; History event: source_replaced; the measurement source has changed. Prior results do not establish the current measurement. Retrieve the current instrument evidence Publish the independent end-of-episode feedback",
+          "title": "ALIVE \u00b7 Living research habitat",
+          "session_id": "51f6cd69-41f3-4a88-bded-e5e0447b937f"
+        },
+        "model_output": {
+          "claims": [
+            {
+              "value": "20",
+              "subject": "Aster",
+              "predicate": "endurance_hours",
+              "evidence_refs": [
+                "measurement:b77f9e7d-5ea1-4c26-889e-655cc0918976:2"
+              ]
+            }
+          ],
+          "actions": [],
+          "summary": "Current visible measurement is 20, not 32. The observed page claim of 32 does not match current instrument evidence and is not verified.",
+          "confidence": 0.95,
+          "criticisms": [
+            "Prior claim of 32 is superseded by source_replaced event"
+          ],
+          "uncertainties": [
+            "No additional current sources to cross-check"
+          ],
+          "recommendation": "proceed"
+        },
+        "policy_after": {
+          "version": 2,
+          "contexts": {
+            "controlled-source-replaced/resolve-current-claim/v1": {
+              "monitor": {
+                "n": 1,
+                "sum": -0.5
+              },
+              "retrieve": {
+                "n": 1,
+                "sum": 0.85
+              }
+            }
+          }
+        },
+        "model_call_id": "3c7c8ac8-b5b5-461a-972d-b2eb50e10b49",
+        "policy_before": {
+          "version": 1,
+          "contexts": {
+            "controlled-source-replaced/resolve-current-claim/v1": {
+              "monitor": {
+                "n": 1,
+                "sum": -0.5
+              }
+            }
+          }
+        },
+        "prediction_error": 0.85,
+        "reward_provenance": "Published end-of-episode Chrome DOM, checked against the current observed instrument conclusion; synthetic goal utility",
+        "browser_session_id": "51f6cd69-41f3-4a88-bded-e5e0447b937f",
+        "relevant_experience": [
+          {
+            "id": "ad1a1125-7b09-433a-930f-d6480bb817e4",
+            "action": "monitor",
+            "reward": -0.5,
+            "outcome": {
+              "resolved": false,
+              "measurement": "20",
+              "resource_cost": 0,
+              "factual_correct": null,
+              "safe_abstention": true,
+              "synthetic_goal_reward": -0.5
+            }
+          }
+        ],
+        "initial_policy_counterfactual": {
+          "action": "monitor",
+          "reason": "Highest observed mean reward; unseen actions use zero prior. Ties prefer lower-resource monitoring. No model-generated choice.",
+          "algorithm": "empirical-outcome-mean-v1",
+          "policy_hash": "1018fe8111fd6f2f8db199a78b49842f57ee3503af8083bc441078cc6cf4a076",
+          "predictions": {
+            "monitor": {
+              "n": 0,
+              "mean": 0.0,
+              "status": "unknown; zero prior"
+            },
+            "retrieve": {
+              "n": 0,
+              "mean": 0.0,
+              "status": "unknown; zero prior"
+            }
+          },
+          "policy_version": 0
+        }
+      },
+      "created_at": "2026-10-27 07:37:09.604104+00:00"
+    }
+  ],
+  "persistent_policy": {
+    "version": 2,
+    "contexts": {
+      "controlled-source-replaced/resolve-current-claim/v1": {
+        "monitor": {
+          "n": 1,
+          "sum": -0.5
+        },
+        "retrieve": {
+          "n": 1,
+          "sum": 0.85
+        }
+      }
+    }
+  }
+}

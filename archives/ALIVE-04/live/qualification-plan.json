@@ -1,0 +1,24 @@
+{
+  "implementation_commit": "c8c9feb60f4ebb8fcefb0ce1a69791615ba8347c",
+  "source_hashes": {
+    "alive/living.py": "1f01048ab5aa7a1fb96409933c01563892d4a4dd46701d5a12ab0a84668411aa",
+    "alive/living_policy.py": "911dd769e2bf2a8d99e7d47d8d572e9128d3907ba02c22f408ec7ccc98e7d91f",
+    "alive/living_models.py": "d379c9229e751740ce06d91e9e0cc8bc6c88aae7c6a530dba551d4bb533416b9",
+    "alive/living_api.py": "07b1469c97137845fd69d9f072f8f624aa8259393e678183a3ad5d494a7d62a1",
+    "alive/browser.py": "00677489b97a6bb7b27b3b338fe37d32b9745fa467007e7afd3ced9957eda059",
+    "alive/providers.py": "661a30eb52d0631adf4fac92f5429647e31636b21cd67e1d8d56eba97f1d1169"
+  },
+  "bounds": {
+    "calls": 2,
+    "tokens": 40000,
+    "estimated_usd": 0.15,
+    "browser_operations": 6
+  },
+  "initial_policy": {
+    "version": 0,
+    "contexts": {}
+  },
+  "no_automatic_retry": true,
+  "journey_id": "b77f9e7d-5ea1-4c26-889e-655cc0918976",
+  "identity_sha256": "77aba3967e36a9a3f7c117a1866eb017863f86f28dfb91f964b25e33dd24742c"
+}
