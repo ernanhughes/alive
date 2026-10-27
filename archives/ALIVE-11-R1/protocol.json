@@ -1,0 +1,137 @@
+{
+  "protocol_version": "alive11-r1-policy-v1",
+  "frozen_at": "2026-10-27T16:57:34.749556+00:00",
+  "kind": "frozen decision-level policy replay, not native outcome evidence",
+  "paid_inference": false,
+  "goal": "Understand Python memory growth and choose a diagnostic for allocation changes.",
+  "definitions": {
+    "eligible": "deterministic lexical relevance permits consideration",
+    "source_adequate": "predeclared whether the excerpt contains evidence for the goal; not owner usefulness",
+    "feedback": "scripted operator feedback only for the initial three negative observations and the probe case",
+    "call": "one analyse decision",
+    "useful_opportunity_met": "analysed and source_adequate",
+    "missed_opportunity": "not analysed and source_adequate",
+    "wasted_call": "analysed and not source_adequate",
+    "repeated_work": "analysis of an excerpt SHA already analysed by that arm",
+    "cost": "150 synthetic tokens per call at ALIVE price() estimate; not a provider charge"
+  },
+  "arms": {
+    "A_frozen_context_wide": "ALIVE-11 context-wide pause; support 3; pause at useful rate <= 0.20; every paused observation increments suppression, including repeated excerpts; next observation after 3 paused is a probe",
+    "B_exact_negative_reuse": "A negatively rated exact excerpt is remembered and suppressed; new excerpt SHA remains eligible; owner correction overrides; no context-wide pause",
+    "C_evidence_aware_contextual": "Support and pauses use distinct excerpt SHA; repeats, rated excerpts and probed excerpts do not increment; after 3 distinct paused excerpts only a fresh excerpt can probe; owner correction resets",
+    "D_constant_analyse": "Analyse every eligible observation; no feedback-conditioned pause"
+  },
+  "cases": [
+    {
+      "id": "neg-1",
+      "sha": "neg-1",
+      "eligible": true,
+      "source_adequate": false,
+      "feedback": false
+    },
+    {
+      "id": "neg-2",
+      "sha": "neg-2",
+      "eligible": true,
+      "source_adequate": false,
+      "feedback": false
+    },
+    {
+      "id": "neg-3",
+      "sha": "neg-3",
+      "eligible": true,
+      "source_adequate": false,
+      "feedback": false
+    },
+    {
+      "id": "new-useful-1",
+      "sha": "new-useful-1",
+      "eligible": true,
+      "source_adequate": true,
+      "feedback": null
+    },
+    {
+      "id": "new-useless-1",
+      "sha": "new-useless-1",
+      "eligible": true,
+      "source_adequate": false,
+      "feedback": null
+    },
+    {
+      "id": "neg-1-repeat",
+      "sha": "neg-1",
+      "eligible": true,
+      "source_adequate": false,
+      "feedback": null
+    },
+    {
+      "id": "new-useful-2",
+      "sha": "new-useful-2",
+      "eligible": true,
+      "source_adequate": true,
+      "feedback": null,
+      "owner_correction": true
+    },
+    {
+      "id": "neg-2-repeat",
+      "sha": "neg-2",
+      "eligible": true,
+      "source_adequate": false,
+      "feedback": null
+    },
+    {
+      "id": "new-useful-3",
+      "sha": "new-useful-3",
+      "eligible": true,
+      "source_adequate": true,
+      "feedback": null
+    },
+    {
+      "id": "irrelevant",
+      "sha": "irrelevant",
+      "eligible": false,
+      "source_adequate": false,
+      "feedback": null
+    },
+    {
+      "id": "new-useless-2",
+      "sha": "new-useless-2",
+      "eligible": true,
+      "source_adequate": false,
+      "feedback": null
+    },
+    {
+      "id": "new-useful-4",
+      "sha": "new-useful-4",
+      "eligible": true,
+      "source_adequate": true,
+      "feedback": true
+    },
+    {
+      "id": "neg-1-repeat-2",
+      "sha": "neg-1",
+      "eligible": true,
+      "source_adequate": false,
+      "feedback": null
+    },
+    {
+      "id": "new-useful-5",
+      "sha": "new-useful-5",
+      "eligible": true,
+      "source_adequate": true,
+      "feedback": null
+    }
+  ],
+  "restart_boundary_after": "new-useful-2",
+  "metrics": [
+    "calls",
+    "useful_opportunities_met",
+    "missed_opportunities",
+    "wasted_calls",
+    "repeated_work",
+    "owner_corrections",
+    "estimated_synthetic_usd"
+  ],
+  "adoption_rule": "Do not change the production policy from this decision replay alone. Require native qualification and independent review.",
+  "caveat": "Predeclared labels are not owner ratings, model outputs, or native task outcomes. The replay must not be presented as evidence of semantic generalisation."
+}

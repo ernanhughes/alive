@@ -3,6 +3,25 @@
 Engineering: **PASS_WITH_LIMITATIONS**. Research: **BEHAVIOUR_CHANGE_DEMONSTRATED**.
 Owner utility advantage is unestablished.
 
+## Review-04 corrections
+
+ALIVE-11-R1 corrects the presentation and interpretation issues found in ALIVE-REVIEW-04:
+
+- Feedback ratings were **scripted operator branch interventions**, not a user study.
+- ALIVE-11 contains **two paid campaigns**, 16 recorded calls, 8,732 charged tokens and
+  approximately $0.023665 estimated spend.
+- All qualification pages were controlled excerpts; this is not arbitrary browsing or open-web
+  adaptation.
+- The synthetic comparison demonstrates **missed opportunities**, not adaptive superiority.
+- Runtime identity is reported by the backend and compared against module/source hashes; it is not
+  inherently trustworthy merely because the backend states it.
+- Lexical relevance accepts one matching content token. The negation example is one failure of that
+  shallow rule, not a negation-specific defect.
+- The extension now clears stale note cost and feedback state on no-action, suppression and
+  uncertainty, and repeated snapshots no longer advance the recovery counter.
+- The policy comparison and recommendation are in `docs/ALIVE-11-R1.md`; the production default was
+  not changed by the decision replay.
+
 ## Source and native isolation
 
 Baseline: `be47e18e329a1f1d932dbce253f703048c5fd3e3` (ALIVE-10 merge).

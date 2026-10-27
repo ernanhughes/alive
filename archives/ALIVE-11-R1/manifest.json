@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "research": "BEHAVIOUR_CHANGE_DEMONSTRATED; NO_UTILITY_ADVANTAGE_ADOPTED",
+  "baseline": "f19391d0fe2825710aeec01ba4c66fa8d852f01c",
+  "source_commit": "1bc947152098ff82918c4247074fe9b76b48c3f5",
+  "product_code_commit": "9f05a625de54d1810e863209186557db7a15e9cc",
+  "paid_calls": 0,
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "evidence/native-synthetic.json": {
+      "sha256": "36cec0755a6469cf450c61c0acf256c4940d2d9abcae9d484a14755ac1d06998",
+      "bytes": 2624
+    },
+    "evidence/policy-comparison.json": {
+      "sha256": "db04d225af8da5748df91818cdbddb69b428e5e37bda70c22dca9e440485e97c",
+      "bytes": 16177
+    },
+    "protocol.json": {
+      "sha256": "a8f52fb616d5eba5ee9bf34821f31dd3b0c078ee12cdf9da90316a9847c6db6f",
+      "bytes": 4513
+    },
+    "README.md": {
+      "sha256": "375b9452e192d4b04152eba48e818af1475fe8cbef029d0482992557a066b586",
+      "bytes": 3034
+    },
+    "validation/backend.txt": {
+      "sha256": "4c68df8197c1ac9fe550c5e70b9e26d9ca51b5a17a8f52759d9cba9651e2a68a",
+      "bytes": 1250
+    },
+    "validation/build.txt": {
+      "sha256": "c0613c75eaed164b0fea18212d145d78f292cc9799d3d4732e61d5decd6ab92c",
+      "bytes": 464
+    },
+    "validation/companion-focused.txt": {
+      "sha256": "ee365b3ff388abd73552a25150a4fd9b2348053481227db91f2d1a53969d3c80",
+      "bytes": 740
+    },
+    "validation/extension.txt": {
+      "sha256": "f67b96199db824fc4a8e210ebe6fd56259396d4c551e824e0a53f82bf8ff6d30",
+      "bytes": 919
+    },
+    "validation/frontend.txt": {
+      "sha256": "a05622da7f65c281a52940d62a2a9c1a08d070445035bb7b1c283ef8cee2ec82",
+      "bytes": 289
+    },
+    "validation/native-synthetic.txt": {
+      "sha256": "7ba02c5493619aab107cdc878ae1553a6d9bc94fba2e804ddd14b4b3de607534",
+      "bytes": 140
+    },
+    "validation/ruff.txt": {
+      "sha256": "4942f1f9df9a276c8afaa2cb3bc54f54b20efd2549f1c662dd9fa2ddf3e93d50",
+      "bytes": 49
+    },
+    "validation/whitespace.txt": {
+      "sha256": "a394d826acb3eacebfab9c2cedd22c8f194fec77d3d93b89db130bcc20ccf65d",
+      "bytes": 348
+    }
+  }
+}

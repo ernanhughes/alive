@@ -6,7 +6,17 @@ import pytest
 from sqlalchemy import select
 
 from alive.web_models import WebExperience
-from tests.test_web_experience import ROOT, TEXT, analyse, fake_model, post, setup, snapshot, wait
+from tests.test_web_experience import (
+    ROOT,
+    TEXT,
+    analyse,
+    consent,
+    fake_model,
+    post,
+    setup,
+    snapshot,
+    wait,
+)
 
 
 def negative_history(client):
@@ -114,3 +124,74 @@ def test_v1_migration_preserves_latest_revision_not_latest_created_row(
 
     client.portal.call(migrate)
     assert snapshot(client, grant)["decision"]["action"] == "analyse"
+
+
+def test_repeated_paused_excerpt_does_not_advance_probe(client, monkeypatch):
+    calls = fake_model(monkeypatch)
+    grant = negative_history(client)
+    text = TEXT + " Repeated paused excerpt."
+    first = snapshot(client, grant, text)["decision"]
+    assert first["action"] == "no_action"
+    assert first["adaptive_policy"]["suppressions"] == 1
+    version = first["policy_version"]
+    for _ in range(3):
+        repeated = snapshot(client, grant, text)["decision"]
+        assert repeated["action"] == "no_action"
+        assert repeated["repeated_suppression"] is True
+        assert repeated["adaptive_policy"]["repeated_suppression"] is True
+        assert repeated["adaptive_policy"]["suppressions"] == 1
+        assert repeated["policy_version"] == version
+        assert repeated["adaptive_policy"]["probe_due"] is False
+    policy = client.get(ROOT).json()["policy"]["data"]
+    context = next(iter(policy["contexts"].values()))
+    assert len(context["suppressed_excerpts"]) == 1
+    assert context["probes"] == 0
+    for index in range(2):
+        snapshot(client, grant, TEXT + f" New paused excerpt {index}.")
+    probe = snapshot(client, grant, TEXT + " Fresh probe excerpt.")["decision"]
+    assert probe["action"] == "analyse"
+    assert probe["probe"] is True
+    assert len(calls) == 3
+
+
+def test_negative_exact_excerpt_cannot_become_probe(client, monkeypatch):
+    calls = fake_model(monkeypatch)
+    grant = negative_history(client)
+    for index in range(3):
+        snapshot(client, grant, TEXT + f" Paused before stale exact {index}.")
+    before = client.get(ROOT).json()["policy"]["data"]
+    stale = snapshot(client, grant, TEXT + " Independent observation 0.")["decision"]
+    assert stale["action"] == "no_action"
+    assert stale["probe_blocked"] == "excerpt_not_fresh"
+    assert stale["adaptive_policy"]["probe_due"] is True
+    assert stale["adaptive_policy"]["probe"] is False
+    assert client.get(ROOT).json()["policy"]["data"] == before
+    probe = snapshot(client, grant, TEXT + " Fresh probe after stale.")["decision"]
+    assert probe["action"] == "analyse"
+    assert probe["probe"] is True
+    assert len(calls) == 3
+
+
+def test_repeated_paused_excerpt_after_restart_does_not_advance(client, settings, monkeypatch):
+    calls = fake_model(monkeypatch)
+    grant = negative_history(client)
+    text = TEXT + " Restart repeated paused excerpt."
+    first = snapshot(client, grant, text)["decision"]
+    assert first["action"] == "no_action"
+    assert first["adaptive_policy"]["suppressions"] == 1
+    version = first["policy_version"]
+
+    client.__exit__(None, None, None)
+    from fastapi.testclient import TestClient
+
+    from alive.app import create_app
+    from tests.conftest import TOKEN
+
+    with TestClient(create_app(settings), headers={"Authorization": f"Bearer {TOKEN}"}) as reopened:
+        fresh = consent(reopened, grant["parent_id"])
+        repeated = snapshot(reopened, fresh, text)["decision"]
+        assert repeated["action"] == "no_action"
+        assert repeated["repeated_suppression"] is True
+        assert repeated["adaptive_policy"]["suppressions"] == 1
+        assert repeated["policy_version"] == version
+        assert len(calls) == 3
