@@ -3,6 +3,7 @@
 Status: **PREPARED, NOT RUN**. No real Meta calls are authorised by this document.
 
 Frozen protocol: `archives/ALIVE-14-R1/protocol/relationship-experiment-v1.json`
+Protocol commit: `3bc28ba`
 Canonical LF SHA-256: `b0e255b2b0cf5325726cf1af652d307daeb56c1f227922e184c0235ac0cac349`
 Seed: `20261101`
 

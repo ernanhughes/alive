@@ -8,6 +8,8 @@ Baseline: `777e4d99b6908d13875c9024dfb065cb3bfcaffa` (ALIVE-14 merge).
 R1 source commit: `9ff0e388cb7a874619e8acf3612beeb6260288c0`.
 R2 protocol commit: `3bc28ba`; canonical LF SHA-256:
 `b0e255b2b0cf5325726cf1af652d307daeb56c1f227922e184c0235ac0cac349`.
+PR: https://github.com/ernanhughes/alive/pull/21 (draft, review-only).
+CI: all eight PR checks passed (backend Ubuntu/Windows, dashboard, first-contact PostgreSQL).
 No paid inference was performed. No merge or auto-merge was requested.
 
 ## Evidence

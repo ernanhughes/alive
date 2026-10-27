@@ -8,6 +8,9 @@ Paid calls: **0**.
 
 Baseline: `777e4d99b6908d13875c9024dfb065cb3bfcaffa` (ALIVE-14 merge).
 Branch: `codex/alive-14-r1-qualification`.
+Source commit for the archived evidence: `9ff0e388cb7a874619e8acf3612beeb6260288c0`.
+PR: https://github.com/ernanhughes/alive/pull/21 (draft, review-only).
+CI: all eight PR checks passed (backend Ubuntu/Windows, dashboard, first-contact PostgreSQL).
 Original ALIVE-14 archive: preserved unchanged.
 R2 experiment protocol: committed before execution; **not run**.
 

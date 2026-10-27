@@ -8,7 +8,9 @@
 - Original ALIVE-14 archive preserved unchanged.
 - No paid inference, merge or auto-merge.
 
-PR/CI: to be recorded after push.
+Source commit for archived evidence: `9ff0e388cb7a874619e8acf3612beeb6260288c0`.
+PR: https://github.com/ernanhughes/alive/pull/21 (draft, review-only; no merge or auto-merge).
+CI: all eight PR checks passed (backend Ubuntu/Windows, dashboard, first-contact PostgreSQL).
 
 ## 2. Confirmed corrections
 

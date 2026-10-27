@@ -43,8 +43,8 @@
       "bytes": 6973
     },
     "README.md": {
-      "sha256": "6284f953f8f4c532d3889dafd4518c72e7fd43261bc39fa5817a430e4b225464",
-      "bytes": 3742
+      "sha256": "6964aba11d2ad04bece7df42f0c8704202cc4983f999088dc59b356b7ba082c1",
+      "bytes": 3907
     },
     "validation/archive.txt": {
       "sha256": "bed167c368ff9874b23fd9f3204876ca7b2e7aa0d7d2d246504b1d5b1969db35",
@@ -82,5 +82,7 @@
       "sha256": "5968467b31bb18dd1281dfa8659a64b5b0e3c940991215aaa32440298630d4d8",
       "bytes": 202
     }
-  }
+  },
+  "pr": "https://github.com/ernanhughes/alive/pull/21",
+  "ci": "all eight checks passed"
 }
