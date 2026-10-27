@@ -20,7 +20,7 @@ test("authorized full evaluation displays persisted paired results", async ({ pa
   await page.addInitScript(token => sessionStorage.setItem("alive-token", token), token);
   await page.goto("/");
   await page.getByRole("button", { name: "Cognition", exact: true }).click();
-  const panel = page.locator(".experiment-panel");
+  const panel = page.getByTestId("policy-comparison");
   await panel.getByLabel("Recorded experiment run").selectOption(full.id);
   for (const [name, value] of Object.entries(full.summary.policies) as [string, { correct: number; tasks: number }][]) {
     const row = panel.getByRole("row").filter({ has: page.getByRole("rowheader", { name, exact: true }) });
