@@ -1,0 +1,369 @@
+{
+  "protocol_version": "alive14-heldout-v1",
+  "frozen_at": "2026-10-27T20:30:00+00:00",
+  "baseline": "3d81ce9a435d375ff6652bde07582d22a1eafdd6",
+  "kind": "frozen held-out retrieval and zero-cost relationship dry-run",
+  "paid_inference": false,
+  "design": {
+    "held_out_memories": 18,
+    "held_out_goals": 3,
+    "held_out_queries": 9,
+    "positive_queries": 6,
+    "relevant_labels": 8,
+    "development_cases": {
+      "goals": [
+        {
+          "id": "dev-gc",
+          "instruction": "Understand short-lived object collection"
+        }
+      ],
+      "memories": [
+        {
+          "id": "D1",
+          "goal_id": "dev-gc",
+          "url": "http://127.0.0.1:9400/development/D1",
+          "text": "Generational collection reduces pauses for short-lived objects."
+        },
+        {
+          "id": "D2",
+          "goal_id": "dev-gc",
+          "url": "http://127.0.0.1:9400/development/D2",
+          "text": "Generational collection reduces pauses for short-lived objects. Ordinary historical note about systems data records reports methods analysis context values states."
+        },
+        {
+          "id": "D3",
+          "goal_id": "dev-gc",
+          "url": "http://127.0.0.1:9400/development/D3",
+          "text": "A finalizer can resurrect an object by storing a new reference."
+        }
+      ],
+      "queries": [
+        {
+          "id": "DQ1",
+          "goal_id": "dev-gc",
+          "url": "http://127.0.0.1:9400/current/DQ1",
+          "text": "Generational collection reduces pauses for short-lived objects in CPython.",
+          "relevant": [
+            "D1"
+          ]
+        },
+        {
+          "id": "DQ2",
+          "goal_id": "dev-gc",
+          "url": "http://127.0.0.1:9400/current/DQ2",
+          "text": "Quantum stabilizer codes protect logical qubits.",
+          "relevant": []
+        }
+      ]
+    },
+    "long_excerpt_ids": [
+      "H04",
+      "H10",
+      "H16"
+    ],
+    "stale_or_superseded_ids": [
+      "H06",
+      "H12",
+      "H18"
+    ],
+    "ordinary_distractors": "The long H04/H10/H16 rows model irrelevant prose with repeated generic vocabulary.",
+    "relevance_labels": "Hard-coded source-adequacy labels, independent of the retrieval scorer.",
+    "seed": 1401
+  },
+  "goals": [
+    {
+      "id": "gc",
+      "instruction": "Compare reference counting and tracing garbage collectors"
+    },
+    {
+      "id": "http",
+      "instruction": "Evaluate HTTP cache revalidation strategies"
+    },
+    {
+      "id": "sw",
+      "instruction": "Assess service worker offline caching"
+    }
+  ],
+  "memories": [
+    {
+      "id": "H01",
+      "goal_id": "gc",
+      "url": "http://127.0.0.1:9400/historical/H01",
+      "title": "Held-out research H01",
+      "text": "Reference counting frees an object immediately when its last reference disappears, but it cannot reclaim isolated cycles.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    },
+    {
+      "id": "H02",
+      "goal_id": "gc",
+      "url": "http://127.0.0.1:9400/historical/H02",
+      "title": "Held-out research H02",
+      "text": "A tracing collector starts from roots and marks reachable objects before sweeping unreachable ones.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    },
+    {
+      "id": "H03",
+      "goal_id": "gc",
+      "url": "http://127.0.0.1:9400/historical/H03",
+      "title": "Held-out research H03",
+      "text": "Reference counting cannot reclaim cycles, so a separate cycle detector is required.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    },
+    {
+      "id": "H04",
+      "goal_id": "gc",
+      "url": "http://127.0.0.1:9400/historical/H04",
+      "title": "Held-out research H04",
+      "text": "Reference counting frees an object immediately when its last reference disappears, but it cannot reclaim isolated cycles. Ordinary historical note about network data systems records reports methods analysis context values states services applications performance resources behaviour models queries storage files pages work needs.",
+      "reviewed_at": "2026-10-27T19:00:00+00:00"
+    },
+    {
+      "id": "H05",
+      "goal_id": "gc",
+      "url": "http://127.0.0.1:9400/historical/H05",
+      "title": "Held-out research H05",
+      "text": "A tracing collector must pause the program while it follows pointers from roots.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    },
+    {
+      "id": "H06",
+      "goal_id": "gc",
+      "url": "http://127.0.0.1:9400/historical/H06",
+      "title": "Held-out research H06",
+      "text": "An older stop-the-world mark phase scanned the entire heap during each collection.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    },
+    {
+      "id": "H07",
+      "goal_id": "http",
+      "url": "http://127.0.0.1:9400/historical/H07",
+      "title": "Held-out research H07",
+      "text": "An ETag validator lets a client send If-None-Match and reuse the cached body when the origin returns 304.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    },
+    {
+      "id": "H08",
+      "goal_id": "http",
+      "url": "http://127.0.0.1:9400/historical/H08",
+      "title": "Held-out research H08",
+      "text": "A max-age directive lets a response be reused without contacting the origin until the freshness lifetime expires.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    },
+    {
+      "id": "H09",
+      "goal_id": "http",
+      "url": "http://127.0.0.1:9400/historical/H09",
+      "title": "Held-out research H09",
+      "text": "A no-store directive prevents a response from being written to any cache.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    },
+    {
+      "id": "H10",
+      "goal_id": "http",
+      "url": "http://127.0.0.1:9400/historical/H10",
+      "title": "Held-out research H10",
+      "text": "An ETag validator lets a client send If-None-Match and reuse the cached body when the origin returns 304. Ordinary historical note about network data systems records reports methods analysis context values states services applications performance resources behaviour models queries storage files pages work needs.",
+      "reviewed_at": "2026-10-27T19:00:00+00:00"
+    },
+    {
+      "id": "H11",
+      "goal_id": "http",
+      "url": "http://127.0.0.1:9400/historical/H11",
+      "title": "Held-out research H11",
+      "text": "A Last-Modified validator compares timestamps with If-Modified-Since.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    },
+    {
+      "id": "H12",
+      "goal_id": "http",
+      "url": "http://127.0.0.1:9400/historical/H12",
+      "title": "Held-out research H12",
+      "text": "Older proxies ignored the Vary header and mixed cached representations.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    },
+    {
+      "id": "H13",
+      "goal_id": "sw",
+      "url": "http://127.0.0.1:9400/historical/H13",
+      "title": "Held-out research H13",
+      "text": "A service worker can precache an application shell during installation and serve it while offline.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    },
+    {
+      "id": "H14",
+      "goal_id": "sw",
+      "url": "http://127.0.0.1:9400/historical/H14",
+      "title": "Held-out research H14",
+      "text": "The Cache API stores request-response pairs in an origin-scoped cache for later retrieval.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    },
+    {
+      "id": "H15",
+      "goal_id": "sw",
+      "url": "http://127.0.0.1:9400/historical/H15",
+      "title": "Held-out research H15",
+      "text": "IndexedDB transactions store structured records for offline data.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    },
+    {
+      "id": "H16",
+      "goal_id": "sw",
+      "url": "http://127.0.0.1:9400/historical/H16",
+      "title": "Held-out research H16",
+      "text": "A service worker can precache an application shell during installation and serve it while offline. Ordinary historical note about network data systems records reports methods analysis context values states services applications performance resources behaviour models queries storage files pages work needs.",
+      "reviewed_at": "2026-10-27T19:00:00+00:00"
+    },
+    {
+      "id": "H17",
+      "goal_id": "sw",
+      "url": "http://127.0.0.1:9400/historical/H17",
+      "title": "Held-out research H17",
+      "text": "A service worker cannot serve an application shell offline unless the page is controlled by that worker.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    },
+    {
+      "id": "H18",
+      "goal_id": "sw",
+      "url": "http://127.0.0.1:9400/historical/H18",
+      "title": "Held-out research H18",
+      "text": "An older application cache manifest listed assets for offline use.",
+      "reviewed_at": "2026-10-27T18:00:00+00:00"
+    }
+  ],
+  "queries": [
+    {
+      "id": "Q1",
+      "goal_id": "gc",
+      "url": "http://127.0.0.1:9400/current/Q1",
+      "text": "Why does reference counting leak cycles even after the last object reference disappears?",
+      "relevant": [
+        "H01",
+        "H03"
+      ],
+      "label_rationale": "H01 explains the cycle leak; H03 names the separate cycle detector needed to reclaim it."
+    },
+    {
+      "id": "Q2",
+      "goal_id": "gc",
+      "url": "http://127.0.0.1:9400/current/Q2",
+      "text": "A tracing collector marks reachable objects from roots before sweeping unreachable ones.",
+      "relevant": [
+        "H02"
+      ],
+      "label_rationale": "H02 describes root tracing, reachability marking and sweeping."
+    },
+    {
+      "id": "Q3",
+      "goal_id": "gc",
+      "url": "http://127.0.0.1:9400/current/Q3",
+      "text": "Quantum stabilizer codes protect logical qubits from decoherence.",
+      "relevant": [],
+      "label_rationale": "No garbage-collector source discusses quantum error correction; abstain."
+    },
+    {
+      "id": "Q4",
+      "goal_id": "http",
+      "url": "http://127.0.0.1:9400/current/Q4",
+      "text": "How does an ETag avoid downloading an unchanged response body?",
+      "relevant": [
+        "H07"
+      ],
+      "label_rationale": "H07 describes ETag revalidation with If-None-Match and 304 reuse."
+    },
+    {
+      "id": "Q5",
+      "goal_id": "http",
+      "url": "http://127.0.0.1:9400/current/Q5",
+      "text": "How long can a max-age response be reused without contacting the origin?",
+      "relevant": [
+        "H08"
+      ],
+      "label_rationale": "H08 defines the freshness lifetime and reuse without origin contact."
+    },
+    {
+      "id": "Q6",
+      "goal_id": "http",
+      "url": "http://127.0.0.1:9400/current/Q6",
+      "text": "The compiler optimizes tail calls in functional languages.",
+      "relevant": [],
+      "label_rationale": "No HTTP cache source discusses compilers or tail calls; abstain."
+    },
+    {
+      "id": "Q7",
+      "goal_id": "sw",
+      "url": "http://127.0.0.1:9400/current/Q7",
+      "text": "A service worker precaches the application shell during installation and serves it offline.",
+      "relevant": [
+        "H13",
+        "H17"
+      ],
+      "label_rationale": "H13 describes precaching and offline serving; H17 states the control condition for serving offline."
+    },
+    {
+      "id": "Q8",
+      "goal_id": "sw",
+      "url": "http://127.0.0.1:9400/current/Q8",
+      "text": "Where does the Cache API store request-response pairs for an origin?",
+      "relevant": [
+        "H14"
+      ],
+      "label_rationale": "H14 describes origin-scoped Cache API request-response storage."
+    },
+    {
+      "id": "Q9",
+      "goal_id": "sw",
+      "url": "http://127.0.0.1:9400/current/Q9",
+      "text": "The database normalized schema removes redundant columns.",
+      "relevant": [],
+      "label_rationale": "No service-worker source discusses relational normalization; abstain."
+    }
+  ],
+  "arms": {
+    "A_recency": "Eligible same-goal rows by reviewed_at descending, then ID; top 3.",
+    "B_alive13": "Frozen ALIVE-13 scoped lexical ranker via ranker=alive13-scoped-lexical-v1.",
+    "C_alive14_bm25": "ALIVE-14 scoped BM25-style ranker with goal-term exclusion, length normalisation and generic-overlap floor.",
+    "D_full_history": "All eligible same-goal rows, no ranking or limit; access control only."
+  },
+  "metrics": [
+    "precision_at_3",
+    "recall_at_3",
+    "mean_reciprocal_rank",
+    "relevant_at_rank_1",
+    "false_positive_results",
+    "correct_abstentions",
+    "decoy_rate",
+    "missing_memory_failures",
+    "retrieval_latency_ms"
+  ],
+  "success_criteria": {
+    "long_excerpt_regression": "C ranks the short relevant source above the newer long generic source for Q1, Q4 and Q7.",
+    "generic_overlap_abstention": "C abstains on queries with no substantive overlap.",
+    "recall_at_3_not_worse_than_alive13": true,
+    "mrr_not_worse_than_alive13": true,
+    "deterministic": true,
+    "no_provider_call_for_retrieval": true
+  },
+  "relationship_dry_run": {
+    "provider": "local_stub",
+    "external": false,
+    "owner_ratings": "NOT_COLLECTED",
+    "conditions": [
+      "A_current_only",
+      "B_current_plus_retrieved_history",
+      "C_history_without_synthesis"
+    ],
+    "seed": 1401,
+    "note": "The local stub validates consent, payload binding, structured output, quotation validation and persistence. It does not measure relationship usefulness."
+  },
+  "stopping_rules": [
+    "Do not run paid Meta inference without a separate owner approval naming the exact model, payloads, call count, token caps, spend cap and abort conditions.",
+    "Do not tune the ranker after observing held-out results.",
+    "If the corrected ranker fails a criterion, report the failure and do not substitute a different scorer."
+  ],
+  "caveats": [
+    "Lexical corpus; no semantic paraphrase claim.",
+    "Source-adequacy labels, not owner usefulness ratings.",
+    "The relationship dry-run is scripted plumbing, not evidence of model usefulness.",
+    "Held-out results are produced only after this protocol is committed; the evidence records the protocol commit."
+  ]
+}
