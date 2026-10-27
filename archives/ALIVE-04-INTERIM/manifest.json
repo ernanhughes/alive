@@ -1,0 +1,47 @@
+{
+  "evidence_kind": "controlled test-harness fixture",
+  "implementation_commit": "b6aad7df88a2b5a1bd217a91dc0b977960c30311",
+  "starting_commit": "0809f3788b521328e37d0bb41e87a6aefde76ef3",
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "evidence/controlled-fixture-journey.json": {
+      "sha256": "b05d5cf12a983a6dc605813d2abeca1557c2161aee4f32cc0645b4d95b3c1fc5",
+      "bytes": 29836
+    },
+    "evidence/frozen-archive-replay.json": {
+      "sha256": "979aff448b0452f6c45248189cbbafb5a79eef9ec01473beeab23eb787642209",
+      "bytes": 980
+    },
+    "README.md": {
+      "sha256": "009c84175ae76e4d99b39a207bdcfca4a738387ceaa049f9f89c1dfeb21a73a3",
+      "bytes": 5640
+    },
+    "validation/backend.txt": {
+      "sha256": "4eff9f603a92c18248cdf9b1a4da4c85eadca864b58fc20ba93949cd35b7d989",
+      "bytes": 1062
+    },
+    "validation/frontend-build.txt": {
+      "sha256": "c8140ffaa5ff09a7e69d939d1b1fff7245ac1ead55e321dba897e575c87df0dd",
+      "bytes": 464
+    },
+    "validation/frontend-tests.txt": {
+      "sha256": "844f086bd91f91ac21d45f289405a12e3137011eede4eb714bc48a8e0a7acdf3",
+      "bytes": 318
+    },
+    "validation/living-focused.txt": {
+      "sha256": "905f25cba479f14e2f77a4ecfae14e10b8a077ce72b0b82cebf60a3fe0faf032",
+      "bytes": 1406
+    },
+    "validation/ruff.txt": {
+      "sha256": "ec7bdd171ec16e3bb84faa8483fe77148967ba82bc6e997808386a06271e894b",
+      "bytes": 48
+    },
+    "validation/whitespace.txt": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  }
+}
