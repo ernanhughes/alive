@@ -12,6 +12,7 @@ let noteGeneration = 0;
 let currentResearchId = null;
 let currentSavedResearchId = null;
 let currentConnectionId = null;
+let outboundConsent = null;
 async function command(type, args = {}) {
   const response = await chrome.runtime.sendMessage({ type, ...args });
   if (response.error) throw new Error(response.error);
@@ -31,10 +32,16 @@ function clearCurrentNote(message) {
   $('note').textContent = message;
   $('cost').textContent = '';
 }
+function clearOutbound() {
+  outboundConsent = null;
+  $('outbound').replaceChildren();
+  $('relationship-feedback').replaceChildren();
+}
 function resetResearch() {
   currentResearchId = null;
   currentSavedResearchId = null;
   currentConnectionId = null;
+  clearOutbound();
   $('research-results').replaceChildren();
   $('research-status').textContent = 'No related research memory selected.';
   $('connection').textContent = '';
@@ -260,9 +267,103 @@ $('save-research').onclick = () => action(async () => {
   $('withdraw-research').disabled = false;
   $('status').textContent = 'Research memory saved locally; retrieval does not authorise sending it externally.';
 });
+async function previewRelationship(item) {
+  const preview = await command('preview-relationship', { memoryId: item.memory_id });
+  const box = $('outbound');
+  box.replaceChildren();
+  $('relationship-feedback').replaceChildren();
+  outboundConsent = preview;
+  const external = preview.external ? 'external provider' : 'local deterministic stub';
+  box.append(
+    outboundText('p', `Outbound payload preview — ${external}.`),
+    outboundText('p', `Current source: ${preview.current_source.url} (SHA-256 ${preview.current_source.sha256.slice(0, 12)})`),
+    outboundText('blockquote', preview.current_source.excerpt),
+    outboundText('p', `Historical source: ${preview.historical_source.url} (SHA-256 ${preview.historical_source.sha256.slice(0, 12)})`),
+    outboundText('blockquote', preview.historical_source.excerpt),
+    outboundText('p', `Goal: ${preview.goal.instruction}`),
+    outboundText('p', `Provider/model: ${preview.provider.id} · ${preview.provider.model}`),
+    outboundText('p', `Estimated maximum: ${preview.estimated_max_tokens} tokens · ${preview.estimated_max_micro_usd} micro-USD`),
+    outboundText('p', preview.external
+      ? 'Authorising this exact payload permits transmission to the external provider.'
+      : 'No external transmission occurs for this local stub.'),
+  );
+  const authorize = document.createElement('button');
+  authorize.textContent = 'Authorize this exact payload';
+  authorize.onclick = () => action(async () => {
+    const authorized = await command('authorize-relationship', {
+      consentId: preview.id,
+      payloadSha256: preview.payload_sha256,
+    });
+    authorize.disabled = true;
+    box.append(outboundText('p', `Authorised exact payload at ${authorized.data?.authorized_at || 'recorded time'}.`));
+    const run = document.createElement('button');
+    run.textContent = 'Run authorised analysis';
+    run.onclick = () => action(async () => {
+      run.disabled = true;
+      const result = await command('analyse-relationship', { consentId: preview.id });
+      renderRelationship(result);
+    });
+    box.append(run);
+  });
+  box.append(authorize);
+}
+function outboundText(tag, text) {
+  const node = document.createElement(tag);
+  node.textContent = text;
+  return node;
+}
+function renderRelationship(result) {
+  const connection = result.connection || (result.id ? result : null);
+  const analysis = result.analysis;
+  const box = $('outbound');
+  if (!connection) {
+    outboundConsent = null;
+    box.append(outboundText('p', `Analysis ${analysis?.status || 'failed'}; no validated connection was stored.`));
+    return;
+  }
+  currentConnectionId = connection.id;
+  const data = connection.data || {};
+  box.append(
+    outboundText('p', `${data.relation_type} · ${data.status}. ${data.explanation}`),
+    outboundText('blockquote', `Current source quote: ${data.current_quote || 'unavailable'}`),
+    outboundText('blockquote', `Historical source quote: ${data.historical_quote || 'unavailable'}`),
+    outboundText('p', `Limitations: ${data.limitations || 'none recorded'}`),
+    outboundText('p', `Provider ${data.provider?.id || 'unknown'} · model ${data.provider?.model || 'unknown'} · ${analysis?.data?.usage?.total_tokens ?? 'unknown'} tokens`),
+    outboundText('p', 'Hypothesis, not independently verified truth.'),
+  );
+  renderRelationshipRubric(connection.id);
+}
+function renderRelationshipRubric(connectionId) {
+  const target = $('relationship-feedback');
+  target.replaceChildren();
+  const rubric = {};
+  const rows = [
+    ['Factually supported', 'factually_supported'],
+    ['Relevant to goal', 'relevant_to_goal'],
+    ['Revealed something new', 'revealed_new'],
+    ['Would investigate or act', 'would_act'],
+    ['Misleading or wrong', 'misleading'],
+  ];
+  for (const [label, field] of rows) {
+    const row = document.createElement('p');
+    row.textContent = label + ': ';
+    for (const value of ['yes', 'no', 'uncertain']) {
+      const button = document.createElement('button');
+      button.textContent = value;
+      button.onclick = () => action(async () => {
+        rubric[field] = value;
+        await command('relationship-feedback', { connectionId, rubric: { ...rubric } });
+        $('research-status').textContent = `Relationship assessment saved (${label}: ${value}).`;
+      });
+      row.append(button);
+    }
+    target.append(row);
+  }
+}
 $('find-research').onclick = () => action(async () => {
   const result = await command('find-research');
   $('research-results').replaceChildren();
+  clearOutbound();
   currentResearchId = null;
   $('connect-research').disabled = true;
   $('connection').textContent = '';
@@ -299,6 +400,13 @@ $('find-research').onclick = () => action(async () => {
         : 'Connection candidate created; both sources remain distinct.';
     });
     block.append(heading, source, quote, button);
+    const outbound = document.createElement('button');
+    outbound.textContent = 'Preview outbound analysis';
+    outbound.onclick = () => action(async () => {
+      currentResearchId = item.memory_id;
+      await previewRelationship(item);
+    });
+    block.append(outbound);
     const withdraw = document.createElement('button');
     withdraw.textContent = 'Withdraw this memory';
     withdraw.onclick = () => action(async () => {
@@ -310,6 +418,7 @@ $('find-research').onclick = () => action(async () => {
       currentConnectionId = null;
       $('connection-useful').disabled = true;
       $('connection-not-useful').disabled = true;
+      clearOutbound();
       $('research-status').textContent = `Withdrew displayed memory ${item.memory_id}; it will not be retrieved.`;
       $('research-results').replaceChildren();
       $('connection').textContent = '';

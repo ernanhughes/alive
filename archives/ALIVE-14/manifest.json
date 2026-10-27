@@ -1,0 +1,80 @@
+{
+  "status": "ENGINEERING_PASS",
+  "native_synthetic": "NATIVE_SYNTHETIC_PASS",
+  "native_meta": "NOT_RUN",
+  "retrieval_advantage": "RETRIEVAL_ADVANTAGE_DEMONSTRATED",
+  "retrieval_scope": "frozen held-out lexical corpus",
+  "relationship_usefulness": "RELATIONSHIP_USEFULNESS_NOT_DEMONSTRATED",
+  "owner_ratings": "SCRIPTED_ONLY",
+  "baseline": "3d81ce9a435d375ff6652bde07582d22a1eafdd6",
+  "protocol_commit": "bf0af924d75483fc1c06ea5f8621ab08c3950b98",
+  "source_commit": "83852b2bdcccdef041c3e440dce3a2b22906ad0c",
+  "pr": "https://github.com/ernanhughes/alive/pull/20",
+  "paid_calls": 0,
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "evidence/native-synthetic.json": {
+      "sha256": "1e45696cd9af12c6007a0de26175b8d82a060dce24fb3aca9d0dfb4b94a843e8",
+      "bytes": 5170
+    },
+    "evidence/ranker-diagnostics.json": {
+      "sha256": "257595e0a4f65043965f358cf2a97c587a5452185051bbaab937d97360f2c61e",
+      "bytes": 2089
+    },
+    "evidence/research-relationship.png": {
+      "sha256": "a428e527a850e6cd980c854c5ecd9be9b389ee71b7b36b473990bfd748adc4de",
+      "bytes": 170219
+    },
+    "evidence/retrieval-comparison-held_out.json": {
+      "sha256": "93b990fdf8db5368b5b1a91bd4b3d99c1661bf3dbfda78de3923bbfdbd0ccfa4",
+      "bytes": 80356
+    },
+    "protocol.json": {
+      "sha256": "56a85e66219425387ca42465ad2f3435be0b9af1652ba484fd7e5836cf54baf5",
+      "bytes": 14349
+    },
+    "README.md": {
+      "sha256": "d3c3f713d8248c8d324dc4bc3fbf3cc9264aca262a55a7cc9d9a63348de7e2d6",
+      "bytes": 4882
+    },
+    "validation/archive.txt": {
+      "sha256": "080e08de792bcc76990daa58b9f258f352796e45796316b57b717f4cf9edeed6",
+      "bytes": 142
+    },
+    "validation/backend.txt": {
+      "sha256": "4915430e5c20e7a8cc9563a993aa9387f10ea21f00c6d36b26c1ec9d5276c078",
+      "bytes": 1296
+    },
+    "validation/build.txt": {
+      "sha256": "d7cfad8ae5c118b8b924e106fb9012f8e5b0ac78fce8be275ee048223a5918d0",
+      "bytes": 464
+    },
+    "validation/extension.txt": {
+      "sha256": "f9c38d559ad4da645133920843e47f627fcafb8f6d20b0e4e5e1397b7411b7c9",
+      "bytes": 1096
+    },
+    "validation/frontend.txt": {
+      "sha256": "5d685c9296976db2cfb9e4b0401c02c18277ca691bfc76b266426f0cc1b0aecf",
+      "bytes": 286
+    },
+    "validation/native.txt": {
+      "sha256": "e592449e17f5c338fb9f63a306ecd1ecc06a9460a65f6512d7a584272ea7ac3c",
+      "bytes": 346
+    },
+    "validation/research-memory.txt": {
+      "sha256": "7090f5fbbddcd5ce5d873a90d74e56a08a56e2a594e5029fa17ee2c91dd80f95",
+      "bytes": 694
+    },
+    "validation/ruff.txt": {
+      "sha256": "4138ce7df9acab0acd718c1d4688d0d537ba149ee0e0c51ffe5620a836f461d0",
+      "bytes": 49
+    },
+    "validation/whitespace.txt": {
+      "sha256": "0d26dafb61bd6e61f051568fc160d6effb89e492f5ade6509bfcf851b95f7c4a",
+      "bytes": 153
+    }
+  }
+}

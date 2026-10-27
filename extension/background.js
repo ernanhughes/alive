@@ -151,9 +151,45 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
     if (message.type === 'connection-feedback') {
       const { connectionId } = await chrome.storage.session.get('connectionId');
       if (!connectionId) throw new Error('No research connection selected');
-      return send('/browser-experience/research/connections/' + connectionId + '/feedback', {
+      return send('/browser-experience/research/connections/' + connectionId + '/feedback', message.rubric || {
         useful: message.useful,
       });
+    }
+    if (message.type === 'preview-relationship') {
+      const { selected } = await chrome.storage.session.get('selected');
+      if (!selected?.snapshot?.id || !message.memoryId)
+        throw new Error('Select a historical research item first');
+      return send('/browser-experience/research/outbound/preview', {
+        snapshot_id: selected.snapshot.id,
+        research_id: message.memoryId,
+        provider: message.provider || 'local_stub',
+      });
+    }
+    if (message.type === 'authorize-relationship') {
+      if (!message.consentId || !message.payloadSha256)
+        throw new Error('Preview the exact outbound payload first');
+      return send('/browser-experience/research/outbound/authorize', {
+        consent_id: message.consentId,
+        payload_sha256: message.payloadSha256,
+        approved: true,
+      });
+    }
+    if (message.type === 'analyse-relationship') {
+      if (!message.consentId) throw new Error('Authorise the outbound payload first');
+      return send('/browser-experience/research/relationships', {
+        consent_id: message.consentId,
+      });
+    }
+    if (message.type === 'relationship-feedback') {
+      if (!message.connectionId || !message.rubric)
+        throw new Error('Select a relationship and provide an assessment');
+      return send('/browser-experience/research/connections/' + message.connectionId + '/feedback', {
+        ...message.rubric,
+      });
+    }
+    if (message.type === 'revoke-relationship') {
+      if (!message.consentId) throw new Error('No outbound consent selected');
+      return send('/browser-experience/research/outbound/' + message.consentId + '/revoke', {});
     }
     if (message.type === 'withdraw-research') {
       if (!message.researchId) throw new Error('Select the research memory to withdraw');

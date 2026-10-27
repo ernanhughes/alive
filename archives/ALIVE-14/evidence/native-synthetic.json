@@ -1,0 +1,79 @@
+{
+  "provenance": {
+    "kind": "native Chrome extension with isolated current-branch backend",
+    "chrome_native": true,
+    "provider": "local synthetic HTTP stub",
+    "paid_calls": 0,
+    "meta_inference": false,
+    "source_commit": "83852b2bdcccdef041c3e440dce3a2b22906ad0c"
+  },
+  "environment": {
+    "target_page": "http://127.0.0.1:53860/research/a",
+    "distractor_pages": [
+      "http://127.0.0.1:53860/research/distractor-1",
+      "http://127.0.0.1:53860/research/distractor-2"
+    ],
+    "current_page": "http://127.0.0.1:53860/research/current",
+    "backend": "http://127.0.0.1:53862",
+    "screenshot": "research-relationship.png",
+    "chrome": "155.0.8059.85",
+    "presentation": "native side panel target",
+    "panel_opened_as_ordinary_tab": false
+  },
+  "steps": [],
+  "retrieval": {
+    "target_memory": "035f299f-f86f-41a7-a2a0-0812190af436",
+    "rank_1_memory": "035f299f-f86f-41a7-a2a0-0812190af436",
+    "rank_1_source_url": "http://127.0.0.1:53860/research/a",
+    "competing_research_memories": 3,
+    "result_count": 2,
+    "ranking_version": "alive14-bm25-v1"
+  },
+  "connection": {
+    "displayed": "candidate \u00b7 topic_overlap_candidate. The displayed source spans share lexical content terms earlier, reviewed, sources. This is a topic-overlap candidate only; it does not establish agreement, support, contradiction or corroboration.\nHistorical source quote: Persistent agent memory retains earlier reviewed research sources across sessions.\nCurrent source quote: Persistent agent memory retrieval selects earlier reviewed research sources for a current goal.\nHistorical model quotation (not a source span): Persistent agent memory retains earlier reviewed research sources across sessions.",
+    "truthful_label": true,
+    "exact_source_spans": true,
+    "owner_feedback_persisted": true
+  },
+  "relationship": {
+    "preview_displayed": "Outbound payload preview \u2014 local deterministic stub.Current source: http://127.0.0.1:53860/research/current (SHA-256 2efd9e0abe46)Persistent agent memory retrieval selects earlier reviewed research sources for a current goal.Historical source: http://127.0.0.1:53860/research/a (SHA-256 5d94ce4006e5)Persistent agent memory retains earlier reviewed research sources across sessions.Goal: Understand persistent agent memory for research tasksProvider/model: local_stub \u00b7 deterministic-local-stub-v1Estimated maximum: 4860 tokens \u00b7 20655 micro-USDNo external transmission occurs for this local stub.Authorize this exact payload",
+    "analysis_displayed": "Outbound payload preview \u2014 local deterministic stub.Current source: http://127.0.0.1:53860/research/current (SHA-256 2efd9e0abe46)Persistent agent memory retrieval selects earlier reviewed research sources for a current goal.Historical source: http://127.0.0.1:53860/research/a (SHA-256 5d94ce4006e5)Persistent agent memory retains earlier reviewed research sources across sessions.Goal: Understand persistent agent memory for research tasksProvider/model: local_stub \u00b7 deterministic-local-stub-v1Estimated maximum: 4860 tokens \u00b7 20655 micro-USDNo external transmission occurs for this local stub.Authorize this exact payloadAuthorised exact payload at 2026-10-27T20:35:53.355116+00:00.Run authorised analysispossible_conceptual_connection \u00b7 candidate. The local deterministic stub found shared lexical terms earlier, reviewed, sources in the displayed spans. This is a scripted candidate, not a semantic finding or an external model result.Current source quote: Persistent agent memory retrieval selects earlier reviewed research sources for a current goal.Historical source quote: Persistent agent memory retains earlier reviewed research sources across sessions.Limitations: Lexical overlap does not establish agreement, support, contradiction or corroboration. No external model was called.Provider local_stub \u00b7 model deterministic-local-stub-v1 \u00b7 0 tokensHypothesis, not independently verified truth.",
+    "external": false,
+    "provider": "local_stub",
+    "analysis_status": "validated",
+    "quote_validation": {
+      "valid": true,
+      "current_quote_exact": true,
+      "historical_quote_exact": true
+    },
+    "scripted_feedback_saved": true
+  },
+  "withdrawal": {
+    "displayed_target": "035f299f-f86f-41a7-a2a0-0812190af436",
+    "remaining_memory_ids": [
+      "291a0985-6c2a-49eb-990b-3d16bb862f89",
+      "7a4396ee-a98c-4330-9b48-9cdcde96a37d"
+    ],
+    "last_saved_was_distractor": true,
+    "target_withdrawn": true,
+    "stale_consent_status": 409,
+    "stale_consent_external_calls": 0
+  },
+  "restart": {
+    "memory_persisted_before_withdrawal": true,
+    "withdrawal_effective_after_restart": true,
+    "analysis_persisted_after_restart": true,
+    "active_after_withdrawal": 2
+  },
+  "negative_checks": {
+    "revoked_grant_connection": 403,
+    "retrieval_remains_local_after_revoke": true,
+    "retrieval_after_revoke_status": 200,
+    "wrong_origin_grant": 403
+  },
+  "provider": {
+    "synthetic_calls": 3,
+    "paid": false
+  },
+  "status": "NATIVE_SYNTHETIC_PASS"
+}

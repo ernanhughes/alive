@@ -33,6 +33,8 @@ class Settings(BaseSettings):
     alive_meta_max_output: int = Field(1536, ge=64, le=4096)
     alive_native_test_pages: str = ""
     alive_companion_micro_usd_limit: int | None = Field(default=None, ge=0)
+    alive_research_meta_enabled: bool = False
+    alive_relationship_micro_usd_limit: int | None = Field(default=100000, ge=0)
     alive_role_models: dict[str, str] = {}
     alive_embedding_enabled: bool = False
     alive_embedding_path: str = ".alive/models/minilm"

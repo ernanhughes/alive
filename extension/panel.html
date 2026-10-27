@@ -38,7 +38,7 @@
       summary { cursor: pointer; color: #b3d68c; margin: 12px 0; }
       blockquote { margin: 12px 0; padding-left: 12px; border-left: 2px solid #c7ed9d; }
       #decision-label { font-size: 16px; color: #c7ed9d; }
-      #relevance, #policy, #feedback-help, #research-status, #research-help, #research-results, #connection { font-size: 11px; color: #9caf92; line-height: 1.5; }
+      #relevance, #policy, #feedback-help, #research-status, #research-help, #research-results, #connection, #outbound, #relationship-feedback { font-size: 11px; color: #9caf92; line-height: 1.5; }
       #note { font-size: 13px; line-height: 1.65; }
       input[type="checkbox"] {
         width: auto;
@@ -71,7 +71,7 @@
   <body>
     <h1>ALIVE <small>11</small></h1>
     <p>A continuing documentation companion.</p>
-    <details id="connection" open><summary>Local connection</summary><label
+    <details id="local-connection" open><summary>Local connection</summary><label
       >Local backend<input
         id="backend"
         disabled
@@ -137,6 +137,8 @@
     <div id="connection"></div>
     <button id="connection-useful" disabled>Connection useful</button>
     <button id="connection-not-useful" disabled>Connection not useful</button>
+    <div id="outbound"></div>
+    <div id="relationship-feedback"></div>
     <p id="research-help">
       Research memory stores only the reviewed excerpt and its source/goal provenance.
       Related material is historical evidence, never evidence for the current page. Nothing is

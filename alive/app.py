@@ -31,6 +31,7 @@ from alive.models import AgentRun, BrowserSession, Event, Goal, Memory, now, rec
 from alive.provenance import runtime_identity
 from alive.providers import MetaProvider
 from alive.research_memory import ResearchMemory
+from alive.research_relationships import ResearchRelationships
 from alive.schemas import (
     BrowserAction,
     GoalInput,
@@ -73,11 +74,15 @@ def create_app(settings=None):
         app.state.living = Living(app, kernel)
         app.state.web = WebCompanion(app, kernel)
         app.state.research = ResearchMemory(app.state.web, app.state.memory)
+        app.state.relationships = ResearchRelationships(
+            app.state.research, app.state.experiments, settings
+        )
         if kernel.ready:
             await app.state.cognition.initialize()
             await app.state.experiments.initialize()
             await app.state.living.initialize()
             await app.state.web.initialize()
+            await app.state.relationships.initialize()
         try:
             yield
         finally:

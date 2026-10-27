@@ -16,6 +16,7 @@ from fastapi.testclient import TestClient
 from alive.app import create_app
 from alive.config import Settings
 from alive.db import Database
+from alive.memory import ALL_MEMORY_TYPES
 from alive.models import Base, Memory, uid
 from alive.providers import MetaProvider
 from alive.web_experience import digest
@@ -73,7 +74,9 @@ def wait(client, note_id):
 
 def old_retrieve(client, query, top_k=15):
     async def call():
-        return await client.app.state.memory.retrieve(query, "text", top_k, memory_types=())
+        return await client.app.state.memory.retrieve(
+            query, "text", top_k, memory_types=ALL_MEMORY_TYPES
+        )
 
     return client.portal.call(call)
 
@@ -105,8 +108,8 @@ def run():
         "synthetic_note_calls": 0,
         "method": (
             "The frozen ALIVE-12 query and post-filter are reproduced against the current "
-            "database. memory_types=() disables the ALIVE-13 general-memory allowlist so the "
-            "old unscoped candidate set is visible."
+            "database. ALL_MEMORY_TYPES disables the ALIVE-13 general-memory allowlist "
+            "so the old unscoped candidate set is visible."
         ),
         "a1_unscoped_retrieval": {},
         "a2_general_cognition_isolation": {},
