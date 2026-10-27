@@ -4,7 +4,7 @@ Status: **ENGINEERING_PASS**. Research: **BEHAVIOUR_CHANGE_DEMONSTRATED**; no ut
 adopted. Paid inference: **none**.
 
 Baseline: `f19391d0fe2825710aeec01ba4c66fa8d852f01c` (ALIVE-11 merge).
-Product code commit: `9f05a625de54d1810e863209186557db7a15e9cc`.
+Product code commit: `22ef627fa5a9b430c17271fbe65bf6a69e6ce56f`.
 Evidence tooling commit: `1bc947152098ff82918c4247074fe9b76b48c3f5`.
 
 This supplementary archive records the ALIVE-11-R1 correctness fixes and a frozen four-policy
@@ -18,8 +18,8 @@ archive.
 | `protocol.json` | predeclared fourteen-observation policy comparison |
 | `evidence/policy-comparison.json` | executable replay results |
 | `evidence/native-synthetic.json` | current-code native synthetic journey with docked side panel |
-| `validation/backend.txt` | 145 backend tests |
-| `validation/companion-focused.txt` | 30 focused companion/policy tests |
+| `validation/backend.txt` | 146 backend tests |
+| `validation/companion-focused.txt` | 31 focused companion/policy tests |
 | `validation/extension.txt` | 9 extension tests |
 | `validation/frontend.txt` | 7 frontend tests |
 | `validation/build.txt` | production dashboard build |

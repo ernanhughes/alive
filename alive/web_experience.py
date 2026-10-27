@@ -485,15 +485,16 @@ class WebCompanion:
         if not isinstance(suppressed, dict):
             suppressed = {}
             context["suppressed_excerpts"] = suppressed
-        if sha256 in suppressed:
+        already_rated = effective_evidence(context, sha256) is not None
+        if sha256 in suppressed or already_rated:
             return adaptive | {
                 "policy_version": before.get("version", 0),
                 "policy_hash": policy_hash(before),
                 "suppressions": len(suppressed),
                 "repeated_suppression": True,
                 "reason": (
-                    "This exact excerpt was already paused. Repeated observations do not "
-                    "advance the recovery probe counter."
+                    "This exact excerpt was already paused or rated. Repeated observations do "
+                    "not advance the recovery probe counter."
                 ),
             }
         suppressed[sha256] = now().isoformat()

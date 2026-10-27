@@ -5,7 +5,7 @@ Engineering: **PASS**. Research: **BEHAVIOUR_CHANGE_DEMONSTRATED** for the exist
 
 Baseline: `f19391d0fe2825710aeec01ba4c66fa8d852f01c` (ALIVE-11 merge).
 Branch: `codex/alive-11-r1-safe-experience-reuse`.
-Product code commit: `9f05a625de54d1810e863209186557db7a15e9cc`.
+Product code commit: `22ef627fa5a9b430c17271fbe65bf6a69e6ce56f`.
 Evidence tooling commit: `1bc947152098ff82918c4247074fe9b76b48c3f5`.
 
 ## Review findings addressed
@@ -103,8 +103,8 @@ The current production policy remains interpretable; old v2 records are not rewr
 
 | Check | Result |
 |---|---|
-| Backend suite | 145 passed |
-| Focused companion/policy tests | 30 passed |
+| Backend suite | 146 passed |
+| Focused companion/policy tests | 31 passed |
 | Extension tests | 9 passed |
 | Frontend suite | 7 passed |
 | Production build | Passed |

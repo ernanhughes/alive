@@ -154,6 +154,25 @@ def test_repeated_paused_excerpt_does_not_advance_probe(client, monkeypatch):
     assert len(calls) == 3
 
 
+def test_repeated_rated_excerpt_does_not_advance_suppression(client, monkeypatch):
+    calls = fake_model(monkeypatch)
+    grant = negative_history(client)
+    rated_text = TEXT + " Independent observation 0."
+    before = client.get(ROOT).json()["policy"]["data"]
+    for _ in range(3):
+        decision = snapshot(client, grant, rated_text)["decision"]
+        assert decision["action"] == "no_action"
+        assert decision["repeated_suppression"] is True
+        assert decision["adaptive_policy"]["suppressions"] == 0
+    assert client.get(ROOT).json()["policy"]["data"] == before
+    for index in range(3):
+        snapshot(client, grant, TEXT + f" Fresh paused after rated {index}.")
+    probe = snapshot(client, grant, TEXT + " Probe after repeated rated.")["decision"]
+    assert probe["action"] == "analyse"
+    assert probe["probe"] is True
+    assert len(calls) == 3
+
+
 def test_negative_exact_excerpt_cannot_become_probe(client, monkeypatch):
     calls = fake_model(monkeypatch)
     grant = negative_history(client)
