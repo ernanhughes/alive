@@ -29,6 +29,8 @@ import type {
 } from "./api";
 import "./style.css";
 import { CognitionPane } from "./Cognition";
+import { BrowserProvenance } from "./BrowserProvenance";
+import type { BrowserObservation } from "./BrowserProvenance";
 import { LivingPane } from "./Living";
 
 const tabs = [
@@ -114,7 +116,7 @@ export function App() {
     [sessionId, setSessionId] = useState(""),
     [selector, setSelector] = useState("#change"),
     [value, setValue] = useState("A green light appeared in the habitat."),
-    [page, setPage] = useState<Record<string, string> | null>(null);
+    [page, setPage] = useState<BrowserObservation | null>(null);
   const [goalTitle, setGoalTitle] = useState("");
   const cursor = useRef(0);
   const refresh = useCallback(async () => {
@@ -791,6 +793,7 @@ export function App() {
                       <>
                         <h3>{page.title}</h3>
                         <small>{page.url}</small>
+                        <BrowserProvenance observation={page} />
                         <pre>{page.text}</pre>
                       </>
                     )}

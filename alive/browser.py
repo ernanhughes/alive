@@ -1,6 +1,7 @@
 import asyncio
 import base64
 import contextlib
+import hashlib
 from urllib.parse import urlsplit
 
 from playwright.async_api import async_playwright
@@ -75,13 +76,39 @@ class Browsers:
 
     async def observe(self, session_id, event_type, selector="body"):
         page = self.page(session_id)
+        if not self.allowed(page.url):
+            raise PermissionError("Current page is not authorised for observation")
+        url = page.url.split("?")[0].split("#")[0]
+        title = await page.title()
+        text = await page.evaluate(SAFE_TEXT, selector)
+        if not self.allowed(page.url):
+            raise PermissionError("Page left the authorised origin during observation")
+        parsed = urlsplit(url)
+        observation_id = uid()
         payload = {
-            "url": page.url.split("?")[0].split("#")[0],
-            "title": await page.title(),
-            "text": await page.evaluate(SAFE_TEXT, selector),
+            "observation_id": observation_id,
+            "url": url,
+            "title": title,
+            "text": text,
             "session_id": session_id,
+            "source_kind": "managed_chrome_dom",
+            "trust_level": "observed_page_text_not_verified_fact",
+            "observed_at": now().isoformat(),
+            "selector": selector,
+            "text_sha256": hashlib.sha256(text.encode()).hexdigest(),
+            "text_chars": len(text),
+            "permission_scope": "ALIVE_BROWSER_ORIGINS exact-origin allowlist",
+            "permission_origin": f"{parsed.scheme}://{parsed.netloc}",
+            "permission_read_only": True,
         }
-        await self.kernel.ingest(Observation(event_type=event_type, source="user", payload=payload))
+        await self.kernel.ingest(
+            Observation(
+                event_id=observation_id,
+                event_type=event_type,
+                source="user",
+                payload=payload,
+            )
+        )
         return payload
 
     async def navigate(self, session_id, url):
