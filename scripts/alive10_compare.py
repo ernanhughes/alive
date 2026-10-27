@@ -7,6 +7,7 @@ model outputs or browser observations.
 """
 
 import json
+import subprocess
 from pathlib import Path
 
 from alive.web_experience import adaptive_recommendation, new_context, new_policy
@@ -126,6 +127,11 @@ def main():
     }
     result = {
         "kind": "frozen decision-level replay",
+        "source_commit": subprocess.check_output(
+            ["git", "rev-parse", "HEAD"],
+            cwd=Path(__file__).resolve().parents[1],
+            text=True,
+        ).strip(),
         "not_native_outcome_evidence": True,
         "caveat": (
             "Eight predeclared observations with usefulness labels. No model was called. "

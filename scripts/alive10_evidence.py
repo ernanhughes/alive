@@ -6,6 +6,7 @@ Real companion API and SQLite; synthetic local provider. No native browser and n
 import asyncio
 import json
 import shutil
+import subprocess
 import time
 from pathlib import Path
 from types import SimpleNamespace
@@ -224,6 +225,11 @@ def main():
                 "meta_inference": False,
                 "paid_calls": 0,
                 "provider": "synthetic local adapter",
+                "source_commit": subprocess.check_output(
+                    ["git", "rev-parse", "HEAD"],
+                    cwd=Path(__file__).resolve().parents[1],
+                    text=True,
+                ).strip(),
             },
             "repeated_same_excerpt": {
                 "ratings": repeated,
