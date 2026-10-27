@@ -20,5 +20,20 @@ $backend = Start-Process -FilePath (Join-Path $PWD '.venv\Scripts\python.exe') -
 $vitePath = Join-Path $PWD 'dashboard\node_modules\vite\bin\vite.js'
 $dashboard = Start-Process -FilePath 'node' -ArgumentList @("`"$vitePath`"",'--host','127.0.0.1','--port','5173','--strictPort') -WorkingDirectory (Join-Path $PWD dashboard) -WindowStyle Hidden -PassThru
 @{ backend = $backend.Id; dashboard = $dashboard.Id } | ConvertTo-Json | Set-Content .alive\dev-processes.json
+foreach ($endpoint in @('http://127.0.0.1:8000/api/v1/health','http://127.0.0.1:5173')) {
+    $ready = $false
+    for ($attempt = 0; $attempt -lt 60; $attempt++) {
+        try {
+            $response = Invoke-WebRequest -Uri $endpoint -TimeoutSec 1
+            if ($response.StatusCode -eq 200) { $ready = $true; break }
+        } catch { }
+        Start-Sleep -Milliseconds 250
+    }
+    if (-not $ready) {
+        Stop-Process -Id $backend.Id,$dashboard.Id -ErrorAction SilentlyContinue
+        Remove-Item -LiteralPath .alive\dev-processes.json -ErrorAction SilentlyContinue
+        throw "ALIVE startup did not become ready: $endpoint"
+    }
+}
 Write-Host 'Dashboard: http://127.0.0.1:5173 | Backend: http://127.0.0.1:8000/docs'
 Write-Host 'Read .alive/token locally to connect. Stop with ./scripts/stop.ps1'

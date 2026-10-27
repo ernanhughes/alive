@@ -1,0 +1,1126 @@
+{
+  "calls": 25,
+  "tokens": 29865,
+  "invocations": [
+    {
+      "role": "proposer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 5365,
+      "usage": {
+        "completion_tokens": 447,
+        "prompt_tokens": 609,
+        "total_tokens": 1056,
+        "completion_tokens_details": {
+          "reasoning_tokens": 262
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "latency_ms": 3074.765799974557,
+      "output": {
+        "summary": "Lyra battery 18h claim lacks linked evidence and cannot be accepted.",
+        "claims": [
+          {
+            "subject": "Lyra battery",
+            "predicate": "endurance_hours",
+            "value": "18",
+            "evidence_refs": []
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Log Lyra battery 18h claim as unverified pending controlled_measurement evidence linkage.",
+            "rationale": "No evidence_refs supplied to support endurance claim."
+          }
+        ],
+        "criticisms": [
+          "Claim provides zero evidence_refs despite citing controlled_measurement source.",
+          "Source measurement:battery:1 not linked in claim evidence_refs."
+        ],
+        "uncertainties": [
+          "Whether measurement:battery:1 actually supports 18h value.",
+          "Measurement conditions and methodology unknown."
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.1
+      },
+      "charged_tokens": 1056
+    },
+    {
+      "role": "proposer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 5359,
+      "usage": {
+        "completion_tokens": 405,
+        "prompt_tokens": 607,
+        "total_tokens": 1012,
+        "completion_tokens_details": {
+          "reasoning_tokens": 219
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "latency_ms": 2226.343799964525,
+      "output": {
+        "summary": "Controlled measurement shows Vega coolant at 26C, not claimed 71C. Unsupported claim should be revised.",
+        "claims": [
+          {
+            "subject": "Vega coolant",
+            "predicate": "temperature_c",
+            "value": "26",
+            "evidence_refs": [
+              "measurement:coolant:1"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Record analysis: Vega coolant temperature is 26C per controlled measurement, rejecting unsupported 71C claim.",
+            "rationale": "Correct record with authoritative evidence and prevent use of unevidenced 71C value."
+          }
+        ],
+        "criticisms": [
+          "Claimed value 71 has zero evidence_refs and is contradicted by controlled measurement."
+        ],
+        "uncertainties": [
+          "Measurement timestamp and calibration status not supplied."
+        ],
+        "recommendation": "revise",
+        "confidence": 0.95
+      },
+      "charged_tokens": 1012
+    },
+    {
+      "role": "proposer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 5136,
+      "usage": {
+        "completion_tokens": 501,
+        "prompt_tokens": 541,
+        "total_tokens": 1042,
+        "completion_tokens_details": {
+          "reasoning_tokens": 335
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "latency_ms": 3828.3877999638207,
+      "output": {
+        "summary": "Decorative pulse 56 noted as layout colour change. No evidence to act on. Logged only, no further action proposed.",
+        "claims": [],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Log observation 'Decorative telemetry pulse 56. Layout colour changed.' as non-actionable UI event with no follow-on tasking.",
+            "rationale": "No sources, memories, or evidence refs supplied to justify further action."
+          }
+        ],
+        "criticisms": [
+          "No evidence refs supplied for verification.",
+          "No testable success criteria possible from decorative pulse."
+        ],
+        "uncertainties": [
+          "Whether pulse reflects any underlying state change.",
+          "Whether further telemetry is expected."
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.05
+      },
+      "charged_tokens": 1042
+    },
+    {
+      "role": "observer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 5286,
+      "usage": {
+        "completion_tokens": 504,
+        "prompt_tokens": 596,
+        "total_tokens": 1100,
+        "completion_tokens_details": {
+          "reasoning_tokens": 369
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 369
+        }
+      },
+      "latency_ms": 3407.246899965685,
+      "output": {
+        "summary": "Observation asserts Lyra battery endurance 18h. Source measurement:battery:1 reports same value via controlled_measurement. No memories or prior changes supplied.",
+        "claims": [
+          {
+            "subject": "Lyra battery",
+            "predicate": "endurance_hours",
+            "value": "18",
+            "evidence_refs": [
+              "measurement:battery:1"
+            ]
+          }
+        ],
+        "actions": [],
+        "criticisms": [
+          "Original claim provided with empty evidence_refs despite matching source"
+        ],
+        "uncertainties": [
+          "No context on measurement conditions or units beyond hours"
+        ],
+        "recommendation": "proceed",
+        "confidence": 0.85
+      },
+      "charged_tokens": 1100
+    },
+    {
+      "role": "proposer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 5925,
+      "usage": {
+        "completion_tokens": 323,
+        "prompt_tokens": 738,
+        "total_tokens": 1061,
+        "completion_tokens_details": {
+          "reasoning_tokens": 160
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "latency_ms": 2536.3867999985814,
+      "output": {
+        "summary": "Lyra battery endurance 18h supported by controlled measurement source.",
+        "claims": [
+          {
+            "subject": "Lyra battery",
+            "predicate": "endurance_hours",
+            "value": "18",
+            "evidence_refs": [
+              "measurement:battery:1"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Record Lyra battery endurance_hours = 18 based on measurement:battery:1 controlled_measurement for downstream use.",
+            "rationale": "Source directly supports value with controlled authority; bounded record only."
+          }
+        ],
+        "criticisms": [
+          "Initial claim lacked evidence_refs despite available source"
+        ],
+        "uncertainties": [
+          "Measurement conditions and test setup unknown"
+        ],
+        "recommendation": "proceed",
+        "confidence": 0.85
+      },
+      "charged_tokens": 1061
+    },
+    {
+      "role": "critic",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 6628,
+      "usage": {
+        "completion_tokens": 533,
+        "prompt_tokens": 896,
+        "total_tokens": 1429,
+        "completion_tokens_details": {
+          "reasoning_tokens": 324
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "latency_ms": 3512.680599989835,
+      "output": {
+        "summary": "Single controlled_measurement source asserts 18h but lacks conditions and corroboration. Recording is premature pending verification.",
+        "claims": [
+          {
+            "subject": "Lyra battery",
+            "predicate": "endurance_hours",
+            "value": "18",
+            "evidence_refs": [
+              "measurement:battery:1"
+            ]
+          }
+        ],
+        "actions": [],
+        "criticisms": [
+          "Original observation claim had empty evidence_refs",
+          "Only single source measurement:battery:1 supports value",
+          "Observer-proposer agreement is not independent evidence",
+          "No measurement conditions, setup, or corroboration supplied"
+        ],
+        "uncertainties": [
+          "Measurement conditions and test setup unknown",
+          "No independent corroborating source or memory",
+          "Units and test variance undefined beyond hours"
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.45
+      },
+      "charged_tokens": 1429
+    },
+    {
+      "role": "evaluator",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 7372,
+      "usage": {
+        "completion_tokens": 313,
+        "prompt_tokens": 1057,
+        "total_tokens": 1370,
+        "completion_tokens_details": {
+          "reasoning_tokens": 121
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 369
+        }
+      },
+      "latency_ms": 2155.4118000203744,
+      "output": {
+        "summary": "Source measurement:battery:1 supports 18h via controlled_measurement, but single source lacks conditions and corroboration. Verify before recording.",
+        "claims": [
+          {
+            "subject": "Lyra battery",
+            "predicate": "endurance_hours",
+            "value": "18",
+            "evidence_refs": [
+              "measurement:battery:1"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Defer recording Lyra battery endurance until measurement conditions and corroboration obtained.",
+            "rationale": "Single source lacks context; avoid premature persistence."
+          }
+        ],
+        "criticisms": [
+          "Original claim had empty evidence_refs",
+          "Only single source without conditions or corroboration",
+          "Observer-proposer agreement is not independent evidence"
+        ],
+        "uncertainties": [
+          "Measurement conditions and test setup unknown",
+          "No independent corroborating source"
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.6
+      },
+      "charged_tokens": 1370
+    },
+    {
+      "role": "observer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 5280,
+      "usage": {
+        "completion_tokens": 425,
+        "prompt_tokens": 594,
+        "total_tokens": 1019,
+        "completion_tokens_details": {
+          "reasoning_tokens": 224
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "latency_ms": 3491.4753999910317,
+      "output": {
+        "summary": "Observation claims Vega coolant at 71 without evidence. Controlled measurement reports 26. Observation is unsupported and contradicted.",
+        "claims": [
+          {
+            "subject": "Vega coolant",
+            "predicate": "temperature_c",
+            "value": "26",
+            "evidence_refs": [
+              "measurement:coolant:1"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Record that Vega coolant temperature_c is 26 per measurement:coolant:1 and flag claimed value 71 as unsupported.",
+            "rationale": "Controlled measurement overrides unevidenced claim; preserves traceability."
+          }
+        ],
+        "criticisms": [
+          "Claimed value 71 has empty evidence_refs",
+          "Claimed value 71 contradicts controlled_measurement value 26"
+        ],
+        "uncertainties": [
+          "Reason for discrepant 71 value unknown",
+          "Measurement recency and calibration not provided"
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.95
+      },
+      "charged_tokens": 1019
+    },
+    {
+      "role": "proposer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 6204,
+      "usage": {
+        "completion_tokens": 334,
+        "prompt_tokens": 802,
+        "total_tokens": 1136,
+        "completion_tokens_details": {
+          "reasoning_tokens": 130
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "latency_ms": 2932.6206000405364,
+      "output": {
+        "summary": "Controlled measurement reports Vega coolant at 26, contradicting unsupported claim of 71. Record 26 and flag 71.",
+        "claims": [
+          {
+            "subject": "Vega coolant",
+            "predicate": "temperature_c",
+            "value": "26",
+            "evidence_refs": [
+              "measurement:coolant:1"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Record Vega coolant temperature_c as 26 per measurement:coolant:1; flag claimed 71 as unsupported and contradicted.",
+            "rationale": "Controlled measurement overrides unevidenced claim; preserves traceability."
+          }
+        ],
+        "criticisms": [
+          "Claimed value 71 has empty evidence_refs",
+          "Claimed value 71 contradicts controlled_measurement value 26"
+        ],
+        "uncertainties": [
+          "Reason for discrepant 71 value unknown",
+          "Measurement recency and calibration not provided"
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.95
+      },
+      "charged_tokens": 1136
+    },
+    {
+      "role": "critic",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 7039,
+      "usage": {
+        "completion_tokens": 432,
+        "prompt_tokens": 1001,
+        "total_tokens": 1433,
+        "completion_tokens_details": {
+          "reasoning_tokens": 276
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 497
+        }
+      },
+      "latency_ms": 3560.735500010196,
+      "output": {
+        "summary": "Observation of 71 is unevidenced and contradicted by controlled measurement of 26. Proposer correctly prefers 26. Investigate discrepancy before action.",
+        "claims": [
+          {
+            "subject": "Vega coolant",
+            "predicate": "temperature_c",
+            "value": "26",
+            "evidence_refs": [
+              "measurement:coolant:1"
+            ]
+          }
+        ],
+        "actions": [],
+        "criticisms": [
+          "Claimed value 71 has empty evidence_refs",
+          "Claimed value 71 contradicts controlled_measurement value 26"
+        ],
+        "uncertainties": [
+          "Reason for discrepant 71 value unknown",
+          "Measurement recency and calibration not provided"
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.95
+      },
+      "charged_tokens": 1433
+    },
+    {
+      "role": "evaluator",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 7619,
+      "usage": {
+        "completion_tokens": 338,
+        "prompt_tokens": 1146,
+        "total_tokens": 1484,
+        "completion_tokens_details": {
+          "reasoning_tokens": 134
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "latency_ms": 1818.8075000070967,
+      "output": {
+        "summary": "Claim of 71 is unevidenced and contradicted. Controlled measurement supports 26. Record 26 and investigate discrepancy.",
+        "claims": [
+          {
+            "subject": "Vega coolant",
+            "predicate": "temperature_c",
+            "value": "26",
+            "evidence_refs": [
+              "measurement:coolant:1"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Record Vega coolant temperature_c as 26 per measurement:coolant:1; flag claimed 71 as unsupported and contradicted.",
+            "rationale": "Controlled measurement overrides unevidenced claim; preserves traceability."
+          }
+        ],
+        "criticisms": [
+          "Claimed value 71 has empty evidence_refs",
+          "Claimed value 71 contradicts controlled_measurement value 26"
+        ],
+        "uncertainties": [
+          "Reason for discrepant 71 value unknown",
+          "Measurement recency and calibration not provided"
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.95
+      },
+      "charged_tokens": 1484
+    },
+    {
+      "role": "observer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 5057,
+      "usage": {
+        "completion_tokens": 456,
+        "prompt_tokens": 528,
+        "total_tokens": 984,
+        "completion_tokens_details": {
+          "reasoning_tokens": 374
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "latency_ms": 3565.2784000267275,
+      "output": {
+        "summary": "Observed decorative telemetry pulse 56 with layout colour change. No entities, claims, or changes requiring action.",
+        "claims": [],
+        "actions": [],
+        "criticisms": [],
+        "uncertainties": [
+          "No sources or evidence refs supplied to validate observation."
+        ],
+        "recommendation": "abstain",
+        "confidence": 1.0
+      },
+      "charged_tokens": 984
+    },
+    {
+      "role": "proposer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 5459,
+      "usage": {
+        "completion_tokens": 544,
+        "prompt_tokens": 616,
+        "total_tokens": 1160,
+        "completion_tokens_details": {
+          "reasoning_tokens": 385
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "latency_ms": 5019.521699985489,
+      "output": {
+        "summary": "Decorative pulse 56 with layout colour change only. No evidence, claims, or actionable changes. Log and abstain.",
+        "claims": [],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Record decorative telemetry pulse 56 as no-action observation; success = log entry created with no entity changes.",
+            "rationale": "No claims or sources supplied; only bounded safe action is logging observation."
+          }
+        ],
+        "criticisms": [
+          "No sources or evidence refs supplied to validate observation.",
+          "No entities or testable changes present in observation."
+        ],
+        "uncertainties": [
+          "No sources or evidence refs supplied to validate observation."
+        ],
+        "recommendation": "abstain",
+        "confidence": 0.1
+      },
+      "charged_tokens": 1160
+    },
+    {
+      "role": "critic",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 6163,
+      "usage": {
+        "completion_tokens": 427,
+        "prompt_tokens": 769,
+        "total_tokens": 1196,
+        "completion_tokens_details": {
+          "reasoning_tokens": 297
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "latency_ms": 4031.434599950444,
+      "output": {
+        "summary": "Pulse 56 is decorative layout colour change only with no sources, entities, or claims. Logging cannot be validated. Abstain.",
+        "claims": [],
+        "actions": [],
+        "criticisms": [
+          "No sources or evidence refs supplied to validate observation",
+          "Proposer action lacks testable entity changes and verification criteria",
+          "Observer and proposer agreement is not evidence"
+        ],
+        "uncertainties": [
+          "No sources or evidence refs supplied to validate observation",
+          "Whether pulse 56 indicates underlying system change is unknown"
+        ],
+        "recommendation": "abstain",
+        "confidence": 0.95
+      },
+      "charged_tokens": 1196
+    },
+    {
+      "role": "evaluator",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 6713,
+      "usage": {
+        "completion_tokens": 330,
+        "prompt_tokens": 887,
+        "total_tokens": 1217,
+        "completion_tokens_details": {
+          "reasoning_tokens": 202
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "latency_ms": 3549.192599952221,
+      "output": {
+        "summary": "Decorative pulse 56 layout colour change only. No sources, entities, or claims to evaluate. No validated action possible.",
+        "claims": [],
+        "actions": [],
+        "criticisms": [
+          "No sources or evidence refs supplied to validate observation",
+          "No entities or testable changes present in observation",
+          "Proposer action lacks verifiable success criteria"
+        ],
+        "uncertainties": [
+          "No sources or evidence refs supplied to validate observation",
+          "Whether pulse 56 indicates underlying system change is unknown"
+        ],
+        "recommendation": "abstain",
+        "confidence": 0.95
+      },
+      "charged_tokens": 1217
+    },
+    {
+      "role": "observer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 5286,
+      "usage": {
+        "completion_tokens": 377,
+        "prompt_tokens": 596,
+        "total_tokens": 973,
+        "completion_tokens_details": {
+          "reasoning_tokens": 197
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "latency_ms": 2430.049600021448,
+      "output": {
+        "summary": "Observation asserts Lyra battery endurance_hours is 18. Single source measurement:battery:1 reports same value as controlled_measurement. No memories or events supplied.",
+        "claims": [
+          {
+            "subject": "Lyra battery",
+            "predicate": "endurance_hours",
+            "value": "18",
+            "evidence_refs": [
+              "measurement:battery:1"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Link claim to measurement:battery:1 before accepting endurance_hours value",
+            "rationale": "Claim has empty evidence_refs while source provides authority"
+          }
+        ],
+        "criticisms": [
+          "Claim evidence_refs is empty despite available source"
+        ],
+        "uncertainties": [
+          "Unlinked evidence reference weakens claim support",
+          "No corroborating measurement provided"
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.6
+      },
+      "charged_tokens": 973
+    },
+    {
+      "role": "proposer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 6142,
+      "usage": {
+        "completion_tokens": 439,
+        "prompt_tokens": 783,
+        "total_tokens": 1222,
+        "completion_tokens_details": {
+          "reasoning_tokens": 262
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 497
+        }
+      },
+      "latency_ms": 3824.0879999939352,
+      "output": {
+        "summary": "Lyra battery endurance_hours 18 supported by controlled_measurement measurement:battery:1. Record with linkage.",
+        "claims": [
+          {
+            "subject": "Lyra battery",
+            "predicate": "endurance_hours",
+            "value": "18",
+            "evidence_refs": [
+              "measurement:battery:1"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Record Lyra battery endurance_hours=18 linked to measurement:battery:1 as controlled_measurement",
+            "rationale": "Single controlled source supports value; link to fix empty evidence_refs"
+          }
+        ],
+        "criticisms": [
+          "Claim evidence_refs was empty despite available source",
+          "Single source with no corroboration"
+        ],
+        "uncertainties": [
+          "No corroborating measurement provided"
+        ],
+        "recommendation": "proceed",
+        "confidence": 0.75
+      },
+      "charged_tokens": 1222
+    },
+    {
+      "role": "critic",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 6888,
+      "usage": {
+        "completion_tokens": 440,
+        "prompt_tokens": 955,
+        "total_tokens": 1395,
+        "completion_tokens_details": {
+          "reasoning_tokens": 280
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 369
+        }
+      },
+      "latency_ms": 3670.070299995132,
+      "output": {
+        "summary": "Endurance 18 rests on single uncorroborated measurement:battery:1. Linkage missing in observation. Do not record yet.",
+        "claims": [
+          {
+            "subject": "Lyra battery",
+            "predicate": "endurance_hours",
+            "value": "18",
+            "evidence_refs": [
+              "measurement:battery:1"
+            ]
+          }
+        ],
+        "actions": [],
+        "criticisms": [
+          "Claim evidence_refs was empty despite available source",
+          "Single source with no corroboration",
+          "Observer-proposer agreement is not evidence"
+        ],
+        "uncertainties": [
+          "No corroborating measurement provided",
+          "Controlled_measurement conditions undefined",
+          "No memories or events to cross-check"
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.55
+      },
+      "charged_tokens": 1395
+    },
+    {
+      "role": "observer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 5280,
+      "usage": {
+        "completion_tokens": 530,
+        "prompt_tokens": 594,
+        "total_tokens": 1124,
+        "completion_tokens_details": {
+          "reasoning_tokens": 323
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 497
+        }
+      },
+      "latency_ms": 3563.1454999675043,
+      "output": {
+        "summary": "Observation claims Vega coolant at 71 with no refs. Controlled source measurement:coolant:1 reports Vega coolant temperature_c 26. Entities: Vega coolant. Change: asserted value unsupported and conflicting.",
+        "claims": [
+          {
+            "subject": "Vega coolant",
+            "predicate": "temperature_c",
+            "value": "26",
+            "evidence_refs": [
+              "measurement:coolant:1"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Record discrepancy between claimed 71 and measured 26 for Vega coolant temperature_c.",
+            "rationale": "Preserve observed conflict for Governor review."
+          }
+        ],
+        "criticisms": [
+          "Claimed value 71 has no evidence_refs.",
+          "Claimed value 71 contradicts controlled_measurement of 26."
+        ],
+        "uncertainties": [
+          "Reason for claimed 71 is unknown.",
+          "Measurement context beyond controlled_measurement not provided."
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.85
+      },
+      "charged_tokens": 1124
+    },
+    {
+      "role": "proposer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 6226,
+      "usage": {
+        "completion_tokens": 276,
+        "prompt_tokens": 808,
+        "total_tokens": 1084,
+        "completion_tokens_details": {
+          "reasoning_tokens": 98
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 369
+        }
+      },
+      "latency_ms": 2570.1232999563217,
+      "output": {
+        "summary": "Claimed 71 unsupported. Controlled measurement reports 26. Conflict requires investigation.",
+        "claims": [
+          {
+            "subject": "Vega coolant",
+            "predicate": "temperature_c",
+            "value": "26",
+            "evidence_refs": [
+              "measurement:coolant:1"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Record discrepancy: claimed 71 vs measured 26 for Vega coolant temperature_c.",
+            "rationale": "Preserve conflict for Governor review."
+          }
+        ],
+        "criticisms": [
+          "Claimed value 71 has no evidence_refs.",
+          "Claimed value 71 contradicts controlled_measurement of 26."
+        ],
+        "uncertainties": [
+          "Reason for claimed 71 is unknown.",
+          "Measurement context not provided."
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.85
+      },
+      "charged_tokens": 1084
+    },
+    {
+      "role": "critic",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 6941,
+      "usage": {
+        "completion_tokens": 520,
+        "prompt_tokens": 981,
+        "total_tokens": 1501,
+        "completion_tokens_details": {
+          "reasoning_tokens": 314
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 369
+        }
+      },
+      "latency_ms": 2866.1830999772064,
+      "output": {
+        "summary": "Observation asserts Vega coolant 71 with no refs. Controlled source measurement:coolant:1 reports 26. Claim unsupported and contradicted; investigation required, no action permission.",
+        "claims": [
+          {
+            "subject": "Vega coolant",
+            "predicate": "temperature_c",
+            "value": "26",
+            "evidence_refs": [
+              "measurement:coolant:1"
+            ]
+          }
+        ],
+        "actions": [],
+        "criticisms": [
+          "Claimed value 71 has no evidence_refs.",
+          "Claimed value 71 contradicts measurement:coolant:1 value 26.",
+          "No alternative source supports 71."
+        ],
+        "uncertainties": [
+          "Reason for claimed 71 is unknown.",
+          "Measurement context beyond controlled_measurement not provided."
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.9
+      },
+      "charged_tokens": 1501
+    },
+    {
+      "role": "observer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 5286,
+      "usage": {
+        "completion_tokens": 628,
+        "prompt_tokens": 596,
+        "total_tokens": 1224,
+        "completion_tokens_details": {
+          "reasoning_tokens": 472
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 369
+        }
+      },
+      "latency_ms": 3843.796100001782,
+      "output": {
+        "summary": "Observed claim Lyra battery endurance_hours is 18, supported by controlled_measurement source measurement:battery:1. No memories or prior events provided.",
+        "claims": [
+          {
+            "subject": "Lyra battery",
+            "predicate": "endurance_hours",
+            "value": "18",
+            "evidence_refs": [
+              "measurement:battery:1"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Record Lyra battery endurance_hours=18 from measurement:battery:1.",
+            "rationale": "Preserve controlled measurement for tracking."
+          }
+        ],
+        "criticisms": [],
+        "uncertainties": [
+          "Single measurement without replication context"
+        ],
+        "recommendation": "proceed",
+        "confidence": 0.8
+      },
+      "charged_tokens": 1224
+    },
+    {
+      "role": "proposer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 6000,
+      "usage": {
+        "completion_tokens": 395,
+        "prompt_tokens": 759,
+        "total_tokens": 1154,
+        "completion_tokens_details": {
+          "reasoning_tokens": 242
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "latency_ms": 2800.6322999717668,
+      "output": {
+        "summary": "Lyra battery endurance_hours=18 supported by controlled measurement measurement:battery:1. Record for tracking.",
+        "claims": [
+          {
+            "subject": "Lyra battery",
+            "predicate": "endurance_hours",
+            "value": "18",
+            "evidence_refs": [
+              "measurement:battery:1"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Record Lyra battery endurance_hours=18 from measurement:battery:1.",
+            "rationale": "Preserve controlled measurement for tracking."
+          }
+        ],
+        "criticisms": [
+          "Single measurement without replication details"
+        ],
+        "uncertainties": [
+          "Single measurement without replication context"
+        ],
+        "recommendation": "proceed",
+        "confidence": 0.8
+      },
+      "charged_tokens": 1154
+    },
+    {
+      "role": "observer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 5280,
+      "usage": {
+        "completion_tokens": 728,
+        "prompt_tokens": 594,
+        "total_tokens": 1322,
+        "completion_tokens_details": {
+          "reasoning_tokens": 527
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 497
+        }
+      },
+      "latency_ms": 4689.915400056634,
+      "output": {
+        "summary": "Observed unsupported claim Vega coolant temperature_c 71 contradicting controlled_measurement measurement:coolant:1 reporting 26. No evidence supplied for 71.",
+        "claims": [
+          {
+            "subject": "Vega coolant",
+            "predicate": "temperature_c",
+            "value": "26",
+            "evidence_refs": [
+              "measurement:coolant:1"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Record discrepancy: unsupported 71 claim vs measurement:coolant:1 value 26 for Governor review.",
+            "rationale": "Preserve conflict without asserting unevidenced value."
+          }
+        ],
+        "criticisms": [
+          "Claim for value 71 provides zero evidence_refs",
+          "Claimed 71 conflicts with controlled_measurement 26"
+        ],
+        "uncertainties": [
+          "True current temperature beyond single measurement unknown",
+          "Origin of 71 claim unknown"
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.9
+      },
+      "charged_tokens": 1322
+    },
+    {
+      "role": "proposer",
+      "model": "muse-spark-1.3",
+      "status": "validated",
+      "reserved_tokens": 6183,
+      "usage": {
+        "completion_tokens": 365,
+        "prompt_tokens": 802,
+        "total_tokens": 1167,
+        "completion_tokens_details": {
+          "reasoning_tokens": 174
+        },
+        "prompt_tokens_details": {
+          "cached_tokens": 369
+        }
+      },
+      "latency_ms": 2372.257000009995,
+      "output": {
+        "summary": "Unsupported 71 conflicts with controlled measurement 26. No evidence for 71. Record discrepancy for review.",
+        "claims": [
+          {
+            "subject": "Vega coolant",
+            "predicate": "temperature_c",
+            "value": "26",
+            "evidence_refs": [
+              "measurement:coolant:1"
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "kind": "record_analysis",
+            "content": "Record discrepancy: unsupported 71 claim vs measurement:coolant:1 value 26 for Governor review.",
+            "rationale": "Preserve conflict without asserting unevidenced value."
+          }
+        ],
+        "criticisms": [
+          "Claim for value 71 provides zero evidence_refs",
+          "Claimed 71 conflicts with controlled_measurement 26"
+        ],
+        "uncertainties": [
+          "True current temperature beyond single measurement unknown",
+          "Origin of 71 claim unknown"
+        ],
+        "recommendation": "investigate",
+        "confidence": 0.9
+      },
+      "charged_tokens": 1167
+    }
+  ]
+}

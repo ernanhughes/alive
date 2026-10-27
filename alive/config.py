@@ -7,10 +7,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
     database_url: str = Field(
+        repr=False,
         default="sqlite+aiosqlite:///.alive/development.db",
         validation_alias=AliasChoices("DATABASE_URL", "ALIVE_DSN", "database_url"),
     )
-    alive_api_token: str = ""
+    alive_api_token: str = Field(default="", repr=False)
     alive_allowed_origins: list[str] = ["http://127.0.0.1:5173", "http://localhost:5173"]
     alive_browser_origins: list[str] = ["http://127.0.0.1:8000"]
     alive_heartbeat_seconds: float = Field(10, ge=0.1)
@@ -19,8 +20,21 @@ class Settings(BaseSettings):
     alive_pi_model: str = ""
     alive_agent_timeout: float = Field(120, ge=1)
     alive_meta_url: str = ""
-    alive_meta_model: str = ""
-    alive_meta_api_key: str = ""
+    alive_meta_model: str = "muse-spark-1.3"
+    alive_meta_base_url: str = "https://api.meta.ai/v1"
+    alive_meta_api_key: str = Field(
+        repr=False,
+        default="",
+        validation_alias=AliasChoices(
+            "ALIVE_META_API_KEY", "MODEL_API_KEY", "META_API_KEY", "alive_meta_api_key"
+        ),
+    )
+    alive_meta_timeout: float = Field(30, ge=1, le=120)
+    alive_meta_max_output: int = Field(1536, ge=64, le=4096)
+    alive_role_models: dict[str, str] = {}
+    alive_embedding_enabled: bool = False
+    alive_embedding_path: str = ".alive/models/minilm"
+    alive_cognitive_provider: str = "mock"
     alive_headless: bool = True
     alive_workspace: Path = Path(".alive/agent-workspace")
 

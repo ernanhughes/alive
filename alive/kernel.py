@@ -177,7 +177,9 @@ class Kernel:
                     correlation=str(event.correlation_id),
                     cause=str(event.event_id),
                 )
-                if instance.lifecycle_state == "running":
+                if instance.lifecycle_state == "running" and not getattr(
+                    self, "cognition_enabled", False
+                ):
                     goal = Goal(
                         id=uid(),
                         instance_id=self.instance_id,

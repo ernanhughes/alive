@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "dataset_version": "alive-world-v1",
+  "split": "predeclared-synthetic-heldout",
+  "notes": "Criteria and source facts are fixed before execution. Expected labels are never supplied to a role.",
+  "cases": [
+    {"id":"battery-update","observation":"Claim: Lyra battery | endurance_hours | 18;","claims":[{"subject":"Lyra battery","predicate":"endurance_hours","value":"18","evidence_refs":[]}],"sources":[{"id":"measurement:battery:1","subject":"Lyra battery","predicate":"endurance_hours","value":"18","authority":"controlled_measurement"}],"relevant":true,"expected_status":"SUPPORTED"},
+    {"id":"coolant-conflict","observation":"Claim: Vega coolant | temperature_c | 71;","claims":[{"subject":"Vega coolant","predicate":"temperature_c","value":"71","evidence_refs":[]}],"sources":[{"id":"measurement:coolant:1","subject":"Vega coolant","predicate":"temperature_c","value":"26","authority":"controlled_measurement"}],"relevant":true,"expected_status":"CONTRADICTED"},
+    {"id":"decorative-noise","observation":"Decorative telemetry pulse 56. Layout colour changed.","claims":[],"sources":[],"relevant":false,"expected_status":"NO_ACTION"}
+  ]
+}

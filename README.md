@@ -4,6 +4,12 @@
 
 ALIVE-01 is a working vertical slice: FastAPI + PostgreSQL/pgvector + ZeroMQ + React dashboard + managed Chrome + Manifest V3 extension + Pi RPC. Deterministic policies drive curiosity, coherence and commitment. They do not require recurring model calls or claim to be reinforcement learning.
 
+**ALIVE-02 adds a bounded autonomous cognitive loop.** Authorised browser changes compete for attention; structured Meta Observer/Proposer/Critic roles cooperate while a deterministic Investigator, Evaluator and Governor control evidence, permissions and budgets. Real ONNX embeddings, hybrid retrieval, human action approval, persistent experience and restart recovery are implemented. Open **Cognition** in the existing observatory to inspect real traces. Autonomy starts stopped and recovers paused.
+
+Read the [ALIVE-02 acceptance report](docs/ALIVE-02-ACCEPTANCE.md) and [design](docs/ALIVE-02-DESIGN.md). ALIVE-01 documentation remains the historical foundation, not the latest integration status.
+
+The reviewed ALIVE-02 specifications, results, screenshot and redacted usage records are retained in the [qualification archive](archives/ALIVE-02/README.md), with checksums and explicit evidence limitations.
+
 ## Run on Windows
 
 Prerequisites: Python 3.13, uv, Node 24+ (tested with 25.8.2), PostgreSQL and stable Chrome.
@@ -37,6 +43,39 @@ uv run python -m scripts.first_contact --runner pi
 It launches managed Chrome, changes the habitat, verifies PostgreSQL full-text retrieval, ZeroMQ delivery, dashboard rendering and agent completion, accepts a follow-up goal, restarts the backend and checks continuity. Evidence stays in ignored `.alive/first-contact.json` and `.alive/first-contact.png`.
 
 Use `--existing-dashboard` when Vite is already running. See [acceptance evidence and limitations](docs/ALIVE-01-ACCEPTANCE.md).
+
+## The First Autonomous Thought
+
+Configure `ALIVE_META_API_KEY` locally. The confirmed primary model is `muse-spark-1.3`. For actual local semantic retrieval:
+
+```powershell
+uv run python -m scripts.prepare_embeddings
+# In ignored .env set ALIVE_EMBEDDING_ENABLED=true.
+```
+
+Start the app and open **Cognition**. Select the provider, start autonomy, open/observe a laboratory habitat and inject its environmental change. No chat prompt starts the investigation. Inspect its attention bid, goal, role exchanges, grounded verdict, permitted effect and experience. Stop revokes managed sensors; pause cancels cognition. Budgets and permissions can be edited while paused. Choosing `preferred_action=lab_draft` demonstrates explicit approval before changing a controlled draft.
+
+For the reproducible demonstration with an owned backend restart, first stop normal development servers:
+
+```powershell
+./scripts/stop.ps1
+uv run python -m scripts.first_thought --provider meta
+# Offline engineering substitute, explicitly labeled:
+uv run python -m scripts.first_thought --provider mock
+./scripts/dev.ps1
+uv run python -m scripts.verify_retrieval
+```
+
+The live demonstration runs relevant-information, irrelevant-noise and contradictory-evidence cases, records actual model expenditure and verifies identity/goals/investigations/experience/budget continuity. Evidence remains ignored in `.alive/first-thought.json` and `.alive/first-thought.png`.
+
+The bounded A/B/C + no-Critic comparison uses one pinned model and fixed datasets. Paid bulk inference requires deliberate opt-in; the ledger persists reservations across interruption:
+
+```powershell
+uv run python -m scripts.benchmark --provider mock --output .alive/benchmark-engineering.json
+uv run python -m scripts.benchmark --provider meta --allow-paid --max-calls 30 --max-tokens 100000 --dataset-path benchmarks/heldout.json --output .alive/benchmark-final.json --ledger .alive/benchmark-final-ledger.json
+```
+
+An existing ledger retains its spent calls/tokens; use distinct explicit ledger/output paths for a new experiment. These three-case component comparisons cannot establish general superiority. The final report includes the Critic ablation, failures, abstentions, latency and measured token cost; unknown dollar costs stay null.
 
 ## Chrome extension
 

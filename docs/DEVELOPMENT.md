@@ -77,4 +77,6 @@ Run First Contact with the backend stopped. It starts its own backend (and Vite 
 
 ## Meta gateway
 
-Set `ALIVE_META_URL` to a complete compatible chat-completions endpoint, `ALIVE_META_MODEL` and `ALIVE_META_API_KEY` on the backend only. No live Meta inference was requested/executed without that configuration. API errors report HTTP status without echoing upstream response bodies or credentials.
+ALIVE-02 supersedes the initial gateway stub: see [META-INTEGRATION](META-INTEGRATION.md) for the live qualified API, model, credential aliases, budgets and exact setup. See README for local embeddings, Cognition controls and the owned First Autonomous Thought demonstration. The original provider settings below remain compatible; a complete endpoint override is optional.
+
+Set `ALIVE_META_API_KEY` on the backend only. The default base URL is the officially confirmed `https://api.meta.ai/v1`, with `muse-spark-1.3`; `ALIVE_META_URL` optionally overrides the complete chat-completions endpoint. API errors never echo raw upstream diagnostic bodies or credentials. ALIVE-02 made actual qualified live calls; its acceptance report distinguishes them from controlled fixtures.

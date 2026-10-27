@@ -1,0 +1,18 @@
+{
+  "captured_at": "2026-10-26T23:14:30.359985+00:00",
+  "source_commit": "f98a6a53b20316b7057f77e5b635fbc06ab23061",
+  "recorded_meta_calls": 70,
+  "calls_with_reported_usage": 69,
+  "reported_total_tokens": 98927,
+  "calls_with_unknown_usage": 1,
+  "scope_note": "All available runtime Meta invocation rows, both benchmark ledgers, retained successful smoke, and disclosed truncated bootstrap call. No account-wide billing completeness claim.",
+  "redactions": [
+    "HTTP authorization headers",
+    "credentials",
+    "runtime request/response bodies",
+    "retrieved memory contents",
+    "browser profiles",
+    "raw service logs"
+  ],
+  "dollar_cost": null
+}

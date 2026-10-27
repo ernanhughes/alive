@@ -1,6 +1,6 @@
 [project]
 name = "alive-runtime"
-version = "0.1.0"
+version = "0.2.0"
 description = "Adaptive Living Intelligence — persistent local runtime"
 requires-python = ">=3.13,<3.14"
 dependencies = [
@@ -19,6 +19,10 @@ dependencies = [
   "filelock>=4.2.4",
   "tornado>=6.6",
   "websockets>=17.3",
+  "onnxruntime>=1.31.1",
+  "tokenizers>=0.23.3",
+  "huggingface-hub>=2.3.0",
+  "numpy>=2.5.4",
 ]
 [dependency-groups]
 dev = ["pytest>=8", "pytest-asyncio>=0.25", "ruff>=0.11"]

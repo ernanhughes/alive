@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "dataset_version": "alive-world-heldout-v1",
+  "split": "heldout-qualification-v1",
+  "notes": "Frozen before final qualification of role specifications v2. Earlier cases.json was used for engineering checks and is not an unseen test set.",
+  "cases": [
+    {"id":"aquila-update","observation":"Claim: Aquila battery | endurance_hours | 23;","claims":[{"subject":"Aquila battery","predicate":"endurance_hours","value":"23","evidence_refs":[]}],"sources":[{"id":"measurement:aquila:1","subject":"Aquila battery","predicate":"endurance_hours","value":"23","authority":"controlled_measurement"}],"relevant":true,"expected_status":"SUPPORTED"},
+    {"id":"pavo-conflict","observation":"Claim: Pavo coolant | temperature_c | 64;","claims":[{"subject":"Pavo coolant","predicate":"temperature_c","value":"64","evidence_refs":[]}],"sources":[{"id":"measurement:pavo:1","subject":"Pavo coolant","predicate":"temperature_c","value":"31","authority":"controlled_measurement"}],"relevant":true,"expected_status":"CONTRADICTED"},
+    {"id":"ornamental-noise","observation":"Decorative layout pulse 89. Border colour cycles again.","claims":[],"sources":[],"relevant":false,"expected_status":"NO_ACTION"}
+  ]
+}

@@ -1,4 +1,6 @@
+import asyncio
 import base64
+import contextlib
 from urllib.parse import urlsplit
 
 from playwright.async_api import async_playwright
@@ -27,6 +29,7 @@ class Browsers:
         self.playwright = None
         self.browser = None
         self.pages = {}
+        self.watchers = {}
 
     def allowed(self, url):
         parsed = urlsplit(url)
@@ -139,6 +142,7 @@ class Browsers:
         )
 
     async def close_session(self, session_id):
+        await self.watch(session_id, False)
         pair = self.pages.pop(session_id, None)
         if pair:
             await pair[0].close()
@@ -157,3 +161,33 @@ class Browsers:
             await self.browser.close()
         if self.playwright:
             await self.playwright.stop()
+
+    async def watch(self, session_id, approved):
+        task = self.watchers.pop(session_id, None)
+        if task:
+            task.cancel()
+            with contextlib.suppress(asyncio.CancelledError):
+                await task
+        if approved:
+            self.page(session_id)
+
+            async def observe_changes():
+                previous = None
+                while session_id in self.pages:
+                    try:
+                        page = self.page(session_id)
+                        if self.allowed(page.url):
+                            content = await page.evaluate(SAFE_TEXT, "body")
+                            if content != previous:
+                                previous = content
+                                await self.observe(session_id, "browser.dom_changed")
+                    except Exception as exc:
+                        await self.kernel.emit(
+                            "browser.observation_failed",
+                            {"error": type(exc).__name__, "session_id": session_id},
+                        )
+                        return
+                    await asyncio.sleep(0.5)
+
+            self.watchers[session_id] = asyncio.create_task(observe_changes())
+        return {"observing": approved, "session_id": session_id}
