@@ -1,0 +1,18 @@
+{
+  "ALIVE-02": {
+    "payloads": 15,
+    "unchanged": true
+  },
+  "ALIVE-03-P1": {
+    "payloads": 22,
+    "unchanged": true
+  },
+  "ALIVE-03-P1-FULL": {
+    "payloads": 16,
+    "unchanged": true
+  },
+  "ALIVE-03-P2-SIM": {
+    "payloads": 48,
+    "unchanged": true
+  }
+}

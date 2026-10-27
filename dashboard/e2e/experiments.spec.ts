@@ -11,7 +11,7 @@ test("policy comparison renders persisted outcomes and preserves the full-run ga
   await page.addInitScript(token => sessionStorage.setItem("alive-token", token), token);
   await page.goto("/");
   await page.getByRole("button", { name: "Cognition", exact: true }).click();
-  const panel = page.locator(".experiment-panel");
+  const panel = page.getByTestId("policy-comparison");
   await expect(panel.getByRole("heading", { name: "Selective cognition experiment" })).toBeVisible();
   if (runs.length === 0) {
     await expect(panel.getByText("No experiment runs recorded.")).toBeVisible();

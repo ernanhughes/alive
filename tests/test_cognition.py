@@ -53,7 +53,7 @@ def completed(client):
     "scenario,verdict", [("relevant", "SUPPORTED"), ("contradiction", "CONTRADICTED")]
 )
 def test_autonomous_evidence_loop(client, scenario, verdict):
-    start(client)
+    start(client, use_critic=True)
     lab, event = observe(client, scenario)
     result = completed(client)
     assert result["state"] == "COMPLETED", result
