@@ -30,6 +30,7 @@ from alive.memory import MemoryService
 from alive.models import AgentRun, BrowserSession, Event, Goal, Memory, now, record
 from alive.provenance import runtime_identity
 from alive.providers import MetaProvider
+from alive.research_memory import ResearchMemory
 from alive.schemas import (
     BrowserAction,
     GoalInput,
@@ -71,6 +72,7 @@ def create_app(settings=None):
         app.state.experiments = Experiments(kernel)
         app.state.living = Living(app, kernel)
         app.state.web = WebCompanion(app, kernel)
+        app.state.research = ResearchMemory(app.state.web, app.state.memory)
         if kernel.ready:
             await app.state.cognition.initialize()
             await app.state.experiments.initialize()

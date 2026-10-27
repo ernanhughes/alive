@@ -9,6 +9,9 @@ let polling = null;
 let currentDecision = null;
 let reviewedSignature = null;
 let noteGeneration = 0;
+let currentResearchId = null;
+let currentSavedResearchId = null;
+let currentConnectionId = null;
 async function command(type, args = {}) {
   const response = await chrome.runtime.sendMessage({ type, ...args });
   if (response.error) throw new Error(response.error);
@@ -23,12 +26,26 @@ function setFeedback(note, allowFeedback = true) {
 }
 function clearCurrentNote(message) {
   setFeedback(null, false);
+  $('save-research').disabled = true;
   $('note-heading').textContent = 'No current note';
   $('note').textContent = message;
   $('cost').textContent = '';
 }
+function resetResearch() {
+  currentResearchId = null;
+  currentSavedResearchId = null;
+  currentConnectionId = null;
+  $('research-results').replaceChildren();
+  $('research-status').textContent = 'No related research memory selected.';
+  $('connection').textContent = '';
+  $('withdraw-research').disabled = true;
+  $('connect-research').disabled = true;
+  $('connection-useful').disabled = true;
+  $('connection-not-useful').disabled = true;
+}
 function invalidateNote() {
   clearCurrentNote('Reviewed observation changed - no current note.');
+  resetResearch();
   noteGeneration += 1;
   clearInterval(polling);
   polling = null;
@@ -50,6 +67,7 @@ function showNote(note, allowFeedback = true, historical = false) {
       ? 'Previous note - historical, not a feedback target'
       : 'Previous note - not a feedback target';
   setFeedback(note, allowFeedback);
+  $('save-research').disabled = !(note?.status === 'validated' && allowFeedback);
   $('cost').textContent = note ? `${note.status} · ${note.data.model} · ${note.data.usage?.total_tokens ?? 'pending'} tokens · estimated $${note.data.estimated_usd ?? '?'} · ${Math.round(note.data.latency_ms || 0)} ms` : '';
   if (historical && $('cost').textContent) $('cost').textContent = 'Previous note usage: ' + $('cost').textContent;
 }
@@ -121,6 +139,7 @@ $('send').onclick = () => action(async () => {
   if (generation !== noteGeneration) return;
   currentDecision = result.decision || null;
   $('status').textContent = 'Observation persisted by ALIVE';
+  $('find-research').disabled = !result.snapshot?.id;
   if (result.decision) {
     const action = result.decision.action;
     const relevance = result.decision.goal_relevance;
@@ -232,6 +251,69 @@ for (const [id, useful] of [['useful', true], ['needs-work', false]]) {
     $('status').textContent = useful
       ? 'Feedback saved. This evidence supports future analysis.'
       : 'Feedback saved. Repeated unhelpful notes may pause automatic analysis; Analyse anyway remains available.';
+  });
+}
+$('save-research').onclick = () => action(async () => {
+  const saved = await command('save-research');
+  currentSavedResearchId = saved.id;
+  $('research-status').textContent = `Saved reviewed source for this goal: ${saved.data.title || saved.data.url} · ${saved.data.reviewed_at || ''} · SHA-256 ${saved.data.sha256.slice(0, 12)}.`;
+  $('withdraw-research').disabled = false;
+  $('status').textContent = 'Research memory saved locally; retrieval does not authorise sending it externally.';
+});
+$('find-research').onclick = () => action(async () => {
+  const result = await command('find-research');
+  $('research-results').replaceChildren();
+  currentResearchId = null;
+  $('connect-research').disabled = true;
+  $('connection').textContent = '';
+  $('connection-useful').disabled = true;
+  $('connection-not-useful').disabled = true;
+  if (!result.results?.length) {
+    $('research-status').textContent = `No related authorised research memory found (${result.mode || 'text'}). Abstained; no connection invented.`;
+    return;
+  }
+  $('research-status').textContent = `${result.results.length} related historical source(s) via ${result.mode}. Historical evidence is distinct from the current page.`;
+  currentSavedResearchId = result.results[0].memory_id;
+  $('withdraw-research').disabled = false;
+  for (const item of result.results) {
+    const block = document.createElement('div');
+    const heading = document.createElement('p');
+    heading.textContent = `Previously researched: ${item.source_title || item.source_url}`;
+    const source = document.createElement('p');
+    source.textContent = `${item.source_url} · reviewed ${item.reviewed_at || 'unknown'} · usefulness ${item.owner_useful === true ? 'useful' : item.owner_useful === false ? 'not useful' : 'unrated'}`;
+    const quote = document.createElement('blockquote');
+    quote.textContent = item.excerpt;
+    const button = document.createElement('button');
+    button.textContent = 'Explain connection to this page';
+    button.onclick = () => action(async () => {
+      currentResearchId = item.memory_id;
+      const connection = await command('connection', { memoryId: item.memory_id });
+      currentConnectionId = connection.id;
+      const data = connection.data || {};
+      $('connection').textContent = `${data.status} · ${data.relation_type}. ${data.explanation}\nHistorical quote: ${data.historical_quote || 'unavailable'}\nCurrent quote: ${data.current_quote || 'unavailable'}`;
+      $('connection-useful').disabled = data.status !== 'candidate';
+      $('connection-not-useful').disabled = data.status !== 'candidate';
+      $('status').textContent = connection.abstained
+        ? 'Connection abstained: no supported shared evidence.'
+        : 'Connection candidate created; both sources remain distinct.';
+    });
+    block.append(heading, source, quote, button);
+    $('research-results').append(block);
+  }
+});
+$('withdraw-research').onclick = () => action(async () => {
+  await command('withdraw-research');
+  currentSavedResearchId = null;
+  $('withdraw-research').disabled = true;
+  $('research-results').replaceChildren();
+  $('connection').textContent = '';
+  $('research-status').textContent = 'Research memory withdrawn; it will not be retrieved or reindexed.';
+});
+for (const [id, useful] of [['connection-useful', true], ['connection-not-useful', false]]) {
+  $(id).onclick = () => action(async () => {
+    await command('connection-feedback', { useful });
+    $('connection').textContent = `Connection feedback saved: ${useful ? 'useful' : 'not useful'}.`;
+    $('connection-useful').disabled = $('connection-not-useful').disabled = true;
   });
 }
 async function preview() {

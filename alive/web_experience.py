@@ -74,6 +74,25 @@ class FeedbackRequest(Strict):
     useful: bool
 
 
+class ResearchSaveRequest(Strict):
+    note_id: str
+
+
+class ResearchRetrieveRequest(Strict):
+    snapshot_id: str
+    top_k: int = Field(3, ge=1, le=5)
+    mode: Literal["text", "hybrid", "vector"] = "hybrid"
+
+
+class ResearchConnectionRequest(Strict):
+    snapshot_id: str
+    memory_id: str
+
+
+class ConnectionFeedbackRequest(Strict):
+    useful: bool
+
+
 class DocumentationNote(Strict):
     summary: str = Field(min_length=1, max_length=1200)
     evidence_quote: str = Field(min_length=5, max_length=160)
@@ -922,6 +941,9 @@ class WebCompanion:
                 "owner_correction": bool(note.data.get("owner_correction")),
             }
             await s.flush()
+            research = getattr(self.app.state, "research", None)
+            if research:
+                await research.sync_feedback(s, note.id)
             return record(feedback)
 
     async def analyse(self, data):
@@ -1170,5 +1192,29 @@ def router(app, ready):
     @api.post("/feedback")
     async def feedback(data: FeedbackRequest):
         return await app.state.web.feedback(data)
+
+    @api.post("/research/memories")
+    async def save_research(data: ResearchSaveRequest):
+        return await app.state.research.save(data.note_id)
+
+    @api.get("/research/memories")
+    async def list_research(goal_id: str | None = None):
+        return await app.state.research.list(goal_id)
+
+    @api.post("/research/memories/{research_id}/withdraw")
+    async def withdraw_research(research_id: str):
+        return await app.state.research.withdraw(research_id)
+
+    @api.post("/research/retrieve")
+    async def retrieve_research(data: ResearchRetrieveRequest):
+        return await app.state.research.retrieve(data.snapshot_id, data.top_k, data.mode)
+
+    @api.post("/research/connections")
+    async def research_connection(data: ResearchConnectionRequest):
+        return await app.state.research.connect(data.snapshot_id, data.memory_id)
+
+    @api.post("/research/connections/{connection_id}/feedback")
+    async def research_connection_feedback(connection_id: str, data: ConnectionFeedbackRequest):
+        return await app.state.research.connection_feedback(connection_id, data.useful)
 
     return api
