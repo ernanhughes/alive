@@ -61,6 +61,13 @@ the recommendation. A changed excerpt, different goal or negative rating selects
 fresh analysis. It does not compare the entire page, infer factual correctness,
 optimise a reward function, or transfer P2/P3 synthetic rewards to real websites.
 
+ALIVE-06 adds a pre-analysis goal-relevance gate. The companion computes exact
+lowercase content-word overlap between the owner goal and the reviewed excerpt. If
+there is no shared term, it records `no_action`, creates no note and makes no Meta
+call; the analysis endpoint independently rejects the same state with HTTP 409. A
+match is necessary but not sufficient for analysis, and this lexical check is not
+semantic understanding. See [the ALIVE-06 protocol](ALIVE-06.md).
+
 Consent expires after 30 minutes and is revoked on navigation, tab closure,
 explicit Stop or backend restart. Restart preserves goals, notes, feedback and
 Governor expenditure, but never replays inference. Form values and hidden/private

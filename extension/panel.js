@@ -72,18 +72,31 @@ $('send').onclick = () => action(async () => {
   const result = await command('send', { reviewed });
   $('status').textContent = 'Observation persisted by ALIVE';
   if (result.decision) {
-    $('decision-label').textContent = result.decision.action === 'recall'
+    const action = result.decision.action;
+    const relevance = result.decision.goal_relevance;
+    $('decision-label').textContent = action === 'recall'
       ? 'Recall a note you found useful · no new inference'
-      : 'Fresh analysis recommended · no useful matching experience yet';
+      : action === 'no_action'
+        ? 'No action warranted · observation does not match your goal'
+        : 'Fresh analysis recommended · no useful matching experience yet';
+    $('relevance').textContent = relevance
+      ? `Goal relevance: ${relevance.relevant ? 'matched' : 'no match'}${relevance.matched_terms?.length ? ' · ' + relevance.matched_terms.join(', ') : ''}. ${relevance.basis}`
+      : '';
     $('decision').textContent = JSON.stringify({ ...result.decision,
       note: result.decision.note?.id || null, candidate_note: result.decision.candidate_note?.id || null }, null, 2);
     $('fact').textContent = `${result.snapshot.data.text_status} · SHA-256 ${result.snapshot.data.sha256}. Observed text; not verified factual truth.`;
-    $('preference').textContent = result.decision.feedback_id
-      ? 'Recall follows your earlier useful rating. Feedback ' + result.decision.feedback_id + '.'
-      : 'No positive matching rating. A saved note alone does not enable reuse.';
-    $('analyse').disabled = result.decision.action === 'recall';
-    if (result.decision.note) { showNote(result.decision.note); $('status').textContent = 'Recalled useful experience · 0 new Meta calls'; }
-    else showNote(result.decision.candidate_note);
+    $('preference').textContent = action === 'no_action'
+      ? 'No Meta call was made. Revise the goal if this page should be analysed.'
+      : result.decision.feedback_id
+        ? 'Recall follows your earlier useful rating. Feedback ' + result.decision.feedback_id + '.'
+        : 'No positive matching rating. A saved note alone does not enable reuse.';
+    $('analyse').disabled = action !== 'analyse';
+    if (action === 'no_action') {
+      $('note').textContent = 'No model note. No Meta call was made.';
+      $('status').textContent = 'No action warranted · the observation was not analysed';
+    } else if (result.decision.note) {
+      showNote(result.decision.note); $('status').textContent = 'Recalled useful experience · 0 new Meta calls';
+    } else showNote(result.decision.candidate_note);
   }
 });
 $('analyse').onclick = () => action(async () => {

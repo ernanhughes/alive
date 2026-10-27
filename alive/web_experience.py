@@ -3,6 +3,7 @@
 import asyncio
 import hashlib
 import json
+import re
 import time
 from datetime import timedelta
 from typing import Literal
@@ -76,6 +77,90 @@ class DocumentationNote(Strict):
 
 def digest(text):
     return hashlib.sha256(text.encode()).hexdigest()
+
+
+RELEVANCE_POLICY = "deterministic-goal-excerpt-overlap-v1"
+RELEVANCE_STOPWORDS = frozenset(
+    {
+        "about",
+        "after",
+        "again",
+        "also",
+        "and",
+        "are",
+        "because",
+        "been",
+        "before",
+        "being",
+        "between",
+        "both",
+        "can",
+        "could",
+        "does",
+        "each",
+        "from",
+        "have",
+        "help",
+        "into",
+        "its",
+        "just",
+        "more",
+        "most",
+        "other",
+        "over",
+        "should",
+        "some",
+        "such",
+        "than",
+        "that",
+        "the",
+        "their",
+        "them",
+        "then",
+        "there",
+        "these",
+        "they",
+        "this",
+        "those",
+        "through",
+        "under",
+        "very",
+        "was",
+        "were",
+        "what",
+        "when",
+        "where",
+        "which",
+        "while",
+        "will",
+        "with",
+        "would",
+        "your",
+        "you",
+    }
+)
+
+
+def content_terms(text):
+    return {
+        term
+        for term in re.findall(r"[a-z0-9_]+", text.lower())
+        if len(term) >= 4 and term not in RELEVANCE_STOPWORDS
+    }
+
+
+def goal_relevance(goal, excerpt):
+    goal_terms = content_terms(goal)
+    excerpt_terms = content_terms(excerpt)
+    matched = sorted(goal_terms & excerpt_terms)
+    return {
+        "policy": RELEVANCE_POLICY,
+        "relevant": bool(matched),
+        "matched_terms": matched[:20],
+        "goal_term_count": len(goal_terms),
+        "excerpt_term_count": len(excerpt_terms),
+        "basis": "Exact lowercase content-word overlap; no semantic or model inference.",
+    }
 
 
 class WebCompanion:
@@ -252,6 +337,25 @@ class WebCompanion:
             return {"snapshot": record(row), "decision": decision}
 
     async def decide(self, s, snapshot):
+        goal = await self.get(s, snapshot.data["goal_id"], "goal")
+        relevance = goal_relevance(goal.data["instruction"], snapshot.data["text"])
+        same_state = digest(
+            json.dumps({k: snapshot.data[k] for k in ["url", "goal_id", "sha256"]}, sort_keys=True)
+        )
+        if not relevance["relevant"]:
+            return {
+                "action": "no_action",
+                "policy": relevance["policy"],
+                "without_feedback_action": "no_action",
+                "same_state_sha256": same_state,
+                "feedback_id": None,
+                "note": None,
+                "candidate_note": None,
+                "reason": "Observation does not match the owner goal by deterministic "
+                "content-word overlap; no model call made.",
+                "goal_relevance": relevance,
+                "inference_calls": 0,
+            }
         notes = [
             n
             for n in await self.rows(s, "note")
@@ -271,17 +375,14 @@ class WebCompanion:
             "action": "recall" if chosen else "analyse",
             "policy": "explicit-usefulness-exact-excerpt-v1",
             "without_feedback_action": "analyse",
-            "same_state_sha256": digest(
-                json.dumps(
-                    {k: snapshot.data[k] for k in ["url", "goal_id", "sha256"]}, sort_keys=True
-                )
-            ),
+            "same_state_sha256": same_state,
             "feedback_id": basis.id if basis else None,
             "note": record(chosen) if chosen else None,
             "candidate_note": record(notes[-1]) if notes else None,
             "reason": "Owner rated this exact goal and excerpt note useful"
             if chosen
             else "No positively rated matching note",
+            "goal_relevance": relevance,
             "inference_calls": 0,
         }
 
@@ -317,6 +418,11 @@ class WebCompanion:
                 if data.reviewed_sha256 != snapshot.data["sha256"]:
                     raise PermissionError("Review the exact excerpt before Meta inference")
                 goal = await self.get(s, grant.parent_id, "goal")
+                relevance = goal_relevance(goal.data["instruction"], snapshot.data["text"])
+                if not relevance["relevant"]:
+                    raise ValueError(
+                        "No action warranted: observation does not match the owner goal"
+                    )
                 control = await s.get(CognitiveControl, self.k.instance_id)
                 cfg = CognitiveConfiguration.model_validate(control.configuration)
                 if control.mode == "running" or control.reserved.get("calls", 0):
@@ -358,6 +464,7 @@ class WebCompanion:
                         "reserved_tokens": reserve,
                         "model": MODEL,
                         "source": "model_interpretation",
+                        "goal_relevance": relevance,
                         "context": context,
                         "instructions": INSTRUCTION,
                         "started_at": now().isoformat(),
