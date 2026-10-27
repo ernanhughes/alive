@@ -1,0 +1,14 @@
+{
+  "ALIVE-02": {
+    "verified_payloads": 15,
+    "unchanged": true
+  },
+  "ALIVE-03-P1": {
+    "verified_payloads": 22,
+    "unchanged": true
+  },
+  "evaluation_freeze": {
+    "id": "549774ba2c72105b0c075ac9dc2eb486a2b21dd59d911aeb83bbaa080f80cd5d",
+    "verified": true
+  }
+}

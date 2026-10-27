@@ -84,6 +84,12 @@ Cognition. See the [protocol and bounded reproduction steps](docs/ALIVE-03-P1.md
 [qualification evidence](archives/ALIVE-03-P1/README.md). The full paid evaluation requires
 separate owner authorization after reviewing its projected expenditure.
 
+The [authorized full evaluation](archives/ALIVE-03-P1-FULL/README.md) completed 120 tasks:
+Never and Selective scored 120/120; Always scored 119/120 under the unchanged scoring contract.
+Selective's frozen calibration chose Never-like behavior, so no adaptive-routing advantage
+was demonstrated. Full paired evidence and the single recommendation-contract regression
+are archived with actual usage and spending checks.
+
 Open `chrome://extensions`, enable Developer mode, select **Load unpacked**, and choose the repository's `extension` directory. Click the ALIVE toolbar icon to open its side panel. Configure the backend and local token, then click **Authorise this page**. Review and send an observation, or explicitly enable automatic sending. **Stop & revoke** disconnects the observer and clears its selected observation.
 
 The extension uses `activeTab`, scripting, storage and the Side Panel API, with host permissions limited to the local backend. It excludes form values, hidden text and marked private subtrees. Arbitrary webpage observation requires a fresh toolbar grant; the test habitat is already covered by the narrow backend host grant.

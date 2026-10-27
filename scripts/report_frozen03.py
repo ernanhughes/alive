@@ -195,6 +195,23 @@ def main():
     write("execution-plan.json", plan)
     write("results.json", run)
     write("analysis.json", analysis)
+    task_map = {t.id: t for t in load("evaluation")}
+    transitions = []
+    for row in run["data"]["rows"]:
+        for policy, arm in row["arms"].items():
+            if row["initial_score"]["correct"] != arm["score"]["correct"]:
+                transitions.append(
+                    {
+                        "task": task_map[row["task_id"]].model_dump(),
+                        "policy": policy,
+                        "initial_decision": row.get("initial_decision"),
+                        "reviewed_decision": arm.get("decision"),
+                        "initial_score": row["initial_score"],
+                        "reviewed_score": arm["score"],
+                        "critic_call_ref": arm.get("critic_call_ref"),
+                    }
+                )
+    write("correctness-transition-audit.json", transitions)
     write("authorization-and-budget-audit.json", audit)
     write("redacted-usage-ledger.json", run["data"]["ledger"])
     write("governor-after.json", {k: control[k] for k in ["configuration", "spent", "reserved"]})
@@ -249,6 +266,7 @@ def main():
     (root / "paired-outcomes.csv").write_bytes(table.getvalue().encode())
     shutil.copyfile(".alive/full-evaluation-tests.txt", root / "backend-tests.txt")
     shutil.copyfile(".alive/full-report-tests.txt", root / "report-tests.txt")
+    shutil.copyfile(".alive/full-integrity-checks.json", root / "prior-archive-integrity.json")
     if Path(".alive/full-evaluation-acceptance.png").exists():
         shutil.copyfile(".alive/full-evaluation-acceptance.png", root / "acceptance.png")
     if Path(".alive/full-evaluation-browser-tests.txt").exists():
@@ -282,7 +300,8 @@ def main():
     verdict = (
         "All policies tie on correctness; no adaptive-selection advantage demonstrated."
         if all_tied
-        else "Correctness differs; inspect the paired outcomes and intervals."
+        else "Never and Selective scored 120/120; Always scored 119/120. "
+        "No adaptive-routing advantage over Never was demonstrated."
     )
     report = f"""# ALIVE-03-P1 — Authorized full evaluation
 
@@ -331,6 +350,25 @@ rescue probability is zero.
 Correctness transitions after criticism: **{len(analysis["rescues_and_regressions"])}**;
 see `analysis.json` for task IDs and outcomes. Selection errors are observed Always-arm proxies,
 not guaranteed counterfactuals for an independently sampled Selective Critic.
+
+### The single regression is a recommendation-contract failure
+
+Task `669bf5d00df69e42be3a49e5` (straightforward, median) supplies verified values
+34, 81 and 67. An independent arithmetic check orders these as 34, 67, 81, so the median
+is 67. Both the initial and reviewed decisions give 67.0 with the same three valid citations.
+The Critic changes `proceed` to `investigate` and adds uncertainty including
+"No permission granted for action". This is a read-only numerical task, with no action requested.
+
+The frozen scorer requires `proceed` for an answer and therefore returns
+`answer_requires_proceed_recommendation`. We retain the original 119/120 score and regression
+classification. It is **not a numerical error or invalid citation**. The frozen
+`unsupported_acceptance` metric also flags this contract failure; that label should not be
+interpreted as evidence that the number itself lacked support. Full decisions and source
+facts are retained in `correctness-transition-audit.json`. No scoring rule was changed.
+
+The observed accuracy gap is 1/120 (0.83 percentage points). The predeclared family-cluster
+bootstrap interval for Selective minus Always is [0, 0.025], including zero. One discordant
+case on this synthetic corpus does not establish a general accuracy advantage.
 
 ## Actual usage, cost and latency
 

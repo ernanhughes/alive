@@ -1,0 +1,134 @@
+[
+  {
+    "task": {
+      "id": "669bf5d00df69e42be3a49e5",
+      "split": "evaluation",
+      "category": "straightforward",
+      "family": "median",
+      "subject": "instrument-c2f62db7a7",
+      "objective": "Determine the middle value after ordering the three verified samples.",
+      "operation": "median",
+      "required_fields": [
+        "x",
+        "y",
+        "z"
+      ],
+      "sources": [
+        {
+          "id": "669bf5d00df69e42be3a49e5:s0",
+          "authority": "verified",
+          "window": "same-window",
+          "facts": [
+            {
+              "key": "x",
+              "value": 34.0
+            }
+          ],
+          "annotation": "Calibrated instrument reading."
+        },
+        {
+          "id": "669bf5d00df69e42be3a49e5:s1",
+          "authority": "verified",
+          "window": "same-window",
+          "facts": [
+            {
+              "key": "y",
+              "value": 81.0
+            }
+          ],
+          "annotation": "Calibrated instrument reading."
+        },
+        {
+          "id": "669bf5d00df69e42be3a49e5:s2",
+          "authority": "verified",
+          "window": "same-window",
+          "facts": [
+            {
+              "key": "z",
+              "value": 67.0
+            }
+          ],
+          "annotation": "Calibrated instrument reading."
+        }
+      ],
+      "expected": {
+        "status": "ANSWER",
+        "value": 67.0,
+        "reason": "verified_inputs"
+      },
+      "scoring_rule": "numeric-with-complete-authoritative-citations-or-justified-abstention-v1",
+      "acceptable_abstention": "Required verified fields absent or same-window verified values conflict.",
+      "verification": "Recompute from verified same-window facts, check tolerance and citation coverage.",
+      "provenance": "First-party seeded synthetic instrument facts; no external licensed text used.",
+      "action_risk": 0.598
+    },
+    "policy": "always",
+    "initial_decision": {
+      "claims": [
+        {
+          "value": "67.0",
+          "subject": "instrument-c2f62db7a7",
+          "predicate": "computed_result",
+          "evidence_refs": [
+            "669bf5d00df69e42be3a49e5:s0",
+            "669bf5d00df69e42be3a49e5:s1",
+            "669bf5d00df69e42be3a49e5:s2"
+          ]
+        }
+      ],
+      "actions": [],
+      "summary": "Ordered x=34.0, z=67.0, y=81.0; median is 67.0 from same-window verified sources.",
+      "confidence": 1.0,
+      "criticisms": [],
+      "uncertainties": [],
+      "recommendation": "proceed"
+    },
+    "reviewed_decision": {
+      "claims": [
+        {
+          "value": "67.0",
+          "subject": "instrument-c2f62db7a7",
+          "predicate": "computed_result",
+          "evidence_refs": [
+            "669bf5d00df69e42be3a49e5:s0",
+            "669bf5d00df69e42be3a49e5:s1",
+            "669bf5d00df69e42be3a49e5:s2"
+          ]
+        }
+      ],
+      "actions": [],
+      "summary": "Verified same-window x=34.0, y=81.0, z=67.0. Ordered 34.0, 67.0, 81.0, median 67.0.",
+      "confidence": 0.9,
+      "criticisms": [
+        "Initial confidence 1.0 overstates measurement uncertainty",
+        "Agreement with initial decision is not independent evidence"
+      ],
+      "uncertainties": [
+        "Calibration drift not shown in supplied facts",
+        "No permission granted for action"
+      ],
+      "recommendation": "investigate"
+    },
+    "initial_score": {
+      "reason": "verified_numeric_with_citations",
+      "correct": true,
+      "abstained": false,
+      "score_version": "supported-numeric-v1",
+      "expected_status": "ANSWER",
+      "citation_validity": 1.0,
+      "correct_abstention": false,
+      "unsupported_acceptance": false
+    },
+    "reviewed_score": {
+      "reason": "answer_requires_proceed_recommendation",
+      "correct": false,
+      "abstained": false,
+      "score_version": "supported-numeric-v1",
+      "expected_status": "ANSWER",
+      "citation_validity": 1.0,
+      "correct_abstention": false,
+      "unsupported_acceptance": true
+    },
+    "critic_call_ref": "17125509-4a77-4fbc-b56b-d0de398cc69c"
+  }
+]

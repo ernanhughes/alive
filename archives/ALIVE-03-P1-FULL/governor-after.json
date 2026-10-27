@@ -1,0 +1,32 @@
+{
+  "configuration": {
+    "depth": 1,
+    "retries": 0,
+    "threshold": 0.45,
+    "lab_writes": false,
+    "tool_calls": 3,
+    "use_critic": true,
+    "concurrency": 1,
+    "wall_seconds": 90,
+    "output_tokens": 1536,
+    "session_calls": 180,
+    "request_tokens": 18000,
+    "session_tokens": 500000,
+    "experiment_calls": 413,
+    "experiment_tokens": 569097,
+    "investigation_calls": 4,
+    "investigation_tokens": 50000
+  },
+  "spent": {
+    "session_calls": 120,
+    "session_tokens": 164049,
+    "experiment_calls": 303,
+    "experiment_tools": 22,
+    "experiment_tokens": 392053
+  },
+  "reserved": {
+    "calls": 0,
+    "tools": 0,
+    "tokens": 0
+  }
+}
