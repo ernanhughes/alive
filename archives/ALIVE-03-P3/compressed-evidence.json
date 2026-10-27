@@ -1,0 +1,12 @@
+{
+  "policy-trajectories.json.gz": {
+    "original_name": "policy-trajectories.json",
+    "bytes": 18740657,
+    "uncompressed_sha256": "29c621327e3ae48653f1d32ec39f8a603e4e1b0fad529e5e8bf3af74542d44f3"
+  },
+  "training-transitions.json.gz": {
+    "original_name": "training-transitions.json",
+    "bytes": 3369476,
+    "uncompressed_sha256": "15cd5c6a65b8d2bdb9d1faa6ebeb232fdff517ba7adda12842f7377772bc45cb"
+  }
+}

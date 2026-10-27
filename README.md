@@ -97,6 +97,12 @@ The [simulator qualification](archives/ALIVE-03-P2-SIM/README.md) preserves the 
 policies learn, but predictive losses have not demonstrated an advantage over value-only learning.
 Runtime criticism defaults off; explicit experimental opt-in remains available.
 
+The [P3 diagnostic](archives/ALIVE-03-P3/README.md) isolates history information, action effects,
+matched prediction probes and three replay sizes using the unchanged P2 learners.
+History-aware state helps both learners in the controlled setting; predictive regularization
+still has no demonstrated advantage. The [next product handoff](docs/LIVE-DEMONSTRATION-NEXT.md)
+prioritizes a visible, Governor-controlled experience loop over further learner optimization.
+
 Open `chrome://extensions`, enable Developer mode, select **Load unpacked**, and choose the repository's `extension` directory. Click the ALIVE toolbar icon to open its side panel. Configure the backend and local token, then click **Authorise this page**. Review and send an observation, or explicitly enable automatic sending. **Stop & revoke** disconnects the observer and clears its selected observation.
 
 The extension uses `activeTab`, scripting, storage and the Side Panel API, with host permissions limited to the local backend. It excludes form values, hidden text and marked private subtrees. Arbitrary webpage observation requires a fresh toolbar grant; the test habitat is already covered by the narrow backend host grant.
