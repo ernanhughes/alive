@@ -283,10 +283,19 @@ async function previewRelationship(item) {
     outboundText('p', `Goal: ${preview.goal.instruction}`),
     outboundText('p', `Provider/model: ${preview.provider.id} · ${preview.provider.model}`),
     outboundText('p', `Estimated maximum: ${preview.estimated_max_tokens} tokens · ${preview.estimated_max_micro_usd} micro-USD`),
+    outboundText('p', `Remaining allowance: ${preview.remaining_allowance.session_calls_remaining} session calls · ${preview.remaining_allowance.session_tokens_remaining} session tokens · ${preview.remaining_allowance.micro_usd_remaining} micro-USD`),
+    outboundText('p', `Exact request SHA-256: ${preview.request_sha256}`),
     outboundText('p', preview.external
       ? 'Authorising this exact payload permits transmission to the external provider.'
       : 'No external transmission occurs for this local stub.'),
   );
+  const requestDetails = document.createElement('details');
+  const requestSummary = document.createElement('summary');
+  requestSummary.textContent = 'Exact outgoing instructions, payload and schema';
+  const requestPre = document.createElement('pre');
+  requestPre.textContent = JSON.stringify(preview.request, null, 2);
+  requestDetails.append(requestSummary, requestPre);
+  box.append(requestDetails);
   const authorize = document.createElement('button');
   authorize.textContent = 'Authorize this exact payload';
   authorize.onclick = () => action(async () => {

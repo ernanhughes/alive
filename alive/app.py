@@ -30,6 +30,7 @@ from alive.memory import GENERAL_MEMORY_TYPES, MemoryService
 from alive.models import AgentRun, BrowserSession, Event, Goal, Memory, now, record
 from alive.provenance import runtime_identity
 from alive.providers import MetaProvider
+from alive.research_blind import ResearchBlind
 from alive.research_memory import ResearchMemory
 from alive.research_relationships import ResearchRelationships
 from alive.schemas import (
@@ -77,6 +78,7 @@ def create_app(settings=None):
         app.state.relationships = ResearchRelationships(
             app.state.research, app.state.experiments, settings
         )
+        app.state.blind = ResearchBlind(kernel)
         if kernel.ready:
             await app.state.cognition.initialize()
             await app.state.experiments.initialize()

@@ -21,6 +21,7 @@ from alive.living_policy import digest as policy_digest
 from alive.models import now, record, uid
 from alive.providers import MetaProvider
 from alive.relevance import evaluate_relevance, load_relevance_config
+from alive.research_blind import BlindRatingRequest, BlindRunRequest
 from alive.web_models import WebExperience
 
 PAGES = {
@@ -93,7 +94,7 @@ class ResearchConnectionRequest(Strict):
 class RelationshipPreviewRequest(Strict):
     snapshot_id: str
     research_id: str
-    provider: Literal["local_stub", "meta"] = "local_stub"
+    provider: Literal["local_stub", "local_stub_invalid", "meta"] = "local_stub"
 
 
 class RelationshipAuthorizeRequest(Strict):
@@ -108,6 +109,7 @@ class RelationshipAnalyzeRequest(Strict):
 
 class ConnectionFeedbackRequest(Strict):
     useful: bool | None = None
+    scripted: bool = False
     factually_supported: Literal["yes", "no", "uncertain"] | None = None
     relevant_to_goal: Literal["yes", "no", "uncertain"] | None = None
     revealed_new: Literal["yes", "no", "uncertain"] | None = None
@@ -1245,9 +1247,12 @@ def router(app, ready):
     @api.post("/research/connections/{connection_id}/feedback")
     async def research_connection_feedback(connection_id: str, data: ConnectionFeedbackRequest):
         rubric = data.model_dump(exclude_none=True)
+        scripted = rubric.pop("scripted", False)
         if not rubric:
             raise ValueError("At least one feedback judgment is required")
-        return await app.state.research.connection_feedback(connection_id, rubric)
+        return await app.state.research.connection_feedback(
+            connection_id, rubric, rater_type="scripted" if scripted else "owner"
+        )
 
     @api.post("/research/outbound/preview")
     async def preview_research_outbound(data: RelationshipPreviewRequest):
@@ -1270,6 +1275,24 @@ def router(app, ready):
     @api.get("/research/relationships")
     async def list_research_relationships():
         return await app.state.relationships.list()
+
+    @api.post("/research/blind/runs")
+    async def create_blind_run(data: BlindRunRequest):
+        return await app.state.blind.create_run(data.experiment_id, data.seed, data.tasks)
+
+    @api.get("/research/blind/runs/{run_id}")
+    async def blind_rating_view(run_id: str):
+        return await app.state.blind.rating_view(run_id)
+
+    @api.post("/research/blind/runs/{run_id}/ratings")
+    async def blind_owner_rating(run_id: str, data: BlindRatingRequest):
+        return await app.state.blind.rate(
+            run_id, data.output_id, data.output_sha256, data.rubric, rater_type="owner"
+        )
+
+    @api.get("/research/blind/runs/{run_id}/reveal")
+    async def blind_reveal(run_id: str):
+        return await app.state.blind.reveal(run_id)
 
     @api.post("/research/index/repair")
     async def repair_research_index():
