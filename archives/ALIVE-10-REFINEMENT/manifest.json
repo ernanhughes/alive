@@ -3,8 +3,8 @@
   "reviewed_head": "2686a8008d48b8932072a6d1b53b4379fed4a754",
   "files": {
     ".gitattributes": {
-      "sha256": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992",
-      "bytes": 9
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
     },
     "backend.txt": {
       "sha256": "7cba7f2a8689660a5d56fbfd2cb0caba5b664261ff5e2d5a7f5387f77bfff089",
@@ -15,8 +15,8 @@
       "bytes": 419
     },
     "frontend.txt": {
-      "sha256": "3bd296746265b850bcf5c2e01611720c4ceae72731d9b329b3383f2cfec7fc49",
-      "bytes": 301
+      "sha256": "5fbd8d5587d17cb04964a8da9f98df10ae8fd2c4dc821a6df40c152ea25587b5",
+      "bytes": 299
     },
     "native-synthetic.json": {
       "sha256": "59c415f56b219b135aa6dccda281bdaa81e941539c81111db7f4e3f6f8ed4cd0",
