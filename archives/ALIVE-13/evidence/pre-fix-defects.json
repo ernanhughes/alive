@@ -1,0 +1,70 @@
+{
+  "source_base": "af12bc88c91a85558873d01579dba93fdd6b1bbf",
+  "paid_inference": false,
+  "synthetic_note_calls": 1,
+  "method": "The frozen ALIVE-12 query and post-filter are reproduced against the current database. memory_types=() disables the ALIVE-13 general-memory allowlist so the old unscoped candidate set is visible.",
+  "a1_unscoped_retrieval": {
+    "ordinary_distractors": 60,
+    "old_top_k": 15,
+    "old_candidates_returned": 15,
+    "old_research_candidates_returned": 0,
+    "old_target_found": false,
+    "corrected_target_found": true,
+    "corrected_rank": 1,
+    "corrected_scoped_count": 1,
+    "corrected_candidate_count": 1,
+    "failure_reproduced": true
+  },
+  "a2_general_cognition_isolation": {
+    "sentinel": "RESEARCH_SENTINEL_ALPHA",
+    "old_general_retrieval_contains_sentinel": true,
+    "new_general_retrieval_contains_sentinel": false,
+    "new_general_retrieval_contains_ordinary_memory": true,
+    "new_general_types": [
+      "experience"
+    ],
+    "full_snapshot_regression": "tests/test_research_memory.py::test_general_investigation_snapshot_excludes_research_memory_sentinel"
+  },
+  "a4_relation_labels": [
+    {
+      "id": "contradictory",
+      "historical": "Persistent memory improves agent task success in this benchmark.",
+      "current": "Persistent memory does not improve agent task success in this benchmark.",
+      "shared": 7,
+      "old_label": "same_concept",
+      "new_label": "topic_overlap_candidate",
+      "old_implication": "overstated semantic relation",
+      "new_implication": "lexical overlap only; no agreement, support or contradiction"
+    },
+    {
+      "id": "unrelated-generic",
+      "historical": "The memory system stores records for later review.",
+      "current": "The legal system stores records for later review.",
+      "shared": 5,
+      "old_label": "same_concept",
+      "new_label": "topic_overlap_candidate",
+      "old_implication": "overstated semantic relation",
+      "new_implication": "lexical overlap only; no agreement, support or contradiction"
+    },
+    {
+      "id": "competing-methods",
+      "historical": "A deterministic retrieval rule chooses the most recent source.",
+      "current": "A learned retrieval policy selects sources from observed feedback.",
+      "shared": 1,
+      "old_label": "complementary",
+      "new_label": "weak_lexical_overlap",
+      "old_implication": "overstated semantic relation",
+      "new_implication": "lexical overlap only; no agreement, support or contradiction"
+    },
+    {
+      "id": "no-inspectable-overlap",
+      "historical": "Quantum stabilizer codes protect logical qubits.",
+      "current": "The compiler optimizes tail calls.",
+      "shared": 0,
+      "old_label": "no_supported_connection",
+      "new_label": "insufficient_evidence",
+      "old_implication": "overstated semantic relation",
+      "new_implication": "lexical overlap only; no agreement, support or contradiction"
+    }
+  ]
+}

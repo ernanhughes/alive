@@ -1,0 +1,20 @@
+{
+  "defect": "The pre-ALIVE-13 background worker withdrew the last saved research ID, not the displayed result.",
+  "old_worker": {
+    "saved_id": "research-B-last-saved",
+    "requested_displayed_id": null,
+    "withdrawn_target": "http://127.0.0.1:61001/api/v1/browser-experience/research/memories/research-B-last-saved/withdraw",
+    "target_was_last_saved": true
+  },
+  "corrected_worker": {
+    "saved_id": "research-B-last-saved",
+    "requested_displayed_id": "research-A-displayed",
+    "withdrawn_target": "http://127.0.0.1:61001/api/v1/browser-experience/research/memories/research-A-displayed/withdraw",
+    "target_was_displayed": true
+  },
+  "missing_explicit_id": {
+    "error": "Select the research memory to withdraw",
+    "fetches": 0
+  },
+  "extension_tests": "node --test tests/extension-background.test.cjs tests/extension-panel.test.cjs"
+}

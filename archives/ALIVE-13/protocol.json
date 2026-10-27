@@ -1,0 +1,531 @@
+{
+  "protocol_version": "alive13-distractor-v1",
+  "frozen_at": "2026-10-27T19:30:00+00:00",
+  "kind": "frozen distractor-rich cross-page research retrieval evaluation",
+  "paid_inference": false,
+  "design": {
+    "research_memories": 36,
+    "goals": 3,
+    "current_queries": 12,
+    "ordinary_memory_distractors": 60,
+    "ordinary_distractors_per_goal": 20,
+    "ordinary_distractor_text": "Legacy ordinary memory {index}: Python memory management JavaScript asynchronous runtime performance browser storage caching offline applications.",
+    "seed_order": "All 60 ordinary memories are inserted before any research projection; research memories are saved in save_order.",
+    "relevance_labels": "Binary labels predeclared per query from source content, independent of the retrieval scorer.",
+    "analysis_mode": "Local synthetic fixture; historical corpus analyses use owner_correction=true because the controlled corpus intentionally spans each goal. No external provider is called."
+  },
+  "goals": [
+    {
+      "id": "python-memory",
+      "instruction": "Understand Python memory management and garbage collection"
+    },
+    {
+      "id": "javascript-async",
+      "instruction": "Evaluate JavaScript asynchronous runtime performance"
+    },
+    {
+      "id": "browser-storage",
+      "instruction": "Assess browser storage and caching for offline applications"
+    }
+  ],
+  "memories": [
+    {
+      "id": "P01",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P01",
+      "title": "Historical source P01",
+      "text": "CPython uses reference counting to reclaim most objects immediately when their reference count reaches zero.",
+      "stale_days": null
+    },
+    {
+      "id": "P02",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P02",
+      "title": "Historical source P02",
+      "text": "The cyclic garbage collector detects reference cycles among container objects that reference counting cannot reclaim.",
+      "stale_days": null
+    },
+    {
+      "id": "P03",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P03",
+      "title": "Historical source P03",
+      "text": "A generational collector separates short-lived objects from long-lived ones to shorten full collection pauses.",
+      "stale_days": 45
+    },
+    {
+      "id": "P04",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P04",
+      "title": "Historical source P04",
+      "text": "The global interpreter lock prevents multiple threads from executing Python bytecode in parallel.",
+      "stale_days": null
+    },
+    {
+      "id": "P05",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P05",
+      "title": "Historical source P05",
+      "text": "A memory arena allocator obtains large blocks from the operating system and subdivides them for small objects.",
+      "stale_days": null
+    },
+    {
+      "id": "P06",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P06",
+      "title": "Historical source P06",
+      "text": "Weak references allow caches to observe objects without preventing their collection.",
+      "stale_days": null
+    },
+    {
+      "id": "P07",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P07",
+      "title": "Historical source P07",
+      "text": "The __slots__ declaration avoids per-instance dictionaries and reduces object memory overhead.",
+      "stale_days": null
+    },
+    {
+      "id": "P08",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P08",
+      "title": "Historical source P08",
+      "text": "Object headers store a reference count and a pointer to the type object.",
+      "stale_days": null
+    },
+    {
+      "id": "P09",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P09",
+      "title": "Historical source P09",
+      "text": "Tracing collectors follow pointers from roots instead of counting references.",
+      "stale_days": null
+    },
+    {
+      "id": "P10",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P10",
+      "title": "Historical source P10",
+      "text": "Finalizers run during collection and can resurrect objects by storing a new reference.",
+      "stale_days": null
+    },
+    {
+      "id": "P11",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P11",
+      "title": "Historical source P11",
+      "text": "Arena fragmentation can retain freed memory in pools for later reuse.",
+      "stale_days": null
+    },
+    {
+      "id": "P12",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/historical/P12",
+      "title": "Historical source P12",
+      "text": "The garbage collector is disabled during interpreter finalization.",
+      "stale_days": null
+    },
+    {
+      "id": "J01",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J01",
+      "title": "Historical source J01",
+      "text": "The event loop moves completed promise callbacks from the microtask queue to the call stack before the next macrotask.",
+      "stale_days": null
+    },
+    {
+      "id": "J02",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J02",
+      "title": "Historical source J02",
+      "text": "Promise resolution schedules reactions as microtasks, so they run before timers.",
+      "stale_days": null
+    },
+    {
+      "id": "J03",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J03",
+      "title": "Historical source J03",
+      "text": "requestAnimationFrame batches visual updates before the browser repaints.",
+      "stale_days": null
+    },
+    {
+      "id": "J04",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J04",
+      "title": "Historical source J04",
+      "text": "Long tasks block the main thread and delay input responsiveness.",
+      "stale_days": null
+    },
+    {
+      "id": "J05",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J05",
+      "title": "Historical source J05",
+      "text": "Web Workers run scripts on a separate thread and communicate by message passing.",
+      "stale_days": null
+    },
+    {
+      "id": "J06",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J06",
+      "title": "Historical source J06",
+      "text": "The call stack executes synchronous JavaScript one frame at a time.",
+      "stale_days": null
+    },
+    {
+      "id": "J07",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J07",
+      "title": "Historical source J07",
+      "text": "The macrotask queue holds timer callbacks and runs them after microtasks complete in each event loop turn.",
+      "stale_days": null
+    },
+    {
+      "id": "J08",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J08",
+      "title": "Historical source J08",
+      "text": "Debouncing delays a function until input events stop for a fixed interval.",
+      "stale_days": null
+    },
+    {
+      "id": "J09",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J09",
+      "title": "Historical source J09",
+      "text": "Layout thrashing occurs when reads and writes alternate and force synchronous reflow.",
+      "stale_days": null
+    },
+    {
+      "id": "J10",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J10",
+      "title": "Historical source J10",
+      "text": "The browser may coalesce DOM mutations into a single visual rendering update.",
+      "stale_days": null
+    },
+    {
+      "id": "J11",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J11",
+      "title": "Historical source J11",
+      "text": "A synthetic benchmark measured event-loop lag during a CPU-bound loop.",
+      "stale_days": null
+    },
+    {
+      "id": "J12",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/historical/J12",
+      "title": "Historical source J12",
+      "text": "Service workers intercept network requests and can serve cached responses.",
+      "stale_days": null
+    },
+    {
+      "id": "B01",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B01",
+      "title": "Historical source B01",
+      "text": "The Cache API stores request and response pairs that service workers can read offline.",
+      "stale_days": null
+    },
+    {
+      "id": "B02",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B02",
+      "title": "Historical source B02",
+      "text": "IndexedDB provides a transactional object store for structured client-side data.",
+      "stale_days": null
+    },
+    {
+      "id": "B03",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B03",
+      "title": "Historical source B03",
+      "text": "localStorage offers synchronous string key-value persistence with a small quota.",
+      "stale_days": null
+    },
+    {
+      "id": "B04",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B04",
+      "title": "Historical source B04",
+      "text": "The HTTP cache honours response headers such as Cache-Control and ETag.",
+      "stale_days": null
+    },
+    {
+      "id": "B05",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B05",
+      "title": "Historical source B05",
+      "text": "Service workers precache application shell assets during installation for offline use.",
+      "stale_days": null
+    },
+    {
+      "id": "B06",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B06",
+      "title": "Historical source B06",
+      "text": "Quota management evicts origin data when storage pressure grows.",
+      "stale_days": 30
+    },
+    {
+      "id": "B07",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B07",
+      "title": "Historical source B07",
+      "text": "IndexedDB transactions abort when a request fails unless handled.",
+      "stale_days": null
+    },
+    {
+      "id": "B08",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B08",
+      "title": "Historical source B08",
+      "text": "Session storage clears when the browser tab closes.",
+      "stale_days": null
+    },
+    {
+      "id": "B09",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B09",
+      "title": "Historical source B09",
+      "text": "Cookies are sent with HTTP requests and have size limits.",
+      "stale_days": null
+    },
+    {
+      "id": "B10",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B10",
+      "title": "Historical source B10",
+      "text": "Cache storage is origin-scoped, stores request-response pairs, and persists offline across browser sessions.",
+      "stale_days": null
+    },
+    {
+      "id": "B11",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B11",
+      "title": "Historical source B11",
+      "text": "A manifest file declares installability metadata for a progressive web app.",
+      "stale_days": null
+    },
+    {
+      "id": "B12",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/historical/B12",
+      "title": "Historical source B12",
+      "text": "ETag revalidation avoids downloading an unchanged response body.",
+      "stale_days": null
+    }
+  ],
+  "save_order": [
+    "P11",
+    "J05",
+    "B12",
+    "P09",
+    "J06",
+    "B11",
+    "P05",
+    "J11",
+    "B09",
+    "P12",
+    "J08",
+    "B08",
+    "P07",
+    "J09",
+    "B04",
+    "P08",
+    "J12",
+    "B03",
+    "P06",
+    "J03",
+    "B06",
+    "P10",
+    "J10",
+    "B02",
+    "P04",
+    "J07",
+    "B07",
+    "P03",
+    "J02",
+    "B05",
+    "P02",
+    "J01",
+    "B10",
+    "P01",
+    "J04",
+    "B01"
+  ],
+  "queries": [
+    {
+      "id": "P-Q1",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/current/P-Q1",
+      "text": "Reference counting reclaims objects immediately when their count reaches zero, but cycles need another mechanism.",
+      "relevant": [
+        "P01",
+        "P02"
+      ],
+      "label_rationale": "Both sources describe reference counting and the cycle-collection problem named by the query.",
+      "connection_expectation": "topic_overlap_candidate"
+    },
+    {
+      "id": "P-Q2",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/current/P-Q2",
+      "text": "Generational collection separates short-lived objects from long-lived ones to shorten full collection pauses.",
+      "relevant": [
+        "P03"
+      ],
+      "label_rationale": "The source describes generational collection, short-lived and long-lived objects, and pause reduction.",
+      "connection_expectation": "topic_overlap_candidate"
+    },
+    {
+      "id": "P-Q3",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/current/P-Q3",
+      "text": "Python's global interpreter lock prevents multiple threads from executing bytecode in parallel.",
+      "relevant": [
+        "P04"
+      ],
+      "label_rationale": "The source describes the global interpreter lock and parallel bytecode execution.",
+      "connection_expectation": "topic_overlap_candidate"
+    },
+    {
+      "id": "P-Q4",
+      "goal_id": "python-memory",
+      "url": "http://127.0.0.1:9300/current/P-Q4",
+      "text": "Quantum stabilizer codes protect logical qubits from decoherence.",
+      "relevant": [],
+      "label_rationale": "No retained source for this goal discusses quantum error correction; the correct outcome is abstention.",
+      "connection_expectation": "insufficient_evidence"
+    },
+    {
+      "id": "J-Q1",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/current/J-Q1",
+      "text": "Promise reactions run as microtasks before timers and the next macrotask.",
+      "relevant": [
+        "J01",
+        "J02",
+        "J07"
+      ],
+      "label_rationale": "All three sources describe microtask, promise-reaction, timer or macrotask ordering.",
+      "connection_expectation": "topic_overlap_candidate"
+    },
+    {
+      "id": "J-Q2",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/current/J-Q2",
+      "text": "Animation frame callbacks batch visual updates before the browser repaints.",
+      "relevant": [
+        "J03",
+        "J10"
+      ],
+      "label_rationale": "Both sources describe frame-aligned visual updates or coalesced rendering before repaint.",
+      "connection_expectation": "topic_overlap_candidate"
+    },
+    {
+      "id": "J-Q3",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/current/J-Q3",
+      "text": "A long task blocks the main thread and delays input responsiveness.",
+      "relevant": [
+        "J04"
+      ],
+      "label_rationale": "The source describes long tasks blocking the main thread and delaying input.",
+      "connection_expectation": "topic_overlap_candidate"
+    },
+    {
+      "id": "J-Q4",
+      "goal_id": "javascript-async",
+      "url": "http://127.0.0.1:9300/current/J-Q4",
+      "text": "The database normalized schema removes redundant columns.",
+      "relevant": [],
+      "label_rationale": "No retained source for this goal discusses relational schema normalization; the correct outcome is abstention.",
+      "connection_expectation": "insufficient_evidence"
+    },
+    {
+      "id": "B-Q1",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/current/B-Q1",
+      "text": "A service worker reads cache request-response pairs offline after precaching the app shell.",
+      "relevant": [
+        "B01",
+        "B05",
+        "B10"
+      ],
+      "label_rationale": "All three sources describe service-worker caching, precached shell assets or offline cache storage.",
+      "connection_expectation": "topic_overlap_candidate"
+    },
+    {
+      "id": "B-Q2",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/current/B-Q2",
+      "text": "IndexedDB transactions store structured records and abort when a request fails.",
+      "relevant": [
+        "B02",
+        "B07"
+      ],
+      "label_rationale": "Both sources describe IndexedDB transactions, structured object stores and request failure behaviour.",
+      "connection_expectation": "topic_overlap_candidate"
+    },
+    {
+      "id": "B-Q3",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/current/B-Q3",
+      "text": "Storage pressure triggers quota eviction of origin data while localStorage has a small synchronous quota.",
+      "relevant": [
+        "B03",
+        "B06"
+      ],
+      "label_rationale": "One source describes quota eviction under storage pressure; the other describes localStorage's small synchronous quota.",
+      "connection_expectation": "topic_overlap_candidate"
+    },
+    {
+      "id": "B-Q4",
+      "goal_id": "browser-storage",
+      "url": "http://127.0.0.1:9300/current/B-Q4",
+      "text": "The compiler optimizes tail calls in functional languages.",
+      "relevant": [],
+      "label_rationale": "No retained source for this goal discusses compilers or tail calls; the correct outcome is abstention.",
+      "connection_expectation": "insufficient_evidence"
+    }
+  ],
+  "arms": {
+    "A_recency": "Eligible same-goal active research rows sorted by reviewed_at descending, then ID; top 3.",
+    "B_alive12_unscoped": "Frozen ALIVE-12 behaviour: MemoryService query built from the goal and current text, top_k*5 candidates, then post-filter by research metadata, goal, active status, current URL/SHA and SHA deduplication.",
+    "C_corrected_scoped_lexical": "ALIVE-13 scoped lexical ranker over authoritative research rows; scope by instance, goal and active status before scoring; score 2*current-content overlap + goal-term overlap; deterministic recency then ID tie-break; top 3 after deduplication.",
+    "D_full_history_access": "All eligible same-goal active research rows with no ranking or limit; used only to distinguish access to history from ranking among it."
+  },
+  "metrics": [
+    "precision_at_3 (positive queries; denominator 3)",
+    "recall_at_3 (positive queries)",
+    "mean_reciprocal_rank (positive queries)",
+    "relevant_at_rank_1 (positive queries)",
+    "false_positive_results",
+    "false_positive_queries",
+    "correct_abstentions (negative queries)",
+    "decoy_rate",
+    "source_attribution_accuracy",
+    "missing_memory_failures",
+    "retrieval_latency_ms",
+    "history_contains_relevant"
+  ],
+  "success_criteria": {
+    "crowding_regression": "C retrieves at least one predeclared relevant memory for every positive query despite 60 ordinary memories and 35 competing research memories.",
+    "recall_at_3_improvement_over_recency": 0.2,
+    "mrr_improvement_over_recency": 0.2,
+    "missing_memory_failures_not_worse_than_recency": true,
+    "negative_queries_abstain": 3,
+    "classification_rule": "RETRIEVAL_ADVANTAGE_DEMONSTRATED only if every criterion above passes; otherwise NO_RETRIEVAL_ADVANTAGE_DEMONSTRATED or INCONCLUSIVE as stated in the evidence."
+  },
+  "caveats": [
+    "The corpus is lexical and controlled; it does not establish semantic paraphrase or owner-perceived usefulness.",
+    "Relevance labels are source-adequacy labels, not task outcomes or independent human ratings.",
+    "The corrected ranker is deterministic and makes no embedding or model call.",
+    "The old arm intentionally reproduces the pre-ALIVE-13 unscoped query and post-filter order.",
+    "The full-history arm is a control, not a retrievable product mode.",
+    "No paid inference is used; synthetic note generation is a local fixture."
+  ]
+}
