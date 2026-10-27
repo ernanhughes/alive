@@ -8,8 +8,8 @@
 | Starting `origin/main` | `0ff4748d2186c7344d635fffaba25f159589fb71` (ALIVE-08 merged) |
 | Branch | `opencode/alive-09-living-research-companion` |
 | Feature commit | `6aea954` - companion policy, owner correction, UI, tests, report, evidence generator |
-| Archive/handoff commit | `_Pending archive commit._` |
-| PR | `_Pending creation._` |
+| Archive/handoff commit | `da1f0ed` - controlled archive, manifest, handoff |
+| PR | [#13](https://github.com/ernanhughes/alive/pull/13); initial head `da1f0ed`, review-only |
 
 No migration, simulator, neural learner, browser-history collector, second Governor or provider
 change was added.
