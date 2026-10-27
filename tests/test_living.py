@@ -103,6 +103,31 @@ def test_empirical_choice_changes_only_after_feedback():
         state_from_dom("Untrusted arbitrary browser text")
 
 
+def test_supported_fact_is_not_an_incorrect_fact_when_recommendation_is_investigate():
+    from alive.cognitive_schema import RoleOutput
+    from alive.living_evaluation import assess
+
+    output = RoleOutput(
+        summary="Correct measurement, unnecessary follow-up",
+        claims=[
+            {
+                "subject": "Aster",
+                "predicate": "endurance_hours",
+                "value": "20.0",
+                "evidence_refs": ["current"],
+            }
+        ],
+        actions=[],
+        criticisms=[],
+        uncertainties=[],
+        recommendation="investigate",
+        confidence=0.9,
+    )
+    result = assess(output, [{"id": "current", "value": "20"}], "20")
+    assert result["factual_correct"] is True
+    assert result["resolved"] is False and result["conclusion_contract_correct"] is False
+
+
 def test_controlled_journey_has_causal_memory_and_real_counterfactual(client, controlled_browser):
     journey = create(client)
     first = advance(client, journey)

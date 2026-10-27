@@ -294,7 +294,7 @@ export function App() {
                             : "A persistent presence."}
               </h1>
               <p>
-                {tab === "Overview"
+                {tab === "Living" ? "Observe a consequence. See what experience changes." : tab === "Overview"
                   ? "Observe the runtime. Follow its attention. See what stays."
                   : "Inspect the real state of your local ALIVE runtime."}
               </p>

@@ -939,5 +939,14 @@ hr {
 .living-outcome strong { font-size: 22px; font-weight: 500; }
 .living-outcome small { grid-column: 2; font-size: 9px; color: #829174; }
 .living-experience details summary { cursor: pointer; font-size: 12px; color: #5e7550; }
+.living-controls label { margin: 0; }
+.living-create > label:first-child { width: 220px; }
+.living-create select { margin: 6px 0 0; width: 100%; }
+.living-create .living-consent { max-width: 430px; }
+.living-consent input { width: auto; flex: 0 0 auto; margin: 3px 0 0; }
+.living-controls > label select { width: 100%; margin: 8px 0 0; }
+.living-carry { display: grid; grid-template-columns: 1fr 340px; align-items: center; gap: 24px; }
+.living-carry h2 { font-size: 22px; font-weight: 450; margin: 10px 0; }
+.living-carry .living-predictions { margin: 0; }
 .living-experience pre { max-height: 420px; overflow: auto; font-size: 10px; }
-@media(max-width: 950px) { .living-encounters { grid-template-columns: 1fr; } .living-process { grid-template-columns: repeat(4, 1fr); row-gap: 20px; } .living-hero { padding: 25px; } }
+@media(max-width: 950px) { .living-encounters, .living-carry { grid-template-columns: 1fr; } .living-process { grid-template-columns: repeat(4, 1fr); row-gap: 20px; } .living-hero { padding: 25px; } }

@@ -103,6 +103,11 @@ History-aware state helps both learners in the controlled setting; predictive re
 still has no demonstrated advantage. The [next product handoff](docs/LIVE-DEMONSTRATION-NEXT.md)
 prioritizes a visible, Governor-controlled experience loop over further learner optimization.
 
+**ALIVE-04 — The Living Experience** adds a Living tab with real Chrome observations, Meta
+evidence synthesis and a durable empirical policy. The qualified two-encounter journey
+changes from monitoring to evidence retrieval after observed feedback and a backend restart.
+See the [protocol](docs/ALIVE-04.md) and [live evidence](archives/ALIVE-04/README.md).
+
 Open `chrome://extensions`, enable Developer mode, select **Load unpacked**, and choose the repository's `extension` directory. Click the ALIVE toolbar icon to open its side panel. Configure the backend and local token, then click **Authorise this page**. Review and send an observation, or explicitly enable automatic sending. **Stop & revoke** disconnects the observer and clears its selected observation.
 
 The extension uses `activeTab`, scripting, storage and the Side Panel API, with host permissions limited to the local backend. It excludes form values, hidden text and marked private subtrees. Arbitrary webpage observation requires a fresh toolbar grant; the test habitat is already covered by the narrow backend host grant.

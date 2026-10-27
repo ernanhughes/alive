@@ -10,11 +10,11 @@ from alive.cognitive_models import CognitiveControl
 from alive.cognitive_schema import CognitiveConfiguration, RoleOutput
 from alive.experiment.metrics import price
 from alive.experiment_budget import check_spend
+from alive.living_evaluation import assess
 from alive.living_models import LivingJourney, LivingPolicy, LivingTransition
 from alive.living_policy import (
     choose,
     digest,
-    numeric_equal,
     state_from_dom,
     update,
     visible_measurement,
@@ -396,25 +396,13 @@ class Living:
                 )
                 feedback = await self.tool(journey_id, episode, browser_id, "feedback", url)
                 measured = visible_measurement(feedback["text"], feedback=True)
-                resolved = (
-                    bool(sources)
-                    and output.recommendation == "proceed"
-                    and len(output.claims) == 1
-                    and output.claims[0].subject == "Aster"
-                    and output.claims[0].predicate == "endurance_hours"
-                    and numeric_equal(output.claims[0].value, measured)
-                    and output.claims[0].evidence_refs == [sources[0]["id"]]
-                )
-                safely_abstained = (
-                    not sources and not output.claims and output.recommendation == "abstain"
-                )
+                assessment = assess(output, sources, measured)
+                resolved, safely_abstained = assessment["resolved"], assessment["safe_abstention"]
                 reward = 1.0 if resolved else -0.5 if safely_abstained else -1.0
                 reward -= 0.15 if choice["action"] == "retrieve" else 0
                 outcome = {
-                    "resolved": resolved,
-                    "safe_abstention": safely_abstained,
+                    **assessment,
                     "measurement": measured,
-                    "factual_correct": True if resolved else False if output.claims else None,
                     "resource_cost": 0.15 if sources else 0,
                     "synthetic_goal_reward": reward,
                 }

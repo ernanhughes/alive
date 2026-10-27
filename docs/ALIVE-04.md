@@ -38,14 +38,15 @@ only the observed evidence. Without current instrument evidence it should safely
 retrieval it can report the supported current measurement and compare it with the page claim.
 Factual abstention and unresolved task utility are separate: the first encounter need not
 contain a wrong factual answer for its action to have been unproductive.
+Factual support and conclusion-contract acceptance are also measured separately: a supported
+measurement with an unnecessary `investigate` recommendation is not labeled a wrong fact.
 
 ## Persistence and causal evidence
 
 `living_policies`, `living_journeys` and `living_transitions` are explicit migration-0005 tables.
 Relevant past transitions are retrieved by exact instance/context and included as historical
 context, never as current verification. Controlled-fixture and live-Meta contexts are separated,
-so mock feedback
-cannot train the live action values. A normal Memory record also preserves the observed
+so mock feedback cannot train the live action values. A normal Memory record preserves the observed
 experience. The transition, feedback, policy update, memory and journey advancement commit in
 one transaction. Before/after hashes and policy versions identify the actual update.
 

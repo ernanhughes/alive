@@ -12,6 +12,7 @@ type Experience = { id: string; episode: number; data: {
   prediction_error: number; memory_ids: string[];
   outcome: { resolved: boolean; safe_abstention: boolean; measurement: string };
   before_hash: string; after_hash: string; policy_after: { version: number };
+  next_choice: Choice;
 } };
 type Journey = { id: string; provider: string; status: string; transitions: Experience[];
   data: { error?: string; stage: string; phases: { stage: string; at: string; data: unknown }[];
@@ -148,6 +149,15 @@ export function LivingPane({ token }: { token: string }) {
           </>}
         </article>;
       })}</div>
+      {experiences.length > 0 && <section className="panel living-carry">
+        <div><span className="living-eyebrow">WHAT CARRIES FORWARD</span>
+          <h2>Experience becomes the next expectation.</h2>
+          <p className="muted">Preferred next action: <strong>{experiences[experiences.length - 1].data.next_choice.action}</strong>.
+            These values come from recorded outcomes, with small-sample uncertainty.</p></div>
+        <div className="living-predictions">{Object.entries(experiences[experiences.length - 1].data.next_choice.predictions).map(([action, p]) =>
+          <div key={action}><span>{action}</span><strong>{p.n ? p.mean.toFixed(2) : "Not learned yet"}</strong>
+            <small>{p.n} observed outcome{p.n === 1 ? "" : "s"}</small></div>)}</div>
+      </section>}
       <details className="panel"><summary>Live reasoning, permissions and provenance</summary>
         <p>{journey.data.grant}. At most two model calls and six bounded browser operations.</p>
         <p>Action choice precedes Meta synthesis. Feedback and policy changes commit together.
