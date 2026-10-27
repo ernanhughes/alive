@@ -14,7 +14,6 @@ from alive.cognitive_models import (
 from alive.cognitive_schema import (
     Approval,
     AutonomyCommand,
-    CognitiveConfiguration,
     ImportApproval,
     ImportPreview,
     LabCreate,
@@ -22,6 +21,7 @@ from alive.cognitive_schema import (
 from alive.laboratory import create_lab, inject_lab, lab_view, world_html
 from alive.models import record
 from alive.providers import MetaProvider
+from alive.workflow_defaults import RuntimeCognitiveConfiguration as CognitiveConfiguration
 
 
 def router(app, ready):

@@ -58,7 +58,7 @@ class Cognition:
                 control = CognitiveControl(
                     instance_id=k.instance_id,
                     cursor=await session.scalar(select(func.max(Event.sequence_number))) or 0,
-                    configuration=CognitiveConfiguration().model_dump(),
+                    configuration=CognitiveConfiguration(use_critic=False).model_dump(),
                     provider=k.settings.alive_cognitive_provider,
                 )
                 session.add(control)
