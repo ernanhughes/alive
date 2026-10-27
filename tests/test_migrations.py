@@ -28,4 +28,5 @@ def test_migration_execution_and_repeat(tmp_path):
             "browser_sessions",
             "runtime_state",
         } <= tables
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0005"
+        assert "web_experiences" in tables
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0006"

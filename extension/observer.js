@@ -4,7 +4,7 @@
     lastSent = 0;
   function snapshot() {
     const walker = document.createTreeWalker(
-      document.body,
+      document.querySelector('main,article,[role="main"]') || document.body,
       NodeFilter.SHOW_TEXT,
     );
     const pieces = [];
@@ -14,7 +14,7 @@
       if (
         !el ||
         el.closest(
-          'script,style,noscript,input,textarea,select,[contenteditable],[hidden],[aria-hidden="true"],[data-alive-private]',
+          'script,style,noscript,nav,input,textarea,select,[contenteditable],[hidden],[aria-hidden="true"],[data-alive-private]',
         ) ||
         !el.getClientRects().length
       )

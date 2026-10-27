@@ -1,0 +1,34 @@
+{
+  "files": {
+    ".gitattributes": {
+      "sha256": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992",
+      "bytes": 9
+    },
+    "evidence.json": {
+      "sha256": "5775e96720d10633866080265cd60597edb3b827d9b13f8b9e8a55f135e2af1d",
+      "bytes": 72846
+    },
+    "native-recall.png": {
+      "sha256": "c305c32d6fbdabf80a54fc52812936cb4d953bb8c8f3f87e95fa7387a0550243",
+      "bytes": 91826
+    },
+    "README.md": {
+      "sha256": "28708e0e8662650e4c313b3fa63013f4f654b54c991c5b3febaa693f1b33de5f",
+      "bytes": 3152
+    },
+    "validation-backend.txt": {
+      "sha256": "1eb27cf553620649cdd11ee1c02118d09d5287b863bb48a2cdf40f7c8e8d8d1d",
+      "bytes": 1055
+    }
+  },
+  "sources": {
+    "alive/web_experience.py": "1cb6088d3b05a264094a26e5b024dff481ff6fbd3db617e1a7da3d9826f1feb7",
+    "alive/web_models.py": "ff0c418031a59b4e331e8386a34c75355a8e6edbe3bf3ad7d3c29bdfe8cefaad",
+    "extension/background.js": "8e7a9d3c1f57af18036386ca7ae1688214c8f23b8a901b7f39e7aa73659b7bba",
+    "extension/observer.js": "57a719de2f3a73bf751e8f1c4fd1b567ba5ad581baf7613108e76e178d5b90f9",
+    "extension/panel.js": "5f8b77c31607419ed421f7e39f2ec7d9b155aa7228bbba337be4b42d5ead29cf",
+    "extension/panel.html": "289a93702cfec4a826305522e4497baa536f9d17aab4ada692558166f411cd91",
+    "extension/manifest.json": "bd845a0b5b7e02b7aca43910a029b742752dd755e443092eb731b91201db6928",
+    "scripts/browser05.py": "20594faa2f700f7df4dc78a329479feacad2525883ff0a7d5a1163147d44fe00"
+  }
+}
