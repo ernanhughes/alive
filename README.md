@@ -2,6 +2,13 @@
 
 **Adaptive Living Intelligence** — a persistent local runtime that perceives browser observations, remembers experience, proposes goals and survives restarts.
 
+**ALIVE-05 adds the native Chrome documentation companion:** review an authorised
+page excerpt, obtain a bounded Meta note, rate its usefulness, then recall the same
+note after a restart. Goals, page evidence, model notes and feedback stay distinct.
+See [installation, qualification and the three-minute demo](docs/ALIVE-05.md).
+This is exact-match experience reuse on two public documentation pages, not general
+website adaptation or evidence that predictive learning outperforms simpler policies.
+
 ALIVE-01 is a working vertical slice: FastAPI + PostgreSQL/pgvector + ZeroMQ + React dashboard + managed Chrome + Manifest V3 extension + Pi RPC. Deterministic policies drive curiosity, coherence and commitment. They do not require recurring model calls or claim to be reinforcement learning.
 
 **ALIVE-02 adds a bounded autonomous cognitive loop.** Authorised browser changes compete for attention; structured Meta Observer/Proposer/Critic roles cooperate while a deterministic Investigator, Evaluator and Governor control evidence, permissions and budgets. Real ONNX embeddings, hybrid retrieval, human action approval, persistent experience and restart recovery are implemented. Open **Cognition** in the existing observatory to inspect real traces. Autonomy starts stopped and recovers paused.
