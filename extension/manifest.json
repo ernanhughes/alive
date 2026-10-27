@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "ALIVE · Browser Perception",
+  "version": "0.1.0",
+  "description": "Explicit, revocable observation for a local ALIVE runtime.",
+  "permissions": ["activeTab", "scripting", "storage", "sidePanel"],
+  "host_permissions": ["http://127.0.0.1:8000/*", "http://localhost:8000/*"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "action": { "default_title": "Open ALIVE perception" },
+  "side_panel": { "default_path": "panel.html" }
+}
