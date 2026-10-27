@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "research": "BEHAVIOUR_CHANGE_DEMONSTRATED",
+  "source_commit": "eb4c273a7922a558126e927d7951a7409ca1b444",
+  "paid_calls": 8,
+  "charged_tokens": 4246,
+  "estimated_usd": 0.0113225,
+  "files": {
+    ".gitattributes": {
+      "sha256": "730a35ae3d558080083c3103d9ac8100c3f6561678092abe341701dfa331eb1d",
+      "bytes": 29
+    },
+    "budget-reconstruction.json": {
+      "sha256": "88619ef1bcf7f44d3698f236ccd8808e531a586254dcb98aed690c10cddb6f93",
+      "bytes": 2391
+    },
+    "distinct-1.png": {
+      "sha256": "c96ed214586af2daf746ca5b33ecc66734d3a88b99543ea27c4c217be23c8411",
+      "bytes": 90789
+    },
+    "distinct-3.png": {
+      "sha256": "c02b1a448289f6ef3f0cb27aee57a0c29c8e9ac313bf7998b1c033a73af27991",
+      "bytes": 90652
+    },
+    "governor-final.json": {
+      "sha256": "928025ae2a7204dc55b1b53f3b7a8b6c217460dbce16f8bdd0067d1c3a36c110",
+      "bytes": 825
+    },
+    "meta-approval.json": {
+      "sha256": "fe8b3aad4bfdad7af485c1f2a4402d1c24629eb0debad4eb3b8df3a0386786fb",
+      "bytes": 701
+    },
+    "meta-checkpoints.json": {
+      "sha256": "d56bea77c60925e00c56d468aeb4ed6792c29d86eb720b1bd034c38bbf329106",
+      "bytes": 1349
+    },
+    "meta-experience.json": {
+      "sha256": "c82693280f0a086d5975d60d725aa22aed6a13316232cb67eb2e894b02570fca",
+      "bytes": 135499
+    },
+    "meta-matched-baselines.json": {
+      "sha256": "0e58fd379832f048665940c0571023f2a0be1f1e388da428be226897b5c2aeec",
+      "bytes": 2012
+    },
+    "meta-protocol.json": {
+      "sha256": "1e593f3daec1d4fac87b5ba3438ff559a778db0a0f41a9bcb2a74e27cb904e6e",
+      "bytes": 7058
+    },
+    "native-meta.json": {
+      "sha256": "7f43b4882edf95af13032c628a35d0e9a3a4749efdaa86ec983c68a633319eb2",
+      "bytes": 9179
+    },
+    "native-panel.png": {
+      "sha256": "47f35f0e2c8a3b30bed6918b59d26b87d099bfe61eae61ec926ecb6d15ddf529",
+      "bytes": 72160
+    },
+    "provider-usage.json": {
+      "sha256": "3bf8a23e694125bd7bb0ccfc619df5d1475d50dca343495ec8ae9eb06248776f",
+      "bytes": 2016
+    },
+    "README.md": {
+      "sha256": "be0b2b2338dfbb9bd4de6b15c16b6d85779461bc62fc1043bbcd192461b86cbc",
+      "bytes": 1093
+    },
+    "recovered.png": {
+      "sha256": "7de5f326f724609444a4ebb9892e5ffb0243dcf060438e08627ca9c41c9b14ce",
+      "bytes": 90602
+    },
+    "source.txt": {
+      "sha256": "63eba42d45324bb3d9691b01f869734358c37824627937bd889ddfe071d6c88e",
+      "bytes": 42
+    },
+    "suppressed.png": {
+      "sha256": "b3a6b6e1ddbae19ea6d03f9f06f83805dd2f0b2280ee0958274b3dc86f68f524",
+      "bytes": 85305
+    }
+  }
+}

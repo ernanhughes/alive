@@ -18,6 +18,11 @@ approved eight-call/12,000-token/$0.10 ceiling. All approved calls are consumed.
 Shared paid baseline responses are not independent trials. The broader synthetic
 comparison saves calls but misses two adequate opportunities.
 
+A second separately approved campaign is frozen in
+[`archives/ALIVE-11/qualification-v2/`](../archives/ALIVE-11/qualification-v2/README.md):
+eight calls, 4,246 tokens and $0.0113225 estimated, with five fresh screenshots.
+It reproduces the same native loop and is not spliced into the v1 replay.
+
 For a new live walkthrough use the synthetic native command in ALIVE-11.md,
 clearly labelled synthetic, from a clean source checkout. Optional stage holds
 are bounded at 60 seconds. A new paid walkthrough requires its own allowance.

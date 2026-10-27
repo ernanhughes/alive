@@ -3,7 +3,9 @@
 Baseline: `be47e18e329a1f1d932dbce253f703048c5fd3e3`.
 Branch: `codex/alive-11-live-native-intelligence`.
 PR: [#15](https://github.com/ernanhughes/alive/pull/15), review-only; initial head `2420fbf`.
-Qualified source: `cb29c336760cb62e709da73a32553663ddde7e38`.
+Qualified source: `cb29c336760cb62e709da73a32553663ddde7e38` (v1);
+second campaign `eb4c273a7922a558126e927d7951a7409ca1b444` (v2, identical
+`alive/` and `extension/` code).
 Worktree: `C:\Projects\alive-worktrees\alive-11`.
 Later evidence/tooling commits retain identical alive/ and extension/ content.
 
@@ -17,6 +19,13 @@ charged tokens, estimated $0.0123425. The explicit allowance is exhausted by cal
 count: no more paid inference under this campaign. Local checks: 142 backend,
 seven frontend, eight extension; build and Ruff passed. Review final-head CI
 separately; SQLite native qualification does not replace PostgreSQL CI coverage.
+
+A second, separately approved campaign is frozen in
+`archives/ALIVE-11/qualification-v2/`: eight validated calls, 4,246 charged
+tokens, estimated $0.0113225, genuine docked side-panel target, policy v11
+restart and all guards. Across both campaigns: 16 calls, 8,732 tokens and
+$0.023665 estimated. Both allowances are consumed; do not rerun either paid
+campaign without a new explicit approval.
 
 Changes: authenticated runtime provenance, panel source display, optional persisted
 cumulative spending ceiling, bounded raw-output/error evidence, service-worker/DOM

@@ -6,10 +6,12 @@ Owner utility advantage is unestablished.
 ## Source and native isolation
 
 Baseline: `be47e18e329a1f1d932dbce253f703048c5fd3e3` (ALIVE-10 merge).
-Both qualified native journeys ran on committed source
-`cb29c336760cb62e709da73a32553663ddde7e38`. Later evidence/tooling commits
-retain identical product and extension code. Original preparation and historical
-archives remain unchanged; the old preparation document is separately preserved.
+The original qualification-v1 native journeys ran on committed source
+`cb29c336760cb62e709da73a32553663ddde7e38`. A second, separately approved
+qualification-v2 campaign ran on `eb4c273a7922a558126e927d7951a7409ca1b444`;
+`alive/` and `extension/` are identical between those commits. Original preparation
+and historical archives remain unchanged; the old preparation document is separately
+preserved.
 
 Headful Chrome 155.0.8059.85 used fresh profiles, free owned loopback ports,
 new migrated SQLite stores and restricted temporary extension copies. The panel
@@ -49,6 +51,30 @@ cumulative estimated spending cap are checked before dispatch and persisted acro
 restart. Conservative failure charging remains active. `budget-reconstruction.json`
 is a retrospective audit, not an original live reservation receipt. Usage is
 complete; no independent packet counter instrumented the real endpoint.
+
+### Fresh paid rerun - qualification-v2
+
+After the v1 allowance was exhausted, the owner separately approved a fresh
+eight-call / 12,000-token / $0.10 campaign. The rerun used the same full native
+protocol on source `eb4c273a7922a558126e927d7951a7409ca1b444`.
+
+| Measure | qualification-v2 |
+| --- | ---: |
+| Calls / validated responses | 8 / 8 |
+| Charged tokens | 4,246 |
+| Estimated spend | $0.0113225 |
+| Adaptive core | 5 calls |
+| Shared matched baseline | 3 calls |
+| Panel | genuine docked side-panel target |
+
+It reproduced distinct-excerpt support, suppression, owner correction, stale-probe
+rejection, bounded recovery, policy v11 restart and all negative authorisation
+checks. All eight notes were validated. Evidence is frozen in
+[`archives/ALIVE-11/qualification-v2/`](../archives/ALIVE-11/qualification-v2/README.md),
+separate from the unchanged v1 archive.
+
+Across both paid campaigns the recorded total is **16 calls, 8,732 charged tokens
+and $0.023665 estimated**. The v2 campaign did not alter product or extension code.
 
 ## Observed loop and guards
 
@@ -122,12 +148,14 @@ uv run python -m scripts.native11_compare
 
 Synthetic commands create owned `.alive` artifacts and require no Meta key.
 The paid harness additionally requires `--provider meta --allow-paid
---credentials-env-file <ignored-local-file>` and separate approval. Do not rerun
-it under the exhausted campaign allowance. Zero-inference recall accepts a prior
-completed run directory: `uv run python -m scripts.native11_recall <prior-run>`.
-The exporter refuses to overwrite an existing archive.
+--credentials-env-file <ignored-local-file>` and separate approval. Both the v1
+and v2 paid allowances are exhausted; do not rerun either campaign. Zero-inference
+recall accepts a prior completed run directory: `uv run python -m
+scripts.native11_recall <prior-run>`. The exporter refuses to overwrite an existing
+archive.
 
-[Evidence archive](../archives/ALIVE-11/qualification-v1/README.md),
+[Evidence archive v1](../archives/ALIVE-11/qualification-v1/README.md),
+[fresh paid rerun v2](../archives/ALIVE-11/qualification-v2/README.md),
 [offline three-minute replay](../archives/ALIVE-11/qualification-v1/demo.html),
 [storyboard](ALIVE-11-DEMO.md) and [handoff](CODEX-ALIVE11-HANDOFF.md) preserve
 results and boundaries. Replay uses actual screenshots, not live footage.

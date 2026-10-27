@@ -1,0 +1,38 @@
+{
+  "spent": {
+    "session_calls": 8,
+    "experiment_calls": 8,
+    "session_tokens": 4246,
+    "experiment_tokens": 4246
+  },
+  "reserved": {
+    "calls": 0,
+    "tokens": 0
+  },
+  "configuration": {
+    "topics": [
+      "battery endurance",
+      "coolant temperature"
+    ],
+    "origins": [
+      "http://127.0.0.1:8000"
+    ],
+    "threshold": 0.45,
+    "session_calls": 8,
+    "session_tokens": 12000,
+    "experiment_calls": 8,
+    "experiment_tokens": 12000,
+    "investigation_calls": 4,
+    "investigation_tokens": 8000,
+    "request_tokens": 8000,
+    "output_tokens": 512,
+    "wall_seconds": 90,
+    "tool_calls": 3,
+    "depth": 1,
+    "retries": 0,
+    "concurrency": 1,
+    "lab_writes": false,
+    "use_critic": false,
+    "preferred_action": "record_analysis"
+  }
+}
