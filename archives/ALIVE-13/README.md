@@ -5,6 +5,9 @@ Status: **ENGINEERING_PASS**, **NATIVE_SYNTHETIC_PASS**, **NATIVE_META_NOT_RUN**
 
 Baseline: `af12bc88c91a85558873d01579dba93fdd6b1bbf` (ALIVE-12 merge).
 Product and harness commit: `d963d267c219d49e4dfab23cf838946b64c4b190`.
+Archive commit: `04adadb`.
+PR: https://github.com/ernanhughes/alive/pull/19 (draft, review-only).
+CI: all eight PR checks passed (backend Ubuntu/Windows, dashboard, first-contact PostgreSQL).
 No paid inference was performed. No merge or auto-merge was requested.
 
 This archive preserves the frozen protocol, reproduced pre-fix defects, corrected retrieval

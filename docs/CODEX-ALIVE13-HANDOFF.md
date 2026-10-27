@@ -6,10 +6,13 @@
 - Branch: `codex/alive-13-reliable-research`, based on that commit.
 - Product and harness commits: `1b7d06f` (retrieval/isolation/withdrawal fix) and `d963d26`
   (regression, evaluation and native harnesses).
+- Archive commit: `04adadb` (protocol, evidence, validation, manifest and reports).
 - Archived evaluation and native evidence record source commit
   `d963d267c219d49e4dfab23cf838946b64c4b190`.
-- PR: to be recorded after push. Review-only; no merge and no auto-merge.
-- CI: to be recorded after push.
+- PR: https://github.com/ernanhughes/alive/pull/19 (draft, review-only; no merge and no
+  auto-merge).
+- CI: all eight checks passed on the PR: backend Ubuntu, backend Windows, dashboard and
+  first-contact PostgreSQL, across both workflow runs.
 
 No paid inference was used. The owner's primary checkout and the frozen ALIVE-01 through ALIVE-12
 archives were not modified.
