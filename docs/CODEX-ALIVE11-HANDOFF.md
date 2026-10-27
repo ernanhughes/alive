@@ -2,6 +2,7 @@
 
 Baseline: `be47e18e329a1f1d932dbce253f703048c5fd3e3`.
 Branch: `codex/alive-11-live-native-intelligence`.
+PR: [#15](https://github.com/ernanhughes/alive/pull/15), review-only; initial head `2420fbf`.
 Qualified source: `cb29c336760cb62e709da73a32553663ddde7e38`.
 Worktree: `C:\Projects\alive-worktrees\alive-11`.
 Later evidence/tooling commits retain identical alive/ and extension/ content.
