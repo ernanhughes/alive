@@ -1,0 +1,36 @@
+{
+  "archive": "ALIVE-04",
+  "archive_implementation_commit": "62be48adcc63794ceb65263cfccbf84d0b662cc5",
+  "reassessed_with_commit": "b6aad7df88a2b5a1bd217a91dc0b977960c30311",
+  "episodes": [
+    {
+      "episode": 1,
+      "reassessed": {
+        "resolved": false,
+        "safe_abstention": true,
+        "factual_correct": null
+      },
+      "original": {
+        "resolved": false,
+        "safe_abstention": true,
+        "factual_correct": null
+      },
+      "matches": true
+    },
+    {
+      "episode": 2,
+      "reassessed": {
+        "resolved": true,
+        "safe_abstention": false,
+        "factual_correct": true
+      },
+      "original": {
+        "resolved": true,
+        "safe_abstention": false,
+        "factual_correct": true
+      },
+      "matches": true
+    }
+  ],
+  "note": "Only resolved, safe_abstention and factual_correct are compared. The frozen archive was not modified; new fields were not backfilled."
+}

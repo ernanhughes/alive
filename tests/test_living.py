@@ -97,10 +97,51 @@ def test_empirical_choice_changes_only_after_feedback():
         and choose(fixture_policy, live_context)["action"] == "monitor"
     )
     assert numeric_equal("20.000", "20") and not numeric_equal("nan", "20")
+    assert not numeric_equal(None, "20") and not numeric_equal(["20"], "20")
     with pytest.raises(ValueError):
         update(policy, "send_message", 1)
     with pytest.raises(ValueError):
         state_from_dom("Untrusted arbitrary browser text")
+
+
+def test_assessment_checks_claim_against_cited_source_and_requires_feedback_corroboration():
+    from alive.cognitive_schema import RoleOutput
+    from alive.living_evaluation import assess
+
+    def output(value, recommendation="proceed"):
+        return RoleOutput(
+            summary="Controlled measurement",
+            claims=[
+                {
+                    "subject": "Aster",
+                    "predicate": "endurance_hours",
+                    "value": value,
+                    "evidence_refs": ["current"],
+                }
+            ],
+            actions=[],
+            criticisms=[],
+            uncertainties=[],
+            recommendation=recommendation,
+            confidence=0.9,
+        )
+
+    source = [{"id": "current", "value": "20"}]
+    contradicted = assess(output("21"), source, "21")
+    assert contradicted["factual_correct"] is False
+    assert contradicted["feedback_confirms_source"] is False
+    assert contradicted["resolved"] is False
+
+    supported_but_unconfirmed = assess(output("20"), source, "21")
+    assert supported_but_unconfirmed["factual_correct"] is True
+    assert supported_but_unconfirmed["feedback_confirms_source"] is False
+    assert supported_but_unconfirmed["resolved"] is False
+    assert supported_but_unconfirmed["conclusion_contract_correct"] is False
+
+    confirmed = assess(output("20"), source, "20")
+    assert confirmed["factual_correct"] is True
+    assert confirmed["feedback_confirms_source"] is True
+    assert confirmed["resolved"] is True
 
 
 def test_supported_fact_is_not_an_incorrect_fact_when_recommendation_is_investigate():
@@ -211,6 +252,28 @@ def test_stop_settles_unknown_call_and_forbids_budget_reset(
     assert row["current_policy"]["version"] == 0
 
 
+def test_revoked_permission_blocks_inference(client, controlled_browser, monkeypatch):
+    from alive.living import Living
+    from alive.living_models import LivingJourney
+
+    original = Living.phase
+
+    async def revoke_after_action(self, journey_id, stage, data=None):
+        await original(self, journey_id, stage, data)
+        if stage == "acting":
+            async with self.k.db.sessions.begin() as session:
+                row = await session.get(LivingJourney, journey_id)
+                row.data = row.data | {"allow": False}
+
+    monkeypatch.setattr(Living, "phase", revoke_after_action)
+    journey = create(client)
+    row = advance(client, journey)
+    assert row["status"] == "failed"
+    assert "permission revoked" in row["data"]["error"]
+    assert not row["data"]["ledger"] and not row["transitions"]
+    assert row["current_policy"]["version"] == 0
+
+
 def test_restart_retains_policy_and_requires_explicit_next_step(settings, controlled_browser):
     async def schema():
         db = Database(settings.database_url)
@@ -232,3 +295,58 @@ def test_restart_retains_policy_and_requires_explicit_next_step(settings, contro
         result = advance(second, journey)
         assert result["status"] == "completed"
         assert result["transitions"][1]["data"]["choice"]["action"] == "retrieve"
+
+
+def test_restart_interrupts_a_running_journey_and_revokes_its_grant(settings, controlled_browser):
+    from alive.cognitive_models import CognitiveControl
+    from alive.living_models import LivingJourney
+
+    async def schema():
+        db = Database(settings.database_url)
+        async with db.engine.begin() as connection:
+            await connection.run_sync(Base.metadata.create_all)
+        await db.engine.dispose()
+
+    asyncio.run(schema())
+    headers = {"Authorization": "Bearer " + TOKEN}
+    with TestClient(create_app(settings), headers=headers) as first:
+        journey = create(first)
+        identity = first.get("/api/v1/alive").json()["identity"]["id"]
+
+    async def mark_running():
+        db = Database(settings.database_url)
+        async with db.sessions.begin() as session:
+            row = await session.get(LivingJourney, journey)
+            row.status = "running"
+            row.data = row.data | {
+                "allow": True,
+                "stage": "reasoning",
+                "ledger": [
+                    {
+                        "id": "reserved-interrupted",
+                        "episode": 1,
+                        "status": "reserved",
+                        "reserved_tokens": 123,
+                        "provider": "mock",
+                        "model": "controlled-living-v1",
+                    }
+                ],
+            }
+            control = await session.get(CognitiveControl, identity)
+            control.reserved = control.reserved | {"calls": 1, "tokens": 123}
+        await db.engine.dispose()
+
+    asyncio.run(mark_running())
+    with TestClient(create_app(settings), headers=headers) as second:
+        row = second.get("/api/v1/living/journeys/" + journey).json()
+        assert row["status"] == "interrupted"
+        assert row["data"]["allow"] is False
+        assert row["data"]["ledger"][0]["status"] == "interrupted"
+        assert row["data"]["ledger"][0]["charged_tokens"] == 123
+        assert not row["transitions"] and row["current_policy"]["version"] == 0
+        assert second.get("/api/v1/cognition").json()["control"]["reserved"]["calls"] == 0
+        assert second.post(f"/api/v1/living/journeys/{journey}/advance", json={}).status_code == 409
+        assert (
+            second.get("/api/v1/living/journeys/" + journey).json()["data"]["ledger"]
+            == row["data"]["ledger"]
+        )

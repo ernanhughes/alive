@@ -105,5 +105,5 @@ Synthetic goal reward: resolved +1, unresolved -0.5; retrieval cost 0.15 resourc
 def numeric_equal(value, measured):
     try:
         return float(value) == float(measured)
-    except ValueError:
+    except (TypeError, ValueError):
         return False
