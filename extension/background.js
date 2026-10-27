@@ -200,7 +200,13 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
         output_sha256: message.outputSha256,
         capability: message.capability,
         rubric: message.rubric,
+        attestation: message.attestation || 'none',
+        synthetic: Boolean(message.synthetic),
       });
+    }
+    if (message.type === 'blind-results') {
+      if (!message.runId) throw new Error('Select a blind evaluation');
+      return send('/browser-experience/research/blind/runs/' + message.runId + '/results');
     }
     if (message.type === 'blind-reveal') {
       if (!message.runId) throw new Error('Select a blind evaluation');

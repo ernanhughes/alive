@@ -1,0 +1,8 @@
+Command: uv run python -m scripts.alive14r3_experiment prepare --mode real
+Run: alive14-r3-paired-v3-real-85fe891cee31
+Provider/model: meta / muse-spark-1.3
+Calls prepared: 18
+Reserved tokens: 92148
+Worst-case USD: 0.391635
+Paid calls: 0
+Approval template is not an approval: False

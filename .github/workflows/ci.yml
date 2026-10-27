@@ -16,8 +16,10 @@ jobs:
       - run: uv run ruff format --check alive migrations scripts tests
       - run: uv run python scripts/verify_archive.py archives/ALIVE-14-R1
       - run: uv run python scripts/verify_archive.py archives/ALIVE-14-R2
+      - run: uv run python scripts/verify_archive.py archives/ALIVE-14-R3
       - run: uv run python scripts/verify_alive14_protocol.py
       - run: uv run python scripts/verify_alive14r2_protocol.py
+      - run: uv run python scripts/verify_alive14r3_protocol.py
       - run: uv run pytest -q
   dashboard:
     runs-on: ubuntu-latest

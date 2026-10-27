@@ -1,0 +1,53 @@
+{
+  "run_id": "alive14-r3-paired-v3-real-85fe891cee31",
+  "protocol_sha256": "85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b",
+  "provider": "meta",
+  "model": "muse-spark-1.3",
+  "task_count": 9,
+  "calls": 18,
+  "payload_sha256s": {
+    "V3-T01": {
+      "A": "a836173df870e7cd876d8718f3b48eaec1ea016243fabaafe07eaf383927e53d",
+      "B": "512c4ece3c5a3dbc9e5e9ed2f25a3c31e1ecce17d60b4a280b7a73f24806e8c0"
+    },
+    "V3-T02": {
+      "A": "07ecc295efe143adf14b0e7bc071385eb67ced4a58a13bdae085820e0d5d716e",
+      "B": "0a1708ac3e05bff08bf356f705e36a95be6ca083f2b247a40114bf0ac0b55737"
+    },
+    "V3-T03": {
+      "A": "df1639698c5fac104c459e2b1b902d13c42207c90d6fcb8fa8b910aef6571dcf",
+      "B": "e799de89fcc1fbaf420ee4690b0f69a053459f9a3c544b21b7cfcb40ddf97a88"
+    },
+    "V3-T04": {
+      "A": "b3afe50e2ec49d964d85abd2ea228ec3bf5af0cd08bb0125ab9f99d05cefb1fa",
+      "B": "a72ade203e725aa58905bb3e6fc0debf9ed27d8bd874b6bcaba493fc8b2e14a9"
+    },
+    "V3-T05": {
+      "A": "feee954dfcdf77f36107c7d1846a4b7ec4314ed4de823b869ed0f6f6e9ee7b8a",
+      "B": "0ece6cac10b3ccf1f37382db86799c7ed9a4a8465e1317489b3e705d7edfedfe"
+    },
+    "V3-T06": {
+      "A": "07ce165dd63a47807cba75ff2d5e486129349ea1056d08d16df02596d7bc1b0e",
+      "B": "7c8c21ed854bc8bfb3384d2802b6a7fcd85cc771d78d5215853284aaf4079c2c"
+    },
+    "V3-T07": {
+      "A": "a03848ce149a8c57f1c81952e8126f2b577abcdf03ffc588fdec6ca43bc5eab9",
+      "B": "4e16ae3b17a39b27dcfe48e0498a72f7b1a2cbd98b756d4a2a0e247f5094ea0a"
+    },
+    "V3-T08": {
+      "A": "69e43f31136302edbc9f06feeaaa9d2b429e371c1a8349def5370c5951b6f33a",
+      "B": "ea6ad1c462374cb2f58a5f8424d393a98749f63bd08f01e698febf92e3745fec"
+    },
+    "V3-T09": {
+      "A": "10b34b129886b6cd3e78cd85062808a6ae262814d1fb77a5dd1f30d6998605cf",
+      "B": "534a4c00e7651721fcdc4ed56d25e58f35ebb23e7dfbfe4fbbef072a8083c6d1"
+    }
+  },
+  "max_input_tokens": 92148,
+  "max_output_tokens": 1536,
+  "max_usd": 0.45,
+  "no_retries": true,
+  "human_approval": false,
+  "approved_by": "PENDING_OWNER_APPROVAL",
+  "approved_at": "PENDING_OWNER_APPROVAL"
+}

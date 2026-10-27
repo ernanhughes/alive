@@ -1,0 +1,359 @@
+{
+  "run_id": "alive14-r3-paired-v3-synthetic-85fe891cee31",
+  "mode": "synthetic",
+  "phase": "archived",
+  "protocol_version": "alive14r3-paired-v3",
+  "protocol_sha256": "85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b",
+  "answer_key_sha256": "255e706dd569634d1710a50831f65a6dd6eb7dabc5ee56e1cd763b382554b43d",
+  "baseline": "767b2951552a9ee89836040c9bccd52869f4e1af",
+  "source_commit": "8828302e286d4b7607bc38274a1972c4d4dcd18b",
+  "provider": "local_stub",
+  "model": "deterministic-local-stub-v1",
+  "task_order": [
+    "V3-T03",
+    "V3-T04",
+    "V3-T05",
+    "V3-T01",
+    "V3-T09",
+    "V3-T08",
+    "V3-T06",
+    "V3-T07",
+    "V3-T02"
+  ],
+  "tasks": [
+    {
+      "task_id": "V3-T01",
+      "goal_id": "9876729c-9d34-43f6-aae3-baf78356eda3",
+      "snapshot_id": "3c75120e-95d4-4fc2-82bb-e43b248b132d",
+      "grant_id": "0bd794dc-16c1-46b9-9e11-06d04a9c0185",
+      "current_url": "http://127.0.0.1:9600/current/v3-t01",
+      "memory_id": "45b37600-8502-4393-82df-9dc1a01234b9",
+      "question": "What risks or limitations are supported by the available evidence for this proposed design?",
+      "payload_sha256s": {
+        "A": "3571472f0ca819d1b475811875cbcbcfbc48d57746a950d47f6035541a2e25f0",
+        "B": "97c607156f8cf498f62f7206e76cffb56ee60b4903f83a3fc9518e79efe56db5"
+      },
+      "request_sha256s": {
+        "A": "86f64e2ecb0552a64a6d0c07c5e5a87c0dd5b8577599878db473923007497bbe",
+        "B": "91b63520129976aced0a0f1662a945e7493de1a0fb33d1aa4c1df3a8168b379c"
+      },
+      "reserved_tokens": {
+        "A": 4993,
+        "B": 5407
+      },
+      "reserved_micro_usd": {
+        "A": 21221,
+        "B": 22980
+      },
+      "current_sha256": "1757ee83d415e9a1cd631951e076e825641d2c3ee7116dcaccc046949dc1ea86",
+      "historical_sha256": "1a8af0774c16ec39d745eec43289eb2fdb746e115c2106b4bf2d87369186eaa7"
+    },
+    {
+      "task_id": "V3-T02",
+      "goal_id": "aa450a88-2054-41ba-a34b-4fb4d9ed14d1",
+      "snapshot_id": "2bded861-4d40-42fa-b66c-a25d888c33e2",
+      "grant_id": "d5b14c54-592b-4c9a-b2ec-1868672f14e9",
+      "current_url": "http://127.0.0.1:9600/current/v3-t02",
+      "memory_id": "afa80832-1aaf-4fef-b12a-71c0b36e1cd1",
+      "question": "What operational risks are supported by the available evidence for this proposed change?",
+      "payload_sha256s": {
+        "A": "189266abb96c244a0be6821604b703aa1be12f3f0aabccd4bac275e9aedb1074",
+        "B": "a6b18012de3ebb972907000178a4238cf9f0b6f3cd06eda431c8dfdb47f0d934"
+      },
+      "request_sha256s": {
+        "A": "90785435c92949e3ab262cc6c9e0fb56deee6071979bb3f58412bae66204df6f",
+        "B": "f3008f0d8b3cbe4929f131f63e4bd0811b212cc66a1b8be23e11bfcb6d0e4c94"
+      },
+      "reserved_tokens": {
+        "A": 4977,
+        "B": 5375
+      },
+      "reserved_micro_usd": {
+        "A": 21153,
+        "B": 22844
+      },
+      "current_sha256": "382e73726480ca6f969d5c51081115f337c6c64af5755f9f219b69ba4c4b7e9a",
+      "historical_sha256": "f388a931694fc949c1859cc5273d32dfb5b1ce93e2c524a342207decab1f4fbf"
+    },
+    {
+      "task_id": "V3-T03",
+      "goal_id": "f67f2df1-ff93-4d5c-85c8-8dc10939f067",
+      "snapshot_id": "7a511797-828d-4d65-9bd7-e58364bb7a0f",
+      "grant_id": "2f801d33-7f3f-40f6-b502-cf6a7397b2a2",
+      "current_url": "http://127.0.0.1:9600/current/v3-t03",
+      "memory_id": "b8395579-6f9d-4b77-9151-3f14396d61c7",
+      "question": "What risks or limitations are supported by the available evidence for this proposed design?",
+      "payload_sha256s": {
+        "A": "f0375f9d97aaea08a5262424c3aca020eae1b3a6a1e592aeabe7f601923fceb7",
+        "B": "f1f404b2d7e845d01a80543ab5c69051d99678aadbb17af4676509227d2e7539"
+      },
+      "request_sha256s": {
+        "A": "32762cca742e7993b3d0f9d8eea05955f4f5389278c51c047a13d153c94d93f9",
+        "B": "5e6c2fedab663237c1af7a3ca6876d4c428cbae4d18af4652782dcefff1630e5"
+      },
+      "reserved_tokens": {
+        "A": 5038,
+        "B": 5345
+      },
+      "reserved_micro_usd": {
+        "A": 21412,
+        "B": 22717
+      },
+      "current_sha256": "e1e18d17daceb308e3d8e8ea9a8453d2aa59e650cbd60354f3aca5143f56f219",
+      "historical_sha256": "0d669fb6cb3676d68f9eb46ba17a50a6f9069f1ed6891002b4b7bf13d74013e5"
+    },
+    {
+      "task_id": "V3-T04",
+      "goal_id": "a64f56ba-019a-45a1-8a8c-7838421db976",
+      "snapshot_id": "1cb79a23-7020-4f03-9fb6-9636b86b9e5f",
+      "grant_id": "0fc299b2-3e21-4bde-8270-6e23d52cc04d",
+      "current_url": "http://127.0.0.1:9600/current/v3-t04",
+      "memory_id": "748d9917-3e6c-4231-b385-110693a1bb62",
+      "question": "What risks or limitations are supported by the available evidence for this proposed design?",
+      "payload_sha256s": {
+        "A": "d49f7d7cc13f83cfa4a3194f157d436146d68d7d527aa0252df91cc92b13db40",
+        "B": "c16acf155a6703b20ef390de925b5b0409a57c7ee1f87614b366423fcc604a85"
+      },
+      "request_sha256s": {
+        "A": "f61a13f84e7f92151210f2e95e0494f8e92509b9a620b8e30ec2be44e2ba4743",
+        "B": "7dff0eaefddf2c9fb1baf72c853fdbc7abe592be7cc60ca065fdf44986792541"
+      },
+      "reserved_tokens": {
+        "A": 4960,
+        "B": 5263
+      },
+      "reserved_micro_usd": {
+        "A": 21080,
+        "B": 22368
+      },
+      "current_sha256": "b519b684a4b033e5e228f588b33bf1a2a27dae06afdbf554079d391e42bd619a",
+      "historical_sha256": "5fc3539b10b4e4e2fd973258179ac97fb2cd1cb958184ffa0a4678464a949dab"
+    },
+    {
+      "task_id": "V3-T05",
+      "goal_id": "a55b2414-1061-44f6-a250-2f1f558edc66",
+      "snapshot_id": "2c116bad-0770-4f96-9027-5a6464b2cf01",
+      "grant_id": "7eb95871-7829-48ba-8628-5e0893b4c538",
+      "current_url": "http://127.0.0.1:9600/current/v3-t05",
+      "memory_id": "dbede6af-82ca-4215-8621-a04f26cd12b9",
+      "question": "What risks or limitations are supported by the available evidence for this proposed design?",
+      "payload_sha256s": {
+        "A": "b9080b34154b5e905d6a71da79b3e7d4ed5cd3da658f42f8658d7b39a498108b",
+        "B": "32393682f54fce3c025392bf4858d8b31e82fe6fb5362278948f231bef420dc3"
+      },
+      "request_sha256s": {
+        "A": "51dba819fc51771e68cd10b8f73397b0f1e72532a57d94a7cbedea539ce2af76",
+        "B": "9a0331b3c6417f0d7447ec16ec8ecaf46cca9b0e732af61a69e645512989c6ce"
+      },
+      "reserved_tokens": {
+        "A": 4899,
+        "B": 5191
+      },
+      "reserved_micro_usd": {
+        "A": 20821,
+        "B": 22062
+      },
+      "current_sha256": "abb5d55d9ca013c6f1fcba8db7861cb807aba5e95bcb19205bc096546eb654a2",
+      "historical_sha256": "583c955e278d2b8097c5570172f8aa8764d1f0edb7bd805136a4712b512ced3a"
+    },
+    {
+      "task_id": "V3-T06",
+      "goal_id": "15a3b1f2-1dd3-43a5-a3fd-fb6ce5019f4f",
+      "snapshot_id": "3410afed-4f2b-48de-832b-9933e751c8d5",
+      "grant_id": "3ec5fc82-7910-463c-ac1e-10889c102342",
+      "current_url": "http://127.0.0.1:9600/current/v3-t06",
+      "memory_id": "3e00c737-e570-46c5-8e9b-60d84217ee80",
+      "question": "What risks or limitations are supported by the available evidence for this proposed design?",
+      "payload_sha256s": {
+        "A": "5abc38b388dc46e121a91cff8af11aeb018320130bcb9e0b163ede9bd8f09644",
+        "B": "99c8f81e82f80ab22ddcc61f2e6408bb6a9651d19ad958aac6f4fc25ed827064"
+      },
+      "request_sha256s": {
+        "A": "ecef688e6c71dc2b5aae76c17cd5358b893ad06fa51a5e82ab822b612a040dcb",
+        "B": "4006172a24c9fe9a84f654b16497249e3e2255b47fcfc9c48291f03537c11fbd"
+      },
+      "reserved_tokens": {
+        "A": 4983,
+        "B": 5328
+      },
+      "reserved_micro_usd": {
+        "A": 21178,
+        "B": 22644
+      },
+      "current_sha256": "ca2a5b9d2d819aab8145331b2eecb3a56e90b4e24e67c35e75e8de11536c6718",
+      "historical_sha256": "bfb7e296824e5bbfbf9b726682846ab9384c5b69f7f0a2c42f3ce511c2fe9f2f"
+    },
+    {
+      "task_id": "V3-T07",
+      "goal_id": "0c6fa634-1bb0-4534-b38e-634c5baebc30",
+      "snapshot_id": "8a4c0193-4d59-485d-bd5d-9a92efdd4058",
+      "grant_id": "df9dad42-3315-4415-aaff-856a2e97f917",
+      "current_url": "http://127.0.0.1:9600/current/v3-t07",
+      "memory_id": "44d44b2e-64c2-44db-90c8-9e30e01a564f",
+      "question": "What risks or limitations are supported by the available evidence for this proposed design?",
+      "payload_sha256s": {
+        "A": "c9e60ec527163cf96af7573a3acdcc9c1666138634bff2037c8253743d647987",
+        "B": "5d432a7ac9be5a227fb7c2bfa6cabe7a124428e1c5b04a7b0819b2fd84ac4fa5"
+      },
+      "request_sha256s": {
+        "A": "04f89164a2c18098f2217dcd3418df3910f7eed06ef8da010e5204e93af5f4ce",
+        "B": "6bda8113b0c0ea29989f857e4288cd814690b17fd0f369b27b16c3c01a8e6195"
+      },
+      "reserved_tokens": {
+        "A": 4971,
+        "B": 5281
+      },
+      "reserved_micro_usd": {
+        "A": 21127,
+        "B": 22445
+      },
+      "current_sha256": "28591ad1c77232acb357e90087d1fc382b9a5afaf8e859d47653e3d62a86ee4b",
+      "historical_sha256": "d99bbcc673602e5738253ad95116fc8dd186f340c1d94acb12f7243727dc9378"
+    },
+    {
+      "task_id": "V3-T08",
+      "goal_id": "dc1c8ac0-6be3-41d2-b31a-258a0a77cc78",
+      "snapshot_id": "ce738593-86e9-4db0-815a-7b93539392d8",
+      "grant_id": "712a3163-4093-456d-af18-c095c4f8aec7",
+      "current_url": "http://127.0.0.1:9600/current/v3-t08",
+      "memory_id": "6cd14ee2-c91d-4ffd-b518-7dca2c2aa80e",
+      "question": "What operational risks are supported by the available evidence for this proposed change?",
+      "payload_sha256s": {
+        "A": "6a762703c019e43fcdc3f094022648fccb85e2a8157139ad6cd384e399285def",
+        "B": "72b8dbde8f5852ae62862995917234c7234902eea2988b5edfc4a62e3b6fc8a8"
+      },
+      "request_sha256s": {
+        "A": "ff333d2d48fbc32fa0671ed79e97b01e7c98bd033c70425331ecac0274387fa5",
+        "B": "d8c1fc57ad2d462c61ad537d873b13b2bee60a48e9e75dee369c9c1a3310733b"
+      },
+      "reserved_tokens": {
+        "A": 4924,
+        "B": 5329
+      },
+      "reserved_micro_usd": {
+        "A": 20927,
+        "B": 22649
+      },
+      "current_sha256": "0c3db0be4c60e1041b8bd68d8210c75628362f65182fb71070bef41702fab7c1",
+      "historical_sha256": "730ad4d18fe2eff65f92124104a632932c3564dc8a0c1e2e8fe3ac50fcee8953"
+    },
+    {
+      "task_id": "V3-T09",
+      "goal_id": "eca60613-786c-4170-97d1-7bf81abdc9be",
+      "snapshot_id": "90e9a584-208e-468c-83f5-ec7ebb34313a",
+      "grant_id": "056f9569-8afe-4b8e-9315-78145a3f5ee9",
+      "current_url": "http://127.0.0.1:9600/current/v3-t09",
+      "memory_id": "9373af46-7a01-44f2-996a-5745076725a9",
+      "question": "What risks or limitations are supported by the available evidence for this proposed design?",
+      "payload_sha256s": {
+        "A": "8cdc665c7c62443ede1a5b381fe0fe28882f0fa51ac8f719489f3587146fd5d7",
+        "B": "eec9acb54c4b4c02ad2b34b6f07f45c25c149208b696c4dabad37d10536b8130"
+      },
+      "request_sha256s": {
+        "A": "15d27a4decd33151150579197be1a677fe4ae0dbaa639b38c472e55bf0aac606",
+        "B": "bcc5e8dbf10183b06ab401595c09fa848b7f0f99a859575114dda28c20bdd89c"
+      },
+      "reserved_tokens": {
+        "A": 4913,
+        "B": 5313
+      },
+      "reserved_micro_usd": {
+        "A": 20881,
+        "B": 22581
+      },
+      "current_sha256": "a9c93964b69bd8ec891102747209448b521b8f05f01146869854c38b8cac5219",
+      "historical_sha256": "f8a1930cb3bdd20ac0e9223e8ad2971f79469b8638b52bb683e50941d21c60cc"
+    }
+  ],
+  "synthetic": true,
+  "totals": {
+    "calls": 18,
+    "reserved_tokens": 92490,
+    "worst_case_micro_usd": 393090
+  },
+  "parity": {
+    "instructions_equal": true,
+    "schema_equal": true,
+    "a_has_no_historical_keys": true,
+    "b_adds_only_historical_keys": true,
+    "answer_key_not_in_requests": true
+  },
+  "created_at": "2026-10-27T23:43:24.681774+00:00",
+  "updated_at": "2026-10-27T23:43:27.582089+00:00",
+  "approval": {
+    "approved_by": "synthetic-local-runner",
+    "approved_at": "2026-10-27T23:43:24.953349+00:00",
+    "human_approval": false,
+    "max_usd": 0.0,
+    "no_retries": true
+  },
+  "grant_reactivations": {
+    "count": 9,
+    "approval_sha256": "7bdbb7627a858b08fb79ba0b89299aa140d09fe19bc7dd6495fd5408c73a99ca",
+    "at": "2026-10-27T23:43:25.355541+00:00",
+    "note": "Grants bound to approved immutable snapshots re-activated after restart."
+  },
+  "blind": {
+    "run_id": "d3927726-9fdf-44b4-ab1a-a80f433c526a",
+    "rating_capability": "g9JL6KUopGWwipAt9p9WBCV_HdKsuCGdx42A3qod0f0",
+    "assignment_commitment": "b9d6f09d50e06a260761cc74d358b8703c9491b1acb2f09ae8b52be7ed7f2bd2",
+    "output_count": 27,
+    "randomized_creation_order": true,
+    "condition_labels_hidden_before_reveal": true
+  },
+  "ratings": {
+    "owner_endpoint_ratings": 27,
+    "synthetic": true,
+    "human_owner_ratings": false,
+    "rating_pattern": "task_id_hash_null_pattern_identical_for_all_conditions",
+    "recorded_at": "2026-10-27T23:43:26.685637+00:00"
+  },
+  "reveal": {
+    "revealed_at": "2026-10-27T23:43:27.003565+00:00",
+    "assignment_commitment": "b9d6f09d50e06a260761cc74d358b8703c9491b1acb2f09ae8b52be7ed7f2bd2",
+    "commitment_verified": true,
+    "owner_ratings": 27
+  },
+  "analysis_summary": {
+    "conditions": {
+      "A": {
+        "n": 9,
+        "supported_useful": 0,
+        "proportion": 0.0,
+        "wilson_95": [
+          0,
+          0.2991450484195441
+        ]
+      },
+      "B": {
+        "n": 9,
+        "supported_useful": 0,
+        "proportion": 0.0,
+        "wilson_95": [
+          0,
+          0.2991450484195441
+        ]
+      },
+      "C": {
+        "n": 9,
+        "supported_useful": 0,
+        "proportion": 0.0,
+        "wilson_95": [
+          0,
+          0.2991450484195441
+        ]
+      }
+    },
+    "paired_summary": {
+      "completed_pairs": 9,
+      "b_better": 0,
+      "a_better": 0,
+      "tied": 9,
+      "mean_difference": 0.0
+    }
+  },
+  "archive": {
+    "path": "archives\\ALIVE-14-R3\\evidence\\runs\\alive14-r3-paired-v3-synthetic-85fe891cee31",
+    "at": "2026-10-27T23:43:27.582077+00:00"
+  }
+}

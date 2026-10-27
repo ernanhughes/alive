@@ -1,0 +1,14 @@
+Command: uv run python -m scripts.alive14r3_experiment full-synthetic
+Phases: prepare -> approve (synthetic) -> execute -> rate (synthetic) -> reveal -> analyse -> archive
+Run: alive14-r3-paired-v3-synthetic-85fe891cee31
+Source commit: 8828302e286d4b7607bc38274a1972c4d4dcd18b
+Protocol: alive14r3-paired-v3 85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b
+Blind run: d3927726-9fdf-44b4-ab1a-a80f433c526a
+Commitment: b9d6f09d50e06a260761cc74d358b8703c9491b1acb2f09ae8b52be7ed7f2bd2
+Conditions: {"A": {"n": 9, "proportion": 0.0, "supported_useful": 0, "wilson_95": [0, 0.2991450484195441]}, "B": {"n": 9, "proportion": 0.0, "supported_useful": 0, "wilson_95": [0, 0.2991450484195441]}, "C": {"n": 9, "proportion": 0.0, "supported_useful": 0, "wilson_95": [0, 0.2991450484195441]}}
+Paired: {"a_better": 0, "b_better": 0, "completed_pairs": 9, "mean_difference": 0.0, "tied": 9}
+Owner-attested ratings: 0
+Synthetic: True
+Paid calls: 0
+Rating pattern: task-id hash null pattern, identical for A/B/C; no condition advantage.
+Archive: archives\ALIVE-14-R3\evidence\runs\alive14-r3-paired-v3-synthetic-85fe891cee31

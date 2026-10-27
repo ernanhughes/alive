@@ -1,0 +1,14 @@
+Command: uv run python -m scripts.native14_r3
+NATIVE_SYNTHETIC_PASS
+Source commit: 8828302e286d4b7607bc38274a1972c4d4dcd18b
+Chrome: 155.0.8059.85
+Presentation: native side panel target
+Synthetic provider calls: 4
+Paid calls: 0
+Blind ratings: 6
+Blind provenance: ["synthetic_owner_endpoint"]
+Synthetic ratings: True
+Owner attestation: ["none"]
+Post-reveal rating status: 409
+Evidence: archives/ALIVE-14-R3/evidence/native-synthetic.json
+Screenshot: archives/ALIVE-14-R3/evidence/native-r3-blind.png

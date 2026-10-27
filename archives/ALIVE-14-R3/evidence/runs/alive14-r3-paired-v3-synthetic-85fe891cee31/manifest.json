@@ -1,0 +1,38 @@
+{
+  "run_id": "alive14-r3-paired-v3-synthetic-85fe891cee31",
+  "protocol_version": "alive14r3-paired-v3",
+  "protocol_sha256": "85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b",
+  "answer_key_sha256": "255e706dd569634d1710a50831f65a6dd6eb7dabc5ee56e1cd763b382554b43d",
+  "synthetic": true,
+  "paid_calls": 0,
+  "files": {
+    "analysis.json": {
+      "sha256": "657be51f4d7a4c2492369d7b93a99843eb48a9d0efd72509ebaaa8b7bec0b493",
+      "bytes": 28680
+    },
+    "approval.json": {
+      "sha256": "7bdbb7627a858b08fb79ba0b89299aa140d09fe19bc7dd6495fd5408c73a99ca",
+      "bytes": 2123
+    },
+    "outputs.jsonl": {
+      "sha256": "a4fbdf09f810c11e0263f335069e3c3a97c10132588033c5ef5ba2a866c1aebb",
+      "bytes": 26368
+    },
+    "preview-manifest.json": {
+      "sha256": "b812f1fb4f231d02d6ee7310318005e249f7cdb32e9139052e8cee4f390db591",
+      "bytes": 5003
+    },
+    "restart.json": {
+      "sha256": "a6541e042a11902a0d581811b6da6cdb0a937ad01a099fe3b485e4c917d2b957",
+      "bytes": 134
+    },
+    "results.json": {
+      "sha256": "9017b2313076a77ab50f0ed9ecbdf527b1316660811618c7bb846166b9f6702c",
+      "bytes": 66742
+    },
+    "state.json": {
+      "sha256": "c575631e87f5308e2546c5e2934a7d2748615a6dda2f81d2de3e680415105325",
+      "bytes": 13893
+    }
+  }
+}

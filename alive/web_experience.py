@@ -95,7 +95,7 @@ class RelationshipPreviewRequest(Strict):
     snapshot_id: str
     research_id: str | None = None
     provider: Literal["local_stub", "local_stub_invalid", "meta"] = "local_stub"
-    analysis_mode: Literal["current_only", "history_assisted"] = "history_assisted"
+    analysis_mode: Literal["current_only", "history_assisted", "paired"] = "history_assisted"
     research_question: str | None = Field(default=None, max_length=1000)
 
 
@@ -1280,11 +1280,13 @@ def router(app, ready):
 
     @api.get("/research/relationships")
     async def list_research_relationships():
-        return await app.state.relationships.list()
+        return await app.state.relationships.list(redact_paired=await app.state.blind.collecting())
 
     @api.post("/research/blind/runs")
     async def create_blind_run(data: BlindRunRequest):
-        return await app.state.blind.create_run(data.experiment_id, data.seed, data.tasks)
+        return await app.state.blind.create_run(
+            data.experiment_id, data.seed, data.tasks, synthetic=data.synthetic
+        )
 
     @api.get("/research/blind/runs")
     async def list_blind_runs():
@@ -1303,11 +1305,17 @@ def router(app, ready):
             data.rubric,
             capability=data.capability,
             rater_type="owner",
+            synthetic=data.synthetic,
+            attestation=data.attestation,
         )
 
     @api.post("/research/blind/runs/{run_id}/reveal")
     async def blind_reveal(run_id: str):
         return await app.state.blind.reveal(run_id)
+
+    @api.get("/research/blind/runs/{run_id}/results")
+    async def blind_revealed_results(run_id: str):
+        return await app.state.blind.revealed_results(run_id)
 
     @api.post("/research/blind/runs/{run_id}/archive")
     async def blind_archive(run_id: str):

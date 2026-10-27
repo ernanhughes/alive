@@ -1,0 +1,53 @@
+{
+  "run_id": "alive14-r3-paired-v3-synthetic-85fe891cee31",
+  "protocol_sha256": "85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b",
+  "provider": "local_stub",
+  "model": "deterministic-local-stub-v1",
+  "task_count": 9,
+  "calls": 18,
+  "payload_sha256s": {
+    "V3-T01": {
+      "A": "3571472f0ca819d1b475811875cbcbcfbc48d57746a950d47f6035541a2e25f0",
+      "B": "97c607156f8cf498f62f7206e76cffb56ee60b4903f83a3fc9518e79efe56db5"
+    },
+    "V3-T02": {
+      "A": "189266abb96c244a0be6821604b703aa1be12f3f0aabccd4bac275e9aedb1074",
+      "B": "a6b18012de3ebb972907000178a4238cf9f0b6f3cd06eda431c8dfdb47f0d934"
+    },
+    "V3-T03": {
+      "A": "f0375f9d97aaea08a5262424c3aca020eae1b3a6a1e592aeabe7f601923fceb7",
+      "B": "f1f404b2d7e845d01a80543ab5c69051d99678aadbb17af4676509227d2e7539"
+    },
+    "V3-T04": {
+      "A": "d49f7d7cc13f83cfa4a3194f157d436146d68d7d527aa0252df91cc92b13db40",
+      "B": "c16acf155a6703b20ef390de925b5b0409a57c7ee1f87614b366423fcc604a85"
+    },
+    "V3-T05": {
+      "A": "b9080b34154b5e905d6a71da79b3e7d4ed5cd3da658f42f8658d7b39a498108b",
+      "B": "32393682f54fce3c025392bf4858d8b31e82fe6fb5362278948f231bef420dc3"
+    },
+    "V3-T06": {
+      "A": "5abc38b388dc46e121a91cff8af11aeb018320130bcb9e0b163ede9bd8f09644",
+      "B": "99c8f81e82f80ab22ddcc61f2e6408bb6a9651d19ad958aac6f4fc25ed827064"
+    },
+    "V3-T07": {
+      "A": "c9e60ec527163cf96af7573a3acdcc9c1666138634bff2037c8253743d647987",
+      "B": "5d432a7ac9be5a227fb7c2bfa6cabe7a124428e1c5b04a7b0819b2fd84ac4fa5"
+    },
+    "V3-T08": {
+      "A": "6a762703c019e43fcdc3f094022648fccb85e2a8157139ad6cd384e399285def",
+      "B": "72b8dbde8f5852ae62862995917234c7234902eea2988b5edfc4a62e3b6fc8a8"
+    },
+    "V3-T09": {
+      "A": "8cdc665c7c62443ede1a5b381fe0fe28882f0fa51ac8f719489f3587146fd5d7",
+      "B": "eec9acb54c4b4c02ad2b34b6f07f45c25c149208b696c4dabad37d10536b8130"
+    }
+  },
+  "max_input_tokens": 92490,
+  "max_output_tokens": 1536,
+  "max_usd": 0.0,
+  "no_retries": true,
+  "human_approval": false,
+  "approved_by": "synthetic-local-runner",
+  "approved_at": "2026-10-27T23:43:24.953349+00:00"
+}

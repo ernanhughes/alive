@@ -391,10 +391,33 @@ async function loadBlindRun() {
   if (!runId) throw new Error('Choose a blind evaluation');
   blindView = await command('blind-view', { runId });
   blindRated.clear();
-  $('blind-status').textContent = `${blindView.task_count} task(s), ${blindView.outputs.length} anonymous output(s). Conditions remain hidden until all ratings are complete.`;
-  $('blind-reveal').disabled = true;
+  for (const outputId of blindView.rated_output_ids || []) blindRated.add(outputId);
+  if (blindView.status === 'revealed' || blindView.status === 'archived') {
+    const results = await command('blind-results', { runId });
+    renderRevealed(results);
+    $('blind-status').textContent = `Read-only results. Revealed at ${results.revealed_at}.`;
+    $('blind-archive').disabled = results.status === 'archived';
+    return;
+  }
+  $('blind-status').textContent = `${blindView.task_count} task(s), ${blindView.outputs.length} anonymous output(s). Commitment ${blindView.assignment_commitment.slice(0, 12)}... Conditions remain hidden until all ratings are complete.`;
+  $('blind-reveal').disabled = blindRated.size !== blindView.outputs.length;
   $('blind-archive').disabled = true;
   renderBlindOutputs();
+}
+function renderRevealed(reveal) {
+  const target = $('blind-outputs');
+  target.replaceChildren();
+  for (const output of reveal.outputs) {
+    target.append(outboundText('p', `${output.task_id} | ${output.condition}`));
+    const answer = document.createElement('pre');
+    answer.textContent = output.output_text;
+    target.append(answer);
+    const rating = (reveal.ratings || []).filter(row => row.data.output_id === output.output_id)
+      .sort((left, right) => right.data.revision - left.data.revision)[0];
+    if (rating) target.append(outboundText('p', `Owner rating revision ${rating.data.revision}`));
+  }
+  $('blind-reveal').disabled = true;
+  $('blind-archive').disabled = reveal.status !== 'revealed';
 }
 function renderBlindOutputs() {
   const target = $('blind-outputs');
@@ -405,6 +428,11 @@ function renderBlindOutputs() {
     const answer = document.createElement('pre');
     answer.textContent = output.output_text;
     block.append(answer);
+    if (blindRated.has(output.output_id)) {
+      block.append(outboundText('p', 'Assessment saved.'));
+      target.append(block);
+      continue;
+    }
     const rubric = {};
     for (const [label, field] of blindFields) {
       const row = document.createElement('p');
@@ -432,6 +460,8 @@ function renderBlindOutputs() {
         outputSha256: output.output_sha256,
         capability: blindView.rating_capability,
         rubric,
+        attestation: $('blind-attest').checked ? 'human_reviewed' : 'none',
+        synthetic: blindView.synthetic === true,
       });
       blindRated.add(output.output_id);
       submit.disabled = true;
@@ -448,19 +478,13 @@ $('blind-load').onclick = () => action(loadBlindRun);
 $('blind-reveal').onclick = () => action(async () => {
   const reveal = await command('blind-reveal', { runId: blindView.blind_run_id });
   $('blind-status').textContent = `Revealed at ${reveal.revealed_at}. Conditions are now visible.`;
-  const target = $('blind-outputs');
-  target.replaceChildren();
-  for (const output of reveal.outputs) {
-    target.append(outboundText('p', `${output.task_id} · ${output.condition}`));
-    target.append(outboundText('pre', output.output_text));
-  }
-  $('blind-reveal').disabled = true;
-  $('blind-archive').disabled = false;
+  renderRevealed(reveal);
 });
 $('blind-archive').onclick = () => action(async () => {
   await command('blind-archive', { runId: blindView.blind_run_id });
-  $('blind-status').textContent = 'Blind evaluation archived.';
-  $('blind-archive').disabled = true;
+  const results = await command('blind-results', { runId: blindView.blind_run_id });
+  $('blind-status').textContent = 'Blind evaluation archived; results remain read-only.';
+  renderRevealed(results);
 });
 $('find-research').onclick = () => action(async () => {
   const result = await command('find-research');
