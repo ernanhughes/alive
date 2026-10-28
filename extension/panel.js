@@ -623,6 +623,10 @@ $('withdraw-research').onclick = () => action(async () => {
   $('withdraw-research').disabled = true;
   $('research-results').replaceChildren();
   $('connection').textContent = '';
+  $('outbound').replaceChildren();
+  $('relationship-feedback').replaceChildren();
+  $('evidence-cards').replaceChildren();
+  $('evidence-indicator').textContent = 'Research withdrawn; refresh to inspect remaining findings.';
   $('research-status').textContent = 'Research memory withdrawn; it will not be retrieved or reindexed.';
 });
 for (const [id, useful] of [['connection-useful', true], ['connection-not-useful', false]]) {
@@ -632,6 +636,71 @@ for (const [id, useful] of [['connection-useful', true], ['connection-not-useful
     $('connection-useful').disabled = $('connection-not-useful').disabled = true;
   });
 }
+// ALIVE-DEMO-01: owner-triggered inspection of stored, source-backed candidates.
+// Never display invalidated rows, and never present candidate inference as truth.
+function evidenceText(tag, value) {
+  const element = document.createElement(tag);
+  element.textContent = String(value ?? '');
+  return element;
+}
+async function refreshEvidenceCards() {
+  const response = await command('evidence-findings');
+  const cards = $('evidence-cards');
+  cards.replaceChildren();
+  const findings = (response.connections || []).filter(row =>
+    row.status === 'candidate' && row.data?.historical_memory_id &&
+    row.data?.current_quote && row.data?.historical_quote);
+  $('evidence-indicator').textContent = findings.length
+    ? findings.length + ' evidence-linked candidate(s) to inspect. Not verified contradictions.'
+    : 'No active evidence-linked candidates. Withdrawn findings are not shown.';
+  for (const finding of findings.slice(-10).reverse()) {
+    const d = finding.data;
+    const card = document.createElement('article');
+    card.style.cssText = 'border-top:1px solid #48603d; margin-top:10px; padding-top:10px';
+    card.append(
+      evidenceText('strong', d.relation_type || 'Possible relationship'),
+      evidenceText('p', 'Candidate · ' + (d.explanation || 'No explanation recorded')),
+      evidenceText('p', 'Current source: ' + (d.current_url || 'unavailable') +
+        ' · SHA ' + String(d.current_sha256 || '').slice(0, 12)),
+      evidenceText('blockquote', d.current_quote),
+      evidenceText('p', 'Historical source: ' + (d.historical_url || 'unavailable') +
+        ' · SHA ' + String(d.historical_sha256 || '').slice(0, 12)),
+      evidenceText('blockquote', d.historical_quote),
+      evidenceText('p', 'Limitations: ' + (d.limitations || 'Interpretation is unverified')),
+    );
+    const retire = document.createElement('button');
+    retire.textContent = 'Withdraw historical evidence';
+    retire.setAttribute('aria-label', 'Withdraw historical source for this finding');
+    retire.onclick = () => action(async () => {
+      if (!confirm('Withdraw the historical research memory and invalidate its dependent findings?')) return;
+      retire.disabled = true;
+      try {
+        await command('withdraw-research', { researchId: d.historical_memory_id });
+        // Fetch fresh authoritative state; do not keep detached quote cards visible.
+        cards.replaceChildren();
+        $('evidence-indicator').textContent = 'Source withdrawn. Reloading current findings…';
+        await refreshEvidenceCards();
+      } catch (e) {
+        // Fail closed: a failed refresh must not leave a potentially stale card.
+        cards.replaceChildren();
+        $('evidence-indicator').textContent = 'Could not verify current evidence state.';
+        throw e;
+      }
+    });
+    card.append(retire);
+    cards.append(card);
+  }
+  if (findings.length > 10) cards.append(evidenceText('p', 'Showing 10 most recent candidates.'));
+}
+$('evidence-refresh').onclick = () => action(async () => {
+  $('evidence-cards').replaceChildren();
+  $('evidence-indicator').textContent = 'Checking stored findings…';
+  try { await refreshEvidenceCards(); }
+  catch (e) {
+    $('evidence-indicator').textContent = 'Evidence check unavailable; no findings displayed.';
+    throw e;
+  }
+});
 async function preview() {
   const { latest, selected } = await chrome.storage.session.get(['latest', 'selected']);
   reviewed = latest?.payload || null;

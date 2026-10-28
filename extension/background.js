@@ -187,6 +187,9 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
         ...message.rubric,
       });
     }
+    if (message.type === 'evidence-findings') {
+      return send('/browser-experience/research/relationships');
+    }
     if (message.type === 'campaigns') return send('/browser-experience/research/experiment/campaigns');
     if (message.type === 'approve-campaign') {
       if (!message.digest || !message.approval)
