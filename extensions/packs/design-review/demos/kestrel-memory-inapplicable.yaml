@@ -1,0 +1,21 @@
+schema_version: alive.demo.v0-proposal
+id: kestrel-memory-inapplicable
+synthetic: true
+disclaimer: Invented examples. Not an ALIVE experimental result.
+goal: Review Kestrel-3 compaction proposal.
+current:
+  source: https://design-review.example/kestrel-3-v6
+  text: "Kestrel-3 v6 uses a bounded background queue and its own foreground-write reservation. Continuous compaction is rate-controlled by the queue."
+memory:
+  source: https://runbooks.example/kestrel-3-v5
+  active: true
+  authorized: true
+  text: "Kestrel-3 runbook v5: continuous compaction can starve foreground writes and must be rate-limited."
+superseding_evidence:
+  source: https://runbooks.example/kestrel-3-v6
+  authorized: true
+  text: "Kestrel-3 runbook v6 supersedes v5: the new bounded queue enforces rate controls and protects foreground writes."
+expected:
+  outcome: qualified_non_use
+  reason_codes: [superseded_constraint, newer_source_available]
+  next_step: Verify the proposal's implementation matches the v6 queue controls.
