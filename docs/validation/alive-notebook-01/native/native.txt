@@ -1,0 +1,158 @@
+{
+  "source_commit": "933c639d778416b43cb5bd9d050520a2ab8cbc31",
+  "source_status_before_run": "M .gitignore\n M alive/web_experience.py\n M extension/config.js\n M extension/live-companion.js\n M tests/extension-live-companion.test.cjs\n?? docs/validation/alive-notebook-01/\n?? scripts/native_notebook_01.py\n?? site/\n?? tests/notebook-capture.test.cjs\n?? tests/test_notebook_01.py",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "hugo": "hugo v0.165.0-76a5e1880ab46688155b02e99bab9be2a6134492 windows/amd64 BuildDate=2026-08-12T14:26:28Z VendorInfo=gohugoio",
+  "goal": "Trace how ALIVE's research claims changed between milestones",
+  "chapters": [
+    "alive-11-corrections",
+    "alive-12-status",
+    "alive-13-what-was-wrong",
+    "alive-13-status",
+    "alive-14-status"
+  ],
+  "allowlist": [
+    "http://127.0.0.1:1313/chapters/alive-11-corrections/",
+    "http://127.0.0.1:1313/chapters/alive-12-status/",
+    "http://127.0.0.1:1313/chapters/alive-13-status/",
+    "http://127.0.0.1:1313/chapters/alive-13-what-was-wrong/",
+    "http://127.0.0.1:1313/chapters/alive-14-status/"
+  ],
+  "external_model_calls": 0,
+  "paid_inference_spend_usd": 0,
+  "steps": [
+    {
+      "step": "saved memory",
+      "chapter": "alive-12-status",
+      "url": "http://127.0.0.1:1313/chapters/alive-12-status/",
+      "sha256": "d6d5418b619dec03773136d0bdc3ec55d69e8fd3b26063609256d35b1fe8c300",
+      "anchor": "Retrieval advantage: NOT DEMONSTRATED."
+    },
+    {
+      "step": "saved memory",
+      "chapter": "alive-11-corrections",
+      "url": "http://127.0.0.1:1313/chapters/alive-11-corrections/",
+      "sha256": "156113bdeb359c694f94083468c0452941b4180a8f7a78b1575f887d5c964396",
+      "anchor": "ALIVE-11 contains two paid campaigns, 16 recorded calls, 8,732 charged tokens and approximately $0.023665 estimated spend."
+    },
+    {
+      "step": "saved memory",
+      "chapter": "alive-14-status",
+      "url": "http://127.0.0.1:1313/chapters/alive-14-status/",
+      "sha256": "1b50e567b5b563474559a16d0fd180e426fe2b2330ad4ffc8e14f1280e4a3460",
+      "anchor": "No owner ratings or paid Meta calls were collected."
+    }
+  ],
+  "shipped_permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "sidePanel"
+  ],
+  "harness_host_permissions": [
+    "http://127.0.0.1:60789/*",
+    "http://127.0.0.1:1313/*"
+  ],
+  "chrome": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/156.0.8078.73",
+    "revision": "@2f9a11097447f226133bc1a31c787291a5eeab98",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+    "jsVersion": "15.6.75.25"
+  },
+  "panel": {
+    "presentation": "native side panel target",
+    "side_panel_registration_ready": true,
+    "action_target_id": "E45DAF7FB74323D9D7330D9BA0C11502",
+    "panel_target_id": "B651F8A7E2BFC7EDA1B2CE72DDC54070",
+    "panel_opened_as_ordinary_tab": false,
+    "panel_behavior": {
+      "openPanelOnActionClick": true
+    }
+  },
+  "goal_id": "bee7bc3e-ab0e-4e91-bf4a-370bb1aab3b1",
+  "capture": {
+    "chapter": "alive-12-status",
+    "chars": 1029,
+    "chrome_excluded": true,
+    "sha256_matches_memory": true
+  },
+  "r1": {
+    "rank": 1,
+    "memory_id": "816fa218-a4ac-47a7-b5b4-3810d1a97d5f",
+    "source_url": "http://127.0.0.1:1313/chapters/alive-12-status/",
+    "sha256": "d6d5418b619dec03773136d0bdc3ec55d69e8fd3b26063609256d35b1fe8c300",
+    "relation_type": "topic_overlap_candidate",
+    "shared_terms": [
+      "complementary",
+      "lexical",
+      "overlap",
+      "same_concept",
+      "shared"
+    ],
+    "current_quote": "Lexical overlap was labelled same_concept or complementary, which overstated what shared words establish.",
+    "historical_quote": "connections builds a deterministic candidate from lexical overlap between the current reviewed excerpt and the historical excerpt:\nat least two shared content terms: same_concept, status candidate;\none shared term: complementary, status candidate, weak;\nno shared term or missing exact quotation: ins",
+    "quote_validation": {
+      "current_exact": true,
+      "historical_exact": true
+    },
+    "explanation": "The displayed source spans share lexical content terms complementary, lexical, overlap, same_concept, shared. This is a topic-overlap candidate only; it does not establish agreement, support, contradiction or corroboration.",
+    "ui_quote_visible": true
+  },
+  "r2": {
+    "rank": 2,
+    "top": [
+      {
+        "rank": 1,
+        "source_url": "http://127.0.0.1:1313/chapters/alive-14-status/"
+      },
+      {
+        "rank": 2,
+        "source_url": "http://127.0.0.1:1313/chapters/alive-12-status/"
+      },
+      {
+        "rank": 3,
+        "source_url": "http://127.0.0.1:1313/chapters/alive-11-corrections/"
+      }
+    ],
+    "sha256": "d6d5418b619dec03773136d0bdc3ec55d69e8fd3b26063609256d35b1fe8c300",
+    "ui_visible": true
+  },
+  "r3": {
+    "rank": 2,
+    "memory_id": "660671ac-ead2-444f-bb72-bbf6d6707d16",
+    "relation_type": "topic_overlap_candidate",
+    "shared_terms": [
+      "calls",
+      "paid"
+    ],
+    "explanation": "The displayed source spans share lexical content terms calls, paid. This is a topic-overlap candidate only; it does not establish agreement, support, contradiction or corroboration.",
+    "strict_abstention_test": "xfail(strict) remains in tests/test_notebook_01.py"
+  },
+  "withdrawal": {
+    "withdrawn": "http://127.0.0.1:1313/chapters/alive-12-status/",
+    "retrieved_after_withdrawal": false
+  },
+  "restart": {
+    "withdrawn_still_absent": true,
+    "other_memory_present": true
+  },
+  "revocation": {
+    "grant_status": "revoked",
+    "session_cleared": true,
+    "further_review_refused": true
+  },
+  "database": {
+    "counts": {
+      "note": 0,
+      "research_memory": 3,
+      "research_connection": 2,
+      "research_relationship_analysis": 0
+    },
+    "memory_statuses": {
+      "active": 2,
+      "withdrawn": 1
+    }
+  },
+  "status": "PASS"
+}
