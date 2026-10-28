@@ -189,8 +189,8 @@ async def main():
                         + json.dumps(url)
                     )
                     await panel.wait(
-                        "document.querySelector('#live-state')"
-                        ".textContent.includes('Page authorised')"
+                        "document.querySelector('#live-companion')"
+                        ".getAttribute('aria-busy') !== 'true'"
                     )
 
                 async def remember():
