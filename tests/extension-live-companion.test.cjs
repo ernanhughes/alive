@@ -92,3 +92,35 @@ test('investigation switch refuses an old preview before any authorization or di
   assert.equal(p.calls.some(x => x.type === 'authorize-relationship'), false);
   assert.equal(p.calls.some(x => x.type === 'analyse-relationship'), false);
 });
+
+const relatedMemory = { memory_id: 'memory', reliance_anchor: {quote: 'Saved passage.'}, matched_terms: ['UTC'] };
+function recordedPair(overrides = {}) {
+  return { status: 'validated', data: { goal_id: 'g', current_sha256: 'sha-X', current_url: 'http://source/X',
+    historical_memory_id: 'memory', validation: {relationship: 'insufficient_evidence'}, ...overrides } };
+}
+function pairContext(analyses, overrides = {}) {
+  return {goal: {id:'g'}, current: {id:'recapture-X', data:{title:'X',url:'http://source/X',sha256:'sha-X'}},
+    related:[relatedMemory], findings:[], analyses, ...overrides};
+}
+test('recorded abstention must match source hash, URL, saved memory and investigation', async () => {
+  for (const changed of [{current_sha256:'other'}, {current_url:'other'}, {historical_memory_id:'other'}, {goal_id:'other'}]) {
+    const p = await panel(pairContext([recordedPair(changed)]));
+    assert.equal(p.d.querySelector('#live-state').textContent, 'Relevant saved evidence found. No comparison has been authorised.');
+  }
+});
+test('matching recorded abstention survives re-review with a different snapshot id', async () => {
+  const p = await panel(pairContext([recordedPair({current_snapshot_id:'original-X'})]));
+  assert.equal(p.d.querySelector('#live-state').textContent, 'Evidence checked · No validated change detected');
+});
+test('dismissed validated candidate never inherits an older abstention', async () => {
+  const analyses = [recordedPair(), recordedPair({current_sha256:'other'}),
+    recordedPair({validation:{relationship:'explicit_supersession'}})];
+  const p = await panel(pairContext(analyses, {findings:[finding]}));
+  await p.click('Dismiss interpretation');
+  p.setContext(pairContext(analyses)); await p.api.refresh();
+  assert.equal(p.d.querySelector('#live-state').textContent, 'Interpretation dismissed. The saved source remains available.');
+});
+test('unrelated abstention without a displayed memory leaves the quiet state', async () => {
+  const p = await panel(pairContext([recordedPair()], {related:[]}));
+  assert.equal(p.d.querySelector('#live-state').textContent, 'Nothing significant to report.');
+});

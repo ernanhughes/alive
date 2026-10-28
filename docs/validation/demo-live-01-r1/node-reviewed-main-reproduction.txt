@@ -1,0 +1,77 @@
+✔ live card separates unchanged text and changed standing, renders untrusted quotes as text (105.9812ms)
+✔ live preview discloses exact request, hashes, local provider and zero maximum spend (16.8489ms)
+✔ live authorised abstention shows recorded outcome rather than an alert (20.0885ms)
+✔ dismissal keeps source evidence and records interpretation feedback only (11.1191ms)
+✔ withdrawal clears live and legacy cards, and a stale refresh cannot restore them (12.8456ms)
+✔ investigation switch refuses an old preview before any authorization or dispatch (10.4407ms)
+✖ recorded abstention must match source hash, URL, saved memory and investigation (13.6995ms)
+✔ matching recorded abstention survives re-review with a different snapshot id (8.545ms)
+✖ dismissed validated candidate never inherits an older abstention (10.6746ms)
+✖ unrelated abstention without a displayed memory leaves the quiet state (10.6155ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 7
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 864.7792
+
+✖ failing tests:
+
+test at .alive\r1-baseline-companion.test.cjs:105:1
+✖ recorded abstention must match source hash, URL, saved memory and investigation (13.6995ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'Evidence checked · No validated change detected'
+  - 'Relevant saved evidence found. No comparison has been authorised.'
+  
+      at TestContext.<anonymous> (C:\Projects\alive\.alive\r1-baseline-companion.test.cjs:108:12)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Evidence checked · No validated change detected',
+    expected: 'Relevant saved evidence found. No comparison has been authorised.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at .alive\r1-baseline-companion.test.cjs:115:1
+✖ dismissed validated candidate never inherits an older abstention (10.6746ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'Evidence checked · No validated change detected'
+  - 'Interpretation dismissed. The saved source remains available.'
+  
+      at TestContext.<anonymous> (C:\Projects\alive\.alive\r1-baseline-companion.test.cjs:121:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Evidence checked · No validated change detected',
+    expected: 'Interpretation dismissed. The saved source remains available.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at .alive\r1-baseline-companion.test.cjs:123:1
+✖ unrelated abstention without a displayed memory leaves the quiet state (10.6155ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'Evidence checked · No validated change detected'
+  - 'Nothing significant to report.'
+  
+      at TestContext.<anonymous> (C:\Projects\alive\.alive\r1-baseline-companion.test.cjs:125:10)
+      at async Test.run (node:internal/test_runner/test:1208:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:831:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'Evidence checked · No validated change detected',
+    expected: 'Nothing significant to report.',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -341,3 +341,22 @@ def test_legacy_named_other_method_is_not_a_supersession():
     )
     assert result["decision"] == "demoted"
     assert "supersession_named_subject_not_bound" in result["reasons"]
+
+
+@pytest.mark.parametrize("version", [1, None])
+def test_validator_independently_demotes_registered_bytes_with_downgraded_versions(client, version):
+    _, _, _, request = setup(client)
+    payload = preview(client, request)["preview"]
+    output = ClaimComparisonOutput(
+        **demo_fixtures()[(payload["current_sha256"], payload["historical_sha256"])]
+    )
+    for prefix in ("historical", "current"):
+        if version is None:
+            payload.pop(prefix + "_capture_format_version")
+        else:
+            payload[prefix + "_capture_format_version"] = version
+    result = validate_claim(output, payload)
+    assert result["decision"] == "demoted"
+    assert result["relationship"] == "insufficient_evidence"
+    assert "historical_capture_source_identity_unverified" in result["reasons"]
+    assert "current_capture_source_identity_unverified" in result["reasons"]

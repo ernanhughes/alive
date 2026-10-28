@@ -21,7 +21,7 @@ from scripts import native10 as chrome_harness
 from scripts.demo_live_01 import environment, prepare_schema
 
 ROOT = Path(__file__).resolve().parents[1]
-EVIDENCE = ROOT / "docs/validation/demo-live-01/native"
+EVIDENCE = ROOT / "docs/validation/demo-live-01-r1/native"
 BEHAVIOR = "Return the current UTC date and time, with tzinfo None."
 DEPRECATION = "Deprecated since version 3.12: Use datetime.now() with UTC instead."
 
@@ -348,6 +348,17 @@ async def main():
                         "usage": ledger_b["analyses"][0]["data"]["usage"],
                     }
                 )
+                # Same investigation: the recorded abstention must not describe a
+                # different source pair as checked. No third dispatch is made.
+                await authorise(urls[0])
+                await remember()
+                await authorise(urls[1])
+                await panel.wait(
+                    "document.querySelector('#live-state').textContent === "
+                    "'Relevant saved evidence found. No comparison has been authorised.'"
+                )
+                report["stale_abstention_absent"] = True
+                await snapshot(panel, "06-unchecked-source-after-abstention")
                 report["goal_isolation_confirmed"] = (
                     await api("/research/relationships?goal_id=" + goal_a)
                 )["connections"] == []
@@ -385,7 +396,13 @@ async def main():
         raise
     finally:
         chrome_harness.stop_backend(process, log)
-        (EVIDENCE / "result.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+        result_path = EVIDENCE / "result.json"
+        if report.get("status") != "PASS":
+            attempt = 1
+            while (EVIDENCE / f"attempt-{attempt}-result.json").exists():
+                attempt += 1
+            result_path = EVIDENCE / f"attempt-{attempt}-result.json"
+        result_path.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(report, indent=2))
 
 

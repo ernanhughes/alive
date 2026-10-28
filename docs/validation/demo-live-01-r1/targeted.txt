@@ -1,0 +1,18 @@
+F..........                                                              [100%]
+================================== FAILURES ===================================
+__________ test_withdrawn_note_enumeration_public_reads_and_restart ___________
+tests\test_demo_live_01_r1.py:49: in test_withdrawn_note_enumeration_public_reads_and_restart
+    assert response.status_code == 410
+E   assert 503 == 410
+E    +  where 503 = <Response [503 Service Unavailable]>.status_code
+============================== warnings summary ===============================
+tests/test_demo_live_01_r1.py: 3 warnings
+tests/test_demo01_foundation_probes.py: 5 warnings
+tests/test_zz_prc_probe.py: 4 warnings
+  C:\Projects\alive\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+    self._get_loop()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_demo_live_01_r1.py::test_withdrawn_note_enumeration_public_reads_and_restart
+1 failed, 10 passed, 12 warnings in 7.88s

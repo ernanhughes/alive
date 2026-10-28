@@ -111,8 +111,21 @@ function renderContext(value, retired = false) {
       button('Check against new evidence', async () => showPreview(memory.memory_id)));
     if (!value.findings?.length && !retired) state('Relevant saved evidence found. No comparison has been authorised.');
   }
-  const latest = [...(value.analyses || [])].reverse().find(row => row.status === 'validated' && row.data.validation?.relationship === 'insufficient_evidence');
-  if (latest && !value.findings?.length && !retired) {
+  const displayedMemories = new Set((value.related || []).map(memory => memory.memory_id));
+  if (value.memory?.data?.reliance_anchor?.quote) displayedMemories.add(value.memory.id);
+  const matching = (value.analyses || []).filter(row => row.status === 'validated'
+    && value.goal?.id && row.data.goal_id === value.goal.id
+    && value.current?.data?.sha256 && row.data.current_sha256 === value.current.data.sha256
+    && row.data.current_url === value.current.data.url
+    && displayedMemories.has(row.data.historical_memory_id));
+  const candidateMemories = new Set(matching.filter(row => row.data.validation?.relationship
+    && row.data.validation.relationship !== 'insufficient_evidence').map(row => row.data.historical_memory_id));
+  const latest = [...matching].reverse().find(row => row.data.validation?.relationship === 'insufficient_evidence'
+    && !candidateMemories.has(row.data.historical_memory_id));
+  if (candidateMemories.size && !value.findings?.length && !retired) {
+    state('Interpretation dismissed. The saved source remains available.');
+  }
+  if (latest && !candidateMemories.size && !value.findings?.length && !retired) {
     state('Evidence checked · No validated change detected');
     content.append(text('p', 'Newer publication alone does not establish that the earlier claim was superseded.'),
       technical('Recorded check and limitations', latest));
