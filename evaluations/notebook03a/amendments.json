@@ -13,5 +13,18 @@
       "annotations.json",
       "schemas.json"
     ]
+  },
+  {
+    "version": "notebook03a-v1.2",
+    "parent_protocol_sha256": "a090fe53109e4bd667a2fb13ddde189578a9cfc40a6707240e3dc95d3bb717ab",
+    "phase": "Before baseline replay/model execution",
+    "reason": "Permit independently controlled held-out task packages while forbidding a repo-accessible task from claiming that split. Validate declared package hash shapes. This schema change does not collect or attest actual independent labels.",
+    "preserved": [
+      "previous_protocol.json",
+      "previous_schemas.json"
+    ],
+    "changed": [
+      "schemas.json"
+    ]
   }
 ]

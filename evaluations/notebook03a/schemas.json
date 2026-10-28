@@ -176,7 +176,8 @@
       "split": {
         "enum": [
           "development",
-          "public_evaluation"
+          "public_evaluation",
+          "independent_heldout"
         ],
         "title": "Split",
         "type": "string"
@@ -620,6 +621,7 @@
       "inputs_sha256": {
         "anyOf": [
           {
+            "pattern": "^[0-9a-f]{64}$",
             "type": "string"
           },
           {
@@ -631,6 +633,7 @@
       "gold_sha256": {
         "anyOf": [
           {
+            "pattern": "^[0-9a-f]{64}$",
             "type": "string"
           },
           {
