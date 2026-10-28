@@ -26,12 +26,18 @@ async function panel(initial = {}) {
     if (override) { const response = override(message); if (response !== undefined) return response; }
     if (message.type === 'live-context') return { data: current };
     if (message.type === 'live-preview') return { data: {
-      id: 'consent', data: { expires_at: 'later' }, preview: { goal_id: 'g', reliance: { quote: 'Anchored source.' } },
+      id: 'consent', data: { expires_at: 'later' }, preview: {
+        goal_id: 'g', current_url: 'http://source/X', current_sha256: 'sha-X',
+        historical_memory_id: 'memory', reliance: { quote: 'Anchored source.' },
+      },
       request: { instructions: 'Exact claim instructions', input: { anchor: 'Anchored source.' }, schema: { title: 'ClaimComparisonOutput' } },
       provider: { id: 'local_fixture_claim' }, payload_sha256: 'payload-hash', request_sha256: 'request-hash', estimated_max_micro_usd: 0,
     } };
     if (message.type === 'withdraw-research') { current = { ...current, related: [], findings: [] }; return { data: { status: 'withdrawn' } }; }
-    if (message.type === 'analyse-relationship') return { data: { analysis: { status: 'validated', data: { validation: { relationship: 'insufficient_evidence' } } }, connection: null } };
+    if (message.type === 'analyse-relationship') return { data: { analysis: { status: 'validated', data: {
+      goal_id: 'g', current_url: 'http://source/X', current_sha256: 'sha-X', historical_memory_id: 'memory',
+      validation: { relationship: 'insufficient_evidence' },
+    } }, connection: null } };
     return { data: {} };
   } } };
   const api = await new AsyncFunction('chrome', 'document', source + '\nreturn {refresh,showPreview};')(chrome, d);
@@ -65,6 +71,33 @@ test('live authorised abstention shows recorded outcome rather than an alert', a
   assert.equal(p.d.querySelector('#live-state').textContent, 'Evidence checked · No validated change detected');
   assert.equal(p.d.querySelectorAll('[data-finding-id]').length, 0);
   assert.deepEqual(p.calls.filter(x => ['authorize-relationship','analyse-relationship'].includes(x.type)).map(x => x.type), ['authorize-relationship','analyse-relationship']);
+});
+test('immediate abstention requires the exact recorded source pair', async () => {
+  const exact = { goal_id: 'g', current_url: 'http://source/X', current_sha256: 'sha-X',
+    historical_memory_id: 'memory', validation: { relationship: 'insufficient_evidence' } };
+  for (const changed of [
+    {goal_id: 'other'}, {current_url: 'other'}, {current_sha256: 'other'}, {historical_memory_id: 'other'},
+    {goal_id: undefined}, {current_url: undefined}, {current_sha256: undefined}, {historical_memory_id: undefined},
+  ]) {
+    const p = await panel();
+    p.intercept(message => message.type === 'analyse-relationship'
+      ? { data: { analysis: { status: 'validated', data: {...exact, ...changed} }, connection: null } }
+      : undefined);
+    await p.api.showPreview('memory'); await p.click('Authorise exact comparison');
+    assert.equal(p.d.querySelector('#live-state').textContent, 'Check did not complete. No finding was stored.');
+    assert.equal(p.d.querySelectorAll('[data-finding-id]').length, 0);
+  }
+});
+test('validated non-abstention without a stored connection is not displayed as an abstention', async () => {
+  const p = await panel();
+  p.intercept(message => message.type === 'analyse-relationship'
+    ? { data: { analysis: { status: 'validated', data: {
+      goal_id: 'g', current_url: 'http://source/X', current_sha256: 'sha-X', historical_memory_id: 'memory',
+      validation: { relationship: 'explicit_supersession' },
+    } }, connection: null } }
+    : undefined);
+  await p.api.showPreview('memory'); await p.click('Authorise exact comparison');
+  assert.equal(p.d.querySelector('#live-state').textContent, 'Check did not complete. No finding was stored.');
 });
 test('dismissal keeps source evidence and records interpretation feedback only', async () => {
   const p = await panel({ findings: [finding] }); await p.click('Dismiss interpretation');

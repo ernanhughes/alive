@@ -164,13 +164,22 @@ async function showPreview(memoryId) {
       state('Comparison requested · waiting for the recorded result.');
       const result = await call('analyse-relationship', { consentId: preview.id });
       await assertGoal(preview.preview.goal_id);
+      const exact = preview.preview;
+      const checked = result.analysis;
+      const bound = checked?.status === 'validated'
+        && checked.data?.validation?.relationship === 'insufficient_evidence'
+        && exact.goal_id && checked.data.goal_id === exact.goal_id
+        && exact.current_sha256 && checked.data.current_sha256 === exact.current_sha256
+        && exact.current_url && checked.data.current_url === exact.current_url
+        && exact.historical_memory_id
+        && checked.data.historical_memory_id === exact.historical_memory_id;
       if (result.connection || result.cached) {
         content.append(renderFinding(result.connection || result));
         state('New evidence worth reviewing.');
-      } else if (result.analysis?.status === 'validated') {
+      } else if (bound) {
         state('Evidence checked · No validated change detected');
         content.append(text('p', 'Newer publication alone does not establish that the earlier claim was superseded.'),
-          technical('Recorded check and limitations', result.analysis));
+          technical('Recorded check and limitations', checked));
       } else {
         state('Check did not complete. No finding was stored.');
         content.append(technical('Recorded outcome', result.analysis));
