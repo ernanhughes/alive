@@ -114,6 +114,10 @@ No changes were made to the Task B fixture, oracle, scorer, canonical docs or ar
   exists.
 - R2's rank-2 result is a measured limitation, not tuned for this demonstration.
 - One native run on Windows Chrome 156 is one observation; it is not a statistical claim.
+- The notebook allowlist authorises exact loopback URLs but does **not** byte-pin the
+  served chapters. Unlike the demo mirrors, a local process on port 1313 could serve
+  different text at the same path. The owner reviews the captured excerpt before saving,
+  but source authenticity is not established by the allowlist.
 - Linux, other Chrome versions and hosted CI were not run.
 - The harness-only host permission means native `activeTab` grant behaviour is inferred,
   not directly exercised by CDP.

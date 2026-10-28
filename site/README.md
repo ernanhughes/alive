@@ -62,6 +62,8 @@ The companion authorises exact chapter URLs only: `alive/web_experience.py` (`PA
 `extension/config.js` (`AUTHORISED_PAGES`) list `http://127.0.0.1:1313/chapters/<id>/` and the
 `localhost` equivalent. `extension/manifest.json` is unchanged; no wildcard or persistent host
 permission was added. The grant is still created per page by the owner clicking the toolbar icon.
+The allowlist does not pin the bytes of the served chapters; review the captured excerpt before
+saving. A local process on port 1313 could serve different text at the same path.
 
 Journey: read `alive-12-status`, review the excerpt, save it as research memory; read
 `alive-13-what-was-wrong`; ask for related research. The retrieval and connection results are
