@@ -113,7 +113,7 @@ class Living:
 
     async def advance(self, journey_id):
         async with self.lock:
-            if self.active or self.app.state.experiments.active:
+            if self.active or self.app.state.experiments.active or self.app.state.web.active:
                 raise ValueError("Another cognitive worker is active")
             async with self.k.lock, self.k.db.sessions.begin() as session:
                 row = await session.get(LivingJourney, journey_id)

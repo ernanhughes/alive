@@ -43,6 +43,8 @@ from alive.schemas import (
     SearchInput,
 )
 from alive.transport import ZmqTransport
+from alive.web_experience import WebCompanion
+from alive.web_experience import router as web_router
 
 
 def create_app(settings=None):
@@ -66,13 +68,16 @@ def create_app(settings=None):
         app.state.cognition = Cognition(kernel, app.state.memory)
         app.state.experiments = Experiments(kernel)
         app.state.living = Living(app, kernel)
+        app.state.web = WebCompanion(app, kernel)
         if kernel.ready:
             await app.state.cognition.initialize()
             await app.state.experiments.initialize()
             await app.state.living.initialize()
+            await app.state.web.initialize()
         try:
             yield
         finally:
+            await app.state.web.close()
             await app.state.living.close()
             await app.state.experiments.close()
             await app.state.cognition.close()
@@ -163,6 +168,7 @@ def create_app(settings=None):
     app.include_router(experiment_router(app, ready))
     app.include_router(learning_router(ready))
     app.include_router(living_router(app, ready))
+    app.include_router(web_router(app, ready))
     app.include_router(living_world_router(app))
     app.include_router(public_router(app))
 
@@ -224,6 +230,7 @@ def create_app(settings=None):
     async def stop():
         from alive.cognitive_schema import AutonomyCommand
 
+        await app.state.web.revoke()
         await app.state.living.cancel()
         await app.state.experiments.cancel()
         await app.state.cognition.command(AutonomyCommand(command="pause"))

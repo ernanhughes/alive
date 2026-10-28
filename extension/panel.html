@@ -30,6 +30,15 @@
         border: 1px solid #48603d;
         border-radius: 5px;
       }
+      *, *::before, *::after { box-sizing: border-box; }
+      body { margin: 0; padding: 18px; overflow-wrap: anywhere; }
+      select { width: 100%; max-width: 100%; padding: 8px; margin-top: 7px;
+        color: #e3edd9; background: #203127; border: 1px solid #48603d; border-radius: 5px; }
+      h2 { font-size: 15px; margin-top: 24px; }
+      summary { cursor: pointer; color: #b3d68c; margin: 12px 0; }
+      blockquote { margin: 12px 0; padding-left: 12px; border-left: 2px solid #c7ed9d; }
+      #decision-label { font-size: 16px; color: #c7ed9d; }
+      #note { font-size: 13px; line-height: 1.65; }
       input[type="checkbox"] {
         width: auto;
       }
@@ -59,30 +68,47 @@
     </style>
   </head>
   <body>
-    <h1>ALIVE <small>01</small></h1>
-    <p>Browser perception, with your permission.</p>
-    <label
+    <h1>ALIVE <small>05</small></h1>
+    <p>A continuing documentation companion.</p>
+    <details id="connection" open><summary>Local connection</summary><label
       >Local backend<input
         id="backend"
         disabled
         value="http://127.0.0.1:8000" /></label
     ><label>Local token<input id="token" type="password" disabled /></label
-    ><button id="connect" disabled>Save & connect</button>
+    ><button id="connect" disabled>Save & connect</button></details>
     <p id="status" role="status">Not connected</p>
+    <h2>Your instruction</h2>
+    <label>Resume a saved goal <select id="resume"></select></label>
+    <label>Goal <input id="goal" maxlength="500" placeholder="What do you want to understand?" /></label>
+    <button id="save-goal">Save new goal</button>
+    <p id="instruction">No goal selected.</p>
     <label
       ><input id="auto" type="checkbox" /> Send observations automatically while
-      observing</label
+      observing the local demo only</label
     ><button id="start">Authorise this page</button
     ><button id="stop">Stop & revoke</button>
     <p>
-      Reads visible text only. Form values and marked private content are
-      excluded. Review the preview before sending.
+      Read-only access to the authorised Python tutorial or MDN JavaScript Guide.
+      Forms and marked private content are excluded. Navigation revokes consent.
+      Review the first 3,000 characters before saving or sending to Meta.
     </p>
-    <h2>Selected observation</h2>
-    <pre id="preview">No observation yet.</pre>
+    <details id="excerpt" open><summary>Selected observation · review before sending</summary>
+    <pre id="preview">No observation yet.</pre></details>
     <button id="send">Send selected observation</button>
-    <h2>Runtime</h2>
-    <pre id="state">Awaiting connection.</pre>
+    <p id="fact">Page text is evidence of what was displayed, not verified truth.</p>
+    <h2>Experience-informed choice</h2>
+    <p id="decision-label">Awaiting a reviewed observation.</p>
+    <details><summary>Why this choice?</summary><pre id="decision"></pre></details>
+    <button id="analyse" disabled>Send reviewed excerpt to Meta</button>
+    <h2>Model interpretation / recalled note</h2>
+    <div id="note">No note yet.</div>
+    <p id="cost"></p>
+    <button id="useful" disabled>Useful · reuse next time</button>
+    <button id="needs-work" disabled>Needs work · analyse next time</button>
+    <h2>Learned action preference</h2>
+    <p id="preference">No feedback yet. Preferences never grant browser permissions.</p>
+    <details><summary>Runtime identity</summary><pre id="state">Awaiting connection.</pre></details>
     <script src="panel.js" type="module"></script>
   </body>
 </html>
