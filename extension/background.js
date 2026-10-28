@@ -42,6 +42,13 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
         return { ignored: true };
       const payload = { url: observedUrl, title: String(message.payload.title).slice(0, 200),
         text: String(message.payload.text).slice(0, pages.has(observedUrl) ? 3000 : 8000), tab_id: observedTab };
+      if (message.payload.capture_format_version === 2) {
+        payload.text = Array.from(String(message.payload.text)).slice(0, pages.has(observedUrl) ? 3000 : 8000).join('');
+        payload.capture_format_version = 2;
+        payload.capture_entries = (message.payload.capture_entries || [])
+          .filter(entry => entry.start < Array.from(payload.text).length)
+          .map(entry => ({ ...entry, end: Math.min(entry.end, Array.from(payload.text).length) }));
+      }
       const observation = { event_id: crypto.randomUUID(), event_type: 'browser.dom_changed', source: 'extension', payload };
       await chrome.storage.session.set({ latest: observation });
       // Real pages always require an explicit preview click. No background Meta calls.
@@ -80,7 +87,7 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
       }
       await chrome.storage.session.set({ observedTab: tab.id, observedUrl: tab.url, grantId });
       try {
-        await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['observer.js'] });
+        await chrome.scripting.executeScript({ target: { tabId: tab.id }, files: ['capture.js', 'observer.js'] });
       } catch (error) { await stop(); throw error; }
       return { ok: true, tabId: tab.id };
     }
@@ -96,6 +103,9 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
         grant_id: grantId, url: latest.payload.url, title: latest.payload.title,
         text: latest.payload.text, reviewed_sha256: await sha(latest.payload.text),
         language: message.language || 'auto',
+        ...(latest.payload.capture_format_version === 2 ? {
+          capture_format_version: 2, capture_entries: latest.payload.capture_entries || [],
+        } : {}),
       });
       await chrome.storage.session.set({ selected: result,
         noteId: result.decision.note?.id || null });

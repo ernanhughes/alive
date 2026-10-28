@@ -160,6 +160,50 @@ def validate_claim(output: ClaimComparisonOutput, payload: dict) -> dict:
                 )
             ):
                 demotions.append("historical_quote_misses_reliance_anchor")
+    capture_v2 = (
+        payload.get("current_capture_format_version") == 2
+        or payload.get("historical_capture_format_version") == 2
+    )
+    bound_subject = None
+    if capture_v2:
+        from alive.demo_live_01 import identify
+
+        for prefix, excerpt in (("historical", historical), ("current", current)):
+            identity = identify(
+                payload.get(prefix + "_url", ""),
+                excerpt,
+                payload.get(prefix + "_capture_entries", []),
+                payload.get(prefix + "_capture_format_version"),
+            )
+            if identity is None or identity != payload.get(prefix + "_source_identity"):
+                demotions.append(prefix + "_capture_source_identity_unverified")
+        historical_entries = [
+            entry
+            for entry in payload.get("historical_capture_entries", [])
+            if hspan and entry.get("start", -1) <= hspan[0] and entry.get("end", -1) >= hspan[1]
+        ]
+        if len(historical_entries) != 1:
+            demotions.append("historical_claim_entry_not_unique")
+        else:
+            bound_subject = historical_entries[0].get("subject")
+            current_entries = [
+                entry
+                for entry in payload.get("current_capture_entries", [])
+                if entry.get("subject") == bound_subject
+            ]
+            if len(current_entries) != 1:
+                demotions.append("current_claim_entry_not_unique")
+            else:
+                entry = current_entries[0]
+                for span in (
+                    cspan,
+                    _span(current, output.supersession_basis_quote or "")
+                    if output.relationship == "explicit_supersession"
+                    else cspan,
+                ):
+                    if not span or not entry["start"] <= span[0] < span[1] <= entry["end"]:
+                        demotions.append("current_evidence_outside_anchored_subject_entry")
+                        break
     if output.relationship == "conflicts":
         if output.scope_alignment != "same" or c in historical:
             demotions.append("conflict_scope_or_novelty_unverified")
@@ -192,4 +236,7 @@ def validate_claim(output: ClaimComparisonOutput, payload: dict) -> dict:
                 demotions.append("supersession_basis_not_nearest_to_subject")
     if demotions:
         return _result("demoted", "insufficient_evidence", demotions, retained)
-    return _result("accepted", output.relationship, [], retained)
+    result = _result("accepted", output.relationship, [], retained)
+    if capture_v2:
+        result |= {"subject_entry": bound_subject, "capture_binding": "pinned_source_entry_v2"}
+    return result

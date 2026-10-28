@@ -75,3 +75,47 @@ CLAIM_FIXTURES = {
         "confidence": 0.4,
     },
 }
+
+
+# Real mirror pairs are pinned by the committed manifest, never by lexical inference.
+def demo_fixtures():
+    import json
+
+    from alive.demo_live_01 import DIRECTORY, manifest
+
+    sources = {item["id"]: item for item in manifest()["sources"]}
+    historical = sources["python-3.11"]
+    h = "Return the current UTC date and time, with tzinfo None."
+    fixtures = {}
+    for name in ("python-3.12", "synthetic-no-change"):
+        current = sources[name]
+        captured = json.loads((DIRECTORY / current["capture_file"]).read_text(encoding="utf-8"))[
+            "text"
+        ]
+        quote = (
+            "Deprecated since version 3.12: Use datetime.now() with UTC instead."
+            if name == "python-3.12"
+            else "This synthetic publication adds no status or recommendation change."
+        )
+        assert quote in captured
+        fixtures[(current["captured_text_sha256"], historical["captured_text_sha256"])] = {
+            "relationship": "explicit_supersession"
+            if name == "python-3.12"
+            else "insufficient_evidence",
+            "claim_aspect": "status",
+            "historical_claim_quote": h,
+            "current_claim_quote": quote,
+            "scope_alignment": "same",
+            "scope_note": "Same datetime.utcnow entry; standing, not behavior.",
+            "supersession_basis_quote": quote if name == "python-3.12" else None,
+            "reason": (
+                "The newer source adds a deprecation recommendation; "
+                "the behavior sentence remains present."
+                if name == "python-3.12"
+                else "Newer publication alone does not establish supersession."
+            ),
+            "limitations": "Deterministic local demonstration. "
+            "Source interpretation is not independently fact-checked.",
+            "confidence": 0.4 if name == "python-3.12" else 0.1,
+        }
+    return fixtures

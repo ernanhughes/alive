@@ -10,7 +10,7 @@ from typing import Literal
 
 from fastapi import APIRouter, Depends, Query
 from fastapi.encoders import jsonable_encoder
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 from sqlalchemy import select
 
 from alive.cognitive_models import CognitiveControl
@@ -26,6 +26,13 @@ from alive.research_blind import BlindRatingRequest, BlindRunRequest
 from alive.web_models import WebExperience
 
 PAGES = {
+    *(
+        f"http://{host}:8000/demo-live-01/{name}"
+        for host in ("127.0.0.1", "localhost")
+        for name in ("python-3.11.html", "python-3.12.html", "synthetic-no-change.html")
+    ),
+    "https://docs.python.org/3.11/library/datetime.html",
+    "https://docs.python.org/3.12/library/datetime.html",
     "https://docs.python.org/3/tutorial/",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
 }
@@ -54,6 +61,13 @@ class GrantRequest(Strict):
     approved: Literal[True]
 
 
+class CaptureEntry(Strict):
+    model_config = ConfigDict(extra="forbid", strict=True)
+    subject: str = Field(min_length=1, max_length=200)
+    start: int = Field(ge=0)
+    end: int = Field(gt=0)
+
+
 class SnapshotRequest(Strict):
     grant_id: str
     url: str
@@ -61,6 +75,21 @@ class SnapshotRequest(Strict):
     text: str = Field(min_length=10, max_length=3000)
     reviewed_sha256: str
     language: Literal["auto", "en", "zh", "ar"] = "auto"
+    capture_format_version: Literal[1, 2] = 1
+    capture_entries: list[CaptureEntry] = Field(default_factory=list, max_length=64)
+
+    @model_validator(mode="after")
+    def capture_contract(self):
+        if self.capture_format_version == 1 and self.capture_entries:
+            raise ValueError("Entry provenance requires capture format 2")
+        previous = 0
+        for entry in self.capture_entries:
+            if not previous <= entry.start < entry.end <= len(self.text):
+                raise ValueError(
+                    "Capture entries must be ordered, disjoint spans inside the excerpt"
+                )
+            previous = entry.end
+        return self
 
 
 class AnalyseRequest(Strict):
@@ -77,7 +106,14 @@ class FeedbackRequest(Strict):
 
 
 class ResearchSaveRequest(Strict):
-    note_id: str
+    note_id: str | None = None
+    snapshot_id: str | None = None
+
+    @model_validator(mode="after")
+    def one_source(self):
+        if (self.note_id is None) == (self.snapshot_id is None):
+            raise ValueError("Select exactly one validated note or reviewed snapshot")
+        return self
 
 
 class ResearchAnchorRequest(Strict):
@@ -589,6 +625,16 @@ class WebCompanion:
                 if r.data["url"] == data.url and r.data["goal_id"] == grant.parent_id
             ]
             changed = bool(prior and prior[-1].data["sha256"] != data.reviewed_sha256)
+            provenance = {}
+            if data.capture_format_version == 2:
+                from alive.demo_live_01 import identify
+
+                entries = [entry.model_dump() for entry in data.capture_entries]
+                provenance = {
+                    "capture_format_version": 2,
+                    "capture_entries": entries,
+                    "source_identity": identify(data.url, data.text, entries, 2),
+                }
             row = self.add(
                 s,
                 "snapshot",
@@ -598,6 +644,7 @@ class WebCompanion:
                     "text": data.text,
                     "sha256": data.reviewed_sha256,
                     "goal_id": grant.parent_id,
+                    **provenance,
                     "language_requested": data.language,
                     "source": "observed_page_text",
                     "verified_fact": False,
@@ -1323,6 +1370,8 @@ def router(app, ready):
 
     @api.post("/research/memories")
     async def save_research(data: ResearchSaveRequest):
+        if data.snapshot_id is not None:
+            return await app.state.research.save_snapshot(data.snapshot_id)
         return await app.state.research.save(data.note_id)
 
     @api.get("/research/memories")

@@ -1,0 +1,16 @@
+{
+  "text": "classmethod datetime.utcnow()\nReturn the current UTC date and time, with tzinfo None.\nThis is like now(), but returns the current UTC date and time, as a naive datetime object. An aware current UTC datetime can be obtained by calling datetime.now(timezone.utc). See also now().\nWarning\nBecause naive datetime objects are treated by many datetime methods as local times, it is preferred to use aware datetimes to represent times in UTC. As such, the recommended way to create an object representing the current time in UTC is by calling datetime.now(timezone.utc).\nclassmethod datetime.utcfromtimestamp(timestamp)\nReturn the UTC datetime corresponding to the POSIX timestamp, with tzinfo None. (The resulting object is naive.)\nThis may raise OverflowError, if the timestamp is out of the range of values supported by the platform C gmtime() function, and OSError on gmtime() failure. It\u2019s common for this to be restricted to years in 1970 through 2038.\nTo get an aware datetime object, call fromtimestamp():\ndatetime.fromtimestamp(timestamp, timezone.utc)\nOn the POSIX compliant platforms, it is equivalent to the following expression:\ndatetime(1970, 1, 1, tzinfo=timezone.utc) + timedelta(seconds=timestamp)\nexcept the latter formula always supports the full years range: between MINYEAR and MAXYEAR inclusive.\nWarning\nBecause naive datetime objects are treated by many datetime methods as local times, it is preferred to use aware datetimes to represent times in UTC. As such, the recommended way to create an object representing a specific timestamp in UTC is by calling datetime.fromtimestamp(timestamp, tz=timezone.utc).\nChanged in version 3.3: Raise OverflowError instead of ValueError if the timestamp is out of the range of values supported by the platform C gmtime() function. Raise OSError instead of ValueError on gmtime() failure.",
+  "capture_format_version": 2,
+  "capture_entries": [
+    {
+      "subject": "datetime.datetime.utcnow",
+      "start": 0,
+      "end": 563
+    },
+    {
+      "subject": "datetime.datetime.utcfromtimestamp",
+      "start": 564,
+      "end": 1841
+    }
+  ]
+}
