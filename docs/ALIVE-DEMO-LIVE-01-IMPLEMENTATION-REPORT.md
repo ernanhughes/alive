@@ -317,6 +317,8 @@ changed pins before use. Ordinary tests/demos use committed offline fixtures.
 - `docs/validation/demo-live-01/postgres-final.txt`
 - `docs/validation/demo-live-01/protected-boundaries.json`
 - `docs/validation/demo-live-01/python-final.txt`
+- `docs/validation/demo-live-01/repository-wide-format.txt`
+- `docs/validation/demo-live-01/repository-wide-lint.txt`
 - `extension/background.js`
 - `extension/capture.js`
 - `extension/config.js`
