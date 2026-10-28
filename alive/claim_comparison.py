@@ -160,9 +160,20 @@ def validate_claim(output: ClaimComparisonOutput, payload: dict) -> dict:
                 )
             ):
                 demotions.append("historical_quote_misses_reliance_anchor")
+    # Registered mirror bytes require entry binding regardless of caller-declared
+    # versions. This guard belongs to validation, independently of the provider.
+    import hashlib
+
+    from alive.demo_live_01 import manifest
+
+    registered_hashes = {source["captured_text_sha256"] for source in manifest()["sources"]}
     capture_v2 = (
         payload.get("current_capture_format_version") == 2
         or payload.get("historical_capture_format_version") == 2
+        or any(
+            hashlib.sha256(excerpt.encode()).hexdigest() in registered_hashes
+            for excerpt in (historical, current)
+        )
     )
     bound_subject = None
     if capture_v2:

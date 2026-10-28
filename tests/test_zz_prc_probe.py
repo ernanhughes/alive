@@ -107,10 +107,10 @@ def test_probe_D_full_database_scan_after_withdrawal(client, monkeypatch):
         response = client.get(ROOT + path)
         assert response.status_code == 200
         assert MARK not in response.text
-    # Authoritative notes remain under the existing audit-original retention policy.
+    # Audit originals remain stored, but ordinary note reads are tombstoned.
     response = client.get(ROOT + f"/notes/{note['id']}")
-    assert response.status_code == 200
-    assert MARK in response.text
+    assert response.status_code == 410
+    assert MARK not in response.text
 
 
 def test_probe_F_paired_analysis_is_scrubbed_after_withdrawal(client, monkeypatch):

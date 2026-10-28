@@ -1361,8 +1361,22 @@ def router(app, ready):
 
     @api.get("/notes/{note_id}")
     async def note(note_id: str):
+        from fastapi import HTTPException
+
         async with app.state.kernel.db.sessions() as s:
-            return record(await app.state.web.get(s, note_id, "note"))
+            row = await app.state.web.get(s, note_id, "note")
+            withdrawn = await s.scalar(
+                select(WebExperience.id)
+                .where(
+                    WebExperience.kind == "research_memory",
+                    WebExperience.status == "withdrawn",
+                    WebExperience.data["note_id"].as_string() == note_id,
+                )
+                .limit(1)
+            )
+            if withdrawn:
+                raise HTTPException(410, "Saved source retired; audit original retained")
+            return record(row)
 
     @api.post("/feedback")
     async def feedback(data: FeedbackRequest):

@@ -101,10 +101,10 @@ def test_D_all_tables_and_public_reads_after_withdrawal(client, monkeypatch):
         response = client.get(ROOT + path)
         assert response.status_code == 200
         assert MARK not in response.text
-    # Existing policy retains the authoritative note endpoint; report this explicitly.
+    # Audit originals remain stored, but ordinary note reads are tombstoned.
     response = client.get(ROOT + f"/notes/{note['id']}")
-    assert response.status_code == 200
-    assert MARK in response.text
+    assert response.status_code == 410
+    assert MARK not in response.text
 
 
 def test_F_paired_lineage_is_scrubbed_and_hidden(client, monkeypatch):
