@@ -15,6 +15,12 @@ from sqlalchemy import select
 
 from alive.cognitive_models import CognitiveControl
 from alive.cognitive_schema import CognitiveConfiguration
+from alive.evidence_qualification import (
+    EvidenceQualifier,
+    EvidenceUnavailable,
+    QualificationRequest,
+    QualificationResult,
+)
 from alive.experiment.metrics import price
 from alive.experiment_approval import ApprovalRequest, CampaignRequest
 from alive.experiment_budget import check_spend
@@ -1433,6 +1439,15 @@ def router(app, ready):
         return await app.state.research.retrieve(
             data.snapshot_id, data.top_k, data.mode, data.ranker
         )
+
+    @api.post("/research/qualifications", response_model=QualificationResult)
+    async def qualify_evidence(data: QualificationRequest):
+        from fastapi import HTTPException
+
+        try:
+            return await EvidenceQualifier(app.state.research).qualify(data)
+        except EvidenceUnavailable:
+            raise HTTPException(404, "Evidence unavailable") from None
 
     @api.post("/research/connections")
     async def research_connection(data: ResearchConnectionRequest):

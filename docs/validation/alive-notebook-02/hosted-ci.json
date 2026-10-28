@@ -1,0 +1,46 @@
+{
+  "run_url": "https://github.com/ernanhughes/alive/actions/runs/40780798558",
+  "implementation_commit": "1a2cbe4aa36ff3cc5be0cedfa92690e2bd414fa6",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "dashboard",
+      "id": 123141694383,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "backend (ubuntu-latest)",
+      "id": 123141694754,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "first-contact-postgresql",
+      "id": 123141694813,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "backend (windows-latest)",
+      "id": 123141694899,
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "name": "notebook",
+      "id": 123141695188,
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "python_results": {
+    "ubuntu": [
+      "2026-10-28T22:38:12.2593939Z 448 passed, 7 skipped, 1 xfailed in 303.34s (0:05:03)"
+    ],
+    "windows": [
+      "2026-10-28T22:43:58.3528361Z 448 passed, 7 skipped, 1 xfailed, 588 warnings in 627.07s (0:10:27)"
+    ]
+  }
+}

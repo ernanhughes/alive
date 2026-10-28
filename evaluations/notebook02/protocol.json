@@ -1,0 +1,38 @@
+{
+  "version": "notebook02-comparison-v1",
+  "baseline_commit": "937bdcdadd82e5fa5035a57ebe564318557621e0",
+  "files_sha256": {
+    "annotations.json": "652de7fb470413192b62e2c1a7b16bc92e6f04f93569906894e236850017bc57",
+    "development.json": "3a511931da296207cb3d004e9b6d9781a7a120a64ca20b6304c97680bc766190",
+    "heldout.json": "e0f012e73557d720bf288c707a4107a5874fa81ad6dca0e0e14985cdaced796a",
+    "labels.json": "0cdc6182be9ff0913dbf66706bd57a1762935ff36299e36469e78fb50da58ccb"
+  },
+  "arms": {
+    "A": "actual existing lexical connection API",
+    "B": "evidence_qualification_v1",
+    "C": "NOT RUN; no model or paid inference authorized",
+    "D": "same evidence access with explicit abstention; no semantic reasoner"
+  },
+  "budget": {
+    "current_characters": 2000,
+    "historical_characters": 2000,
+    "fixed_candidate_pairs": true,
+    "retrieval_ranking_unchanged": true
+  },
+  "metrics": [
+    "supported substantive relation precision; null when denominator zero",
+    "correct non-use/abstention among negative labels",
+    "missed useful substantive relationships among positive labels"
+  ],
+  "diagnostics": [
+    "candidate yield and useful-label agreement, not substantive precision",
+    "reverse source order on all complete-source held-out pairs",
+    "append identical lexical distractor sentence to both sources on held-out pairs",
+    "quote validity and authorization are hard gates, not scores"
+  ],
+  "labels": "author-prepared before execution, not independently annotated; never supplied to services",
+  "freeze": "commit these inputs and labels before implementation or comparison execution",
+  "model_calls": 0,
+  "paid_inference_budget_usd": 0,
+  "hash_normalization": "UTF-8 bytes with CRLF normalized to LF; labels and cases unchanged"
+}

@@ -102,3 +102,4 @@ jobs:
       - run: uv run python site/notebook.py check --public site/public
       - run: uv run pytest -q -ra tests/test_notebook_01.py
       - run: node --test tests/notebook-capture.test.cjs
+      - run: uv run python -m scripts.notebook02_evaluation --output "$RUNNER_TEMP/notebook02-evaluation.json"
