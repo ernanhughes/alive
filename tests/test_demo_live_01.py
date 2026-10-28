@@ -162,15 +162,24 @@ def test_real_mirror_preview_authorize_candidate_reuse_withdraw_restart(client, 
 
 
 def test_synthetic_newer_source_leaves_a_real_abstention_ledger_entry(client):
-    _, _, _, request = setup(client, newer="synthetic-no-change")
+    g, _, _, request = setup(client, newer="synthetic-no-change")
     consent = preview(client, request)
+    payload = consent["preview"]
     authorize(client, consent)
     result = analyze(client, consent)
     assert result["analysis"]["status"] == "validated"
     assert result["analysis"]["data"]["validation"]["relationship"] == "insufficient_evidence"
+    assert result["analysis"]["data"]["goal_id"] == payload["goal_id"]
+    assert result["analysis"]["data"]["current_url"] == payload["current_url"]
+    assert result["analysis"]["data"]["current_sha256"] == payload["current_sha256"]
+    assert result["analysis"]["data"]["historical_memory_id"] == payload["historical_memory_id"]
     assert result["connection"] is None
     assert result["analysis"]["data"]["charged_tokens"] == 0
     assert result["abstained"]
+    listed = client.get(ROOT + "/research/relationships", params={"goal_id": g["id"]}).json()
+    row = next(row for row in listed["analyses"] if row["id"] == result["analysis"]["id"])
+    assert row["data"]["goal_id"] == payload["goal_id"]
+    assert row["data"]["current_url"] == payload["current_url"]
 
 
 def test_wrong_method_basis_cannot_be_accepted(client):
