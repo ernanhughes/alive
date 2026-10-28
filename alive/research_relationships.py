@@ -1052,6 +1052,9 @@ class ResearchRelationships:
                     "explanation_status": "unverified_model_interpretation",
                 }
             )
+            source_valid = await self._settlement_source_valid(session, payload)
+            if not source_valid:
+                error = error or "evidence_or_grant_revoked_before_settlement"
             row.status = (
                 "validated"
                 if output and not error and validation["valid"]
@@ -1089,6 +1092,9 @@ class ResearchRelationships:
                 "latency_ms": (time.monotonic() - started) * 1000,
                 "completed_at": now().isoformat(),
             }
+            if not source_valid:
+                row.data = self._scrub_withdrawn_data(row.data)
+                row.status = "invalidated"
             analysis_row = None
             if row.status == "validated" and output:
                 shared = {
@@ -1320,6 +1326,7 @@ class ResearchRelationships:
                     "current_sha256": snapshot.data["sha256"],
                     "historical_sha256": memory.data["sha256"],
                     "reserved_tokens": reserve,
+                    "dispatch_status": "reserved_never_dispatched",
                     "started_at": now().isoformat(),
                 },
                 snapshot.id,
@@ -1364,6 +1371,14 @@ class ResearchRelationships:
                         reserve,
                         cap=capped if capped is not None else 100000,
                     )
+                # Durable liability marker before any provider call. A crash between
+                # marker commit and send is ambiguous and conservatively charged.
+                async with self.k.lock, self.k.db.sessions.begin() as marker_session:
+                    marker = await self.web.get(marker_session, attempt_id, ATTEMPT_KIND)
+                    marker.data = marker.data | {
+                        "dispatch_status": "dispatch_possibly_started",
+                        "dispatch_started_at": now().isoformat(),
+                    }
                 if provider["id"] == "local_stub":
                     output = self._local_stub(payload)
                     raw = output.model_dump_json()
@@ -1415,6 +1430,9 @@ class ResearchRelationships:
                     "historical_quote_exact": False,
                 }
             )
+            source_valid = await self._settlement_source_valid(session, payload)
+            if not source_valid:
+                error = error or "evidence_or_grant_revoked_before_settlement"
             row.status = (
                 "validated"
                 if output and not error and validation["valid"]
@@ -1437,6 +1455,9 @@ class ResearchRelationships:
                 "latency_ms": (time.monotonic() - started) * 1000,
                 "completed_at": now().isoformat(),
             }
+            if not source_valid:
+                row.data = self._scrub_withdrawn_data(row.data)
+                row.status = "invalidated"
             connection = None
             if row.status == "validated" and output:
                 goal_terms = _tokens(payload.get("goal_instruction", ""))
@@ -1570,18 +1591,67 @@ class ResearchRelationships:
                         "invalid_reason": "current_page_grant_revoked",
                     }
 
+    @staticmethod
+    def _scrub_withdrawn_data(data):
+        """Retain IDs, lifecycle and accounting; discard evidence and output copies."""
+        sensitive = {
+            "current_quote", "historical_quote", "model_evidence_quote",
+            "current_excerpt", "historical_excerpt", "raw_response",
+            "explanation", "limitations", "research_question", "answer",
+            "evidence", "payload", "request", "output",
+        }
+        return {k: v for k, v in data.items() if k not in sensitive} | {
+            "invalid_reason": "historical_memory_withdrawn",
+            "invalidated_at": now().isoformat(),
+        }
+
     async def invalidate_for_memory(self, memory_id):
+        """Invalidate *all* dependent projections, not just pending consents.
+
+        The research-memory withdrawal endpoint invokes this after retiring the
+        authoritative source. Never return copied withdrawn quotations as findings.
+        """
+        kinds = (CONSENT_KIND, ATTEMPT_KIND, CONNECTION_KIND,
+                 CURRENT_ANALYSIS_KIND, PAIRED_ANALYSIS_KIND)
         async with self.k.lock, self.k.db.sessions.begin() as session:
-            for row in await self.web.rows(session, CONSENT_KIND):
-                if row.data.get("historical_memory_id") == memory_id and row.status in (
-                    "pending",
-                    "authorized",
-                ):
+            for kind in kinds:
+                for row in await self.web.rows(session, kind):
+                    if row.data.get("historical_memory_id") != memory_id:
+                        continue
+                    # Active attempts must settle their reservation; no premature
+                    # transition that would hide unsettled dispatch liability.
+                    if kind == ATTEMPT_KIND and row.status == "reserved":
+                        row.data = row.data | {"source_revoked_during_dispatch": True}
+                        continue
+                    if row.status == "invalidated":
+                        continue
+                    row.data = self._scrub_withdrawn_data(row.data)
                     row.status = "invalidated"
-                    row.data = row.data | {
-                        "invalidated_at": now().isoformat(),
-                        "invalid_reason": "historical_memory_withdrawn",
-                    }
+            self.k.add_event(
+                session, "research.evidence_dependents_invalidated",
+                {"research_memory_id": memory_id},
+            )
+
+    async def _settlement_source_valid(self, session, payload):
+        """Check authoritative source and grant again *after* inference, under lock."""
+        try:
+            snapshot = await self.web.get(
+                session, payload["current_snapshot_id"], "snapshot"
+            )
+            await self.web.valid_grant(session, snapshot.parent_id)
+            if snapshot.data.get("sha256") != payload.get("current_sha256"):
+                return False
+            memory_id = payload.get("historical_memory_id")
+            if memory_id:
+                memory = await self.research._research_row(session, memory_id)
+                if memory.status != "active":
+                    return False
+                if (memory.data.get("sha256") != payload.get("historical_sha256")
+                        or memory.data.get("goal_id") != payload.get("goal_id")):
+                    return False
+            return True
+        except (KeyError, PermissionError, ValueError):
+            return False
 
     async def initialize(self):
         async with self.k.lock, self.k.db.sessions.begin() as session:

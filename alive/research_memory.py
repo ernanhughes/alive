@@ -333,6 +333,33 @@ class ResearchMemory:
                 projection = await session.get(Memory, projection_id)
                 if projection:
                     await session.delete(projection)
+            # Invalidate derived content in the SAME transaction as withdrawal.
+            # API consumers must never observe a retired source with an active
+            # dependent finding. This is not a second copy of the source.
+            from alive.research_relationships import (
+                ATTEMPT_KIND, CONSENT_KIND, CURRENT_ANALYSIS_KIND,
+                PAIRED_ANALYSIS_KIND, ResearchRelationships,
+            )
+
+            dependent_kinds = (
+                CONSENT_KIND, ATTEMPT_KIND, CONNECTION_KIND,
+                CURRENT_ANALYSIS_KIND, PAIRED_ANALYSIS_KIND,
+            )
+            for kind in dependent_kinds:
+                for dependent in await self.web.rows(session, kind):
+                    if dependent.data.get("historical_memory_id") != research_id:
+                        continue
+                    if kind == ATTEMPT_KIND and dependent.status == "reserved":
+                        dependent.data = dependent.data | {
+                            "source_revoked_during_dispatch": True
+                        }
+                        continue
+                    if dependent.status == "invalidated":
+                        continue
+                    dependent.data = ResearchRelationships._scrub_withdrawn_data(
+                        dependent.data
+                    )
+                    dependent.status = "invalidated"
             self.k.add_event(
                 session,
                 "research.memory_withdrawn",
