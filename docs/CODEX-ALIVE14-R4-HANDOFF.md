@@ -9,7 +9,11 @@
 - Protocol v3 and answer key remain frozen at
   `85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b` and
   `255e706dd569634d1710a50831f65a6dd6eb7dabc5ee56e1cd763b382554b43d`.
-- Final implementation commit, PR and CI: to be recorded after push.
+- Implementation commit: `4bdefea1bb0eb198d06db2b0518d6f13d1f7d6ad`.
+- PR: https://github.com/ernanhughes/alive/pull/25 (draft, review-only; no
+  merge or auto-merge).
+- CI: all eight checks passed on `4bdefea` (backend Ubuntu/Windows, dashboard,
+  first-contact PostgreSQL).
 - The R3 runner refuses real mode; the R4 runner is the only real-execution path.
 - No paid Meta inference. No automatic merge or auto-merge.
 

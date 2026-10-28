@@ -7,6 +7,9 @@ independent review and explicit owner approval), **NATIVE_META_NOT_RUN**,
 
 Baseline: `ac11be81115f397a9bad9f5c630a74ee22bdc3d2` (ALIVE-14-R3 merge).
 Branch: `codex/alive-14-r4-pilot-safety`.
+Implementation commit: `4bdefea1bb0eb198d06db2b0518d6f13d1f7d6ad`.
+PR: https://github.com/ernanhughes/alive/pull/25 (draft, review-only).
+CI: all eight checks passed on `4bdefea`.
 Protocol v3 is unchanged:
 `85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b`.
 Answer key: `255e706dd569634d1710a50831f65a6dd6eb7dabc5ee56e1cd763b382554b43d`.
