@@ -1094,10 +1094,12 @@ class ResearchRelationships:
             }
             if not source_valid:
                 row.data = self._scrub_withdrawn_data(row.data)
-                row.status = "invalidated"
+                row.status = ("failed" if row.data.get("dispatch_status") ==
+                              "reserved_never_dispatched" else "invalidated")
             analysis_row = None
             if row.status == "validated" and output:
                 shared = {
+                    "historical_memory_id": payload.get("historical_memory_id"),
                     "goal_id": payload["goal_id"],
                     "current_snapshot_id": payload["current_snapshot_id"],
                     "current_url": payload["current_url"],
@@ -1344,7 +1346,7 @@ class ResearchRelationships:
         started = time.monotonic()
         try:
             async with asyncio.timeout(cfg.wall_seconds):
-                async with self.k.lock, self.k.db.sessions() as guard_session:
+                async with self.k.lock, self.k.db.sessions.begin() as guard_session:
                     await self._validate_sources(guard_session, consent)
                     if consent.data.get("request_sha256") != self._request_sha256(payload):
                         raise PermissionError(
@@ -1371,10 +1373,7 @@ class ResearchRelationships:
                         reserve,
                         cap=capped if capped is not None else 100000,
                     )
-                # Durable liability marker before any provider call. A crash between
-                # marker commit and send is ambiguous and conservatively charged.
-                async with self.k.lock, self.k.db.sessions.begin() as marker_session:
-                    marker = await self.web.get(marker_session, attempt_id, ATTEMPT_KIND)
+                    marker = await self.web.get(guard_session, attempt_id, ATTEMPT_KIND)
                     marker.data = marker.data | {
                         "dispatch_status": "dispatch_possibly_started",
                         "dispatch_started_at": now().isoformat(),
@@ -1457,7 +1456,8 @@ class ResearchRelationships:
             }
             if not source_valid:
                 row.data = self._scrub_withdrawn_data(row.data)
-                row.status = "invalidated"
+                row.status = ("failed" if row.data.get("dispatch_status") ==
+                              "reserved_never_dispatched" else "invalidated")
             connection = None
             if row.status == "validated" and output:
                 goal_terms = _tokens(payload.get("goal_instruction", ""))
@@ -1606,31 +1606,26 @@ class ResearchRelationships:
         }
 
     async def invalidate_for_memory(self, memory_id):
-        """Invalidate *all* dependent projections, not just pending consents.
-
-        The research-memory withdrawal endpoint invokes this after retiring the
-        authoritative source. Never return copied withdrawn quotations as findings.
-        """
-        kinds = (CONSENT_KIND, ATTEMPT_KIND, CONNECTION_KIND,
-                 CURRENT_ANALYSIS_KIND, PAIRED_ANALYSIS_KIND)
         async with self.k.lock, self.k.db.sessions.begin() as session:
-            for kind in kinds:
+            consents = [
+                row for row in await self.web.rows(session, CONSENT_KIND)
+                if row.data.get("historical_memory_id") == memory_id
+            ]
+            consent_ids = {row.id for row in consents}
+            for kind in (CONSENT_KIND, ATTEMPT_KIND, CONNECTION_KIND,
+                         CURRENT_ANALYSIS_KIND, PAIRED_ANALYSIS_KIND):
                 for row in await self.web.rows(session, kind):
-                    if row.data.get("historical_memory_id") != memory_id:
+                    if (row.data.get("historical_memory_id") != memory_id
+                            and row.data.get("consent_id") not in consent_ids):
                         continue
-                    # Active attempts must settle their reservation; no premature
-                    # transition that would hide unsettled dispatch liability.
                     if kind == ATTEMPT_KIND and row.status == "reserved":
                         row.data = row.data | {"source_revoked_during_dispatch": True}
                         continue
-                    if row.status == "invalidated":
-                        continue
-                    row.data = self._scrub_withdrawn_data(row.data)
-                    row.status = "invalidated"
-            self.k.add_event(
-                session, "research.evidence_dependents_invalidated",
-                {"research_memory_id": memory_id},
-            )
+                    if row.status != "invalidated":
+                        row.data = self._scrub_withdrawn_data(row.data)
+                        row.status = "invalidated"
+            self.k.add_event(session, "research.evidence_dependents_invalidated",
+                             {"research_memory_id": memory_id})
 
     async def _settlement_source_valid(self, session, payload):
         """Check authoritative source and grant again *after* inference, under lock."""
@@ -1678,10 +1673,25 @@ class ResearchRelationships:
                 self.research.outbound_inflight.discard(row.data.get("historical_memory_id"))
                 self.research.outbound_inflight.discard(row.data.get("current_snapshot_id"))
 
-    async def list(self, redact_paired=False):
+    async def list(self, redact_paired=False, goal_id=None):
         async with self.k.db.sessions() as session:
-            analyses = [record(row) for row in await self.web.rows(session, ATTEMPT_KIND)]
-            paired = [record(row) for row in await self.web.rows(session, PAIRED_ANALYSIS_KIND)]
+            consents = {row.id: row for row in await self.web.rows(session, CONSENT_KIND)}
+            active_memories = {
+                row.id for row in await self.web.rows(session, "research_memory")
+                if row.status == "active"
+            }
+            def visible(row):
+                data = row.data
+                if goal_id and data.get("goal_id") != goal_id:
+                    return False
+                consent = consents.get(data.get("consent_id"))
+                if consent:
+                    memory_id = consent.data.get("historical_memory_id")
+                    if memory_id and memory_id not in active_memories:
+                        return False
+                return row.status != "invalidated"
+            analyses = [record(row) for row in await self.web.rows(session, ATTEMPT_KIND) if visible(row)]
+            paired = [record(row) for row in await self.web.rows(session, PAIRED_ANALYSIS_KIND) if visible(row)]
             if redact_paired:
                 analyses = [
                     {
@@ -1709,10 +1719,10 @@ class ResearchRelationships:
                 "connections": [
                     record(row)
                     for row in await self.web.rows(session, CONNECTION_KIND)
-                    if row.data.get("analysis_version") == ANALYSIS_VERSION
+                    if visible(row) and row.data.get("analysis_version") == ANALYSIS_VERSION
                 ],
                 "current_analyses": [
-                    record(row) for row in await self.web.rows(session, CURRENT_ANALYSIS_KIND)
+                    record(row) for row in await self.web.rows(session, CURRENT_ANALYSIS_KIND) if visible(row)
                 ],
                 "paired_analyses": paired,
             }
