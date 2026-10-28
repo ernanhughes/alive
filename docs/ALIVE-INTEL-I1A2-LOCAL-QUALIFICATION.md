@@ -131,3 +131,11 @@ consent and grants existed only inside synthetic test databases. Paid spend: **0
    resolved; only the 25-test claim-runtime suite was run there.
 
 **I1-A ready for I1-B: NO. I1-A2 ready for I1-B: NO. Keep any follow-up PR draft.**
+
+## Subsequent owner-authorized consolidation
+
+The owner subsequently requested consolidation of all branches into main. The
+nested validation-evidence leak was then repaired, and the unchanged F probe
+passed on SQLite and PostgreSQL. See [the consolidation report](MAIN-CONSOLIDATION-2026-10-28.md)
+for the newer integration and verification state. The original stop evidence above
+is retained as historical evidence, not the current storage result.
