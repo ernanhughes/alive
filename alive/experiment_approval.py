@@ -93,6 +93,38 @@ class ExperimentApprovals:
         ).hexdigest()
 
     @staticmethod
+    def canonical_manifest(content, stages):
+        """Derive the owner-facing manifest from the canonical content only."""
+        manifest = json.loads(json.dumps(content, sort_keys=True))
+        manifest["stages"] = json.loads(json.dumps(stages, sort_keys=True))
+        return manifest
+
+    @staticmethod
+    def validate_display_manifest(data):
+        """Reject any display object that differs from canonical dispatch content."""
+        content = data.content
+        manifest = data.manifest
+        if not isinstance(manifest, dict):
+            raise ValueError("Campaign display manifest must be an object")
+        allowed = set(content) | {"stages", "payload_sha256s"}
+        unknown = set(manifest) - allowed
+        if unknown:
+            raise ValueError(
+                "Campaign display manifest has unknown fields: " + ", ".join(sorted(unknown))
+            )
+        for key in content:
+            if key not in manifest:
+                raise ValueError("Campaign display manifest is missing " + key)
+            if manifest[key] != content[key]:
+                raise ValueError(
+                    "Campaign display manifest " + key + " differs from canonical content"
+                )
+        if "stages" in manifest and manifest["stages"] != data.stages:
+            raise ValueError("Campaign display stage totals differ from the registered stages")
+        if "payload_sha256s" in manifest and not isinstance(manifest["payload_sha256s"], dict):
+            raise ValueError("Campaign display payload hashes must be an object")
+
+    @staticmethod
     def validate_campaign_content(data):
         content = data.content
         if content is None:
@@ -263,13 +295,61 @@ class ExperimentApprovals:
             raise ValueError("Campaign USD cap is below its stage reservations")
         if data.campaign_digest != ExperimentApprovals.canonical_content(content):
             raise ValueError("Client campaign digest does not match canonical content")
+        # Do not trust the client's instruction/schema hashes. Recompute them
+        # from the exact server code that will build the provider request.
+        from alive.research_relationships import PAIRED_INSTRUCTIONS, PairedAnswerOutput
+
+        expected_instructions = hashlib.sha256(PAIRED_INSTRUCTIONS.encode()).hexdigest()
+        expected_schema = hashlib.sha256(
+            json.dumps(
+                PairedAnswerOutput.model_json_schema(),
+                sort_keys=True,
+                ensure_ascii=False,
+            ).encode()
+        ).hexdigest()
+        if content["instructions_sha256"] != expected_instructions:
+            raise ValueError("Campaign instruction hash does not match the server contract")
+        if content["schema_sha256"] != expected_schema:
+            raise ValueError("Campaign response-schema hash does not match the server contract")
+        ExperimentApprovals.validate_display_manifest(data)
 
     async def register_campaign(self, data):
         self.validate_campaign_content(data)
+        if data.content is not None:
+            # The display and approval view is derived from the one authoritative
+            # content object. Local payload hashes are not research content and are
+            # deliberately excluded from the durable manifest.
+            data = data.model_copy(
+                update={"manifest": self.canonical_manifest(data.content, data.stages)}
+            )
         async with self.k.lock, self.k.db.sessions.begin() as session:
             for row in await self.rows(session, CAMPAIGN_KIND):
                 if row.data.get("campaign_digest") != data.campaign_digest:
                     continue
+                if data.content is not None:
+                    if row.data.get("content") is None:
+                        raise ValueError("Campaign digest already registered as a legacy record")
+                    stable = {
+                        "content": data.content,
+                        "stages": data.stages,
+                        "stage_contracts": data.stage_contracts,
+                        "run_id": data.run_id,
+                        "protocol_sha256": data.protocol_sha256,
+                        "answer_key_sha256": data.answer_key_sha256,
+                        "provider": data.provider,
+                        "model": data.model,
+                        "task_count": data.task_count,
+                        "call_cap": data.call_cap,
+                        "max_input_tokens": data.max_input_tokens,
+                        "max_output_tokens": data.max_output_tokens,
+                        "max_usd": data.max_usd,
+                        "no_retries": data.no_retries,
+                        "analysis_mode": data.analysis_mode,
+                        "synthetic": data.synthetic,
+                    }
+                    if any(row.data.get(key) != value for key, value in stable.items()):
+                        raise ValueError("Campaign digest already registered with other content")
+                    return self.public(row)
                 registration_sha = hashlib.sha256(
                     json.dumps(data.model_dump(), sort_keys=True, ensure_ascii=False).encode()
                 ).hexdigest()
@@ -304,7 +384,7 @@ class ExperimentApprovals:
 
     async def campaign(self, campaign_digest):
         async with self.k.db.sessions() as session:
-            return await self.campaign_locked(session, campaign_digest)
+            return self.public(await self.campaign_locked(session, campaign_digest))
 
     async def campaign_locked(self, session, campaign_digest):
         for row in await self.rows(session, CAMPAIGN_KIND):
@@ -331,19 +411,167 @@ class ExperimentApprovals:
         ).all()
         return [row for row in rows if row.data.get("campaign_digest") == campaign_digest]
 
-    async def stage_one_eligible_locked(self, session, campaign_digest):
+    @staticmethod
+    def settled_attempt(row):
+        """Only a settled response may permit the next frozen call."""
+        if row.status not in ("validated", "rejected"):
+            return False
+        if row.data.get("campaign_fatal"):
+            return False
+        return row.data.get("dispatch_status") in (
+            "dispatch_possibly_started",
+            "provider_response_received",
+        )
+
+    async def campaign_block_reason_locked(self, session, campaign_digest, exclude_attempt_id=None):
+        """Return a durable reason why this campaign may not dispatch."""
+        campaign = await self.campaign_locked(session, campaign_digest)
+        blocked = campaign.data.get("blocked")
+        if blocked:
+            if isinstance(blocked, dict):
+                return str(blocked.get("reason") or "Campaign is blocked")
+            return str(blocked)
+        for row in await self.attempts_locked(session, campaign_digest):
+            if row.id == exclude_attempt_id:
+                continue
+            if row.data.get("campaign_fatal"):
+                return "Campaign has a campaign-fatal attempt"
+            if row.status == "interrupted":
+                return "Campaign has an interrupted attempt with unknown completion"
+            if row.status == "reserved":
+                return "Campaign has an outstanding attempt reservation"
+            if row.data.get(
+                "dispatch_status"
+            ) == "dispatch_possibly_started" and row.status not in ("validated", "rejected"):
+                return "Campaign has an unresolved possibly-started dispatch"
+        return None
+
+    async def block_campaign_locked(
+        self,
+        session,
+        campaign_digest,
+        reason,
+        *,
+        attempt_id=None,
+        category=None,
+    ):
+        """Persist a durable campaign block; the first reason is never cleared."""
+        campaign = await self.campaign_locked(session, campaign_digest)
+        if campaign.data.get("blocked"):
+            return campaign
+        campaign.status = "blocked"
+        campaign.data = campaign.data | {
+            "blocked": {
+                "reason": str(reason)[:1000],
+                "category": category,
+                "attempt_id": attempt_id,
+                "blocked_at": now().isoformat(),
+                "cleared": False,
+            },
+            "status": "blocked",
+        }
+        return campaign
+
+    async def next_eligible_index_locked(
+        self, session, campaign_digest, stage, exclude_attempt_id=None
+    ):
+        """Derive the one next index from durable attempt history.
+
+        A later index cannot overtake an earlier unsettled or missing index. The
+        process-local kernel lock serialises single-backend callers; the durable
+        attempt rows make the decision survive restart.
+        """
+        campaign = await self.campaign_locked(session, campaign_digest)
+        contract = self.stage_contract(campaign, stage)
+        indexed = {}
+        for row in await self.attempts_locked(session, campaign_digest):
+            if row.id == exclude_attempt_id:
+                continue
+            value = row.data.get("call_index")
+            if value is None:
+                continue
+            index = int(value)
+            if index in indexed:
+                raise PermissionError("Duplicate experiment call index in durable history")
+            indexed[index] = row
+        expected = int(contract["index_start"])
+        end = int(contract["index_end"])
+        while expected < end and expected in indexed:
+            row = indexed[expected]
+            if not self.settled_attempt(row):
+                raise PermissionError(f"Call index {expected} has not reached a settled outcome")
+            expected += 1
+        if any(index > expected for index in indexed):
+            raise PermissionError("A later call index was attempted before the next eligible call")
+        if expected >= end:
+            return None
+        return expected
+
+    async def stage_one_eligible_locked(self, session, campaign_digest, exclude_attempt_id=None):
+        if await self.campaign_block_reason_locked(
+            session, campaign_digest, exclude_attempt_id=exclude_attempt_id
+        ):
+            return False
         rows = [
             row
             for row in await self.attempts_locked(session, campaign_digest)
             if row.data.get("stage") == 1
         ]
-        if len(rows) != 2:
+        if len(rows) != 2 or len({row.id for row in rows}) != 2:
             return False
-        if any(row.status == "reserved" for row in rows):
+        indices = sorted(int(row.data.get("call_index", -1)) for row in rows)
+        if indices != [0, 1]:
             return False
-        if any(row.data.get("campaign_fatal") for row in rows):
-            return False
+        for row in rows:
+            if not self.settled_attempt(row):
+                return False
+            if row.data.get("campaign_digest") != campaign_digest:
+                return False
+            if int(row.data.get("stage", 0)) != 1:
+                return False
+            if not row.data.get("content_sha256"):
+                return False
         return any(row.status == "validated" for row in rows)
+
+    async def campaign_state(self, campaign_digest):
+        """Owner-facing technical state without blinded outputs."""
+        async with self.k.db.sessions() as session:
+            campaign = await self.campaign_locked(session, campaign_digest)
+            attempts = await self.attempts_locked(session, campaign_digest)
+            stage_one_eligible = await self.stage_one_eligible_locked(session, campaign_digest)
+            block_reason = await self.campaign_block_reason_locked(session, campaign_digest)
+            stage_two_started = any(int(row.data.get("stage", 0)) == 2 for row in attempts)
+            return {
+                "campaign_digest": campaign_digest,
+                "blocked": campaign.data.get("blocked"),
+                "block_reason": block_reason,
+                "stage_1_eligible": stage_one_eligible,
+                "stage_2_eligible": bool(
+                    stage_one_eligible and not stage_two_started and not block_reason
+                ),
+                "attempts": [
+                    {
+                        "attempt_id": row.id,
+                        "stage": row.data.get("stage"),
+                        "call_index": row.data.get("call_index"),
+                        "task_id": row.data.get("task_id"),
+                        "condition": row.data.get("condition"),
+                        "status": row.status,
+                        "dispatch_status": row.data.get("dispatch_status"),
+                        "campaign_fatal": bool(row.data.get("campaign_fatal")),
+                        "error_category": row.data.get("error_category"),
+                        "cost_liability_tokens": row.data.get("cost_liability_tokens", 0),
+                        "content_sha256": row.data.get("content_sha256"),
+                    }
+                    for row in sorted(
+                        attempts,
+                        key=lambda item: (
+                            int(item.data.get("call_index", -1)),
+                            item.id,
+                        ),
+                    )
+                ],
+            }
 
     @staticmethod
     def stage_contract(campaign, stage):
@@ -393,6 +621,9 @@ class ExperimentApprovals:
                     break
             if campaign is None:
                 raise KeyError("Unknown campaign")
+            block_reason = await self.campaign_block_reason_locked(session, campaign_digest)
+            if block_reason:
+                raise ValueError("Campaign is blocked: " + block_reason)
             if data.no_retries is not True:
                 raise ValueError("Zero-retry approval is required")
             if data.stage not in (1, 2):
@@ -507,6 +738,11 @@ class ExperimentApprovals:
         exclude_attempt_id=None,
     ):
         campaign = await self.campaign_locked(session, campaign_digest)
+        block_reason = await self.campaign_block_reason_locked(
+            session, campaign_digest, exclude_attempt_id=exclude_attempt_id
+        )
+        if block_reason:
+            raise PermissionError("Campaign is blocked: " + block_reason)
         approval = await self.approval_locked(session, approval_id)
         if approval.status != "active":
             raise PermissionError("Campaign approval is not active")
@@ -522,6 +758,15 @@ class ExperimentApprovals:
             raise PermissionError("Call index is outside the approved stage")
         if call_index >= int(data.get("call_cap", 0)):
             raise PermissionError("Call index exceeds the approval call cap")
+        next_index = await self.next_eligible_index_locked(
+            session, campaign_digest, stage, exclude_attempt_id=exclude_attempt_id
+        )
+        if next_index is None:
+            raise PermissionError("The approved stage is already complete")
+        if call_index != next_index:
+            raise PermissionError(
+                f"Call index {call_index} is not the next eligible index {next_index}"
+            )
         manifest = campaign.data.get("content") or campaign.data["manifest"]
         call_order = manifest.get("call_order", [])
         if call_index >= len(call_order):
@@ -529,7 +774,9 @@ class ExperimentApprovals:
         expected = call_order[call_index]
         if expected["task_id"] != task_id or expected["condition"] != condition:
             raise PermissionError("Cell does not match the frozen call order")
-        if stage == 2 and not await self.stage_one_eligible_locked(session, campaign_digest):
+        if stage == 2 and not await self.stage_one_eligible_locked(
+            session, campaign_digest, exclude_attempt_id=exclude_attempt_id
+        ):
             raise PermissionError("Stage 2 is not eligible")
         attempts = await self.attempts_locked(session, campaign_digest)
         if any(
@@ -631,4 +878,19 @@ class ExperimentApprovals:
     def public(row):
         data = dict(row.data)
         data.pop("capability_hash", None)
+        if data.get("content"):
+            from alive.research_relationships import PAIRED_INSTRUCTIONS, PairedAnswerOutput
+
+            data["disclosure"] = {
+                "instructions": PAIRED_INSTRUCTIONS,
+                "schema": PairedAnswerOutput.model_json_schema(),
+                "instructions_sha256": hashlib.sha256(PAIRED_INSTRUCTIONS.encode()).hexdigest(),
+                "schema_sha256": hashlib.sha256(
+                    json.dumps(
+                        PairedAnswerOutput.model_json_schema(),
+                        sort_keys=True,
+                        ensure_ascii=False,
+                    ).encode()
+                ).hexdigest(),
+            }
         return record(row) | {"data": data}

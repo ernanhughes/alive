@@ -1,0 +1,81 @@
+prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+CONFIRMED: server dispatched call_index=1 before any attempt at index=0
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+CONFIRMED: backend dispatched index=1 after durable fatal 401 at index=0
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+execute: V3-T03 A recovered status=failed missing=True
+execute: V3-T03 B status=validated abstained=False charged=0
+execute: phase=staged attempted=2 remaining=16 call_cap=2
+CONFIRMED: ordinary restart recovered fatal 401 but dispatched the next cell; phase=staged
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+CONFIRMED: cancellation settlement rolled back; restart charged ambiguity but omitted fatal flag; stage 2 approved and dispatched
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+CONFIRMED: actual dispatched question differs from registered native-display manifest
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: queued revocation committed before final dispatch marker; zero provider calls, zero liability
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound research_question refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound current_excerpt refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound historical_excerpt refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound current_url refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound current_sha256 refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound goal_instruction refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound instructions refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound schema refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound provider refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound model refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound run_id refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound approval_id refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound stage refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound call_index refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+prepare: alive14-r5-real-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.391635 phase=prepared
+PASS: UUID-independent digest, source sensitivity, budgets 10345/92148 tokens, 43967/391635 micro-USD, minimum owner/runtime/protocol cap
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: already-authorized consent refused after campaign approval supersession; zero dispatch
+.
+============================== warnings summary ===============================
+alive-review-12-evidence/test_review12.py: 97 warnings
+  C:\Projects\alive-worktrees\alive-14-r5\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+    self._get_loop()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+22 passed, 97 warnings in 50.79s

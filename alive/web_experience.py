@@ -389,9 +389,9 @@ class WebCompanion:
         await session.flush()
         return row
 
-    def add(self, session, kind, data, parent=None, status="recorded"):
+    def add(self, session, kind, data, parent=None, status="recorded", row_id=None):
         row = WebExperience(
-            id=uid(),
+            id=row_id or uid(),
             instance_id=self.k.instance_id,
             kind=kind,
             parent_id=parent,
@@ -1404,6 +1404,10 @@ def router(app, ready):
     @api.get("/research/experiment/campaigns/{campaign_digest}")
     async def get_experiment_campaign(campaign_digest: str):
         return await app.state.approvals.campaign(campaign_digest)
+
+    @api.get("/research/experiment/campaigns/{campaign_digest}/state")
+    async def get_experiment_campaign_state(campaign_digest: str):
+        return await app.state.approvals.campaign_state(campaign_digest)
 
     @api.post("/research/experiment/campaigns/{campaign_digest}/approve")
     async def approve_experiment_campaign(campaign_digest: str, data: ApprovalRequest):

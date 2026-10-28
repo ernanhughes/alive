@@ -1,0 +1,47 @@
+{
+  "status": "NOT_AN_APPROVAL",
+  "real_approval_created": false,
+  "paid_calls": 0,
+  "run_id": "alive14-r5-real-85fe891cee31",
+  "campaign_digest": "c11590b43c5b366618ca15153249555f949276e05abe65087295b55514c6b3ff",
+  "protocol_sha256": "85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b",
+  "answer_key_sha256": "255e706dd569634d1710a50831f65a6dd6eb7dabc5ee56e1cd763b382554b43d",
+  "provider": "meta",
+  "model": "muse-spark-1.3",
+  "task_count": 9,
+  "stage_1": {
+    "call_cap": 2,
+    "reserved_tokens": 10345,
+    "worst_case_micro_usd": 43967
+  },
+  "full": {
+    "call_cap": 18,
+    "reserved_tokens": 92148,
+    "worst_case_micro_usd": 391635
+  },
+  "totals": {
+    "calls": 18,
+    "reserved_tokens": 92148,
+    "worst_case_micro_usd": 391635
+  },
+  "stage_contracts": {
+    "1": {
+      "stage": 1,
+      "call_cap": 2,
+      "index_start": 0,
+      "index_end": 2,
+      "reserved_tokens": 10345,
+      "max_usd": 0.043967
+    },
+    "2": {
+      "stage": 2,
+      "call_cap": 18,
+      "index_start": 2,
+      "index_end": 18,
+      "reserved_tokens": 92148,
+      "max_usd": 0.391635
+    }
+  },
+  "content_cells": 18,
+  "content_sha256": "c11590b43c5b366618ca15153249555f949276e05abe65087295b55514c6b3ff"
+}

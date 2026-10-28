@@ -1,3 +1,5 @@
+> **REVIEW-12 superseded R5 readiness.** Independent REVIEW-12 reproduced four remaining blockers in the merged R5 package: durable fatal-stop bypass, cancellation settlement rollback, out-of-order dispatch and display/manifest divergence. R5 is **NOT READY** for owner approval. See `docs/ALIVE-14-R5-R1.md` and `archives/ALIVE-14-R5-R1/`.
+
 # Codex ALIVE-14-R5 handoff
 
 ## Repository

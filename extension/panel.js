@@ -392,9 +392,42 @@ async function loadCampaign() {
   campaignView = record.data;
   campaignApprovalId = null;
   $('campaign-revoke').disabled = true;
-  $('campaign-status').textContent = `${campaignView.provider} / ${campaignView.model} | ${campaignView.task_count} tasks | ${campaignView.call_cap} calls | ${campaignView.synthetic ? 'synthetic' : 'real'}`;
-  $('campaign-digest').textContent = `Campaign digest: ${campaignView.campaign_digest}\nStage 1: 2 calls, ${campaignView.stages.stage_1.worst_case_micro_usd} micro-USD\nFull: ${campaignView.stages.full.call_cap} calls, ${campaignView.stages.full.worst_case_micro_usd} micro-USD`;
-  $('campaign-manifest').textContent = JSON.stringify(campaignView.manifest, null, 2);
+  const blocked = campaignView.blocked;
+  $('campaign-status').textContent = blocked
+    ? `BLOCKED: ${blocked.reason || 'durable campaign barrier'} | ${campaignView.provider} / ${campaignView.model} | ${campaignView.task_count} tasks`
+    : `${campaignView.provider} / ${campaignView.model} | ${campaignView.task_count} tasks | ${campaignView.call_cap} calls | ${campaignView.synthetic ? 'synthetic' : 'real'}`;
+  $('campaign-approve').disabled = Boolean(blocked);
+  try {
+    const active = await command('active-approval', { digest });
+    if (active?.data?.status === 'active' && !blocked) {
+      campaignApprovalId = active.data.approval_id;
+      $('campaign-revoke').disabled = false;
+      $('campaign-status').textContent = `Approval ${active.data.approval_id} active for stage ${active.data.stage}; ${active.data.call_cap} calls, ${active.data.max_usd} USD cap.`;
+    }
+  } catch (error) {
+    // No active approval is a normal state.
+  }
+  $('campaign-digest').textContent = `Campaign digest: ${campaignView.campaign_digest}\nProtocol: ${campaignView.protocol_sha256}\nAnswer key: ${campaignView.answer_key_sha256}\nOutput cap: ${campaignView.max_output_tokens} tokens\nStage 1: 2 calls, ${campaignView.stages.stage_1.worst_case_micro_usd} micro-USD\nFull: ${campaignView.stages.full.call_cap} calls, ${campaignView.stages.full.worst_case_micro_usd} micro-USD`;
+  $('campaign-manifest').textContent = JSON.stringify(
+    campaignView.content || campaignView.manifest,
+    null,
+    2
+  );
+  $('campaign-disclosure').textContent = campaignView.disclosure
+    ? JSON.stringify(campaignView.disclosure, null, 2)
+    : 'No server disclosure available.';
+  await refreshCampaignState();
+}
+async function refreshCampaignState() {
+  if (!campaignView) return;
+  const state = await command('campaign-state', { digest: campaignView.campaign_digest });
+  $('campaign-state').textContent = JSON.stringify({
+    blocked: state.blocked,
+    block_reason: state.block_reason,
+    stage_1_eligible: state.stage_1_eligible,
+    stage_2_eligible: state.stage_2_eligible,
+    attempts: state.attempts,
+  }, null, 2);
 }
 async function approveCampaign() {
   if (!campaignView) throw new Error('Load a campaign first');
@@ -419,6 +452,7 @@ async function approveCampaign() {
   campaignApprovalId = approved.data.approval_id;
   $('campaign-revoke').disabled = false;
   $('campaign-status').textContent = `Approval ${approved.data.approval_id} active for stage ${approved.data.stage}; ${approved.data.call_cap} calls, ${approved.data.max_usd} USD cap.`;
+  await refreshCampaignState();
 }
 async function revokeCampaignApproval() {
   if (!campaignApprovalId) throw new Error('No active approval is displayed');
@@ -426,6 +460,7 @@ async function revokeCampaignApproval() {
   $('campaign-status').textContent = `Approval ${revoked.data.approval_id} is ${revoked.data.status}; no further dispatch is authorised.`;
   $('campaign-revoke').disabled = true;
   campaignApprovalId = null;
+  await refreshCampaignState();
 }
 $('campaign-revoke').onclick = () => action(revokeCampaignApproval);
 $('campaign-refresh').onclick = () => action(refreshCampaigns);

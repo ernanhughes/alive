@@ -1,0 +1,37 @@
+INFO:     Started server process [26040]
+INFO:     Waiting for application startup.
+C:\Projects\alive-worktrees\alive-14-r5\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+  self._get_loop()
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:60832 (Press CTRL+C to quit)
+INFO:     127.0.0.1:60833 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62127 - "GET /api/v1/provenance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62127 - "GET /api/v1/alive HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62127 - "GET /api/v1/browser-experience HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62127 - "GET /api/v1/browser-experience/research/experiment/campaigns HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62127 - "GET /api/v1/browser-experience/research/experiment/campaigns HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62127 - "GET /api/v1/browser-experience/research/experiment/approvals?campaign_digest=795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25 HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62127 - "GET /api/v1/browser-experience/research/experiment/campaigns/795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62127 - "POST /api/v1/browser-experience/research/experiment/campaigns/795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25/approve HTTP/1.1" 409 Conflict
+INFO:     127.0.0.1:62127 - "POST /api/v1/browser-experience/research/experiment/campaigns/795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25/approve HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62127 - "GET /api/v1/browser-experience/research/experiment/campaigns/795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25/state HTTP/1.1" 200 OK
+INFO:     Started server process [39244]
+INFO:     Waiting for application startup.
+C:\Projects\alive-worktrees\alive-14-r5\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+  self._get_loop()
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:60832 (Press CTRL+C to quit)
+INFO:     127.0.0.1:61760 - "GET /api/v1/health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61066 - "GET /api/v1/provenance HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61066 - "GET /api/v1/alive HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61066 - "GET /api/v1/browser-experience HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61066 - "GET /api/v1/browser-experience/research/experiment/campaigns HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61066 - "GET /api/v1/browser-experience/research/experiment/campaigns HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61066 - "GET /api/v1/browser-experience/research/experiment/approvals?campaign_digest=795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61066 - "GET /api/v1/browser-experience/research/experiment/campaigns/795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61066 - "POST /api/v1/browser-experience/research/experiment/approvals/a833ba1d-28eb-47b6-a1d5-ccbf6bb43909/revoke HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61066 - "GET /api/v1/browser-experience/research/experiment/campaigns/795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61088 - "GET /api/v1/browser-experience/research/experiment/approvals/a833ba1d-28eb-47b6-a1d5-ccbf6bb43909 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61106 - "GET /api/v1/browser-experience/research/relationships HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61107 - "GET /api/v1/browser-experience/research/experiment/campaigns/795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25/state HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61110 - "POST /api/v1/browser-experience/research/outbound/preview HTTP/1.1" 403 Forbidden
