@@ -192,6 +192,10 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
       if (!message.digest) throw new Error('Select a campaign');
       return send('/browser-experience/research/experiment/campaigns/' + message.digest + '/state');
     }
+    if (message.type === 'active-approval') {
+      if (!message.digest) throw new Error('Select a campaign');
+      return send('/browser-experience/research/experiment/approvals?campaign_digest=' + encodeURIComponent(message.digest));
+    }
     if (message.type === 'approve-campaign') {
       if (!message.digest || !message.approval)
         throw new Error('Select a campaign and approval stage');

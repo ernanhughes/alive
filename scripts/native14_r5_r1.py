@@ -246,82 +246,113 @@ async def campaign_a(root, page_url, evidence):
             await panel.screenshot(root / "a" / "native-r5r1-stage1-approval.png")
             evidence["screenshots"].append("native-r5r1-stage1-approval.png")
 
-            # Import the owner-created approval into the CLI pointer and restore
-            # restart-suspended grants for the HTTP dispatch.
-            await asyncio.to_thread(runner.approve, "synthetic", synthetic=True, stage=1)
+            evidence["environment"]["campaign_a_chrome"] = context.browser.version
+            evidence["environment"]["campaign_a_panel"] = meta
+            await context.close()
+            context = None
 
-            def restore():
-                settings = runner.build_settings("synthetic", protocol, directory, token)
-                with runner.Client(settings, token) as client:
-                    return runner.reactivate_approved_grants(client, directory, state)
+        harness.stop_backend(backend_process, backend_log)
+        backend_process = backend_log = None
+        await asyncio.to_thread(runner.approve, "synthetic", synthetic=True, stage=1)
+        first = await asyncio.to_thread(runner.execute, "synthetic", limit=1)
+        assert first["phase"] == "staged", first["phase"]
+        assert first["execution"]["attempted_dispatches"] == 1
+        approval = runner.read_json(directory / "approval.json")
+        evidence["backend_actions"].append(
+            "Runner CLI A: imported the panel approval and dispatched exactly one stage-1 cell"
+        )
 
-            await asyncio.to_thread(restore)
-            approval = runner.read_json(directory / "approval.json")
-            first = await http_dispatch(backend, token, state, approval, 0)
-            assert first.status_code == 200, first.text
-            first_data = first.json()
-            assert first_data["analysis"]["status"] == "validated"
-            assert first_data["analysis"]["data"]["call_index"] == 0
-            evidence["backend_actions"].append(
-                "HTTP A: dispatched exactly one synthetic stage-1 cell after owner approval"
+        backend_process, backend_log = harness.start_backend(root / "a", env, backend_port)
+        await harness.wait_backend(backend)
+        async with async_playwright() as playwright:
+            context, panel, meta = await launch_panel(
+                playwright,
+                root / "a",
+                "chrome-profile-a2",
+                extension,
+                backend,
+                page_url,
             )
-
+            await load_campaign(panel, state["campaign_digest"])
+            await panel.wait("!document.querySelector('#campaign-revoke').disabled")
             await panel.click("#campaign-revoke")
             await panel.wait(
                 "document.querySelector('#campaign-status').textContent.includes('is revoked')"
             )
             await panel.screenshot(root / "a" / "native-r5r1-revoked.png")
             evidence["screenshots"].append("native-r5r1-revoked.png")
+            evidence["native_actions"].append(
+                "Chrome A: reloaded the active approval after restart and revoked it"
+            )
+            await context.close()
+            context = None
 
-            refused = await http_dispatch(backend, token, state, approval, 1)
-            assert refused.status_code in (403, 409), refused.text
-            assert "not active" in refused.text.lower() or "blocked" in refused.text.lower()
-            inventory = await api_ok(backend, token, "GET", "/research/relationships")
+        approval_record = await api_ok(
+            backend,
+            token,
+            "GET",
+            f"/research/experiment/approvals/{approval['approval_id']}",
+        )
+        assert approval_record["data"]["status"] == "revoked"
+        inventory = await api_ok(backend, token, "GET", "/research/relationships")
+        attempts = [
+            row
+            for row in inventory["analyses"]
+            if row["data"].get("campaign_digest") == state["campaign_digest"]
+        ]
+        assert len(attempts) == 1
+        assert attempts[0]["data"]["call_index"] == 0
+        state_view = await api_ok(
+            backend,
+            token,
+            "GET",
+            f"/research/experiment/campaigns/{state['campaign_digest']}/state",
+        )
+        assert state_view["attempts"][0]["call_index"] == 0
+        refused = await http_dispatch(backend, token, state, approval, 1)
+        assert refused.status_code in (403, 409), refused.text
+        evidence["backend_actions"].append(
+            "HTTP A: the next dispatch after revocation was refused; attempt count remained one"
+        )
+
+        harness.stop_backend(backend_process, backend_log)
+        backend_process = backend_log = None
+        try:
+            runner.execute("synthetic", limit=2)
+            raise AssertionError("CLI execution after revocation was not refused")
+        except SystemExit as exc:
+            assert "no longer active" in str(exc), str(exc)
+        settings = runner.build_settings("synthetic", protocol, directory, token)
+        with runner.Client(settings, token) as client:
+            inventory = runner.call(client, "GET", "/research/relationships")
             attempts = [
                 row
                 for row in inventory["analyses"]
                 if row["data"].get("campaign_digest") == state["campaign_digest"]
             ]
-            assert len(attempts) == 1
-            assert attempts[0]["data"]["call_index"] == 0
-            approval_record = await api_ok(
-                backend,
-                token,
-                "GET",
-                f"/research/experiment/approvals/{approval['approval_id']}",
-            )
-            assert approval_record["data"]["status"] == "revoked"
-            state_view = await api_ok(
-                backend,
-                token,
-                "GET",
-                f"/research/experiment/campaigns/{state['campaign_digest']}/state",
-            )
-            assert state_view["attempts"][0]["call_index"] == 0
-            evidence["campaign_a"] = {
-                "campaign_digest": state["campaign_digest"],
-                "approval_id": approval["approval_id"],
-                "digest_displayed": True,
-                "canonical_question": state["campaign_content"]["tasks"][0]["question"],
-                "manifest_equals_content": True,
-                "disclosure_displayed": True,
-                "stage_2_before_stage_1_rejected": True,
-                "stage_1_approval_created_by_panel": True,
-                "dispatched_call_indices": [0],
-                "revoked_after_first_dispatch": True,
-                "next_dispatch_refused": True,
-                "attempt_count_after_revocation": len(attempts),
-                "approval_status_after_revocation": approval_record["data"]["status"],
-                "technical_state": state_view,
-                "synthetic": True,
-            }
-            evidence["native_actions"].append(
-                "Chrome A: revoked approval after one dispatch; next backend dispatch refused"
-            )
-            evidence["environment"]["campaign_a_chrome"] = context.browser.version
-            evidence["environment"]["campaign_a_panel"] = meta
-            await context.close()
-            context = None
+        assert len(attempts) == 1
+        assert attempts[0]["data"]["call_index"] == 0
+        evidence["campaign_a"] = {
+            "campaign_digest": state["campaign_digest"],
+            "approval_id": approval["approval_id"],
+            "digest_displayed": True,
+            "canonical_question": state["campaign_content"]["tasks"][0]["question"],
+            "manifest_equals_content": True,
+            "disclosure_displayed": True,
+            "stage_2_before_stage_1_rejected": True,
+            "stage_1_approval_created_by_panel": True,
+            "stage_1_cli_calls": 1,
+            "revoked_after_first_dispatch": True,
+            "next_dispatch_refused_http": refused.status_code,
+            "next_dispatch_refused_cli": True,
+            "attempt_count_after_revocation": len(attempts),
+            "approval_status_after_revocation": approval_record["data"]["status"],
+            "technical_state": state_view,
+            "synthetic": True,
+        }
+        evidence["native_actions"].append(
+            "Chrome A: revoked approval after one dispatch; HTTP and CLI successor paths refused"
+        )
     finally:
         if context:
             try:
