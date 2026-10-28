@@ -340,7 +340,7 @@ class ResearchMemory:
             if occurrence_start is None and len(offsets) != 1:
                 raise ValueError("Ambiguous anchor; choose an occurrence offset: " + repr(offsets))
             start = offsets[0] if occurrence_start is None else occurrence_start
-            if start not in offsets or not _bounded_sentence(excerpt, quote):
+            if start not in offsets or not _bounded_sentence(excerpt, quote, start):
                 raise ValueError("Anchor occurrence is invalid or not sentence-bounded")
             new_revision = revision + 1
             row.data = row.data | {"reliance_anchor": {
