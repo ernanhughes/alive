@@ -48,10 +48,10 @@ def source_identity():
     }
 
 
-def prepare_campaign(root, label):
+async def prepare_campaign(root, label):
     runner.RUNS = root / label / "runs"
     runner.ARCHIVE = root / label / "archive"
-    state = runner.prepare("synthetic")
+    state = await asyncio.to_thread(runner.prepare, "synthetic")
     protocol = runner.verify_protocol_identity()
     directory = runner.run_dir("synthetic", protocol)
     token = runner.token_for(directory)
@@ -201,7 +201,7 @@ async def assert_disclosure(panel, state):
 
 
 async def campaign_a(root, page_url, evidence):
-    state, protocol, directory, token = prepare_campaign(root, "a")
+    state, protocol, directory, token = await prepare_campaign(root, "a")
     backend_port = harness.free_port()
     backend = f"http://127.0.0.1:{backend_port}"
     env = backend_env(root / "a", directory, token, page_url, backend)
@@ -332,7 +332,7 @@ async def campaign_a(root, page_url, evidence):
 
 
 async def campaign_b(root, page_url, evidence):
-    state, protocol, directory, token = prepare_campaign(root, "b")
+    state, protocol, directory, token = await prepare_campaign(root, "b")
     backend_port = harness.free_port()
     backend = f"http://127.0.0.1:{backend_port}"
     env = backend_env(root / "b", directory, token, page_url, backend)
