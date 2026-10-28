@@ -34,6 +34,7 @@ class Settings(BaseSettings):
     alive_native_test_pages: str = ""
     alive_companion_micro_usd_limit: int | None = Field(default=None, ge=0)
     alive_research_meta_enabled: bool = False
+    alive_claim_meta_enabled: bool = False
     alive_relationship_micro_usd_limit: int | None = Field(default=100000, ge=0)
     alive_relationship_allow_test_providers: bool = False
     alive_role_models: dict[str, str] = {}
