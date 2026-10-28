@@ -1,6 +1,6 @@
 # ALIVE-NOTEBOOK-01-R1 — integrity and qualification corrections
 
-Recommendation: **READY_FOR_REVIEW**, subject to the hosted CI result recorded below.
+Recommendation: **READY_FOR_REVIEW**. Hosted CI status is recorded below.
 Shipped toolbar acceptance remains **NOT QUALIFIED** under the explicitly permitted
 manual-qualification fallback. This is not a release claim for that path.
 
@@ -10,6 +10,7 @@ Base: current `origin/main`, `8737adf1e91d89cc772cd32cd56a8a4fe9370116`, contain
 merged PR #40. Branch: `codex/alive-notebook-01-r1-integrity`. Worktree:
 `C:\Projects\alive-notebook-01-r1`; the original checkout and its untracked `.vscode/`
 were left intact. No ALIVE-NOTEBOOK-02 work was started. No automatic merge is authorized.
+Draft correction PR: https://github.com/ernanhughes/alive/pull/41.
 
 ## Root causes and corrections
 
@@ -60,20 +61,40 @@ All paths below are relative to `docs/validation/alive-notebook-01-r1/`.
 |---|---|---|
 | Targeted Python (notebook + demo/live R1) | 46 passed, 0 failed, 1 skipped, 1 xfailed | `python-targeted.txt` |
 | Notebook Python | 30 passed, 0 failed, 1 skipped, 1 xfailed | included in targeted and hosted notebook output |
-| Full Python | PENDING | `python-full.txt` |
+| Full Python | 414 passed, 0 failed, 7 skipped, 1 xfailed; 419.84s | `python-full.txt` |
 | Six Node suites | 38 passed, 0 failed, 0 skipped | `node.txt` |
 | Ruff check and format | PASS; 170 files formatted | `lint.txt` |
 | Hugo production build / built provenance | PASS; provenance OK | `hugo.txt` |
 | Six archive and three protocol verifiers | PASS | `archive-protocol.txt` |
+| Protected runtime/authorization/archive paths | unchanged | `protected-paths.txt` |
 | Substituted native journey | PASS; 0 external calls, USD 0.00 | `substituted-native/result.json`, nine screenshots, `substituted-native.txt` |
 | Byte-identical shipped-extension load smoke | PASS; 0 external calls, USD 0.00 | `shipped-smoke/result.json`, `chapter.png`, `shipped-smoke.txt` |
 | Authentic shipped toolbar capture/rejection/revocation | NOT QUALIFIED | manual procedure below |
-| Hosted CI | PENDING; no hosted success claimed | to be recorded after push |
+| Hosted notebook job | SUCCESS: 30 passed, 1 skipped, 1 xfailed; Node 2 passed, 0 skipped | `hosted-notebook.txt` |
+| Hosted full workflow (push) | SUCCESS; all five jobs | run 40776438791; `hosted-ci.json` |
 
 The targeted skip is the existing unimplemented semantic validity judgement, not provenance.
 The strict R3 xfail remains: terminology overlap cannot establish a meaningful relationship.
 Native runs used Windows 11 / Chrome 156.0.8078.73 and Hugo 0.165.0. Their JSON records
 the base commit and working state; execution preceded the correction commit.
+
+Hosted push run [40776438791](https://github.com/ernanhughes/alive/actions/runs/40776438791)
+concluded **success** on implementation commit `0213deb`: dashboard, Ubuntu backend,
+Windows backend, notebook and PostgreSQL first-contact jobs all passed. The Ubuntu
+backend result was 414 passed / 7 skipped / 1 xfailed in 275.13s in the parallel PR run;
+the Windows push job recorded 414 passed / 7 skipped / 1 xfailed in 429.93s. No failures.
+The final evidence commit changes documentation/evidence only; these conclusions identify
+the tested implementation commit, not an unobserved subsequent run.
+
+Hosted pull-request run [#234 / 40776465685](https://github.com/ernanhughes/alive/actions/runs/40776465685)
+tests implementation commit `0213deb0f8603451386ba62c8cebdd814bf71510` merged with
+base `8737adf` (test merge `9c888f4`). The
+[notebook job](https://github.com/ernanhughes/alive/actions/runs/40776465685/job/123126970323)
+concluded **success**: full-history fetch, checksum-verified Hugo installation, production
+build, built provenance, Python and Node capture checks all executed. The sole skipped
+Python test is semantic validity judgement; all four formerly skipped provenance tests ran.
+The separate PR run was still finishing its Windows backend at the evidence checkpoint;
+no conclusion is inferred for an in-progress run.
 
 ## Security consequences and limits
 
@@ -141,4 +162,7 @@ hybrid embeddings. Retrieval was not tuned.
   qualification corrections, reproduction and results.
 
 The historical PR #40 description was corrected in place to state its merged status, all
-substitutions, lexical rank conditions and the limits of its evidence.
+substitutions, lexical rank conditions and the limits of its evidence. Its actual hosted run
+[#231 / 40771211673](https://github.com/ernanhughes/alive/actions/runs/40771211673)
+concluded success, but omitted notebook gates and allowed provenance skips. That historical
+green run is not evidence that notebook provenance was enforced.
