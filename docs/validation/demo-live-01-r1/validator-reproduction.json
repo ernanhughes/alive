@@ -1,0 +1,46 @@
+{
+  "absent": {
+    "reviewed_main": {
+      "valid": true,
+      "decision": "accepted",
+      "relationship": "explicit_supersession",
+      "reasons": [],
+      "version": "alive-demo01-claim-v2",
+      "historical_quote_retained_in_current": true
+    },
+    "repair": {
+      "valid": true,
+      "decision": "demoted",
+      "relationship": "insufficient_evidence",
+      "reasons": [
+        "historical_capture_source_identity_unverified",
+        "current_capture_source_identity_unverified",
+        "historical_claim_entry_not_unique"
+      ],
+      "version": "alive-demo01-claim-v2",
+      "historical_quote_retained_in_current": true
+    }
+  },
+  "v1": {
+    "reviewed_main": {
+      "valid": true,
+      "decision": "accepted",
+      "relationship": "explicit_supersession",
+      "reasons": [],
+      "version": "alive-demo01-claim-v2",
+      "historical_quote_retained_in_current": true
+    },
+    "repair": {
+      "valid": true,
+      "decision": "demoted",
+      "relationship": "insufficient_evidence",
+      "reasons": [
+        "historical_capture_source_identity_unverified",
+        "current_capture_source_identity_unverified",
+        "historical_claim_entry_not_unique"
+      ],
+      "version": "alive-demo01-claim-v2",
+      "historical_quote_retained_in_current": true
+    }
+  }
+}

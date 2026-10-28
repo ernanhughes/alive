@@ -1,0 +1,32 @@
+Base verification: git fetch origin; git rev-parse origin/main
+Base: cf587c1af90bb605dd18e64162403bcade588e82
+Branch: git switch -c fix/alive-demo-live-01-r1 origin/main
+
+uv run pytest -q --tb=short -rs
+  python.txt (final); python-interrupted.txt (earlier interrupted run)
+node --test tests/extension-background.test.cjs tests/extension-panel.test.cjs tests/extension-capture.test.cjs tests/extension-live-background.test.cjs tests/extension-live-companion.test.cjs
+  node.txt
+uv run ruff check alive migrations scripts tests
+uv run ruff format --check alive migrations scripts tests
+  lint.txt
+uv run pytest -q tests/test_demo_live_01_r1.py tests/test_demo01_foundation_probes.py tests/test_zz_prc_probe.py --tb=short
+  targeted.txt (initial new restart-test setup failure)
+uv run pytest -q tests/test_demo_live_01_r1.py --tb=short
+  notes-targeted.txt (corrected setup, PASS)
+
+ALIVE_CLAIM_TEST_PG_URL=postgresql://postgres@127.0.0.1:61588/postgres
+uv run pytest -q tests/test_demo_live_01.py tests/test_claim_runtime.py tests/test_demo01_foundation_probes.py tests/test_demo_live_01_r1.py --tb=short
+  postgres-final.txt (46 genuine PostgreSQL tests; server setup: postgres-server.txt)
+uv run pytest -q tests/test_demo_live_01_r1.py --tb=short
+  postgres-notes.txt (two PostgreSQL note tests)
+Earlier postgres.txt ran before the new note module adopted the optional PG fixture;
+its original 44 domain tests used PG and its two note tests used SQLite. Use postgres-final.txt.
+
+From C:\r1 (detached short worktree at runtime checkpoint):
+uv run python -m scripts.native_demo_live_01
+  native.txt (first success), native-final.txt (final success)
+  native/result.json and six screenshots (final artifacts)
+
+Archive/protocol commands and their outputs: protected-verifiers.txt.
+AST equality and git diff --name-only against main: protected-boundaries.json.
+Direct reviewed-main vs repaired validator reproduction: validator-reproduction.json.

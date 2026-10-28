@@ -1,0 +1,18 @@
+{
+  "base": "cf587c1af90bb605dd18e64162403bcade588e82",
+  "implementation": "fc9e75f1fca1b436edb372acb29f2251eafcd9b2",
+  "changed_paths": [
+    "alive/claim_comparison.py",
+    "alive/web_experience.py",
+    "extension/live-companion.js",
+    "scripts/native_demo_live_01.py",
+    "tests/extension-live-companion.test.cjs",
+    "tests/test_demo01_foundation_probes.py",
+    "tests/test_demo_live_01.py",
+    "tests/test_demo_live_01_r1.py",
+    "tests/test_zz_prc_probe.py"
+  ],
+  "protected_changes": [],
+  "bounded_ast_identical": true,
+  "bounded_ast_sha256": "7ad4e965db6d97176545cc63174ba435b37f0e87014b3e5fca60c96438e35e0a"
+}
