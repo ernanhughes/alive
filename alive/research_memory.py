@@ -307,6 +307,75 @@ class ResearchMemory:
         if projection:
             projection.metadata_json = projection.metadata_json | {"owner_useful": usefulness}
 
+    async def anchor(self, research_id, quote, expected_sha256, expected_revision,
+                     occurrence_start=None):
+        """Compare-and-swap an exact owner-selected source passage."""
+        import unicodedata
+        from alive.claim_comparison import _bounded_sentence
+        if not 16 <= len(quote) <= 300 or any(
+            unicodedata.category(char) in ("Cc", "Cf") for char in quote
+        ):
+            raise ValueError("Anchor quote must be 16–300 characters without controls")
+        async with self.k.lock, self.k.db.sessions.begin() as session:
+            row = await self._research_row(session, research_id)
+            if row.status != "active":
+                raise ValueError("Cannot anchor a withdrawn memory")
+            if research_id in self.outbound_inflight:
+                raise ValueError("Cannot re-anchor while outbound analysis is in progress")
+            previous = row.data.get("reliance_anchor") or {}
+            revision = previous.get("revision", 0)
+            if row.data["sha256"] != expected_sha256 or revision != expected_revision:
+                raise ValueError("Stale research source or anchor revision")
+            excerpt = row.data["excerpt"]
+            offsets = []
+            pos = 0
+            while True:
+                pos = excerpt.find(quote, pos)
+                if pos < 0:
+                    break
+                offsets.append(pos)
+                pos += 1
+            if not offsets:
+                raise ValueError("Anchor quote not present in saved excerpt")
+            if occurrence_start is None and len(offsets) != 1:
+                raise ValueError("Ambiguous anchor; choose an occurrence offset: " + repr(offsets))
+            start = offsets[0] if occurrence_start is None else occurrence_start
+            if start not in offsets or not _bounded_sentence(excerpt, quote):
+                raise ValueError("Anchor occurrence is invalid or not sentence-bounded")
+            new_revision = revision + 1
+            row.data = row.data | {"reliance_anchor": {
+                "quote": quote, "start": start, "end": start + len(quote),
+                "source_sha256": expected_sha256, "revision": new_revision,
+                "anchored_at": now().isoformat(),
+            }}
+            from alive.research_relationships import (
+                CONSENT_KIND, ATTEMPT_KIND, CONNECTION_KIND, CURRENT_ANALYSIS_KIND,
+                PAIRED_ANALYSIS_KIND, ResearchRelationships,
+            )
+            affected = set()
+            for consent in await self.web.rows(session, CONSENT_KIND):
+                payload = consent.data.get("payload") or {}
+                bound = payload.get("reliance") or {}
+                if (payload.get("historical_memory_id") == research_id
+                        and bound and bound.get("revision", 0) < new_revision):
+                    affected.add(consent.id)
+            for kind in (CONSENT_KIND, ATTEMPT_KIND, CONNECTION_KIND,
+                         CURRENT_ANALYSIS_KIND, PAIRED_ANALYSIS_KIND):
+                for dependent in await self.web.rows(session, kind):
+                    if (dependent.id if kind == CONSENT_KIND else
+                            dependent.data.get("consent_id")) not in affected:
+                        continue
+                    if kind == ATTEMPT_KIND and dependent.status == "reserved":
+                        dependent.data = dependent.data | {"anchor_revised_during_dispatch": True}
+                        continue
+                    dependent.data = ResearchRelationships._scrub_withdrawn_data(dependent.data) | {
+                        "invalid_reason": "anchor_revised",
+                    }
+                    dependent.status = "invalidated"
+            self.k.add_event(session, "research.anchor_set",
+                             {"research_memory_id": research_id, "revision": new_revision})
+            return record(row)
+
     async def withdraw(self, research_id):
         async with self.k.lock, self.k.db.sessions.begin() as session:
             if research_id in self.outbound_inflight:
@@ -317,6 +386,11 @@ class ResearchMemory:
             if row.status == "withdrawn":
                 return record(row) | {"idempotent": True}
             row.status = "withdrawn"
+            previous_anchor = row.data.get("reliance_anchor")
+            if previous_anchor:
+                row.data = row.data | {
+                    "reliance_anchor": {k: v for k, v in previous_anchor.items() if k != "quote"}
+                }
             row.data = row.data | {
                 "status": "withdrawn",
                 "withdrawn_at": now().isoformat(),

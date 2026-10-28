@@ -80,6 +80,13 @@ class ResearchSaveRequest(Strict):
     note_id: str
 
 
+class ResearchAnchorRequest(Strict):
+    quote: str = Field(min_length=16, max_length=300)
+    occurrence_start: int | None = Field(default=None, ge=0)
+    expected_sha256: str = Field(min_length=64, max_length=64)
+    expected_revision: int = Field(ge=0)
+
+
 class ResearchRetrieveRequest(Strict):
     snapshot_id: str
     top_k: int = Field(3, ge=1, le=5)
@@ -1317,6 +1324,13 @@ def router(app, ready):
     @api.get("/research/memories")
     async def list_research(goal_id: str | None = None):
         return await app.state.research.list(goal_id)
+
+    @api.post("/research/memories/{research_id}/anchor")
+    async def anchor_research(research_id: str, data: ResearchAnchorRequest):
+        return await app.state.research.anchor(
+            research_id, data.quote, data.expected_sha256,
+            data.expected_revision, data.occurrence_start,
+        )
 
     @api.post("/research/memories/{research_id}/withdraw")
     async def withdraw_research(research_id: str):
