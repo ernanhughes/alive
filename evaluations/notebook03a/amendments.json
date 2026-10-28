@@ -1,0 +1,17 @@
+[
+  {
+    "version": "notebook03a-v1.1",
+    "parent_protocol_sha256": "a66642132b3e77a209006958e8c171c4e73adee152043ec891ce7d66762c5e9d",
+    "phase": "Before any baseline replay/model execution",
+    "reason": "Require directed supersession identities so source reversal cannot silently reverse replacement; treat date-only same-entity examples as insufficient rather than overclaiming independent observations. No output-driven tuning.",
+    "preserved": [
+      "initial_protocol.json",
+      "initial_annotations.json",
+      "initial_schemas.json"
+    ],
+    "changed": [
+      "annotations.json",
+      "schemas.json"
+    ]
+  }
+]

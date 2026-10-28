@@ -389,6 +389,30 @@
         ],
         "default": null,
         "title": "Ambiguity Notes"
+      },
+      "superseded_claim_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Superseded Claim Ref"
+      },
+      "replacement_claim_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Replacement Claim Ref"
       }
     },
     "required": [
@@ -524,6 +548,30 @@
         "default": true,
         "title": "Review Required",
         "type": "boolean"
+      },
+      "superseded_claim_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Superseded Claim Ref"
+      },
+      "replacement_claim_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Replacement Claim Ref"
       }
     },
     "required": [
@@ -738,6 +786,30 @@
       "raw_policy": {
         "title": "Raw Policy",
         "type": "string"
+      },
+      "superseded_claim_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Superseded Claim Ref"
+      },
+      "replacement_claim_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Replacement Claim Ref"
       }
     },
     "required": [

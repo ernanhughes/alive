@@ -1,5 +1,5 @@
 {
-  "version": "notebook03a-v1",
+  "version": "notebook03a-v1.1",
   "baseline_commit": "a9bcf8673818e85246a268c308b64d2080792b96",
   "hypothesis": "A future structured semantic policy may improve useful evidence-grounded findings over always-abstain and reduce misleading candidates relative to lexical retrieval, without violating integrity/governance gates. This is untested.",
   "available_cases": 40,
@@ -37,13 +37,17 @@
   ],
   "amendments": "Append a new version and amendment rationale; never overwrite v1 evidence.",
   "files_sha256": {
-    "annotations.json": "df19e87b77c36020f189e3ef950c787c81f16bcf13aef374946f2ad2f595b45a",
+    "amendments.json": "39d03c30d5d896b61dfefe018a8386414fb923a452c5775b23340c19722940f0",
+    "annotations.json": "3e120694306f7a44d6e6116c2e1796ea8774d6073ed6960b180f264ac43c83c6",
     "annotation_notes.json": "2f2bf34e2f0273f439ba1b79972bb8eefbd1c67fb134be4d76be2d314ad49d4b",
     "independent_submission.json": "524a20de65d3b56181c135b65b5c98edab5824ccf37bb904f780f847510db6e4",
+    "initial_annotations.json": "df19e87b77c36020f189e3ef950c787c81f16bcf13aef374946f2ad2f595b45a",
+    "initial_protocol.json": "a66642132b3e77a209006958e8c171c4e73adee152043ec891ce7d66762c5e9d",
+    "initial_schemas.json": "3c2996c58f221bf67748a575be05bbcd77b49bc153423ec6ac6dcf9d2ee94e96",
     "metrics.json": "ad5ba48540cf0df3e0b935e9a25b1eb74d6ff25bae978a2914d621b8c5636daf",
     "origins.json": "d63034b3bb3d41fb8c8af581614f73f28e69cb55e228703dcd4f81a3fbf2046e",
     "prompts.json": "8844533a4dccf14957562bce5b72a8b55ce1ca94120dff4056b8d7f5bdd1618a",
-    "schemas.json": "3c2996c58f221bf67748a575be05bbcd77b49bc153423ec6ac6dcf9d2ee94e96",
+    "schemas.json": "ee32741afba6f5d0349afa5ec4a4c840c5c5bc9215e2f7503d390c01b7a2b9fd",
     "tasks.json": "b3f68b5387379524b6255acc7a941f573b7b2d83f399962fd1925aac4f88bfc4"
   },
   "hash_normalization": "UTF-8 bytes with CRLF normalized to LF"

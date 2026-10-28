@@ -33,7 +33,9 @@
       "The entire ALIVE-12 milestone was invalid.",
       "A newer date alone proves replacement."
     ],
-    "ambiguity_notes": null
+    "ambiguity_notes": null,
+    "superseded_claim_ref": "c0",
+    "replacement_claim_ref": "c1"
   },
   {
     "task_id": "21ac0b9ee6495a00",
@@ -486,7 +488,9 @@
     "forbidden_conclusions": [
       "Treat a proposed relation or matching source hash as independently verified factual truth."
     ],
-    "ambiguity_notes": null
+    "ambiguity_notes": null,
+    "superseded_claim_ref": "c0",
+    "replacement_claim_ref": "c1"
   },
   {
     "task_id": "6b978533c472aab6",
@@ -1081,7 +1085,9 @@
     "forbidden_conclusions": [
       "Treat a proposed relation or matching source hash as independently verified factual truth."
     ],
-    "ambiguity_notes": null
+    "ambiguity_notes": null,
+    "superseded_claim_ref": "c0",
+    "replacement_claim_ref": "c1"
   },
   {
     "task_id": "b490a481c680cd6b",
@@ -1104,7 +1110,7 @@
         "source_id": "s0",
         "start": 0,
         "end": 220,
-        "text": "The baseline ranker is deliberately simple and explainable:\n\n- Normalise lower-case content terms of at least three characters.\n- Exclude the reviewed stopword list.\n- Score `2 * |current ∩ historical| + |goal ∩ historic"
+        "text": "The baseline ranker is deliberately simple and explainable:\n\n- Normalise lower-case content terms of at least three characters.\n- Exclude the reviewed stopword list.\n- Score `2 * |current \u2229 historical| + |goal \u2229 historic"
       },
       {
         "source_id": "s1",
@@ -1160,33 +1166,20 @@
     "independence": "implementer_authored",
     "reviewers": [],
     "relationships": [
-      "independent_observations"
+      "unknown"
     ],
-    "sufficiency": "sufficient_for_candidate",
+    "sufficiency": "insufficient",
     "applicability": "unknown",
     "decisions": [
-      "set_aside"
+      "abstain"
     ],
     "useful_finding": false,
-    "rationale": "Shared vocabulary or a later publication alone does not establish a meaningful research relationship.",
-    "required_evidence": [
-      {
-        "source_id": "s0",
-        "start": 0,
-        "end": 88,
-        "text": "Published in 2028: the Cedar calibration is discussed without any replacement statement."
-      },
-      {
-        "source_id": "s1",
-        "start": 0,
-        "end": 54,
-        "text": "The Cedar 2023 calibration remains valid through 2030."
-      }
-    ],
+    "rationale": "Later discussion of the same calibration is not explicit replacement and does not establish the relationship being sought; preserve uncertainty rather than asserting independence.",
+    "required_evidence": [],
     "forbidden_conclusions": [
       "Treat a proposed relation or matching source hash as independently verified factual truth."
     ],
-    "ambiguity_notes": null
+    "ambiguity_notes": "A substantive continuity link may be plausible. Independent adjudication should refine the task question before semantic deployment."
   },
   {
     "task_id": "dc3dd31b8920aa8e",
@@ -1221,7 +1214,9 @@
     "forbidden_conclusions": [
       "Treat a proposed relation or matching source hash as independently verified factual truth."
     ],
-    "ambiguity_notes": null
+    "ambiguity_notes": null,
+    "superseded_claim_ref": "c1",
+    "replacement_claim_ref": "c0"
   },
   {
     "task_id": "e3a56c3973946019",
@@ -1230,33 +1225,20 @@
     "independence": "implementer_authored",
     "reviewers": [],
     "relationships": [
-      "independent_observations"
+      "unknown"
     ],
-    "sufficiency": "sufficient_for_candidate",
+    "sufficiency": "insufficient",
     "applicability": "unknown",
     "decisions": [
-      "set_aside"
+      "abstain"
     ],
     "useful_finding": false,
-    "rationale": "Shared vocabulary or a later publication alone does not establish a meaningful research relationship.",
-    "required_evidence": [
-      {
-        "source_id": "s0",
-        "start": 0,
-        "end": 53,
-        "text": "The Lyra 2023 calibration remains valid through 2030."
-      },
-      {
-        "source_id": "s1",
-        "start": 0,
-        "end": 87,
-        "text": "Published in 2028: the Lyra calibration is discussed without any replacement statement."
-      }
-    ],
+    "rationale": "Later discussion of the same calibration is not explicit replacement and does not establish the relationship being sought; preserve uncertainty rather than asserting independence.",
+    "required_evidence": [],
     "forbidden_conclusions": [
       "Treat a proposed relation or matching source hash as independently verified factual truth."
     ],
-    "ambiguity_notes": null
+    "ambiguity_notes": "A substantive continuity link may be plausible. Independent adjudication should refine the task question before semantic deployment."
   },
   {
     "task_id": "ff665aee3f1227d4",
@@ -1291,6 +1273,8 @@
     "forbidden_conclusions": [
       "Treat a proposed relation or matching source hash as independently verified factual truth."
     ],
-    "ambiguity_notes": null
+    "ambiguity_notes": null,
+    "superseded_claim_ref": "c0",
+    "replacement_claim_ref": "c1"
   }
 ]
