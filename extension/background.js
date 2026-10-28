@@ -187,6 +187,12 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
         ...message.rubric,
       });
     }
+    if (message.type === 'campaigns') return send('/browser-experience/research/experiment/campaigns');
+    if (message.type === 'approve-campaign') {
+      if (!message.digest || !message.approval)
+        throw new Error('Select a campaign and approval stage');
+      return send('/browser-experience/research/experiment/campaigns/' + message.digest + '/approve', message.approval);
+    }
     if (message.type === 'blind-runs') return send('/browser-experience/research/blind/runs');
     if (message.type === 'blind-view') {
       if (!message.runId) throw new Error('Select a blind evaluation');

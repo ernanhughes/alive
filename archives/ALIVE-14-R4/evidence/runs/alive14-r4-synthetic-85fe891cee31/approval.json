@@ -1,0 +1,61 @@
+{
+  "run_id": "alive14-r4-synthetic-85fe891cee31",
+  "campaign_digest": "0e38b5fef20ed1ba4ee20624c369670a9ca411de9f214e1d2b98726e8b26e83f",
+  "protocol_sha256": "85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b",
+  "provider": "local_stub",
+  "model": "deterministic-local-stub-v1",
+  "task_count": 9,
+  "call_cap": 18,
+  "calls": 18,
+  "stage": 1,
+  "payload_sha256s": {
+    "V3-T01": {
+      "A": "0d606494cfa52421051b15ae6b054705bd08ff27b072dc8118e0af33f4d620cc",
+      "B": "b7964ef4b65fc9865adbfe29277d13beae74a49a988e87d0dfdd80110af47dcd"
+    },
+    "V3-T02": {
+      "A": "1d11fd59d70dd9d7d5bac3bbbab33bad06714dbf474c9a8c0f19fd8b475e525a",
+      "B": "398c04d43f6dc010b2c49e2c407ee8d4d999501798cbaca95cfa0fb45415bca9"
+    },
+    "V3-T03": {
+      "A": "3e1833284f043180a93ef8810cba0b197b212cca4681da35b07f0fa74d25d861",
+      "B": "76b92132661736656d9a18c85acc11f643d5d4d33eaa8c7dc176632189d83282"
+    },
+    "V3-T04": {
+      "A": "2f9b6b843be1ef364816981e8ede277def8cd677a2027b6bec7ee4071cd89424",
+      "B": "c4ec2526dc670c675a6288a64f1dd0dab29ac523137c0344cb3abbb67c0bc0d9"
+    },
+    "V3-T05": {
+      "A": "1f8cc0234a4bada9cf89ed2110cd962019252e9f441f97d32c07aaa6b47b20ff",
+      "B": "d82ae92817f4342a33f077b603b05aca2a35808a382b48db85d4c5f8ed936ccb"
+    },
+    "V3-T06": {
+      "A": "698fb6812f9d2a77a0fb238e72c84a5965a8dc03737fa210fa3046a04dd4e9ef",
+      "B": "0089c49a0eef2c3e83dc9131919d29ac44818926326df566e177a50109604eb3"
+    },
+    "V3-T07": {
+      "A": "51f4c6fbc809ec018593026c05e78c0e7e56cf9f01be774edc6d6fb8b773657e",
+      "B": "cab0fcba7a1cd15b2f0ec4f4572a5fa5ab49da56555b7f9862f33addad6ad197"
+    },
+    "V3-T08": {
+      "A": "fa483bab7533fe9e17651196378ed9672daedbec264449db7ecdcdba01a44baa",
+      "B": "ef8c19192405536abcb3bfc78ec43cb254463ac92a10a89697ed7fabca05dc20"
+    },
+    "V3-T09": {
+      "A": "761f9454faba936cf761232cfdaa9907ba4cf334d520b720e578e1de10c88427",
+      "B": "c161712d4657282345cfe3f9cd285b81a288562b29b39965369e8173b6b2359e"
+    }
+  },
+  "max_input_tokens": 92490,
+  "max_output_tokens": 1536,
+  "max_usd": 0.0,
+  "no_retries": true,
+  "human_approval": false,
+  "human_attestation": false,
+  "provenance": "synthetic_owner_endpoint",
+  "approval_id": "a4547566-b207-4089-a08d-855eb4f05d73",
+  "approved_by": "synthetic_local_runner",
+  "approved_at": "2026-10-28T00:45:45.318145+00:00",
+  "status": "active",
+  "effective_max_usd": 0.45
+}

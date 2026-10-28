@@ -20,6 +20,7 @@ from alive.cognitive_api import public_router, router
 from alive.config import Settings, prepare_local
 from alive.db import Database
 from alive.experiment.api import router as experiment_router
+from alive.experiment_approval import ExperimentApprovals
 from alive.experiment_budget import BudgetedExperiments as Experiments
 from alive.kernel import Kernel, envelope
 from alive.learning.api import router as learning_router
@@ -79,6 +80,7 @@ def create_app(settings=None):
             app.state.research, app.state.experiments, settings
         )
         app.state.blind = ResearchBlind(kernel)
+        app.state.approvals = ExperimentApprovals(kernel)
         if kernel.ready:
             await app.state.cognition.initialize()
             await app.state.experiments.initialize()

@@ -29,7 +29,8 @@ def charged_micro_usd(ledger):
     for call in ledger:
         estimate = price(call.get("usage"))
         if call["status"] != "validated" or estimate is None:
-            total += worst_micro_usd(call["reserved_tokens"])
+            tokens = call.get("cost_liability_tokens", call["reserved_tokens"])
+            total += worst_micro_usd(tokens)
         else:
             total += int(
                 (Decimal(str(estimate)) * 1000000).to_integral_value(rounding=ROUND_CEILING)

@@ -130,14 +130,34 @@ class MetaProvider:
                     json=body,
                 )
                 if response.is_error:
-                    category = {401: "authentication", 403: "access_denied", 429: "rate_limit"}.get(
-                        response.status_code,
-                        "server_error" if response.status_code >= 500 else "request_error",
-                    )
-                    raise ProviderError(category, response.status_code)
+                    status = response.status_code
+                    body = response.text.lower()
+                    if status == 401:
+                        category = "authentication"
+                    elif status == 403:
+                        category = "access_denied"
+                    elif status == 402 or "quota" in body:
+                        category = "quota_exhausted"
+                    elif status == 429:
+                        category = "rate_limit"
+                    elif status in (400, 404, 405, 422):
+                        category = (
+                            "unsupported_schema"
+                            if "schema" in body or "response_format" in body
+                            else "invalid_request"
+                        )
+                    elif status >= 500:
+                        category = "server_error"
+                    else:
+                        category = "invalid_request"
+                    raise ProviderError(category, status, response_received=True)
                 value = response.json()
                 if value["choices"][0].get("finish_reason") == "length":
-                    raise ProviderError("output_truncated", usage=value.get("usage", {}))
+                    raise ProviderError(
+                        "output_truncated",
+                        usage=value.get("usage", {}),
+                        response_received=True,
+                    )
                 return Generation(
                     value["choices"][0]["message"]["content"],
                     value.get("usage", {}),
@@ -146,9 +166,9 @@ class MetaProvider:
         except httpx.TimeoutException as exc:
             raise ProviderError("timeout") from exc
         except httpx.HTTPError as exc:
-            raise ProviderError("network") from exc
+            raise ProviderError("transient_network") from exc
         except (KeyError, ValueError, TypeError) as exc:
-            raise ProviderError("invalid_response") from exc
+            raise ProviderError("invalid_response", response_received=True) from exc
 
     async def generate(self, prompt):
         if not self.capabilities()["configured"]:
@@ -171,8 +191,34 @@ class MetaProvider:
         yield (await self.generate(prompt)).text
 
 
+FATAL_PROVIDER_CATEGORIES = frozenset(
+    {
+        "authentication",
+        "access_denied",
+        "invalid_request",
+        "unsupported_schema",
+        "rate_limit",
+        "quota_exhausted",
+        "credentials_not_configured",
+        "transient_network",
+        "server_error",
+        "timeout",
+        "invalid_response",
+        "ambiguous_settlement",
+        "cancelled",
+        "unknown",
+    }
+)
+CELL_PROVIDER_CATEGORIES = frozenset({"invalid_structured_output", "output_truncated"})
+
+
 class ProviderError(RuntimeError):
-    def __init__(self, category, status=None, usage=None):
+    def __init__(self, category, status=None, usage=None, response_received=False):
         self.category, self.status = category, status
         self.usage = usage or {}
+        self.response_received = response_received
         super().__init__(f"Meta provider: {category}" + (f" (HTTP {status})" if status else ""))
+
+    @property
+    def campaign_fatal(self):
+        return self.category in FATAL_PROVIDER_CATEGORIES

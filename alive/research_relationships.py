@@ -106,6 +106,10 @@ class Strict(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
 
+class EvidenceValidationError(ValueError):
+    """A provider response arrived but failed the local evidence contract."""
+
+
 class EvidenceItem(Strict):
     source: Literal["current", "historical"]
     quote: str = Field(max_length=300)
@@ -630,15 +634,16 @@ class ResearchRelationships:
             await self._validate_sources(session, consent)
             consent.status = "authorized"
             consent.data = consent.data | {"authorized_at": now().isoformat()}
-            self.k.add_event(
-                session,
-                "research.outbound_authorized",
-                {
+            event_payload = (
+                {"analysis_mode": "paired", "authorized": True}
+                if consent.data.get("analysis_mode") == "paired"
+                else {
                     "consent_id": consent.id,
                     "payload_sha256": consent.data["payload_sha256"],
                     "provider": consent.data["provider"]["id"],
-                },
+                }
             )
+            self.k.add_event(session, "research.outbound_authorized", event_payload)
             return record(consent)
 
     async def revoke(self, consent_id):
@@ -656,6 +661,9 @@ class ResearchRelationships:
             {
                 "status": row.status,
                 "reserved_tokens": row.data.get("reserved_tokens", 0),
+                "cost_liability_tokens": row.data.get(
+                    "cost_liability_tokens", row.data.get("reserved_tokens", 0)
+                ),
                 "usage": row.data.get("usage"),
             }
             for row in rows
@@ -808,6 +816,10 @@ class ResearchRelationships:
             payload = consent.data["payload"]
             provider = consent.data["provider"]
         usage, raw, error, output = None, None, None, None
+        error_category = None
+        provider_status = None
+        campaign_fatal = False
+        provider_response_received = False
         started = time.monotonic()
         dispatched = False
         try:
@@ -844,6 +856,15 @@ class ResearchRelationships:
                         "dispatch_status": "dispatch_guard_passed",
                         "guard_passed_at": now().isoformat(),
                     }
+                # Commit the dispatch-start marker before any external request can leave
+                # the process. A crash after this point is ambiguous, not "never sent".
+                async with self.k.lock, self.k.db.sessions.begin() as dispatch_session:
+                    marker = await self.web.get(dispatch_session, attempt_id, ATTEMPT_KIND)
+                    marker.data = marker.data | {
+                        "dispatch_status": "dispatch_possibly_started",
+                        "dispatch_started_at": now().isoformat(),
+                    }
+                dispatched = True
                 if provider["id"] in ("local_stub", "local_stub_invalid"):
                     dispatched = True
                     if provider["id"] == "local_stub":
@@ -875,14 +896,26 @@ class ResearchRelationships:
                     output = output_type.model_validate_json(raw)
                     validation = validate(output, payload)
                     if not validation["valid"]:
-                        raise ValueError(
+                        raise EvidenceValidationError(
                             "Bounded output failed evidence validation: "
                             + ", ".join(validation["reasons"])
                         )
         except BaseException as exc:
             usage = getattr(exc, "usage", None) or usage
             error = type(exc).__name__
-        charged = usage.get("total_tokens") if usage and not error else reserve
+            error_category = getattr(exc, "category", None)
+            if error_category is None:
+                error_category = (
+                    "invalid_structured_output"
+                    if isinstance(exc, EvidenceValidationError)
+                    else type(exc).__name__
+                )
+            provider_status = getattr(exc, "status", None)
+            campaign_fatal = bool(getattr(exc, "campaign_fatal", False))
+            provider_response_received = bool(getattr(exc, "response_received", False))
+        charged = (
+            usage.get("total_tokens") if usage and not error else 0 if not dispatched else reserve
+        )
         if not isinstance(charged, int) or charged < 0:
             charged = reserve
         async with self.k.lock, self.k.db.sessions.begin() as session:
@@ -912,6 +945,10 @@ class ResearchRelationships:
             row.data = row.data | {
                 "usage": usage,
                 "charged_tokens": charged,
+                "cost_liability_tokens": charged
+                if row.status == "validated"
+                else (0 if not dispatched else reserve),
+                "original_reserved_tokens": reserve,
                 "estimated_usd": price(usage),
                 "raw_response": raw[:16384] if isinstance(raw, str) else None,
                 "raw_response_sha256": hashlib.sha256(raw.encode()).hexdigest()
@@ -921,8 +958,14 @@ class ResearchRelationships:
                 "validation": validation,
                 "validator_version": validator_version,
                 "error": error,
+                "error_category": error_category,
+                "provider_status": provider_status,
+                "campaign_fatal": campaign_fatal,
+                "provider_response_received": provider_response_received,
                 "dispatch_status": (
-                    "response_received" if dispatched and not error else "dispatch_possibly_started"
+                    "provider_response_received"
+                    if provider_response_received
+                    else "dispatch_possibly_started"
                 )
                 if dispatched
                 else "reserved_never_dispatched",
@@ -982,6 +1025,16 @@ class ResearchRelationships:
                         analysis_row.id
                     )
                 }
+            event_payload = (
+                {"analysis_mode": "paired", "settled": True}
+                if mode == "paired"
+                else {
+                    "attempt_id": row.id,
+                    "status": row.status,
+                    "consent_id": row.data["consent_id"],
+                    "charged_tokens": charged,
+                }
+            )
             self.k.add_event(
                 session,
                 "research."
@@ -990,12 +1043,7 @@ class ResearchRelationships:
                     if mode == "current_only"
                     else "paired_analysis_settled"
                 ),
-                {
-                    "attempt_id": row.id,
-                    "status": row.status,
-                    "consent_id": row.data["consent_id"],
-                    "charged_tokens": charged,
-                },
+                event_payload,
             )
             await session.flush()
             return {
@@ -1423,11 +1471,20 @@ class ResearchRelationships:
                     continue
                 control = await session.get(CognitiveControl, self.k.instance_id)
                 reserve = row.data.get("reserved_tokens", 0)
-                self.experiments._settle_control(control, reserve, reserve)
+                dispatch_status = row.data.get("dispatch_status", "reserved_never_dispatched")
+                never_dispatched = dispatch_status == "reserved_never_dispatched"
+                charged = 0 if never_dispatched else reserve
+                self.experiments._settle_control(control, reserve, charged)
                 row.status = "interrupted"
                 row.data = row.data | {
-                    "charged_tokens": reserve,
-                    "error": "Unknown completion; never replayed",
+                    "charged_tokens": charged,
+                    "cost_liability_tokens": charged,
+                    "settled_from_dispatch_status": dispatch_status,
+                    "error": (
+                        "cancelled_before_dispatch"
+                        if never_dispatched
+                        else "Unknown completion; never replayed"
+                    ),
                 }
                 self.research.outbound_inflight.discard(row.data.get("historical_memory_id"))
                 self.research.outbound_inflight.discard(row.data.get("current_snapshot_id"))

@@ -38,7 +38,7 @@
       summary { cursor: pointer; color: #b3d68c; margin: 12px 0; }
       blockquote { margin: 12px 0; padding-left: 12px; border-left: 2px solid #c7ed9d; }
       #decision-label { font-size: 16px; color: #c7ed9d; }
-      #relevance, #policy, #feedback-help, #research-status, #research-help, #research-results, #connection, #outbound, #relationship-feedback, #blind-status, #blind-outputs { font-size: 11px; color: #9caf92; line-height: 1.5; }
+      #relevance, #policy, #feedback-help, #research-status, #research-help, #research-results, #connection, #outbound, #relationship-feedback, #blind-status, #blind-outputs, #campaign-status, #campaign-digest { font-size: 11px; color: #9caf92; line-height: 1.5; }
       #note { font-size: 13px; line-height: 1.65; }
       input[type="checkbox"] {
         width: auto;
@@ -144,6 +144,21 @@
       Related material is historical evidence, never evidence for the current page. Nothing is
       sent externally by retrieval alone.
     </p>
+    <h2>Experiment approval</h2>
+    <button id="campaign-refresh">Refresh campaigns</button>
+    <select id="campaign-select"></select>
+    <p id="campaign-status">No campaign loaded.</p>
+    <pre id="campaign-digest"></pre>
+    <details><summary>Complete registered campaign manifest</summary><pre id="campaign-manifest"></pre></details>
+    <label>Stage
+      <select id="campaign-stage">
+        <option value="1">Stage 1 (2 calls)</option>
+        <option value="2">Stage 2 (remaining calls)</option>
+      </select>
+    </label>
+    <label><input type="checkbox" id="campaign-attest"> I am the owner and authorise this paid campaign</label>
+    <button id="campaign-approve">Approve selected stage</button>
+
     <h2>Blind evaluation</h2>
     <select id="blind-run"></select>
     <button id="blind-refresh">Refresh evaluations</button>

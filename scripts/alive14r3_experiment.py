@@ -634,6 +634,11 @@ def reactivate_approved_grants(client, directory, state):
 
 
 def execute(mode):
+    if mode == "real":
+        raise SystemExit(
+            "Real execution is superseded by scripts.alive14r4_experiment.py; "
+            "the R3 runner is retained only for synthetic archive reproduction"
+        )
     protocol = verify_protocol_identity()
     directory, state = load_or_create_state(mode, protocol)
     if not state:
