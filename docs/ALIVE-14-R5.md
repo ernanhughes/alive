@@ -12,7 +12,8 @@ Status:
 
 Baseline: `ac11be81115f397a9bad9f5c630a74ee22bdc3d2` (R4 merge).
 Branch: `codex/alive-14-r5-approval-integrity`.
-Working tree: local changes only; no push, PR, merge, hosted CI or paid inference.
+Local commit: `ef26935ab346c0e0e916a1d83c84c706f58d3be5`.
+No push, PR, merge, hosted CI or paid inference.
 Protocol v3 and its answer key are unchanged.
 
 ## REVIEW-11 failures reproduced

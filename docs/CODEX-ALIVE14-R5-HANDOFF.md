@@ -5,7 +5,7 @@
 - Baseline: `ac11be81115f397a9bad9f5c630a74ee22bdc3d2`
 - Branch: `codex/alive-14-r5-approval-integrity`
 - Worktree: `C:\Projects\alive-worktrees\alive-14-r5`
-- Local commits: to be recorded after the local commit.
+- Local commit: `ef26935ab346c0e0e916a1d83c84c706f58d3be5`.
 - No push, PR, merge, auto-merge, hosted CI, real approval or paid inference.
 - Protocol v3 and answer key unchanged.
 
