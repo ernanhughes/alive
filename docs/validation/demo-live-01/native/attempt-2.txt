@@ -1,0 +1,24 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Projects\alive\scripts\native_demo_live_01.py", line 344, in <module>
+    asyncio.run(main())
+    ~~~~~~~~~~~^^^^^^^^
+  File "C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\runners.py", line 195, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\base_events.py", line 719, in run_until_complete
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "C:\Projects\alive\scripts\native_demo_live_01.py", line 233, in main
+    await authorise(urls[0])
+  File "C:\Projects\alive\scripts\native_demo_live_01.py", line 191, in authorise
+    await panel.wait(
+    ...<2 lines>...
+    )
+  File "C:\Projects\alive\scripts\native10.py", line 186, in wait
+    raise AssertionError("Panel did not reach expected state: " + expression + "; " + status)
+AssertionError: Panel did not reach expected state: document.querySelector('#live-state').textContent.includes('Page authorised'); Goal saved locally. It survives browser and backend restarts.

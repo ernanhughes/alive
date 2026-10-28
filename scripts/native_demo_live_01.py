@@ -208,8 +208,9 @@ async def main():
                     )
                     await click(panel, "Confirm passage")
                     await panel.wait(
-                        "document.querySelector('#live-state')"
-                        ".textContent.includes('Passage remembered')"
+                        "document.querySelector('#live-companion').getAttribute('aria-busy') !== 'true' && "
+                        "Array.from(document.querySelectorAll('#live-content button'))"
+                        ".some(button => button.textContent === 'Withdraw saved source')"
                     )
 
                 async def check():
