@@ -1,6 +1,6 @@
 {
-  "source_commit": "933c639d778416b43cb5bd9d050520a2ab8cbc31",
-  "source_status_before_run": "M .gitignore\n M alive/web_experience.py\n M extension/config.js\n M extension/live-companion.js\n M tests/extension-live-companion.test.cjs\n?? docs/validation/alive-notebook-01/\n?? scripts/native_notebook_01.py\n?? site/\n?? tests/notebook-capture.test.cjs\n?? tests/test_notebook_01.py",
+  "source_commit": "165046c7343eafefb7aec03fbd8b1f54c8181712",
+  "source_status_before_run": "",
   "platform": "Windows-11-10.0.26300-SP0",
   "hugo": "hugo v0.165.0-76a5e1880ab46688155b02e99bab9be2a6134492 windows/amd64 BuildDate=2026-08-12T14:26:28Z VendorInfo=gohugoio",
   "goal": "Trace how ALIVE's research claims changed between milestones",
@@ -50,7 +50,7 @@
     "sidePanel"
   ],
   "harness_host_permissions": [
-    "http://127.0.0.1:60789/*",
+    "http://127.0.0.1:62241/*",
     "http://127.0.0.1:1313/*"
   ],
   "chrome": {
@@ -63,14 +63,14 @@
   "panel": {
     "presentation": "native side panel target",
     "side_panel_registration_ready": true,
-    "action_target_id": "E45DAF7FB74323D9D7330D9BA0C11502",
-    "panel_target_id": "B651F8A7E2BFC7EDA1B2CE72DDC54070",
+    "action_target_id": "A32D0B772C4EDD318C4B8E788F377B06",
+    "panel_target_id": "A8B352E4F2122D05871CAD6760613BE0",
     "panel_opened_as_ordinary_tab": false,
     "panel_behavior": {
       "openPanelOnActionClick": true
     }
   },
-  "goal_id": "bee7bc3e-ab0e-4e91-bf4a-370bb1aab3b1",
+  "goal_id": "6a6ae98a-b78f-4d32-a410-16743292ae2d",
   "capture": {
     "chapter": "alive-12-status",
     "chars": 1029,
@@ -79,7 +79,7 @@
   },
   "r1": {
     "rank": 1,
-    "memory_id": "816fa218-a4ac-47a7-b5b4-3810d1a97d5f",
+    "memory_id": "f70fba22-317d-4907-804b-c2d13bf19760",
     "source_url": "http://127.0.0.1:1313/chapters/alive-12-status/",
     "sha256": "d6d5418b619dec03773136d0bdc3ec55d69e8fd3b26063609256d35b1fe8c300",
     "relation_type": "topic_overlap_candidate",
@@ -120,7 +120,7 @@
   },
   "r3": {
     "rank": 2,
-    "memory_id": "660671ac-ead2-444f-bb72-bbf6d6707d16",
+    "memory_id": "fc9cb467-a3e2-4700-97fc-194d3ed290b9",
     "relation_type": "topic_overlap_candidate",
     "shared_terms": [
       "calls",
