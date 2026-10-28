@@ -9,7 +9,6 @@ deterministic layer does not judge supersession or validity (see the UNIMPLEMENT
 import importlib.util
 import json
 import shutil
-import subprocess
 from pathlib import Path
 
 import pytest
@@ -28,15 +27,6 @@ RELATIONS = {r["id"]: r for r in json.loads(nb.RELATIONS.read_text(encoding="utf
 
 def url(chapter, host="127.0.0.1"):
     return f"http://{host}:1313/chapters/{chapter}/"
-
-
-def shallow():
-    out = subprocess.run(
-        ["git", "-C", str(nb.ROOT), "rev-parse", "--is-shallow-repository"],
-        capture_output=True,
-        text=True,
-    )
-    return out.stdout.strip() == "true"
 
 
 class Journey:
@@ -84,7 +74,6 @@ def no_provider(monkeypatch):
 # --- provenance -------------------------------------------------------------------------
 
 
-@pytest.mark.skipif(shallow(), reason="provenance check needs full git history")
 def test_committed_chapters_pass_the_provenance_check():
     assert nb.check() == []
 
@@ -98,7 +87,6 @@ def tampered_copy(tmp_path, monkeypatch, chapter_id, edit):
     return nb.check()
 
 
-@pytest.mark.skipif(shallow(), reason="provenance check needs full git history")
 def test_rewriting_a_result_more_strongly_than_its_source_is_rejected(tmp_path, monkeypatch):
     weak = "Retrieval advantage: **NOT DEMONSTRATED**."
     problems = tampered_copy(
@@ -113,7 +101,6 @@ def test_rewriting_a_result_more_strongly_than_its_source_is_rejected(tmp_path, 
     assert "chapter body was edited after conversion" in joined
 
 
-@pytest.mark.skipif(shallow(), reason="provenance check needs full git history")
 def test_source_or_hash_drift_is_rejected(tmp_path, monkeypatch):
     problems = tampered_copy(
         tmp_path,
@@ -125,7 +112,6 @@ def test_source_or_hash_drift_is_rejected(tmp_path, monkeypatch):
     assert any("recorded hash does not match" in problem for problem in problems)
 
 
-@pytest.mark.skipif(shallow(), reason="provenance check needs full git history")
 def test_an_invented_quote_is_rejected(tmp_path, monkeypatch):
     data = json.loads(nb.RELATIONS.read_text(encoding="utf-8"))
     data["relations"][1]["newer"]["quotes"] = ["ALIVE improves research retrieval."]
@@ -291,3 +277,106 @@ def test_terminology_only_pair_should_abstain(client, no_provider):
 )
 def test_validity_judgement_of_a_superseded_claim():
     raise AssertionError("not implemented")
+
+
+@pytest.mark.parametrize(
+    ("key", "value"),
+    [
+        (
+            "title",
+            json.loads((SITE.parent / "tests/fixtures/notebook-r4.json").read_text())["attack"],
+        ),
+        ("source_parts", ["__preamble__"]),
+        ("alive_stage", "ALIVE-99"),
+        ("generated_by", "trusted-reviewer"),
+        ("summary", "ALIVE improves research retrieval"),
+        ("draft", True),
+        ("slug", "unsupported-result"),
+        ("chapter_id", "unsupported-result"),
+        ("source_doc", "docs/ALIVE-13.md"),
+        ("source_commit", "0" * 40),
+        ("source_sha256", "0" * 64),
+        ("body_sha256", "0" * 64),
+    ],
+)
+def test_front_matter_attacks_are_rejected_with_valid_source_and_body_hashes(
+    tmp_path, monkeypatch, key, value
+):
+    def edit(text):
+        header, body = text[4:].split("\n+++\n", 1)
+        meta = nb.tomllib.loads(header)
+        meta[key] = value
+        return (
+            "+++\n"
+            + "\n".join(f"{k} = {nb.toml_value(v)}" for k, v in meta.items())
+            + "\n+++\n"
+            + body
+        )
+
+    problems = tampered_copy(tmp_path, monkeypatch, "alive-12-status", edit)
+    assert any(f"front matter {key}" in p or f"front matter key: {key}" in p for p in problems)
+
+
+def test_rehashed_body_cannot_remove_critical_qualification(tmp_path, monkeypatch):
+    def edit(text):
+        header, body = text[4:].split("\n+++\n", 1)
+        meta = nb.tomllib.loads(header)
+        body = body.replace(
+            "Retrieval advantage: **NOT DEMONSTRATED**.", "ALIVE improves research retrieval."
+        )
+        meta["body_sha256"] = nb.sha256(body.encode())
+        return (
+            "+++\n"
+            + "\n".join(f"{k} = {nb.toml_value(v)}" for k, v in meta.items())
+            + "\n+++\n"
+            + body
+        )
+
+    problems = tampered_copy(tmp_path, monkeypatch, "alive-12-status", edit)
+    assert any("qualifier removed" in p for p in problems)
+    assert any("line stronger than source" in p for p in problems)
+    assert not any("chapter body was edited after conversion" in p for p in problems)
+
+
+def test_generation_is_deterministic_and_matches_committed_chapters(tmp_path, monkeypatch):
+    committed = {p.name: nb.normalise(p.read_bytes()) for p in nb.CONTENT.glob("*.md")}
+    monkeypatch.setattr(nb, "CONTENT", tmp_path / "chapters")
+    nb.convert()
+    first = {p.name: p.read_bytes() for p in nb.CONTENT.glob("*.md")}
+    nb.convert()
+    assert first == {p.name: p.read_bytes() for p in nb.CONTENT.glob("*.md")} == committed
+
+
+def test_missing_history_is_a_failure_not_a_skip(monkeypatch):
+    real_git = nb.git
+
+    def git(*args):
+        if args == ("rev-parse", "--is-shallow-repository"):
+            return b"true\n"
+        return real_git(*args)
+
+    monkeypatch.setattr(nb, "git", git)
+    problems = nb.check()
+    assert len([p for p in problems if "requires full Git history" in p]) == 5
+
+
+@pytest.mark.parametrize("tag", ["h1", "title"])
+def test_rendered_title_attack_is_rejected(tmp_path, tag):
+    chapter = nb.load_spec()["chapters"][1]
+    title = nb.split_title(chapter)
+    page = tmp_path / "chapters" / chapter["id"] / "index.html"
+    page.parent.mkdir(parents=True)
+    h1 = "ALIVE demonstrated retrieval superiority" if tag == "h1" else title
+    doc_title = (
+        "ALIVE demonstrated retrieval superiority"
+        if tag == "title"
+        else (title + " · The ALIVE Notebook")
+    )
+    page.write_text(
+        f"<html><head><title>{doc_title}</title></head>"
+        f"<body><main><h1>{h1}</h1></main></body></html>",
+        encoding="utf-8",
+    )
+    problems = []
+    nb.check_public(tmp_path, {"chapters": [chapter], "capture_window": 2000}, {}, problems)
+    assert any("rendered" in p and "title" in p for p in problems)

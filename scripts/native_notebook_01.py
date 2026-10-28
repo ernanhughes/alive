@@ -1,10 +1,11 @@
 """Native acceptance for the ALIVE Notebook: real Hugo, backend and Chrome panel.
 
 Starts the built Hugo site on loopback port 1313, an isolated ALIVE backend/database,
-loads the actual unpacked extension and drives the complete reading journey in a real
+loads a substituted test copy of the extension and drives the reading journey in a real
 docked Chrome side panel. No provider is reachable; no paid inference is used.
 """
 
+import argparse
 import asyncio
 import base64
 import hashlib
@@ -190,6 +191,19 @@ async def main():
         "goal": GOAL,
         "chapters": CHAPTERS,
         "allowlist": sorted(URLS.values()),
+        "qualification_scope": "substituted authorization integration journey",
+        "shipped_toolbar_activeTab": "NOT QUALIFIED",
+        "retrieval_mode": "lexical fallback; embeddings disabled",
+        "substitutions": {
+            "config.js": "entire file replaced in test copy",
+            "DEFAULT_BACKEND": backend,
+            "DEFAULT_BACKENDS": [backend],
+            "AUTHORISED_PAGES": list(URLS.values()),
+            "isLocalDemo": "always false",
+            "manifest.host_permissions": [backend + "/*", "http://127.0.0.1:1313/*"],
+            "backend.ALIVE_NATIVE_TEST_PAGES": list(URLS.values()),
+            "toolbar": "CDP Extensions.triggerAction; does not demonstrate activeTab grant",
+        },
         "external_model_calls": 0,
         "paid_inference_spend_usd": 0,
         "steps": [],
@@ -577,4 +591,7 @@ async def main():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--evidence-directory", type=Path, default=EVIDENCE)
+    EVIDENCE = parser.parse_args().evidence_directory.resolve()
     asyncio.run(main())

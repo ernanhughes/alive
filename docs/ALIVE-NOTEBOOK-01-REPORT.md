@@ -6,11 +6,11 @@
 - Branch: `codex/alive-notebook-01`
 - Base: `933c639d778416b43cb5bd9d050520a2ab8cbc31`
 - Implementation commit: `a3fba87f41118d451e4bfae4dc8d98076f126573`
-- Draft PR: opened from `codex/alive-notebook-01` against `main`
+- PR #40: merged into `main` as `8737adf1e91d89cc772cd32cd56a8a4fe9370116`.
 - Environment: Windows 11, Chrome `156.0.8078.73`, Hugo `v0.165.0`, Python `3.13.3`
 - Spend: USD 0.00; no Meta or other external provider was configured or called.
 
-This report qualifies the existing uncommitted ALIVE-NOTEBOOK-01 implementation. It does
+This historical report records the initial ALIVE-NOTEBOOK-01 acceptance run. It does
 not recreate the site or its provenance checker. Canonical `docs/`, `archives/`, the
 Governor, approval logic and frozen experiments were not modified. The native harness
 records the base commit `933c639` and the uncommitted implementation status at the start
@@ -38,6 +38,29 @@ One product integration defect was found and corrected during acceptance: after 
 companion saved a reviewed chapter, the legacy “Find related research” control stayed
 disabled because only the legacy send path enabled it. The live companion now enables it
 after a successful capture, with a permanent Node regression.
+
+## Qualification correction (ALIVE-NOTEBOOK-01-R1)
+
+The original run demonstrates a browser integration journey with substituted authorization,
+not the exact shipped authorization configuration. The test copy replaced all of `config.js`:
+`DEFAULT_BACKEND` and `DEFAULT_BACKENDS` pointed to the isolated random backend port;
+`AUTHORISED_PAGES` became only the five `127.0.0.1:1313` chapter URLs; `isLocalDemo`
+always returned false. The manifest's entire `host_permissions` list was replaced with
+`<isolated backend>/*` and `http://127.0.0.1:1313/*` (the shipped localhost and external
+origins were removed). The backend also set `ALIVE_NATIVE_TEST_PAGES` to the five
+chapter URLs. Other manifest permissions and shipped files were unchanged.
+`Extensions.triggerAction` opened the panel; it did not qualify a toolbar `activeTab` grant.
+
+Retain the original evidence with this scope. Shipped toolbar capture, unlisted-URL rejection
+and revocation remain **NOT QUALIFIED** by that run. R1 is a lexical connection candidate,
+not proven supersession. R2 compares different evaluation conditions; it establishes no
+universal improvement. R3 remains a false-similarity problem. All reported retrieval ranks
+used **lexical fallback**, with embeddings disabled; they are not hybrid retrieval ranks.
+Hashes demonstrate integrity relative to verified inputs, not semantic accuracy.
+
+The [R1 report](ALIVE-NOTEBOOK-01-R1-REPORT.md) records the shipped-config load smoke,
+manual qualification procedure and actual hosted CI evidence. The results below are
+historical local results, not hosted CI conclusions.
 
 ## Native journey
 
@@ -74,7 +97,7 @@ candidates only. No semantic supersession or validity judgement is claimed.
 - Hugo build and `site/notebook.py check --public site/public`: **PASS** (`provenance OK`).
 - Six ALIVE-14 archive verifiers and three protocol verifiers: **PASS**.
 - Protected-path check: archives, experiment/living/approval logic and migrations unchanged.
-- Real Chrome native run: **PASS**; docked side-panel target, 360 px, zero external calls.
+- Real Chrome substituted-authorization journey: **PASS**; docked side-panel target, 360 px, zero external calls.
 
 ## Security and provenance checks
 
@@ -139,5 +162,5 @@ uv run python -m scripts.native_notebook_01
 
 ## Recommendation
 
-**READY FOR REVIEW** once the full Python result above is green and the draft PR is opened.
-Do not merge without independent review.
+Historical disposition: PR #40 was merged. Independent review: APPROVE_WITH_CONDITIONS.
+R1 addresses those conditions; see its report for current qualification and CI status.

@@ -1,0 +1,102 @@
+{
+  "commit": "8737adf1e91d89cc772cd32cd56a8a4fe9370116",
+  "extension_sha256": {
+    "background.js": "18b25a1ddceeeaeb3ca49e2c199650a4d1b1614a4fd6bb90e92d14212b13397f",
+    "capture.js": "60c84956334ea6384c0624a8614c816e08012b2d762d8527b0d5d70377a7bcdf",
+    "config.js": "55afec523c076a95852b56d995cd71a1159c75aa669486d78a6a2f3d80bb1507",
+    "live-companion.js": "4e97063a7992be9474d1d57b668fe6793281660cc8108b9fdc88e17a1bae632d",
+    "manifest.json": "58b1577607c804e66125035b13c821bb2f64602443fb730c7ff404fe66f5c072",
+    "observer.js": "0f7360df96691c227c4cc274ed9e83537623e35613d7006a0b38d9293d59735b",
+    "panel.html": "e39c3f27efe3368eb07115b267b59d3e5252f179341584a81fd227c531a2f7a2",
+    "panel.js": "f2b77f595fc37cac13df30151ccda095abf750d12810770dd30c7119e3b5d244"
+  },
+  "substitutions": [],
+  "backend_started": false,
+  "external_model_calls": 0,
+  "paid_inference_spend_usd": 0,
+  "shipped_toolbar_activeTab_capture_rejection_revocation": "NOT QUALIFIED",
+  "reason": "No reliable authentic toolbar interaction in the CDP harness. No Extensions.triggerAction or synthetic activeTab grant attempted.",
+  "manual_procedure": "docs/ALIVE-NOTEBOOK-01-R1-REPORT.md",
+  "chrome": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/156.0.8078.73",
+    "revision": "@2f9a11097447f226133bc1a31c787291a5eeab98",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+    "jsVersion": "15.6.75.25"
+  },
+  "runtime": {
+    "manifest": {
+      "action": {
+        "default_title": "Open ALIVE perception"
+      },
+      "background": {
+        "service_worker": "background.js",
+        "type": "module"
+      },
+      "description": "Explicit, revocable observation for a local ALIVE runtime.",
+      "host_permissions": [
+        "http://127.0.0.1:8000/*",
+        "http://localhost:8000/*",
+        "https://docs.python.org/3/tutorial/*",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      ],
+      "manifest_version": 3,
+      "name": "ALIVE \u00b7 Browser Perception",
+      "permissions": [
+        "activeTab",
+        "scripting",
+        "storage",
+        "sidePanel"
+      ],
+      "side_panel": {
+        "default_path": "panel.html"
+      },
+      "version": "0.11.0"
+    },
+    "permissions": {
+      "origins": [
+        "http://127.0.0.1:8000/*",
+        "http://localhost:8000/*",
+        "https://developer.mozilla.org/*",
+        "https://docs.python.org/*"
+      ],
+      "permissions": [
+        "activeTab",
+        "storage",
+        "scripting",
+        "sidePanel"
+      ]
+    },
+    "config": {
+      "backend": "http://127.0.0.1:8000",
+      "backends": [
+        "http://127.0.0.1:8000",
+        "http://localhost:8000"
+      ],
+      "pages": [
+        "http://127.0.0.1:8000/demo-live-01/python-3.11.html",
+        "http://127.0.0.1:8000/demo-live-01/python-3.12.html",
+        "http://127.0.0.1:8000/demo-live-01/synthetic-no-change.html",
+        "http://localhost:8000/demo-live-01/python-3.11.html",
+        "http://localhost:8000/demo-live-01/python-3.12.html",
+        "http://localhost:8000/demo-live-01/synthetic-no-change.html",
+        "https://docs.python.org/3.11/library/datetime.html",
+        "https://docs.python.org/3.12/library/datetime.html",
+        "http://127.0.0.1:1313/chapters/alive-11-corrections/",
+        "http://127.0.0.1:1313/chapters/alive-12-status/",
+        "http://127.0.0.1:1313/chapters/alive-13-status/",
+        "http://127.0.0.1:1313/chapters/alive-13-what-was-wrong/",
+        "http://127.0.0.1:1313/chapters/alive-14-status/",
+        "http://localhost:1313/chapters/alive-11-corrections/",
+        "http://localhost:1313/chapters/alive-12-status/",
+        "http://localhost:1313/chapters/alive-13-status/",
+        "http://localhost:1313/chapters/alive-13-what-was-wrong/",
+        "http://localhost:1313/chapters/alive-14-status/",
+        "https://docs.python.org/3/tutorial/",
+        "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+      ],
+      "notebookIsDemo": false
+    }
+  },
+  "load_smoke": "PASS"
+}

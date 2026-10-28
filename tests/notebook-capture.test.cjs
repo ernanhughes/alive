@@ -27,7 +27,8 @@ test('config.js authorises exactly the notebook chapter URLs on loopback port 13
 });
 
 const hugo = spawnSync('hugo', ['version']);
-test('capture of built chapters excludes navigation, contents and footer', { skip: hugo.error ? 'hugo is not installed' : false }, () => {
+test('capture of built chapters excludes navigation, contents and footer', () => {
+  assert.equal(hugo.status, 0, 'Hugo must be installed for notebook capture validation');
   const out = fs.mkdtempSync(path.join(os.tmpdir(), 'alive-notebook-'));
   try {
     const built = spawnSync('hugo', ['--source', path.join(root, 'site'), '--destination', out, '--quiet']);
