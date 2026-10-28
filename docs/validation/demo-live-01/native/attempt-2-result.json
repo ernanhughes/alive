@@ -1,0 +1,36 @@
+{
+  "source_commit": "4d3cb37b82a6da297a12c84b3da818907b3c6c33",
+  "source_status_before_run": "?? docs/validation/demo-live-01/native/",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "shipped_permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "sidePanel"
+  ],
+  "harness_host_permissions": [
+    "http://127.0.0.1:49536/*"
+  ],
+  "external_model_calls": 0,
+  "paid_inference_spend_usd": 0,
+  "steps": [],
+  "chrome": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/156.0.8078.73",
+    "revision": "@2f9a11097447f226133bc1a31c787291a5eeab98",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+    "jsVersion": "15.6.75.25"
+  },
+  "panel": {
+    "presentation": "native side panel target",
+    "side_panel_registration_ready": true,
+    "action_target_id": "BD9BCD40CA50678A5CE7D079DFCB1CC8",
+    "panel_target_id": "A0D4C6BDF7E5C1D334065A6F6FFAD47B",
+    "panel_opened_as_ordinary_tab": false,
+    "panel_behavior": {
+      "openPanelOnActionClick": true
+    }
+  },
+  "status": "FAIL",
+  "error": "AssertionError: Panel did not reach expected state: document.querySelector('#live-state').textContent.includes('Page authorised'); Goal saved locally. It survives browser and backend restarts."
+}

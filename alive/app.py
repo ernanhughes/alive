@@ -104,6 +104,13 @@ def create_app(settings=None):
             await transport.close()
 
     app = FastAPI(title="ALIVE", version="0.2.0", lifespan=lifespan)
+
+    @app.get("/demo-live-01/{name}", include_in_schema=False)
+    async def demo_live_mirror(name: str):
+        from alive.demo_live_01 import fixture_page
+
+        return fixture_page(name)
+
     app.add_middleware(
         CORSMiddleware,
         allow_origins=settings.alive_allowed_origins,

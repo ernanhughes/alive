@@ -1,0 +1,24 @@
+✔ isolated extension rejects stale port 8000 before any fetch (1.7024ms)
+✔ connect records the authenticated backend identity before declaring connection (0.2852ms)
+✔ connect fails closed on an incompatible backend identity (0.128ms)
+✔ withdraw sends the displayed research id, not the most recently saved id (0.7987ms)
+✔ withdraw without an explicit research id fails before any fetch (0.1856ms)
+✔ v2 preserves punctuation around adjacent inline code (122.5203ms)
+✔ v2 separates nested blocks without double-counting their text (15.2975ms)
+✔ v2 records separate Sphinx method entries in Unicode code-point coordinates (14.3147ms)
+✔ v2 keeps code lines, excludes private/hidden/non-content text, and bounds length (10.0333ms)
+✔ v2 binds the selected repeated occurrence, including a Unicode prefix (14.8739ms)
+✔ a late validated reply cannot restore a feedback target after Stop (2.2066ms)
+✔ a late reply cannot rate the previous excerpt after the preview changes (0.3086ms)
+✔ an obsolete polling error cannot overwrite the stopped status (0.214ms)
+✔ changing language requires a new reviewed snapshot and invalidates old feedback (0.6976ms)
+✔ a current validated note still enables feedback (0.3137ms)
+✔ a no-action decision clears the previous note cost and feedback target (0.3765ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 806.0688

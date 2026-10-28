@@ -1,0 +1,91 @@
+{
+  "source_commit": "08dfea4dac32a7f2061181c918ab021fcd0a9a04",
+  "source_status_before_run": "",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "shipped_permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "sidePanel"
+  ],
+  "harness_host_permissions": [
+    "http://127.0.0.1:55775/*"
+  ],
+  "external_model_calls": 0,
+  "paid_inference_spend_usd": 0,
+  "steps": [
+    {
+      "demo": "A",
+      "outcome": "candidate",
+      "analysis_mode": "claim_comparison",
+      "validation": {
+        "valid": true,
+        "decision": "accepted",
+        "relationship": "explicit_supersession",
+        "reasons": [],
+        "version": "alive-demo01-claim-v2",
+        "historical_quote_retained_in_current": true,
+        "subject_entry": "datetime.datetime.utcnow",
+        "capture_binding": "pinned_source_entry_v2"
+      },
+      "usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "demo": "B",
+      "outcome": "insufficient_evidence",
+      "analysis_status": "validated",
+      "usage": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      }
+    }
+  ],
+  "chrome": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/156.0.8078.73",
+    "revision": "@2f9a11097447f226133bc1a31c787291a5eeab98",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+    "jsVersion": "15.6.75.25"
+  },
+  "panel": {
+    "presentation": "native side panel target",
+    "side_panel_registration_ready": true,
+    "action_target_id": "264454245A653CB9C6261F9D2CD03EBE",
+    "panel_target_id": "E7E8C1962D9876631B22366FED74C649",
+    "panel_opened_as_ordinary_tab": false,
+    "panel_behavior": {
+      "openPanelOnActionClick": true
+    }
+  },
+  "withdrawal_scan": [
+    {
+      "table": "web_experiences",
+      "kind": "snapshot",
+      "status": "recorded"
+    },
+    {
+      "table": "web_experiences",
+      "kind": "research_memory",
+      "status": "withdrawn"
+    },
+    {
+      "table": "web_experiences",
+      "kind": "snapshot",
+      "status": "recorded"
+    }
+  ],
+  "restart_confirmed": true,
+  "goal_isolation_confirmed": true,
+  "panel_width_px": 360,
+  "recorded_provider_ids": [
+    "local_fixture_claim",
+    "local_fixture_claim"
+  ],
+  "recorded_attempts": 2,
+  "status": "PASS"
+}

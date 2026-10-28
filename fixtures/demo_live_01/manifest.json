@@ -1,0 +1,98 @@
+{
+  "format": 1,
+  "sources": [
+    {
+      "id": "python-3.11",
+      "file": "python-3.11.html",
+      "kind": "local_mirror",
+      "canonical_url": "https://docs.python.org/3.11/library/datetime.html",
+      "documentation_build": "datetime \u2014 Basic date and time types \u2014 Python 3.11.18 documentation",
+      "retrieved_at": "2026-10-28T17:55:50.672807+00:00",
+      "upstream_revision": null,
+      "upstream_revision_status": "not_independently_established",
+      "source_html_file": "upstream-3.11.html",
+      "source_html_sha256": "9bba47a70b26fff1a2e6fe2e342296f62572991f296474cbc0925aa620102776",
+      "mirror_html_sha256": "d12b400b58d9b904a71bfc7dc8df9adada61fbdf73291c6e7b4e166d15b09a5a",
+      "capture_format_version": 2,
+      "license": "PSF License Version 2; documentation code examples also 0BSD",
+      "license_url": "https://docs.python.org/3.11/license.html",
+      "attribution": "Copyright \u00a9 Python Software Foundation; All Rights Reserved",
+      "last_modified_header": "Mon, 26 Oct 2026 16:24:14 GMT",
+      "captured_text_sha256": "2c47a1179d4a97b5b7c13c1d60e20dcd4ed340ba3343a95d0363817884538494",
+      "capture_entries": [
+        {
+          "subject": "datetime.datetime.utcnow",
+          "start": 0,
+          "end": 563
+        },
+        {
+          "subject": "datetime.datetime.utcfromtimestamp",
+          "start": 564,
+          "end": 1841
+        }
+      ],
+      "capture_file": "python-3.11.capture.json",
+      "capture_browser": "156.0.8078.73",
+      "verification": "browser_capture_of_pinned_local_mirror"
+    },
+    {
+      "id": "python-3.12",
+      "file": "python-3.12.html",
+      "kind": "local_mirror",
+      "canonical_url": "https://docs.python.org/3.12/library/datetime.html",
+      "documentation_build": "datetime \u2014 Basic date and time types \u2014 Python 3.12.16 documentation",
+      "retrieved_at": "2026-10-28T17:55:50.838425+00:00",
+      "upstream_revision": null,
+      "upstream_revision_status": "not_independently_established",
+      "source_html_file": "upstream-3.12.html",
+      "source_html_sha256": "fcd2fe0765ce0e84e67bde0f527cf60953871687aacc09d42dd765cb51358189",
+      "mirror_html_sha256": "658f6edf5ff01457d3fd731966d265f03e704f1591ad48911a585b0d8ad78bea",
+      "capture_format_version": 2,
+      "license": "PSF License Version 2; documentation code examples also 0BSD",
+      "license_url": "https://docs.python.org/3.12/license.html",
+      "attribution": "Copyright \u00a9 Python Software Foundation; All Rights Reserved",
+      "last_modified_header": "Mon, 26 Oct 2026 15:01:55 GMT",
+      "captured_text_sha256": "8a549c9616d48bc9660259afcdc43adaa864d52cf363127e24cb3fbf9352a6bf",
+      "capture_entries": [
+        {
+          "subject": "datetime.datetime.utcnow",
+          "start": 0,
+          "end": 631
+        },
+        {
+          "subject": "datetime.datetime.utcfromtimestamp",
+          "start": 632,
+          "end": 1987
+        }
+      ],
+      "capture_file": "python-3.12.capture.json",
+      "capture_browser": "156.0.8078.73",
+      "verification": "browser_capture_of_pinned_local_mirror"
+    },
+    {
+      "id": "synthetic-no-change",
+      "file": "synthetic-no-change.html",
+      "kind": "synthetic",
+      "canonical_url": null,
+      "documentation_build": null,
+      "retrieved_at": null,
+      "upstream_revision": null,
+      "source_html_sha256": null,
+      "mirror_html_sha256": "e78861944eb84c18103237aa4ba7b5a13c188b55af506a973d70e9995db2f285",
+      "capture_format_version": 2,
+      "license": "Repository license",
+      "attribution": "ALIVE constructed fixture",
+      "captured_text_sha256": "c726319fe3c1c1e48f5609bb52081a3aa8bf164c9d607e8afbad727031274233",
+      "capture_entries": [
+        {
+          "subject": "datetime.datetime.utcnow",
+          "start": 0,
+          "end": 153
+        }
+      ],
+      "capture_file": "synthetic-no-change.capture.json",
+      "capture_browser": "156.0.8078.73",
+      "verification": "synthetic_fixture"
+    }
+  ]
+}

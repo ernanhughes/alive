@@ -1,0 +1,36 @@
+{
+  "source_commit": "ffc08fd8478cc55dacee2fa2b65a8a569fb3b22d",
+  "source_status_before_run": "",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "shipped_permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "sidePanel"
+  ],
+  "harness_host_permissions": [
+    "http://127.0.0.1:57772/*"
+  ],
+  "external_model_calls": 0,
+  "paid_inference_spend_usd": 0,
+  "steps": [],
+  "chrome": {
+    "protocolVersion": "1.3",
+    "product": "Chrome/156.0.8078.73",
+    "revision": "@2f9a11097447f226133bc1a31c787291a5eeab98",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/156.0.0.0 Safari/537.36",
+    "jsVersion": "15.6.75.25"
+  },
+  "panel": {
+    "presentation": "native side panel target",
+    "side_panel_registration_ready": true,
+    "action_target_id": "12F677A8C76B1CDFFF216B68FC775FF9",
+    "panel_target_id": "CA771443B0FCEA42FCB34B3B25EC9839",
+    "panel_opened_as_ordinary_tab": false,
+    "panel_behavior": {
+      "openPanelOnActionClick": true
+    }
+  },
+  "status": "FAIL",
+  "error": "AssertionError: Panel did not reach expected state: document.querySelector('#live-state').textContent.includes('Page authorised'); Goal saved locally. It survives browser and backend restarts."
+}

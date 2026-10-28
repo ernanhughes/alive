@@ -1,0 +1,11 @@
+{
+  "text": "classmethod datetime.utcnow()\nReturn the current UTC date and time, with tzinfo None.\nThis synthetic publication adds no status or recommendation change.",
+  "capture_format_version": 2,
+  "capture_entries": [
+    {
+      "subject": "datetime.datetime.utcnow",
+      "start": 0,
+      "end": 153
+    }
+  ]
+}

@@ -63,13 +63,18 @@
       p {
         line-height: 1.6;
       }
+      #live-companion { border: 1px solid #71916a; border-radius: 8px; padding: 14px; margin: 18px 0; }
+      #live-companion h2 { margin-top: 0; }
+      #live-companion h3 { font-size: 14px; }
+      #live-companion a { color: #c7ed9d; }
+      #live-error { color: #ffcaac; }
       #status {
         color: #b3d68c;
       }
     </style>
   </head>
   <body>
-    <h1>ALIVE <small>11</small></h1>
+    <h1>ALIVE <small>RESEARCH</small></h1>
     <p>A continuing documentation companion.</p>
     <details id="local-connection" open><summary>Local connection</summary><label
       >Local backend<input
@@ -86,13 +91,31 @@
     <label>Goal <input id="goal" maxlength="500" placeholder="What do you want to understand?" /></label>
     <button id="save-goal">Save new goal</button>
     <p id="instruction">No goal selected.</p>
+    <section id="live-companion" aria-label="Research companion">
+      <h2>Research companion</h2>
+      <p id="live-investigation">Choose an investigation above.</p>
+      <p><strong>Deterministic local demonstration · $0 inference</strong></p>
+      <p id="live-state" role="status">Nothing significant to report.</p>
+      <p id="live-error" role="alert"></p>
+      <button id="live-authorise">Authorise and review page</button>
+      <button id="live-review">Review captured source</button>
+      <button id="live-remember">Remember this passage</button>
+      <button id="live-refresh">Refresh research</button>
+      <details><summary>Demonstration sources</summary>
+        <a id="live-historical" target="_blank" rel="noopener">Python 3.11 local mirror</a><br>
+        <a id="live-newer" target="_blank" rel="noopener">Python 3.12 local mirror</a><br>
+        <a id="live-abstention" target="_blank" rel="noopener">Synthetic abstention page</a>
+      </details>
+      <div id="live-content"></div>
+    </section>
+    <details id="legacy-tools"><summary>Advanced companion and experiment tools</summary>
     <label
       ><input id="auto" type="checkbox" /> Send observations automatically while
       observing the local demo only</label
     ><button id="start">Authorise this page</button
     ><button id="stop">Stop & revoke</button>
     <p>
-      Read-only access to the authorised Python tutorial or MDN JavaScript Guide.
+      Read-only access to explicitly authorised research pages and local mirrors.
       Forms and marked private content are excluded. Navigation revokes consent.
       Review the first 3,000 characters before saving or sending to Meta.
     </p>
@@ -178,6 +201,8 @@
     <button id="blind-reveal" disabled>Reveal after all ratings</button>
     <button id="blind-archive" disabled>Archive revealed evaluation</button>
     <details><summary>Runtime identity</summary><pre id="state">Awaiting connection.</pre></details>
+    </details>
     <script src="panel.js" type="module"></script>
+    <script src="live-companion.js" type="module"></script>
   </body>
 </html>

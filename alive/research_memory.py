@@ -228,6 +228,11 @@ class ResearchMemory:
                 session,
                 RESEARCH_KIND,
                 {
+                    **{
+                        key: snapshot.data[key]
+                        for key in ("capture_format_version", "capture_entries", "source_identity")
+                        if key in snapshot.data
+                    },
                     "goal_id": goal.id,
                     "url": snapshot.data["url"],
                     "title": snapshot.data.get("title", ""),
@@ -293,6 +298,85 @@ class ResearchMemory:
                 "error": type(exc).__name__,
             }
         result["index"] = index | {"available": self.memory.embedding.available}
+        return result
+
+    async def save_snapshot(self, snapshot_id):
+        """Remember reviewed source evidence without inventing a model-generated note."""
+        async with self.k.lock, self.k.db.sessions.begin() as session:
+            snapshot = await self.web.get(session, snapshot_id, "snapshot")
+            await self.web.valid_grant(session, snapshot.parent_id)
+            data = snapshot.data
+            for existing in await self.web.rows(session, RESEARCH_KIND):
+                if (
+                    existing.data.get("goal_id") == data["goal_id"]
+                    and existing.data.get("url") == data["url"]
+                    and existing.data.get("sha256") == data["sha256"]
+                    and existing.data.get("capture_format_version", 1)
+                    == data.get("capture_format_version", 1)
+                ):
+                    if existing.status != "active":
+                        raise ValueError("This source was withdrawn; it cannot be resurrected")
+                    return record(existing) | {"idempotent": True}
+            row = self.web.add(
+                session,
+                RESEARCH_KIND,
+                {
+                    "goal_id": data["goal_id"],
+                    "url": data["url"],
+                    "title": data.get("title", ""),
+                    "snapshot_id": snapshot.id,
+                    "sha256": data["sha256"],
+                    "note_id": None,
+                    "excerpt": data["text"][:2000],
+                    "source_kind": "owner_selected_source",
+                    "language_requested": data.get("language_requested", "auto"),
+                    "capture_format_version": data.get("capture_format_version", 1),
+                    "capture_entries": data.get("capture_entries", []),
+                    "source_identity": data.get("source_identity"),
+                    "saved_at": now().isoformat(),
+                    "reviewed_at": snapshot.created_at.isoformat(),
+                    "status": "active",
+                    "index_version": INDEX_VERSION,
+                    "withdrawn_at": None,
+                },
+                snapshot.id,
+                "active",
+            )
+            await session.flush()
+            projection_id = _projection_id(self.k.instance_id, snapshot.id)
+            session.add(
+                Memory(
+                    id=projection_id,
+                    instance_id=self.k.instance_id,
+                    content=row.data["excerpt"],
+                    memory_type="research_memory",
+                    importance=0.5,
+                    confidence=1.0,
+                    metadata_json={
+                        "research_memory_id": row.id,
+                        "goal_id": data["goal_id"],
+                        "url": data["url"],
+                        "snapshot_id": snapshot.id,
+                        "note_id": None,
+                        "sha256": data["sha256"],
+                        "source_kind": "owner_selected_source",
+                        "index_version": INDEX_VERSION,
+                        "saved_at": row.data["saved_at"],
+                    },
+                )
+            )
+            row.data = row.data | {
+                "memory_projection_id": projection_id,
+                "index_model": self.memory.embedding.model_id,
+                "index_revision": self.memory.embedding.revision,
+            }
+            await session.flush()
+            result = record(row)
+        try:
+            await self.memory.index(limit=32)
+        except Exception:
+            # The authoritative source is usable through the existing lexical retriever.
+            pass
         return result
 
     async def sync_feedback(self, session, note_id):
@@ -690,6 +774,8 @@ class ResearchMemory:
                         "same_source": False,
                         "sha256": row.data["sha256"],
                         "source_kind": row.data.get("source_kind"),
+                        "reliance_anchor": row.data.get("reliance_anchor"),
+                        "source_identity": row.data.get("source_identity"),
                         "status": row.status,
                         "rank": len(results) + 1,
                     }

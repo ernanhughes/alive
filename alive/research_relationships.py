@@ -487,6 +487,16 @@ class ResearchRelationships:
             payload["reliance"] = {
                 key: anchor[key] for key in ("quote", "start", "end", "revision", "source_sha256")
             }
+            if (
+                snapshot.data.get("capture_format_version") == 2
+                or memory.data.get("capture_format_version") == 2
+            ):
+                for prefix, row in (("current", snapshot), ("historical", memory)):
+                    payload[prefix + "_capture_format_version"] = row.data.get(
+                        "capture_format_version", 1
+                    )
+                    payload[prefix + "_capture_entries"] = row.data.get("capture_entries", [])
+                    payload[prefix + "_source_identity"] = row.data.get("source_identity")
         return payload
 
     async def _validate_sources(self, session, consent):
@@ -537,6 +547,16 @@ class ResearchRelationships:
                     "Historical source changed; preview the outbound payload again"
                 )
         if mode == "claim_comparison":
+            for prefix, row in (("current", snapshot), ("historical", memory)):
+                if prefix + "_capture_format_version" in payload:
+                    if (
+                        row.data.get("capture_format_version", 1)
+                        != payload[prefix + "_capture_format_version"]
+                        or row.data.get("capture_entries", [])
+                        != payload[prefix + "_capture_entries"]
+                        or row.data.get("source_identity") != payload[prefix + "_source_identity"]
+                    ):
+                        raise PermissionError("Capture provenance changed since preview")
             if consent.data["expires_at"] < now().isoformat():
                 raise PermissionError("Outbound consent expired; preview the payload again")
             if (
@@ -691,7 +711,9 @@ class ResearchRelationships:
                     "grant_id": snapshot.parent_id,
                     "historical_memory_id": memory.id if memory else None,
                     "reserved_tokens": reserve,
-                    "estimated_max_micro_usd": worst_micro_usd(reserve),
+                    "estimated_max_micro_usd": 0
+                    if provider == "local_fixture_claim"
+                    else worst_micro_usd(reserve),
                     "limits": {
                         "max_current_chars": MAX_CURRENT_CHARS,
                         "max_historical_chars": MAX_HISTORICAL_CHARS,
@@ -729,7 +751,9 @@ class ResearchRelationships:
                 if memory
                 else None,
                 "estimated_max_tokens": reserve,
-                "estimated_max_micro_usd": worst_micro_usd(reserve),
+                "estimated_max_micro_usd": 0
+                if provider == "local_fixture_claim"
+                else worst_micro_usd(reserve),
                 "single_call_reservation": reserve,
                 "remaining_allowance": allowance,
                 "request": request,
@@ -1656,6 +1680,10 @@ class ResearchRelationships:
                             "historical_quote": output.historical_claim_quote,
                             "relation_type": validation["relationship"],
                             "reliance": payload["reliance"],
+                            "current_source_identity": payload.get("current_source_identity"),
+                            "historical_source_identity": payload.get("historical_source_identity"),
+                            "supersession_basis_quote": output.supersession_basis_quote,
+                            "claim_aspect": output.claim_aspect,
                             "historical_quote_retained_in_current": validation[
                                 "historical_quote_retained_in_current"
                             ],
@@ -1754,9 +1782,24 @@ class ResearchRelationships:
     def _local_fixture_claim(self, payload):
         """Deterministic, test-gated exact-SHA fixture. Never infer labels from source text."""
         pair = (payload["current_sha256"], payload["historical_sha256"])
-        from alive.claim_fixtures import CLAIM_FIXTURES
+        from alive.claim_fixtures import CLAIM_FIXTURES, demo_fixtures
 
-        fixtures = CLAIM_FIXTURES
+        real_demo = demo_fixtures()
+        if pair in real_demo:
+            from alive.demo_live_01 import identify
+
+            for prefix in ("current", "historical"):
+                identity = identify(
+                    payload.get(prefix + "_url", ""),
+                    payload.get(prefix + "_excerpt", ""),
+                    payload.get(prefix + "_capture_entries", []),
+                    payload.get(prefix + "_capture_format_version"),
+                )
+                if identity is None or identity != payload.get(prefix + "_source_identity"):
+                    raise PermissionError(
+                        "Real demo fixtures require pinned capture-v2 source identity"
+                    )
+        fixtures = CLAIM_FIXTURES | real_demo
         if pair not in fixtures:
             raise ValueError("Unregistered claim fixture pair; refusing output")
         return ClaimComparisonOutput.model_validate(fixtures[pair])
@@ -1929,6 +1972,15 @@ class ResearchRelationships:
                 ) != payload.get("goal_id"):
                     return False
                 if payload.get("analysis_mode") == "claim_comparison":
+                    for prefix, row in (("current", snapshot), ("historical", memory)):
+                        if prefix + "_capture_format_version" in payload:
+                            for key, default in (
+                                ("capture_format_version", 1),
+                                ("capture_entries", []),
+                                ("source_identity", None),
+                            ):
+                                if row.data.get(key, default) != payload.get(prefix + "_" + key):
+                                    return False
                     anchor = memory.data.get("reliance_anchor") or {}
                     if not anchor or any(
                         anchor.get(key) != payload.get("reliance", {}).get(key)

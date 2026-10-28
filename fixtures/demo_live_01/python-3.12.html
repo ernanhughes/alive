@@ -1,0 +1,55 @@
+<!doctype html><html lang='en'><meta charset='utf-8'><title>datetime — Basic date and time types — Python 3.12.16 documentation</title><style>body{font:16px system-ui;max-width:850px;margin:30px auto;padding:16px}header{border:2px solid #786321;padding:16px;background:#fff6d6}dt{font-weight:bold;margin-top:24px}dd{margin-left:20px}p{line-height:1.6}.versionmodified{font-weight:bold}code{font-family:monospace}</style><header><strong>LOCAL MIRROR — PYTHON DOCUMENTATION</strong><p>Focused local mirror of two entries from <a href='https://docs.python.org/3.12/library/datetime.html'>datetime — Basic date and time types — Python 3.12.16 documentation</a>. Other entries are omitted. Copyright © Python Software Foundation. <a href='https://docs.python.org/3.12/license.html'>PSF License Version 2</a>. Captured text is evidence of this pinned mirror, not verified factual truth.</p></header><h1>datetime — Basic date and time types — Python 3.12.16 documentation</h1><main><dl class="py method">
+<dt class="sig sig-object py" id="datetime.datetime.utcnow">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">datetime.</span></span><span class="sig-name descname"><span class="pre">utcnow</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Return the current UTC date and time, with <a class="reference internal" href="#datetime.datetime.tzinfo" title="datetime.datetime.tzinfo"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tzinfo</span></code></a> <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+<p>This is like <a class="reference internal" href="#datetime.datetime.now" title="datetime.datetime.now"><code class="xref py py-meth docutils literal notranslate"><span class="pre">now()</span></code></a>, but returns the current UTC date and time, as a naive
+<a class="reference internal" href="#datetime.datetime" title="datetime.datetime"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> object. An aware current UTC datetime can be obtained by
+calling <code class="docutils literal notranslate"><span class="pre">datetime.now(timezone.utc)</span></code>. See also <a class="reference internal" href="#datetime.datetime.now" title="datetime.datetime.now"><code class="xref py py-meth docutils literal notranslate"><span class="pre">now()</span></code></a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Because naive <code class="docutils literal notranslate"><span class="pre">datetime</span></code> objects are treated by many <code class="docutils literal notranslate"><span class="pre">datetime</span></code> methods
+as local times, it is preferred to use aware datetimes to represent times
+in UTC. As such, the recommended way to create an object representing the
+current time in UTC is by calling <code class="docutils literal notranslate"><span class="pre">datetime.now(timezone.utc)</span></code>.</p>
+</div>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.12: </span>Use <a class="reference internal" href="#datetime.datetime.now" title="datetime.datetime.now"><code class="xref py py-meth docutils literal notranslate"><span class="pre">datetime.now()</span></code></a> with <a class="reference internal" href="#datetime.UTC" title="datetime.UTC"><code class="xref py py-const docutils literal notranslate"><span class="pre">UTC</span></code></a> instead.</p>
+</div>
+</dd></dl><dl class="py method">
+<dt class="sig sig-object py" id="datetime.datetime.utcfromtimestamp">
+<em class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">datetime.</span></span><span class="sig-name descname"><span class="pre">utcfromtimestamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Return the UTC <a class="reference internal" href="#datetime.datetime" title="datetime.datetime"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> corresponding to the POSIX timestamp, with
+<a class="reference internal" href="#datetime.datetime.tzinfo" title="datetime.datetime.tzinfo"><code class="xref py py-attr docutils literal notranslate"><span class="pre">tzinfo</span></code></a> <code class="docutils literal notranslate"><span class="pre">None</span></code>.  (The resulting object is naive.)</p>
+<p>This may raise <a class="reference internal" href="exceptions.html#OverflowError" title="OverflowError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">OverflowError</span></code></a>, if the timestamp is
+out of the range of values supported by the platform C <code class="xref c c-func docutils literal notranslate"><span class="pre">gmtime()</span></code> function,
+and <a class="reference internal" href="exceptions.html#OSError" title="OSError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">OSError</span></code></a> on <code class="xref c c-func docutils literal notranslate"><span class="pre">gmtime()</span></code> failure.
+It’s common for this to be restricted to years in 1970 through 2038.</p>
+<p>To get an aware <a class="reference internal" href="#datetime.datetime" title="datetime.datetime"><code class="xref py py-class docutils literal notranslate"><span class="pre">datetime</span></code></a> object, call <a class="reference internal" href="#datetime.datetime.fromtimestamp" title="datetime.datetime.fromtimestamp"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fromtimestamp()</span></code></a>:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">,</span> <span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>On the POSIX compliant platforms, it is equivalent to the following
+expression:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">datetime</span><span class="p">(</span><span class="mi">1970</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">timestamp</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>except the latter formula always supports the full years range: between
+<a class="reference internal" href="#datetime.MINYEAR" title="datetime.MINYEAR"><code class="xref py py-const docutils literal notranslate"><span class="pre">MINYEAR</span></code></a> and <a class="reference internal" href="#datetime.MAXYEAR" title="datetime.MAXYEAR"><code class="xref py py-const docutils literal notranslate"><span class="pre">MAXYEAR</span></code></a> inclusive.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Because naive <code class="docutils literal notranslate"><span class="pre">datetime</span></code> objects are treated by many <code class="docutils literal notranslate"><span class="pre">datetime</span></code> methods
+as local times, it is preferred to use aware datetimes to represent times
+in UTC. As such, the recommended way to create an object representing a
+specific timestamp in UTC is by calling
+<code class="docutils literal notranslate"><span class="pre">datetime.fromtimestamp(timestamp,</span> <span class="pre">tz=timezone.utc)</span></code>.</p>
+</div>
+<div class="versionchanged">
+<p><span class="versionmodified changed">Changed in version 3.3: </span>Raise <a class="reference internal" href="exceptions.html#OverflowError" title="OverflowError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">OverflowError</span></code></a> instead of <a class="reference internal" href="exceptions.html#ValueError" title="ValueError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> if the timestamp
+is out of the range of values supported by the platform C
+<code class="xref c c-func docutils literal notranslate"><span class="pre">gmtime()</span></code> function. Raise <a class="reference internal" href="exceptions.html#OSError" title="OSError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">OSError</span></code></a> instead of
+<a class="reference internal" href="exceptions.html#ValueError" title="ValueError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ValueError</span></code></a> on <code class="xref c c-func docutils literal notranslate"><span class="pre">gmtime()</span></code> failure.</p>
+</div>
+<div class="deprecated">
+<p><span class="versionmodified deprecated">Deprecated since version 3.12: </span>Use <a class="reference internal" href="#datetime.datetime.fromtimestamp" title="datetime.datetime.fromtimestamp"><code class="xref py py-meth docutils literal notranslate"><span class="pre">datetime.fromtimestamp()</span></code></a> with <a class="reference internal" href="#datetime.UTC" title="datetime.UTC"><code class="xref py py-const docutils literal notranslate"><span class="pre">UTC</span></code></a> instead.</p>
+</div>
+</dd></dl></main></html>

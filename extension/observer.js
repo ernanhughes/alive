@@ -3,27 +3,9 @@
   let previous = "",
     lastSent = 0;
   function snapshot() {
-    const walker = document.createTreeWalker(
-      document.querySelector('main,article,[role="main"]') || document.body,
-      NodeFilter.SHOW_TEXT,
-    );
-    const pieces = [];
-    let node;
-    while ((node = walker.nextNode()) && pieces.join(" ").length < 8000) {
-      const el = node.parentElement;
-      if (
-        !el ||
-        el.closest(
-          'script,style,noscript,nav,input,textarea,select,[contenteditable],[hidden],[aria-hidden="true"],[data-alive-private]',
-        ) ||
-        !el.getClientRects().length
-      )
-        continue;
-      if (getComputedStyle(el).visibility === "hidden") continue;
-      const text = node.textContent.trim();
-      if (text) pieces.push(text);
-    }
-    const text = pieces.join(" ").replace(/\s+/g, " ").slice(0, 8000);
+    const content = document.querySelector('main,article,[role="main"]') || document.body;
+    const captured = globalThis.__aliveCaptureV2(content);
+    const text = captured.text;
     if (text === previous) return;
     previous = text;
     lastSent = Date.now();
@@ -34,7 +16,7 @@
         payload: {
           url: location.origin + location.pathname,
           title: document.title.slice(0, 200),
-          text,
+          ...captured,
         },
       })
       .catch(() => {});
