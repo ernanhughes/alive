@@ -292,12 +292,13 @@ def validate_relationship_output(output, payload):
 
 
 class ResearchRelationships:
-    def __init__(self, research, experiments, settings):
+    def __init__(self, research, experiments, settings, approvals=None):
         self.research = research
         self.web = research.web
         self.k = research.k
         self.experiments = experiments
         self.settings = settings
+        self.approvals = approvals
 
     def _provider_identity(self, provider):
         if provider == "local_stub":
@@ -511,6 +512,58 @@ class ResearchRelationships:
             raise PermissionError("Outbound payload hash changed")
         return snapshot, memory, goal
 
+    async def _assert_experiment_locked(
+        self,
+        session,
+        experiment,
+        payload,
+        request_sha256,
+        max_output_tokens,
+        exclude_attempt_id=None,
+    ):
+        if self.approvals is None:
+            raise PermissionError("Experiment approval service is unavailable")
+        required = {
+            "campaign_digest",
+            "approval_id",
+            "run_id",
+            "stage",
+            "task_id",
+            "condition",
+            "call_index",
+        }
+        missing = required - set(experiment or {})
+        if missing:
+            raise PermissionError(
+                "Experiment dispatch identity is incomplete: " + ", ".join(sorted(missing))
+            )
+        instructions_sha256 = hashlib.sha256(
+            self._instructions(payload["analysis_mode"]).encode()
+        ).hexdigest()
+        schema_sha256 = hashlib.sha256(
+            json.dumps(
+                self._schema(payload["analysis_mode"]),
+                sort_keys=True,
+                ensure_ascii=False,
+            ).encode()
+        ).hexdigest()
+        return await self.approvals.assert_dispatch_locked(
+            session,
+            campaign_digest=experiment["campaign_digest"],
+            approval_id=experiment["approval_id"],
+            run_id=experiment["run_id"],
+            stage=int(experiment["stage"]),
+            task_id=experiment["task_id"],
+            condition=experiment["condition"],
+            call_index=int(experiment["call_index"]),
+            payload=payload,
+            request_sha256=request_sha256,
+            instructions_sha256=instructions_sha256,
+            schema_sha256=schema_sha256,
+            max_output_tokens=max_output_tokens,
+            exclude_attempt_id=exclude_attempt_id,
+        )
+
     async def preview(
         self,
         snapshot_id,
@@ -518,9 +571,12 @@ class ResearchRelationships:
         provider="local_stub",
         analysis_mode="history_assisted",
         research_question=None,
+        experiment=None,
     ):
         if analysis_mode not in ("current_only", "history_assisted", "paired"):
             raise ValueError("Unknown analysis mode")
+        if experiment is not None and analysis_mode != "paired":
+            raise ValueError("Experiment dispatch requires paired analysis mode")
         identity = self._provider_identity(provider)
         async with self.k.lock, self.k.db.sessions.begin() as session:
             snapshot = await self.web.get(session, snapshot_id, "snapshot")
@@ -559,6 +615,15 @@ class ResearchRelationships:
             reserve = self._reserve(payload, identity["model"])
             request = self._request(payload)
             request_sha256 = _digest(request)
+            if experiment is not None:
+                approved = await self._assert_experiment_locked(
+                    session,
+                    experiment,
+                    payload,
+                    request_sha256,
+                    self.settings.alive_meta_max_output,
+                )
+                experiment = dict(experiment) | {"content_sha256": approved["content_sha256"]}
             allowance = await self._allowance(session)
             row = self.web.add(
                 session,
@@ -585,6 +650,7 @@ class ResearchRelationships:
                     "authorized_at": None,
                     "consumed_at": None,
                     "external": identity["external"],
+                    "experiment": experiment,
                 },
                 snapshot.id,
                 "pending",
@@ -616,6 +682,7 @@ class ResearchRelationships:
                 "remaining_allowance": allowance,
                 "request": request,
                 "request_sha256": request_sha256,
+                "experiment": experiment,
                 "provider_operation": ("external_meta" if identity["external"] else "local_test"),
                 "payload_immutable": True,
                 "requires_owner_authorisation": True,
@@ -632,6 +699,16 @@ class ResearchRelationships:
             if consent.data["payload_sha256"] != payload_sha256:
                 raise PermissionError("The displayed payload changed; preview it again")
             await self._validate_sources(session, consent)
+            experiment = consent.data.get("experiment")
+            if experiment:
+                payload = consent.data["payload"]
+                await self._assert_experiment_locked(
+                    session,
+                    experiment,
+                    payload,
+                    consent.data["request_sha256"],
+                    self.settings.alive_meta_max_output,
+                )
             consent.status = "authorized"
             consent.data = consent.data | {"authorized_at": now().isoformat()}
             event_payload = (
@@ -802,6 +879,16 @@ class ResearchRelationships:
                     "historical_sha256": memory.data["sha256"] if memory else None,
                     "reserved_tokens": reserve,
                     "dispatch_status": "reserved_never_dispatched",
+                    "campaign_digest": (consent.data.get("experiment") or {}).get(
+                        "campaign_digest"
+                    ),
+                    "approval_id": (consent.data.get("experiment") or {}).get("approval_id"),
+                    "run_id": (consent.data.get("experiment") or {}).get("run_id"),
+                    "stage": (consent.data.get("experiment") or {}).get("stage"),
+                    "task_id": (consent.data.get("experiment") or {}).get("task_id"),
+                    "condition": (consent.data.get("experiment") or {}).get("condition"),
+                    "call_index": (consent.data.get("experiment") or {}).get("call_index"),
+                    "content_sha256": (consent.data.get("experiment") or {}).get("content_sha256"),
                     "started_at": now().isoformat(),
                 },
                 snapshot.id,
@@ -822,6 +909,7 @@ class ResearchRelationships:
         provider_response_received = False
         started = time.monotonic()
         dispatched = False
+        cancelled = False
         try:
             async with asyncio.timeout(cfg.wall_seconds):
                 async with self.k.lock, self.k.db.sessions() as guard_session:
@@ -859,6 +947,17 @@ class ResearchRelationships:
                 # Commit the dispatch-start marker before any external request can leave
                 # the process. A crash after this point is ambiguous, not "never sent".
                 async with self.k.lock, self.k.db.sessions.begin() as dispatch_session:
+                    await self._validate_sources(dispatch_session, consent)
+                    experiment = consent.data.get("experiment")
+                    if experiment:
+                        await self._assert_experiment_locked(
+                            dispatch_session,
+                            experiment,
+                            payload,
+                            consent.data["request_sha256"],
+                            min(cfg.output_tokens, self.settings.alive_meta_max_output),
+                            exclude_attempt_id=attempt_id,
+                        )
                     marker = await self.web.get(dispatch_session, attempt_id, ATTEMPT_KIND)
                     marker.data = marker.data | {
                         "dispatch_status": "dispatch_possibly_started",
@@ -903,16 +1002,34 @@ class ResearchRelationships:
         except BaseException as exc:
             usage = getattr(exc, "usage", None) or usage
             error = type(exc).__name__
-            error_category = getattr(exc, "category", None)
-            if error_category is None:
-                error_category = (
-                    "invalid_structured_output"
-                    if isinstance(exc, EvidenceValidationError)
-                    else type(exc).__name__
-                )
+            raw_category = getattr(exc, "category", None)
             provider_status = getattr(exc, "status", None)
-            campaign_fatal = bool(getattr(exc, "campaign_fatal", False))
             provider_response_received = bool(getattr(exc, "response_received", False))
+            if isinstance(exc, (TimeoutError, asyncio.TimeoutError)):
+                error_category = "wall_clock_timeout"
+                campaign_fatal = dispatched
+            elif isinstance(exc, asyncio.CancelledError):
+                error_category = "cancelled"
+                campaign_fatal = dispatched
+                cancelled = True
+            elif isinstance(exc, EvidenceValidationError):
+                error_category = "invalid_structured_output"
+                campaign_fatal = False
+            elif isinstance(exc, PermissionError):
+                error_category = "permission_denied"
+                campaign_fatal = True
+            elif isinstance(exc, ValueError) and type(exc).__name__ == "ValidationError":
+                error_category = "invalid_structured_output"
+                campaign_fatal = False
+            elif isinstance(exc, ValueError):
+                error_category = "invalid_request"
+                campaign_fatal = True if consent.data.get("experiment") else dispatched
+            elif raw_category is not None:
+                error_category = raw_category
+                campaign_fatal = bool(getattr(exc, "campaign_fatal", True))
+            else:
+                error_category = raw_category or type(exc).__name__
+                campaign_fatal = dispatched
         charged = (
             usage.get("total_tokens") if usage and not error else 0 if not dispatched else reserve
         )
@@ -1046,6 +1163,8 @@ class ResearchRelationships:
                 event_payload,
             )
             await session.flush()
+            if cancelled:
+                raise asyncio.CancelledError()
             return {
                 "analysis": record(row),
                 "current_analysis": record(analysis_row)

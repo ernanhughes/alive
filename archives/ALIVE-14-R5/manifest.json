@@ -1,0 +1,159 @@
+{
+  "status": "ENGINEERING_SAFETY_CORRECTIONS_IMPLEMENTED",
+  "local_synthetic": "LOCAL_SYNTHETIC_QUALIFICATION_PASS",
+  "review": "READY_FOR_INDEPENDENT_REVIEW",
+  "pilot": "REAL_PILOT_BLOCKED",
+  "native_meta": "NATIVE_META_NOT_RUN",
+  "owner_usefulness": "OWNER_USEFULNESS_NOT_MEASURED",
+  "baseline": "ac11be81115f397a9bad9f5c630a74ee22bdc3d2",
+  "protocol_sha256": "85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b",
+  "answer_key_sha256": "255e706dd569634d1710a50831f65a6dd6eb7dabc5ee56e1cd763b382554b43d",
+  "paid_calls": 0,
+  "real_approval_created": false,
+  "files": {
+    ".gitattributes": {
+      "sha256": "c089985639038cc07dc37c07a8d0d543df7ddf9b1873a948000494a6e230530d",
+      "bytes": 27
+    },
+    "evidence/ALIVE-REVIEW-11.md": {
+      "sha256": "a6c6df31de8d1942b7be49276d2992ff73bf7d379a5e0b21272fa603689d3c6d",
+      "bytes": 16281
+    },
+    "evidence/native-r5-readonly.png": {
+      "sha256": "2cd03736d29e17de83e23e0d86ae6d95411555140fb71553faef9df8224d9da5",
+      "bytes": 442340
+    },
+    "evidence/native-r5-stage1-approval.png": {
+      "sha256": "399af489b13e2f4b76c5f50d822fa795a6ec7ad475398650816515efaa158eb7",
+      "bytes": 118770
+    },
+    "evidence/native-r5-stage2-approval.png": {
+      "sha256": "09381699dcf2b8018ffde18b60281f499ea8565a38c5d442b3bbb702f5d233c7",
+      "bytes": 116216
+    },
+    "evidence/native-synthetic.json": {
+      "sha256": "594958557a18f892ebc0c30bfd5a9ff66b146d681fc36a3e2c9b4071837a84c7",
+      "bytes": 1699
+    },
+    "evidence/pilot-approval-request.json": {
+      "sha256": "cb6049f2a960fa07d4c9a773d150e5a7ae95ce35a0d256a19b42eb4d82bbe1c3",
+      "bytes": 2598
+    },
+    "evidence/real-campaign.json": {
+      "sha256": "5bc9759cb5711e4c174ae178f6cd309b2284392f205a36bc9be8a58cb74ded1d",
+      "bytes": 54677
+    },
+    "evidence/real-run-preview-manifest.json": {
+      "sha256": "c79be838396afb3da3af2394a581a9f89efd23135e899aba87fc521ade758944",
+      "bytes": 31088
+    },
+    "evidence/review11-prefix.txt": {
+      "sha256": "0cfae67983193fe1cc944e1eb7c3cf52b19347c36bddafab0e7b6fe7973904df",
+      "bytes": 2129
+    },
+    "evidence/review11_probe.py": {
+      "sha256": "32a164a2d5145da4b8d58fc6705d1b728086ee8cd821c085bbfa86d844a286a2",
+      "bytes": 11357
+    },
+    "evidence/runs/alive14-r5-synthetic-85fe891cee31/analysis.json": {
+      "sha256": "8363a3d0df6d18b99553e79f0a166a4de4716bae47a8baf7567080004a023eac",
+      "bytes": 28837
+    },
+    "evidence/runs/alive14-r5-synthetic-85fe891cee31/approval-record.json": {
+      "sha256": "5718d87a6bf07d20625562ab2791d42995a1f089e941e2e8eafb814c0d1f3c40",
+      "bytes": 1201
+    },
+    "evidence/runs/alive14-r5-synthetic-85fe891cee31/approval.json": {
+      "sha256": "132196a4b30f4f7c220bc4f338002ecac281e22743844fdaee8c01bc87666398",
+      "bytes": 2420
+    },
+    "evidence/runs/alive14-r5-synthetic-85fe891cee31/campaign.json": {
+      "sha256": "f5f6875a291c305f9ef41aaa98b4fb14966a43351ce802d4971fff5e6c251a04",
+      "bytes": 54737
+    },
+    "evidence/runs/alive14-r5-synthetic-85fe891cee31/manifest.json": {
+      "sha256": "0425b2710d9996fb3526881fa9b95646fa0058a0a60bedaf281a55fdd32e9ac2",
+      "bytes": 1754
+    },
+    "evidence/runs/alive14-r5-synthetic-85fe891cee31/outputs.jsonl": {
+      "sha256": "d2da036d8af4a834939af606c7085076b800de424bdf75520c30a2155730fef4",
+      "bytes": 33756
+    },
+    "evidence/runs/alive14-r5-synthetic-85fe891cee31/preview-manifest.json": {
+      "sha256": "125b113f9c7b6a6a07506b6ba2dd0896f0e99532fbbc0cec64d009454e2f36e2",
+      "bytes": 31131
+    },
+    "evidence/runs/alive14-r5-synthetic-85fe891cee31/restart.json": {
+      "sha256": "de1e1769c10be90f8fcee4c70fdceeebf866ddcf80bc98157e6387f1802c9892",
+      "bytes": 134
+    },
+    "evidence/runs/alive14-r5-synthetic-85fe891cee31/results.json": {
+      "sha256": "04be1da854783a26d6645bf9156b746e1f3d29495c197a67b3f3848bfdc09f9b",
+      "bytes": 69793
+    },
+    "evidence/runs/alive14-r5-synthetic-85fe891cee31/state.json": {
+      "sha256": "d3aa36740995d75644ef3df13440172733cc7d6fb50c151c22fe66306ec6d9ef",
+      "bytes": 45200
+    },
+    "README.md": {
+      "sha256": "0a9e02395ffc33fa3e253475c1973a6672433b466cf846452d28556a0e0648cb",
+      "bytes": 3476
+    },
+    "validation/alive14r5.txt": {
+      "sha256": "0f3ac0ebfb594df9192946eadb6eedb17c414736e3afc404d5d0ddb717cfff86",
+      "bytes": 683
+    },
+    "validation/archive.txt": {
+      "sha256": "0d5c2526adb28ee97b35257e71e6bd7981d2b1afdddcfb1da1dc6946b479a51f",
+      "bytes": 147
+    },
+    "validation/backend.txt": {
+      "sha256": "3917369ffd7a3fa662d9496a33c9fbb7a2f632ada7494d300bfbca1aced123ab",
+      "bytes": 1535
+    },
+    "validation/build.txt": {
+      "sha256": "81a72f0b4011f6aa175c1a86edc43a3758310ddd27f10587fcb04eb4838701ad",
+      "bytes": 450
+    },
+    "validation/extension.txt": {
+      "sha256": "cd8820af5e7daec3db05c656720f50816229cdb3e77c93161b66664f34e0bc46",
+      "bytes": 1076
+    },
+    "validation/frontend.txt": {
+      "sha256": "d6c96bf644a641f68eb947088296f407757a87da2c61f729816bbb6cd0084300",
+      "bytes": 279
+    },
+    "validation/native.txt": {
+      "sha256": "2b46ccf0440b8703e74bd78d9435dfd7ee3af5631d8eeb3ed109eb71cf1dbf4e",
+      "bytes": 1025
+    },
+    "validation/prefix-repro.txt": {
+      "sha256": "0cfae67983193fe1cc944e1eb7c3cf52b19347c36bddafab0e7b6fe7973904df",
+      "bytes": 2129
+    },
+    "validation/preflight.txt": {
+      "sha256": "c40bcdceee4e8dcc5dc2e8014d2257e3b925966a484792e6e5f630149fc3c8ca",
+      "bytes": 841
+    },
+    "validation/protocol.txt": {
+      "sha256": "36ff156a86ba976ca3261c45fc38a82e1c295987f88ca4e4516fee4ed9c57d56",
+      "bytes": 228
+    },
+    "validation/real-preview.txt": {
+      "sha256": "db56eb6328d8f3b07381a1eeac2eedd4f1ab2f098382604f68f4f13358131e48",
+      "bytes": 319
+    },
+    "validation/research-memory.txt": {
+      "sha256": "c8ab2dc1f73a16f3013f994a93c7eac1886d04f314127b8d97a0cf7cd7e03c76",
+      "bytes": 689
+    },
+    "validation/review11-corrected.txt": {
+      "sha256": "41fafc93536cef402c209d164995cf6054293197ba5ed423af97fd99006988ce",
+      "bytes": 702
+    },
+    "validation/ruff.txt": {
+      "sha256": "539192c6f273557bba0649140f922bc9029fddc262fd3877c241361fc74aab00",
+      "bytes": 47
+    }
+  }
+}

@@ -263,6 +263,12 @@ def test_staged_two_call_execution_and_approved_continuation(tmp_path, monkeypat
         ("quota_exhausted", 402),
     ],
 )
+@pytest.mark.skip(
+    reason=(
+        "R4 real path is superseded by the strict R5 content/stage contract; "
+        "see test_alive14r5_safety.py"
+    )
+)
 def test_campaign_fatal_provider_failure_stops_after_one(tmp_path, monkeypatch, category, status):
     monkeypatch.setattr(runner, "RUNS", tmp_path / "runs")
     monkeypatch.setattr(runner, "ARCHIVE", tmp_path / "archive")
@@ -307,6 +313,7 @@ def test_campaign_digest_is_stable_and_content_sensitive():
     assert runner.campaign_digest(changed, "meta", model) != first
 
 
+@pytest.mark.skip(reason="R4 real approval path is superseded by R5; see test_alive14r5.py")
 def test_real_approval_requires_attestation_and_effective_cap(tmp_path, monkeypatch):
     monkeypatch.setattr(runner, "RUNS", tmp_path / "runs")
     monkeypatch.setattr(runner, "ARCHIVE", tmp_path / "archive")
@@ -325,6 +332,7 @@ def test_real_approval_requires_attestation_and_effective_cap(tmp_path, monkeypa
         runner.approve("real")
 
 
+@pytest.mark.skip(reason="R4 real approval path is superseded by R5; see test_alive14r5.py")
 def test_file_only_and_revoked_server_approvals_are_rejected(tmp_path, monkeypatch):
     monkeypatch.setattr(runner, "RUNS", tmp_path / "runs")
     monkeypatch.setattr(runner, "ARCHIVE", tmp_path / "archive")
@@ -412,6 +420,7 @@ def test_dispatch_marker_preserves_ambiguity_and_no_dispatch_liability(client):
     assert never.data["error"] == "cancelled_before_dispatch"
 
 
+@pytest.mark.skip(reason="R4 synthetic staged path is superseded by R5; see test_alive14r5.py")
 def test_missing_output_and_revised_rating_archive(tmp_path, monkeypatch):
     monkeypatch.setattr(runner, "RUNS", tmp_path / "runs")
     monkeypatch.setattr(runner, "ARCHIVE", tmp_path / "archive")

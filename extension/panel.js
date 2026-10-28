@@ -370,6 +370,7 @@ function renderRelationshipRubric(connectionId) {
   }
 }
 let campaignView = null;
+let campaignApprovalId = null;
 async function refreshCampaigns() {
   const { campaigns } = await command('campaigns');
   $('campaign-select').replaceChildren(new Option('Choose a campaign', ''));
@@ -389,6 +390,8 @@ async function loadCampaign() {
   const record = campaigns.find(row => row.data.campaign_digest === digest);
   if (!record) throw new Error('Campaign is no longer registered');
   campaignView = record.data;
+  campaignApprovalId = null;
+  $('campaign-revoke').disabled = true;
   $('campaign-status').textContent = `${campaignView.provider} / ${campaignView.model} | ${campaignView.task_count} tasks | ${campaignView.call_cap} calls | ${campaignView.synthetic ? 'synthetic' : 'real'}`;
   $('campaign-digest').textContent = `Campaign digest: ${campaignView.campaign_digest}\nStage 1: 2 calls, ${campaignView.stages.stage_1.worst_case_micro_usd} micro-USD\nFull: ${campaignView.stages.full.call_cap} calls, ${campaignView.stages.full.worst_case_micro_usd} micro-USD`;
   $('campaign-manifest').textContent = JSON.stringify(campaignView.manifest, null, 2);
@@ -413,8 +416,18 @@ async function approveCampaign() {
     digest: campaignView.campaign_digest,
     approval,
   });
+  campaignApprovalId = approved.data.approval_id;
+  $('campaign-revoke').disabled = false;
   $('campaign-status').textContent = `Approval ${approved.data.approval_id} active for stage ${approved.data.stage}; ${approved.data.call_cap} calls, ${approved.data.max_usd} USD cap.`;
 }
+async function revokeCampaignApproval() {
+  if (!campaignApprovalId) throw new Error('No active approval is displayed');
+  const revoked = await command('revoke-approval', { approvalId: campaignApprovalId });
+  $('campaign-status').textContent = `Approval ${revoked.data.approval_id} is ${revoked.data.status}; no further dispatch is authorised.`;
+  $('campaign-revoke').disabled = true;
+  campaignApprovalId = null;
+}
+$('campaign-revoke').onclick = () => action(revokeCampaignApproval);
 $('campaign-refresh').onclick = () => action(refreshCampaigns);
 $('campaign-select').onchange = () => action(loadCampaign);
 $('campaign-approve').onclick = () => action(approveCampaign);

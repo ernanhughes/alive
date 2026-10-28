@@ -1,0 +1,7 @@
+Command: uv run python -m scripts.native14_r5
+NATIVE_SYNTHETIC_PASS
+Chrome: {"chrome": "156.0.8078.73", "presentation": "native side panel target", "panel_opened_as_ordinary_tab": false, "campaign_digest": "795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25", "synthetic": true}
+Native actions: ["Chrome: connect docked panel", "Chrome: review immutable digest and manifest", "Chrome: observed server rejection of stage 2 before stage 1", "Chrome: approved stage 1 and revoked it through the owner UI", "Chrome: re-approved stage 1 with no prior dispatch", "Chrome: stage 2 approval became available after two stage-1 attempts and was approved", "Chrome: loaded archived blind results read-only after restart"]
+Backend actions: ["Runner CLI: read server stage-1 approval and dispatched exactly two calls", "Runner CLI: dispatched remaining 16 calls, rated, revealed, analysed and archived"]
+Screenshots: ["native-r5-stage1-approval.png", "native-r5-stage2-approval.png", "native-r5-readonly.png"]
+Paid calls: 0

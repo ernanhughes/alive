@@ -1,3 +1,5 @@
+> **REVIEW-11 superseded R4 readiness.** The merged R4 package is **NOT READY** for owner approval. See `docs/ALIVE-14-R4-R1-SAFETY-CLOSURE.md` and `docs/ALIVE-14-R5.md`.
+
 # ALIVE-14-R4 - Final pilot safety qualification
 
 Status: **ENGINEERING_PASS**, **NATIVE_SYNTHETIC_PASS**,
