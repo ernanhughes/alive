@@ -7,6 +7,7 @@ from alive.app import create_app
 from alive.web_models import WebExperience
 from tests.conftest import TOKEN
 from tests.evidence_leaks import assert_no_derived_evidence
+from tests.test_claim_runtime import settings as settings
 from tests.test_research_memory import (
     MDN,
     MDN_TEXT,
