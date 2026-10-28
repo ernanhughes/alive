@@ -72,7 +72,7 @@ def _boundary(source: str, start: int, end: int) -> bool:
     if start == 0 or source[start - 1] == "\n":
         start_ok = True
     else:
-        match = re.search(r"[.!?][\"')\\]]?\s+$", before)
+        match = re.search(r"[.!?]\\s+$", before)
         prefix = before.rstrip().lower()
         start_ok = bool(match) and not any(prefix.endswith(a) for a in ABBREVIATIONS)
         if match and re.search(r"\d\.\s*$", before):
@@ -80,7 +80,7 @@ def _boundary(source: str, start: int, end: int) -> bool:
     if end == len(source) or source[end] == "\n":
         end_ok = True
     else:
-        end_ok = bool(re.search(r"[.!?][\"')\\]]?$", source[start:end])) and source[end].isspace()
+        end_ok = bool(re.search(r"[.!?]$", source[start:end])) and source[end].isspace()
         if end_ok and re.search(r"\d\.$", source[start:end]) and source[end].isdigit():
             end_ok = False
     return start_ok and end_ok
