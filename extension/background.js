@@ -224,7 +224,10 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
       return { goal: state.goals.find(row => row.id === goalId), current,
         captured: latest?.payload || null,
         memory: current ? memories.find(row => row.data.sha256 === current.data.sha256 && row.data.url === current.data.url) : null,
-        related, findings: ledger.connections.filter(row => row.data.analysis_version === 'alive-demo01-claim-v2' && row.data.owner_useful !== false),
+        related, findings: ledger.connections.filter(row => row.status === 'candidate' &&
+          row.data.analysis_version === 'alive-demo01-claim-v2' && row.data.owner_useful !== false &&
+          row.data.provider?.id === 'local_fixture_claim' &&
+          row.data.validation?.capture_binding === 'pinned_source_entry_v2'),
         analyses: ledger.analyses.filter(row => row.data.analysis_mode === 'claim_comparison') };
     }
     if (message.type === 'live-selection') {

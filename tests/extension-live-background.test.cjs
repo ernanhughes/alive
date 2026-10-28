@@ -12,6 +12,7 @@ function worker() {
   const session = { observedTab: 1, observedUrl: 'http://127.0.0.1:8000/demo-live-01/python-3.11.html', grantId: 'grant',
     latest: { payload: { url: 'http://127.0.0.1:8000/demo-live-01/python-3.11.html', title: 'Mirror', text, capture_format_version: 2, capture_entries: [] } },
     selected: { snapshot: { id: 'snapshot', data: { goal_id: 'g', sha256: sha(text), url: 'http://127.0.0.1:8000/demo-live-01/python-3.11.html' } } } };
+  const ledger = {connections:[],analyses:[]};
   const memory = { id: 'memory', data: { goal_id: 'g', url: session.observedUrl, sha256: sha(text), reliance_anchor: { revision: 7, quote: 'Old anchor.' } } };
   const chrome = { sidePanel: { setPanelBehavior() {} }, runtime: { id: 'test', getURL: p=>'chrome-extension://test/'+p,
     onMessage: { addListener(fn) { listener=fn; } } },
@@ -24,14 +25,14 @@ function worker() {
     let data={};
     if(url.endsWith('/browser-experience')) data={goals:[{id:'g',data:{instruction:'Investigate'}}]};
     else if(url.includes('/research/memories?')) data={memories:[memory]};
-    else if(url.includes('/research/relationships?')) data={connections:[],analyses:[]};
+    else if(url.includes('/research/relationships?')) data=ledger;
     else if(url.endsWith('/research/retrieve')) data={results:[]};
     else if(url.endsWith('/research/memories')) data=memory;
     else if(url.endsWith('/snapshots')) data=session.selected;
     else if(url.endsWith('/anchor')) data={...memory,data:{...memory.data,reliance_anchor:{...body,revision:8}}};
     return {ok:true,json:async()=>data};
   },webcrypto);
-  return {calls,session,memory,command:message=>new Promise(resolve=>listener(message,{id:'test',url:'chrome-extension://test/panel.html'},resolve))};
+  return {calls,session,memory,ledger,command:message=>new Promise(resolve=>listener(message,{id:'test',url:'chrome-extension://test/panel.html'},resolve))};
 }
 test('live preview always specifies claim mode and the local fixture provider',async()=>{
   const w=worker(); const r=await w.command({type:'live-preview',memoryId:'memory',provider:'meta'});
@@ -66,4 +67,14 @@ test('live preview refuses stale captured text before authorization or dispatch'
   const w=worker();w.session.latest={payload:{text:'A changed captured source.'}};
   const r=await w.command({type:'live-preview',memoryId:'memory'});
   assert.match(r.error,/Capture changed/);assert.equal(w.calls.length,0);
+});
+
+test('the local companion does not relabel legacy or Meta candidates as qualified fixture results',async()=>{
+  const w=worker();
+  const good={id:'entry-bound',status:'candidate',data:{analysis_version:'alive-demo01-claim-v2',
+    provider:{id:'local_fixture_claim'},validation:{capture_binding:'pinned_source_entry_v2'}}};
+  w.ledger.connections=[good,{...good,id:'meta',data:{...good.data,provider:{id:'meta'}}},
+    {...good,id:'legacy',data:{...good.data,validation:{}}}, {...good,id:'retired',status:'invalidated'}];
+  const r=await w.command({type:'live-context'});
+  assert.deepEqual(r.data.findings.map(x=>x.id),['entry-bound']);
 });

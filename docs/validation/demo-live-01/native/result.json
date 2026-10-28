@@ -1,5 +1,5 @@
 {
-  "source_commit": "16733790b02c27fd65d00575790cabd95cf77b68",
+  "source_commit": "744f087e4b9ab28d59408abeca1b4857133fa829",
   "source_status_before_run": "",
   "platform": "Windows-11-10.0.26300-SP0",
   "shipped_permissions": [
@@ -9,7 +9,7 @@
     "sidePanel"
   ],
   "harness_host_permissions": [
-    "http://127.0.0.1:62678/*"
+    "http://127.0.0.1:61128/*"
   ],
   "external_model_calls": 0,
   "paid_inference_spend_usd": 0,
@@ -55,8 +55,8 @@
   "panel": {
     "presentation": "native side panel target",
     "side_panel_registration_ready": true,
-    "action_target_id": "E6F55A857AC056AE417881916D64648B",
-    "panel_target_id": "6978C3757BF6C29B2502BEF4CC70A7F9",
+    "action_target_id": "CE36452AC9B230D16E4913A2F49C82A6",
+    "panel_target_id": "06F12FCFA6A986127148074B5A2B2369",
     "panel_opened_as_ordinary_tab": false,
     "panel_behavior": {
       "openPanelOnActionClick": true
@@ -65,6 +65,11 @@
   "dismissal_kept_source": true,
   "candidate_reuse_confirmed": true,
   "withdrawal_scan": [
+    {
+      "table": "web_experiences",
+      "kind": "snapshot",
+      "status": "recorded"
+    },
     {
       "table": "web_experiences",
       "kind": "snapshot",

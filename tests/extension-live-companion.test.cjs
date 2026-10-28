@@ -8,7 +8,7 @@ const source = readFileSync(join(__dirname, '../extension/live-companion.js'), '
 const html = readFileSync(join(__dirname, '../extension/panel.html'), 'utf8');
 const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
 const finding = { id: 'finding', status: 'candidate', data: {
-  historical_memory_id: 'memory', historical_quote: '<img src=x onerror=alert(1)>',
+  provider: {id:'local_fixture_claim'}, historical_memory_id: 'memory', historical_quote: '<img src=x onerror=alert(1)>',
   current_quote: 'Deprecated since 3.12.', supersession_basis_quote: 'Deprecated since 3.12.',
   historical_quote_retained_in_current: true, relation_type: 'explicit_supersession',
   explanation: 'Standing changes; behavior is retained.', limitations: 'Fixture interpretation.',

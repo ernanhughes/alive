@@ -70,7 +70,9 @@ function renderFinding(finding) {
     : 'The sources suggest a change to review in the selected claim.'), text('blockquote', data.supersession_basis_quote || data.current_quote));
   card.append(text('h4', 'Why ALIVE flagged this'), text('p', data.explanation),
     text('p', 'Source interpretation, not an independent factual assessment.'), text('p', data.limitations),
-    text('p', 'Provider: deterministic local fixture. No external model was called.'));
+    text('p', data.provider?.id === 'local_fixture_claim'
+      ? 'Provider: deterministic local fixture. No external model was called.'
+      : 'Provider: ' + (data.provider?.id || 'not recorded') + '. Review its recorded consent and provenance.'));
   card.append(technical('Review evidence', {
     historical_source: data.historical_source_identity, current_source: data.current_source_identity,
     historical_url: data.historical_url, current_url: data.current_url,
