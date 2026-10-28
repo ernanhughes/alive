@@ -188,7 +188,9 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
       });
     }
     if (message.type === 'evidence-findings') {
-      return send('/browser-experience/research/relationships');
+      const { goalId } = await chrome.storage.local.get('goalId');
+      if (!goalId) throw new Error('Select a research goal before checking evidence');
+      return send('/browser-experience/research/relationships?goal_id=' + encodeURIComponent(goalId));
     }
     if (message.type === 'campaigns') return send('/browser-experience/research/experiment/campaigns');
     if (message.type === 'approve-campaign') {
