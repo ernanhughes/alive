@@ -1,0 +1,102 @@
+{
+  "001": {
+    "useful_relationship": true,
+    "relation": "possible_supersession",
+    "rationale": "A subsequent report explicitly corrects earlier lexical labels."
+  },
+  "002": {
+    "useful_relationship": true,
+    "relation": "different_conditions",
+    "rationale": "Preserve the limited frozen lexical finding and earlier different comparator."
+  },
+  "003": {
+    "useful_relationship": false,
+    "relation": "unestablished",
+    "rationale": "Shared expenditure terminology addresses separate milestones."
+  },
+  "004": {
+    "useful_relationship": false,
+    "relation": "unsupported_presentation",
+    "rationale": "Visible retrieval-superiority headline exceeds the source qualification."
+  },
+  "005": {
+    "useful_relationship": true,
+    "relation": "explicit_revision",
+    "rationale": "Same device policy explicitly revised."
+  },
+  "006": {
+    "useful_relationship": true,
+    "relation": "different_conditions",
+    "rationale": "Different populations and comparators, no general contradiction."
+  },
+  "007": {
+    "useful_relationship": false,
+    "relation": "unestablished",
+    "rationale": "Count vocabulary does not link unrelated institutions."
+  },
+  "008": {
+    "useful_relationship": true,
+    "relation": "corroboration_candidate",
+    "rationale": "Explicitly matching conditions permit a cautious replication hypothesis."
+  },
+  "009": {
+    "useful_relationship": true,
+    "relation": "conflict_candidate",
+    "rationale": "Opposing results under matching stated conditions deserve inspection."
+  },
+  "010": {
+    "useful_relationship": false,
+    "relation": "no_revision_established",
+    "rationale": "Later publication alone does not revise the earlier claim."
+  },
+  "011": {
+    "useful_relationship": false,
+    "relation": "unsupported_generalization",
+    "rationale": "Universal presentation unsupported by narrow source."
+  },
+  "012": {
+    "useful_relationship": false,
+    "relation": "missing_support",
+    "rationale": "A retained memory without its authoritative snapshot must be set aside."
+  },
+  "013": {
+    "useful_relationship": true,
+    "relation": "corroboration_candidate",
+    "rationale": "Matching physical conditions and result."
+  },
+  "014": {
+    "useful_relationship": true,
+    "relation": "explicit_revision",
+    "rationale": "Explicit replacement rather than temporal inference."
+  },
+  "015": {
+    "useful_relationship": true,
+    "relation": "different_conditions",
+    "rationale": "Environment and treatment differ."
+  },
+  "016": {
+    "useful_relationship": false,
+    "relation": "unestablished",
+    "rationale": "Shared reporting terms concern different objects."
+  },
+  "017": {
+    "useful_relationship": true,
+    "relation": "conflict_candidate",
+    "rationale": "Same named system and test, conflicting outcomes."
+  },
+  "018": {
+    "useful_relationship": false,
+    "relation": "unsupported_generalization",
+    "rationale": "Single batch cannot establish universal absence."
+  },
+  "019": {
+    "useful_relationship": false,
+    "relation": "unestablished",
+    "rationale": "Source instructions are data, and experiments differ."
+  },
+  "020": {
+    "useful_relationship": false,
+    "relation": "unsupported_generalization",
+    "rationale": "Unfamiliar narrow evidence versus global presentation."
+  }
+}

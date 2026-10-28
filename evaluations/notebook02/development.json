@@ -1,0 +1,90 @@
+[
+  {
+    "id": "001",
+    "historical": {
+      "title": "ALIVE-12 - Personal Research Intelligence",
+      "text": "ALIVE-12 - Personal Research Intelligence\nEngineering: PASS. Native synthetic: PASS. Native Meta: NOT RUN. Retrieval advantage: NOT DEMONSTRATED.\nBaseline: d58c30748a5ec9273a0be86dc769d8c1b7dc6b23 (ALIVE-11-R1 merge). Branch: codex/alive-12-research-intelligence. Source commit for the evidence: cf7022cb168b4cbd65bbc0b98faafbb25b498c85. No paid inference was used.\nConnections and feedback\nPOST /research/connections builds a deterministic candidate from lexical overlap between the current reviewed excerpt and the historical excerpt:\nat least two shared content terms: same_concept, status candidate;\none shared term: complementary, status candidate, weak;\nno shared term or missing exact quotation: insufficient_evidence, aborted connection.\nEvery candidate stores both source URLs and hashes, the current and historical quotations, exact quote-validation flags, shared terms, relation type and explanation. It is never labelled factual support. Connection feedback is persisted separately and never used to suppress a topic."
+    },
+    "current": {
+      "title": "ALIVE-13 - Reliable Research Retrieval and Evidence-Grounded Connections",
+      "text": "ALIVE-13 - Reliable Research Retrieval and Evidence-Grounded Connections\nWhat was wrong\nALIVE-12 established the research-memory lifecycle, but its retrieval path was:\ngoal + current text -> unscoped MemoryService top-k -> post-filter by research metadata\nThe rank and limit were therefore decided before goal and record-type eligibility. Sixty older ordinary memories could fill the candidate window before the relevant research row was considered. The same shared MemoryService path was also used by general cognition, so a saved research excerpt could enter an ordinary investigation prompt. The panel's withdrawal command used the last saved research ID rather than the displayed result. Lexical overlap was labelled same_concept or complementary, which overstated what shared words establish.\nThe frozen pre-fix evidence is in archives/ALIVE-13/evidence/pre-fix-defects.json:\nWith 60 ordinary memories, the old path returned 15 ordinary candidates and zero research candidates; the relevant research memory was absent.\nThe old general retrieval path returned the research sentinel; the corrected default returned the ordinary experience memory and excluded the sentinel.\nThe old background worker withdrew research-B-last-saved when the displayed item was research-A-displayed; the corrected worker withdrew the displayed ID and rejected a request with no explicit ID.\nContradictory, unrelated and weakly related fixtures were labelled same_concept, complementary or no_supported_connection; the corrected labels are topic_overlap_candidate, weak_lexical_overlap and insufficient_evidence.\nThese controlled reproductions reconstruct the pre-fix algorithm against a fresh database: the old query, top-k and post-filter are copied from af12bc8, and the ALIVE-13 type allowlist is explicitly disabled. They are faithful reproductions of the defect, not a literal execution from a checkout made before the edits."
+    }
+  },
+  {
+    "id": "002",
+    "historical": {
+      "title": "ALIVE-12 - Personal Research Intelligence",
+      "text": "ALIVE-12 - Personal Research Intelligence\nEngineering: PASS. Native synthetic: PASS. Native Meta: NOT RUN. Retrieval advantage: NOT DEMONSTRATED.\nBaseline: d58c30748a5ec9273a0be86dc769d8c1b7dc6b23 (ALIVE-11-R1 merge). Branch: codex/alive-12-research-intelligence. Source commit for the evidence: cf7022cb168b4cbd65bbc0b98faafbb25b498c85. No paid inference was used.\nConnections and feedback\nPOST /research/connections builds a deterministic candidate from lexical overlap between the current reviewed excerpt and the historical excerpt:\nat least two shared content terms: same_concept, status candidate;\none shared term: complementary, status candidate, weak;\nno shared term or missing exact quotation: insufficient_evidence, aborted connection.\nEvery candidate stores both source URLs and hashes, the current and historical quotations, exact quote-validation flags, shared terms, relation type and explanation. It is never labelled factual support. Connection feedback is persisted separately and never used to suppress a topic."
+    },
+    "current": {
+      "title": "ALIVE-13 - Reliable Research Retrieval and Evidence-Grounded Connections",
+      "text": "ALIVE-13 - Reliable Research Retrieval and Evidence-Grounded Connections\nEngineering: ENGINEERING_PASS. Native synthetic: NATIVE_SYNTHETIC_PASS. Native Meta: NATIVE_META_NOT_RUN. Controlled lexical retrieval: RETRIEVAL_ADVANTAGE_DEMONSTRATED on the frozen corpus. General semantic or owner-usefulness superiority: NOT DEMONSTRATED.\nBaseline: af12bc88c91a85558873d01579dba93fdd6b1bbf (ALIVE-12 merge, origin/main). Branch: codex/alive-13-reliable-research. Product and harness commit for the archived evidence: d963d267c219d49e4dfab23cf838946b64c4b190. Archive commit: 04adadb. PR: https://github.com/ernanhughes/alive/pull/19 (draft, review-only). CI: all eight PR checks passed (backend Ubuntu/Windows, dashboard, first-contact PostgreSQL). No paid inference was used. No merge or auto-merge was requested.\nConnection evidence semantics\nNew connection records use only lexical claim labels:\ntopic_overlap_candidate - at least two shared content terms and exact sentence spans in both sources.\nweak_lexical_overlap - exactly one shared content term and exact sentence spans.\ninsufficient_evidence - no inspectable shared span; the connection abstains.\nThe record carries the current URL/SHA-256, historical URL/SHA-256, exact current and historical source sentences, separately labelled model evidence quotation, shared terms, an explicit evidence_policy, and quote-validation booleans. The explanation states that lexical overlap does not establish agreement, support, contradiction or corroboration. The panel labels source spans and the historical model quotation separately. Legacy persisted rows are not rewritten."
+    }
+  },
+  {
+    "id": "003",
+    "historical": {
+      "title": "ALIVE-11 — Live native intelligence qualification",
+      "text": "ALIVE-11 — Live native intelligence qualification\nEngineering: PASS_WITH_LIMITATIONS. Research: BEHAVIOUR_CHANGE_DEMONSTRATED. Owner utility advantage is unestablished.\nReview-04 corrections\nALIVE-11-R1 corrects the presentation and interpretation issues found in ALIVE-REVIEW-04:\nFeedback ratings were scripted operator branch interventions, not a user study.\nALIVE-11 contains two paid campaigns, 16 recorded calls, 8,732 charged tokens and approximately $0.023665 estimated spend.\nAll qualification pages were controlled excerpts; this is not arbitrary browsing or open-web adaptation.\nThe synthetic comparison demonstrates missed opportunities, not adaptive superiority.\nRuntime identity is reported by the backend and compared against module/source hashes; it is not inherently trustworthy merely because the backend states it.\nLexical relevance accepts one matching content token. The negation example is one failure of that shallow rule, not a negation-specific defect.\nThe extension now clears stale note cost and feedback state on no-action, suppression and uncertainty, and repeated snapshots no longer advance the recovery counter.\nThe policy comparison and recommendation are in docs/ALIVE-11-R1.md; the production default was not changed by the decision replay."
+    },
+    "current": {
+      "title": "ALIVE-14 - Evidence-Grounded Research Connections",
+      "text": "ALIVE-14 - Evidence-Grounded Research Connections\nEngineering: ENGINEERING_PASS. Native synthetic: NATIVE_SYNTHETIC_PASS. Native Meta: NATIVE_META_NOT_RUN. Retrieval: RETRIEVAL_ADVANTAGE_DEMONSTRATED on the frozen held-out lexical corpus. Relationship usefulness: RELATIONSHIP_USEFULNESS_NOT_DEMONSTRATED. Owner ratings: SCRIPTED_ONLY (no human ratings collected).\nBaseline: 3d81ce9a435d375ff6652bde07582d22a1eafdd6 (ALIVE-13 merge, origin/main). Branch: codex/alive-14-research-connections. Protocol freeze commit: bf0af924d75483fc1c06ea5f8621ab08c3950b98. Implementation commit for the archived evidence: 83852b2bdcccdef041c3e440dce3a2b22906ad0c. PR: https://github.com/ernanhughes/alive/pull/20 (draft, review-only). CI: all eight PR checks passed (backend Ubuntu/Windows, dashboard, first-contact PostgreSQL). No paid inference was used. No merge or auto-merge was requested.\nLimitations\nThe corpus is lexical and controlled; no semantic paraphrase claim.\nRetrieval labels are source-adequacy labels, not owner usefulness ratings.\nALIVE-14 improves MRR and rank-1 on the held-out corpus but not recall or precision over ALIVE-13.\nThe local stub is not Meta and cannot establish relationship usefulness.\nNo owner ratings or paid Meta calls were collected.\nReal Meta requires a separate approval naming the exact model, payloads, call count, token caps, spend cap, abort conditions and data-redaction plan.\nAdditional relationship feedback revisions are stored as revisions, not independent ratings."
+    }
+  },
+  {
+    "id": "004",
+    "historical": {
+      "title": "ALIVE-12 - Personal Research Intelligence",
+      "text": "ALIVE-12 - Personal Research Intelligence\nEngineering: PASS. Native synthetic: PASS. Native Meta: NOT RUN. Retrieval advantage: NOT DEMONSTRATED.\nBaseline: d58c30748a5ec9273a0be86dc769d8c1b7dc6b23 (ALIVE-11-R1 merge). Branch: codex/alive-12-research-intelligence. Source commit for the evidence: cf7022cb168b4cbd65bbc0b98faafbb25b498c85. No paid inference was used.\nConnections and feedback\nPOST /research/connections builds a deterministic candidate from lexical overlap between the current reviewed excerpt and the historical excerpt:\nat least two shared content terms: same_concept, status candidate;\none shared term: complementary, status candidate, weak;\nno shared term or missing exact quotation: insufficient_evidence, aborted connection.\nEvery candidate stores both source URLs and hashes, the current and historical quotations, exact quote-validation flags, shared terms, relation type and explanation. It is never labelled factual support. Connection feedback is persisted separately and never used to suppress a topic."
+    },
+    "current": {
+      "title": "ALIVE-12 demonstrated retrieval superiority",
+      "text": "ALIVE-12 demonstrated retrieval superiority\nALIVE-12 - Personal Research Intelligence\nEngineering: PASS. Native synthetic: PASS. Native Meta: NOT RUN. Retrieval advantage: NOT DEMONSTRATED.\nBaseline: d58c30748a5ec9273a0be86dc769d8c1b7dc6b23 (ALIVE-11-R1 merge). Branch: codex/alive-12-research-intelligence. Source commit for the evidence: cf7022cb168b4cbd65bbc0b98faafbb25b498c85. No paid inference was used.\nConnections and feedback\nPOST /research/connections builds a deterministic candidate from lexical overlap between the current reviewed excerpt and the historical excerpt:\nat least two shared content terms: same_concept, status candidate;\none shared term: complementary, status candidate, weak;\nno shared term or missing exact quotation: insufficient_evidence, aborted connection.\nEvery candidate stores both source URLs and hashes, the current and historical quotations, exact quote-validation flags, shared terms, relation type and explanation. It is never labelled factual support. Connection feedback is persisted separately and never used to suppress a topic."
+    }
+  },
+  {
+    "id": "005",
+    "historical": {
+      "title": "Sensor specification",
+      "text": "The Vega sensor revision A has a temperature limit of 40 degrees."
+    },
+    "current": {
+      "title": "Sensor amendment",
+      "text": "Revision B replaces the revision A limit of 40 degrees with 30 degrees."
+    }
+  },
+  {
+    "id": "006",
+    "historical": {
+      "title": "Storage experiment",
+      "text": "Orion storage reduced median latency on ten synthetic workloads against FIFO."
+    },
+    "current": {
+      "title": "Storage observation",
+      "text": "Orion storage showed no benefit on field workloads against LRU."
+    }
+  },
+  {
+    "id": "007",
+    "historical": {
+      "title": "Harbor budget",
+      "text": "The Harbor robot trial logged twelve maintenance calls in June."
+    },
+    "current": {
+      "title": "Museum ledger",
+      "text": "The North museum logged twelve maintenance calls in July."
+    }
+  },
+  {
+    "id": "008",
+    "historical": {
+      "title": "Battery measurement",
+      "text": "The Linden battery lasted eight hours in the same bench protocol."
+    },
+    "current": {
+      "title": "Battery replication",
+      "text": "An independent lab measured eight hours for the Linden battery with that bench protocol."
+    }
+  }
+]
