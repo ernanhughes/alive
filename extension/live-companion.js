@@ -21,13 +21,14 @@ function button(label, task) {
 async function run(task) {
   if (busy) return;
   busy = true; version++;
+  el('live-companion').setAttribute('aria-busy', 'true');
   el('live-error').textContent = '';
   try { await task(); }
   catch (error) {
     content.replaceChildren();
     state('Research action could not complete.');
     el('live-error').textContent = error.message;
-  } finally { busy = false; }
+  } finally { busy = false; el('live-companion').setAttribute('aria-busy', 'false'); }
 }
 function technical(label, data) {
   const detail = document.createElement('details');
