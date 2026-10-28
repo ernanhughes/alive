@@ -112,7 +112,7 @@ function renderContext(value, retired = false) {
     if (!value.findings?.length && !retired) state('Relevant saved evidence found. No comparison has been authorised.');
   }
   const displayedMemories = new Set((value.related || []).map(memory => memory.memory_id));
-  if (value.memory) displayedMemories.add(value.memory.id);
+  if (value.memory?.data?.reliance_anchor?.quote) displayedMemories.add(value.memory.id);
   const matching = (value.analyses || []).filter(row => row.status === 'validated'
     && value.goal?.id && row.data.goal_id === value.goal.id
     && value.current?.data?.sha256 && row.data.current_sha256 === value.current.data.sha256
