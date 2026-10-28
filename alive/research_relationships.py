@@ -1784,7 +1784,22 @@ class ResearchRelationships:
         pair = (payload["current_sha256"], payload["historical_sha256"])
         from alive.claim_fixtures import CLAIM_FIXTURES, demo_fixtures
 
-        fixtures = CLAIM_FIXTURES | demo_fixtures()
+        real_demo = demo_fixtures()
+        if pair in real_demo:
+            from alive.demo_live_01 import identify
+
+            for prefix in ("current", "historical"):
+                identity = identify(
+                    payload.get(prefix + "_url", ""),
+                    payload.get(prefix + "_excerpt", ""),
+                    payload.get(prefix + "_capture_entries", []),
+                    payload.get(prefix + "_capture_format_version"),
+                )
+                if identity is None or identity != payload.get(prefix + "_source_identity"):
+                    raise PermissionError(
+                        "Real demo fixtures require pinned capture-v2 source identity"
+                    )
+        fixtures = CLAIM_FIXTURES | real_demo
         if pair not in fixtures:
             raise ValueError("Unregistered claim fixture pair; refusing output")
         return ClaimComparisonOutput.model_validate(fixtures[pair])

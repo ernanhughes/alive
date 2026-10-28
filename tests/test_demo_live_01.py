@@ -25,12 +25,14 @@ def capture(name):
     return json.loads((DIRECTORY / (name + ".capture.json")).read_text(encoding="utf-8"))
 
 
-def setup(client, newer="python-3.12", anchor=True):
+def setup(client, newer="python-3.12", anchor=True, version=2):
     client.app.state.kernel.settings.alive_relationship_allow_test_providers = True
     g = goal(client, "Investigate datetime.utcnow behavior and recommended standing")
     snapshots = []
     for name in ("python-3.11", newer):
         data = capture(name)
+        if version == 1:
+            data = {"text": data["text"]}
         url = "http://127.0.0.1:8000/demo-live-01/" + name + ".html"
         permission = grant(client, g["id"], url)
         snapshots.append(
@@ -304,3 +306,15 @@ def test_malformed_or_ambiguous_anchors_are_not_silently_selected(client):
     post(client, path, body | {"expected_sha256": "0" * 64}, 409)
     post(client, "/research/memories", {}, 422)
     assert client.get("/demo-live-01/python-3.11.html").status_code == 200
+
+
+def test_real_fixture_cannot_bypass_identity_by_downgrading_to_capture_v1(client):
+    _, _, _, request = setup(client, version=1)
+    consent = preview(client, request)
+    assert "current_source_identity" not in consent["preview"]
+    authorize(client, consent)
+    result = analyze(client, consent)
+    assert result["analysis"]["status"] == "failed"
+    assert result["analysis"]["data"]["error"] == "PermissionError"
+    assert result["connection"] is None
+    assert result["analysis"]["data"]["charged_tokens"] == 0
