@@ -2,10 +2,10 @@
   "version": "notebook02-comparison-v1",
   "baseline_commit": "937bdcdadd82e5fa5035a57ebe564318557621e0",
   "files_sha256": {
-    "annotations.json": "0af8c57555ad31949429b383d15905b3f9ab2dd12b890c1fe14d654fd32e9780",
-    "development.json": "47020236fd14af6288d5e26093b69a08218f05c41acdffad4a49d72f6385b551",
-    "heldout.json": "578001d27da1ce041109bee4d53227799c2c4611713dc3711add22cea2d8b386",
-    "labels.json": "7674989b263fc6b38342eaf15c6dda12c9317eeeb5009e81afaaf4b25c9d216a"
+    "annotations.json": "652de7fb470413192b62e2c1a7b16bc92e6f04f93569906894e236850017bc57",
+    "development.json": "3a511931da296207cb3d004e9b6d9781a7a120a64ca20b6304c97680bc766190",
+    "heldout.json": "e0f012e73557d720bf288c707a4107a5874fa81ad6dca0e0e14985cdaced796a",
+    "labels.json": "0cdc6182be9ff0913dbf66706bd57a1762935ff36299e36469e78fb50da58ccb"
   },
   "arms": {
     "A": "actual existing lexical connection API",
@@ -33,5 +33,6 @@
   "labels": "author-prepared before execution, not independently annotated; never supplied to services",
   "freeze": "commit these inputs and labels before implementation or comparison execution",
   "model_calls": 0,
-  "paid_inference_budget_usd": 0
+  "paid_inference_budget_usd": 0,
+  "hash_normalization": "UTF-8 bytes with CRLF normalized to LF; labels and cases unchanged"
 }
