@@ -1,0 +1,33 @@
+schema_version: alive.pack.v0-proposal
+id: org.alive.design-review
+version: 0.1.0
+display_name: Engineering Design Review
+description: Compare a current proposal to authorized research memories and distinguish applicable constraints from stale ones.
+core_compatibility: ">=0.2.0,<0.3.0"
+entrypoint: declarative_workflow
+capabilities:
+  - current_authorized_snapshot.read
+  - goal_research_memory.retrieve
+  - source_quote.validate
+  - candidate.render
+skills:
+  - id: org.alive.evidence-qualification
+    version: 0.1.0
+workflow:
+  - id: qualify
+    skill: org.alive.evidence-qualification
+    inputs:
+      current_snapshot_ref: request.current_snapshot_ref
+      goal_id: request.goal_id
+      memory_refs: retrieval.authorized_memories
+output_contract:
+  outcomes:
+    - connection_candidate
+    - qualified_non_use
+    - abstain
+  require_verified_quotes: true
+  require_source_provenance: true
+  allow_unapproved_model_send: false
+demos:
+  - demos/kestrel-memory-helps.yaml
+  - demos/kestrel-memory-inapplicable.yaml
