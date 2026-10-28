@@ -60,7 +60,10 @@ Hashes demonstrate integrity relative to verified inputs, not semantic accuracy.
 
 The [R1 report](ALIVE-NOTEBOOK-01-R1-REPORT.md) records the shipped-config load smoke,
 manual qualification procedure and actual hosted CI evidence. The results below are
-historical local results, not hosted CI conclusions.
+historical local results. PR #40's hosted [run #231 / 40771211673](https://github.com/ernanhughes/alive/actions/runs/40771211673)
+on head `2f1bb932af7fe06dd27c72268480defdb799137d` concluded **success**. That workflow
+omitted Hugo/provenance/Node notebook gates and allowed shallow-history provenance skips;
+its green conclusion did not establish notebook integrity.
 
 ## Native journey
 
@@ -111,10 +114,10 @@ candidates only. No semantic supersession or validity judgement is claimed.
   database audit records zero notes and zero relationship analyses.
 - Capture and retrieval still require an explicit owner grant; withdrawal and revocation
   were exercised natively and persisted across restart.
-- The native harness adds a **test-copy only** `http://127.0.0.1:1313/*` host permission
-  because CDP `Extensions.triggerAction` opens the panel but does not grant `activeTab`.
-  A real toolbar click grants `activeTab`; the shipped manifest is untouched. This is a
-  harness limitation, not a product permission change.
+- The native harness uses the substituted configuration detailed in the qualification
+  correction above: the whole config file and host-permission list are replaced in the
+  test copy, and extra backend test pages are configured. No shipped toolbar `activeTab`
+  behavior was established by this run.
 - No symlinked or shared site dependencies. The site is static; the Node capture test uses
   the existing `dashboard/node_modules/jsdom`, and the native harness uses the project
   virtual environment.
@@ -141,7 +144,8 @@ No changes were made to the Task B fixture, oracle, scorer, canonical docs or ar
   served chapters. Unlike the demo mirrors, a local process on port 1313 could serve
   different text at the same path. The owner reviews the captured excerpt before saving,
   but source authenticity is not established by the allowlist.
-- Linux, other Chrome versions and hosted CI were not run.
+- Linux and other Chrome versions were not run locally. The subsequent hosted run #231
+  succeeded with the notebook gate omissions described above. R1 CI evidence is separate.
 - The harness-only host permission means native `activeTab` grant behaviour is inferred,
   not directly exercised by CDP.
 

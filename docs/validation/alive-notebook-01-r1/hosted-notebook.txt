@@ -1,0 +1,34 @@
+Hosted notebook job evidence
+Run: https://github.com/ernanhughes/alive/actions/runs/40776465685
+Job: https://github.com/ernanhughes/alive/actions/runs/40776465685/job/123126970323
+Commit: 0213deb0f8603451386ba62c8cebdd814bf71510
+Conclusion: success
+Extracted relevant lines from GitHub job log; unrelated setup lines omitted.
+2026-10-28T21:59:59.1840576Z [command]/usr/bin/git -c protocol.version=2 fetch --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/* +9c888f421ec00f2d6fd459da9714978f2327ac55:refs/remotes/pull/41/merge
+2026-10-28T22:00:00.7433746Z HEAD is now at 9c888f4 Merge 0213deb0f8603451386ba62c8cebdd814bf71510 into 8737adf1e91d89cc772cd32cd56a8a4fe9370116
+2026-10-28T22:00:03.2481875Z ##[group]Run curl --fail --location --retry 3 -O https://github.com/gohugoio/hugo/releases/download/v0.165.0/hugo_0.165.0_linux-amd64.tar.gz
+2026-10-28T22:00:03.2483000Z curl --fail --location --retry 3 -O https://github.com/gohugoio/hugo/releases/download/v0.165.0/hugo_0.165.0_linux-amd64.tar.gz
+2026-10-28T22:00:03.2483964Z curl --fail --location --retry 3 -O https://github.com/gohugoio/hugo/releases/download/v0.165.0/hugo_0.165.0_checksums.txt
+2026-10-28T22:00:03.2485194Z grep ' hugo_0.165.0_linux-amd64.tar.gz$' hugo_0.165.0_checksums.txt | sha256sum --check --strict
+2026-10-28T22:00:03.2485731Z tar -xzf hugo_0.165.0_linux-amd64.tar.gz hugo
+2026-10-28T22:00:03.2486095Z sudo install hugo /usr/local/bin/hugo
+2026-10-28T22:00:03.2486398Z hugo version
+2026-10-28T22:00:04.1800890Z hugo_0.165.0_linux-amd64.tar.gz: OK
+2026-10-28T22:00:04.4731514Z hugo v0.165.0-76a5e1880ab46688155b02e99bab9be2a6134492 linux/amd64 BuildDate=2026-08-12T14:26:28Z VendorInfo=gohugoio
+2026-10-28T22:00:06.6409312Z  + pytest==9.1.1
+2026-10-28T22:00:06.6409698Z  + pytest-asyncio==1.4.1
+2026-10-28T22:00:10.2808265Z ##[group]Run hugo --source site --environment production --cleanDestinationDir
+2026-10-28T22:00:10.2808882Z hugo --source site --environment production --cleanDestinationDir
+2026-10-28T22:00:10.3344976Z hugo v0.165.0-76a5e1880ab46688155b02e99bab9be2a6134492 linux/amd64 BuildDate=2026-08-12T14:26:28Z VendorInfo=gohugoio
+2026-10-28T22:00:10.7518695Z provenance OK
+2026-10-28T22:00:10.7647477Z ##[group]Run uv run pytest -q -ra tests/test_notebook_01.py
+2026-10-28T22:00:10.7647951Z uv run pytest -q -ra tests/test_notebook_01.py
+2026-10-28T22:00:17.3943854Z SKIPPED [1] tests/test_notebook_01.py:274: UNIMPLEMENTED: judging that R1 is a supersession, or R2 a scoped change, needs a qualified validity judgement; none exists, none is claimed, and none was run here.
+2026-10-28T22:00:17.3947011Z XFAIL tests/test_notebook_01.py::test_terminology_only_pair_should_abstain - UNIMPLEMENTED: ALIVE's lexical connection cannot abstain on a terminology-only pair
+2026-10-28T22:00:17.3948517Z 30 passed, 1 skipped, 1 xfailed in 3.45s
+2026-10-28T22:00:17.9720423Z ##[group]Run node --test tests/notebook-capture.test.cjs
+2026-10-28T22:00:17.9721349Z node --test tests/notebook-capture.test.cjs
+2026-10-28T22:00:19.1415704Z ℹ tests 2
+2026-10-28T22:00:19.1417241Z ℹ pass 2
+2026-10-28T22:00:19.1417943Z ℹ fail 0
+2026-10-28T22:00:19.1418918Z ℹ skipped 0

@@ -1,0 +1,2 @@
+git diff origin/main --name-only -- alive extension archives migrations experiments
+PASS: no changed paths; memory/retrieval, shipped authorization, Governor, approval, migrations, archives and frozen experiments remain unchanged.
