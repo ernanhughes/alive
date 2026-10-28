@@ -1,0 +1,11 @@
+{
+  "id": "research-connections",
+  "version": 1,
+  "description": "On request, retrieve related investigation nodes and show source-linked connections.",
+  "capabilities": ["graph.query", "ui.show_links"],
+  "triggers": ["user_request"],
+  "steps": [
+    {"operation": "graph.query", "args": {"scope": "current_inquiry", "depth": 1}},
+    {"operation": "ui.show_links", "args": {"title": "Related explorations", "evidence_required": true}}
+  ]
+}
