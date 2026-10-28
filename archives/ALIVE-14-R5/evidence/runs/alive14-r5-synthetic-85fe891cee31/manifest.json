@@ -1,0 +1,49 @@
+{
+  "run_id": "alive14-r5-synthetic-85fe891cee31",
+  "protocol_version": "alive14r3-paired-v3",
+  "protocol_sha256": "85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b",
+  "answer_key_sha256": "255e706dd569634d1710a50831f65a6dd6eb7dabc5ee56e1cd763b382554b43d",
+  "campaign_digest": "795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25",
+  "approval_id": "cbad6d44-0e6d-48d4-baf5-56b013dce60e",
+  "approval_provenance": "synthetic_owner_endpoint",
+  "synthetic": true,
+  "paid_calls": 0,
+  "files": {
+    "analysis.json": {
+      "sha256": "8363a3d0df6d18b99553e79f0a166a4de4716bae47a8baf7567080004a023eac",
+      "bytes": 28837
+    },
+    "approval-record.json": {
+      "sha256": "5718d87a6bf07d20625562ab2791d42995a1f089e941e2e8eafb814c0d1f3c40",
+      "bytes": 1201
+    },
+    "approval.json": {
+      "sha256": "132196a4b30f4f7c220bc4f338002ecac281e22743844fdaee8c01bc87666398",
+      "bytes": 2420
+    },
+    "campaign.json": {
+      "sha256": "f5f6875a291c305f9ef41aaa98b4fb14966a43351ce802d4971fff5e6c251a04",
+      "bytes": 54737
+    },
+    "outputs.jsonl": {
+      "sha256": "d2da036d8af4a834939af606c7085076b800de424bdf75520c30a2155730fef4",
+      "bytes": 33756
+    },
+    "preview-manifest.json": {
+      "sha256": "125b113f9c7b6a6a07506b6ba2dd0896f0e99532fbbc0cec64d009454e2f36e2",
+      "bytes": 31131
+    },
+    "restart.json": {
+      "sha256": "de1e1769c10be90f8fcee4c70fdceeebf866ddcf80bc98157e6387f1802c9892",
+      "bytes": 134
+    },
+    "results.json": {
+      "sha256": "04be1da854783a26d6645bf9156b746e1f3d29495c197a67b3f3848bfdc09f9b",
+      "bytes": 69793
+    },
+    "state.json": {
+      "sha256": "d3aa36740995d75644ef3df13440172733cc7d6fb50c151c22fe66306ec6d9ef",
+      "bytes": 45200
+    }
+  }
+}

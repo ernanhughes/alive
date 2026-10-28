@@ -1,0 +1,10 @@
+Command: R5 synthetic 2+16 runner campaign (native harness backend)
+Run: alive14-r5-synthetic-85fe891cee31
+Source commit: 8ae71b967fe92ae43ca8baa24d382b74d5435044
+Campaign digest: 795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25
+Approval: cbad6d44-0e6d-48d4-baf5-56b013dce60e stage=2 provenance=synthetic_owner_endpoint
+Conditions: {"A": {"n": 9, "proportion": 0.0, "supported_useful": 0, "wilson_95": [0, 0.2991450484195441]}, "B": {"n": 9, "proportion": 0.0, "supported_useful": 0, "wilson_95": [0, 0.2991450484195441]}, "C": {"n": 9, "proportion": 0.0, "supported_useful": 0, "wilson_95": [0, 0.2991450484195441]}}
+Paired: {"a_better": 0, "b_better": 0, "completed_pairs": 9, "mean_difference": 0.0, "tied": 9}
+Missing by condition: {"A": 0, "B": 0, "C": 0}
+Misleading by condition: {"A": 4, "B": 4, "C": 4}
+Paid calls: 0

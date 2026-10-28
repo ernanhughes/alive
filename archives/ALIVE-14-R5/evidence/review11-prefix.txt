@@ -1,0 +1,30 @@
+Using CPython 3.13.3
+Creating virtual environment at: .venv
+Installed 56 packages in 960ms
+prepare: alive14-r4-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+execute: V3-T03 A status=validated abstained=False charged=0
+execute: V3-T03 B status=validated abstained=False charged=0
+execute: phase=staged attempted=2 remaining=16 call_cap=2
+CONFIRMED: second dispatch occurred AFTER campaign approval revocation
+.prepare: alive14-r4-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+execute: V3-T03 A status=validated abstained=False charged=0
+execute: phase=staged attempted=1 remaining=17 call_cap=2
+CONFIRMED: local JSON edits dispatched changed question under unchanged server approval/digest
+.prepare: alive14-r4-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+CONFIRMED: stage=1 accepts call_cap=18 despite registered stage_1 cap=2
+.prepare: alive14-r4-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+execute: V3-T03 A status=failed abstained=None charged=5038
+execute: V3-T03 B status=failed abstained=None charged=5345
+execute: phase=staged attempted=2 remaining=16 call_cap=2
+CONFIRMED: raw wall-clock TimeoutError is nonfatal and dispatch continues
+.
+============================== warnings summary ===============================
+review11_probe.py: 22 warnings
+  C:\Projects\alive-worktrees\alive-14-r5\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+    self._get_loop()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+4 passed, 12 deselected, 22 warnings in 14.46s

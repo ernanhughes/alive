@@ -76,11 +76,14 @@ def create_app(settings=None):
         app.state.living = Living(app, kernel)
         app.state.web = WebCompanion(app, kernel)
         app.state.research = ResearchMemory(app.state.web, app.state.memory)
+        app.state.approvals = ExperimentApprovals(kernel)
         app.state.relationships = ResearchRelationships(
-            app.state.research, app.state.experiments, settings
+            app.state.research,
+            app.state.experiments,
+            settings,
+            app.state.approvals,
         )
         app.state.blind = ResearchBlind(kernel)
-        app.state.approvals = ExperimentApprovals(kernel)
         if kernel.ready:
             await app.state.cognition.initialize()
             await app.state.experiments.initialize()

@@ -92,12 +92,23 @@ class ResearchConnectionRequest(Strict):
     memory_id: str
 
 
+class ExperimentDispatch(Strict):
+    campaign_digest: str = Field(min_length=64, max_length=64)
+    approval_id: str = Field(min_length=1, max_length=160)
+    run_id: str = Field(min_length=1, max_length=160)
+    stage: int = Field(ge=1, le=2)
+    task_id: str = Field(min_length=1, max_length=80)
+    condition: Literal["A", "B"]
+    call_index: int = Field(ge=0, le=500)
+
+
 class RelationshipPreviewRequest(Strict):
     snapshot_id: str
     research_id: str | None = None
     provider: Literal["local_stub", "local_stub_invalid", "meta"] = "local_stub"
     analysis_mode: Literal["current_only", "history_assisted", "paired"] = "history_assisted"
     research_question: str | None = Field(default=None, max_length=1000)
+    experiment: ExperimentDispatch | None = None
 
 
 class RelationshipAuthorizeRequest(Strict):
@@ -1341,6 +1352,7 @@ def router(app, ready):
             data.provider,
             data.analysis_mode,
             data.research_question,
+            data.experiment.model_dump() if data.experiment else None,
         )
 
     @api.post("/research/outbound/authorize")
@@ -1366,6 +1378,10 @@ def router(app, ready):
     @api.get("/research/experiment/campaigns")
     async def list_experiment_campaigns():
         return await app.state.approvals.list_campaigns()
+
+    @api.get("/research/experiment/campaigns/{campaign_digest}")
+    async def get_experiment_campaign(campaign_digest: str):
+        return await app.state.approvals.campaign(campaign_digest)
 
     @api.post("/research/experiment/campaigns/{campaign_digest}/approve")
     async def approve_experiment_campaign(campaign_digest: str, data: ApprovalRequest):
