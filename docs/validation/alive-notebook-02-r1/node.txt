@@ -1,0 +1,46 @@
+✔ isolated extension rejects stale port 8000 before any fetch (3.5581ms)
+✔ connect records the authenticated backend identity before declaring connection (0.5519ms)
+✔ connect fails closed on an incompatible backend identity (1.4123ms)
+✔ withdraw sends the displayed research id, not the most recently saved id (0.4936ms)
+✔ withdraw without an explicit research id fails before any fetch (0.2536ms)
+✔ v2 preserves punctuation around adjacent inline code (483.0449ms)
+✔ v2 separates nested blocks without double-counting their text (129.4452ms)
+✔ v2 records separate Sphinx method entries in Unicode code-point coordinates (142.0021ms)
+✔ v2 keeps code lines, excludes private/hidden/non-content text, and bounds length (86.1618ms)
+✔ v2 binds the selected repeated occurrence, including a Unicode prefix (106.1833ms)
+✔ live preview always specifies claim mode and the local fixture provider (29.0575ms)
+✔ live preview refuses a snapshot from another active goal before transmission (9.3812ms)
+✔ live selection preserves the chosen occurrence and expected anchor revision (6.3538ms)
+✔ remembering a passage binds source SHA, chosen offset and revision without a model note (7.7247ms)
+✔ a changed selection source is refused before creating any snapshot or memory (5.2406ms)
+✔ live preview refuses stale captured text before authorization or dispatch (2.9036ms)
+✔ the local companion does not relabel legacy or Meta candidates as qualified fixture results (5.5501ms)
+✔ live card separates unchanged text and changed standing, renders untrusted quotes as text (516.0471ms)
+✔ live preview discloses exact request, hashes, local provider and zero maximum spend (143.2756ms)
+✔ live authorised abstention shows recorded outcome rather than an alert (91.228ms)
+✔ immediate abstention requires the exact recorded source pair (673.512ms)
+✔ validated non-abstention without a stored connection is not displayed as an abstention (65.5861ms)
+✔ live review enables related-research lookup for the notebook journey (71.7785ms)
+✔ dismissal keeps source evidence and records interpretation feedback only (105.4021ms)
+✔ withdrawal clears live and legacy cards, and a stale refresh cannot restore them (53.4703ms)
+✔ investigation switch refuses an old preview before any authorization or dispatch (64.0815ms)
+✔ recorded abstention must match source hash, URL, saved memory and investigation (247.9582ms)
+✔ matching recorded abstention survives re-review with a different snapshot id (49.4283ms)
+✔ dismissed validated candidate never inherits an older abstention (58.1222ms)
+✔ unrelated abstention without a displayed memory leaves the quiet state (34.8381ms)
+✔ a late validated reply cannot restore a feedback target after Stop (6.6501ms)
+✔ a late reply cannot rate the previous excerpt after the preview changes (1.9861ms)
+✔ an obsolete polling error cannot overwrite the stopped status (0.5851ms)
+✔ changing language requires a new reviewed snapshot and invalidates old feedback (2.0199ms)
+✔ a current validated note still enables feedback (2.1205ms)
+✔ a no-action decision clears the previous note cost and feedback target (1.77ms)
+✔ config.js authorises exactly the notebook chapter URLs on loopback port 1313 (7.4743ms)
+✔ capture of built chapters excludes navigation, contents and footer (2106.8445ms)
+ℹ tests 38
+ℹ suites 0
+ℹ pass 38
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5607.5678

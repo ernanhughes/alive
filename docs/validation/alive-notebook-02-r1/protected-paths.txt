@@ -1,0 +1,4 @@
+Baseline: 7bae6eb56806f587bf4d6dd2692041ab5239b496
+PASS: original frozen inputs and recorded evidence, canonical docs/site, archives, migrations, browser extension, experiments, research-memory/ranking/relationships and Governor/approval/budget code unchanged.
+PASS: portable metric summaries contain no local drive/home paths.
+PASS: executed source hashes match delivered implementation bytes.

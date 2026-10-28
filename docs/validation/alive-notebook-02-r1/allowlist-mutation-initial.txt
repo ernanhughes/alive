@@ -1,0 +1,16 @@
+
+=================================== ERRORS ====================================
+_____________ ERROR collecting .alive/allowlist_mutation_probe.py _____________
+ImportError while importing test module 'C:\Projects\alive-notebook-02-r1\.alive\allowlist_mutation_probe.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.alive\allowlist_mutation_probe.py:3: in <module>
+    import alive.evidence_qualification as eq
+E   ModuleNotFoundError: No module named 'alive'
+=========================== short test summary info ===========================
+ERROR .alive/allowlist_mutation_probe.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.79s

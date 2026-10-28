@@ -1,0 +1,27 @@
+
+> alive-dashboard@0.2.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Projects/alive-notebook-02-r1/dashboard
+
+
+ Test Files  3 passed (3)
+      Tests  7 passed (7)
+   Start at  23:10:45
+   Duration  3.77s (transform 222ms, setup 0ms, import 1.25s, tests 363ms, environment 4.51s)
+
+
+> alive-dashboard@0.2.0 build
+> tsc -b && vite build
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 1938 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.47 kB │ gzip:  0.31 kB
+dist/assets/index-6M59oFcG.css   16.57 kB │ gzip:  4.63 kB
+dist/assets/index-CFzc3MgN.js   281.42 kB │ gzip: 85.75 kB
+
+✓ built in 862ms
