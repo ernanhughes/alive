@@ -4,7 +4,7 @@ const { readFileSync } = require('node:fs');
 const { join } = require('node:path');
 const { JSDOM } = require('../dashboard/node_modules/jsdom');
 const source = readFileSync(join(__dirname, '../extension/live-companion.js'), 'utf8')
-  .replace(/^import .*?;\r?\n/, 'const DEFAULT_BACKEND="http://127.0.0.1:8000";\n');
+  .replace(/^import .*?;\r?\n/, 'const DEFAULT_BACKEND="http://127.0.0.1:8000"; const DEFAULT_BACKENDS=[DEFAULT_BACKEND];\n');
 const html = readFileSync(join(__dirname, '../extension/panel.html'), 'utf8');
 const AsyncFunction = Object.getPrototypeOf(async () => {}).constructor;
 const finding = { id: 'finding', status: 'candidate', data: {

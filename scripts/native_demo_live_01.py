@@ -247,6 +247,29 @@ async def main():
                     + ")"
                 )
                 await snapshot(panel, "02-meaningful-change")
+                await click(panel, "Dismiss interpretation")
+                await panel.wait(
+                    "document.querySelector('#live-state')"
+                    ".textContent.includes('Interpretation dismissed')"
+                )
+                assert len((await api("/research/memories?goal_id=" + goal_a))["memories"]) == 1
+                await panel.click("#live-refresh")
+                await panel.wait(
+                    "!document.querySelector('[data-finding-id]') && "
+                    "document.querySelector('#live-content').textContent.includes('Check against new evidence')"
+                )
+                await click(panel, "Check against new evidence")
+                await panel.wait(
+                    "document.querySelector('#live-state')"
+                    ".textContent.includes('awaiting authorisation')"
+                )
+                await click(panel, "Authorise exact comparison")
+                await panel.wait("!!document.querySelector('[data-finding-id]')")
+                assert (
+                    len((await api("/research/relationships?goal_id=" + goal_a))["analyses"]) == 1
+                )
+                report["dismissal_kept_source"] = True
+                report["candidate_reuse_confirmed"] = True
                 await click(panel, "Keep for review")
                 await panel.wait(
                     "document.querySelector('#live-state').textContent.includes('Kept for review')"
@@ -333,7 +356,8 @@ async def main():
                     attempts = [
                         json.loads(row[0])
                         for row in database.execute(
-                            "select data from web_experiences where kind='research_relationship_analysis'"
+                            "select data from web_experiences "
+                            "where kind='research_relationship_analysis'"
                         )
                     ]
                     report["recorded_provider_ids"] = [row["provider"]["id"] for row in attempts]

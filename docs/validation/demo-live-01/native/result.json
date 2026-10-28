@@ -1,5 +1,5 @@
 {
-  "source_commit": "4dade4b1b8fd75d1645ace7ebab8a3dd609080d5",
+  "source_commit": "08dfea4dac32a7f2061181c918ab021fcd0a9a04",
   "source_status_before_run": "",
   "platform": "Windows-11-10.0.26300-SP0",
   "shipped_permissions": [
@@ -9,7 +9,7 @@
     "sidePanel"
   ],
   "harness_host_permissions": [
-    "http://127.0.0.1:64880/*"
+    "http://127.0.0.1:55775/*"
   ],
   "external_model_calls": 0,
   "paid_inference_spend_usd": 0,
@@ -55,8 +55,8 @@
   "panel": {
     "presentation": "native side panel target",
     "side_panel_registration_ready": true,
-    "action_target_id": "123C12B5AD986EFA721383B869AB0B81",
-    "panel_target_id": "D4413DD0F9A1073B589C303EAE4FAE6E",
+    "action_target_id": "264454245A653CB9C6261F9D2CD03EBE",
+    "panel_target_id": "E7E8C1962D9876631B22366FED74C649",
     "panel_opened_as_ordinary_tab": false,
     "panel_behavior": {
       "openPanelOnActionClick": true
@@ -82,5 +82,10 @@
   "restart_confirmed": true,
   "goal_isolation_confirmed": true,
   "panel_width_px": 360,
+  "recorded_provider_ids": [
+    "local_fixture_claim",
+    "local_fixture_claim"
+  ],
+  "recorded_attempts": 2,
   "status": "PASS"
 }

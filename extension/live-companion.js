@@ -1,4 +1,4 @@
-import { DEFAULT_BACKEND } from './config.js';
+import { DEFAULT_BACKEND, DEFAULT_BACKENDS } from './config.js';
 const el = id => document.getElementById(id);
 const content = el('live-content');
 let version = 0, busy = false, context = null;
@@ -196,6 +196,6 @@ el('live-refresh').onclick = refresh;
 chrome.storage.onChanged.addListener(() => { if (!busy) void refresh(); });
 const saved = await chrome.storage.local.get('backend');
 for (const [id, name] of [['live-historical', 'python-3.11.html'], ['live-newer', 'python-3.12.html'], ['live-abstention', 'synthetic-no-change.html']]) {
-  el(id).href = (saved.backend || DEFAULT_BACKEND) + '/demo-live-01/' + name;
+  el(id).href = (DEFAULT_BACKENDS.includes(saved.backend) ? saved.backend : DEFAULT_BACKEND) + '/demo-live-01/' + name;
 }
 await refresh();
