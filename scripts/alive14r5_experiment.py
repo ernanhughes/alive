@@ -1128,7 +1128,31 @@ def execute(mode, limit=None, approval_file=None):
         attempts = inventory["analyses"]
         paired_by_id = {row["id"]: row for row in inventory.get("paired_analyses", [])}
         campaign = fetch_campaign(client, state["campaign_digest"])
-        content = (campaign.get("data") or {}).get("content")
+        campaign_data = campaign.get("data") or {}
+        server_block = campaign_data.get("blocked")
+        if server_block:
+            reason = (
+                server_block.get("reason") if isinstance(server_block, dict) else str(server_block)
+            )
+            state["phase"] = "blocked"
+            state["blocked"] = {
+                "phase": "blocked",
+                "stage": "campaign_blocked",
+                "error": reason,
+                "server_block": server_block,
+                "at": now().isoformat(),
+                "dispatched_calls": len(
+                    [
+                        row
+                        for row in (call(client, "GET", "/research/relationships")["analyses"])
+                        if row["data"].get("campaign_digest") == state["campaign_digest"]
+                    ]
+                ),
+            }
+            write_state(directory, state)
+            print("execute: blocked by durable server campaign state: " + reason)
+            return state
+        content = campaign_data.get("content")
         if not content:
             state["phase"] = "blocked"
             state["blocked"] = {
@@ -1156,6 +1180,28 @@ def execute(mode, limit=None, approval_file=None):
             for row in attempts
             if row["data"].get("campaign_digest") == state["campaign_digest"]
         ]
+        fatal_prior = [
+            row
+            for row in prior_pairs
+            if row["data"].get("campaign_fatal") or row["status"] in ("interrupted", "reserved")
+        ]
+        if fatal_prior:
+            first = fatal_prior[0]
+            state["phase"] = "blocked"
+            state["blocked"] = {
+                "phase": "blocked",
+                "stage": "prior_attempt_not_settled",
+                "attempt_id": first["id"],
+                "error": (
+                    first["data"].get("error")
+                    or "A prior experiment attempt is fatal, interrupted or outstanding"
+                ),
+                "at": now().isoformat(),
+                "dispatched_calls": len(prior_pairs),
+            }
+            write_state(directory, state)
+            print("execute: blocked by a prior fatal or ambiguous attempt")
+            return state
         attempted_existing = len(prior_pairs)
         new_dispatches = 0
         staged = False
@@ -1210,6 +1256,33 @@ def execute(mode, limit=None, approval_file=None):
                         f"execute: {task_id} {condition} recovered status={record['status']} "
                         f"missing={record['missing']}"
                     )
+                    if attempt["status"] not in ("validated", "rejected"):
+                        blocked = {
+                            "phase": "blocked",
+                            "stage": "prior_attempt_not_settled",
+                            "task_id": task_id,
+                            "condition": condition,
+                            "attempt_id": attempt["id"],
+                            "error": "A recovered attempt did not reach a settled outcome",
+                            "at": now().isoformat(),
+                            "dispatched_calls": attempted_existing,
+                        }
+                        print("execute: blocked; recovered attempt is not settled")
+                        break
+                    if record.get("campaign_fatal"):
+                        blocked = {
+                            "phase": "blocked",
+                            "stage": "provider_failure_recovery",
+                            "task_id": task_id,
+                            "condition": condition,
+                            "attempt_id": attempt["id"],
+                            "error_category": record.get("error_category"),
+                            "error": record.get("error"),
+                            "at": now().isoformat(),
+                            "dispatched_calls": attempted_existing,
+                        }
+                        print("execute: blocked by recovered campaign-fatal attempt")
+                        break
                     continue
                 try:
                     preview_task = dict(task)

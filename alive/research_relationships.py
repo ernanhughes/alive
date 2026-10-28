@@ -10,10 +10,12 @@ import hashlib
 import json
 import re
 import time
+import uuid
 from datetime import timedelta
 from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
+from sqlalchemy.exc import IntegrityError
 
 from alive.cognitive_models import CognitiveControl
 from alive.cognitive_schema import CognitiveConfiguration
@@ -890,9 +892,36 @@ class ResearchRelationships:
                 reserve,
                 cap=capped if capped is not None else 100000,
             )
+            payload = consent.data["payload"]
+            provider = consent.data["provider"]
+            experiment = consent.data.get("experiment")
+            if experiment:
+                # Revalidate the durable campaign state before reserving the
+                # attempt, then again at the final dispatch marker below.
+                await self._assert_experiment_locked(
+                    session,
+                    experiment,
+                    payload,
+                    consent.data["request_sha256"],
+                    min(cfg.output_tokens, self.settings.alive_meta_max_output),
+                )
             consent.status = "consumed"
             consent.data = consent.data | {"consumed_at": now().isoformat()}
             self.research.outbound_inflight.add(snapshot.id)
+            experiment = consent.data.get("experiment")
+            cell_key = (
+                str(
+                    uuid.uuid5(
+                        uuid.NAMESPACE_URL,
+                        "alive14-r5:"
+                        + experiment["campaign_digest"]
+                        + ":"
+                        + str(experiment["call_index"]),
+                    )
+                )
+                if experiment
+                else None
+            )
             attempt = self.web.add(
                 session,
                 ATTEMPT_KIND,
@@ -923,15 +952,19 @@ class ResearchRelationships:
                 },
                 snapshot.id,
                 "reserved",
+                row_id=cell_key,
             )
             control.reserved = control.reserved | {
                 "calls": control.reserved.get("calls", 0) + 1,
                 "tokens": control.reserved.get("tokens", 0) + reserve,
             }
-            await session.flush()
+            try:
+                await session.flush()
+            except IntegrityError as exc:
+                raise PermissionError(
+                    "This campaign cell already has a durable attempt; replay is prohibited"
+                ) from exc
             attempt_id = attempt.id
-            payload = consent.data["payload"]
-            provider = consent.data["provider"]
         usage, raw, error, output = None, None, None, None
         error_category = None
         provider_status = None
@@ -1041,31 +1074,35 @@ class ResearchRelationships:
             raw_category = getattr(exc, "category", None)
             provider_status = getattr(exc, "status", None)
             provider_response_received = bool(getattr(exc, "response_received", False))
-            if isinstance(exc, (TimeoutError, asyncio.TimeoutError)):
-                error_category = "wall_clock_timeout"
-                campaign_fatal = dispatched
-            elif isinstance(exc, asyncio.CancelledError):
+            experiment_dispatch = bool(consent.data.get("experiment"))
+            if isinstance(exc, asyncio.CancelledError):
                 error_category = "cancelled"
-                campaign_fatal = dispatched
+                campaign_fatal = True if experiment_dispatch else dispatched
                 cancelled = True
+            elif isinstance(exc, (TimeoutError, asyncio.TimeoutError)):
+                error_category = "wall_clock_timeout"
+                campaign_fatal = True if experiment_dispatch else dispatched
             elif isinstance(exc, EvidenceValidationError):
+                # Explicit settled cell-level allowance: invalid quotations are
+                # recorded as a rejected cell, not a campaign-wide failure.
                 error_category = "invalid_structured_output"
                 campaign_fatal = False
             elif isinstance(exc, PermissionError):
                 error_category = "permission_denied"
                 campaign_fatal = True
             elif isinstance(exc, ValueError) and type(exc).__name__ == "ValidationError":
+                # Malformed provider JSON has uncertain settlement; fail closed.
                 error_category = "invalid_structured_output"
-                campaign_fatal = False
+                campaign_fatal = True if experiment_dispatch else False
             elif isinstance(exc, ValueError):
                 error_category = "invalid_request"
-                campaign_fatal = True if consent.data.get("experiment") else dispatched
+                campaign_fatal = True if experiment_dispatch else dispatched
             elif raw_category is not None:
                 error_category = raw_category
                 campaign_fatal = bool(getattr(exc, "campaign_fatal", True))
             else:
                 error_category = raw_category or type(exc).__name__
-                campaign_fatal = dispatched
+                campaign_fatal = True if experiment_dispatch else dispatched
         charged = (
             usage.get("total_tokens") if usage and not error else 0 if not dispatched else reserve
         )
@@ -1186,6 +1223,18 @@ class ResearchRelationships:
                         analysis_row.id
                     )
                 }
+            experiment = consent.data.get("experiment")
+            if experiment and self.approvals is not None and (campaign_fatal or cancelled):
+                # Commit the campaign-wide barrier in the same settlement
+                # transaction as the attempt. This survives cancellation and
+                # cannot be cleared by rebuilding local runner state.
+                await self.approvals.block_campaign_locked(
+                    session,
+                    experiment["campaign_digest"],
+                    error_category or error or "campaign-fatal experiment outcome",
+                    attempt_id=attempt_id,
+                    category=error_category,
+                )
             event_payload = (
                 {"analysis_mode": "paired", "settled": True}
                 if mode == "paired"
@@ -1207,9 +1256,7 @@ class ResearchRelationships:
                 event_payload,
             )
             await session.flush()
-            if cancelled:
-                raise asyncio.CancelledError()
-            return {
+            result = {
                 "analysis": record(row),
                 "current_analysis": record(analysis_row)
                 if analysis_row and mode == "current_only"
@@ -1222,6 +1269,11 @@ class ResearchRelationships:
                     not analysis_row or not analysis_row.data.get("sufficient_evidence")
                 ),
             }
+        # Re-raise only after the settlement transaction has committed. Raising
+        # inside the async-with would roll the durable settlement back.
+        if cancelled:
+            raise asyncio.CancelledError()
+        return result
 
     def _local_stub_current(self, payload):
         excerpt = payload["current_excerpt"]
@@ -1738,12 +1790,15 @@ class ResearchRelationships:
                 dispatch_status = row.data.get("dispatch_status", "reserved_never_dispatched")
                 never_dispatched = dispatch_status == "reserved_never_dispatched"
                 charged = 0 if never_dispatched else reserve
+                campaign_digest = row.data.get("campaign_digest")
                 self.experiments._settle_control(control, reserve, charged)
                 row.status = "interrupted"
                 row.data = row.data | {
                     "charged_tokens": charged,
                     "cost_liability_tokens": charged,
                     "settled_from_dispatch_status": dispatch_status,
+                    "campaign_fatal": bool(campaign_digest) and not never_dispatched,
+                    "ambiguous": bool(campaign_digest) and not never_dispatched,
                     "error": (
                         "cancelled_before_dispatch"
                         if never_dispatched
@@ -1752,6 +1807,36 @@ class ResearchRelationships:
                 }
                 self.research.outbound_inflight.discard(row.data.get("historical_memory_id"))
                 self.research.outbound_inflight.discard(row.data.get("current_snapshot_id"))
+                if campaign_digest and self.approvals is not None:
+                    await self.approvals.block_campaign_locked(
+                        session,
+                        campaign_digest,
+                        (
+                            "Attempt interrupted before dispatch"
+                            if never_dispatched
+                            else "Unknown completion after a possible dispatch; never replayed"
+                        ),
+                        attempt_id=row.id,
+                        category=(
+                            "cancelled_before_dispatch"
+                            if never_dispatched
+                            else "interrupted_ambiguous"
+                        ),
+                    )
+            # Also derive the durable campaign barrier from any pre-existing
+            # fatal attempt, including records written by an older process.
+            for row in await self.web.rows(session, ATTEMPT_KIND):
+                campaign_digest = row.data.get("campaign_digest")
+                if not campaign_digest or self.approvals is None:
+                    continue
+                if row.data.get("campaign_fatal") or row.status == "interrupted":
+                    await self.approvals.block_campaign_locked(
+                        session,
+                        campaign_digest,
+                        "Campaign has a fatal or interrupted attempt",
+                        attempt_id=row.id,
+                        category=row.data.get("error_category", "interrupted"),
+                    )
 
     async def list(self, redact_paired=False, goal_id=None):
         async with self.k.db.sessions() as session:

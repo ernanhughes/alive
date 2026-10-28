@@ -1,0 +1,115 @@
+{
+  "provenance": {
+    "kind": "genuine docked Chrome side panel with isolated R5-R1 databases",
+    "chrome_native": true,
+    "provider": "local deterministic stub",
+    "paid_calls": 0,
+    "real_approval_created": false,
+    "source_commit": "08f2ad11e383244058d4381e12892bfec6f133bc",
+    "source_tree": "ca2192c8effc50df4e55cf627225c6d146ae409d",
+    "runtime_source_sha256": "f3b313344d78362b1204ddf1e040786dee0ec491c711e032b7ee212980a173a9",
+    "git_status": ""
+  },
+  "native_actions": [
+    "Chrome A: reviewed canonical content, server disclosure, digest and stage limits",
+    "Chrome A: server rejected stage 2 before stage 1 eligibility",
+    "Chrome A: reloaded the active approval after restart and revoked it",
+    "Chrome A: revoked approval after one dispatch; HTTP and CLI successor paths refused",
+    "Chrome B: reviewed canonical content; stage 2 rejected before stage 1",
+    "Chrome B: technical outcome showed two stage-1 attempts; separate stage 2 approval succeeded",
+    "Chrome B: loaded archived blind results read-only after restart"
+  ],
+  "backend_actions": [
+    "Runner CLI A: imported the panel approval and dispatched exactly one stage-1 cell",
+    "HTTP A: the next dispatch after revocation was refused; attempt count remained one",
+    "Runner CLI B: imported the panel approval and dispatched exactly two stage-1 calls",
+    "Runner CLI B: dispatched remaining 16 calls, rated, revealed, analysed and archived"
+  ],
+  "screenshots": [
+    "native-r5r1-stage1-approval.png",
+    "native-r5r1-revoked.png",
+    "native-r5r1-stage1-approval.png",
+    "native-r5r1-stage2-approval.png",
+    "native-r5r1-readonly.png"
+  ],
+  "environment": {
+    "campaign_a_chrome": "156.0.8078.73",
+    "campaign_a_panel": {
+      "presentation": "native side panel target",
+      "side_panel_registration_ready": true,
+      "action_target_id": "DA2144FD4EB2E35A7081FDEEE4182127",
+      "panel_target_id": "32BB2EE61567AA45D4F4B69AA80279BD",
+      "panel_opened_as_ordinary_tab": false,
+      "panel_behavior": {
+        "openPanelOnActionClick": true
+      }
+    },
+    "campaign_b_chrome": "156.0.8078.73",
+    "campaign_b_panel": {
+      "presentation": "native side panel target",
+      "side_panel_registration_ready": true,
+      "action_target_id": "D7E066F1452D935CF9F275A3121E9277",
+      "panel_target_id": "B9C4D63138CD28182CD7A895CDF4A508",
+      "panel_opened_as_ordinary_tab": false,
+      "panel_behavior": {
+        "openPanelOnActionClick": true
+      }
+    }
+  },
+  "campaign_a": {
+    "campaign_digest": "795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25",
+    "approval_id": "a833ba1d-28eb-47b6-a1d5-ccbf6bb43909",
+    "digest_displayed": true,
+    "canonical_question": "What risks or limitations are supported by the available evidence for this proposed design?",
+    "manifest_equals_content": true,
+    "disclosure_displayed": true,
+    "stage_2_before_stage_1_rejected": true,
+    "stage_1_approval_created_by_panel": true,
+    "stage_1_cli_calls": 1,
+    "revoked_after_first_dispatch": true,
+    "next_dispatch_refused_http": 403,
+    "next_dispatch_refused_cli": true,
+    "attempt_count_after_revocation": 1,
+    "approval_status_after_revocation": "revoked",
+    "technical_state": {
+      "campaign_digest": "795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25",
+      "blocked": null,
+      "block_reason": null,
+      "stage_1_eligible": false,
+      "stage_2_eligible": false,
+      "attempts": [
+        {
+          "attempt_id": "e9d0d660-b15b-5bb9-a165-d83d516dc4c9",
+          "stage": 1,
+          "call_index": 0,
+          "task_id": "V3-T03",
+          "condition": "A",
+          "status": "validated",
+          "dispatch_status": "dispatch_possibly_started",
+          "campaign_fatal": false,
+          "error_category": null,
+          "cost_liability_tokens": 0,
+          "content_sha256": "f8ed16c70e239765530960b83fdb30641859ae2bdff466adec6747bbe97f871e"
+        }
+      ]
+    },
+    "synthetic": true
+  },
+  "campaign_b": {
+    "campaign_digest": "795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25",
+    "stage_1_calls": 2,
+    "stage_2_calls": 16,
+    "total_calls": 18,
+    "stage_1_technical_outcome_displayed": true,
+    "stage_2_approved_after_eligibility": true,
+    "read_only_after_restart": true,
+    "blind_run_id": "7faa1a9f-3d0a-4ea8-ab15-3a9499fe0e86",
+    "synthetic": true,
+    "budget": {
+      "calls": 18,
+      "reserved_tokens": 92490,
+      "worst_case_micro_usd": 393090
+    }
+  },
+  "status": "NATIVE_SYNTHETIC_PASS"
+}

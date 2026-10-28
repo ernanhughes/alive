@@ -1,0 +1,13 @@
+
+> alive-dashboard@0.2.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Projects/alive-worktrees/alive-14-r5/dashboard
+
+
+ Test Files  3 passed (3)
+      Tests  7 passed (7)
+   Start at  16:59:55
+   Duration  3.52s (transform 206ms, setup 0ms, import 1.42s, tests 400ms, environment 4.87s)
+

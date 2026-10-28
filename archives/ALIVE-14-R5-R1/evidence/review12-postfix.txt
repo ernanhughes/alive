@@ -1,0 +1,315 @@
+prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+Fprepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+Fprepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+execute: blocked by durable server campaign state: authentication
+Fprepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+Fprepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+Fprepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: queued revocation committed before final dispatch marker; zero provider calls, zero liability
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound research_question refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound current_excerpt refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound historical_excerpt refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound current_url refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound current_sha256 refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound goal_instruction refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound instructions refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound schema refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound provider refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound model refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound run_id refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound approval_id refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound stage refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+PASS: modified outbound call_index refused before provider dispatch
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+prepare: alive14-r5-real-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.391635 phase=prepared
+PASS: UUID-independent digest, source sensitivity, budgets 10345/92148 tokens, 43967/391635 micro-USD, minimum owner/runtime/protocol cap
+.prepare: alive14-r5-synthetic-85fe891cee31 tasks=9 calls=18 worst_case_usd=0.393090 phase=prepared
+approve: phase=approved stage=1 call_cap=2 provenance=synthetic_owner_endpoint
+F
+================================== FAILURES ===================================
+__________________ test_server_dispatches_second_cell_first ___________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000277F441AFD0>
+
+    def test_server_dispatches_second_cell_first(monkeypatch):
+        p,s,d,t,a=setup()
+        seen=[]
+        original=ResearchRelationships._local_stub_paired
+        def capture(self,payload):
+            seen.append(copy.deepcopy(payload))
+            return original(self,payload)
+        monkeypatch.setattr(ResearchRelationships,'_local_stub_paired',capture)
+        with r.Client(r.build_settings('synthetic',p,d,t),t) as c:
+            r.reactivate_approved_grants(c,d,s)
+>           result=dispatch(c,s,a,1)
+                   ^^^^^^^^^^^^^^^^^
+
+..\..\alive-review-12-evidence\test_review12.py:61: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\alive-review-12-evidence\test_review12.py:48: in dispatch
+    fresh=consent(c,s,a,index)
+          ^^^^^^^^^^^^^^^^^^^^
+..\..\alive-review-12-evidence\test_review12.py:43: in consent
+    fresh=r.preview(c,task,s['provider'],task['memory_id'] if condition=='B' else None,exp)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\alive14r5_experiment.py:336: in preview
+    return call(client, "POST", "/research/outbound/preview", body)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+client = <starlette.testclient.TestClient object at 0x00000277F5BD5F30>
+method = 'POST', path = '/research/outbound/preview'
+body = {'snapshot_id': 'c0287af0-5cbb-4451-b17d-a4c1087c7cf4', 'analysis_mode': 'paired', 'research_question': 'What risks or limitations are supported by the available evidence for this proposed design?', 'provider': 'local_stub', ...}
+expected = 200
+
+    def call(client, method, path, body=None, expected=200):
+        response = client.request(method, API + path, json=body)
+        if response.status_code != expected:
+>           raise RuntimeError(
+                f"{method} {path} returned {response.status_code}: {response.text[:2000]}"
+            )
+E           RuntimeError: POST /research/outbound/preview returned 403: {"error":{"code":403,"message":"Call index 1 is not the next eligible index 0","correlation_id":"2f6d3bdb-5e49-449c-9b5e-75984d4321f7"}}
+
+scripts\alive14r5_experiment.py:291: RuntimeError
+__________________ test_backend_dispatches_after_fatal_error __________________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000277F5BD4C30>
+
+    def test_backend_dispatches_after_fatal_error(monkeypatch):
+        p,s,d,t,a=setup()
+        seen=[]
+        def fail(self,payload):
+            seen.append(payload)
+            raise ProviderError('authentication',401)
+        monkeypatch.setattr(ResearchRelationships,'_local_stub_paired',fail)
+        with r.Client(r.build_settings('synthetic',p,d,t),t) as c:
+            r.reactivate_approved_grants(c,d,s)
+            first=dispatch(c,s,a,0)
+            assert first['analysis']['data']['campaign_fatal'] is True
+>           second=dispatch(c,s,a,1)
+                   ^^^^^^^^^^^^^^^^^
+
+..\..\alive-review-12-evidence\test_review12.py:77: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\alive-review-12-evidence\test_review12.py:48: in dispatch
+    fresh=consent(c,s,a,index)
+          ^^^^^^^^^^^^^^^^^^^^
+..\..\alive-review-12-evidence\test_review12.py:43: in consent
+    fresh=r.preview(c,task,s['provider'],task['memory_id'] if condition=='B' else None,exp)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\alive14r5_experiment.py:336: in preview
+    return call(client, "POST", "/research/outbound/preview", body)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+client = <starlette.testclient.TestClient object at 0x00000277F695C160>
+method = 'POST', path = '/research/outbound/preview'
+body = {'snapshot_id': '7a580e27-2526-4ffa-9681-decc8cb27858', 'analysis_mode': 'paired', 'research_question': 'What risks or limitations are supported by the available evidence for this proposed design?', 'provider': 'local_stub', ...}
+expected = 200
+
+    def call(client, method, path, body=None, expected=200):
+        response = client.request(method, API + path, json=body)
+        if response.status_code != expected:
+>           raise RuntimeError(
+                f"{method} {path} returned {response.status_code}: {response.text[:2000]}"
+            )
+E           RuntimeError: POST /research/outbound/preview returned 403: {"error":{"code":403,"message":"Campaign is blocked: authentication","correlation_id":"62816ab6-f4f2-49da-82f9-cfaaeb4ebfbb"}}
+
+scripts\alive14r5_experiment.py:291: RuntimeError
+______________ test_runner_crash_recovery_continues_after_fatal _______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000277F6923AD0>
+
+    def test_runner_crash_recovery_continues_after_fatal(monkeypatch):
+        p,s,d,t,a=setup()
+        calls=[]
+        original=ResearchRelationships._local_stub_paired
+        def fail_once(self,payload):
+            calls.append(payload)
+            if len(calls)==1:
+                raise ProviderError('authentication',401)
+            return original(self,payload)
+        monkeypatch.setattr(ResearchRelationships,'_local_stub_paired',fail_once)
+        normal=r.call
+        crashed=[]
+        def crash(c,method,path,body=None,expected=200):
+            result=normal(c,method,path,body,expected)
+            if method=='POST' and path=='/research/relationships' and not crashed:
+                crashed.append(True)
+                raise SystemExit('simulated process exit after durable fatal settlement')
+            return result
+        monkeypatch.setattr(r,'call',crash)
+        with pytest.raises(SystemExit,match='simulated process exit'):
+            r.execute('synthetic')
+        assert len(calls)==1
+        monkeypatch.setattr(r,'call',normal)
+        result=r.execute('synthetic')
+>       assert len(calls)==2
+E       AssertionError: assert 1 == 2
+E        +  where 1 = len([{'analysis_mode': 'paired', 'current_snapshot_id': '965d57ae-8ef7-4d9f-81f6-f4459fa7d0b3', 'current_url': 'http://127.0.0.1:9600/current/v3-t03', 'current_sha256': 'e1e18d17daceb308e3d8e8ea9a8453d2aa59e650cbd60354f3aca5143f56f219', ...}])
+
+..\..\alive-review-12-evidence\test_review12.py:106: AssertionError
+________ test_cancellation_rolls_back_settlement_and_allows_stage_two _________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000277F7603F00>
+
+    def test_cancellation_rolls_back_settlement_and_allows_stage_two(monkeypatch):
+        p,s,d,t,a=setup()
+        seen=[]
+        original=ResearchRelationships._local_stub_paired
+        def cancel_second(self,payload):
+            seen.append(payload)
+            if len(seen)==2:
+                raise asyncio.CancelledError()
+            return original(self,payload)
+        monkeypatch.setattr(ResearchRelationships,'_local_stub_paired',cancel_second)
+        with r.Client(r.build_settings('synthetic',p,d,t),t) as c:
+            r.reactivate_approved_grants(c,d,s)
+            first=dispatch(c,s,a,0)
+            assert first['analysis']['status']=='validated'
+            fresh=consent(c,s,a,1)
+            async def cancel_and_inspect():
+                try:
+                    await c.app.state.relationships.analyze(fresh['id'])
+                except asyncio.CancelledError:
+                    pass
+                async with c.app.state.kernel.db.sessions() as session:
+                    rows=await c.app.state.approvals.attempts_locked(session,s['campaign_digest'])
+                    second=next(x for x in rows if x.data.get('call_index')==1)
+                    return {'id':second.id,'status':second.status,'data':dict(second.data)}
+            second=c.portal.call(cancel_and_inspect)
+>           assert second['status']=='reserved'
+E           AssertionError: assert 'failed' == 'reserved'
+E             
+E             - reserved
+E             + failed
+
+..\..\alive-review-12-evidence\test_review12.py:136: AssertionError
+____________ test_registration_accepts_display_manifest_divergence ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000277F7D8A030>
+
+    def test_registration_accepts_display_manifest_divergence(monkeypatch):
+        p,s,d,t,a=setup()
+        # A fresh DB avoids duplicate-registration protection and preserves content identity.
+        r.RUNS=r.RUNS.parent/'other-runs'
+        normal=r.call
+        def alternate(c,method,path,body=None,expected=200):
+            if method=='POST' and path=='/research/experiment/campaigns':
+                body=copy.deepcopy(body)
+                body['manifest']=json.loads(json.dumps(body['manifest']))
+                body['manifest']['tasks'][0]['question']='DISPLAYED QUESTION DIFFERS FROM ENFORCED CONTENT'
+            return normal(c,method,path,body,expected)
+        r.call=alternate
+        try:
+>           other=r.prepare('synthetic')
+                  ^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\alive-review-12-evidence\test_review12.py:166: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\alive14r5_experiment.py:550: in prepare
+    call(client, "POST", "/research/experiment/campaigns", campaign_request)
+..\..\alive-review-12-evidence\test_review12.py:163: in alternate
+    return normal(c,method,path,body,expected)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+client = <starlette.testclient.TestClient object at 0x00000277F8702030>
+method = 'POST', path = '/research/experiment/campaigns'
+body = {'campaign_digest': '795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25', 'run_id': 'alive14-r5-syntheti...6a0ee426186d5735eb5a71b', 'answer_key_sha256': '255e706dd569634d1710a50831f65a6dd6eb7dabc5ee56e1cd763b382554b43d', ...}
+expected = 200
+
+    def call(client, method, path, body=None, expected=200):
+        response = client.request(method, API + path, json=body)
+        if response.status_code != expected:
+>           raise RuntimeError(
+                f"{method} {path} returned {response.status_code}: {response.text[:2000]}"
+            )
+E           RuntimeError: POST /research/experiment/campaigns returned 409: {"error":{"code":409,"message":"Campaign display manifest tasks differs from canonical content","correlation_id":"b6c55579-f2eb-4a4d-95bc-7f11f5e8b0d7"}}
+
+scripts\alive14r5_experiment.py:291: RuntimeError
+_______________ test_supersession_before_marker_blocks_dispatch _______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000277FB2992B0>
+
+    def test_supersession_before_marker_blocks_dispatch(monkeypatch):
+        p,s,d,t,a=setup()
+        seen=[]
+        def forbidden(self,payload):
+            seen.append(payload)
+            raise AssertionError('Superseded approval must not dispatch')
+        monkeypatch.setattr(ResearchRelationships,'_local_stub_paired',forbidden)
+        with r.Client(r.build_settings('synthetic',p,d,t),t) as c:
+            r.reactivate_approved_grants(c,d,s)
+            fresh=consent(c,s,a,0)
+            newer=approve(c,s,1)
+            assert newer['data']['approval_id']!=a['approval_id']
+>           result=r.call(c,'POST','/research/relationships',{'consent_id':fresh['id']})
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\alive-review-12-evidence\test_review12.py:310: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+client = <starlette.testclient.TestClient object at 0x00000277F9D73570>
+method = 'POST', path = '/research/relationships'
+body = {'consent_id': '5f0b90a7-91a7-4fce-a804-9ce958566fbf'}, expected = 200
+
+    def call(client, method, path, body=None, expected=200):
+        response = client.request(method, API + path, json=body)
+        if response.status_code != expected:
+>           raise RuntimeError(
+                f"{method} {path} returned {response.status_code}: {response.text[:2000]}"
+            )
+E           RuntimeError: POST /research/relationships returned 403: {"error":{"code":403,"message":"Campaign approval is not active","correlation_id":"8088b229-52a6-41d5-9021-383b2bea6fc7"}}
+
+scripts\alive14r5_experiment.py:291: RuntimeError
+============================== warnings summary ===============================
+alive-review-12-evidence/test_review12.py: 95 warnings
+  C:\Projects\alive-worktrees\alive-14-r5\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+    self._get_loop()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED ..\..\alive-review-12-evidence\test_review12.py::test_server_dispatches_second_cell_first
+FAILED ..\..\alive-review-12-evidence\test_review12.py::test_backend_dispatches_after_fatal_error
+FAILED ..\..\alive-review-12-evidence\test_review12.py::test_runner_crash_recovery_continues_after_fatal
+FAILED ..\..\alive-review-12-evidence\test_review12.py::test_cancellation_rolls_back_settlement_and_allows_stage_two
+FAILED ..\..\alive-review-12-evidence\test_review12.py::test_registration_accepts_display_manifest_divergence
+FAILED ..\..\alive-review-12-evidence\test_review12.py::test_supersession_before_marker_blocks_dispatch
+6 failed, 16 passed, 95 warnings in 52.51s
