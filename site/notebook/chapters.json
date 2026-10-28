@@ -1,0 +1,37 @@
+{
+  "repository": "https://github.com/ernanhughes/alive",
+  "port": 1313,
+  "capture_window": 2000,
+  "chapters": [
+    {
+      "id": "alive-11-corrections",
+      "doc": "docs/ALIVE-11.md",
+      "alive_stage": "ALIVE-11",
+      "parts": ["__preamble__", "Review-04 corrections"]
+    },
+    {
+      "id": "alive-12-status",
+      "doc": "docs/ALIVE-12.md",
+      "alive_stage": "ALIVE-12",
+      "parts": ["__preamble__", "Connections and feedback"]
+    },
+    {
+      "id": "alive-13-what-was-wrong",
+      "doc": "docs/ALIVE-13.md",
+      "alive_stage": "ALIVE-13",
+      "parts": ["What was wrong"]
+    },
+    {
+      "id": "alive-13-status",
+      "doc": "docs/ALIVE-13.md",
+      "alive_stage": "ALIVE-13",
+      "parts": ["__preamble__", "Connection evidence semantics"]
+    },
+    {
+      "id": "alive-14-status",
+      "doc": "docs/ALIVE-14.md",
+      "alive_stage": "ALIVE-14",
+      "parts": ["__preamble__", "Limitations"]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+baseURL = "http://127.0.0.1:1313/"
+title = "The ALIVE Notebook"
+disableKinds = ["taxonomy", "term", "RSS", "sitemap", "robotsTXT"]
+
+[params]
+  sourceRepo = "https://github.com/ernanhughes/alive"
+
+[markup.tableOfContents]
+  startLevel = 2
+  endLevel = 3
+
+[markup.goldmark.extensions]
+  typographer = false
