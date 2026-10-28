@@ -1,0 +1,22 @@
+..................F..                                                    [100%]
+================================== FAILURES ===================================
+________________ test_F_paired_lineage_is_scrubbed_and_hidden _________________
+tests\test_demo01_foundation_probes.py:117: in test_F_paired_lineage_is_scrubbed_and_hidden
+    assert_no_derived_evidence(client, MARK)
+tests\evidence_leaks.py:42: in assert_no_derived_evidence
+    assert not leaks, leaks
+           ^^^^^^^^^
+E   AssertionError: [{'table': 'web_experiences', 'id': '7938e7a5-51f7-44e9-86e6-0e17759cf02d', 'kind': 'research_relationship_analysis', 'status': 'invalidated'}, {'table': 'web_experiences', 'id': '8a4f86b0-e167-4f7e-a408-fb8ac0ece950', 'kind': 'research_paired_analysis', 'status': 'invalidated'}]
+============================== warnings summary ===============================
+tests/test_demo01_foundation_probes.py::test_C_real_midflight_recovery_charges_full_liability_once
+tests/test_demo01_foundation_probes.py::test_D_all_tables_and_public_reads_after_withdrawal
+tests/test_demo01_foundation_probes.py::test_F_paired_lineage_is_scrubbed_and_hidden
+tests/test_demo01_foundation_probes.py::test_E_IE1_committed_revocation_before_marker_never_dispatches
+tests/test_demo01_foundation_probes.py::test_E_IE2_post_marker_revocation_discards_result
+  C:\Projects\alive\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+    self._get_loop()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_demo01_foundation_probes.py::test_F_paired_lineage_is_scrubbed_and_hidden
+1 failed, 20 passed, 5 warnings in 4.12s

@@ -1,0 +1,77 @@
+"""Pinned synthetic claim fixtures; never evidence about a real product.
+
+Available only through the explicitly enabled local test provider.
+Keys are (full current-source SHA256, full historical-source SHA256).
+Changing even one source character must fail closed.
+"""
+
+HISTORICAL_TEXT = "The fixture interface is recommended for all clients."
+CURRENT_TEXTS = {
+    "conflicts": "The fixture interface is not recommended for any clients.",
+    "qualifies": "The fixture interface is recommended only for local clients.",
+    "explicit_supersession": "The fixture interface is deprecated in version 3.12.",
+    "supports": "The fixture interface is recommended for all clients.",
+}
+
+CLAIM_FIXTURES = {
+    (
+        "61dadcae7a519f7ac05a3eb67838959d48051f7091251249cf928dcd2cce3a6e",
+        "ad52164c4d1e38eb4cf1c7170bd4e8de3a8c6f4772fcb3d5e9af0c38eb5021fe",
+    ): {
+        "relationship": "conflicts",
+        "claim_aspect": "recommendation",
+        "historical_claim_quote": "The fixture interface is recommended for all clients.",
+        "current_claim_quote": "The fixture interface is not recommended for any clients.",
+        "scope_alignment": "same",
+        "scope_note": "Same synthetic fixture interface.",
+        "supersession_basis_quote": None,
+        "reason": "A pinned synthetic source comparison.",
+        "limitations": "Synthetic test data; no independent factual verification.",
+        "confidence": 0.4,
+    },
+    (
+        "71a85534c339030ae50f6df88c7ccc7a3503b54dcad67850c6f49579fb9a89de",
+        "ad52164c4d1e38eb4cf1c7170bd4e8de3a8c6f4772fcb3d5e9af0c38eb5021fe",
+    ): {
+        "relationship": "qualifies",
+        "claim_aspect": "recommendation",
+        "historical_claim_quote": "The fixture interface is recommended for all clients.",
+        "current_claim_quote": "The fixture interface is recommended only for local clients.",
+        "scope_alignment": "same",
+        "scope_note": "Same synthetic fixture interface.",
+        "supersession_basis_quote": None,
+        "reason": "A pinned synthetic source comparison.",
+        "limitations": "Synthetic test data; no independent factual verification.",
+        "confidence": 0.4,
+    },
+    (
+        "bda769d11aaea4130322715f5d24dc6e3a59a48dbf80a4e2263f2890a94d2252",
+        "ad52164c4d1e38eb4cf1c7170bd4e8de3a8c6f4772fcb3d5e9af0c38eb5021fe",
+    ): {
+        "relationship": "explicit_supersession",
+        "claim_aspect": "status",
+        "historical_claim_quote": "The fixture interface is recommended for all clients.",
+        "current_claim_quote": "The fixture interface is deprecated in version 3.12.",
+        "scope_alignment": "same",
+        "scope_note": "Same synthetic fixture interface.",
+        "supersession_basis_quote": "The fixture interface is deprecated in version 3.12.",
+        "reason": "A pinned synthetic source comparison.",
+        "limitations": "Synthetic test data; no independent factual verification.",
+        "confidence": 0.4,
+    },
+    (
+        "ad52164c4d1e38eb4cf1c7170bd4e8de3a8c6f4772fcb3d5e9af0c38eb5021fe",
+        "ad52164c4d1e38eb4cf1c7170bd4e8de3a8c6f4772fcb3d5e9af0c38eb5021fe",
+    ): {
+        "relationship": "supports",
+        "claim_aspect": "recommendation",
+        "historical_claim_quote": "The fixture interface is recommended for all clients.",
+        "current_claim_quote": "The fixture interface is recommended for all clients.",
+        "scope_alignment": "same",
+        "scope_note": "Same synthetic fixture interface.",
+        "supersession_basis_quote": None,
+        "reason": "A pinned synthetic source comparison.",
+        "limitations": "Synthetic test data; no independent factual verification.",
+        "confidence": 0.4,
+    },
+}

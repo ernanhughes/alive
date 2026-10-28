@@ -1327,10 +1327,16 @@ def router(app, ready):
 
     @api.post("/research/memories/{research_id}/anchor")
     async def anchor_research(research_id: str, data: ResearchAnchorRequest):
-        return await app.state.research.anchor(
-            research_id, data.quote, data.expected_sha256,
-            data.expected_revision, data.occurrence_start,
-        )
+        from fastapi import HTTPException
+        from alive.research_memory import AnchorValidationError
+
+        try:
+            return await app.state.research.anchor(
+                research_id, data.quote, data.expected_sha256,
+                data.expected_revision, data.occurrence_start,
+            )
+        except AnchorValidationError as exc:
+            raise HTTPException(422, str(exc)) from exc
 
     @api.post("/research/memories/{research_id}/withdraw")
     async def withdraw_research(research_id: str):

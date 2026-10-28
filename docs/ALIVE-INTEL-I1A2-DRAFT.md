@@ -26,3 +26,11 @@ This session edited GitHub source through connector operations and **did not run
 
 ## Non-actions
 Zero Meta calls, no actual owner consent, zero paid spend, no ALIVE-14 changes, no migrations, no new browser permissions, no Think cycle.
+
+## Local follow-up, 28 October 2026
+
+See [the local qualification report](ALIVE-INTEL-I1A2-LOCAL-QUALIFICATION.md).
+A full-suite checkpoint passed after import/dispatch repairs, but the subsequently
+added all-table foundation probe found copied withdrawn evidence in invalidated
+`validation.evidence[].quote` fields. Qualification stopped under the review's
+explicit gate. The current working tree is **not qualified** and readiness is **NO**.

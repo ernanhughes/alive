@@ -1,0 +1,39 @@
+diff --git a/alive/claim_comparison.py b/alive/claim_comparison.py
+index 3f657d3..be0e3d6 100644
+--- a/alive/claim_comparison.py
++++ b/alive/claim_comparison.py
+@@ -19,6 +19,9 @@ SUPERSESSION = re.compile(
+     r"\b(?:deprecated since|deprecated in|is deprecated|superseded by|replaced by|"
+     r"no longer recommended|removed in|erratum|retracted)\b|\bcorrection:", re.I,
+ )
++SIGNATURE = re.compile(
++    r"\b(?:classmethod|staticmethod|class|method|function|attribute|property|exception)\s+[A-Za-z_][\w.]*",
++)
+ ABBREVIATIONS = ("e.g.", "i.e.", "etc.", "vs.", "cf.", "fig.", "no.",
+                  "dr.", "mr.", "ms.")
+ 
+@@ -72,10 +75,10 @@ def _boundary(source: str, start: int, end: int) -> bool:
+     if start == 0 or source[start - 1] == "\n":
+         start_ok = True
+     else:
+-        match = re.search(r"[.!?]\\s+$", before)
+-        prefix = before.rstrip().lower()
+-        start_ok = bool(match) and not any(prefix.endswith(a) for a in ABBREVIATIONS)
+-        if match and re.search(r"\d\.\s*$", before):
++        match = re.search(r"[.!?]\s+$", before)
++        tokens = before.rstrip().lower().split()
++        start_ok = bool(match) and not (tokens and tokens[-1] in ABBREVIATIONS)
++        if match and re.search(r"\d\.$", before.rstrip()) and source[start].isdigit():
+             start_ok = False
+     if end == len(source) or source[end] == "\n":
+         end_ok = True
+@@ -162,6 +165,9 @@ def validate_claim(output: ClaimComparisonOutput, payload: dict) -> dict:
+                 m.start() for m in SUPERSESSION.finditer(current)
+                 if m.start() >= anchor_at
+             ]
++            between = current[anchor_at:span[0]]
++            if SIGNATURE.search(between[len(h) if h in current else 0:]):
++                demotions.append("another_subject_between_anchor_and_basis")
+             if (not match_positions or
+                     span[0] - anchor_at > 1200 or
+                     not (span[0] <= match_positions[0] < span[1])):

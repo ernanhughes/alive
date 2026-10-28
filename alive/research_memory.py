@@ -16,6 +16,11 @@ from alive.cognitive_models import MemoryVector
 from alive.models import Memory, now, record, uid
 from alive.web_models import WebExperience
 
+
+class AnchorValidationError(ValueError):
+    """An invalid anchor span, distinct from a stale source or revision conflict."""
+
+
 RESEARCH_KIND = "research_memory"
 CONNECTION_KIND = "research_connection"
 INDEX_VERSION = "alive12-research-v1"
@@ -315,7 +320,7 @@ class ResearchMemory:
         if not 16 <= len(quote) <= 300 or any(
             unicodedata.category(char) in ("Cc", "Cf") for char in quote
         ):
-            raise ValueError("Anchor quote must be 16–300 characters without controls")
+            raise AnchorValidationError("Anchor quote must be 16–300 characters without controls")
         async with self.k.lock, self.k.db.sessions.begin() as session:
             row = await self._research_row(session, research_id)
             if row.status != "active":
@@ -336,12 +341,12 @@ class ResearchMemory:
                 offsets.append(pos)
                 pos += 1
             if not offsets:
-                raise ValueError("Anchor quote not present in saved excerpt")
+                raise AnchorValidationError("Anchor quote not present in saved excerpt")
             if occurrence_start is None and len(offsets) != 1:
-                raise ValueError("Ambiguous anchor; choose an occurrence offset: " + repr(offsets))
+                raise AnchorValidationError("Ambiguous anchor; choose an occurrence offset: " + repr(offsets))
             start = offsets[0] if occurrence_start is None else occurrence_start
             if start not in offsets or not _bounded_sentence(excerpt, quote, start):
-                raise ValueError("Anchor occurrence is invalid or not sentence-bounded")
+                raise AnchorValidationError("Anchor occurrence is invalid or not sentence-bounded")
             new_revision = revision + 1
             row.data = row.data | {"reliance_anchor": {
                 "quote": quote, "start": start, "end": start + len(quote),

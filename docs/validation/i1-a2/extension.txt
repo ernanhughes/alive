@@ -1,0 +1,19 @@
+✔ isolated extension rejects stale port 8000 before any fetch (1.7285ms)
+✔ connect records the authenticated backend identity before declaring connection (0.2955ms)
+✔ connect fails closed on an incompatible backend identity (0.1482ms)
+✔ withdraw sends the displayed research id, not the most recently saved id (0.7762ms)
+✔ withdraw without an explicit research id fails before any fetch (0.1907ms)
+✔ a late validated reply cannot restore a feedback target after Stop (1.9765ms)
+✔ a late reply cannot rate the previous excerpt after the preview changes (0.2917ms)
+✔ an obsolete polling error cannot overwrite the stopped status (0.2208ms)
+✔ changing language requires a new reviewed snapshot and invalidates old feedback (0.6349ms)
+✔ a current validated note still enables feedback (0.3241ms)
+✔ a no-action decision clears the previous note cost and feedback target (0.3851ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 72.0231
