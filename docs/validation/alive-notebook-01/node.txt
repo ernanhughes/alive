@@ -1,0 +1,46 @@
+Γ£ö isolated extension rejects stale port 8000 before any fetch (2.6473ms)
+Γ£ö connect records the authenticated backend identity before declaring connection (0.3357ms)
+Γ£ö connect fails closed on an incompatible backend identity (0.8326ms)
+Γ£ö withdraw sends the displayed research id, not the most recently saved id (0.2393ms)
+Γ£ö withdraw without an explicit research id fails before any fetch (0.1713ms)
+Γ£ö v2 preserves punctuation around adjacent inline code (112.3537ms)
+Γ£ö v2 separates nested blocks without double-counting their text (15.3871ms)
+Γ£ö v2 records separate Sphinx method entries in Unicode code-point coordinates (16.4224ms)
+Γ£ö v2 keeps code lines, excludes private/hidden/non-content text, and bounds length (10.7639ms)
+Γ£ö v2 binds the selected repeated occurrence, including a Unicode prefix (13.3581ms)
+Γ£ö live preview always specifies claim mode and the local fixture provider (6.569ms)
+Γ£ö live preview refuses a snapshot from another active goal before transmission (0.5271ms)
+Γ£ö live selection preserves the chosen occurrence and expected anchor revision (1.7884ms)
+Γ£ö remembering a passage binds source SHA, chosen offset and revision without a model note (0.8324ms)
+Γ£ö a changed selection source is refused before creating any snapshot or memory (0.5378ms)
+Γ£ö live preview refuses stale captured text before authorization or dispatch (0.3972ms)
+Γ£ö the local companion does not relabel legacy or Meta candidates as qualified fixture results (0.8049ms)
+Γ£ö live card separates unchanged text and changed standing, renders untrusted quotes as text (108.3826ms)
+Γ£ö live preview discloses exact request, hashes, local provider and zero maximum spend (20.1732ms)
+Γ£ö live authorised abstention shows recorded outcome rather than an alert (21.6237ms)
+Γ£ö immediate abstention requires the exact recorded source pair (106.1186ms)
+Γ£ö validated non-abstention without a stored connection is not displayed as an abstention (11.337ms)
+Γ£ö live review enables related-research lookup for the notebook journey (24.3577ms)
+Γ£ö dismissal keeps source evidence and records interpretation feedback only (11.1907ms)
+Γ£ö withdrawal clears live and legacy cards, and a stale refresh cannot restore them (10.557ms)
+Γ£ö investigation switch refuses an old preview before any authorization or dispatch (8.4842ms)
+Γ£ö recorded abstention must match source hash, URL, saved memory and investigation (36.6654ms)
+Γ£ö matching recorded abstention survives re-review with a different snapshot id (10.0988ms)
+Γ£ö dismissed validated candidate never inherits an older abstention (12.7358ms)
+Γ£ö unrelated abstention without a displayed memory leaves the quiet state (12.4474ms)
+Γ£ö a late validated reply cannot restore a feedback target after Stop (2.2062ms)
+Γ£ö a late reply cannot rate the previous excerpt after the preview changes (0.2996ms)
+Γ£ö an obsolete polling error cannot overwrite the stopped status (0.22ms)
+Γ£ö changing language requires a new reviewed snapshot and invalidates old feedback (0.6997ms)
+Γ£ö a current validated note still enables feedback (0.291ms)
+Γ£ö a no-action decision clears the previous note cost and feedback target (0.3753ms)
+Γ£ö config.js authorises exactly the notebook chapter URLs on loopback port 1313 (1.5649ms)
+Γ£ö capture of built chapters excludes navigation, contents and footer (373.2267ms)
+Γä╣ tests 38
+Γä╣ suites 0
+Γä╣ pass 38
+Γä╣ fail 0
+Γä╣ cancelled 0
+Γä╣ skipped 0
+Γä╣ todo 0
+Γä╣ duration_ms 1113.8341

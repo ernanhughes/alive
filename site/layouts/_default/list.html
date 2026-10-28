@@ -1,0 +1,11 @@
+{{ define "main" }}
+<main>
+<h1>{{ .Title }}</h1>
+{{ .Content }}
+<ul>
+{{ range site.RegularPages.ByParam "chapter_id" }}
+<li><a href="{{ .RelPermalink }}">{{ .Title }}</a> ({{ .Params.chapter_id }}; {{ delimit .Params.source_parts ", " }})</li>
+{{ end }}
+</ul>
+</main>
+{{ end }}

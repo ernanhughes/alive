@@ -1,0 +1,67 @@
+{
+  "note": "Ground truth for the notebook tests. Not published as a page, so it cannot enter a captured excerpt. Every quote is checked against the canonical document by `python site/notebook.py check`. A relation here is a human reading of the quoted passages, not an ALIVE finding.",
+  "relations": [
+    {
+      "id": "R1-labels-superseded",
+      "kind": "supersession",
+      "authenticity": "real",
+      "claim": "ALIVE-12 labelled lexical overlap `same_concept`; ALIVE-13 states those labels overstated what shared words establish and replaced them.",
+      "older": {
+        "chapter": "alive-12-status",
+        "quotes": [
+          "at least two shared content terms: `same_concept`, status `candidate`"
+        ]
+      },
+      "newer": {
+        "chapter": "alive-13-what-was-wrong",
+        "quotes": [
+          "`same_concept` or `complementary`, which overstated what shared words establish."
+        ]
+      }
+    },
+    {
+      "id": "R2-result-narrowed",
+      "kind": "scoped_change",
+      "authenticity": "real",
+      "claim": "ALIVE-12 reported retrieval advantage NOT DEMONSTRATED. ALIVE-13 reports it demonstrated only on its frozen lexical corpus and keeps general superiority NOT DEMONSTRATED. This is a scoped change, not a general reversal.",
+      "must_not_say": [
+        "ALIVE improves research retrieval"
+      ],
+      "older": {
+        "chapter": "alive-12-status",
+        "quotes": [
+          "Retrieval advantage: **NOT DEMONSTRATED**."
+        ]
+      },
+      "newer": {
+        "chapter": "alive-13-status",
+        "quotes": [
+          "Controlled lexical retrieval: **RETRIEVAL_ADVANTAGE_DEMONSTRATED** on the frozen corpus.",
+          "General semantic or owner-usefulness superiority: **NOT DEMONSTRATED**."
+        ]
+      }
+    },
+    {
+      "id": "R3-paid-terminology-only",
+      "kind": "abstention",
+      "authenticity": "real",
+      "claim": "Both passages mention paid calls, but each reports the spend of its own milestone: ALIVE-11 ran paid campaigns, ALIVE-14 collected no paid Meta calls. Neither supports, contradicts or supersedes the other, so no relationship is established. A lexical matcher sees the shared words.",
+      "shared_terms": [
+        "paid",
+        "calls"
+      ],
+      "older": {
+        "chapter": "alive-11-corrections",
+        "quotes": [
+          "ALIVE-11 contains **two paid campaigns**, 16 recorded calls, 8,732 charged tokens and approximately $0.023665 estimated spend."
+        ]
+      },
+      "newer": {
+        "chapter": "alive-14-status",
+        "quotes": [
+          "No owner ratings or paid Meta calls were collected."
+        ]
+      }
+    }
+  ]
+}

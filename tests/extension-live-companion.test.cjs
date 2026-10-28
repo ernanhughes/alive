@@ -13,14 +13,14 @@ const finding = { id: 'finding', status: 'candidate', data: {
   historical_quote_retained_in_current: true, relation_type: 'explicit_supersession',
   explanation: 'Standing changes; behavior is retained.', limitations: 'Fixture interpretation.',
 } };
-async function panel(initial = {}) {
+async function panel(initial = {}, session = {}) {
   const d = new JSDOM(html).window.document;
   let current = { goal: { id: 'g', data: { instruction: 'Research UTC' } }, related: [], findings: [], analyses: [], ...initial };
   let goalId = 'g', onChanged, override;
   const calls = [];
   const chrome = { storage: {
     local: { get: async () => ({ backend: 'http://127.0.0.1:8000', goalId }) },
-    session: { get: async () => ({}) }, onChanged: { addListener(fn) { onChanged = fn; } },
+    session: { get: async () => session }, onChanged: { addListener(fn) { onChanged = fn; } },
   }, runtime: { sendMessage: async message => {
     calls.push(message);
     if (override) { const response = override(message); if (response !== undefined) return response; }
@@ -98,6 +98,16 @@ test('validated non-abstention without a stored connection is not displayed as a
     : undefined);
   await p.api.showPreview('memory'); await p.click('Authorise exact comparison');
   assert.equal(p.d.querySelector('#live-state').textContent, 'Check did not complete. No finding was stored.');
+});
+test('live review enables related-research lookup for the notebook journey', async () => {
+  const p = await panel({}, { latest: { payload: {
+    url: 'http://127.0.0.1:1313/chapters/alive-12-status/', text: 'Reviewed chapter text.',
+  } } });
+  p.d.querySelector('#find-research').disabled = true;
+  p.d.querySelector('#live-review').click();
+  for (let i = 0; i < 50 && p.d.querySelector('#find-research').disabled; i++)
+    await new Promise(resolve => setTimeout(resolve, 10));
+  assert.equal(p.d.querySelector('#find-research').disabled, false);
 });
 test('dismissal keeps source evidence and records interpretation feedback only', async () => {
   const p = await panel({ findings: [finding] }); await p.click('Dismiss interpretation');

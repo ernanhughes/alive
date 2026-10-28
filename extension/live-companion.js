@@ -206,6 +206,7 @@ el('live-authorise').onclick = () => run(async () => {
   if (!latest) throw new Error('Capture is not available yet. Review the captured source when ready.');
   await assertGoal(goalId);
   await call('send', { reviewed: latest.payload });
+  document.querySelector('#find-research').disabled = false;
   context = await call('live-context');
   renderContext(context);
 });
@@ -213,6 +214,7 @@ el('live-review').onclick = () => run(async () => {
   const { latest } = await chrome.storage.session.get('latest');
   if (!latest?.payload) throw new Error('Authorise the current page and wait for its capture first.');
   await call('send', { reviewed: latest.payload });
+  document.querySelector('#find-research').disabled = false;
   context = await call('live-context');
   renderContext(context);
 });

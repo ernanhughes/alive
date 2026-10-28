@@ -25,6 +25,13 @@ from alive.relevance import evaluate_relevance, load_relevance_config
 from alive.research_blind import BlindRatingRequest, BlindRunRequest
 from alive.web_models import WebExperience
 
+NOTEBOOK_CHAPTERS = (
+    "alive-11-corrections",
+    "alive-12-status",
+    "alive-13-status",
+    "alive-13-what-was-wrong",
+    "alive-14-status",
+)
 PAGES = {
     *(
         f"http://{host}:8000/demo-live-01/{name}"
@@ -35,6 +42,12 @@ PAGES = {
     "https://docs.python.org/3.12/library/datetime.html",
     "https://docs.python.org/3/tutorial/",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+    # ALIVE Notebook (site/): exact chapter URLs of a Hugo site served on loopback port 1313.
+    *(
+        f"http://{host}:1313/chapters/{chapter}/"
+        for host in ("127.0.0.1", "localhost")
+        for chapter in NOTEBOOK_CHAPTERS
+    ),
 }
 MODEL = "muse-spark-1.3"
 INSTRUCTION = (

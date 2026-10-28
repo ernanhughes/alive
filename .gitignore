@@ -166,8 +166,10 @@ venv.bak/
 # Rope project settings
 .ropeproject
 
-# mkdocs/Zensical documentation
-/site
+# Hugo notebook build output (site/ itself is tracked)
+/site/public/
+/site/resources/
+/site/.hugo_build.lock
 
 # mypy
 .mypy_cache/

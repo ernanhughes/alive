@@ -1,0 +1,16 @@
+{{ define "main" }}
+{{ with .TableOfContents }}<nav class="toc" aria-label="Contents">{{ . }}</nav>{{ end }}
+<main>
+<article id="chapter" data-chapter-id="{{ .Params.chapter_id }}">
+<h1>{{ .Title }}</h1>
+{{ .Content }}
+</article>
+</main>
+{{ end }}
+{{ define "footer" }}
+{{ with .Params.source_doc }}
+<p>Source: <a href="{{ site.Params.sourceRepo }}/blob/{{ $.Params.source_commit }}/{{ . }}"><code>{{ . }}</code></a>
+at commit <code>{{ substr $.Params.source_commit 0 12 }}</code>. Source SHA-256 <code>{{ $.Params.source_sha256 }}</code>.
+Parts reproduced verbatim: {{ delimit $.Params.source_parts ", " }}. The source document is canonical.</p>
+{{ end }}
+{{ end }}
