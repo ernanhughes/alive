@@ -1682,9 +1682,10 @@ class ResearchRelationships:
             }
             def visible(row):
                 data = row.data
-                if goal_id and data.get("goal_id") != goal_id:
-                    return False
                 consent = consents.get(data.get("consent_id"))
+                scoped_goal = data.get("goal_id") or (consent.data.get("payload") or {}).get("goal_id") if consent else data.get("goal_id")
+                if goal_id and scoped_goal != goal_id:
+                    return False
                 if consent:
                     memory_id = consent.data.get("historical_memory_id")
                     if memory_id and memory_id not in active_memories:
