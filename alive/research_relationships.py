@@ -599,6 +599,10 @@ class ResearchRelationships:
             raise ValueError("Unknown analysis mode")
         if experiment is not None and analysis_mode != "paired":
             raise ValueError("Experiment dispatch requires paired analysis mode")
+        if analysis_mode == "claim_comparison" and provider not in ("local_fixture_claim", "meta"):
+            raise PermissionError("Claim comparison requires a claim-specific provider")
+        if analysis_mode != "claim_comparison" and provider == "local_fixture_claim":
+            raise PermissionError("Claim fixtures are only available in claim mode")
         if analysis_mode == "claim_comparison" and provider == "meta" and not getattr(self.settings, "alive_claim_meta_enabled", False):
             raise PermissionError("Paid claim comparison is disabled")
         identity = self._provider_identity(provider)
@@ -1597,8 +1601,12 @@ class ResearchRelationships:
         return result
 
     def _local_fixture_claim(self, payload):
-        """Deterministic fixture only; intentionally abstains without a pinned fixture map."""
-        raise ValueError("Claim fixture map is not yet configured; no inference dispatched")
+        """Deterministic, test-gated exact-SHA fixture. Never infer labels from source text."""
+        pair = (payload["current_sha256"], payload["historical_sha256"])
+        fixtures = getattr(self, "_claim_fixture_map", {})
+        if pair not in fixtures:
+            raise ValueError("Unregistered claim fixture pair; refusing output")
+        return ClaimComparisonOutput.model_validate(fixtures[pair])
 
     def _local_stub(self, payload):
         current = payload["current_excerpt"]
