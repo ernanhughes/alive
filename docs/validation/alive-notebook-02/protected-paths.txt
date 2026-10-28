@@ -1,0 +1,3 @@
+Baseline: 937bdcdadd82e5fa5035a57ebe564318557621e0
+PASS: existing canonical docs, archives, extension, migrations, experiments, research memory/ranker/relationship services, Governor/approval/budget paths and notebook source/content/manifest unchanged.
+PASS: executed implementation file hashes match delivered source bytes (LF normalized).

@@ -1,0 +1,13 @@
+Hosted notebook job
+https://github.com/ernanhughes/alive/actions/runs/40780798558/job/123141695188
+Implementation commit: 1a2cbe4aa36ff3cc5be0cedfa92690e2bd414fa6
+Conclusion: success
+Selected relevant lines from hosted log:
+2026-10-28T22:33:11.3350405Z provenance OK
+2026-10-28T22:33:16.7213251Z 30 passed, 1 skipped, 1 xfailed in 2.74s
+2026-10-28T22:33:18.2795246Z ℹ tests 2
+2026-10-28T22:33:18.2795697Z ℹ pass 2
+2026-10-28T22:33:18.2795816Z ℹ fail 0
+2026-10-28T22:33:18.2796088Z ℹ skipped 0
+2026-10-28T22:33:18.2869523Z ##[group]Run uv run python -m scripts.notebook02_evaluation --output "$RUNNER_TEMP/notebook02-evaluation.json"
+2026-10-28T22:33:21.3394741Z Evidence: /home/runner/work/_temp/notebook02-evaluation.json
