@@ -1,0 +1,8 @@
+archives\ALIVE-14-R5-R1\evidence\test_review12.py:2:1: unformatted: File would be reformatted
+archives\ALIVE-14-R5\evidence\review11_probe.py:2:1: unformatted: File would be reformatted
+docs\ALIVE-DEMO-01-PR-C-CLAUDE-REVIEW.md:173:23: unformatted: File would be reformatted
+docs\i1a_attacks.py:3:1: unformatted: File would be reformatted
+docs\validator_attacks.py:4:1: unformatted: File would be reformatted
+skill_forge\__init__.py:5:1: unformatted: File would be reformatted
+skill_forge\runtime.py:6:1: unformatted: File would be reformatted
+7 files would be reformatted, 298 files already formatted

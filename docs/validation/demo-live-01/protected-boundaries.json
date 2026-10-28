@@ -14,5 +14,6 @@
     "VERIFIED ALIVE-14 protocol reconciliation: git-blob-LF=01165f12a54e2ec2c60a6e9d39fcd19054a69ae3e3278740bf4de47991492d9b original-CRLF=56a85e66219425387ca42465ad2f3435be0b9af1652ba484fd7e5836cf54baf5; original archive manifest/evidence preserved",
     "VERIFIED ALIVE-14-R2 protocol canonical LF hash bd08e2e6b9e7f4804af16daaca5b5a12a2d07d83eb19ae082527ef1da2add5dc",
     "VERIFIED ALIVE-14-R3 protocol canonical LF hash 85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b\nVERIFIED ALIVE-14-R3 answer-key canonical LF hash 255e706dd569634d1710a50831f65a6dd6eb7dabc5ee56e1cd763b382554b43d"
-  ]
+  ],
+  "final_implementation_commit": "d2eeced2843624583760f099b870092d31565840"
 }

@@ -1,5 +1,5 @@
 {
-  "source_commit": "744f087e4b9ab28d59408abeca1b4857133fa829",
+  "source_commit": "d2eeced2843624583760f099b870092d31565840",
   "source_status_before_run": "",
   "platform": "Windows-11-10.0.26300-SP0",
   "shipped_permissions": [
@@ -9,7 +9,7 @@
     "sidePanel"
   ],
   "harness_host_permissions": [
-    "http://127.0.0.1:61128/*"
+    "http://127.0.0.1:50455/*"
   ],
   "external_model_calls": 0,
   "paid_inference_spend_usd": 0,
@@ -55,8 +55,8 @@
   "panel": {
     "presentation": "native side panel target",
     "side_panel_registration_ready": true,
-    "action_target_id": "CE36452AC9B230D16E4913A2F49C82A6",
-    "panel_target_id": "06F12FCFA6A986127148074B5A2B2369",
+    "action_target_id": "05061D5A2ED57F0EAA725A0B46372C35",
+    "panel_target_id": "3C4ADA100F62A3DB29FF92A093BF056B",
     "panel_opened_as_ordinary_tab": false,
     "panel_behavior": {
       "openPanelOnActionClick": true
