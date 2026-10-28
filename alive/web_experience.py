@@ -112,8 +112,8 @@ class ExperimentDispatch(Strict):
 class RelationshipPreviewRequest(Strict):
     snapshot_id: str
     research_id: str | None = None
-    provider: Literal["local_stub", "local_stub_invalid", "meta"] = "local_stub"
-    analysis_mode: Literal["current_only", "history_assisted", "paired"] = "history_assisted"
+    provider: Literal["local_stub", "local_stub_invalid", "local_fixture_claim", "meta"] = "local_stub"
+    analysis_mode: Literal["current_only", "history_assisted", "paired", "claim_comparison"] = "history_assisted"
     research_question: str | None = Field(default=None, max_length=1000)
     experiment: ExperimentDispatch | None = None
 
