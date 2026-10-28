@@ -1,0 +1,26 @@
+schema_version: alive.skill.v0-proposal
+id: org.alive.evidence-qualification
+version: 0.1.0
+display_name: Evidence Qualification
+kind: deterministic
+description: Qualify source-linked remembered constraints against current context.
+capabilities:
+  - current_authorized_snapshot.read
+  - goal_research_memory.retrieve
+  - source_quote.validate
+inputs:
+  - current_snapshot_ref
+  - goal_id
+  - memory_refs
+outputs:
+  - source_evidence
+  - relevance
+  - applicability
+  - currency
+  - qualification_reason_codes
+  - proposed_outcome
+limits:
+  max_memories: 3
+  max_source_excerpt_chars: 2000
+  model_calls: 0
+side_effects: []

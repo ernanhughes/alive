@@ -1,0 +1,19 @@
+schema_version: alive.demo.v0-proposal
+id: kestrel-memory-helps
+synthetic: true
+disclaimer: Invented examples. Not an ALIVE experimental result.
+goal: Review Kestrel-3 compaction proposal.
+current:
+  source: https://design-review.example/kestrel-3
+  text: "Proposal: run Kestrel-3 compaction continuously to keep write amplification low."
+memory:
+  source: https://runbooks.example/kestrel-3-v5
+  active: true
+  authorized: true
+  text: "Kestrel-3 runbook v5: continuous compaction can starve foreground writes and must be rate-limited."
+expected:
+  outcome: connection_candidate
+  current_quote: "run Kestrel-3 compaction continuously"
+  memory_quote: "must be rate-limited"
+  reason_codes: [applicable_constraint_missing]
+  next_step: Ask how foreground writes are protected.
