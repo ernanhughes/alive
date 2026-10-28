@@ -202,6 +202,94 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
       if (!goalId) throw new Error('Select a research goal before checking evidence');
       return send('/browser-experience/research/relationships?goal_id=' + encodeURIComponent(goalId));
     }
+    if (message.type === 'live-context') {
+      const { goalId } = await chrome.storage.local.get('goalId');
+      const { selected, latest } = await chrome.storage.session.get(['selected', 'latest']);
+      if (!goalId) return { goal: null, current: null, related: [], findings: [] };
+      const [state, memoryListing, ledger] = await Promise.all([
+        send('/browser-experience'),
+        send('/browser-experience/research/memories?goal_id=' + encodeURIComponent(goalId)),
+        send('/browser-experience/research/relationships?goal_id=' + encodeURIComponent(goalId)),
+      ]);
+      const memories = memoryListing.memories;
+      const current = selected?.snapshot?.data?.goal_id === goalId ? selected.snapshot : null;
+      let related = [];
+      if (current) {
+        try {
+          related = (await send('/browser-experience/research/retrieve', {
+            snapshot_id: current.id, mode: 'text',
+          })).results.filter(row => row.reliance_anchor?.quote && !row.same_source);
+        } catch { /* Expired page permission cannot grant a new comparison. */ }
+      }
+      return { goal: state.goals.find(row => row.id === goalId), current,
+        captured: latest?.payload || null,
+        memory: current ? memories.find(row => row.data.sha256 === current.data.sha256 && row.data.url === current.data.url) : null,
+        related, findings: ledger.connections.filter(row => row.data.analysis_version === 'alive-demo01-claim-v2' && row.data.owner_useful !== false),
+        analyses: ledger.analyses.filter(row => row.data.analysis_mode === 'claim_comparison') };
+    }
+    if (message.type === 'live-selection') {
+      const { observedTab, observedUrl, grantId, latest } = await chrome.storage.session.get(['observedTab', 'observedUrl', 'grantId', 'latest']);
+      const { goalId } = await chrome.storage.local.get('goalId');
+      if (!goalId || !grantId || !latest || latest.payload.capture_format_version !== 2)
+        throw new Error('Select an investigation and authorise this page before remembering a passage.');
+      if ((await chrome.tabs.get(observedTab)).url !== observedUrl) throw new Error('Page changed; authorise it again.');
+      const values = await chrome.scripting.executeScript({ target: { tabId: observedTab }, func: () => {
+        const selection = window.getSelection();
+        if (!selection?.rangeCount || selection.isCollapsed) return null;
+        const content = document.querySelector('main,article,[role="main"]') || document.body;
+        return globalThis.__aliveCaptureV2(content, 3000, selection.getRangeAt(0));
+      }});
+      const value = values[0]?.result;
+      if (!value?.selection?.quote) throw new Error('Select visible text inside the retained source excerpt.');
+      if (value.text !== latest.payload.text) throw new Error('Capture changed; review this source again.');
+      const { memories } = await send('/browser-experience/research/memories?goal_id=' + encodeURIComponent(goalId));
+      const expectedSha = await sha(value.text);
+      const memory = memories.find(row => row.data.sha256 === expectedSha && row.data.url === observedUrl);
+      return { ...value.selection, reviewed: latest.payload, expected_sha256: expectedSha,
+        expected_revision: memory?.data?.reliance_anchor?.revision || 0,
+        previous_anchor: memory?.data?.reliance_anchor || null,
+        goal_id: goalId, source_identity: memory?.data?.source_identity || null };
+    }
+    if (message.type === 'live-remember') {
+      const { observedTab, observedUrl, grantId, latest } = await chrome.storage.session.get(['observedTab', 'observedUrl', 'grantId', 'latest']);
+      const { goalId } = await chrome.storage.local.get('goalId');
+      if (!latest || !grantId || message.proposal?.goal_id !== goalId ||
+          JSON.stringify(message.proposal.reviewed) !== JSON.stringify(latest.payload) ||
+          await sha(latest.payload.text) !== message.proposal.expected_sha256 ||
+          (await chrome.tabs.get(observedTab)).url !== observedUrl)
+        throw new Error('Source or investigation changed. Select the passage again.');
+      const snapshot = await send('/browser-experience/snapshots', {
+        grant_id: grantId, url: observedUrl, title: latest.payload.title,
+        text: latest.payload.text, reviewed_sha256: message.proposal.expected_sha256,
+        capture_format_version: 2, capture_entries: latest.payload.capture_entries || [],
+      });
+      const memory = await send('/browser-experience/research/memories', { snapshot_id: snapshot.snapshot.id });
+      const anchored = await send('/browser-experience/research/memories/' + memory.id + '/anchor', {
+        quote: message.proposal.quote, occurrence_start: message.proposal.occurrence_start,
+        expected_sha256: message.proposal.expected_sha256, expected_revision: message.proposal.expected_revision,
+      });
+      await chrome.storage.session.set({ selected: snapshot });
+      return anchored;
+    }
+    if (message.type === 'live-preview') {
+      const { selected } = await chrome.storage.session.get('selected');
+      const { goalId } = await chrome.storage.local.get('goalId');
+      if (!selected?.snapshot?.id || selected.snapshot.data.goal_id !== goalId)
+        throw new Error('Review a source in the active investigation first.');
+      return send('/browser-experience/research/outbound/preview', {
+        snapshot_id: selected.snapshot.id, research_id: message.memoryId,
+        analysis_mode: 'claim_comparison', provider: 'local_fixture_claim',
+      });
+    }
+    if (message.type === 'live-cancel')
+      return send('/browser-experience/research/outbound/' + encodeURIComponent(message.consentId) + '/revoke', {});
+    if (message.type === 'live-feedback') {
+      const { goalId } = await chrome.storage.local.get('goalId');
+      const ledger = await send('/browser-experience/research/relationships?goal_id=' + encodeURIComponent(goalId || ''));
+      if (!goalId || !ledger.connections.some(row => row.id === message.connectionId && row.data.analysis_version === 'alive-demo01-claim-v2'))
+        throw new Error('This finding is not active in the selected investigation.');
+      return send('/browser-experience/research/connections/' + message.connectionId + '/feedback', { useful: message.useful });
+    }
     if (message.type === 'campaigns') return send('/browser-experience/research/experiment/campaigns');
     if (message.type === 'campaign-state') {
       if (!message.digest) throw new Error('Select a campaign');
