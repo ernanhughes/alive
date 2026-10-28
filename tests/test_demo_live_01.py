@@ -318,3 +318,26 @@ def test_real_fixture_cannot_bypass_identity_by_downgrading_to_capture_v1(client
     assert result["analysis"]["data"]["error"] == "PermissionError"
     assert result["connection"] is None
     assert result["analysis"]["data"]["charged_tokens"] == 0
+
+
+def test_legacy_named_other_method_is_not_a_supersession():
+    historical = "Return the current UTC time."
+    current_quote = "Return the local date and time."
+    basis = "utcfromtimestamp() is deprecated since 3.12."
+    output = ClaimComparisonOutput(
+        relationship="explicit_supersession",
+        claim_aspect="status",
+        historical_claim_quote=historical,
+        current_claim_quote=current_quote,
+        supersession_basis_quote=basis,
+        scope_alignment="same",
+        scope_note="Unverified scope.",
+        reason="A constructed wrong-method attack.",
+        limitations="No entity binding supplied.",
+        confidence=0.4,
+    )
+    result = validate_claim(
+        output, {"historical_excerpt": historical, "current_excerpt": current_quote + " " + basis}
+    )
+    assert result["decision"] == "demoted"
+    assert "supersession_named_subject_not_bound" in result["reasons"]

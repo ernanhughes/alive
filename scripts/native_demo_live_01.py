@@ -256,7 +256,8 @@ async def main():
                 await panel.click("#live-refresh")
                 await panel.wait(
                     "!document.querySelector('[data-finding-id]') && "
-                    "document.querySelector('#live-content').textContent.includes('Check against new evidence')"
+                    "document.querySelector('#live-content')"
+                    ".textContent.includes('Check against new evidence')"
                 )
                 await click(panel, "Check against new evidence")
                 await panel.wait(

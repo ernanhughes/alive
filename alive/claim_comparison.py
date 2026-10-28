@@ -209,6 +209,11 @@ def validate_claim(output: ClaimComparisonOutput, payload: dict) -> dict:
             demotions.append("conflict_scope_or_novelty_unverified")
     if output.relationship == "explicit_supersession":
         basis = output.supersession_basis_quote or ""
+        marker = SUPERSESSION.search(basis)
+        if marker:
+            named_subjects = re.findall(r"\b([A-Za-z_][\w.]*)\s*\([^)]*\)", basis[: marker.start()])
+            if named_subjects and not all(subject in h for subject in named_subjects):
+                demotions.append("supersession_named_subject_not_bound")
         span = _span(current, basis)
         if (
             not span
