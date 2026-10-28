@@ -1,0 +1,36 @@
+{
+  "id": "634c2471-92fb-4069-b245-9f24cf561432",
+  "instance_id": "0b02d74d-8b64-41c7-bb9d-4bdf7d12e2c4",
+  "kind": "research_experiment_approval",
+  "parent_id": "8000bc87-69cc-410d-9f2f-753def2694dd",
+  "status": "active",
+  "data": {
+    "approval_id": "afa9c24a-6819-4757-b468-e62a49269f33",
+    "campaign_digest": "795f2b9e969a507357886a7e6ed47b757c22e3d735c68595aa8e6d3ddc30fe25",
+    "run_id": "alive14-r5-synthetic-85fe891cee31",
+    "protocol_sha256": "85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b",
+    "provider": "local_stub",
+    "model": "deterministic-local-stub-v1",
+    "stage": 2,
+    "stage_contract": {
+      "stage": 2,
+      "call_cap": 18,
+      "index_start": 2,
+      "index_end": 18,
+      "reserved_tokens": 92490,
+      "max_usd": 0.39309
+    },
+    "call_cap": 18,
+    "max_input_tokens": 92490,
+    "max_output_tokens": 1536,
+    "max_usd": 0.39309,
+    "no_retries": true,
+    "human_attestation": false,
+    "synthetic": true,
+    "provenance": "synthetic_owner_endpoint",
+    "approved_by": "synthetic_local_runner",
+    "approved_at": "2026-10-28T16:58:34.513197+00:00",
+    "status": "active"
+  },
+  "created_at": "2026-10-28T16:58:34.515933"
+}
