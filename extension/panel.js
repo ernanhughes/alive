@@ -623,6 +623,10 @@ $('withdraw-research').onclick = () => action(async () => {
   $('withdraw-research').disabled = true;
   $('research-results').replaceChildren();
   $('connection').textContent = '';
+  $('outbound').replaceChildren();
+  $('relationship-feedback').replaceChildren();
+  $('evidence-cards').replaceChildren();
+  $('evidence-indicator').textContent = 'Research withdrawn; refresh to inspect remaining findings.';
   $('research-status').textContent = 'Research memory withdrawn; it will not be retrieved or reindexed.';
 });
 for (const [id, useful] of [['connection-useful', true], ['connection-not-useful', false]]) {
