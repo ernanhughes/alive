@@ -20,9 +20,9 @@ from alive.cognitive_api import public_router, router
 from alive.config import Settings, prepare_local
 from alive.db import Database
 from alive.experiment.api import router as experiment_router
-from alive.exploration_api import router as exploration_router
 from alive.experiment_approval import ExperimentApprovals
 from alive.experiment_budget import BudgetedExperiments as Experiments
+from alive.exploration_api import router as exploration_router
 from alive.kernel import Kernel, envelope
 from alive.learning.api import router as learning_router
 from alive.living import Living

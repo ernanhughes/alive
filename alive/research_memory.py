@@ -312,11 +312,14 @@ class ResearchMemory:
         if projection:
             projection.metadata_json = projection.metadata_json | {"owner_useful": usefulness}
 
-    async def anchor(self, research_id, quote, expected_sha256, expected_revision,
-                     occurrence_start=None):
+    async def anchor(
+        self, research_id, quote, expected_sha256, expected_revision, occurrence_start=None
+    ):
         """Compare-and-swap an exact owner-selected source passage."""
         import unicodedata
+
         from alive.claim_comparison import _bounded_sentence
+
         if not 16 <= len(quote) <= 300 or any(
             unicodedata.category(char) in ("Cc", "Cf") for char in quote
         ):
@@ -343,32 +346,53 @@ class ResearchMemory:
             if not offsets:
                 raise AnchorValidationError("Anchor quote not present in saved excerpt")
             if occurrence_start is None and len(offsets) != 1:
-                raise AnchorValidationError("Ambiguous anchor; choose an occurrence offset: " + repr(offsets))
+                raise AnchorValidationError(
+                    "Ambiguous anchor; choose an occurrence offset: " + repr(offsets)
+                )
             start = offsets[0] if occurrence_start is None else occurrence_start
             if start not in offsets or not _bounded_sentence(excerpt, quote, start):
                 raise AnchorValidationError("Anchor occurrence is invalid or not sentence-bounded")
             new_revision = revision + 1
-            row.data = row.data | {"reliance_anchor": {
-                "quote": quote, "start": start, "end": start + len(quote),
-                "source_sha256": expected_sha256, "revision": new_revision,
-                "anchored_at": now().isoformat(),
-            }}
+            row.data = row.data | {
+                "reliance_anchor": {
+                    "quote": quote,
+                    "start": start,
+                    "end": start + len(quote),
+                    "source_sha256": expected_sha256,
+                    "revision": new_revision,
+                    "anchored_at": now().isoformat(),
+                }
+            }
             from alive.research_relationships import (
-                CONSENT_KIND, ATTEMPT_KIND, CONNECTION_KIND, CURRENT_ANALYSIS_KIND,
-                PAIRED_ANALYSIS_KIND, ResearchRelationships,
+                ATTEMPT_KIND,
+                CONNECTION_KIND,
+                CONSENT_KIND,
+                CURRENT_ANALYSIS_KIND,
+                PAIRED_ANALYSIS_KIND,
+                ResearchRelationships,
             )
+
             affected = set()
             for consent in await self.web.rows(session, CONSENT_KIND):
                 payload = consent.data.get("payload") or {}
                 bound = payload.get("reliance") or {}
-                if (payload.get("historical_memory_id") == research_id
-                        and bound and bound.get("revision", 0) < new_revision):
+                if (
+                    payload.get("historical_memory_id") == research_id
+                    and bound
+                    and bound.get("revision", 0) < new_revision
+                ):
                     affected.add(consent.id)
-            for kind in (CONSENT_KIND, ATTEMPT_KIND, CONNECTION_KIND,
-                         CURRENT_ANALYSIS_KIND, PAIRED_ANALYSIS_KIND):
+            for kind in (
+                CONSENT_KIND,
+                ATTEMPT_KIND,
+                CONNECTION_KIND,
+                CURRENT_ANALYSIS_KIND,
+                PAIRED_ANALYSIS_KIND,
+            ):
                 for dependent in await self.web.rows(session, kind):
-                    if (dependent.id if kind == CONSENT_KIND else
-                            dependent.data.get("consent_id")) not in affected:
+                    if (
+                        dependent.id if kind == CONSENT_KIND else dependent.data.get("consent_id")
+                    ) not in affected:
                         continue
                     if kind == ATTEMPT_KIND and dependent.status == "reserved":
                         dependent.data = dependent.data | {"anchor_revised_during_dispatch": True}
@@ -377,8 +401,11 @@ class ResearchMemory:
                         "invalid_reason": "anchor_revised",
                     }
                     dependent.status = "invalidated"
-            self.k.add_event(session, "research.anchor_set",
-                             {"research_memory_id": research_id, "revision": new_revision})
+            self.k.add_event(
+                session,
+                "research.anchor_set",
+                {"research_memory_id": research_id, "revision": new_revision},
+            )
             return record(row)
 
     async def withdraw(self, research_id):
@@ -416,32 +443,37 @@ class ResearchMemory:
             # API consumers must never observe a retired source with an active
             # dependent finding. This is not a second copy of the source.
             from alive.research_relationships import (
-                ATTEMPT_KIND, CONSENT_KIND, CURRENT_ANALYSIS_KIND,
-                PAIRED_ANALYSIS_KIND, ResearchRelationships,
+                ATTEMPT_KIND,
+                CONSENT_KIND,
+                CURRENT_ANALYSIS_KIND,
+                PAIRED_ANALYSIS_KIND,
+                ResearchRelationships,
             )
 
             affected_consents = {
-                item.id for item in await self.web.rows(session, CONSENT_KIND)
+                item.id
+                for item in await self.web.rows(session, CONSENT_KIND)
                 if item.data.get("historical_memory_id") == research_id
             }
             dependent_kinds = (
-                CONSENT_KIND, ATTEMPT_KIND, CONNECTION_KIND,
-                CURRENT_ANALYSIS_KIND, PAIRED_ANALYSIS_KIND,
+                CONSENT_KIND,
+                ATTEMPT_KIND,
+                CONNECTION_KIND,
+                CURRENT_ANALYSIS_KIND,
+                PAIRED_ANALYSIS_KIND,
             )
             for kind in dependent_kinds:
                 for dependent in await self.web.rows(session, kind):
-                    if (dependent.data.get("historical_memory_id") != research_id
-                            and dependent.data.get("consent_id") not in affected_consents):
+                    if (
+                        dependent.data.get("historical_memory_id") != research_id
+                        and dependent.data.get("consent_id") not in affected_consents
+                    ):
                         continue
                     if kind == ATTEMPT_KIND and dependent.status == "reserved":
-                        dependent.data = dependent.data | {
-                            "source_revoked_during_dispatch": True
-                        }
+                        dependent.data = dependent.data | {"source_revoked_during_dispatch": True}
                         continue
                     if dependent.status != "invalidated":
-                        dependent.data = ResearchRelationships._scrub_withdrawn_data(
-                            dependent.data
-                        )
+                        dependent.data = ResearchRelationships._scrub_withdrawn_data(dependent.data)
                         dependent.status = "invalidated"
             self.k.add_event(
                 session,

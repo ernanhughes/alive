@@ -112,8 +112,12 @@ class ExperimentDispatch(Strict):
 class RelationshipPreviewRequest(Strict):
     snapshot_id: str
     research_id: str | None = None
-    provider: Literal["local_stub", "local_stub_invalid", "local_fixture_claim", "meta"] = "local_stub"
-    analysis_mode: Literal["current_only", "history_assisted", "paired", "claim_comparison"] = "history_assisted"
+    provider: Literal["local_stub", "local_stub_invalid", "local_fixture_claim", "meta"] = (
+        "local_stub"
+    )
+    analysis_mode: Literal["current_only", "history_assisted", "paired", "claim_comparison"] = (
+        "history_assisted"
+    )
     research_question: str | None = Field(default=None, max_length=1000)
     experiment: ExperimentDispatch | None = None
 
@@ -1328,12 +1332,16 @@ def router(app, ready):
     @api.post("/research/memories/{research_id}/anchor")
     async def anchor_research(research_id: str, data: ResearchAnchorRequest):
         from fastapi import HTTPException
+
         from alive.research_memory import AnchorValidationError
 
         try:
             return await app.state.research.anchor(
-                research_id, data.quote, data.expected_sha256,
-                data.expected_revision, data.occurrence_start,
+                research_id,
+                data.quote,
+                data.expected_sha256,
+                data.expected_revision,
+                data.occurrence_start,
             )
         except AnchorValidationError as exc:
             raise HTTPException(422, str(exc)) from exc

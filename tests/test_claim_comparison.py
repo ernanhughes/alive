@@ -1,6 +1,6 @@
 """Deterministic C1 contract checks; no provider calls."""
-from alive.claim_comparison import ClaimComparisonOutput, validate_claim
 
+from alive.claim_comparison import ClaimComparisonOutput, validate_claim
 
 H = "The interface is recommended for all clients."
 C = "The interface is deprecated in version 3.12."
@@ -36,7 +36,9 @@ def test_recency_without_explicit_basis_abstains():
 
 
 def test_invented_quote_is_rejected():
-    assert validate_claim(example(current_claim_quote="Not in source."), P)["decision"] == "rejected"
+    assert (
+        validate_claim(example(current_claim_quote="Not in source."), P)["decision"] == "rejected"
+    )
 
 
 def test_conflict_requires_same_scope():
@@ -54,7 +56,8 @@ def test_truncated_quote_cannot_drop_negation():
     current = "Caching improves recall."
     payload = {"historical_excerpt": historical, "current_excerpt": current}
     item = example(
-        relationship="supports", historical_claim_quote="caching improves recall.",
+        relationship="supports",
+        historical_claim_quote="caching improves recall.",
         current_claim_quote=current,
     )
     assert validate_claim(item, payload)["decision"] == "rejected"
@@ -66,7 +69,8 @@ def test_overconfident_abstention_rejected():
 
 
 def test_extra_schema_fields_disallowed():
-    from pydantic import ValidationError
     import pytest
+    from pydantic import ValidationError
+
     with pytest.raises(ValidationError):
         ClaimComparisonOutput(**(example().model_dump() | {"secret": "unexpected"}))

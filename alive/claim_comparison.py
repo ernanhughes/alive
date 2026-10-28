@@ -3,6 +3,7 @@
 Verifies exact source provenance and structural requirements, never semantic truth.
 No network or model access.
 """
+
 from __future__ import annotations
 
 import re
@@ -17,20 +18,24 @@ QUALIFIER = re.compile(r"\b(?:only|unless|except)\b", re.I)
 ASSERTIVE = re.compile(r"\b(?:proves?|confirmed?|definitely|certainly|verified)\b", re.I)
 SUPERSESSION = re.compile(
     r"\b(?:deprecated since|deprecated in|is deprecated|superseded by|replaced by|"
-    r"no longer recommended|removed in|erratum|retracted)\b|\bcorrection:", re.I,
+    r"no longer recommended|removed in|erratum|retracted)\b|\bcorrection:",
+    re.I,
 )
 SIGNATURE = re.compile(
     r"\b(?:classmethod|staticmethod|class|method|function|attribute|property|exception)\s+[A-Za-z_][\w.]*",
 )
-ABBREVIATIONS = ("e.g.", "i.e.", "etc.", "vs.", "cf.", "fig.", "no.",
-                 "dr.", "mr.", "ms.")
+ABBREVIATIONS = ("e.g.", "i.e.", "etc.", "vs.", "cf.", "fig.", "no.", "dr.", "mr.", "ms.")
 
 
 class ClaimComparisonOutput(BaseModel):
     model_config = ConfigDict(extra="forbid", strict=True)
     relationship: Literal[
-        "supports", "conflicts", "qualifies", "explicit_supersession",
-        "unrelated", "insufficient_evidence"
+        "supports",
+        "conflicts",
+        "qualifies",
+        "explicit_supersession",
+        "unrelated",
+        "insufficient_evidence",
     ]
     claim_aspect: Literal["behaviour", "recommendation", "status", "measurement", "other"]
     historical_claim_quote: str | None = Field(default=None, max_length=300)
@@ -126,7 +131,9 @@ def validate_claim(output: ClaimComparisonOutput, payload: dict) -> dict:
     if h == c and output.relationship != "supports":
         errors.append("identical_quotes_cannot_establish_change")
     if output.relationship == "supports":
-        if bool(NEGATOR.search(h)) != bool(NEGATOR.search(c)) or bool(QUALIFIER.search(h)) != bool(QUALIFIER.search(c)):
+        if bool(NEGATOR.search(h)) != bool(NEGATOR.search(c)) or bool(QUALIFIER.search(h)) != bool(
+            QUALIFIER.search(c)
+        ):
             errors.append("asymmetric_negation_or_qualification")
     if ASSERTIVE.search(output.reason):
         errors.append("assertive_reason")
@@ -142,35 +149,46 @@ def validate_claim(output: ClaimComparisonOutput, payload: dict) -> dict:
             demotions.append("invalid_anchor_contract")
         else:
             start, end, quote = anchor.get("start"), anchor.get("end"), anchor.get("quote")
-            if (not isinstance(start, int) or not isinstance(end, int) or
-                    not isinstance(quote, str) or historical[start:end] != quote or
-                    not hspan or not (hspan[0] <= start and hspan[1] >= end or
-                                      start <= hspan[0] and end >= hspan[1])):
+            if (
+                not isinstance(start, int)
+                or not isinstance(end, int)
+                or not isinstance(quote, str)
+                or historical[start:end] != quote
+                or not hspan
+                or not (
+                    hspan[0] <= start and hspan[1] >= end or start <= hspan[0] and end >= hspan[1]
+                )
+            ):
                 demotions.append("historical_quote_misses_reliance_anchor")
     if output.relationship == "conflicts":
         if output.scope_alignment != "same" or c in historical:
             demotions.append("conflict_scope_or_novelty_unverified")
     if output.relationship == "explicit_supersession":
         basis = output.supersession_basis_quote or ""
-        occurrences = _occurrences(current, basis)
         span = _span(current, basis)
-        if (not span or not _boundary(current, *span) or
-                not SUPERSESSION.search(basis) or NEGATOR.search(basis) or
-                basis in historical or output.claim_aspect not in ("status", "recommendation")):
+        if (
+            not span
+            or not _boundary(current, *span)
+            or not SUPERSESSION.search(basis)
+            or NEGATOR.search(basis)
+            or basis in historical
+            or output.claim_aspect not in ("status", "recommendation")
+        ):
             demotions.append("supersession_basis_not_authoritative")
         else:
             # Compare against *all* marker-bearing sentences after the anchored subject.
             anchor_at = current.find(h) if h in current else cspan[0]
             match_positions = [
-                m.start() for m in SUPERSESSION.finditer(current)
-                if m.start() >= anchor_at
+                m.start() for m in SUPERSESSION.finditer(current) if m.start() >= anchor_at
             ]
-            between = current[anchor_at:span[0]]
-            if SIGNATURE.search(between[len(h) if h in current else 0:]):
+            between = current[anchor_at : span[0]]
+            if SIGNATURE.search(between[len(h) if h in current else 0 :]):
                 demotions.append("another_subject_between_anchor_and_basis")
-            if (not match_positions or
-                    span[0] - anchor_at > 1200 or
-                    not (span[0] <= match_positions[0] < span[1])):
+            if (
+                not match_positions
+                or span[0] - anchor_at > 1200
+                or not (span[0] <= match_positions[0] < span[1])
+            ):
                 demotions.append("supersession_basis_not_nearest_to_subject")
     if demotions:
         return _result("demoted", "insufficient_evidence", demotions, retained)

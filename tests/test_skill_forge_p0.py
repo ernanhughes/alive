@@ -54,9 +54,7 @@ def test_requires_approval_and_explicit_invocation(tmp_path):
     assert seen == ["query", "display"]
     registry.set_enabled("research-connections", False)
     with pytest.raises(SkillError):
-        execute_requested_skill(
-            registry, "research-connections", handlers, owner_requested=True
-        )
+        execute_requested_skill(registry, "research-connections", handlers, owner_requested=True)
     registry.close()
 
 
@@ -78,8 +76,7 @@ def test_graph_provenance_and_candidate_status(tmp_path):
     graph.add_node("hci-inquiry", "inquiry", "HCI for ALIVE", "owner declaration")
     graph.add_node("adaptive-ui", "concept", "Adaptive interfaces", "page observation")
     graph.add_edge(
-        "link-001", "hci-inquiry", "adaptive-ui",
-        "explores", "source:https://example.org/paper"
+        "link-001", "hci-inquiry", "adaptive-ui", "explores", "source:https://example.org/paper"
     )
     edges = graph.neighborhood("hci-inquiry")
     assert edges[0]["status"] == "candidate"

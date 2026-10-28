@@ -3,6 +3,7 @@
 Project directly from ALIVE-12 research memories on every request. This deliberately
 avoids another store that could retain withdrawn browser content.
 """
+
 from __future__ import annotations
 
 import hashlib
@@ -27,10 +28,15 @@ def project_inquiry(goal_id: str, goal_instruction: str, memories: list) -> dict
     if len(memories) > MAX_SOURCES:
         raise ValueError("projection input exceeds limit")
     inquiry_id = _node_id("inquiry", goal_id)
-    nodes = [{
-        "id": inquiry_id, "kind": "inquiry", "label": goal_instruction[:300],
-        "source_ref": goal_id, "status": "owner_declared",
-    }]
+    nodes = [
+        {
+            "id": inquiry_id,
+            "kind": "inquiry",
+            "label": goal_instruction[:300],
+            "source_ref": goal_id,
+            "status": "owner_declared",
+        }
+    ]
     edges = []
     common = Counter()
     source_terms: dict[str, set[str]] = {}
@@ -41,41 +47,61 @@ def project_inquiry(goal_id: str, goal_instruction: str, memories: list) -> dict
         source_terms[memory.id] = terms
         for term in terms:
             common[term] += 1
-        nodes.append({
-            "id": _node_id("source", memory.id),
-            "kind": "source",
-            "label": (data.get("title") or data.get("url") or "Reviewed source")[:300],
-            "source_ref": memory.id,
-            "url": data.get("url"),
-            "sha256": data.get("sha256"),
-            "status": "owner_saved",
-        })
-        edges.append({
-            "source_id": inquiry_id, "target_id": _node_id("source", memory.id),
-            "relation": "explores", "evidence_ref": memory.id,
-            "status": "owner_saved",
-        })
+        nodes.append(
+            {
+                "id": _node_id("source", memory.id),
+                "kind": "source",
+                "label": (data.get("title") or data.get("url") or "Reviewed source")[:300],
+                "source_ref": memory.id,
+                "url": data.get("url"),
+                "sha256": data.get("sha256"),
+                "status": "owner_saved",
+            }
+        )
+        edges.append(
+            {
+                "source_id": inquiry_id,
+                "target_id": _node_id("source", memory.id),
+                "relation": "explores",
+                "evidence_ref": memory.id,
+                "status": "owner_saved",
+            }
+        )
     # Require distinct sources to share a term before claiming a candidate concept.
     candidates = [
-        term for term, frequency in sorted(common.items(), key=lambda p: (-p[1], p[0]))
+        term
+        for term, frequency in sorted(common.items(), key=lambda p: (-p[1], p[0]))
         if frequency >= 2
     ][:MAX_CONCEPTS]
     for term in candidates:
         concept_id = _node_id("concept", goal_id + ":" + term)
-        nodes.append({
-            "id": concept_id, "kind": "concept", "label": term,
-            "source_ref": None, "status": "lexical_candidate",
-        })
+        nodes.append(
+            {
+                "id": concept_id,
+                "kind": "concept",
+                "label": term,
+                "source_ref": None,
+                "status": "lexical_candidate",
+            }
+        )
         for memory in memories:
             if term in source_terms[memory.id]:
-                edges.append({
-                    "source_id": _node_id("source", memory.id), "target_id": concept_id,
-                    "relation": "related_to", "evidence_ref": memory.id,
-                    "status": "candidate",
-                })
+                edges.append(
+                    {
+                        "source_id": _node_id("source", memory.id),
+                        "target_id": concept_id,
+                        "relation": "related_to",
+                        "evidence_ref": memory.id,
+                        "status": "candidate",
+                    }
+                )
     return {
-        "inquiry_id": inquiry_id, "goal_id": goal_id, "nodes": nodes, "edges": edges,
-        "source_count": len(memories), "truncated": False,
+        "inquiry_id": inquiry_id,
+        "goal_id": goal_id,
+        "nodes": nodes,
+        "edges": edges,
+        "source_count": len(memories),
+        "truncated": False,
         "interpretation": "Lexical candidate projection, not verified semantic relationships",
     }
 
@@ -120,11 +146,14 @@ def router(app, ready):
         async with web.k.db.sessions() as session:
             rows = (await web.rows(session, "goal"))[-limit:]
             return {
-                "inquiries": [{
-                    "goal_id": row.id,
-                    "label": row.data.get("instruction", "")[:300],
-                    "source": "owner_instruction",
-                } for row in rows]
+                "inquiries": [
+                    {
+                        "goal_id": row.id,
+                        "label": row.data.get("instruction", "")[:300],
+                        "source": "owner_instruction",
+                    }
+                    for row in rows
+                ]
             }
 
     return api
