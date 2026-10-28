@@ -215,7 +215,6 @@ async def main():
                     )
 
                 async def check():
-                    await panel.click("#live-review")
                     await panel.wait(
                         "document.querySelector('#live-content')"
                         ".textContent.includes('Check against new evidence')"

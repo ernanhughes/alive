@@ -167,9 +167,23 @@ async function showPreview(memoryId) {
     }));
 }
 el('live-authorise').onclick = () => run(async () => {
+  const { goalId } = await chrome.storage.local.get('goalId');
   await call('start');
   content.replaceChildren();
-  state('Page authorised. Select a passage, or review the captured source for related evidence.');
+  state('Page authorised · capturing the source for local review.');
+  let latest;
+  for (let attempt = 0; attempt < 60; attempt++) {
+    const captured = await chrome.storage.session.get(['latest', 'observedUrl']);
+    if (captured.latest?.payload.url === captured.observedUrl && captured.latest?.payload.text) {
+      latest = captured.latest; break;
+    }
+    await new Promise(resolve => setTimeout(resolve, 50));
+  }
+  if (!latest) throw new Error('Capture is not available yet. Review the captured source when ready.');
+  await assertGoal(goalId);
+  await call('send', { reviewed: latest.payload });
+  context = await call('live-context');
+  renderContext(context);
 });
 el('live-review').onclick = () => run(async () => {
   const { latest } = await chrome.storage.session.get('latest');

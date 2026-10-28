@@ -263,6 +263,7 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
         text: latest.payload.text, reviewed_sha256: message.proposal.expected_sha256,
         capture_format_version: 2, capture_entries: latest.payload.capture_entries || [],
       });
+      if (snapshot.snapshot.data.goal_id !== goalId) throw new Error('Investigation changed; authorise the page again.');
       const memory = await send('/browser-experience/research/memories', { snapshot_id: snapshot.snapshot.id });
       const anchored = await send('/browser-experience/research/memories/' + memory.id + '/anchor', {
         quote: message.proposal.quote, occurrence_start: message.proposal.occurrence_start,
@@ -272,10 +273,13 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
       return anchored;
     }
     if (message.type === 'live-preview') {
-      const { selected } = await chrome.storage.session.get('selected');
+      const { selected, latest, observedTab } = await chrome.storage.session.get(['selected', 'latest', 'observedTab']);
       const { goalId } = await chrome.storage.local.get('goalId');
       if (!selected?.snapshot?.id || selected.snapshot.data.goal_id !== goalId)
         throw new Error('Review a source in the active investigation first.');
+      if (!latest || await sha(latest.payload.text) !== selected.snapshot.data.sha256 ||
+          (await chrome.tabs.get(observedTab)).url !== selected.snapshot.data.url)
+        throw new Error('Capture changed; review this source again before checking evidence.');
       return send('/browser-experience/research/outbound/preview', {
         snapshot_id: selected.snapshot.id, research_id: message.memoryId,
         analysis_mode: 'claim_comparison', provider: 'local_fixture_claim',

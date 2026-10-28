@@ -11,7 +11,7 @@ function worker() {
   const calls = [], text = 'One sentence here. Remember this exact sentence.';
   const session = { observedTab: 1, observedUrl: 'http://127.0.0.1:8000/demo-live-01/python-3.11.html', grantId: 'grant',
     latest: { payload: { url: 'http://127.0.0.1:8000/demo-live-01/python-3.11.html', title: 'Mirror', text, capture_format_version: 2, capture_entries: [] } },
-    selected: { snapshot: { id: 'snapshot', data: { goal_id: 'g', sha256: sha(text) } } } };
+    selected: { snapshot: { id: 'snapshot', data: { goal_id: 'g', sha256: sha(text), url: 'http://127.0.0.1:8000/demo-live-01/python-3.11.html' } } } };
   const memory = { id: 'memory', data: { goal_id: 'g', url: session.observedUrl, sha256: sha(text), reliance_anchor: { revision: 7, quote: 'Old anchor.' } } };
   const chrome = { sidePanel: { setPanelBehavior() {} }, runtime: { id: 'test', getURL: p=>'chrome-extension://test/'+p,
     onMessage: { addListener(fn) { listener=fn; } } },
@@ -60,4 +60,10 @@ test('a changed selection source is refused before creating any snapshot or memo
   const w=worker();const proposal=(await w.command({type:'live-selection'})).data;w.calls.length=0;
   const r=await w.command({type:'live-remember',proposal:{...proposal,expected_sha256:'changed'}});
   assert.match(r.error,/Source or investigation changed/);assert.equal(w.calls.length,0);
+});
+
+test('live preview refuses stale captured text before authorization or dispatch',async()=>{
+  const w=worker();w.session.latest={payload:{text:'A changed captured source.'}};
+  const r=await w.command({type:'live-preview',memoryId:'memory'});
+  assert.match(r.error,/Capture changed/);assert.equal(w.calls.length,0);
 });
