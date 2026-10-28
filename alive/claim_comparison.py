@@ -20,7 +20,7 @@ SUPERSESSION = re.compile(
     r"no longer recommended|removed in|erratum|retracted)\b|\bcorrection:", re.I,
 )
 SIGNATURE = re.compile(
-    r"\\b(?:classmethod|staticmethod|class|method|function|attribute|property|exception)\\s+[A-Za-z_][\\w.]*",
+    r"\b(?:classmethod|staticmethod|class|method|function|attribute|property|exception)\s+[A-Za-z_][\w.]*",
 )
 ABBREVIATIONS = ("e.g.", "i.e.", "etc.", "vs.", "cf.", "fig.", "no.",
                  "dr.", "mr.", "ms.")
@@ -75,10 +75,10 @@ def _boundary(source: str, start: int, end: int) -> bool:
     if start == 0 or source[start - 1] == "\n":
         start_ok = True
     else:
-        match = re.search(r"[.!?]\\s+$", before)
+        match = re.search(r"[.!?]\s+$", before)
         tokens = before.rstrip().lower().split()
         start_ok = bool(match) and not (tokens and tokens[-1] in ABBREVIATIONS)
-        if match and re.search(r"\\d\\.$", before.rstrip()) and source[start].isdigit():
+        if match and re.search(r"\d\.$", before.rstrip()) and source[start].isdigit():
             start_ok = False
     if end == len(source) or source[end] == "\n":
         end_ok = True
