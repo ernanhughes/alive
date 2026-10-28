@@ -68,11 +68,13 @@ def test_qualified_sources_are_not_qualified_claims_and_retrieval_is_unchanged(c
         (r["memory_id"], r["retrieval_score"]) for r in after["results"]
     ]
     assert result.outcome == "abstain"
-    assert result.source_quotes_verified
+    assert result.quotes_requested is False
+    assert result.source_quotes_verified is None
     assert result.dimensions.source_integrity == "verified_retained_captures"
     for field in ("relevance", "claim_relationship", "applicability", "currency"):
         assert getattr(result.dimensions, field) == "unknown"
-    assert result.historical_source.quote in old["data"]["text"]
+    assert result.historical_source.displayed_excerpt in old["data"]["text"]
+    assert result.historical_source.quote is None
     assert result.semantic_judgement == "not_performed"
     assert not result.model_used
     assert result.inference_calls == result.token_usage == result.cost_micro_usd == 0
@@ -291,3 +293,82 @@ def test_qualification_adds_no_persistent_research_findings(client):
     qualify(client, body)
     qualify(client, body)
     assert asyncio.run(count()) == before
+
+
+@pytest.mark.parametrize("selection", [None, "The sensor trial", "An altered quotation"])
+def test_requested_quotes_are_distinct_from_automatic_excerpts(client, selection):
+    body, _, _, _ = pair(client)
+    if selection is not None:
+        body |= {"current_quote": selection}
+    result = qualify(client, body)
+    assert result["quotes_requested"] is (selection is not None)
+    assert result["historical_source"]["selection_method"] == "automatic_excerpt"
+    assert result["historical_source"]["quote_exact"] is None
+    if selection is None:
+        assert result["source_quotes_verified"] is None
+        ref = result["current_source"]
+        assert ref["displayed_excerpt"]
+        assert ref["quote"] is ref["quote_start"] is ref["quote_end"] is None
+    elif selection == "The sensor trial":
+        assert result["source_quotes_verified"] is True
+        ref = result["current_source"]
+        assert ref["selection_method"] == "caller_quote"
+        assert ref["quote_exact"] is True and ref["quote"] == selection
+        assert ref["displayed_excerpt"] is None
+    else:
+        assert result["source_quotes_verified"] is False
+        assert result["current_source"] is None
+        assert result["dimensions"]["source_integrity"] == "verified_retained_captures"
+        assert result["dimensions"]["evidence_sufficiency"] == "requested_quote_unverified"
+
+
+def test_both_requested_quotes_are_verified_without_semantic_claim(client):
+    body, _, _, _ = pair(client)
+    result = qualify(
+        client,
+        body
+        | {"current_quote": "The sensor trial", "historical_quote": "bounded laboratory result"},
+    )
+    assert result["source_quotes_verified"] is True
+    assert all(result[k]["quote_exact"] is True for k in ("current_source", "historical_source"))
+    assert result["outcome"] == "abstain"
+    assert result["semantic_judgement"] == "not_performed"
+
+
+def test_repeated_quote_reports_all_occurrences_and_first_match(client):
+    body, _, _, _ = pair(client, current="Repeated phrase. Repeated phrase. aaa")
+    result = qualify(client, body | {"current_quote": "Repeated phrase."})
+    ref = result["current_source"]
+    assert ref["quote_start"] == 0
+    assert ref["quote_occurrence_count"] == 2
+    assert ref["occurrence_selection"] == "first_exact_match"
+    overlap = qualify(client, body | {"current_quote": "aa"})["current_source"]
+    assert overlap["quote_occurrence_count"] == 2
+
+
+def test_misleading_title_does_not_inherit_body_or_quote_verification(client):
+    from alive.evidence_qualification import digest
+
+    text = "The pilot trial found no general improvement across populations."
+    body, _, _, _ = pair(client, current=text)
+    mutate(client, body["snapshot_id"], data={"title": "Universal improvement PROVEN"})
+    result = qualify(client, body | {"current_quote": "no general improvement"})
+    ref = result["current_source"]
+    assert result["dimensions"]["source_integrity"] == "verified_retained_captures"
+    assert result["source_quotes_verified"] is True
+    assert ref["sha256"] == digest(text)
+    assert "displayed_title" not in ref
+    assert ref["untrusted_presentation"] == {
+        "displayed_title": "Universal improvement PROVEN",
+        "integrity": "not_bound_to_capture_hash",
+        "semantic_validity": "unestablished",
+    }
+    assert result["dimensions"]["claim_relationship"] == "unknown"
+
+
+def test_current_url_must_be_allowlisted_even_when_grant_and_snapshot_match(client):
+    body, _, _, cg = pair(client)
+    url = "https://unlisted.invalid/research"
+    mutate(client, cg["id"], data={"url": url})
+    mutate(client, body["snapshot_id"], data={"url": url})
+    qualify(client, body, 404)

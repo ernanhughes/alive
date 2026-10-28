@@ -110,8 +110,14 @@ def run_case(client, case):
         ref = b[key]
         if ref:
             text = shot["data"]["text"][:2000]
-            assert text[ref["quote_start"] : ref["quote_end"]] == ref["quote"]
+            if ref["selection_method"] == "caller_quote":
+                assert ref["quote_exact"] is True
+                assert text[ref["quote_start"] : ref["quote_end"]] == ref["quote"]
+            else:
+                assert ref["displayed_excerpt"] == text[:300]
+                assert ref["quote"] is ref["quote_exact"] is None
             assert ref["sha256"] == hashlib.sha256(shot["data"]["text"].encode()).hexdigest()
+    assert b["quotes_requested"] is False and b["source_quotes_verified"] is None
     a = outputs["A"]["data"]
     for key, shot in (("current_quote", shots[1]), ("historical_quote", shots[0])):
         if a[key]:
@@ -127,46 +133,64 @@ def run_case(client, case):
     }
 
 
+def decision(output, arm):
+    """Map recorded API actions, without promoting lexical candidates to factual claims."""
+    if arm == "A":
+        if output["abstained"] is True:
+            return "abstain"
+        if output["abstained"] is False and output["data"]["status"] == "candidate":
+            return "candidate_connection"
+        raise ValueError("Unrecognized legacy decision")
+    outcome = output["outcome"]
+    if outcome not in ("abstain", "qualified_non_use", "candidate_connection"):
+        raise ValueError("Unrecognized qualification decision")
+    return outcome
+
+
 def score(records):
-    # Ground truth is intentionally absent from prepare_pair/run_case and all API inputs.
+    # Labels are only used after runtime decisions. Counts depend on recorded outcomes.
     labels = json.loads((FROZEN / "labels.json").read_text(encoding="utf-8"))
-    summary = {}
     positives = sum(labels[r["case_id"]]["useful_relationship"] for r in records)
     negatives = len(records) - positives
+    summary = {}
     for arm in ("A", "B", "D"):
-        declines = correct_declines = candidates = useful_candidates = 0
-        for r in records:
-            useful = labels[r["case_id"]]["useful_relationship"]
-            output = r["outputs"][arm]
-            decline = (
-                output["abstained"]
-                if arm == "A"
-                else (output["outcome"] in ("abstain", "qualified_non_use"))
-            )
-            declines += decline
-            correct_declines += bool(decline and not useful)
-            candidates += not decline
-            useful_candidates += bool(not decline and useful)
+        candidates = useful_candidates = unsupported_candidates = 0
+        correct_abstention = false_abstention = integrity_rejection = 0
+        useful_rejected = negative_rejected = 0
+        for record in records:
+            useful = labels[record["case_id"]]["useful_relationship"]
+            action = decision(record["outputs"][arm], arm)
+            if action == "candidate_connection":
+                candidates += 1
+                useful_candidates += bool(useful)
+                unsupported_candidates += not useful
+            elif action == "abstain":
+                correct_abstention += not useful
+                false_abstention += bool(useful)
+            else:
+                integrity_rejection += 1
+                useful_rejected += bool(useful)
+                negative_rejected += not useful
         summary[arm] = {
             "cases": len(records),
             "useful_labels": positives,
             "negative_labels": negatives,
-            "substantive_findings": 0,
-            "supported_substantive_relation_precision": None,
-            "precision_limitation": "No arm executed semantic reasoning; lexical candidates "
-            "are not substantive relationship assertions.",
-            "correct_non_use_or_abstention": correct_declines,
-            "correct_non_use_or_abstention_rate": correct_declines / negatives
-            if negatives
-            else None,
-            "missed_useful_substantive_relationships": positives,
-            "missed_useful_substantive_relationship_rate": 1.0 if positives else None,
-            "declines": declines,
             "candidate_connections": candidates,
-            "useful_label_candidates": useful_candidates,
-            "candidate_label_precision_diagnostic": useful_candidates / candidates
+            "useful_candidates_retained": useful_candidates,
+            "useful_candidate_recall": useful_candidates / positives if positives else None,
+            "useful_candidates_lost": positives - useful_candidates,
+            "unsupported_candidates": unsupported_candidates,
+            "unsupported_candidate_rate": unsupported_candidates / candidates
             if candidates
             else None,
+            "negative_candidate_rate": unsupported_candidates / negatives if negatives else None,
+            "correct_abstention": correct_abstention,
+            "correct_abstention_rate": correct_abstention / negatives if negatives else None,
+            "false_abstention": false_abstention,
+            "false_abstention_rate": false_abstention / positives if positives else None,
+            "integrity_rejection": integrity_rejection,
+            "useful_integrity_rejection": useful_rejected,
+            "negative_integrity_rejection": negative_rejected,
             "p50_latency_ms": (
                 statistics.median(r["latency_ms"][arm] for r in records) if arm != "D" else None
             ),
@@ -181,13 +205,78 @@ def score(records):
     return summary
 
 
+METRIC_NOTES = [
+    "Useful candidate recall is retained useful candidates divided by useful labels.",
+    "Unsupported candidate rate uses emitted candidates as denominator; negative candidate "
+    "rate uses negative labels. These labels do not identify false factual assertions.",
+    "Correct/false abstention count explicit abstain decisions on negative/positive labels. "
+    "Integrity rejection is separate, including its useful and negative label breakdown.",
+    "Useful candidates lost = useful labels minus actual retained useful candidates. "
+    "The former constant missed-substantive-relations metric is retired, not relabeled.",
+    "No semantic reasoning is performed. Candidate usefulness labels do not establish "
+    "substantive relation precision, source authenticity or factual truth.",
+]
+
+
+def portable_path(path):
+    resolved = path.resolve()
+    return (
+        resolved.relative_to(ROOT).as_posix()
+        if resolved.is_relative_to(ROOT)
+        else "external-output/" + resolved.name
+    )
+
+
+def derive_historical(source, protocol):
+    historical = json.loads(source.read_text(encoding="utf-8"))
+    if historical["protocol"]["files_sha256"] != protocol["files_sha256"]:
+        raise ValueError("Historical evidence uses different frozen inputs")
+    return {
+        "report_version": "notebook02-metrics-v2",
+        "derived_from": {
+            "path": portable_path(source),
+            "sha256_lf_normalized": sha(source.read_bytes()),
+            "execution_commit": historical["execution_commit"],
+        },
+        "scorer_sha256": sha(Path(__file__).read_bytes()),
+        "frozen_inputs_sha256": protocol["files_sha256"],
+        "metrics": {split: score(records) for split, records in historical["per_case"].items()},
+        "metric_notes": METRIC_NOTES,
+        "limitations": [
+            "Recomputed from unchanged historical recorded actions; no new runtime "
+            "or semantic judgments. Original metrics/evidence remain preserved.",
+            "Historical default-excerpt quote verification is not retrospectively "
+            "qualified. Inspect the R1 runtime reproduction for the corrected contract.",
+        ],
+        "new_provider_calls": 0,
+    }
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--output", type=Path, default=ROOT / "docs/validation/alive-notebook-02/evaluation.json"
+        "--output", type=Path, default=ROOT / "docs/validation/alive-notebook-02-r1/evaluation.json"
+    )
+    parser.add_argument(
+        "--derive-from",
+        type=Path,
+        help="Rescore preserved recorded outcomes without executing any arm",
     )
     args = parser.parse_args()
     protocol = verify_freeze()
+    # Never overwrite the original evidence archive, even via an explicit output argument.
+    historical_dir = ROOT / "docs/validation/alive-notebook-02"
+    if args.output.resolve().is_relative_to(historical_dir):
+        raise ValueError("Original Notebook-02 evidence is preserved; choose a new output path")
+    if args.derive_from is not None:
+        if args.output.resolve() == args.derive_from.resolve():
+            raise ValueError("Derived output must not overwrite its input")
+        report = derive_historical(args.derive_from, protocol)
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8", newline="\n")
+        print(json.dumps(report["metrics"], indent=2))
+        print("Evidence:", portable_path(args.output))
+        return
     work = ROOT / ".alive" / ("notebook02-eval-" + uuid.uuid4().hex)
     work.mkdir(parents=True)
     settings = Settings(
@@ -247,6 +336,8 @@ def main():
     finally:
         MetaProvider.structured = original
     report = {
+        "report_version": "notebook02-metrics-v2",
+        "metric_notes": METRIC_NOTES,
         "protocol": protocol,
         "protocol_sha256": sha((FROZEN / "protocol.json").read_bytes()),
         "execution_commit": subprocess.check_output(
@@ -261,7 +352,9 @@ def main():
             )
         },
         "environment": {"platform": platform.platform(), "python": platform.python_version()},
-        "integrity_gates": "PASS; every emitted quote checked against retained input and offset",
+        "integrity_gates": (
+            "PASS; automatic excerpts checked as display context, not requested quotes"
+        ),
         "external_model_calls": 0,
         "tokens": 0,
         "cost_micro_usd": 0,
@@ -282,7 +375,7 @@ def main():
         json.dumps(report, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n"
     )
     print(json.dumps(report["metrics"], indent=2))
-    print("Evidence:", args.output)
+    print("Evidence:", portable_path(args.output))
 
 
 if __name__ == "__main__":

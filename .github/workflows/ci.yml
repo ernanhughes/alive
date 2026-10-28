@@ -103,3 +103,4 @@ jobs:
       - run: uv run pytest -q -ra tests/test_notebook_01.py
       - run: node --test tests/notebook-capture.test.cjs
       - run: uv run python -m scripts.notebook02_evaluation --output "$RUNNER_TEMP/notebook02-evaluation.json"
+      - run: uv run python -m scripts.notebook02_evaluation --derive-from docs/validation/alive-notebook-02/evaluation.json --output "$RUNNER_TEMP/notebook02-r1-derived.json"
