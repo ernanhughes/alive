@@ -1368,8 +1368,10 @@ def router(app, ready):
         return await app.state.relationships.analyze(data.consent_id)
 
     @api.get("/research/relationships")
-    async def list_research_relationships():
-        return await app.state.relationships.list(redact_paired=await app.state.blind.collecting())
+    async def list_research_relationships(goal_id: str | None = None):
+        return await app.state.relationships.list(
+            redact_paired=await app.state.blind.collecting(), goal_id=goal_id
+        )
 
     @api.post("/research/experiment/campaigns")
     async def register_experiment_campaign(data: CampaignRequest):
