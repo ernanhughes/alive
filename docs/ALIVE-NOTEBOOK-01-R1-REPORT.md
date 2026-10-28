@@ -10,7 +10,10 @@ Base: current `origin/main`, `8737adf1e91d89cc772cd32cd56a8a4fe9370116`, contain
 merged PR #40. Branch: `codex/alive-notebook-01-r1-integrity`. Worktree:
 `C:\Projects\alive-notebook-01-r1`; the original checkout and its untracked `.vscode/`
 were left intact. No ALIVE-NOTEBOOK-02 work was started. No automatic merge is authorized.
-Draft correction PR: https://github.com/ernanhughes/alive/pull/41.
+Implementation PR #41 was created as a draft, then merged externally as `79ddb655`
+while validation was still running. This agent did not issue a merge command. The merge
+included `0213deb` but preceded the final evidence commits. Remaining report/evidence
+changes are delivered in draft PR https://github.com/ernanhughes/alive/pull/42.
 
 ## Root causes and corrections
 
