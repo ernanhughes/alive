@@ -17,7 +17,7 @@ QUALIFIER = re.compile(r"\b(?:only|unless|except)\b", re.I)
 ASSERTIVE = re.compile(r"\b(?:proves?|confirmed?|definitely|certainly|verified)\b", re.I)
 SUPERSESSION = re.compile(
     r"\b(?:deprecated since|deprecated in|is deprecated|superseded by|replaced by|"
-    r"no longer recommended|removed in|erratum|retracted|correction:)\b", re.I,
+    r"no longer recommended|removed in|erratum|retracted)\b|\bcorrection:", re.I,
 )
 ABBREVIATIONS = ("e.g.", "i.e.", "etc.", "vs.", "cf.", "fig.", "no.",
                  "dr.", "mr.", "ms.")
