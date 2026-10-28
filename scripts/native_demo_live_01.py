@@ -208,7 +208,8 @@ async def main():
                     )
                     await click(panel, "Confirm passage")
                     await panel.wait(
-                        "document.querySelector('#live-companion').getAttribute('aria-busy') !== 'true' && "
+                        "document.querySelector('#live-companion')"
+                        ".getAttribute('aria-busy') !== 'true' && "
                         "Array.from(document.querySelectorAll('#live-content button'))"
                         ".some(button => button.textContent === 'Withdraw saved source')"
                     )
@@ -328,6 +329,29 @@ async def main():
                     await api("/research/relationships?goal_id=" + goal_a)
                 )["connections"] == []
                 report["panel_width_px"] = await panel.evaluate("window.innerWidth")
+                with sqlite3.connect(work / "demo.db") as database:
+                    attempts = [
+                        json.loads(row[0])
+                        for row in database.execute(
+                            "select data from web_experiences where kind='research_relationship_analysis'"
+                        )
+                    ]
+                    report["recorded_provider_ids"] = [row["provider"]["id"] for row in attempts]
+                    assert report["recorded_provider_ids"] == [
+                        "local_fixture_claim",
+                        "local_fixture_claim",
+                    ]
+                    assert all(row["usage"]["total_tokens"] == 0 for row in attempts)
+                    report["external_model_calls"] = sum(
+                        row["provider"]["id"] == "meta" for row in attempts
+                    )
+                    report["recorded_attempts"] = len(attempts)
+                    assert (
+                        database.execute(
+                            "select count(*) from web_experiences where kind='note'"
+                        ).fetchone()[0]
+                        == 0
+                    )
                 report["status"] = "PASS"
             finally:
                 await context.close()

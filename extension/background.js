@@ -74,7 +74,7 @@ chrome.runtime.onMessage.addListener((message, sender, reply) => {
     if (message.type === 'start') {
       const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
       if (!tab?.id || (!pages.has(tab.url) && !localDemo(tab.url)))
-        throw new Error('Choose one of the two authorised documentation pages and click the ALIVE toolbar icon');
+        throw new Error('Choose an authorised research page and click the ALIVE toolbar icon');
       await stop();
       let grantId = null;
       if (pages.has(tab.url)) {

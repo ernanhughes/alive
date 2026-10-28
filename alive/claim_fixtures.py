@@ -115,7 +115,7 @@ def demo_fixtures():
                 else "Newer publication alone does not establish supersession."
             ),
             "limitations": "Deterministic local demonstration. "
-            "Source interpretation is not independently fact-checked.",
+            "No independent assessment of factual truth.",
             "confidence": 0.4 if name == "python-3.12" else 0.1,
         }
     return fixtures
