@@ -1,0 +1,14 @@
+Command: uv run python -m scripts.alive14r4_experiment full-synthetic
+Run: alive14-r4-synthetic-85fe891cee31
+Source commit: ac11be81115f397a9bad9f5c630a74ee22bdc3d2
+Protocol: alive14r3-paired-v3 85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b
+Campaign digest: 0e38b5fef20ed1ba4ee20624c369670a9ca411de9f214e1d2b98726e8b26e83f
+Approval: a4547566-b207-4089-a08d-855eb4f05d73 (synthetic_owner_endpoint)
+Blind run: 27e89706-05b0-4119-b23a-a494ac641791
+Conditions: {"A": {"n": 9, "proportion": 0.0, "supported_useful": 0, "wilson_95": [0, 0.2991450484195441]}, "B": {"n": 9, "proportion": 0.0, "supported_useful": 0, "wilson_95": [0, 0.2991450484195441]}, "C": {"n": 9, "proportion": 0.0, "supported_useful": 0, "wilson_95": [0, 0.2991450484195441]}}
+Paired: {"a_better": 0, "b_better": 0, "completed_pairs": 9, "mean_difference": 0.0, "tied": 9}
+Missing outputs: 0
+Missing by condition: {"A": 0, "B": 0, "C": 0}
+Misleading by condition: {"A": 4, "B": 4, "C": 4}
+Paid calls: 0
+Rating pattern: task-id hash null pattern identical for A/B/C.

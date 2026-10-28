@@ -1,0 +1,12 @@
+Command: uv run python -m scripts.native14_r4
+NATIVE_SYNTHETIC_PASS
+Source commit: ac11be81115f397a9bad9f5c630a74ee22bdc3d2
+Chrome: 155.0.8059.85
+Presentation: native side panel target
+Synthetic provider calls: 4
+Paid calls: 0
+Campaign approval: {"campaign_digest": "49d8437ace62731884a46f944f339e8456172b45dc1b44b17da56a1ef6d407f5", "registered": true, "digest_displayed": true, "manifest_displayed": true, "native_approval_status": "Approval f12f530a-34ac-4d11-8513-6c3f9f405717 active for stage 1; 2 calls, 0.04 USD cap.", "call_cap": 2, "synthetic": true, "paid": false}
+Blind ratings: 6
+Post-reveal rating status: 409
+Evidence: archives/ALIVE-14-R4/evidence/native-synthetic.json
+Screenshot: archives/ALIVE-14-R4/evidence/native-r4-approval.png

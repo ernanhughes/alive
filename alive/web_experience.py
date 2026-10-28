@@ -8,7 +8,7 @@ import time
 from datetime import timedelta
 from typing import Literal
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy import select
@@ -16,6 +16,7 @@ from sqlalchemy import select
 from alive.cognitive_models import CognitiveControl
 from alive.cognitive_schema import CognitiveConfiguration
 from alive.experiment.metrics import price
+from alive.experiment_approval import ApprovalRequest, CampaignRequest
 from alive.experiment_budget import check_spend
 from alive.living_policy import digest as policy_digest
 from alive.models import now, record, uid
@@ -389,6 +390,23 @@ class WebCompanion:
             for grant in await self.rows(s, "grant"):
                 if grant.status == "active":
                     grant.status = "revoked_restart"
+                    grant.data = grant.data | {
+                        "suspended_at": now().isoformat(),
+                        "suspended_from": "active",
+                        "suspension_reason": "restart",
+                        "owner_revoked": bool(grant.data.get("owner_revoked", False)),
+                        "state_history": (
+                            list(grant.data.get("state_history", []))
+                            + [
+                                {
+                                    "state": "revoked_restart",
+                                    "reason": "restart",
+                                    "actor": "system",
+                                    "at": now().isoformat(),
+                                }
+                            ]
+                        ),
+                    }
             for note in await self.rows(s, "note"):
                 if note.status == "reserved":
                     control = await s.get(CognitiveControl, self.k.instance_id)
@@ -437,9 +455,68 @@ class WebCompanion:
                 await self.cancel()
             async with self.k.lock, self.k.db.sessions.begin() as s:
                 for grant in await self.rows(s, "grant"):
-                    if grant.status == "active" and (not grant_id or grant.id == grant_id):
+                    if grant_id and grant.id != grant_id:
+                        continue
+                    if grant.status in ("active", "revoked_restart"):
                         grant.status = "revoked"
+                        grant.data = grant.data | {
+                            "owner_revoked": True,
+                            "revoked_at": now().isoformat(),
+                            "revoked_by": "owner",
+                            "revocation_reason": "owner_explicit",
+                            "state_history": (
+                                list(grant.data.get("state_history", []))
+                                + [
+                                    {
+                                        "state": "revoked",
+                                        "reason": "owner_explicit",
+                                        "actor": "owner",
+                                        "at": now().isoformat(),
+                                    }
+                                ]
+                            ),
+                        }
+                    elif grant.status == "revoked":
+                        grant.data = grant.data | {
+                            "owner_revoked": True,
+                            "last_revoke_at": now().isoformat(),
+                        }
         return {"status": "revoked"}
+
+    async def reactivate_grant(self, grant_id, run_id, approval_id):
+        """Restore only a restart-suspended grant that the owner never revoked.
+
+        The original expiry is preserved; this cannot extend lifetime or broaden scope.
+        """
+        async with self.lock, self.k.lock, self.k.db.sessions.begin() as s:
+            grant = await self.get(s, grant_id, "grant")
+            if grant.status != "revoked_restart":
+                raise PermissionError("Only a restart-suspended grant can be restored")
+            if grant.data.get("owner_revoked") or grant.data.get("revoked_at"):
+                raise PermissionError("Owner revocation is permanent")
+            if grant.data.get("expires_at", "") < now().isoformat():
+                raise PermissionError("Restart-suspended grant has expired")
+            grant.status = "active"
+            grant.data = grant.data | {
+                "restored_at": now().isoformat(),
+                "restored_by": "approved_experiment_runner",
+                "restored_from": "revoked_restart",
+                "restored_for_run": run_id,
+                "approval_id": approval_id,
+                "state_history": (
+                    list(grant.data.get("state_history", []))
+                    + [
+                        {
+                            "state": "active",
+                            "reason": "approved_experiment_restoration",
+                            "actor": "experiment_runner",
+                            "at": now().isoformat(),
+                        }
+                    ]
+                ),
+            }
+            await s.flush()
+            return record(grant)
 
     async def valid_grant(self, s, grant_id):
         grant = await self.get(s, grant_id, "grant")
@@ -1281,6 +1358,32 @@ def router(app, ready):
     @api.get("/research/relationships")
     async def list_research_relationships():
         return await app.state.relationships.list(redact_paired=await app.state.blind.collecting())
+
+    @api.post("/research/experiment/campaigns")
+    async def register_experiment_campaign(data: CampaignRequest):
+        return await app.state.approvals.register_campaign(data)
+
+    @api.get("/research/experiment/campaigns")
+    async def list_experiment_campaigns():
+        return await app.state.approvals.list_campaigns()
+
+    @api.post("/research/experiment/campaigns/{campaign_digest}/approve")
+    async def approve_experiment_campaign(campaign_digest: str, data: ApprovalRequest):
+        return await app.state.approvals.approve(campaign_digest, data)
+
+    @api.get("/research/experiment/approvals/{approval_id}")
+    async def get_experiment_approval(
+        approval_id: str, capability: str | None = Query(default=None)
+    ):
+        return await app.state.approvals.get_approval(approval_id, capability)
+
+    @api.get("/research/experiment/approvals")
+    async def active_experiment_approval(campaign_digest: str = Query(...)):
+        return await app.state.approvals.active_for_digest(campaign_digest)
+
+    @api.post("/research/experiment/approvals/{approval_id}/revoke")
+    async def revoke_experiment_approval(approval_id: str):
+        return await app.state.approvals.revoke(approval_id)
 
     @api.post("/research/blind/runs")
     async def create_blind_run(data: BlindRunRequest):

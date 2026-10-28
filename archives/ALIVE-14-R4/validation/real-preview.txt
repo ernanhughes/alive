@@ -1,0 +1,7 @@
+Command: uv run python -m scripts.alive14r4_experiment prepare --mode real
+Run: alive14-r4-real-85fe891cee31
+Campaign digest: 6851fbadf3b7a3367f93f623e1ae45063b0de6b09b6ce2efba965603c8884b7e
+Provider/model: meta / muse-spark-1.3
+Stages: {"full": {"call_cap": 18, "reserved_tokens": 92148, "worst_case_micro_usd": 391635}, "stage_1": {"call_cap": 2, "reserved_tokens": 10345, "worst_case_micro_usd": 43967}}
+Status: NOT_AN_APPROVAL; server-side owner approval required.
+Paid calls: 0

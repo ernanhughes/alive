@@ -1,0 +1,7 @@
+{
+  "protocol_path": "archives/ALIVE-14-R3/protocol/relationship-experiment-v3.json",
+  "protocol_sha256": "85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b",
+  "answer_key_path": "archives/ALIVE-14-R3/protocol/answer-key-v3.json",
+  "answer_key_sha256": "255e706dd569634d1710a50831f65a6dd6eb7dabc5ee56e1cd763b382554b43d",
+  "frozen": true
+}

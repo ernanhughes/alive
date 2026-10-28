@@ -1,0 +1,63 @@
+{
+  "status": "NOT_AN_APPROVAL",
+  "server_approval_required": true,
+  "run_id": "alive14-r4-real-85fe891cee31",
+  "campaign_digest": "6851fbadf3b7a3367f93f623e1ae45063b0de6b09b6ce2efba965603c8884b7e",
+  "protocol_sha256": "85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5735eb5a71b",
+  "answer_key_sha256": "255e706dd569634d1710a50831f65a6dd6eb7dabc5ee56e1cd763b382554b43d",
+  "provider": "meta",
+  "model": "muse-spark-1.3",
+  "task_count": 9,
+  "stages": {
+    "stage_1": {
+      "call_cap": 2,
+      "reserved_tokens": 10345,
+      "worst_case_micro_usd": 43967
+    },
+    "full": {
+      "call_cap": 18,
+      "reserved_tokens": 92148,
+      "worst_case_micro_usd": 391635
+    }
+  },
+  "payload_sha256s": {
+    "V3-T01": {
+      "A": "2f54070b8f7068145a7c091df3b68de644385d3f529bd3d204b110818cf65c37",
+      "B": "fa9b057630e406336dbb2a2557ee7779cdf347d408e88d2aab6e8a002eb1872d"
+    },
+    "V3-T02": {
+      "A": "e1bfe161da8a89e9144eac26f533581db7f57e7789153105081d70de84728290",
+      "B": "c1a2e8ab6a8fc6349aa23626db4b45d02ea2f06a9a63ade126469b724764ad08"
+    },
+    "V3-T03": {
+      "A": "6c3e94af2f654a59348f75850c58024466346f036e6542a4475c51366afe10c0",
+      "B": "fa9b0729220418bb0d03f4f38a347d47552a95260fe882b403f33c09c6426494"
+    },
+    "V3-T04": {
+      "A": "f78950ddee78157629ef346fa31a948b9c24f681444e0b8182acebd82424e36c",
+      "B": "7c8fccf70278ffb1ba1cdb64e68cb194ae691b0a1f84100b036ad62a4252ceb1"
+    },
+    "V3-T05": {
+      "A": "1d38c28b939fbc77c5951629b9e94a2cff65a651563a9204de0b4d6f2dbb24e7",
+      "B": "b9b0f9a21f89dafde922040a7b687508e0e35056814435da95ba854ebe8344ef"
+    },
+    "V3-T06": {
+      "A": "57e43eeebd8a63ca16095e4111b2e4936cae5bf9827139f1f18b7a905b7e3a62",
+      "B": "b3c0bc8496e623dec02d02cc43ba726901a2b47ecf6d77f58b15781c62e9282a"
+    },
+    "V3-T07": {
+      "A": "0e2dba67db943bb99cef94120a1fb3acb2f0bcf9807aeec0bc499971cac8898b",
+      "B": "8c48e8d482254504f4e9e73ed8cb1bee2e836c89ed8ba7cfaf2dca6882bcd6d0"
+    },
+    "V3-T08": {
+      "A": "103a4711ebbdac445d0e6d23169cea3d5329a6960c217092d009d6d53b892216",
+      "B": "f3a13c724e97e030698c76f9caa89e4f22074232074548935a74bd227f65fac2"
+    },
+    "V3-T09": {
+      "A": "33be14d4b86ce30d342befe6a33a5ef4bbb3d99df2729669acf13e24b3d39ff1",
+      "B": "21878eba62af2edc8cfa25c9c0b73fe826f477838eb4b0fcc09c275558d4b629"
+    }
+  },
+  "no_retries": true,
+  "approval_instruction": "Run serve-approval, connect the native panel, review the exact campaign, and approve stage 1 (2 calls) then stage 2 (remaining 16) after stage 1 succeeds."
+}

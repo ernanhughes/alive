@@ -369,6 +369,56 @@ function renderRelationshipRubric(connectionId) {
     target.append(row);
   }
 }
+let campaignView = null;
+async function refreshCampaigns() {
+  const { campaigns } = await command('campaigns');
+  $('campaign-select').replaceChildren(new Option('Choose a campaign', ''));
+  for (const campaign of campaigns) {
+    $('campaign-select').add(new Option(`${campaign.data.run_id} | ${campaign.data.task_count} tasks`, campaign.data.campaign_digest));
+  }
+  $('campaign-status').textContent = `${campaigns.length} registered campaign(s).`;
+}
+function campaignStage(campaign, stage) {
+  const stages = campaign.stages || {};
+  return stage === '1' ? stages.stage_1 : stages.full;
+}
+async function loadCampaign() {
+  const digest = $('campaign-select').value;
+  if (!digest) throw new Error('Choose a campaign');
+  const { campaigns } = await command('campaigns');
+  const record = campaigns.find(row => row.data.campaign_digest === digest);
+  if (!record) throw new Error('Campaign is no longer registered');
+  campaignView = record.data;
+  $('campaign-status').textContent = `${campaignView.provider} / ${campaignView.model} | ${campaignView.task_count} tasks | ${campaignView.call_cap} calls | ${campaignView.synthetic ? 'synthetic' : 'real'}`;
+  $('campaign-digest').textContent = `Campaign digest: ${campaignView.campaign_digest}\nStage 1: 2 calls, ${campaignView.stages.stage_1.worst_case_micro_usd} micro-USD\nFull: ${campaignView.stages.full.call_cap} calls, ${campaignView.stages.full.worst_case_micro_usd} micro-USD`;
+  $('campaign-manifest').textContent = JSON.stringify(campaignView.manifest, null, 2);
+}
+async function approveCampaign() {
+  if (!campaignView) throw new Error('Load a campaign first');
+  const stage = $('campaign-stage').value;
+  const selected = campaignStage(campaignView, stage);
+  if (!selected) throw new Error('Selected stage is not registered');
+  if (!campaignView.synthetic && !$('campaign-attest').checked)
+    throw new Error('Explicit owner attestation is required for a real campaign');
+  const approval = {
+    stage: Number(stage),
+    call_cap: selected.call_cap,
+    max_input_tokens: selected.reserved_tokens,
+    max_output_tokens: campaignView.max_output_tokens,
+    max_usd: selected.worst_case_micro_usd / 1000000,
+    no_retries: true,
+    human_attestation: $('campaign-attest').checked,
+  };
+  const approved = await command('approve-campaign', {
+    digest: campaignView.campaign_digest,
+    approval,
+  });
+  $('campaign-status').textContent = `Approval ${approved.data.approval_id} active for stage ${approved.data.stage}; ${approved.data.call_cap} calls, ${approved.data.max_usd} USD cap.`;
+}
+$('campaign-refresh').onclick = () => action(refreshCampaigns);
+$('campaign-select').onchange = () => action(loadCampaign);
+$('campaign-approve').onclick = () => action(approveCampaign);
+
 let blindView = null;
 const blindRated = new Set();
 const blindFields = [

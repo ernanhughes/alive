@@ -1,0 +1,28 @@
+{
+  "baseline": "ac11be81115f397a9bad9f5c630a74ee22bdc3d2",
+  "provider": "local_stub and monkeypatched 401",
+  "paid_calls": 0,
+  "defects": {
+    "owner_revocation_durability": {
+      "grant_id": "c61a2f51-9bbc-44bc-b9df-24f61cf4e64c",
+      "status_after_explicit_owner_revoke": "revoked_restart",
+      "owner_revoked_flag": null,
+      "status_after_runner_execute": "revoked_restart",
+      "reactivated_for_run": "alive14-r3-paired-v3-synthetic-85fe891cee31",
+      "execution_phase": "awaiting_ratings",
+      "explicit_revocation_survived": false,
+      "defect_confirmed": true,
+      "runner_completed_all_cells_after_revoke": true,
+      "blind_runs_visible_before_ratings": 0
+    },
+    "systematic_provider_failure": {
+      "attempted_calls": 18,
+      "total_cells": 18,
+      "undispatched_cells": 0,
+      "phase": "awaiting_ratings",
+      "outputs_recorded": 18,
+      "all_cells_recorded_as_failed": true,
+      "defect_confirmed": true
+    }
+  }
+}
