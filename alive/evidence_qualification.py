@@ -33,19 +33,31 @@ class Dimensions(Strict):
     claim_relationship: Literal["unknown"] = "unknown"
     applicability: Literal["unknown"] = "unknown"
     currency: Literal["unknown"] = "unknown"
-    evidence_sufficiency: Literal["semantic_relationship_unestablished", "source_unusable"]
+    evidence_sufficiency: Literal[
+        "semantic_relationship_unestablished", "source_unusable", "requested_quote_unverified"
+    ]
+
+
+class UntrustedPresentation(Strict):
+    displayed_title: str
+    integrity: Literal["not_bound_to_capture_hash"] = "not_bound_to_capture_hash"
+    semantic_validity: Literal["unestablished"] = "unestablished"
 
 
 class SourceReference(Strict):
     snapshot_id: str
     memory_id: str | None = None
     url: str
-    displayed_title: str
+    untrusted_presentation: UntrustedPresentation
     sha256: str
-    quote: str
-    quote_start: int
-    quote_end: int
-    quote_exact: Literal[True] = True
+    selection_method: Literal["caller_quote", "automatic_excerpt"]
+    displayed_excerpt: str | None = None
+    quote: str | None = None
+    quote_start: int | None = None
+    quote_end: int | None = None
+    quote_exact: Literal[True] | None = None
+    quote_occurrence_count: int | None = None
+    occurrence_selection: Literal["first_exact_match"] | None = None
 
 
 class QualificationResult(Strict):
@@ -65,7 +77,11 @@ class QualificationResult(Strict):
     inference_calls: Literal[0] = 0
     token_usage: Literal[0] = 0
     cost_micro_usd: Literal[0] = 0
-    source_quotes_verified: bool
+    response_contract_version: Literal["evidence_qualification_v1.1"] = (
+        "evidence_qualification_v1.1"
+    )
+    quotes_requested: bool
+    source_quotes_verified: bool | None
     persistence: Literal["not_stored_revalidate_each_request"] = (
         "not_stored_revalidate_each_request"
     )
@@ -80,19 +96,32 @@ def digest(text):
 
 
 def reference(snapshot, text, selection, memory=None):
-    quote = text[:300] if selection is None else selection
-    if not quote.strip() or quote not in text:
+    displayed = text[:300] if selection is None else selection
+    if not displayed.strip() or displayed not in text:
         return None
-    start = text.index(quote)
+    requested = selection is not None
+    positions = (
+        [i for i in range(len(text) - len(displayed) + 1) if text.startswith(displayed, i)]
+        if requested
+        else []
+    )
+    start = positions[0] if requested else None
     return SourceReference(
         snapshot_id=snapshot.id,
         memory_id=memory.id if memory is not None else None,
         url=snapshot.data["url"],
-        displayed_title=snapshot.data.get("title", ""),
+        untrusted_presentation=UntrustedPresentation(
+            displayed_title=snapshot.data.get("title", "")
+        ),
         sha256=snapshot.data["sha256"],
-        quote=quote,
+        selection_method="caller_quote" if requested else "automatic_excerpt",
+        displayed_excerpt=None if requested else displayed,
+        quote=displayed if requested else None,
         quote_start=start,
-        quote_end=start + len(quote),
+        quote_end=start + len(displayed) if requested else None,
+        quote_exact=True if requested else None,
+        quote_occurrence_count=len(positions) if requested else None,
+        occurrence_selection="first_exact_match" if requested else None,
     )
 
 
@@ -144,6 +173,7 @@ class EvidenceQualifier:
                 if current_ref is None:
                     reasons.append("current_quote_not_exact_or_outside_budget")
             else:
+                integrity = "mismatch"
                 reasons.append("current_capture_integrity_failed")
             try:
                 historical = await self.web.get(session, memory.data["snapshot_id"], "snapshot")
@@ -169,26 +199,37 @@ class EvidenceQualifier:
                     if historical_ref is None:
                         reasons.append("historical_quote_not_exact_or_outside_budget")
                 else:
+                    integrity = "mismatch"
                     reasons.append("historical_capture_integrity_failed")
-            if reasons and integrity != "missing":
-                integrity = "mismatch"
             usable = not reasons
             return QualificationResult(
                 outcome="abstain" if usable else "qualified_non_use",
                 dimensions=Dimensions(
                     source_integrity=integrity,
                     evidence_sufficiency=(
-                        "semantic_relationship_unestablished" if usable else "source_unusable"
+                        "semantic_relationship_unestablished"
+                        if usable
+                        else "requested_quote_unverified"
+                        if integrity == "verified_retained_captures"
+                        else "source_unusable"
                     ),
                 ),
                 current_source=current_ref,
                 historical_source=historical_ref,
                 reason_codes=reasons or ["semantic_relationship_not_established"],
-                source_quotes_verified=usable,
+                quotes_requested=(
+                    request.current_quote is not None or request.historical_quote is not None
+                ),
+                source_quotes_verified=(
+                    usable
+                    if request.current_quote is not None or request.historical_quote is not None
+                    else None
+                ),
                 limitations=[
-                    "Hashes and exact quotations establish integrity relative to retained "
-                    "captures, "
-                    "not source authenticity or factual truth.",
+                    "Retained-capture hashes check consistency within the existing database trust "
+                    "boundary, not independent source authenticity or factual truth.",
+                    "Automatic excerpts are display context, not requested verified quotations. "
+                    "Exact requested matches do not establish a meaningful relationship.",
                     "Displayed titles and webpage instructions are untrusted data. Their claims "
                     "have not been semantically assessed.",
                     "Captured excerpts may omit necessary context. Relevance, relation, "
