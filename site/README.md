@@ -39,6 +39,8 @@ Each chapter's front matter records `chapter_id` (stable, also the URL slug), `s
 `source_parts`, `source_commit` (the last commit that touched the source), `source_sha256`
 (line endings normalised to LF) and `body_sha256`. `check` fails when:
 
+- any front-matter field differs from canonical generation, including title, selected parts, stage,
+  generator and commit, or any unauthorized key (such as `summary` or `draft`) is present;
 - the source file changed since conversion, or does not match the recorded hash at the recorded
   commit (hash drift);
 - the chapter body differs from a fresh conversion of the source. The report says whether an
@@ -47,9 +49,14 @@ Each chapter's front matter records `chapter_id` (stable, also the URL slug), `s
 - a body link would not resolve on the site;
 - a relationship quote is not in the canonical document, or is not inside the first 2000
   characters of the chapter (the companion saves at most a 2000-character excerpt);
-- with `--public site/public`: a built page has page chrome inside `<main>`, or its article is
+- with `--public site/public`: an article H1 or document title differs from its canonical source
+  title, a built page has page chrome inside `<main>`, or its article is
   longer than the saved excerpt.
 
+Full Git history is required; missing or shallow history fails rather than skipping checks.
+Hashes prove integrity relative to verified inputs, not the truth of an editorial interpretation.
+The conversion manifest is a reviewed input. This checker cannot determine whether a changed
+manifest omits a relevant qualification elsewhere in a source, or assess unfamiliar documents.
 If a source document legitimately changes, rerun `convert` and review the chapter diff.
 
 ## Reading with the companion
@@ -89,7 +96,7 @@ kept out of the published pages so it cannot enter a captured excerpt.
 
 ```bash
 uv run pytest tests/test_notebook_01.py
-node --test tests/notebook-capture.test.cjs   # builds the site with Hugo; skipped if Hugo is absent
+node --test tests/notebook-capture.test.cjs   # requires Hugo; missing Hugo fails
 ```
 
 What they show, and do not show:
@@ -113,15 +120,28 @@ What they show, and do not show:
 uv run python -m scripts.native_notebook_01
 ```
 
-The harness starts Hugo on `127.0.0.1:1313`, an isolated SQLite ALIVE backend and the
+The substituted-authorization harness starts Hugo on `127.0.0.1:1313`, an isolated SQLite ALIVE backend and the
 actual unpacked extension, then drives a docked Chrome side panel through capture,
 memory save, retrieval, the three relationships, withdrawal, backend restart and
 revocation. It writes `docs/validation/alive-notebook-01/native/result.json` and
-screenshots. The test copy of the extension adds a loopback `127.0.0.1:1313` host
-permission because CDP's `Extensions.triggerAction` opens the panel but does not grant
-`activeTab`; the shipped `extension/manifest.json` is unchanged and a real toolbar
-click grants `activeTab`. No model provider is configured, and no paid inference is
-used.
+screenshots. This is integration evidence with a substituted test copy, not shipped
+`activeTab` qualification. It overwrites all of `config.js`: backend defaults become the
+isolated random port, `AUTHORISED_PAGES` becomes the five loopback chapter URLs and
+`isLocalDemo` always returns false. It replaces the manifest's host permissions with the
+isolated backend and `http://127.0.0.1:1313/*`, and sets backend
+`ALIVE_NATIVE_TEST_PAGES` to those chapters. CDP opens the panel without qualifying a
+real toolbar grant. The shipped extension files remain unchanged.
+
+`uv run python -m scripts.native_notebook_01_shipped` separately loads a byte-identical
+copy of the shipped extension, checks runtime configuration and permissions, and saves
+its hashes. This load smoke does not claim capture acceptance. Shipped toolbar capture,
+unlisted-URL rejection and revocation are **NOT QUALIFIED** until the manual procedure in
+[the R1 report](../docs/ALIVE-NOTEBOOK-01-R1-REPORT.md) is completed. No model provider
+is configured; no paid inference is used.
+
+PR #40 has merged. All reported ranks used lexical fallback with embeddings disabled.
+R1 remains a lexical connection candidate, R2 compares different evaluation conditions
+and does not establish universal superiority, and R3 remains a known false similarity.
 
 ## Extending
 

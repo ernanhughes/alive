@@ -3,7 +3,7 @@
 No model writes any chapter text. A chapter body is an exact slice of a canonical document
 under ``docs/``; the front matter records the source path, the last commit that touched it and
 the content hashes. ``check`` fails when a source drifts, a chapter differs from a fresh
-conversion (including a result restated more strongly than its source), or a recorded
+conversion, or a recorded
 relationship quote is not in both the source and the capturable part of the chapter.
 
     python site/notebook.py convert   # rewrite site/content/chapters/*.md
@@ -64,7 +64,12 @@ def source_bytes(doc):
 
 
 def source_commit(doc):
-    return git("log", "-n1", "--format=%H", "--", doc).decode().strip()
+    if git("rev-parse", "--is-shallow-repository").decode().strip() != "false":
+        raise ValueError("provenance requires full Git history; fetch with --unshallow")
+    commit = git("log", "-n1", "--format=%H", "--", doc).decode().strip()
+    if not re.fullmatch(r"[0-9a-f]{40}", commit):
+        raise ValueError(f"no source history for {doc}")
+    return commit
 
 
 def split_doc(text):
@@ -95,10 +100,10 @@ def toml_value(value):
     return json.dumps(value, ensure_ascii=False)
 
 
-def chapter_file(chapter, commit):
+def chapter_metadata(chapter, commit):
     doc = chapter["doc"]
     title, body = render_body(doc, chapter["parts"])
-    meta = {
+    return {
         "title": title,
         "slug": chapter["id"],
         "chapter_id": chapter["id"],
@@ -110,6 +115,11 @@ def chapter_file(chapter, commit):
         "body_sha256": sha256(body.encode("utf-8")),
         "generated_by": GENERATOR,
     }
+
+
+def chapter_file(chapter, commit):
+    meta = chapter_metadata(chapter, commit)
+    _, body = render_body(chapter["doc"], chapter["parts"])
     header = "\n".join(f"{key} = {toml_value(value)}" for key, value in meta.items())
     return f"+++\n{header}\n+++\n{body}"
 
@@ -172,10 +182,23 @@ def check_chapter(chapter, problems):
         return None
     if meta.get("source_doc") != doc or meta.get("chapter_id") != name:
         problems.append(f"{name}: front matter id/source does not match chapters.json")
+    try:
+        expected_meta = chapter_metadata(chapter, source_commit(doc))
+    except (ValueError, subprocess.CalledProcessError) as error:
+        problems.append(f"{name}: cannot verify canonical metadata: {error}")
+        return body
+    for key in sorted(set(meta) - set(expected_meta)):
+        problems.append(f"{name}: unauthorized front matter key: {key}")
+    for key, value in expected_meta.items():
+        if type(meta.get(key)) is not type(value) or meta.get(key) != value:
+            problems.append(f"{name}: front matter {key} differs from canonical generation")
     current = sha256(source_bytes(doc))
     if meta.get("source_sha256") != current:
         problems.append(f"{name}: source {doc} changed since conversion (hash drift)")
     commit = meta.get("source_commit", "")
+    if not isinstance(commit, str) or not re.fullmatch(r"[0-9a-f]{40}", commit):
+        problems.append(f"{name}: invalid source_commit")
+        return body
     try:
         pinned = sha256(normalise(git("show", f"{commit}:{doc}")))
     except subprocess.CalledProcessError:
@@ -283,8 +306,14 @@ class Capturable(HTMLParser):
         self.main_count = 0
         self.foreign = []  # tags inside <main> that should be page chrome
         self.stack = []
+        self.h1s, self.titles = [], []
+        self.heading, self.page_title = None, None
 
     def handle_starttag(self, tag, attrs):
+        if tag == "title":
+            self.page_title = []
+        if tag == "h1" and self.depth:
+            self.heading = []
         if tag == "main" and not self.depth:
             self.main_count += 1
         if self.depth:
@@ -298,6 +327,12 @@ class Capturable(HTMLParser):
             self.stack.append(tag)
 
     def handle_endtag(self, tag):
+        if tag == "title" and self.page_title is not None:
+            self.titles.append(squash("".join(self.page_title)))
+            self.page_title = None
+        if tag == "h1" and self.heading is not None:
+            self.h1s.append(squash("".join(self.heading)))
+            self.heading = None
         if self.stack and self.stack[-1] == tag:
             self.stack.pop()
             self.skip -= 1
@@ -305,6 +340,10 @@ class Capturable(HTMLParser):
             self.depth -= 1
 
     def handle_data(self, data):
+        if self.page_title is not None:
+            self.page_title.append(data)
+        if self.heading is not None:
+            self.heading.append(data)
         if self.depth and not self.skip:
             self.chunks.append(data)
 
@@ -318,6 +357,13 @@ def check_public(public, spec, bodies, problems):
             continue
         parser = Capturable()
         parser.feed(page.read_text(encoding="utf-8"))
+        title = squash(split_title(chapter))
+        if parser.h1s != [title]:
+            problems.append(f"{chapter['id']}: rendered H1 differs from authoritative source title")
+        if parser.titles != [title + " · The ALIVE Notebook"]:
+            problems.append(
+                f"{chapter['id']}: rendered document title differs from canonical title"
+            )
         if parser.main_count != 1:
             problems.append(
                 f"{chapter['id']}: expected exactly one <main>, found {parser.main_count}"

@@ -1,0 +1,17 @@
+{
+  "id": "R4-valid-source-misleading-presentation",
+  "research_question": "Can ALIVE detect unsupported interpretation before treating a page as evidence?",
+  "chapter": "alive-12-status",
+  "field": "title",
+  "attack": "ALIVE-12 demonstrated retrieval superiority",
+  "qualification": "Retrieval advantage: NOT DEMONSTRATED.",
+  "preserved_inputs": [
+    "source_doc",
+    "source_commit",
+    "source_sha256",
+    "body_sha256",
+    "body"
+  ],
+  "expected_converter_result": "reject noncanonical title",
+  "semantic_detection": "UNIMPLEMENTED; rejecting this known mutation does not solve interpretation of unfamiliar documents"
+}
