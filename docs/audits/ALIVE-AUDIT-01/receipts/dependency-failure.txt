@@ -1,0 +1,12 @@
+{
+  "health_without_db": {
+    "status": "degraded",
+    "version": "0.2.0"
+  },
+  "secured_without_db_status": 503,
+  "health_after_restore_restart": {
+    "status": "ok",
+    "version": "0.2.0"
+  },
+  "status": "PASS"
+}

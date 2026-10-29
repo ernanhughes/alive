@@ -1,0 +1,36 @@
+{
+  "intended_data": {
+    "nested": {
+      "工具": {
+        "arguments": {
+          "path": "a\\b\"c\n雪",
+          "id": "call-α"
+        }
+      }
+    }
+  },
+  "dispatched_body": {
+    "model": "audit-model",
+    "messages": [
+      {
+        "role": "developer",
+        "content": "审计 🧪 \\\n"
+      },
+      {
+        "role": "user",
+        "content": "{\"nested\": {\"工具\": {\"arguments\": {\"path\": \"a\\\\b\\\"c\\n雪\", \"id\": \"call-α\"}}}}"
+      }
+    ],
+    "max_completion_tokens": 256,
+    "reasoning_effort": "minimal",
+    "response_format": {
+      "type": "json_schema",
+      "json_schema": {
+        "name": "alive_structured_output",
+        "schema": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

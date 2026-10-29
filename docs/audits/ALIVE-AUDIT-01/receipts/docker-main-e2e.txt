@@ -1,0 +1,7 @@
+PASS readiness
+PASS capabilities
+PASS frontend+fixtures
+PASS goal-lifecycle
+PASS evidence-workflow
+PASS failure-paths
+E2E OK: 6 groups passed against http://127.0.0.1:18081

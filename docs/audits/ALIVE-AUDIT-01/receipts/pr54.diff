@@ -1,0 +1,420 @@
+diff --git a/.env.example b/.env.example
+index dd2bf69..7207004 100644
+--- a/.env.example
++++ b/.env.example
+@@ -32,6 +32,9 @@ ALIVE_COGNITIVE_PROVIDER=mock
+ # ALIVE_DEMO_MODE=true loads idempotent fixture content into a fresh database.
+ # Restarts never duplicate or overwrite existing data.
+ # ALIVE_DEMO_MODE=true
++# Host port for the composed app. Keep 8000 for the Chrome extension demo (the extension is
++# built for port 8000); other values move the dashboard but break the extension.
++# ALIVE_HOST_PORT=8000
+ # Optional: build the dashboard against an explicit API origin instead of the
+ # default same-origin wiring (only needed behind custom reverse proxies).
+ # VITE_ALIVE_API_BASE=
+diff --git a/compose.yaml b/compose.yaml
+index 7d80a80..76b0243 100644
+--- a/compose.yaml
++++ b/compose.yaml
+@@ -27,16 +27,23 @@ services:
+     environment:
+       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-alive}:${POSTGRES_PASSWORD:-change-me-for-local-use}@db:5432/${POSTGRES_DB:-alive}
+       ALIVE_API_TOKEN: ${ALIVE_API_TOKEN:-alive-dev-token-replace-for-local-use-000}
+-      ALIVE_ALLOWED_ORIGINS: '["http://localhost:8080","http://127.0.0.1:8080"]'
+-      ALIVE_BROWSER_ORIGINS: '["http://app:8000","http://localhost:8080","http://127.0.0.1:8000"]'
++      ALIVE_ALLOWED_ORIGINS: '["http://localhost:${ALIVE_HOST_PORT:-8000}","http://127.0.0.1:${ALIVE_HOST_PORT:-8000}"]'
++      ALIVE_BROWSER_ORIGINS: '["http://app:8000","http://localhost:${ALIVE_HOST_PORT:-8000}","http://127.0.0.1:8000"]'
+       ALIVE_COGNITIVE_PROVIDER: ${ALIVE_COGNITIVE_PROVIDER:-mock}
+       ALIVE_DEMO_MODE: ${ALIVE_DEMO_MODE:-true}
++      # Deterministic, non-external fixture providers (local_fixture_claim, local_stub_invalid)
++      # for the pinned /demo-live-01 mirrors. Tied to demo mode so it is off whenever demo mode is
++      # off. The paid Meta claim/research flags are deliberately not set here.
++      ALIVE_RELATIONSHIP_ALLOW_TEST_PROVIDERS: ${ALIVE_DEMO_MODE:-true}
+       # Optional live-inference credentials. Empty by default (no paid calls).
+       # Set ALIVE_META_API_KEY in an ignored .env file; never commit it.
+       ALIVE_META_API_KEY: ${ALIVE_META_API_KEY:-}
+       ALIVE_META_MODEL: ${ALIVE_META_MODEL:-muse-spark-1.3}
+     ports:
+-      - "127.0.0.1:8080:8000"
++      # Host port 8000 matches the unpacked Chrome extension (host_permissions, authorised
++      # pages, default backend) and the server's PAGES allow-list. Overriding it also moves the
++      # dashboard, but the extension will not follow.
++      - "127.0.0.1:${ALIVE_HOST_PORT:-8000}:8000"
+     volumes:
+       - alive-appdata:/app/.alive
+     healthcheck:
+diff --git a/dashboard/e2e/docker.spec.ts b/dashboard/e2e/docker.spec.ts
+index c35a890..2cb8062 100644
+--- a/dashboard/e2e/docker.spec.ts
++++ b/dashboard/e2e/docker.spec.ts
+@@ -4,7 +4,7 @@ import { test, expect } from "@playwright/test";
+ // No Chrome automation here: the slim runtime image has no managed Chrome, so the
+ // Browser tab cannot succeed. This spec exercises the genuine UI workflow that
+ // works offline (goals, memory search, mock agent) plus the pinned fixture pages.
+-const APP = (process.env.ALIVE_BASE_URL || "http://localhost:8080").replace(
++const APP = (process.env.ALIVE_BASE_URL || "http://localhost:8000").replace(
+   /\/$/,
+   "",
+ );
+diff --git a/docker/README.md b/docker/README.md
+index 8fa2382..d6c5555 100644
+--- a/docker/README.md
++++ b/docker/README.md
+@@ -10,10 +10,39 @@ Copy-Item .env.example .env   # optional; safe local defaults exist
+ docker compose up --build -d
+ ```
+ 
+-Open [http://localhost:8080](http://localhost:8080). When prompted for the local
++Open [http://localhost:8000](http://localhost:8000). When prompted for the local
+ token, use your `ALIVE_API_TOKEN` value (or the compose default
+ `alive-dev-token-replace-for-local-use-000`, local use only).
+ 
++The app is published on host port **8000** because that is the port the Chrome
++extension is built for (its permissions, authorised pages and default backend,
++and the server's page allow-list). Stop any dev backend on 8000 first.
++
++## Evidence-lifecycle demo (fixture, no inference)
++
++With the stack running, the pinned local mirrors are served at
++`http://127.0.0.1:8000/demo-live-01/python-3.11.html`, `python-3.12.html` and
++`synthetic-no-change.html`.
++
++1. In Chrome open `chrome://extensions`, enable Developer mode, **Load unpacked**
++   and choose this repository's `extension/` folder (the image does not contain it).
++2. Open the extension side panel, set the token (default above), open the 3.11 mirror,
++   review and save the excerpt, anchor the sentence, then open 3.12 and ask for the check.
++3. The comparison runs through the deterministic `local_fixture_claim` provider, which
++   compose enables only while `ALIVE_DEMO_MODE=true`. It is a **fixture result, not model
++   reasoning and not source truth**. The paid Meta flags are not set.
++
++Scripted check of the same lifecycle over HTTP (no Chrome needed):
++
++```powershell
++uv run python scripts/docker-lifecycle-check.py --phase run
++docker compose restart app
++uv run python scripts/docker-lifecycle-check.py --phase after-restart --goal-id <id printed by run>
++```
++
++With `ALIVE_DEMO_MODE=false` the fixture provider is refused
++(`--phase expect-refused`).
++
+ ## Operational commands
+ 
+ ```powershell
+@@ -37,7 +66,7 @@ Smoke test (host, needs `ALIVE_API_TOKEN` matching the app):
+ 
+ ```powershell
+ $env:ALIVE_API_TOKEN="alive-dev-token-replace-for-local-use-000"
+-uv run python scripts/docker-smoke-test.py --base-url http://localhost:8080
++uv run python scripts/docker-smoke-test.py --base-url http://localhost:8000
+ ```
+ 
+ Isolated E2E (separate `alive-e2e-*` volumes, never touches dev data):
+@@ -50,7 +79,7 @@ docker compose -f compose.e2e.yaml down
+ Browser E2E against the composed app (Playwright, needs Chrome):
+ 
+ ```powershell
+-$env:ALIVE_BASE_URL="http://localhost:8080"
++$env:ALIVE_BASE_URL="http://localhost:8000"
+ $env:ALIVE_API_TOKEN="alive-dev-token-replace-for-local-use-000"
+ cd dashboard; npx playwright test e2e/docker.spec.ts; cd ..
+ ```
+@@ -66,8 +95,9 @@ them only discards disposable test data.
+ 
+ - **Docker unavailable**: install Docker Desktop (Windows) or Docker Engine +
+   Compose v2 plugin (Linux); verify with `docker compose version`.
+-- **Port 8080 occupied**: stop the conflicting process, or map another host
+-  port by overriding `ports` for `app`.
++- **Port 8000 occupied**: stop the conflicting process (often a dev backend), or set
++  `ALIVE_HOST_PORT` (for example `ALIVE_HOST_PORT=8080`). The dashboard and API follow the
++  override, but the Chrome extension is fixed to 8000, so the extension demo will not work.
+ - **App unhealthy / 503 degraded**: `docker compose logs app`; usually the
+   database was unreachable (`DATABASE_URL` host `db`) or migrations are
+   pending — the entrypoint runs `alembic upgrade head` automatically.
+diff --git a/scripts/docker-lifecycle-check.py b/scripts/docker-lifecycle-check.py
+new file mode 100644
+index 0000000..7f881e9
+--- /dev/null
++++ b/scripts/docker-lifecycle-check.py
+@@ -0,0 +1,188 @@
++"""Host-runnable lifecycle check for the composed ALIVE demo (ALIVE-DOCKER-02).
++
++Usage:
++    python scripts/docker-lifecycle-check.py --phase run
++    docker compose restart app
++    python scripts/docker-lifecycle-check.py --phase after-restart --goal-id <printed id>
++    python scripts/docker-lifecycle-check.py --phase expect-refused   # demo mode off
++
++Drives the real HTTP API of the running container through the deterministic local fixture
++provider (`local_fixture_claim`): save and anchor a source, authorise the exact payload, see a
++meaningful change on the 3.12 mirror and an honest abstention on the synthetic no-change mirror,
++then withdraw the source. No inference and no paid provider is involved; the output is a
++deterministic fixture result, not model reasoning and not source truth.
++
++The mirror URLs below are identifiers the server allow-lists (alive.web_experience.PAGES); they
++use port 8000 whatever --base-url is, because that is what the Chrome extension authorises.
++"""
++
++import argparse
++import hashlib
++import json
++import os
++import sys
++from pathlib import Path
++
++import httpx
++
++ROOT = "/api/v1/browser-experience"
++FIXTURES = Path(__file__).resolve().parents[1] / "fixtures" / "demo_live_01"
++IDENTITY_HOST = "http://127.0.0.1:8000/demo-live-01/"
++BEHAVIOR = "Return the current UTC date and time, with tzinfo None."
++DEPRECATION = "Deprecated since version 3.12: Use datetime.now() with UTC instead."
++DEFAULT_TOKEN = "alive-dev-token-replace-for-local-use-000"
++
++
++def post(client, path, body, expected=200):
++    response = client.post(ROOT + path, json=body)
++    assert response.status_code == expected, (
++        f"POST {path} HTTP {response.status_code}: {response.text[:300]}"
++    )
++    return response.json()
++
++
++def capture(name):
++    return json.loads((FIXTURES / (name + ".capture.json")).read_text(encoding="utf-8"))
++
++
++def setup(client, newer):
++    goal = post(client, "/goals", {"instruction": f"Docker lifecycle check: utcnow vs {newer}"})
++    snapshots = []
++    for name in ("python-3.11", newer):
++        data = capture(name)
++        url = IDENTITY_HOST + name + ".html"
++        permission = post(
++            client,
++            "/grants",
++            {"goal_id": goal["id"], "url": url, "tab_key": "docker-check-tab", "approved": True},
++        )
++        snapshots.append(
++            post(
++                client,
++                "/snapshots",
++                {
++                    "grant_id": permission["id"],
++                    "url": url,
++                    "title": name,
++                    **data,
++                    "reviewed_sha256": hashlib.sha256(data["text"].encode()).hexdigest(),
++                },
++            )["snapshot"]
++        )
++    saved = post(client, "/research/memories", {"snapshot_id": snapshots[0]["id"]})
++    post(
++        client,
++        f"/research/memories/{saved['id']}/anchor",
++        {
++            "quote": BEHAVIOR,
++            "expected_sha256": saved["data"]["sha256"],
++            "expected_revision": 0,
++            "occurrence_start": saved["data"]["excerpt"].index(BEHAVIOR),
++        },
++    )
++    request = {
++        "snapshot_id": snapshots[1]["id"],
++        "research_id": saved["id"],
++        "analysis_mode": "claim_comparison",
++        "provider": "local_fixture_claim",
++    }
++    return goal, saved, request
++
++
++def authorise_and_analyse(client, request):
++    consent = post(client, "/research/outbound/preview", request)
++    provider = consent.get("provider") or {}
++    assert provider.get("id") == "local_fixture_claim", f"unexpected provider {provider}"
++    assert provider.get("external") is False, "fixture provider must not be external"
++    post(
++        client,
++        "/research/outbound/authorize",
++        {
++            "consent_id": consent["id"],
++            "payload_sha256": consent["payload_sha256"],
++            "approved": True,
++        },
++    )
++    return post(client, "/research/relationships", {"consent_id": consent["id"]})
++
++
++def run(client):
++    for name in ("python-3.11", "python-3.12", "synthetic-no-change"):
++        page = client.get(f"/demo-live-01/{name}.html")
++        assert page.status_code == 200, f"mirror {name} HTTP {page.status_code}"
++    assert client.get("/demo-live-01/does-not-exist.html").status_code == 404
++    print("PASS mirrors: three pinned mirrors served, unknown mirror 404")
++
++    goal, saved, request = setup(client, "python-3.12")
++    result = authorise_and_analyse(client, request)
++    assert result["analysis"]["status"] == "validated", result
++    candidate = result["connection"]
++    assert candidate["status"] == "candidate"
++    assert candidate["data"]["historical_quote_retained_in_current"] is True
++    assert candidate["data"]["supersession_basis_quote"] == DEPRECATION
++    print("PASS change: fixture comparison found a standing change; behaviour retained")
++
++    post(client, f"/research/memories/{saved['id']}/withdraw", {})
++    listed = client.get(ROOT + "/research/relationships", params={"goal_id": goal["id"]}).json()
++    assert listed["connections"] == [], "withdrawn source must not leave a connection"
++    print("PASS withdrawal: dependent finding removed from ordinary reads")
++
++    goal2, _, request2 = setup(client, "synthetic-no-change")
++    result2 = authorise_and_analyse(client, request2)
++    assert result2["analysis"]["data"]["validation"]["relationship"] == "insufficient_evidence"
++    assert result2["connection"] is None and result2["abstained"]
++    print("PASS abstention: no-change mirror leaves an honest abstention, no connection")
++    print(
++        "\nRUN OK. After `docker compose restart app` run: "
++        f"--phase after-restart --goal-id {goal['id']}"
++    )
++    return 0
++
++
++def after_restart(client, goal_id):
++    listed = client.get(ROOT + "/research/relationships", params={"goal_id": goal_id}).json()
++    assert listed["connections"] == [], "finding reappeared after restart"
++    print("PASS restart: withdrawn finding is still absent after the container restarted")
++    return 0
++
++
++def expect_refused(client):
++    goal, saved, request = setup(client, "python-3.12")
++    response = client.post(ROOT + "/research/outbound/preview", json=request)
++    assert response.status_code >= 400, "fixture provider must be refused when demo mode is off"
++    print(
++        f"PASS refused: fixture provider rejected (HTTP {response.status_code}) with demo mode off"
++    )
++    return 0
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument(
++        "--base-url", default=os.environ.get("ALIVE_BASE_URL", "http://localhost:8000")
++    )
++    parser.add_argument("--token", default=os.environ.get("ALIVE_API_TOKEN", DEFAULT_TOKEN))
++    parser.add_argument(
++        "--phase", choices=["run", "after-restart", "expect-refused"], default="run"
++    )
++    parser.add_argument("--goal-id", default="")
++    args = parser.parse_args()
++    headers = {"Authorization": f"Bearer {args.token.strip()}"}
++    with httpx.Client(base_url=args.base_url.rstrip("/"), timeout=60, headers=headers) as client:
++        if args.phase == "run":
++            return run(client)
++        if args.phase == "after-restart":
++            assert args.goal_id, "--goal-id is required for --phase after-restart"
++            return after_restart(client, args.goal_id)
++        return expect_refused(client)
++
++
++if __name__ == "__main__":
++    try:
++        sys.exit(main())
++    except AssertionError as exc:
++        print(f"FAIL {exc}")
++        sys.exit(1)
++    except httpx.HTTPError as exc:
++        print(f"FAIL transport: {exc}")
++        sys.exit(1)
+diff --git a/scripts/docker-smoke-test.py b/scripts/docker-smoke-test.py
+index 79fd37c..762e201 100644
+--- a/scripts/docker-smoke-test.py
++++ b/scripts/docker-smoke-test.py
+@@ -1,6 +1,6 @@
+ """Host-runnable Docker smoke test for ALIVE-DOCKER-01.
+ 
+-Usage: python scripts/docker-smoke-test.py [--base-url http://localhost:8080]
++Usage: python scripts/docker-smoke-test.py [--base-url http://localhost:8000]
+ 
+ Exercises the real composed application: static UI, fixture pages, and the
+ authenticated API workflow. No inference, no paid providers.
+@@ -28,7 +28,7 @@ def wrap(fn):
+ def main():
+     parser = argparse.ArgumentParser()
+     parser.add_argument(
+-        "--base-url", default=os.environ.get("ALIVE_BASE_URL", "http://localhost:8080")
++        "--base-url", default=os.environ.get("ALIVE_BASE_URL", "http://localhost:8000")
+     )
+     parser.add_argument("--token", default=os.environ.get("ALIVE_API_TOKEN", ""))
+     args = parser.parse_args()
+diff --git a/tests/test_docker_config.py b/tests/test_docker_config.py
+index ab5a426..8179ca3 100644
+--- a/tests/test_docker_config.py
++++ b/tests/test_docker_config.py
+@@ -1,5 +1,7 @@
+ """ALIVE-DOCKER-01 config regression tests (no Docker required)."""
+ 
++import json
++import re
+ from pathlib import Path
+ 
+ ROOT = Path(__file__).resolve().parents[1]
+@@ -13,13 +15,58 @@ def test_compose_defines_postgres_and_app():
+     compose = read("compose.yaml")
+     assert "pgvector/pgvector:pg16" in compose
+     assert "condition: service_healthy" in compose
+-    assert '"127.0.0.1:8080:8000"' in compose
++    assert '"127.0.0.1:${ALIVE_HOST_PORT:-8000}:8000"' in compose
+     assert "alive-pgdata" in compose and "alive-appdata" in compose
+     assert "pg_isready" in compose
+     assert "ALIVE_DEMO_MODE" in compose
+     assert "ALIVE_COGNITIVE_PROVIDER" in compose
+ 
+ 
++def compose_default_port():
++    match = re.search(r"ALIVE_HOST_PORT:-(\d+)\}:8000", read("compose.yaml"))
++    assert match, "compose must publish the app on ${ALIVE_HOST_PORT:-<port>}"
++    return int(match.group(1))
++
++
++def test_published_port_matches_extension_and_server_allowlist():
++    """The demo only works if Docker, the extension and the server agree on the port."""
++    port = compose_default_port()
++    manifest = json.loads(read("extension/manifest.json"))
++    hosts = manifest["host_permissions"]
++    assert f"http://127.0.0.1:{port}/*" in hosts and f"http://localhost:{port}/*" in hosts
++    config = read("extension/config.js")
++    assert f"DEFAULT_BACKEND = 'http://127.0.0.1:{port}'" in config
++    assert f"http://${{host}}:{port}/demo-live-01/" in config
++    from alive.web_experience import PAGES
++
++    for host in ("127.0.0.1", "localhost"):
++        for name in ("python-3.11", "python-3.12", "synthetic-no-change"):
++            assert f"http://{host}:{port}/demo-live-01/{name}.html" in PAGES
++
++
++def test_allowed_origins_follow_the_published_port():
++    compose = read("compose.yaml")
++    for line in compose.splitlines():
++        if "ALIVE_ALLOWED_ORIGINS" in line:
++            assert "localhost:${ALIVE_HOST_PORT:-8000}" in line
++            assert "127.0.0.1:${ALIVE_HOST_PORT:-8000}" in line
++            break
++    else:
++        raise AssertionError("ALIVE_ALLOWED_ORIGINS missing from compose.yaml")
++
++
++def test_fixture_provider_is_tied_to_demo_mode_and_paid_flags_stay_off():
++    compose = read("compose.yaml")
++    assert "ALIVE_RELATIONSHIP_ALLOW_TEST_PROVIDERS: ${ALIVE_DEMO_MODE:-true}" in compose, (
++        "fixture provider must follow ALIVE_DEMO_MODE, never a literal true"
++    )
++    for paid in ("ALIVE_CLAIM_META_ENABLED", "ALIVE_RESEARCH_META_ENABLED"):
++        assert paid not in compose, f"{paid} must not be enabled by compose"
++    e2e = read("compose.e2e.yaml")
++    assert "ALIVE_RELATIONSHIP_ALLOW_TEST_PROVIDERS" not in e2e
++    assert 'ALIVE_DEMO_MODE: "false"' in e2e
++
++
+ def test_compose_does_not_publish_database_port():
+     lines = read("compose.yaml").splitlines()
+     service, db_ports = None, False

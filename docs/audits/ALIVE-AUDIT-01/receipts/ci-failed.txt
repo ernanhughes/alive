@@ -1,0 +1,52 @@
+backend (ubuntu-latest)	Run uv run pytest -q	﻿2026-10-29T13:31:52.7527255Z ##[group]Run uv run pytest -q
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:31:52.7527591Z ^[[36;1muv run pytest -q^[[0m
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:31:52.7559771Z shell: /usr/bin/bash -e {0}
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:31:52.7560053Z env:
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:31:52.7560257Z   UV_PYTHON: 3.13
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:31:52.7560532Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:31:52.7560857Z ##[endgroup]
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:34:01.4546969Z ............sss.ss.s.................................................... [ 11%]
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:34:44.6585084Z ........................................................................ [ 22%]
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:35:01.3856668Z ........................................................................ [ 34%]
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:35:31.4528894Z ........................................................................ [ 45%]
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:35:42.8659973Z ........................................................................ [ 57%]
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:36:03.9572237Z ........................................................................ [ 68%]
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:36:13.5298547Z ..........................................xs.....................F...... [ 80%]
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:36:44.0778067Z ........................................................................ [ 91%]
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5408568Z ...................................................                      [100%]
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5409325Z =================================== FAILURES ===================================
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5410001Z ________________ test_provider_timeout_is_bounded_and_recorded _________________
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5410441Z 
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5410738Z client = <starlette.testclient.TestClient object at 0x762d1acaf460>
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5411479Z monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x762d228f27b0>
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5411936Z 
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5412243Z     def test_provider_timeout_is_bounded_and_recorded(client, monkeypatch):
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5412864Z         from alive.providers import MetaProvider
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5413282Z     
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5413607Z         async def discover(*args):
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5414105Z             return {"status": "available", "models": ["muse-spark-1.3"]}
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5415305Z     
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5415588Z         async def slow(*args, **kwargs):
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5415973Z             await asyncio.sleep(10)
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5416335Z     
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5416704Z         monkeypatch.setattr(MetaProvider, "discover", discover)
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5417280Z         monkeypatch.setattr(MetaProvider, "structured", slow)
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5417926Z         client.post("/api/v1/cognition/configuration", json={"wall_seconds": 1})
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5418727Z         client.post("/api/v1/cognition/control", json={"command": "start", "provider": "meta"})
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5419360Z         observe(client)
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5419691Z         run = completed(client)
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5420152Z         assert run["state"] == "FAILED" and run["error"] == "TimeoutError"
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5420728Z >       assert run["invocations"][0]["status"] == "cancelled"
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5421259Z E       AssertionError: assert 'reserved' == 'cancelled'
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5421706Z E         
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5421981Z E         - cancelled
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5422284Z E         + reserved
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5422457Z 
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5422650Z tests/test_recovery_budgets.py:137: AssertionError
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5423171Z =========================== short test summary info ============================
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5424191Z FAILED tests/test_recovery_budgets.py::test_provider_timeout_is_bounded_and_recorded - AssertionError: assert 'reserved' == 'cancelled'
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5425209Z   
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5425456Z   - cancelled
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5425742Z   + reserved
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:16.5426108Z 1 failed, 618 passed, 7 skipped, 1 xfailed in 318.66s (0:05:18)
+backend (ubuntu-latest)	Run uv run pytest -q	2026-10-29T13:37:20.2165030Z ##[error]Process completed with exit code 1.

@@ -1,0 +1,11 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______________ test_attention_protocol_and_evidence_integrity ________________
+tests\test_cognition.py:228: in test_attention_protocol_and_evidence_integrity
+    with pytest.raises(ValueError, match="unknown"):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_cognition.py::test_attention_protocol_and_evidence_integrity
+1 failed in 0.17s
+MUTATION references KILLED pytest_exit 1

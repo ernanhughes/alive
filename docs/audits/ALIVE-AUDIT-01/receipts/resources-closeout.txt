@@ -1,0 +1,11 @@
+alive-pi-01a-r2-app-1 127.0.0.1:8080->8000/tcp
+alive-pi-01a-r2-db-1 5432/tcp
+devcontainer-db-1 0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp
+alive-audit01-main_alive-appdata
+alive-audit01-main_alive-pgdata
+alive-audit01-pr54_alive-appdata
+alive-audit01-pr54_alive-pgdata
+C:/Projects/alive                                                           a060abe [main]
+C:/Projects/alive-audit-01                                                  1b6da07 [codex/alive-audit-01]
+C:/Projects/alive-audit-01-pr54                                             7bff18a (detached HEAD)
+C:/Projects/alive-audit-01-pr55                                             b0a77c1 (detached HEAD)

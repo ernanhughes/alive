@@ -1,0 +1,6 @@
+{
+  "unauthenticated_get_status": 200,
+  "unauthenticated_post_goal_status": 200,
+  "websocket_without_token_delivered_event": true,
+  "data_and_token_are_temporary_fixtures": true
+}

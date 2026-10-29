@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="8" skipped="0" tests="20" time="6.141" timestamp="2026-10-29T14:40:51.810955+00:00" hostname="Max"><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_sentinel_payload_survives[sentinel0]" time="0.004" /><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_sentinel_payload_survives[sentinel1]" time="0.004" /><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_sentinel_payload_survives[sentinel2]" time="0.004" /><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_zero_output_limit_is_not_silently_replaced" time="0.003"><failure message="assert 1536 == 0">docs\audits\ALIVE-AUDIT-01\test_adversarial.py:66: in test_zero_output_limit_is_not_silently_replaced
+    assert seen[0]["max_completion_tokens"] == 0
+E   assert 1536 == 0</failure></testcase><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_malformed_response_is_typed_provider_failure[response0]" time="0.003"><failure message="IndexError: list index out of range">docs\audits\ALIVE-AUDIT-01\test_adversarial.py:76: in test_malformed_response_is_typed_provider_failure
+    asyncio.run(wire(response=response))
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+docs\audits\ALIVE-AUDIT-01\test_adversarial.py:42: in wire
+    result = await DirectMetaGateway(configured(), **gateway_args).structured(req)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alive\model_gateway.py:43: in structured
+    return await MetaProvider(self.settings).structured(
+alive\providers.py:111: in structured
+    return await self._request(body, correlation, transport)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alive\providers.py:155: in _request
+    if value["choices"][0].get("finish_reason") == "length":
+       ^^^^^^^^^^^^^^^^^^^
+E   IndexError: list index out of range</failure></testcase><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_malformed_response_is_typed_provider_failure[response1]" time="0.003"><failure message="Failed: DID NOT RAISE ProviderError">docs\audits\ALIVE-AUDIT-01\test_adversarial.py:75: in test_malformed_response_is_typed_provider_failure
+    with pytest.raises(ProviderError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ProviderError</failure></testcase><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_malformed_response_is_typed_provider_failure[response2]" time="0.002"><failure message="Failed: DID NOT RAISE ProviderError">docs\audits\ALIVE-AUDIT-01\test_adversarial.py:75: in test_malformed_response_is_typed_provider_failure
+    with pytest.raises(ProviderError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ProviderError</failure></testcase><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_truncated_output_never_succeeds" time="0.002" /><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_unknown_request_operation_refused" time="0.004"><failure message="Failed: DID NOT RAISE any of (ValueError, KeyError)">docs\audits\ALIVE-AUDIT-01\test_adversarial.py:87: in test_unknown_request_operation_refused
+    with pytest.raises((ValueError, KeyError)):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE any of (ValueError, KeyError)</failure></testcase><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_first_file_direct_construction_is_detected" time="0.009" /><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_alias_construction_is_detected" time="0.003"><failure message="AssertionError: assert []&#10; +  where [] = &lt;function check_allowlist at 0x0000023EEEC08F40&gt;([])&#10; +    where [] = &lt;function find_meta_constructions at 0x0000023EEEC08EA0&gt;(WindowsPath('C:/Users/ernan/AppData/Local/Temp/pytest-of-ernan/pytest-13594/test_alias_construction_is_det0'))">docs\audits\ALIVE-AUDIT-01\test_adversarial.py:104: in test_alias_construction_is_detected
+    assert check_allowlist(find_meta_constructions(tmp_path))
+E   AssertionError: assert []
+E    +  where [] = &lt;function check_allowlist at 0x0000023EEEC08F40&gt;([])
+E    +    where [] = &lt;function find_meta_constructions at 0x0000023EEEC08EA0&gt;(WindowsPath('C:/Users/ernan/AppData/Local/Temp/pytest-of-ernan/pytest-13594/test_alias_construction_is_det0'))</failure></testcase><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_invalid_first_reference_not_hidden_by_valid_last" time="0.000" /><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_authentication_and_origin_both_required" time="0.485" /><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_snapshot_grant_cannot_switch_url" time="0.446" /><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_withdraw_first_of_two_sources_isolated_and_irreversible" time="0.538" /><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_capture_hash_mismatch_refused" time="0.471" /><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_empty_persisted_token_never_allows_unauthenticated_access" time="0.480"><failure message="assert 200 == 401&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">C:\Projects\alive-audit-01\docs\audits\ALIVE-AUDIT-01\test_adversarial.py:192: in test_empty_persisted_token_never_allows_unauthenticated_access
+    assert read.status_code == 401
+E   assert 200 == 401
+E    +  where 200 = &lt;Response [200 OK]&gt;.status_code</failure></testcase><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_later_capture_does_not_inherit_prior_hash" time="0.460" /><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_missing_second_grant_does_not_partially_import_history" time="0.434" /><testcase classname="docs.audits.ALIVE-AUDIT-01.test_adversarial" name="test_timeout_in_durable_reservation_exit_settles_invocation" time="1.780"><failure message="AssertionError: [{'id': 'cfb8023e-4751-4e71-bdce-c7dee78796b0', 'investigation_id': '2a9c1db0-3490-45a2-8ee5-54d66459edf7', 'role': 'observer', 'provider': 'meta', ...}]&#10;assert 'reserved' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + reserved">docs\audits\ALIVE-AUDIT-01\test_adversarial.py:246: in test_timeout_in_durable_reservation_exit_settles_invocation
+    assert run["invocations"][0]["status"] == "cancelled", run["invocations"]
+E   AssertionError: [{'id': 'cfb8023e-4751-4e71-bdce-c7dee78796b0', 'investigation_id': '2a9c1db0-3490-45a2-8ee5-54d66459edf7', 'role': 'observer', 'provider': 'meta', ...}]
+E   assert 'reserved' == 'cancelled'
+E     
+E     - cancelled
+E     + reserved</failure></testcase></testsuite></testsuites>

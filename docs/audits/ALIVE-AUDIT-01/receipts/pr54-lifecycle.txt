@@ -1,0 +1,6 @@
+PASS mirrors: three pinned mirrors served, unknown mirror 404
+PASS change: fixture comparison found a standing change; behaviour retained
+PASS withdrawal: dependent finding removed from ordinary reads
+PASS abstention: no-change mirror leaves an honest abstention, no connection
+
+RUN OK. After `docker compose restart app` run: --phase after-restart --goal-id afdcc124-c4cd-4f47-95c0-b799f8ed89a7

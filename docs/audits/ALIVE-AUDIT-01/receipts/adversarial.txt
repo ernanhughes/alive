@@ -1,0 +1,87 @@
+...FFFF.F.F.....F..F                                                     [100%]
+================================== FAILURES ===================================
+_______________ test_zero_output_limit_is_not_silently_replaced _______________
+docs\audits\ALIVE-AUDIT-01\test_adversarial.py:66: in test_zero_output_limit_is_not_silently_replaced
+    assert seen[0]["max_completion_tokens"] == 0
+E   assert 1536 == 0
+________ test_malformed_response_is_typed_provider_failure[response0] _________
+docs\audits\ALIVE-AUDIT-01\test_adversarial.py:76: in test_malformed_response_is_typed_provider_failure
+    asyncio.run(wire(response=response))
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\runners.py:195: in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\runners.py:118: in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\base_events.py:719: in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+docs\audits\ALIVE-AUDIT-01\test_adversarial.py:42: in wire
+    result = await DirectMetaGateway(configured(), **gateway_args).structured(req)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alive\model_gateway.py:43: in structured
+    return await MetaProvider(self.settings).structured(
+alive\providers.py:111: in structured
+    return await self._request(body, correlation, transport)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+alive\providers.py:155: in _request
+    if value["choices"][0].get("finish_reason") == "length":
+       ^^^^^^^^^^^^^^^^^^^
+E   IndexError: list index out of range
+________ test_malformed_response_is_typed_provider_failure[response1] _________
+docs\audits\ALIVE-AUDIT-01\test_adversarial.py:75: in test_malformed_response_is_typed_provider_failure
+    with pytest.raises(ProviderError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ProviderError
+________ test_malformed_response_is_typed_provider_failure[response2] _________
+docs\audits\ALIVE-AUDIT-01\test_adversarial.py:75: in test_malformed_response_is_typed_provider_failure
+    with pytest.raises(ProviderError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ProviderError
+___________________ test_unknown_request_operation_refused ____________________
+docs\audits\ALIVE-AUDIT-01\test_adversarial.py:87: in test_unknown_request_operation_refused
+    with pytest.raises((ValueError, KeyError)):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE any of (ValueError, KeyError)
+_____________________ test_alias_construction_is_detected _____________________
+docs\audits\ALIVE-AUDIT-01\test_adversarial.py:104: in test_alias_construction_is_detected
+    assert check_allowlist(find_meta_constructions(tmp_path))
+E   AssertionError: assert []
+E    +  where [] = <function check_allowlist at 0x0000023EEEC08F40>([])
+E    +    where [] = <function find_meta_constructions at 0x0000023EEEC08EA0>(WindowsPath('C:/Users/ernan/AppData/Local/Temp/pytest-of-ernan/pytest-13594/test_alias_construction_is_det0'))
+_______ test_empty_persisted_token_never_allows_unauthenticated_access ________
+C:\Projects\alive-audit-01\docs\audits\ALIVE-AUDIT-01\test_adversarial.py:192: in test_empty_persisted_token_never_allows_unauthenticated_access
+    assert read.status_code == 401
+E   assert 200 == 401
+E    +  where 200 = <Response [200 OK]>.status_code
+_________ test_timeout_in_durable_reservation_exit_settles_invocation _________
+docs\audits\ALIVE-AUDIT-01\test_adversarial.py:246: in test_timeout_in_durable_reservation_exit_settles_invocation
+    assert run["invocations"][0]["status"] == "cancelled", run["invocations"]
+E   AssertionError: [{'id': 'cfb8023e-4751-4e71-bdce-c7dee78796b0', 'investigation_id': '2a9c1db0-3490-45a2-8ee5-54d66459edf7', 'role': 'observer', 'provider': 'meta', ...}]
+E   assert 'reserved' == 'cancelled'
+E     
+E     - cancelled
+E     + reserved
+============================== warnings summary ===============================
+docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_authentication_and_origin_both_required
+docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_snapshot_grant_cannot_switch_url
+docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_withdraw_first_of_two_sources_isolated_and_irreversible
+docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_capture_hash_mismatch_refused
+docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_empty_persisted_token_never_allows_unauthenticated_access
+docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_later_capture_does_not_inherit_prior_hash
+docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_missing_second_grant_does_not_partially_import_history
+docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_timeout_in_durable_reservation_exit_settles_invocation
+  C:\Projects\alive-audit-01\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+    self._get_loop()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_zero_output_limit_is_not_silently_replaced
+FAILED docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_malformed_response_is_typed_provider_failure[response0]
+FAILED docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_malformed_response_is_typed_provider_failure[response1]
+FAILED docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_malformed_response_is_typed_provider_failure[response2]
+FAILED docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_unknown_request_operation_refused
+FAILED docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_alias_construction_is_detected
+FAILED docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_empty_persisted_token_never_allows_unauthenticated_access
+FAILED docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_timeout_in_durable_reservation_exit_settles_invocation
+8 failed, 12 passed, 8 warnings in 6.15s

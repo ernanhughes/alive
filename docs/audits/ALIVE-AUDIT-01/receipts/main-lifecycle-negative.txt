@@ -1,0 +1,2 @@
+PASS mirrors: three pinned mirrors served, unknown mirror 404
+FAIL POST /research/outbound/preview HTTP 403: {"error":{"code":403,"message":"Claim fixture provider is disabled","correlation_id":"9558d40d-c3aa-40e9-bb6d-0fb95f92c962"}}

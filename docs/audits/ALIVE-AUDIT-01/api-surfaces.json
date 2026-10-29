@@ -1,0 +1,626 @@
+[
+  {
+    "module": "alive/app.py",
+    "function": "demo_live_mirror",
+    "line": 109,
+    "decorator": "app.get('/demo-live-01/{name}', include_in_schema=False)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "health",
+    "line": 213,
+    "decorator": "app.get('/api/v1/health')"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "capabilities",
+    "line": 217,
+    "decorator": "app.get('/api/v1/capabilities', dependencies=[Depends(auth)])"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "alive",
+    "line": 247,
+    "decorator": "app.get('/api/v1/alive', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "provenance",
+    "line": 251,
+    "decorator": "app.get('/api/v1/provenance', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "start",
+    "line": 255,
+    "decorator": "app.post('/api/v1/alive/start', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "stop",
+    "line": 259,
+    "decorator": "app.post('/api/v1/alive/stop', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "events",
+    "line": 271,
+    "decorator": "app.get('/api/v1/events', dependencies=secured, response_model=list[PersistedEvent])"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "ingest",
+    "line": 284,
+    "decorator": "app.post('/api/v1/events', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "memories",
+    "line": 290,
+    "decorator": "app.get('/api/v1/memories', dependencies=secured, response_model=list[MemoryOutput])"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "search",
+    "line": 302,
+    "decorator": "app.post('/api/v1/memories/search', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "goals",
+    "line": 327,
+    "decorator": "app.get('/api/v1/goals', dependencies=secured, response_model=list[GoalOutput])"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "goal",
+    "line": 337,
+    "decorator": "app.post('/api/v1/goals', dependencies=secured, response_model=GoalOutput)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "transition",
+    "line": 346,
+    "decorator": "app.post('/api/v1/goals/{goal_id}/transition', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "agents",
+    "line": 371,
+    "decorator": "app.get('/api/v1/agents', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "run",
+    "line": 386,
+    "decorator": "app.post('/api/v1/agents/runs', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "get_run",
+    "line": 393,
+    "decorator": "app.get('/api/v1/agents/runs/{run_id}', dependencies=secured, response_model=RunOutput)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "cancel",
+    "line": 401,
+    "decorator": "app.post('/api/v1/agents/runs/{run_id}/cancel', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "sessions",
+    "line": 406,
+    "decorator": "app.get('/api/v1/browser/sessions', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "create_session",
+    "line": 433,
+    "decorator": "app.post('/api/v1/browser/sessions', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "navigate",
+    "line": 437,
+    "decorator": "app.post('/api/v1/browser/sessions/{session_id}/navigate', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "action",
+    "line": 441,
+    "decorator": "app.post('/api/v1/browser/sessions/{session_id}/actions', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "close_session",
+    "line": 445,
+    "decorator": "app.delete('/api/v1/browser/sessions/{session_id}', dependencies=secured)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "demo",
+    "line": 450,
+    "decorator": "app.get('/demo', include_in_schema=False)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "stream",
+    "line": 482,
+    "decorator": "app.websocket('/api/v1/events/stream')"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "dashboard_index",
+    "line": 464,
+    "decorator": "app.get('/', include_in_schema=False)"
+  },
+  {
+    "module": "alive/app.py",
+    "function": "dashboard_spa",
+    "line": 468,
+    "decorator": "app.get('/{path:path}', include_in_schema=False)"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "status",
+    "line": 31,
+    "decorator": "route.get('/cognition')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "control",
+    "line": 35,
+    "decorator": "route.post('/cognition/control')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "configuration",
+    "line": 60,
+    "decorator": "route.post('/cognition/configuration')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "observations",
+    "line": 70,
+    "decorator": "route.get('/cognition/observations')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "investigations",
+    "line": 84,
+    "decorator": "route.get('/cognition/investigations')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "detail",
+    "line": 96,
+    "decorator": "route.get('/cognition/investigations/{run_id}')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "cancel",
+    "line": 100,
+    "decorator": "route.post('/cognition/investigations/{run_id}/cancel')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "actions",
+    "line": 119,
+    "decorator": "route.get('/cognition/actions')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "approve",
+    "line": 131,
+    "decorator": "route.post('/cognition/actions/{action_id}/decision')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "experiences",
+    "line": 135,
+    "decorator": "route.get('/experiences')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "export",
+    "line": 147,
+    "decorator": "route.get('/experiences/export')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "replay",
+    "line": 164,
+    "decorator": "route.post('/experiences/{experience_id}/replay')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "probe",
+    "line": 184,
+    "decorator": "route.post('/providers/meta/probe')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "index",
+    "line": 188,
+    "decorator": "route.post('/memories/index')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "preview",
+    "line": 192,
+    "decorator": "route.post('/history/preview')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "import_decision",
+    "line": 196,
+    "decorator": "route.post('/history/{import_id}/decision')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "revoke",
+    "line": 200,
+    "decorator": "route.delete('/history/{import_id}')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "lab",
+    "line": 204,
+    "decorator": "route.post('/lab')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "inject",
+    "line": 208,
+    "decorator": "route.post('/lab/{environment_id}/inject')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "watch",
+    "line": 212,
+    "decorator": "route.post('/browser/sessions/{session_id}/observation')"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "world",
+    "line": 222,
+    "decorator": "route.get('/world/{environment_id}', response_class=HTMLResponse)"
+  },
+  {
+    "module": "alive/cognitive_api.py",
+    "function": "world_state",
+    "line": 232,
+    "decorator": "route.get('/api/v1/lab/world/{environment_id}')"
+  },
+  {
+    "module": "alive/experiment/api.py",
+    "function": "list_runs",
+    "line": 12,
+    "decorator": "routes.get('')"
+  },
+  {
+    "module": "alive/experiment/api.py",
+    "function": "review",
+    "line": 36,
+    "decorator": "routes.get('/review-pack')"
+  },
+  {
+    "module": "alive/experiment/api.py",
+    "function": "freeze_design",
+    "line": 40,
+    "decorator": "routes.post('/freeze-design')"
+  },
+  {
+    "module": "alive/experiment/api.py",
+    "function": "start",
+    "line": 44,
+    "decorator": "routes.post('/runs')"
+  },
+  {
+    "module": "alive/experiment/api.py",
+    "function": "authorize",
+    "line": 52,
+    "decorator": "routes.post('/authorize-full')"
+  },
+  {
+    "module": "alive/experiment/api.py",
+    "function": "detail",
+    "line": 56,
+    "decorator": "routes.get('/runs/{run_id}')"
+  },
+  {
+    "module": "alive/experiment/api.py",
+    "function": "freeze_policy",
+    "line": 60,
+    "decorator": "routes.post('/runs/{run_id}/freeze-policy')"
+  },
+  {
+    "module": "alive/experiment/api.py",
+    "function": "stop",
+    "line": 64,
+    "decorator": "routes.post('/stop')"
+  },
+  {
+    "module": "alive/exploration_api.py",
+    "function": "inquiry",
+    "line": 137,
+    "decorator": "api.get('/inquiries/{goal_id}')"
+  },
+  {
+    "module": "alive/exploration_api.py",
+    "function": "inquiries",
+    "line": 143,
+    "decorator": "api.get('/inquiries')"
+  },
+  {
+    "module": "alive/learning/api.py",
+    "function": "status",
+    "line": 24,
+    "decorator": "route.get('')"
+  },
+  {
+    "module": "alive/learning/api.py",
+    "function": "demonstration",
+    "line": 34,
+    "decorator": "route.get('/demonstration')"
+  },
+  {
+    "module": "alive/living_api.py",
+    "function": "status",
+    "line": 22,
+    "decorator": "route.get('')"
+  },
+  {
+    "module": "alive/living_api.py",
+    "function": "create",
+    "line": 46,
+    "decorator": "route.post('/journeys')"
+  },
+  {
+    "module": "alive/living_api.py",
+    "function": "detail",
+    "line": 50,
+    "decorator": "route.get('/journeys/{journey_id}')"
+  },
+  {
+    "module": "alive/living_api.py",
+    "function": "advance",
+    "line": 54,
+    "decorator": "route.post('/journeys/{journey_id}/advance')"
+  },
+  {
+    "module": "alive/living_api.py",
+    "function": "stop",
+    "line": 58,
+    "decorator": "route.post('/journeys/{journey_id}/stop')"
+  },
+  {
+    "module": "alive/living_api.py",
+    "function": "world",
+    "line": 68,
+    "decorator": "route.get('/living/world/{journey_id}/{episode}', response_class=HTMLResponse)"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "status",
+    "line": 1347,
+    "decorator": "api.get('')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "goal",
+    "line": 1360,
+    "decorator": "api.post('/goals')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "grant",
+    "line": 1364,
+    "decorator": "api.post('/grants')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "revoke",
+    "line": 1368,
+    "decorator": "api.post('/grants/{grant_id}/revoke')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "snapshot",
+    "line": 1374,
+    "decorator": "api.post('/snapshots')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "analyse",
+    "line": 1378,
+    "decorator": "api.post('/analyse')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "note",
+    "line": 1382,
+    "decorator": "api.get('/notes/{note_id}')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "feedback",
+    "line": 1401,
+    "decorator": "api.post('/feedback')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "save_research",
+    "line": 1405,
+    "decorator": "api.post('/research/memories')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "list_research",
+    "line": 1411,
+    "decorator": "api.get('/research/memories')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "anchor_research",
+    "line": 1415,
+    "decorator": "api.post('/research/memories/{research_id}/anchor')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "withdraw_research",
+    "line": 1432,
+    "decorator": "api.post('/research/memories/{research_id}/withdraw')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "retrieve_research",
+    "line": 1438,
+    "decorator": "api.post('/research/retrieve')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "qualify_evidence",
+    "line": 1444,
+    "decorator": "api.post('/research/qualifications', response_model=QualificationResult)"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "research_connection",
+    "line": 1453,
+    "decorator": "api.post('/research/connections')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "research_connection_feedback",
+    "line": 1457,
+    "decorator": "api.post('/research/connections/{connection_id}/feedback')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "preview_research_outbound",
+    "line": 1467,
+    "decorator": "api.post('/research/outbound/preview')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "authorize_research_outbound",
+    "line": 1478,
+    "decorator": "api.post('/research/outbound/authorize')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "revoke_research_outbound",
+    "line": 1482,
+    "decorator": "api.post('/research/outbound/{consent_id}/revoke')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "analyze_research_relationship",
+    "line": 1486,
+    "decorator": "api.post('/research/relationships')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "list_research_relationships",
+    "line": 1490,
+    "decorator": "api.get('/research/relationships')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "register_experiment_campaign",
+    "line": 1496,
+    "decorator": "api.post('/research/experiment/campaigns')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "list_experiment_campaigns",
+    "line": 1500,
+    "decorator": "api.get('/research/experiment/campaigns')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "get_experiment_campaign",
+    "line": 1504,
+    "decorator": "api.get('/research/experiment/campaigns/{campaign_digest}')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "get_experiment_campaign_state",
+    "line": 1508,
+    "decorator": "api.get('/research/experiment/campaigns/{campaign_digest}/state')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "approve_experiment_campaign",
+    "line": 1512,
+    "decorator": "api.post('/research/experiment/campaigns/{campaign_digest}/approve')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "get_experiment_approval",
+    "line": 1516,
+    "decorator": "api.get('/research/experiment/approvals/{approval_id}')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "active_experiment_approval",
+    "line": 1522,
+    "decorator": "api.get('/research/experiment/approvals')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "revoke_experiment_approval",
+    "line": 1526,
+    "decorator": "api.post('/research/experiment/approvals/{approval_id}/revoke')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "create_blind_run",
+    "line": 1530,
+    "decorator": "api.post('/research/blind/runs')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "list_blind_runs",
+    "line": 1536,
+    "decorator": "api.get('/research/blind/runs')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "blind_rating_view",
+    "line": 1540,
+    "decorator": "api.get('/research/blind/runs/{run_id}')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "blind_owner_rating",
+    "line": 1544,
+    "decorator": "api.post('/research/blind/runs/{run_id}/ratings')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "blind_reveal",
+    "line": 1557,
+    "decorator": "api.post('/research/blind/runs/{run_id}/reveal')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "blind_revealed_results",
+    "line": 1561,
+    "decorator": "api.get('/research/blind/runs/{run_id}/results')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "blind_archive",
+    "line": 1565,
+    "decorator": "api.post('/research/blind/runs/{run_id}/archive')"
+  },
+  {
+    "module": "alive/web_experience.py",
+    "function": "repair_research_index",
+    "line": 1569,
+    "decorator": "api.post('/research/index/repair')"
+  }
+]

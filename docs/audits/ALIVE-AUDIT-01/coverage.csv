@@ -1,0 +1,172 @@
+path,lines,ast_parsed,semantic_review
+alive/__init__.py,1,True,not completed
+alive/agents.py,199,True,detailed
+alive/app.py,540,True,detailed
+alive/attention.py,134,True,detailed
+alive/browser.py,220,True,detailed
+alive/claim_comparison.py,258,True,detailed
+alive/claim_fixtures.py,121,True,not completed
+alive/cognition.py,1183,True,selected critical paths
+alive/cognitive_api.py,240,True,selected critical paths
+alive/cognitive_models.py,139,True,not completed
+alive/cognitive_schema.py,145,True,detailed
+alive/config.py,67,True,detailed
+alive/db.py,27,True,detailed
+alive/demo.html,,,not completed
+alive/demo_live_01.py,86,True,detailed
+alive/evidence_qualification.py,245,True,selected critical paths
+alive/experience_lab.py,654,True,selected critical paths
+alive/experiment/__init__.py,1,True,not completed
+alive/experiment/api.py,67,True,not completed
+alive/experiment/corpus.py,235,True,not completed
+alive/experiment/freeze.py,84,True,not completed
+alive/experiment/metrics.py,166,True,not completed
+alive/experiment/policy.py,122,True,not completed
+alive/experiment/prompts.py,42,True,not completed
+alive/experiment/schema.py,86,True,not completed
+alive/experiment/scoring.py,111,True,not completed
+alive/experiment/service.py,828,True,selected critical paths
+alive/experiment_approval.py,896,True,selected critical paths
+alive/experiment_budget.py,123,True,selected critical paths
+alive/exploration_api.py,159,True,not completed
+alive/kernel.py,300,True,detailed
+alive/laboratory.py,110,True,not completed
+alive/learning/__init__.py,1,True,not completed
+alive/learning/api.py,39,True,not completed
+alive/learning/controller.py,123,True,selected critical paths
+alive/learning/environment.py,207,True,not completed
+alive/learning/experiment.py,283,True,selected critical paths
+alive/learning/history_diagnostic.py,423,True,not completed
+alive/living.py,544,True,selected critical paths
+alive/living_api.py,76,True,not completed
+alive/living_evaluation.py,27,True,not completed
+alive/living_models.py,35,True,not completed
+alive/living_policy.py,109,True,not completed
+alive/memory.py,358,True,selected critical paths
+alive/model_gateway.py,58,True,detailed
+alive/models.py,122,True,detailed
+alive/provenance.py,50,True,detailed
+alive/providers.py,224,True,detailed
+alive/relevance.py,430,True,not completed
+alive/research_blind.py,500,True,selected critical paths
+alive/research_memory.py,948,True,selected critical paths
+alive/research_relationships.py,2127,True,selected critical paths
+alive/schemas.py,113,True,not completed
+alive/society.py,156,True,detailed
+alive/transport.py,68,True,detailed
+alive/web_experience.py,1572,True,selected critical paths
+alive/web_models.py,19,True,not completed
+alive/workflow_defaults.py,7,True,not completed
+dashboard/src/BrowserProvenance.test.tsx,40,,not completed
+dashboard/src/BrowserProvenance.tsx,66,,not completed
+dashboard/src/Cognition.tsx,637,,not completed
+dashboard/src/Experiments.tsx,100,,not completed
+dashboard/src/Learning.tsx,85,,not completed
+dashboard/src/Living.test.tsx,127,,not completed
+dashboard/src/Living.tsx,228,,not completed
+dashboard/src/api.test.ts,55,,not completed
+dashboard/src/api.ts,108,,not completed
+dashboard/src/main.tsx,890,,not completed
+dashboard/src/style.css,,,not completed
+dashboard/src/vite-env.d.ts,1,,not completed
+extension/background.js,366,,not completed
+extension/capture.js,72,,not completed
+extension/config.js,22,,not completed
+extension/live-companion.js,241,,not completed
+extension/manifest.json,,,not completed
+extension/observer.js,40,,not completed
+extension/panel.html,,,not completed
+extension/panel.js,757,,not completed
+migrations/env.py,23,True,not completed
+migrations/versions/0001_foundation.py,172,True,not completed
+migrations/versions/0002_event_indexes.py,23,True,not completed
+migrations/versions/0003_cognitive_society.py,178,True,not completed
+migrations/versions/0004_selective_experiments.py,41,True,not completed
+migrations/versions/0005_living_experience.py,49,True,not completed
+migrations/versions/0006_web_experience.py,29,True,not completed
+scripts/_build_alive14r3_protocol.py,623,True,not completed
+scripts/alive08.py,628,True,not completed
+scripts/alive09_evidence.py,353,True,not completed
+scripts/alive10_compare.py,166,True,not completed
+scripts/alive10_evidence.py,307,True,not completed
+scripts/alive11r1_compare.py,175,True,not completed
+scripts/alive12_evaluation.py,324,True,not completed
+scripts/alive13_defects.py,320,True,not completed
+scripts/alive13_evaluation.py,623,True,not completed
+scripts/alive13_withdrawal_repro.cjs,86,,not completed
+scripts/alive14_evaluation.py,527,True,not completed
+scripts/alive14r2_preflight.py,298,True,not completed
+scripts/alive14r3_experiment.py,1303,True,not completed
+scripts/alive14r4_defects.py,148,True,not completed
+scripts/alive14r4_experiment.py,1749,True,not completed
+scripts/alive14r5_experiment.py,2021,True,selected critical paths
+scripts/alive_eval01.py,69,True,not completed
+scripts/alive_eval01_custodian.py,689,True,not completed
+scripts/alive_eval02.py,123,True,not completed
+scripts/alive_eval02_custodian.py,768,True,not completed
+scripts/archive10.py,146,True,not completed
+scripts/archive11.py,152,True,selected critical paths
+scripts/archive11_rerun.py,187,True,not completed
+scripts/archive_browser05.py,130,True,not completed
+scripts/archive_diagnostic03.py,238,True,not completed
+scripts/archive_experiment03.py,253,True,not completed
+scripts/archive_learning03.py,212,True,not completed
+scripts/archive_living04.py,376,True,not completed
+scripts/benchmark.py,302,True,not completed
+scripts/browser05.py,242,True,not completed
+scripts/canonical_sha256.py,16,True,not completed
+scripts/demo_live_01.py,70,True,not completed
+scripts/dev.ps1,39,,not completed
+scripts/diagnostic03.py,18,True,not completed
+scripts/docker-demo-seed.py,116,True,not completed
+scripts/docker-e2e.py,146,True,selected critical paths
+scripts/docker-smoke-test.py,133,True,selected critical paths
+scripts/experiment03.py,131,True,not completed
+scripts/extension_smoke.py,95,True,not completed
+scripts/first_contact.py,246,True,not completed
+scripts/first_thought.py,236,True,not completed
+scripts/learning03.py,22,True,not completed
+scripts/living04.py,138,True,not completed
+scripts/native10.py,938,True,selected critical paths
+scripts/native11.py,452,True,not completed
+scripts/native11_cases.py,125,True,not completed
+scripts/native11_compare.py,193,True,not completed
+scripts/native11_recall.py,191,True,not completed
+scripts/native12.py,284,True,not completed
+scripts/native13.py,400,True,not completed
+scripts/native14.py,533,True,not completed
+scripts/native14_r1.py,624,True,not completed
+scripts/native14_r2.py,740,True,not completed
+scripts/native14_r3.py,1094,True,not completed
+scripts/native14_r4.py,1179,True,not completed
+scripts/native14_r5.py,295,True,not completed
+scripts/native14_r5_r1.py,581,True,not completed
+scripts/native_demo_live_01.py,410,True,selected critical paths
+scripts/native_notebook_01.py,597,True,not completed
+scripts/native_notebook_01_shipped.py,104,True,not completed
+scripts/notebook02_evaluation.py,382,True,not completed
+scripts/notebook03a.py,377,True,not completed
+scripts/notebook03a_protocol.py,580,True,not completed
+scripts/notebook03a_r1.py,493,True,not completed
+scripts/notebook03a_r1_protocol.py,629,True,not completed
+scripts/notebook03a_r1_surface.py,249,True,not completed
+scripts/notebook03a_r2.py,528,True,not completed
+scripts/notebook03a_r2_protocol.py,1015,True,not completed
+scripts/notebook03a_r2_shortcut.py,301,True,not completed
+scripts/prepare_demo_live_01.py,148,True,not completed
+scripts/prepare_embeddings.py,28,True,not completed
+scripts/relevance07.py,274,True,not completed
+scripts/report_frozen03.py,470,True,not completed
+scripts/run_frozen03.py,123,True,not completed
+scripts/stop.ps1,12,,not completed
+scripts/test_profile.py,240,True,not completed
+scripts/test_run.py,171,True,not completed
+scripts/test_select.py,560,True,not completed
+scripts/verify_alive14_protocol.py,44,True,not completed
+scripts/verify_alive14r2_protocol.py,20,True,not completed
+scripts/verify_alive14r3_protocol.py,29,True,not completed
+scripts/verify_archive.py,39,True,not completed
+scripts/verify_retrieval.py,88,True,not completed
+skill_forge/__init__.py,214,True,selected critical paths
+skill_forge/examples/research-connections.json,,,not completed
+skill_forge/runtime.py,38,True,not completed

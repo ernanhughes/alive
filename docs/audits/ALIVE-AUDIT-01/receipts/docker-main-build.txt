@@ -1,0 +1,121 @@
+ Image alive-audit01-main-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 519B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.77kB done
+#2 DONE 0.1s
+
+#3 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#3 DONE 0.6s
+
+#4 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#4 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e 0.1s done
+#4 CACHED
+
+#5 [internal] load metadata for ghcr.io/astral-sh/uv:latest
+#5 ...
+
+#6 [internal] load metadata for docker.io/library/python:3.13-slim
+#6 DONE 0.4s
+
+#7 [internal] load metadata for docker.io/library/node:24-slim
+#7 DONE 0.5s
+
+#5 [internal] load metadata for ghcr.io/astral-sh/uv:latest
+#5 DONE 0.5s
+
+#8 [internal] load .dockerignore
+#8 transferring context: 440B done
+#8 DONE 0.1s
+
+#9 [internal] load build context
+#9 DONE 0.0s
+
+#10 [stage-1  1/14] FROM docker.io/library/python:3.13-slim@sha256:2d44738ebf4ce5f63b9d9ea871e9c7cfdc0426f7b0c97cac915fd88ded1d86bb
+#10 resolve docker.io/library/python:3.13-slim@sha256:2d44738ebf4ce5f63b9d9ea871e9c7cfdc0426f7b0c97cac915fd88ded1d86bb 0.1s done
+#10 DONE 0.1s
+
+#11 FROM ghcr.io/astral-sh/uv:latest@sha256:af22a52f5eafef3d78e551599d405c02df61919d18028f0cea8eda93bc9986d0
+#11 resolve ghcr.io/astral-sh/uv:latest@sha256:af22a52f5eafef3d78e551599d405c02df61919d18028f0cea8eda93bc9986d0 0.1s done
+#11 DONE 0.1s
+
+#12 [frontend-build 1/6] FROM docker.io/library/node:24-slim@sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c
+#12 resolve docker.io/library/node:24-slim@sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c 0.1s done
+#12 DONE 0.1s
+
+#9 [internal] load build context
+#9 transferring context: 2.99MB 0.2s done
+#9 DONE 0.3s
+
+#13 [stage-1  2/14] RUN apt-get update     && apt-get install -y --no-install-recommends curl postgresql-client     && rm -rf /var/lib/apt/lists/*     && useradd --create-home --uid 10000 alive     && mkdir -p /app && chown alive:alive /app
+#13 CACHED
+
+#14 [stage-1  3/14] WORKDIR /app
+#14 CACHED
+
+#15 [stage-1  5/14] COPY --chown=alive:alive pyproject.toml uv.lock alembic.ini ./
+#15 CACHED
+
+#16 [stage-1  4/14] COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+#16 CACHED
+
+#17 [stage-1  6/14] RUN uv sync --locked --no-dev     && mkdir -p /app/.alive /app/dashboard     && chmod 700 /app/.alive
+#17 CACHED
+
+#18 [frontend-build 4/6] RUN cd dashboard && npm ci
+#18 CACHED
+
+#19 [frontend-build 2/6] WORKDIR /build
+#19 CACHED
+
+#20 [frontend-build 5/6] COPY dashboard/ ./dashboard/
+#20 CACHED
+
+#21 [frontend-build 3/6] COPY dashboard/package.json dashboard/package-lock.json ./dashboard/
+#21 CACHED
+
+#22 [frontend-build 6/6] RUN cd dashboard && npm run build
+#22 CACHED
+
+#23 [stage-1  7/14] COPY --chown=alive:alive alive/ ./alive/
+#23 DONE 0.1s
+
+#24 [stage-1  8/14] COPY --chown=alive:alive migrations/ ./migrations/
+#24 DONE 0.2s
+
+#25 [stage-1  9/14] COPY --chown=alive:alive fixtures/ ./fixtures/
+#25 DONE 0.2s
+
+#26 [stage-1 10/14] COPY --chown=alive:alive config/ ./config/
+#26 DONE 0.2s
+
+#27 [stage-1 11/14] COPY --chown=alive:alive scripts/docker-demo-seed.py scripts/docker-e2e.py scripts/docker-smoke-test.py ./scripts/
+#27 DONE 0.2s
+
+#28 [stage-1 12/14] COPY --chown=alive:alive docker/entrypoint.sh docker/healthcheck.py ./docker/
+#28 DONE 0.2s
+
+#29 [stage-1 13/14] COPY --from=frontend-build --chown=alive:alive /build/dashboard/dist ./dashboard/dist
+#29 DONE 0.2s
+
+#30 [stage-1 14/14] RUN chmod +x docker/entrypoint.sh
+#30 DONE 0.3s
+
+#31 exporting to image
+#31 exporting layers
+#31 exporting layers 1.2s done
+#31 exporting manifest sha256:65ea9b09e08ed2e87432c7506d2057e87177457138df032dc88f8d6a9b9f0e9a 0.1s done
+#31 exporting config sha256:51ea2a99a144b3745151cb6a83c8011692acd1bf4e4f35c858ebcf743d6aaee2 0.1s done
+#31 exporting attestation manifest sha256:ec083a03c3112d6ad66308fa851c2da58919a068c3001e65df6ac6e611e9a6ce 0.1s done
+#31 exporting manifest list sha256:a7bf4cc857f2fa8fc81fdf19d2c6baec8f76a88b5e7e33d7bf2431baf9c9347c
+#31 exporting manifest list sha256:a7bf4cc857f2fa8fc81fdf19d2c6baec8f76a88b5e7e33d7bf2431baf9c9347c 0.0s done
+#31 naming to docker.io/library/alive-audit01-main-app:latest done
+#31 unpacking to docker.io/library/alive-audit01-main-app:latest
+#31 unpacking to docker.io/library/alive-audit01-main-app:latest 0.4s done
+#31 DONE 2.0s
+
+#32 resolving provenance for metadata file
+#32 DONE 0.0s
+ Image alive-audit01-main-app Built 

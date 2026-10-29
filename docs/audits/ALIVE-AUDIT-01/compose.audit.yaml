@@ -1,0 +1,9 @@
+services:
+  app:
+    ports: !override
+      - '127.0.0.1:18081:8000'
+    environment:
+      ALIVE_META_API_KEY: ''
+      ALIVE_API_TOKEN: 'audit-only-local-token-00000000000000'
+      ALIVE_CLAIM_META_ENABLED: 'false'
+      ALIVE_RESEARCH_META_ENABLED: 'false'

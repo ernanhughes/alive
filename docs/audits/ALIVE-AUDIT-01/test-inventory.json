@@ -1,0 +1,4347 @@
+[
+  {
+    "path": "archives/ALIVE-14-R5-R1/evidence/test_review12.py",
+    "name": "test_server_dispatches_second_cell_first",
+    "line": 51,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5-R1/evidence/test_review12.py",
+    "name": "test_backend_dispatches_after_fatal_error",
+    "line": 66,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5-R1/evidence/test_review12.py",
+    "name": "test_runner_crash_recovery_continues_after_fatal",
+    "line": 82,
+    "assertions": 3,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5-R1/evidence/test_review12.py",
+    "name": "test_cancellation_rolls_back_settlement_and_allows_stage_two",
+    "line": 111,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5-R1/evidence/test_review12.py",
+    "name": "test_registration_accepts_display_manifest_divergence",
+    "line": 153,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5-R1/evidence/test_review12.py",
+    "name": "test_revocation_queued_before_final_marker_blocks_dispatch",
+    "line": 188,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5-R1/evidence/test_review12.py",
+    "name": "test_actual_outbound_mutation_is_refused",
+    "line": 227,
+    "assertions": 1,
+    "raises_contexts": 2,
+    "decorators": [
+      "pytest.mark.parametrize('field', ['research_question', 'current_excerpt', 'historical_excerpt', 'current_url', 'current_sha256', 'goal_instruction', 'instructions', 'schema', 'provider', 'model', 'run_id', 'approval_id', 'stage', 'call_index'])"
+    ]
+  },
+  {
+    "path": "archives/ALIVE-14-R5-R1/evidence/test_review12.py",
+    "name": "test_fresh_digest_budget_and_minimum_cap",
+    "line": 271,
+    "assertions": 9,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5-R1/evidence/test_review12.py",
+    "name": "test_supersession_before_marker_blocks_dispatch",
+    "line": 298,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5/evidence/review11_probe.py",
+    "name": "test_revoked_campaign_continues_dispatch",
+    "line": 32,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5/evidence/review11_probe.py",
+    "name": "test_local_question_and_hash_edits_bypass_digest",
+    "line": 49,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5/evidence/review11_probe.py",
+    "name": "test_stage_one_accepts_full_campaign_cap",
+    "line": 80,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5/evidence/review11_probe.py",
+    "name": "test_blind_status_route_correlates_content",
+    "line": 86,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5/evidence/review11_probe.py",
+    "name": "test_staged_order_budget_digest_and_revisions",
+    "line": 99,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5/evidence/review11_probe.py",
+    "name": "test_all_fatal_categories_stop_and_no_replay",
+    "line": 118,
+    "assertions": 4,
+    "raises_contexts": 1,
+    "decorators": [
+      "pytest.mark.parametrize('category,status', [('authentication', 401), ('access_denied', 403), ('unsupported_schema', 400), ('quota_exhausted', 402), ('rate_limit', 429), ('timeout', None), ('ambiguous_settlement', None)])"
+    ]
+  },
+  {
+    "path": "archives/ALIVE-14-R5/evidence/review11_probe.py",
+    "name": "test_unwrapped_timeout_fails_to_stop",
+    "line": 137,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5/evidence/review11_probe.py",
+    "name": "test_fresh_database_digest_and_budget",
+    "line": 152,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5/evidence/review11_probe.py",
+    "name": "test_superseded_approval_and_placeholder_identity",
+    "line": 168,
+    "assertions": 3,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "archives/ALIVE-14-R5/evidence/review11_probe.py",
+    "name": "test_mixed_scoring_abstention_missing_misleading_revision",
+    "line": 185,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_agents.py",
+    "name": "test_pi_rpc_stream_and_result",
+    "line": 10,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_agents.py",
+    "name": "test_pi_error_timeout_and_cancellation",
+    "line": 36,
+    "assertions": 0,
+    "raises_contexts": 3,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_agents.py",
+    "name": "test_provider_contract",
+    "line": 56,
+    "assertions": 4,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r3_experiment.py",
+    "name": "test_protocol_v3_is_frozen_neutral_and_separated_from_the_answer_key",
+    "line": 14,
+    "assertions": 16,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r3_experiment.py",
+    "name": "test_full_synthetic_run_reaches_every_phase_with_a_null_rating_pattern",
+    "line": 42,
+    "assertions": 20,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r3_experiment.py",
+    "name": "test_a_real_run_cannot_execute_without_a_matching_human_approval",
+    "line": 87,
+    "assertions": 2,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r3_experiment.py",
+    "name": "test_phases_do_not_silently_authorise_the_next",
+    "line": 125,
+    "assertions": 0,
+    "raises_contexts": 3,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r4.py",
+    "name": "test_explicit_revocation_of_restart_suspended_grant_is_permanent",
+    "line": 108,
+    "assertions": 6,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r4.py",
+    "name": "test_restart_recovery_is_bounded_and_preserves_expiry",
+    "line": 144,
+    "assertions": 5,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r4.py",
+    "name": "test_revocation_concurrent_with_recovery_never_leaves_grant_active",
+    "line": 185,
+    "assertions": 3,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r4.py",
+    "name": "test_expired_restart_suspended_grant_cannot_be_restored",
+    "line": 214,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r4.py",
+    "name": "test_staged_two_call_execution_and_approved_continuation",
+    "line": 235,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r4.py",
+    "name": "test_campaign_fatal_provider_failure_stops_after_one",
+    "line": 272,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('category,status', [('authentication', 401), ('unsupported_schema', 400), ('quota_exhausted', 402)])",
+      "pytest.mark.skip(reason='R4 real path is superseded by the strict R5 content/stage contract; see test_alive14r5_safety.py')"
+    ]
+  },
+  {
+    "path": "tests/test_alive14r4.py",
+    "name": "test_campaign_digest_is_stable_and_content_sensitive",
+    "line": 305,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r4.py",
+    "name": "test_real_approval_requires_attestation_and_effective_cap",
+    "line": 317,
+    "assertions": 0,
+    "raises_contexts": 3,
+    "decorators": [
+      "pytest.mark.skip(reason='R4 real approval path is superseded by R5; see test_alive14r5.py')"
+    ]
+  },
+  {
+    "path": "tests/test_alive14r4.py",
+    "name": "test_file_only_and_revoked_server_approvals_are_rejected",
+    "line": 336,
+    "assertions": 0,
+    "raises_contexts": 2,
+    "decorators": [
+      "pytest.mark.skip(reason='R4 real approval path is superseded by R5; see test_alive14r5.py')"
+    ]
+  },
+  {
+    "path": "tests/test_alive14r4.py",
+    "name": "test_dispatch_marker_preserves_ambiguity_and_no_dispatch_liability",
+    "line": 368,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r4.py",
+    "name": "test_missing_output_and_revised_rating_archive",
+    "line": 424,
+    "assertions": 14,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.skip(reason='R4 synthetic staged path is superseded by R5; see test_alive14r5.py')"
+    ]
+  },
+  {
+    "path": "tests/test_alive14r5.py",
+    "name": "test_explicit_revocation_of_restart_suspended_grant_is_permanent",
+    "line": 108,
+    "assertions": 6,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5.py",
+    "name": "test_restart_recovery_is_bounded_and_preserves_expiry",
+    "line": 144,
+    "assertions": 5,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5.py",
+    "name": "test_revocation_concurrent_with_recovery_never_leaves_grant_active",
+    "line": 185,
+    "assertions": 3,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5.py",
+    "name": "test_expired_restart_suspended_grant_cannot_be_restored",
+    "line": 214,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5.py",
+    "name": "test_staged_two_call_execution_and_approved_continuation",
+    "line": 235,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5.py",
+    "name": "test_campaign_fatal_provider_failure_stops_after_one",
+    "line": 266,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('category,status', [('authentication', 401), ('unsupported_schema', 400), ('quota_exhausted', 402)])"
+    ]
+  },
+  {
+    "path": "tests/test_alive14r5.py",
+    "name": "test_campaign_digest_is_stable_and_content_sensitive",
+    "line": 299,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5.py",
+    "name": "test_real_approval_requires_attestation_and_effective_cap",
+    "line": 310,
+    "assertions": 0,
+    "raises_contexts": 3,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5.py",
+    "name": "test_file_only_and_revoked_server_approvals_are_rejected",
+    "line": 327,
+    "assertions": 0,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5.py",
+    "name": "test_dispatch_marker_preserves_ambiguity_and_no_dispatch_liability",
+    "line": 359,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5.py",
+    "name": "test_missing_output_and_revised_rating_archive",
+    "line": 414,
+    "assertions": 14,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_backend_fatal_is_durable_and_blocks_later_dispatch",
+    "line": 125,
+    "assertions": 9,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_runner_crash_recovery_after_fatal_does_not_dispatch",
+    "line": 174,
+    "assertions": 8,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_cancellation_settlement_commits_and_blocks_stage_two",
+    "line": 220,
+    "assertions": 9,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_interrupted_reservation_blocks_campaign_after_restart",
+    "line": 290,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('dispatch_status,expected_liability', [('reserved_never_dispatched', 0), ('dispatch_guard_passed', 1000), ('dispatch_possibly_started', 1000), ('provider_response_received', 1000)])"
+    ]
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_index_one_before_index_zero_is_refused",
+    "line": 354,
+    "assertions": 4,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_concurrent_same_index_dispatches_at_most_once",
+    "line": 370,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_independent_client_cannot_replay_a_settled_cell",
+    "line": 404,
+    "assertions": 2,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_later_index_cannot_overtake_missing_lower_index",
+    "line": 419,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_stage_two_cannot_dispatch_out_of_order",
+    "line": 458,
+    "assertions": 3,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_campaign_state_reports_technical_eligibility",
+    "line": 479,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_server_discloses_exact_instruction_and_schema",
+    "line": 504,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_server_rejects_client_recomputed_instruction_hash",
+    "line": 516,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_duplicate_registration_accepts_identical_canonical_content",
+    "line": 535,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_manifest_cell_divergence_is_rejected",
+    "line": 548,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_manifest_divergence_is_rejected_at_registration",
+    "line": 581,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('field,value', [('question', 'DISPLAYED QUESTION DIFFERS FROM ENFORCED CONTENT'), ('current_excerpt', 'Displayed current excerpt differs.'), ('historical_excerpt', 'Displayed historical excerpt differs.'), ('current_url', 'https://example.test/displayed-current'), ('historical_url', 'https://example.test/displayed-historical'), ('current_sha256', '0' * 64), ('historical_sha256', '1' * 64), ('goal', 'Displayed goal differs'), ('instructions_sha256', '2' * 64), ('schema_sha256', '3' * 64), ('provider', 'meta'), ('model', 'different-model'), ('max_output_tokens', 2048)])"
+    ]
+  },
+  {
+    "path": "tests/test_alive14r5_r1.py",
+    "name": "test_registered_display_is_the_canonical_dispatch_content",
+    "line": 599,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_safety.py",
+    "name": "test_revocation_after_call_one_prevents_call_two",
+    "line": 51,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_safety.py",
+    "name": "test_local_state_content_mutation_is_refused",
+    "line": 99,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('field,value', [('question', 'Changed question outside the approved campaign'), ('current_excerpt', 'Changed current excerpt.'), ('historical_excerpt', 'Changed historical excerpt.'), ('current_url', 'https://example.test/changed'), ('current_sha256', '0' * 64), ('historical_sha256', '1' * 64), ('goal', 'Changed goal')])"
+    ]
+  },
+  {
+    "path": "tests/test_alive14r5_safety.py",
+    "name": "test_server_rejects_changed_question_even_with_valid_approval",
+    "line": 123,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_safety.py",
+    "name": "test_server_rejects_digest_mismatch_and_conflicting_registration",
+    "line": 155,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_safety.py",
+    "name": "test_stage_two_requires_two_terminal_stage_one_attempts",
+    "line": 170,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_safety.py",
+    "name": "test_revoked_stage_two_approval_prevents_dispatch",
+    "line": 193,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_safety.py",
+    "name": "test_stage_one_over_cap_and_stage_two_before_eligibility_are_rejected",
+    "line": 213,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_safety.py",
+    "name": "test_raw_timeout_is_campaign_fatal",
+    "line": 247,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive14r5_safety.py",
+    "name": "test_fatal_provider_categories_stop_after_one",
+    "line": 279,
+    "assertions": 7,
+    "raises_contexts": 1,
+    "decorators": [
+      "pytest.mark.parametrize('category,status', [('authentication', 401), ('access_denied', 403), ('unsupported_schema', 400), ('quota_exhausted', 402), ('rate_limit', 429), ('server_error', 500)])"
+    ]
+  },
+  {
+    "path": "tests/test_alive14r5_safety.py",
+    "name": "test_actual_asyncio_timeout_is_campaign_fatal",
+    "line": 303,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_honest_receipt_recomputes_and_ignores_summary",
+    "line": 282,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_fabricated_metrics_cannot_pass",
+    "line": 309,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_one_case_fake_holdout_fails",
+    "line": 332,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_forged_adjudicated_flag_fails",
+    "line": 353,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_modified_gold_hash_fails_closed",
+    "line": 381,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_modified_protocol_hash_fails_closed",
+    "line": 408,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_wrong_scope_flag_downgrades_to_public",
+    "line": 430,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_changed_task_set_after_evaluation_fails",
+    "line": 451,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_same_id_changed_source_fails",
+    "line": 472,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_missing_source_hash_fails",
+    "line": 497,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_tampered_scorer_identity_fails",
+    "line": 508,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_missing_comparator_outputs_inconclusive",
+    "line": 530,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_self_issued_custody_rejected",
+    "line": 552,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_policy_rejects_nan_inf_zero_unknown",
+    "line": 575,
+    "assertions": 0,
+    "raises_contexts": 4,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_threshold_nan_inf_ci_bounds_rejected",
+    "line": 600,
+    "assertions": 0,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_every_policy_param_genuinely_consumed",
+    "line": 621,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_intervals_nested_and_counts_reported",
+    "line": 662,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_identical_systems_cannot_progress",
+    "line": 684,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_imbalanced_families_warn",
+    "line": 709,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_gated_flags_match_scorer",
+    "line": 731,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_controls_registry_marks_contamination",
+    "line": 749,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_annotation_package_v17_clean",
+    "line": 763,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_tampered_package_with_mapping_fails",
+    "line": 788,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_r1_vulnerable_path_closed_by_custodian",
+    "line": 802,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval01.py",
+    "name": "test_cli_evaluate_paths",
+    "line": 818,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_distinct_string_custodian_cannot_progress",
+    "line": 74,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_public_relabelled_holdout_stays_diagnostic",
+    "line": 92,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_self_declared_adjudicator_forgery_fails",
+    "line": 99,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_evil_protocol_with_recomputed_hash_and_permissive_policy",
+    "line": 112,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_scorer_substitution_blocked",
+    "line": 151,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_synthetic_outputs_are_diagnostic_only",
+    "line": 173,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_replayed_outputs_from_another_package_fail",
+    "line": 181,
+    "assertions": 1,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_rewritten_gold_invalidates_receipt",
+    "line": 216,
+    "assertions": 2,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_fabricated_controls_cannot_qualify",
+    "line": 250,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_family_label_manipulation_is_detected",
+    "line": 258,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_bootstrap_seed_pinned",
+    "line": 310,
+    "assertions": 2,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_receipt_tampering_rejected",
+    "line": 338,
+    "assertions": 2,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_valid_diagnostic_evaluation_reports_improvement",
+    "line": 358,
+    "assertions": 9,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_qualified_unreachable_without_anchor",
+    "line": 383,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_v1_receipts_rejected_as_qualified",
+    "line": 396,
+    "assertions": 2,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_structural_invalid_inputs_fail_closed",
+    "line": 419,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_counts_come_from_candidate_arm_not_cross_arm_max",
+    "line": 426,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_intervals_deterministic",
+    "line": 441,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_v_gate_blocks_regression_vs_shortcut",
+    "line": 448,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_c_gate_does_not_veto",
+    "line": 455,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_straddling_intervals_are_inconclusive_not_failure",
+    "line": 461,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_missing_arm_is_indeterminate",
+    "line": 490,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02.py",
+    "name": "test_cli_verify_evaluate_verify_receipt",
+    "line": 496,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_r1_exploit_sealed_root_flag_rejected_by_cli",
+    "line": 72,
+    "assertions": 2,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_self_created_sealed_dir_cannot_qualify",
+    "line": 86,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_forged_signature_rejected",
+    "line": 125,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_substituted_trusted_key_rejected",
+    "line": 149,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_caller_modified_policy_blocks_qualification",
+    "line": 175,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_swapped_contract_blocks_qualification",
+    "line": 193,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_handwritten_model_outputs_are_unqualified",
+    "line": 205,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_missing_governed_run_receipts",
+    "line": 213,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_v_records_cannot_be_reused_across_arms",
+    "line": 220,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_near_duplicate_family_casefold_detected",
+    "line": 241,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_valid_arm_specific_applicability_counts",
+    "line": 285,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_hand_typed_qualified_receipt_rejected",
+    "line": 325,
+    "assertions": 3,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_substituted_outputs_file_rejected",
+    "line": 358,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_legacy_receipts_never_qualify",
+    "line": 377,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_alive_eval02_r2.py",
+    "name": "test_verify_command_reports_real_enforcement",
+    "line": 389,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_browser_provenance.py",
+    "name": "test_managed_chrome_observation_carries_source_and_integrity_metadata",
+    "line": 41,
+    "assertions": 14,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_browser_provenance.py",
+    "name": "test_managed_chrome_observation_rejects_page_outside_allowlist",
+    "line": 69,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_browser_provenance.py",
+    "name": "test_managed_chrome_observation_rejects_origin_change_during_read",
+    "line": 80,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_comparison.py",
+    "name": "test_explicit_source_deprecation_can_pass",
+    "line": 27,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_comparison.py",
+    "name": "test_recency_without_explicit_basis_abstains",
+    "line": 32,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_comparison.py",
+    "name": "test_invented_quote_is_rejected",
+    "line": 38,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_comparison.py",
+    "name": "test_conflict_requires_same_scope",
+    "line": 44,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_comparison.py",
+    "name": "test_reliance_anchor_must_overlap_historical_quote",
+    "line": 49,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_comparison.py",
+    "name": "test_truncated_quote_cannot_drop_negation",
+    "line": 54,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_comparison.py",
+    "name": "test_overconfident_abstention_rejected",
+    "line": 66,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_comparison.py",
+    "name": "test_extra_schema_fields_disallowed",
+    "line": 71,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_review_attacks.py",
+    "name": "test_review_attack",
+    "line": 241,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('name,rel,h,c,historical,current,options,expected', CASES, ids=[case[0] for case in CASES])"
+    ]
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_pinned_pair_dispatch_storage_and_listing",
+    "line": 179,
+    "assertions": 13,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('label', CURRENT_TEXTS)"
+    ]
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_pinned_map_hashes_match_full_source_bytes",
+    "line": 206,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_unknown_pair_fails_closed_and_releases_reservation",
+    "line": 216,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_full_lifecycle_cache_reanchor_withdraw_restart",
+    "line": 234,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_anchor_http_conflicts_and_invalid_spans",
+    "line": 265,
+    "assertions": 0,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_test_provider_and_paid_mode_are_disabled_by_default",
+    "line": 280,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_owner_revocation_invalidates_current_grant_lineage",
+    "line": 293,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('phase', ['pending', 'authorized', 'settled', 'cached'])"
+    ]
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_expired_consent_never_dispatches",
+    "line": 313,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('authorized', [False, True])"
+    ]
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_pre_dispatch_revalidation_failure_has_no_cost",
+    "line": 341,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_claim_timeout_settles_without_dispatch",
+    "line": 364,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_claim_cancellation_settles_and_propagates",
+    "line": 394,
+    "assertions": 4,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_restart_recovers_local_claim_without_spend_or_replay",
+    "line": 436,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('dispatch_status', ['reserved_never_dispatched', 'dispatch_guard_passed', 'dispatch_possibly_started'])"
+    ]
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_rejected_and_demoted_claims_never_become_candidates",
+    "line": 483,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('mutation,decision', [({'current_claim_quote': 'A fabricated source quotation.'}, 'rejected'), ({'supersession_basis_quote': None}, 'demoted')])"
+    ]
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_claim_settlement_rechecks_owner_revocation",
+    "line": 499,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_runtime.py",
+    "name": "test_authorization_hash_and_dispatch_provider_switch_are_rechecked",
+    "line": 521,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_validator_v2.py",
+    "name": "test_earlier_passage_repeated_in_new_source_allowed",
+    "line": 23,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_validator_v2.py",
+    "name": "test_negated_deprecation_not_a_supersession",
+    "line": 32,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_validator_v2.py",
+    "name": "test_not_the_same_as_recommended_behavior",
+    "line": 38,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_validator_v2.py",
+    "name": "test_cannot_negation_suppresses_support",
+    "line": 46,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_validator_v2.py",
+    "name": "test_duplicate_without_offset_rejected",
+    "line": 55,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_validator_v2.py",
+    "name": "test_anchoring_honors_selected_occurrence",
+    "line": 66,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_validator_v2.py",
+    "name": "test_unsupported_unverified_claim_abstains",
+    "line": 73,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_validator_v2_adversarial.py",
+    "name": "test_mid_excerpts_space_joined_boundary",
+    "line": 29,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_validator_v2_adversarial.py",
+    "name": "test_year_sentence_and_abbreviation_token",
+    "line": 34,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_validator_v2_adversarial.py",
+    "name": "test_utcnow_superset_with_following_method_deprecation",
+    "line": 42,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_validator_v2_adversarial.py",
+    "name": "test_next_entry_is_only_deprecated_entry",
+    "line": 68,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_claim_validator_v2_adversarial.py",
+    "name": "test_partial_version_number_is_not_complete_sentence",
+    "line": 82,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_cognition.py",
+    "name": "test_autonomous_evidence_loop",
+    "line": 55,
+    "assertions": 15,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('scenario,verdict', [('relevant', 'SUPPORTED'), ('contradiction', 'CONTRADICTED')])"
+    ]
+  },
+  {
+    "path": "tests/test_cognition.py",
+    "name": "test_no_action_noise_duplicates_and_concurrent_arrival",
+    "line": 90,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_cognition.py",
+    "name": "test_budget_exhaustion_and_no_credential_leak",
+    "line": 105,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_cognition.py",
+    "name": "test_stop_cancels_pending_work",
+    "line": 123,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_cognition.py",
+    "name": "test_human_action_authority_and_idempotency",
+    "line": 149,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('decision,expected', [('approve', 'executed'), ('reject', 'rejected'), ('cancel', 'cancelled')])"
+    ]
+  },
+  {
+    "path": "tests/test_cognition.py",
+    "name": "test_consequential_action_cannot_be_approved",
+    "line": 186,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_cognition.py",
+    "name": "test_attention_protocol_and_evidence_integrity",
+    "line": 210,
+    "assertions": 3,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_cognition.py",
+    "name": "test_accepted_commitment_cannot_be_starved_by_fresh_high_bids",
+    "line": 236,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo01_c0.py",
+    "name": "test_paired_analysis_invalidated_through_consent_lineage",
+    "line": 19,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo01_c0.py",
+    "name": "test_withdrawal_does_not_reappear_in_goal_scoped_read",
+    "line": 50,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo01_c1b_anchor.py",
+    "name": "test_anchor_unique_quote_and_revision_compare_and_swap",
+    "line": 6,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo01_c1b_anchor.py",
+    "name": "test_withdrawal_scrubs_anchor_quote",
+    "line": 33,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo01_evidence_integrity.py",
+    "name": "test_withdrawal_scrub_drops_copied_source_content",
+    "line": 10,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo01_evidence_integrity.py",
+    "name": "test_settlement_rejects_withdrawn_authoritative_source",
+    "line": 32,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.asyncio"
+    ]
+  },
+  {
+    "path": "tests/test_demo01_evidence_integrity.py",
+    "name": "test_settlement_rejects_revoked_current_grant",
+    "line": 63,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.asyncio"
+    ]
+  },
+  {
+    "path": "tests/test_demo01_foundation_probes.py",
+    "name": "test_C_real_midflight_recovery_charges_full_liability_once",
+    "line": 47,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo01_foundation_probes.py",
+    "name": "test_D_all_tables_and_public_reads_after_withdrawal",
+    "line": 86,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo01_foundation_probes.py",
+    "name": "test_F_paired_lineage_is_scrubbed_and_hidden",
+    "line": 110,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo01_foundation_probes.py",
+    "name": "test_E_IE1_committed_revocation_before_marker_never_dispatches",
+    "line": 123,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo01_foundation_probes.py",
+    "name": "test_E_IE2_post_marker_revocation_discards_result",
+    "line": 158,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo_live_01.py",
+    "name": "test_fixture_bytes_provenance_and_real_neighbor_are_pinned",
+    "line": 80,
+    "assertions": 9,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo_live_01.py",
+    "name": "test_source_save_requires_reviewed_grant_but_no_model_note",
+    "line": 112,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo_live_01.py",
+    "name": "test_real_mirror_preview_authorize_candidate_reuse_withdraw_restart",
+    "line": 125,
+    "assertions": 14,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo_live_01.py",
+    "name": "test_synthetic_newer_source_leaves_a_real_abstention_ledger_entry",
+    "line": 164,
+    "assertions": 11,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo_live_01.py",
+    "name": "test_wrong_method_basis_cannot_be_accepted",
+    "line": 185,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo_live_01.py",
+    "name": "test_forged_capture_identity_and_entries_abstain",
+    "line": 207,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo_live_01.py",
+    "name": "test_anchor_revision_and_goal_isolation",
+    "line": 224,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo_live_01.py",
+    "name": "test_invalid_capture_ranges_and_unregistered_mirror_fail_closed",
+    "line": 264,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo_live_01.py",
+    "name": "test_settlement_rechecks_capture_provenance",
+    "line": 292,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo_live_01.py",
+    "name": "test_malformed_or_ambiguous_anchors_are_not_silently_selected",
+    "line": 310,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo_live_01.py",
+    "name": "test_real_fixture_cannot_bypass_identity_by_downgrading_to_capture_v1",
+    "line": 320,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo_live_01.py",
+    "name": "test_legacy_named_other_method_is_not_a_supersession",
+    "line": 332,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo_live_01.py",
+    "name": "test_validator_independently_demotes_registered_bytes_with_downgraded_versions",
+    "line": 356,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('version', [1, None])"
+    ]
+  },
+  {
+    "path": "tests/test_demo_live_01_r1.py",
+    "name": "test_withdrawn_note_enumeration_public_reads_and_restart",
+    "line": 26,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_demo_live_01_r1.py",
+    "name": "test_other_active_and_unsaved_notes_remain_readable",
+    "line": 55,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_docker_config.py",
+    "name": "test_compose_defines_postgres_and_app",
+    "line": 12,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_docker_config.py",
+    "name": "test_compose_does_not_publish_database_port",
+    "line": 23,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_docker_config.py",
+    "name": "test_e2e_environment_is_isolated",
+    "line": 34,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_docker_config.py",
+    "name": "test_dockerfile_is_reproducible_and_secret_free",
+    "line": 44,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_docker_config.py",
+    "name": "test_entrypoint_migrates_without_destroying_data",
+    "line": 57,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_docker_config.py",
+    "name": "test_frontend_base_is_configurable",
+    "line": 64,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_docker_config.py",
+    "name": "test_backend_serves_dashboard_without_touching_api",
+    "line": 70,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_qualified_sources_are_not_qualified_claims_and_retrieval_is_unchanged",
+    "line": 62,
+    "assertions": 11,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_ineligible_memory_has_identical_error_and_no_metadata",
+    "line": 84,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('kind', ['missing', 'wrong_goal', 'withdrawn', 'foreign_instance'])"
+    ]
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_current_grant_must_remain_applicable",
+    "line": 104,
+    "assertions": 0,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('change', ['revoked', 'expired', 'wrong_url', 'wrong_goal', 'missing'])"
+    ]
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_historical_saved_evidence_does_not_need_its_old_tab_grant",
+    "line": 119,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_corrupt_source_bindings_are_non_use_not_semantic_judgments",
+    "line": 138,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('target,edit', [('current', {'text': 'An altered capture without a matching stored hash.'}), ('old', {'text': 'An altered historical capture without its original hash.'}), ('memory', {'excerpt': 'A fabricated excerpt with a valid original source hash.'}), ('memory', {'sha256': '0' * 64}), ('memory', {'url': 'https://example.invalid/untrusted'}), ('memory', {'title': 'A fabricated title'}), ('old', {'capture_format_version': 99}), ('current', {'capture_format_version': 99})])"
+    ]
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_missing_authoritative_passage_produces_non_use",
+    "line": 149,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_hallucinated_quote_is_rejected",
+    "line": 159,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('key', ['current_quote', 'historical_quote'])"
+    ]
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_exact_quote_offsets_and_bounded_context",
+    "line": 167,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_unapproved_provider_and_unknown_contracts_are_refused",
+    "line": 183,
+    "assertions": 0,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('extra', [{'provider': 'meta'}, {'historical_text': 'fabricated'}, {'qualification_policy': 'semantic_v99'}])"
+    ]
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_untrusted_instruction_and_unfamiliar_headline_do_not_drive_judgment",
+    "line": 188,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_api_requires_owner_authentication",
+    "line": 201,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_restart_revalidates_withdrawal_without_cached_qualification",
+    "line": 211,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_missing_or_foreign_current_snapshot_does_not_disclose_memory",
+    "line": 245,
+    "assertions": 0,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_cross_goal_underlying_source_is_not_exposed",
+    "line": 252,
+    "assertions": 0,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_quote_outside_comparable_evidence_budget_is_not_verified",
+    "line": 259,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_frozen_evaluation_is_checked_before_execution",
+    "line": 266,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_qualification_adds_no_persistent_research_findings",
+    "line": 283,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_requested_quotes_are_distinct_from_automatic_excerpts",
+    "line": 299,
+    "assertions": 14,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('selection', [None, 'The sensor trial', 'An altered quotation'])"
+    ]
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_both_requested_quotes_are_verified_without_semantic_claim",
+    "line": 325,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_repeated_quote_reports_all_occurrences_and_first_match",
+    "line": 338,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_misleading_title_does_not_inherit_body_or_quote_verification",
+    "line": 349,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_evidence_qualification.py",
+    "name": "test_current_url_must_be_allowlisted_even_when_grant_and_snapshot_match",
+    "line": 369,
+    "assertions": 0,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experience_lab.py",
+    "name": "test_utility_and_action_costs_are_predeclared",
+    "line": 34,
+    "assertions": 4,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experience_lab.py",
+    "name": "test_observation_never_contains_hidden_fields",
+    "line": 43,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experience_lab.py",
+    "name": "test_governor_denies_invalid_action_and_budget_exhaustion",
+    "line": 59,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experience_lab.py",
+    "name": "test_hierarchical_agent_uses_source_history_after_threshold",
+    "line": 67,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experience_lab.py",
+    "name": "test_source_margin_falls_back_to_class_context",
+    "line": 86,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experience_lab.py",
+    "name": "test_flat_empirical_learns_class_context_without_source_key",
+    "line": 105,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experience_lab.py",
+    "name": "test_run_episode_records_causal_order_and_independent_utility",
+    "line": 121,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experience_lab.py",
+    "name": "test_paired_bootstrap_is_deterministic_and_cluster_aware",
+    "line": 133,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experience_lab.py",
+    "name": "test_policy_roundtrip_preserves_decisions",
+    "line": 153,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experience_lab.py",
+    "name": "test_generated_corpus_is_deterministic_and_has_frozen_roles",
+    "line": 170,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experience_lab.py",
+    "name": "test_shuffled_training_runs_and_summary_is_finite",
+    "line": 183,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment03.py",
+    "name": "test_corpus_sizes_ground_truth_and_contamination",
+    "line": 16,
+    "assertions": 6,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment03.py",
+    "name": "test_independent_arithmetic_scoring",
+    "line": 56,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('operation,fields,expected', [('sum', {'a': 4, 'b': 7}, 11), ('difference', {'start': 10, 'remainder': 6}, 4), ('minimum', {'a': 4, 'b': 1, 'c': 9}, 1), ('maximum', {'a': 4, 'b': 1, 'c': 9}, 9), ('ratio', {'numerator': 9, 'denominator': 2}, 4.5), ('median', {'x': 3, 'y': 8, 'z': 5}, 5), ('weighted_mean', {'value_a': 10, 'weight_a': 1, 'value_b': 20, 'weight_b': 3}, 17.5), ('count_at_least', {'v1': 1, 'v2': 3, 'v3': 5, 'v4': 7, 'v5': 9, 'cutoff': 5}, 3), ('fahrenheit', {'temperature_f': 212}, 100), ('rate', {'quantity': 60, 'hours': 4}, 15)])"
+    ]
+  },
+  {
+    "path": "tests/test_experiment03.py",
+    "name": "test_abstention_and_poisoned_instruction_are_evidence_not_authority",
+    "line": 93,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment03.py",
+    "name": "test_policies_only_receive_general_numeric_features",
+    "line": 109,
+    "assertions": 4,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment03.py",
+    "name": "test_threshold_calibration_requires_development_and_can_choose_never",
+    "line": 131,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment03.py",
+    "name": "test_rate_card_estimates_and_intervals_are_not_billing",
+    "line": 157,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment03.py",
+    "name": "test_frozen_controlled_calibration_and_pilot",
+    "line": 192,
+    "assertions": 10,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment03.py",
+    "name": "test_full_run_needs_exact_freeze_authorization",
+    "line": 234,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment03.py",
+    "name": "test_governor_exhaustion_prevents_experiment_inference",
+    "line": 298,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment03.py",
+    "name": "test_freeze_manifest_tamper_detected",
+    "line": 316,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment03.py",
+    "name": "test_invalid_model_output_is_retained_as_failure",
+    "line": 326,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment03.py",
+    "name": "test_cancel_settles_unknown_provider_usage_without_replay",
+    "line": 354,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment03.py",
+    "name": "test_paired_rescues_regressions_and_unknown_usage",
+    "line": 391,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment_budget.py",
+    "name": "test_spending_ceiling_prevents_call_and_rounds_up",
+    "line": 6,
+    "assertions": 3,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment_budget.py",
+    "name": "test_unknown_and_failed_usage_charged_conservatively",
+    "line": 14,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_experiment_budget.py",
+    "name": "test_completed_usage_counts_cached_and_completion_once",
+    "line": 28,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_exploration_api.py",
+    "name": "test_shared_terms_become_candidates_not_verified_claims",
+    "line": 22,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_exploration_api.py",
+    "name": "test_empty_or_unrelated_sources_abstain_on_concepts",
+    "line": 39,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_exploration_api.py",
+    "name": "test_graph_has_stable_ids_and_bound",
+    "line": 54,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_exploration_api.py",
+    "name": "test_no_page_body_or_private_excerpt_in_response",
+    "line": 63,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_full_report.py",
+    "name": "test_full_report_retains_failures_unknown_cost_and_scheduled_denominators",
+    "line": 10,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('valid', [False, True])"
+    ]
+  },
+  {
+    "path": "tests/test_history_diagnostic.py",
+    "name": "test_history_aliasing_and_no_truth_in_current_state",
+    "line": 16,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_history_diagnostic.py",
+    "name": "test_action_consequences_have_opposite_realized_value_for_a_changed_claim",
+    "line": 27,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_history_diagnostic.py",
+    "name": "test_matched_history_ablation_and_nested_experience",
+    "line": 45,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_history_diagnostic.py",
+    "name": "test_empirical_baseline_heldout_protection_and_critical_metrics",
+    "line": 59,
+    "assertions": 3,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_history_diagnostic.py",
+    "name": "test_current_only_policy_cannot_distinguish_paired_histories",
+    "line": 71,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_history_diagnostic.py",
+    "name": "test_two_step_governor_and_preserved_pair_bootstrap",
+    "line": 78,
+    "assertions": 1,
+    "raises_contexts": 3,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_learning.py",
+    "name": "test_simulator_splits_reproducible_and_action_dependent",
+    "line": 10,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_learning.py",
+    "name": "test_simulator_governor_and_terminal_no_replay",
+    "line": 22,
+    "assertions": 2,
+    "raises_contexts": 3,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_learning.py",
+    "name": "test_training_rejects_heldout_transitions_and_preserves_action_masks",
+    "line": 37,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_learning.py",
+    "name": "test_predictive_gradients_and_zero_loss_ablation",
+    "line": 46,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_learning.py",
+    "name": "test_shared_encoder_gradient_matches_finite_difference",
+    "line": 60,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_learning.py",
+    "name": "test_actual_learning_and_checkpoint_roundtrip",
+    "line": 79,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_learning.py",
+    "name": "test_runtime_default_skips_critic_but_explicit_opt_in_works",
+    "line": 95,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_learning.py",
+    "name": "test_factual_and_decision_measurements_are_separate",
+    "line": 108,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_learning.py",
+    "name": "test_rollout_prediction_precedes_observation_and_evaluation_does_not_train",
+    "line": 120,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_learning.py",
+    "name": "test_learning_api_read_only_and_checksum_guard",
+    "line": 136,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_living.py",
+    "name": "test_empirical_choice_changes_only_after_feedback",
+    "line": 83,
+    "assertions": 7,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_living.py",
+    "name": "test_assessment_checks_claim_against_cited_source_and_requires_feedback_corroboration",
+    "line": 107,
+    "assertions": 10,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_living.py",
+    "name": "test_supported_fact_is_not_an_incorrect_fact_when_recommendation_is_investigate",
+    "line": 147,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_living.py",
+    "name": "test_controlled_journey_has_causal_memory_and_real_counterfactual",
+    "line": 172,
+    "assertions": 14,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_living.py",
+    "name": "test_no_hidden_reset_or_out_of_scope_permission",
+    "line": 194,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_living.py",
+    "name": "test_zero_governor_budget_blocks_inference_and_policy_update",
+    "line": 214,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_living.py",
+    "name": "test_stop_settles_unknown_call_and_forbids_budget_reset",
+    "line": 222,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_living.py",
+    "name": "test_revoked_permission_blocks_inference",
+    "line": 255,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_living.py",
+    "name": "test_restart_retains_policy_and_requires_explicit_next_step",
+    "line": 277,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_living.py",
+    "name": "test_restart_interrupts_a_running_journey_and_revokes_its_grant",
+    "line": 300,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_meta_memory.py",
+    "name": "test_meta_structured_output_usage_and_safe_errors",
+    "line": 9,
+    "assertions": 6,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_meta_memory.py",
+    "name": "test_history_preview_approval_dedup_and_revocation",
+    "line": 43,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_meta_memory.py",
+    "name": "test_hybrid_fallback_is_explicit",
+    "line": 79,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_meta_memory.py",
+    "name": "test_embedding_model_space_and_dimension_guard",
+    "line": 91,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_migrations.py",
+    "name": "test_migration_execution_and_repeat",
+    "line": 7,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_model_gateway.py",
+    "name": "test_gateway_parity_with_direct_call",
+    "line": 118,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_model_gateway.py",
+    "name": "test_gateway_parity_correlation_only_changes_request_id",
+    "line": 151,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_model_gateway.py",
+    "name": "test_gateway_for_routes_and_rejects_unknown",
+    "line": 177,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_model_gateway.py",
+    "name": "test_migrated_path_records_identical_invocation_row",
+    "line": 195,
+    "assertions": 19,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_model_gateway.py",
+    "name": "test_sentinel_still_bites_through_gateway",
+    "line": 262,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_model_gateway.py",
+    "name": "test_ceiling_blocks_over_limit_request_with_zero_dispatch",
+    "line": 279,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_model_gateway.py",
+    "name": "test_ceiling_mutation_is_detected",
+    "line": 301,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_model_gateway.py",
+    "name": "test_ratchet_no_new_direct_meta_construction",
+    "line": 467,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_model_gateway.py",
+    "name": "test_ratchet_catches_new_site",
+    "line": 473,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_native11.py",
+    "name": "test_provenance_authentication_and_no_local_secret_disclosure",
+    "line": 14,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_native11.py",
+    "name": "test_companion_usd_limit_is_cumulative_across_restart",
+    "line": 31,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_native11.py",
+    "name": "test_companion_usd_limit_conservatively_counts_failed_reservations",
+    "line": 45,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_native11.py",
+    "name": "test_zero_companion_usd_limit_blocks_before_dispatch",
+    "line": 60,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_native11.py",
+    "name": "test_invalid_structured_response_is_retained_without_becoming_a_note",
+    "line": 68,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook02_r1_evaluation.py",
+    "name": "test_retention_and_false_abstention_change_with_actual_decisions",
+    "line": 25,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook02_r1_evaluation.py",
+    "name": "test_integrity_rejection_is_separate_from_abstention",
+    "line": 41,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('index', [0, 1])"
+    ]
+  },
+  {
+    "path": "tests/test_notebook02_r1_evaluation.py",
+    "name": "test_unsupported_rate_and_unknown_outcome_are_not_silently_accepted",
+    "line": 53,
+    "assertions": 2,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook02_r1_evaluation.py",
+    "name": "test_historical_derivation_preserves_original_and_records_provenance",
+    "line": 64,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook02_r1_evaluation.py",
+    "name": "test_portable_output_names_and_archive_overwrite_guard",
+    "line": 76,
+    "assertions": 2,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_frozen_public_corpus_and_schemas_are_complete",
+    "line": 29,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_malformed_or_label_leaking_tasks_rejected",
+    "line": 47,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": [
+      "pytest.mark.parametrize('mutation', ['hash', 'quote', 'source', 'extra_label'])"
+    ]
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_missing_qualifier_invalidates_existing_quote_bindings",
+    "line": 61,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_pinned_authentic_provenance_cannot_be_self_certified",
+    "line": 70,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_family_or_duplicate_source_cannot_cross_splits",
+    "line": 79,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_missing_or_unsupported_labels_are_not_filled_in",
+    "line": 92,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_annotation_contract_rejects_incoherent_metadata",
+    "line": 111,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": [
+      "pytest.mark.parametrize('change', [{'sufficiency': 'insufficient'}, {'relationships': ['unknown', 'supersession']}, {'independence': 'external_attested'}, {'required_evidence': []}])"
+    ]
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_payload_excludes_labels_case_ids_and_annotation_metadata",
+    "line": 117,
+    "assertions": 4,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_repository_holdout_is_not_hidden_and_exposure_invalidates_attestation",
+    "line": 142,
+    "assertions": 3,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_always_abstain_cannot_hide_all_missed_useful_findings",
+    "line": 181,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_supported_finding_is_rewarded_and_wrong_category_penalized",
+    "line": 213,
+    "assertions": 4,
+    "raises_contexts": 1,
+    "decorators": [
+      "pytest.mark.parametrize('relation', ['supersession', 'contradiction_candidate', 'scoped_change', 'corroboration_candidate', 'unsupported_claim'])"
+    ]
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_citation_integrity_alone_does_not_prove_unsupported_headline",
+    "line": 232,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_reversed_supersession_direction_is_not_credited",
+    "line": 239,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_fabricated_quotes_unsupported_refs_and_authorization_fail_closed",
+    "line": 250,
+    "assertions": 0,
+    "raises_contexts": 3,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_missing_duplicate_and_inapplicable_results_cannot_hide_difficult_cases",
+    "line": 265,
+    "assertions": 0,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_frozen_inputs_and_evidence_are_not_overwritten",
+    "line": 278,
+    "assertions": 0,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_external_submission_gate_is_not_satisfied_by_a_directory",
+    "line": 292,
+    "assertions": 0,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_unknown_relationship_cannot_authorize_use",
+    "line": 305,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_frozen_protocol_document_fingerprints",
+    "line": 319,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a.py",
+    "name": "test_scoped_result_requires_comparator_and_generalization_limits",
+    "line": 325,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_r1_frozen_corpus_covers_all_categories_with_eval_authentic",
+    "line": 36,
+    "assertions": 13,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_v14_evidence_preserved_byte_unchanged",
+    "line": 80,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_r1_frozen_documents_match",
+    "line": 90,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_malformed_tasks_rejected",
+    "line": 96,
+    "assertions": 0,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_family_cannot_cross_splits",
+    "line": 108,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_missing_git_revision_is_controlled_error",
+    "line": 121,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_r1_payload_withholds_context_cues_and_ids",
+    "line": 130,
+    "assertions": 7,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_surface_control_is_genuine_frozen_baseline",
+    "line": 153,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_surface_matches_templates_but_misses_authentic",
+    "line": 181,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_misleading_advance_and_dual_thresholds",
+    "line": 219,
+    "assertions": 9,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_unknown_unknown_rule_and_non_use",
+    "line": 261,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_citation_precision_rewards_exact_spans",
+    "line": 272,
+    "assertions": 4,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_long_passages_have_distractor_context",
+    "line": 302,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_nonreasoning_arms_cannot_emit_semantics",
+    "line": 309,
+    "assertions": 0,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_template_similarity_reports_limits",
+    "line": 332,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_normalized_comparison_covers_strata_and_decisions",
+    "line": 339,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_annotation_package_has_no_answers",
+    "line": 359,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r1.py",
+    "name": "test_r1_freeze_inventory_and_no_overwrite",
+    "line": 375,
+    "assertions": 0,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_r2_freeze_and_neutral_question",
+    "line": 83,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_v15_and_v14_preserved",
+    "line": 92,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_contract_validates_strictly",
+    "line": 101,
+    "assertions": 1,
+    "raises_contexts": 5,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_retention_mutation_changes_decisive_outcome",
+    "line": 133,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_misleading_cap_mutation_changes_decisive_outcome",
+    "line": 145,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_missing_comparators_return_inconclusive",
+    "line": 155,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_public_scope_never_yields_progress",
+    "line": 165,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_missing_gold_or_holdout_returns_inconclusive",
+    "line": 174,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_old_shortcut_cannot_earn_progress",
+    "line": 187,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_always_abstain_cannot_pass",
+    "line": 205,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_c_and_d_verdicts_differ_structurally",
+    "line": 217,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_correlated_duplicates_not_independent",
+    "line": 227,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_contaminated_package_fails_audit",
+    "line": 244,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_clean_package_passes_audit_and_is_self_contained",
+    "line": 253,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_question_does_not_encode_category",
+    "line": 261,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_citation_gate_scenarios",
+    "line": 270,
+    "assertions": 5,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_shortcut_v2_is_honest_and_frozen",
+    "line": 343,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_cli_validate_and_audit_package",
+    "line": 362,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_cli_score_and_decide_paths",
+    "line": 372,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_cli_submission_and_holdout_pending",
+    "line": 419,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook03a_r2.py",
+    "name": "test_r1_vulnerable_path_is_closed",
+    "line": 429,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_committed_chapters_pass_the_provenance_check",
+    "line": 77,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_rewriting_a_result_more_strongly_than_its_source_is_rejected",
+    "line": 90,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_source_or_hash_drift_is_rejected",
+    "line": 104,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_an_invented_quote_is_rejected",
+    "line": 115,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_relations_cover_a_supersession_a_scoped_change_and_an_abstention",
+    "line": 125,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_chapter_front_matter_has_stable_id_source_commit_and_hashes",
+    "line": 131,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_allowlist_is_exactly_the_notebook_chapters_on_loopback_port_1313",
+    "line": 143,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_unlisted_notebook_urls_cannot_be_granted",
+    "line": 153,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_cross_page_retrieval_returns_the_earlier_chapter_with_exact_source_text",
+    "line": 176,
+    "assertions": 16,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_scoped_change_pair_is_retrieved_within_top_three_but_not_ranked_first",
+    "line": 209,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_retrieval_abstains_without_an_eligible_memory",
+    "line": 224,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_withdrawn_memory_is_not_retrieved",
+    "line": 234,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_terminology_only_pair_is_shown_as_a_lexical_candidate_never_as_support",
+    "line": 249,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_terminology_only_pair_should_abstain",
+    "line": 270,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.xfail(strict=True, reason=\"UNIMPLEMENTED: ALIVE's lexical connection cannot abstain on a terminology-only pair\")"
+    ]
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_validity_judgement_of_a_superseded_claim",
+    "line": 278,
+    "assertions": 0,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.skip(reason='UNIMPLEMENTED: judging that R1 is a supersession, or R2 a scoped change, needs a qualified validity judgement; none exists, none is claimed, and none was run here.')"
+    ]
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_front_matter_attacks_are_rejected_with_valid_source_and_body_hashes",
+    "line": 302,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize(('key', 'value'), [('title', json.loads((SITE.parent / 'tests/fixtures/notebook-r4.json').read_text())['attack']), ('source_parts', ['__preamble__']), ('alive_stage', 'ALIVE-99'), ('generated_by', 'trusted-reviewer'), ('summary', 'ALIVE improves research retrieval'), ('draft', True), ('slug', 'unsupported-result'), ('chapter_id', 'unsupported-result'), ('source_doc', 'docs/ALIVE-13.md'), ('source_commit', '0' * 40), ('source_sha256', '0' * 64), ('body_sha256', '0' * 64)])"
+    ]
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_rehashed_body_cannot_remove_critical_qualification",
+    "line": 320,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_generation_is_deterministic_and_matches_committed_chapters",
+    "line": 341,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_missing_history_is_a_failure_not_a_skip",
+    "line": 350,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_notebook_01.py",
+    "name": "test_rendered_title_attack_is_rejected",
+    "line": 364,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('tag', ['h1', 'title'])"
+    ]
+  },
+  {
+    "path": "tests/test_recovery_budgets.py",
+    "name": "test_interrupted_investigation_recovery_preserves_budget_and_identity",
+    "line": 14,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_recovery_budgets.py",
+    "name": "test_invalid_model_response_never_executes",
+    "line": 79,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_recovery_budgets.py",
+    "name": "test_tool_and_per_request_budget_enforced_before_calls",
+    "line": 104,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_recovery_budgets.py",
+    "name": "test_request_budget_enforced_before_inference",
+    "line": 112,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_recovery_budgets.py",
+    "name": "test_provider_timeout_is_bounded_and_recorded",
+    "line": 121,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_recovery_budgets.py",
+    "name": "test_persistent_benchmark_budget_and_paid_opt_in",
+    "line": 141,
+    "assertions": 1,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_relevance.py",
+    "name": "test_default_config_is_external_versioned_and_stable",
+    "line": 20,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_relevance.py",
+    "name": "test_english_relevance_preserves_alive06_style_decisions",
+    "line": 32,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_relevance.py",
+    "name": "test_chinese_uses_character_ngrams_not_whitespace_words",
+    "line": 46,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_relevance.py",
+    "name": "test_arabic_normalizes_diacritics_and_orthographic_variants",
+    "line": 58,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_relevance.py",
+    "name": "test_language_detection_and_uncertainty_are_explicit",
+    "line": 69,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_relevance.py",
+    "name": "test_missing_language_resource_fails_clearly",
+    "line": 84,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_relevance.py",
+    "name": "test_invalid_toml_and_unknown_keys_fail_closed",
+    "line": 92,
+    "assertions": 0,
+    "raises_contexts": 2,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_relevance_evaluation.py",
+    "name": "test_frozen_corpus_has_independent_splits_and_labels",
+    "line": 5,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_relevance_evaluation.py",
+    "name": "test_v2_evaluation_reports_per_language_and_beats_v1_recall",
+    "line": 14,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_relevance_evaluation.py",
+    "name": "test_baselines_are_distinct_and_deterministic",
+    "line": 32,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_save_is_idempotent_and_cross_page_retrieval_is_goal_scoped",
+    "line": 168,
+    "assertions": 14,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_withdraw_removes_memory_from_retrieval_and_restart_cannot_resurrect",
+    "line": 196,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_connection_has_two_sources_and_persisted_feedback",
+    "line": 226,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_connection_abstains_without_shared_evidence",
+    "line": 257,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_relationship_validator_rejects_weak_or_generic_evidence",
+    "line": 324,
+    "assertions": 16,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_blind_rating_view_hides_conditions_and_requires_owner_ratings",
+    "line": 407,
+    "assertions": 21,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_owner_attestation_and_synthetic_provenance_are_distinct",
+    "line": 563,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_blind_run_does_not_leak_condition_order_or_assignment",
+    "line": 635,
+    "assertions": 22,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_bm25_prefers_short_specific_source_over_newer_long_prose",
+    "line": 749,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_bm25_abstains_when_only_generic_terms_overlap",
+    "line": 786,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_connection_feedback_records_revisions",
+    "line": 815,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_scripted_feedback_is_marked_separately",
+    "line": 854,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_withdrawal_is_blocked_while_outbound_analysis_is_inflight",
+    "line": 884,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_outbound_consent_rejects_a_changed_source",
+    "line": 900,
+    "assertions": 0,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_concurrent_withdrawal_cannot_interrupt_an_outbound_call",
+    "line": 933,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_simultaneous_requests_cannot_reuse_one_consent",
+    "line": 1000,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_connection_reuse_matches_provider_model_and_payload",
+    "line": 1068,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_provider_timeout_is_charged_conservatively_and_not_replayed",
+    "line": 1172,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_controlled_invalid_provider_is_preserved_as_a_rejected_attempt",
+    "line": 1219,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_grant_revocation_between_reservation_and_dispatch_blocks_call",
+    "line": 1253,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_meta_kill_switch_is_rechecked_at_dispatch",
+    "line": 1318,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_meta_model_change_after_authorisation_is_rejected",
+    "line": 1360,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_meta_relationship_preview_is_disabled_by_default",
+    "line": 1402,
+    "assertions": 0,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_current_only_analysis_dispatches_without_historical_evidence",
+    "line": 1418,
+    "assertions": 9,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_current_only_analysis_abstains_when_current_evidence_is_insufficient",
+    "line": 1457,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_current_only_rejects_a_historical_memory_selection",
+    "line": 1490,
+    "assertions": 0,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_historical_prompt_injection_remains_bounded_source_data",
+    "line": 1507,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_paired_conditions_share_instruction_schema_and_isolation",
+    "line": 1575,
+    "assertions": 16,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_paired_valid_abstention_is_stored_and_rateable",
+    "line": 1644,
+    "assertions": 14,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_paired_validator_accepts_cross_vocabulary_and_one_source",
+    "line": 1740,
+    "assertions": 11,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_paired_invalid_output_is_rejected_without_crashing",
+    "line": 1815,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_outbound_preview_and_authorisation_bind_the_exact_payload",
+    "line": 1850,
+    "assertions": 19,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_outbound_consent_is_invalidated_by_withdrawal",
+    "line": 1916,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_outbound_consent_rejects_a_revoked_grant",
+    "line": 1944,
+    "assertions": 0,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_interrupted_attempts_remain_in_the_usd_ledger_after_restart",
+    "line": 1977,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_outbound_analysis_respects_the_governor_budget",
+    "line": 2034,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_invalid_model_quotations_are_rejected_without_a_connection",
+    "line": 2062,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_repeated_analysis_reuses_the_same_connection",
+    "line": 2115,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_contradictory_sources_are_only_topic_overlap",
+    "line": 2162,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_unrelated_sources_sharing_generic_words_are_not_semantic_support",
+    "line": 2184,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_competing_methods_sharing_one_term_are_a_weak_overlap",
+    "line": 2202,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_model_quotation_stays_separate_from_the_exact_source_span",
+    "line": 2218,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_feedback_revision_updates_research_memory_usefulness",
+    "line": 2235,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_scoped_ranking_survives_sixty_general_memory_distractors",
+    "line": 2248,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_general_memory_retrieval_excludes_research_memory",
+    "line": 2290,
+    "assertions": 4,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_general_investigation_snapshot_excludes_research_memory_sentinel",
+    "line": 2313,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_withdraw_targets_only_the_requested_memory",
+    "line": 2411,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_withdraw_rejects_unknown_and_wrong_instance_ids",
+    "line": 2428,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_concurrent_withdraw_is_idempotent_and_does_not_resurrect",
+    "line": 2452,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_retrieval_is_local_but_connection_requires_live_grant",
+    "line": 2468,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_index_repair_refreshes_stale_projection_and_removes_withdrawn_leftovers",
+    "line": 2484,
+    "assertions": 10,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_research_memory.py",
+    "name": "test_index_repair_rebuilds_missing_projection_without_resurrection",
+    "line": 2541,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_runtime.py",
+    "name": "test_security_and_degraded_startup",
+    "line": 12,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_runtime.py",
+    "name": "test_observation_atomicity_duplicate_memory_and_goals",
+    "line": 28,
+    "assertions": 10,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_runtime.py",
+    "name": "test_heartbeat_stop_and_mock_agent",
+    "line": 65,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_runtime.py",
+    "name": "test_websocket_auth_history_and_cursors",
+    "line": 85,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_runtime.py",
+    "name": "test_restart_continuity",
+    "line": 94,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_runtime.py",
+    "name": "test_envelope_rejects_invalid_schema",
+    "line": 118,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_skill_forge_p0.py",
+    "name": "test_schema_rejects_privilege_and_background_triggers",
+    "line": 23,
+    "assertions": 0,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_skill_forge_p0.py",
+    "name": "test_requires_approval_and_explicit_invocation",
+    "line": 36,
+    "assertions": 2,
+    "raises_contexts": 3,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_skill_forge_p0.py",
+    "name": "test_revision_revokes_approval",
+    "line": 61,
+    "assertions": 1,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_skill_forge_p0.py",
+    "name": "test_graph_provenance_and_candidate_status",
+    "line": 74,
+    "assertions": 2,
+    "raises_contexts": 1,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_skill_forge_p0.py",
+    "name": "test_example_is_valid",
+    "line": 89,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_test_select.py",
+    "name": "test_frontend_change_does_not_require_postgres_rebuild",
+    "line": 15,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_test_select.py",
+    "name": "test_migration_change_requires_db_tests_and_docker_flag",
+    "line": 25,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_test_select.py",
+    "name": "test_eval_change_requires_eval_tests",
+    "line": 31,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_test_select.py",
+    "name": "test_docker_change_requires_config_and_docker_tier",
+    "line": 36,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_test_select.py",
+    "name": "test_docs_only_is_minimal",
+    "line": 45,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_test_select.py",
+    "name": "test_unknown_impact_falls_back_to_full",
+    "line": 50,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_test_select.py",
+    "name": "test_core_change_falls_back_to_full_in_affected",
+    "line": 57,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_test_select.py",
+    "name": "test_quick_is_bounded_smoke_for_broad_change",
+    "line": 64,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_test_select.py",
+    "name": "test_every_selection_has_reasons_and_no_duplicates",
+    "line": 71,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_test_select.py",
+    "name": "test_full_mode_selects_everything",
+    "line": 83,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_transport.py",
+    "name": "test_actual_zmq_independent_subscriber_and_reconnect",
+    "line": 10,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_transport.py",
+    "name": "test_inprocess_adapter",
+    "line": 34,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_feedback_changes_exact_state_choice_and_survives_restart",
+    "line": 100,
+    "assertions": 11,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_changed_excerpt_and_negative_feedback_prevent_reuse",
+    "line": 128,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_goal_relevance_is_deterministic_and_explicit",
+    "line": 141,
+    "assertions": 14,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_unrelated_goal_returns_no_action_without_model_call",
+    "line": 171,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_uncertain_language_requires_explicit_override",
+    "line": 191,
+    "assertions": 9,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_chinese_relevant_goal_analyses_and_recalls",
+    "line": 214,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_exact_consent_hash_and_owner_goal_isolation",
+    "line": 232,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_zero_governor_budget_blocks_calls",
+    "line": 264,
+    "assertions": 2,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_bad_citation_preserves_failure_and_consumes_reservation",
+    "line": 275,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_stop_cancels_paid_worker_and_settles_unknown_usage",
+    "line": 285,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_revocation_before_inference_prevents_provider_call",
+    "line": 303,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_feedback_policy_is_idempotent_and_revision_replaces_evidence",
+    "line": 331,
+    "assertions": 10,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_three_negative_feedback_suppresses_analysis_and_owner_correction_restores",
+    "line": 356,
+    "assertions": 15,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_lexical_no_action_requires_explicit_owner_correction",
+    "line": 397,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_owner_correction_cannot_bypass_revoked_grant",
+    "line": 415,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_owner_correction_cannot_bypass_expired_grant",
+    "line": 425,
+    "assertions": 1,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_adaptive_policy_persists_across_restart",
+    "line": 441,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_repeated_ratings_of_unchanged_excerpt_count_as_one_evidence_unit",
+    "line": 462,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_three_distinct_excerpts_suppress_and_probe_recovers",
+    "line": 480,
+    "assertions": 16,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_exact_useful_recall_precedes_adaptive_pause",
+    "line": 519,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_failed_feedback_does_not_change_policy",
+    "line": 540,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_failed_governor_correction_does_not_reset_suppression",
+    "line": 552,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_experience.py",
+    "name": "test_feedback_duplicate_evidence_does_not_increment_policy",
+    "line": 576,
+    "assertions": 5,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_policy_recovery.py",
+    "name": "test_probe_due_cannot_authorise_old_paused_snapshots",
+    "line": 31,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_policy_recovery.py",
+    "name": "test_rejected_probe_keeps_eligibility_without_provider_dispatch",
+    "line": 53,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_policy_recovery.py",
+    "name": "test_v1_migration_preserves_latest_revision_not_latest_created_row",
+    "line": 72,
+    "assertions": 11,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('keep_history', [False, True])"
+    ]
+  },
+  {
+    "path": "tests/test_web_policy_recovery.py",
+    "name": "test_repeated_paused_excerpt_does_not_advance_probe",
+    "line": 129,
+    "assertions": 13,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_policy_recovery.py",
+    "name": "test_repeated_rated_excerpt_does_not_advance_suppression",
+    "line": 157,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_policy_recovery.py",
+    "name": "test_negative_exact_excerpt_cannot_become_probe",
+    "line": 176,
+    "assertions": 8,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_web_policy_recovery.py",
+    "name": "test_repeated_paused_excerpt_after_restart_does_not_advance",
+    "line": 194,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_zz_claim_mode_probe.py",
+    "name": "test_probe_1_fixture_provider_never_reaches_meta",
+    "line": 24,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_zz_claim_mode_probe.py",
+    "name": "test_probe_2_meta_gate",
+    "line": 34,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_zz_claim_mode_probe.py",
+    "name": "test_probe_3_real_fixture_dispatch_respects_anchor_revision",
+    "line": 43,
+    "assertions": 9,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_zz_claim_mode_probe.py",
+    "name": "test_probe_4_withdrawal_scrubs_copied_claim_fields",
+    "line": 63,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_zz_prc_probe.py",
+    "name": "test_probe_C_real_midflight_crash_is_charged",
+    "line": 13,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_zz_prc_probe.py",
+    "name": "test_probe_E_revocation_queued_at_dispatch_guard_discards_finding",
+    "line": 41,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_zz_prc_probe.py",
+    "name": "test_probe_D_full_database_scan_after_withdrawal",
+    "line": 93,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_zz_prc_probe.py",
+    "name": "test_probe_F_paired_analysis_is_scrubbed_after_withdrawal",
+    "line": 116,
+    "assertions": 4,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_zz_review_probe.py",
+    "name": "test_probe_A_withdrawal_invalidates_finding_across_restart",
+    "line": 70,
+    "assertions": 7,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_zz_review_probe.py",
+    "name": "test_probe_B_grant_revoked_during_dispatch_discards_finding",
+    "line": 99,
+    "assertions": 6,
+    "raises_contexts": 0,
+    "decorators": []
+  },
+  {
+    "path": "tests/test_zz_review_probe.py",
+    "name": "test_probe_C_restart_charges_according_to_durable_dispatch_marker",
+    "line": 142,
+    "assertions": 3,
+    "raises_contexts": 0,
+    "decorators": [
+      "pytest.mark.parametrize('dispatch_status,charged', [('reserved_never_dispatched', 0), ('dispatch_possibly_started', 999)])"
+    ]
+  }
+]

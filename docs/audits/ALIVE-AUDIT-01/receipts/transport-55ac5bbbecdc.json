@@ -1,0 +1,33 @@
+{
+  "intended_data": {
+    "empty": "",
+    "zero": 0,
+    "nil": null,
+    "false": false,
+    "array": []
+  },
+  "dispatched_body": {
+    "model": "audit-model",
+    "messages": [
+      {
+        "role": "developer",
+        "content": "审计 🧪 \\\n"
+      },
+      {
+        "role": "user",
+        "content": "{\"empty\": \"\", \"zero\": 0, \"nil\": null, \"false\": false, \"array\": []}"
+      }
+    ],
+    "max_completion_tokens": 256,
+    "reasoning_effort": "minimal",
+    "response_format": {
+      "type": "json_schema",
+      "json_schema": {
+        "name": "alive_structured_output",
+        "schema": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

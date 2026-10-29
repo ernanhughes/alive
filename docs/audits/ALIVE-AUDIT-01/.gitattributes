@@ -1,0 +1,2 @@
+# Preserve audit reports, synthetic fixtures and raw receipts byte-for-byte.
+* -text whitespace=cr-at-eol
