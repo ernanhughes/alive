@@ -46,6 +46,26 @@ process working inside (check before each removal).
   until that decision.
 - Any `docker ... -v` volume deletion: never proposed.
 
+## Execution outcome (2026-10-29, approved Groups A+B)
+
+Group A: 4/4 deleted after ancestor=0 + no-worktree verification —
+`codex/consolidate-main-20261028`, `codex/fix-review-probes`,
+`codex/i1-a2-qualification`, `opencode/alive-04-interim`.
+
+Group B: 16/17 worktree registrations removed after clean + ancestor=0 +
+no-dev-marker verification (branches preserved, incl. `feat/alive-docker-01`).
+`alive-notebook-01`: worktree registration removed but its directory remains
+on disk — VSCode Python tooling is actively using its `.venv`, so directory
+deletion was skipped per safeguards. Owner may delete it manually after
+closing the VSCode handle; nothing versioned is at risk (all content in main).
+
+Skipped per Group C (untouched): `alive-notebook-02-r1` (dirty report),
+`/r1`, `/rdi`, `alive-review-docker` (+volumes), primary checkout,
+opencode/Temp session dirs, all cc-r06 machine workspaces + 14 WS branches.
+
+Post-cleanup: `origin/main` = `4b74f3c` (unchanged); primary checkout
+unchanged (eval-01 branch @ a76f23f + `?? .vscode/` only). No volumes touched.
+
 ## Execution order (after approval)
 
 A (branches) → B (worktrees, verify-each) → re-run `git worktree list` and
