@@ -1,0 +1,48 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-alive}
+      POSTGRES_USER: ${POSTGRES_USER:-alive}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me-for-local-use}
+    volumes:
+      - alive-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U $${POSTGRES_USER:-alive} -d $${POSTGRES_DB:-alive}",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+    restart: unless-stopped
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-alive}:${POSTGRES_PASSWORD:-change-me-for-local-use}@db:5432/${POSTGRES_DB:-alive}
+      ALIVE_API_TOKEN: ${ALIVE_API_TOKEN:-alive-dev-token-replace-for-local-use-000}
+      ALIVE_ALLOWED_ORIGINS: '["http://localhost:8080","http://127.0.0.1:8080"]'
+      ALIVE_BROWSER_ORIGINS: '["http://app:8000","http://localhost:8080","http://127.0.0.1:8000"]'
+      ALIVE_COGNITIVE_PROVIDER: ${ALIVE_COGNITIVE_PROVIDER:-mock}
+      ALIVE_DEMO_MODE: ${ALIVE_DEMO_MODE:-true}
+    ports:
+      - "127.0.0.1:8080:8000"
+    volumes:
+      - alive-appdata:/app/.alive
+    healthcheck:
+      test: ["CMD", "python", "docker/healthcheck.py"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+    restart: unless-stopped
+
+volumes:
+  alive-pgdata:
+  alive-appdata:
