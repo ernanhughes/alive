@@ -115,3 +115,5 @@ jobs:
       - run: uv run python -m scripts.notebook03a_r2 audit-package
       - run: uv run python -m scripts.notebook03a_r2 baseline --check-against docs/validation/alive-notebook-03a-r2/expected-baselines.json --output "$RUNNER_TEMP/notebook03a-r2-baseline.json"
       - run: uv run pytest -q tests/test_notebook03a.py tests/test_notebook03a_r1.py tests/test_notebook03a_r2.py
+      - run: uv run pytest -q tests/test_alive_eval01.py
+      - run: uv run python -m scripts.alive_eval01 verify
