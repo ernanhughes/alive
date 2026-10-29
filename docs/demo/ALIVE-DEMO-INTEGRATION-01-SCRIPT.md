@@ -31,6 +31,10 @@ call the comparison "AI reasoning", "verified", or "ALIVE found the truth".
 
 ## Fallback: RECORDED walkthrough
 
-If Docker or Chrome fails on stage, play `docs/demo/evidence/recorded/RECORDED-*.png`, a storyboard captured from a
-real local run, with **RECORDED WALKTHROUGH — NOT LIVE** burned into every frame. Say "this is a
-recording". Regenerate with `pwsh scripts/demo-acceptance.ps1 -Record` (set `DEMO_VIDEO=1` after `npx playwright install ffmpeg` for a video).
+If Docker or Chrome fails on stage, play `docs/demo/evidence/recorded/RECORDED-walkthrough.webm`, or
+page through the storyboard `docs/demo/evidence/recorded/RECORDED-*.png`. Both are captures of a real
+local run with **RECORDED WALKTHROUGH — NOT LIVE** burned into every frame. Say "this is a recording".
+
+Regenerate with `pwsh scripts/demo-acceptance.ps1 -Record`. That installs Playwright's ffmpeg (about
+1.6 MiB) into your per-user Playwright cache, not the repo, and not the Docker image: recording runs in
+host Chrome against the container.

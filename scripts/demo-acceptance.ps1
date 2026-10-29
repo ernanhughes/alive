@@ -12,6 +12,8 @@ No provider key is set and no paid call is possible. Needs Docker, uv, Node and 
 
   pwsh scripts/demo-acceptance.ps1 [-Project alive-demo-accept] [-Port 8000] [-Record] [-KeepRunning]
 
+-Record also installs Playwright's ffmpeg into the user cache and saves a RECORDED video.
+
 The web demonstration works on any free host port; only the Chrome-extension lane needs 8000.
 #>
 param(
@@ -67,7 +69,13 @@ Step "after restart" { Phase "after-restart" }
 Step "remove containers and start again (volumes kept)" { docker compose -p $Project down; docker compose -p $Project up -d }
 Wait-Healthy
 Step "after down/up" { Phase "after-restart" }
-if ($Record) { Step "recorded walkthrough" { Phase "record" } }
+if ($Record) {
+  # Playwright's ffmpeg (~1.6 MiB) goes into the per-user Playwright cache, never into the repo.
+  Step "install Playwright ffmpeg (user cache)" { Push-Location dashboard; npx playwright install ffmpeg; $c = $LASTEXITCODE; Pop-Location; $global:LASTEXITCODE = $c }
+  $env:DEMO_VIDEO = "1"
+  Step "recorded walkthrough (screenshots + video, RECORDED banner)" { Phase "record" }
+  Remove-Item Env:DEMO_VIDEO
+}
 $env:ALIVE_DEMO_MODE = "false"
 Step "demo mode off" { docker compose -p $Project up -d app }
 Wait-Healthy
