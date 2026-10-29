@@ -790,6 +790,9 @@ def find_meta_constructions(*roots):
                 for n in ast.walk(tree)
                 if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef))
             )
+            scopes.extend(
+                (f"<class {n.name}>", n) for n in ast.walk(tree) if isinstance(n, ast.ClassDef)
+            )
             seen = set()
             for func_name, scope_node in scopes:
                 if id(scope_node) in seen:
@@ -983,10 +986,10 @@ def _scan_scope(scope_node, path, func_name, file_aliases, file_subclasses, file
         if kinds is None and assigned_target is None:
             continue
         if assigned_target is not None:
-            pending.setdefault(assigned_target, []).append(kinds if kinds else set())
+            pending[assigned_target] = pending.get(assigned_target, 0) + 1
             continue
         findings.append((path, func_name, kinds, flags))
-    for name in pending:
+    for name, constructions in pending.items():
         used = sorted(
             {
                 sub.attr
@@ -998,18 +1001,22 @@ def _scan_scope(scope_node, path, func_name, file_aliases, file_subclasses, file
             }
         )
         methods = {m for m in used if m in PROVIDER_METHODS}
-        if methods:
-            findings.append((path, func_name, methods, {"assigned"}))
-        else:
-            others = [
-                n
-                for n in nodes
-                if isinstance(n, ast.Name)
-                and n.id == name
-                and not isinstance(n.ctx, (ast.Store, ast.Del))
-            ]
-            if others:
+        others = [
+            n
+            for n in nodes
+            if isinstance(n, ast.Name)
+            and n.id == name
+            and not isinstance(n.ctx, (ast.Store, ast.Del))
+        ]
+        # One finding per construction: an extra constructor must never be
+        # merged away by sharing a variable name with a legitimate one.
+        for _ in range(constructions):
+            if methods:
+                findings.append((path, func_name, methods, {"assigned"}))
+            elif others:
                 findings.append((path, func_name, {"ambiguous"}, {"opaque-use"}))
+            else:
+                findings.append((path, func_name, {"ambiguous"}, {"unused-assignment"}))
     return findings
 
 
@@ -1037,6 +1044,10 @@ def check_allowlist(findings):
         exp_kinds, exp_count = allowed[(path, func)]
         if set(kinds) != set(exp_kinds) or total != exp_count:
             violations.append((path, func, sorted(kinds), sorted(flags), total, exp_count))
+    # Reverse inventory: a deleted expected site must fail closed, not vanish.
+    for path, func in sorted(set(allowed) - set(counts)):
+        exp_kinds, exp_count = allowed[(path, func)]
+        violations.append((path, func, sorted(exp_kinds), ["missing-expected-site"], 0, exp_count))
     return violations
 
 
@@ -1147,6 +1158,11 @@ def test_ratchet_no_new_credential_access():
     assert violations == [], f"new Meta credential access: {violations}"
 
 
+def _violations_for(violations, filename):
+    """Rogue fixtures also report missing expected sites; scope to the rogue file."""
+    return [v for v in violations if v[0] == filename]
+
+
 def _write_rogue(tmp_path, name, body):
     target = tmp_path / name
     target.write_text(body)
@@ -1163,7 +1179,7 @@ def test_ratchet_catches_extra_constructor_in_approved_function(tmp_path):
         "    b = await MetaProvider(settings).structured('i', {}, {}, model='m')\n"
         "    return a, b\n",
     )
-    violations = check_allowlist(find_meta_constructions(tmp_path))
+    violations = _violations_for(check_allowlist(find_meta_constructions(tmp_path)), "extra.py")
     assert len(violations) == 1
     assert violations[0][0] == "extra.py" and violations[0][1] == "command"
     assert violations[0][4] == 2
@@ -1178,7 +1194,7 @@ def test_ratchet_catches_assigned_variable_in_new_function(tmp_path):
         "    provider = MetaProvider(settings)\n"
         "    return await provider.discover()\n",
     )
-    violations = check_allowlist(find_meta_constructions(tmp_path))
+    violations = _violations_for(check_allowlist(find_meta_constructions(tmp_path)), "assigned.py")
     assert violations == [("assigned.py", "probe", ["discover"], ["assigned"], 1, None)]
 
 
@@ -1190,7 +1206,7 @@ def test_ratchet_catches_aliased_import(tmp_path):
         "async def run(settings):\n"
         "    return await MP(settings).structured('i', {}, {}, model='m')\n",
     )
-    violations = check_allowlist(find_meta_constructions(tmp_path))
+    violations = _violations_for(check_allowlist(find_meta_constructions(tmp_path)), "aliased.py")
     assert violations == [("aliased.py", "run", ["structured"], ["chained"], 1, None)]
 
 
@@ -1204,7 +1220,9 @@ def test_ratchet_catches_subclass_construction(tmp_path):
         "async def run(settings):\n"
         "    return await Sneaky(settings).structured('i', {}, {}, model='m')\n",
     )
-    violations = check_allowlist(find_meta_constructions(tmp_path))
+    violations = _violations_for(
+        check_allowlist(find_meta_constructions(tmp_path)), "subclassed.py"
+    )
     assert violations == [("subclassed.py", "run", ["structured"], ["chained"], 1, None)]
 
 
@@ -1217,7 +1235,9 @@ def test_ratchet_catches_constructor_alias(tmp_path):
         "async def run(settings):\n"
         "    return await MP(settings).structured('i', {}, {}, model='m')\n",
     )
-    violations = check_allowlist(find_meta_constructions(tmp_path))
+    violations = _violations_for(
+        check_allowlist(find_meta_constructions(tmp_path)), "aliased_ctor.py"
+    )
     assert violations == [("aliased_ctor.py", "run", ["structured"], ["chained"], 1, None)]
 
 
@@ -1230,7 +1250,7 @@ def test_ratchet_catches_getattr_dispatch(tmp_path):
         "    cls = getattr(providers, 'MetaProvider')\n"
         "    return await cls(settings).structured('i', {}, {}, model='m')\n",
     )
-    violations = check_allowlist(find_meta_constructions(tmp_path))
+    violations = _violations_for(check_allowlist(find_meta_constructions(tmp_path)), "dynamic.py")
     assert len(violations) == 1
     path, func, kinds, flags, total, _ = violations[0]
     assert (path, func, total) == ("dynamic.py", "run", 2)
@@ -1245,7 +1265,7 @@ def test_ratchet_catches_unbound_method(tmp_path):
         "async def run(provider, settings):\n"
         "    return await MetaProvider.structured(provider, 'i', {}, {}, model='m')\n",
     )
-    violations = check_allowlist(find_meta_constructions(tmp_path))
+    violations = _violations_for(check_allowlist(find_meta_constructions(tmp_path)), "unbound.py")
     assert ("unbound.py", "run", ["structured"], ["unbound-method"], 1, None) in violations
 
 
@@ -1258,14 +1278,14 @@ def test_ratchet_catches_ambiguous_construction(tmp_path):
         "    provider = MetaProvider(settings)\n"
         "    return provider\n",
     )
-    violations = check_allowlist(find_meta_constructions(tmp_path))
+    violations = _violations_for(check_allowlist(find_meta_constructions(tmp_path)), "ambiguous.py")
     assert violations == [("ambiguous.py", "run", ["ambiguous"], ["opaque-use"], 1, None)]
 
 
 def test_ratchet_fails_closed_on_unparseable(tmp_path):
     rogue = tmp_path / "broken.py"
     rogue.write_bytes(b"def broken(:\n    pass\n")
-    violations = check_allowlist(find_meta_constructions(tmp_path))
+    violations = _violations_for(check_allowlist(find_meta_constructions(tmp_path)), "broken.py")
     assert violations == [
         ("broken.py", "<module>", ["parse-error"], ["unreadable-or-unparseable"], 1, None)
     ]
@@ -1287,6 +1307,106 @@ def test_ratchet_catches_direct_httpx_with_credential(tmp_path):
     kinds = {k for _, _, ks in creds for k in ks}
     assert "credential:key" in kinds, creds
     assert "credential:literal" in kinds, creds
+
+
+def _mirror(tmp_path, modules):
+    """Mirror selected repo modules into tmp/alive so allow-list paths match."""
+    import shutil
+
+    root = Path(__file__).resolve().parents[1]
+    alive = tmp_path / "alive"
+    alive.mkdir(parents=True, exist_ok=True)
+    (tmp_path / "scripts").mkdir(parents=True, exist_ok=True)
+    for rel in modules:
+        shutil.copy(root / rel, alive / Path(rel).name)
+    return alive
+
+
+def test_ratchet_detects_missing_expected_site(tmp_path):
+    """R3: deleting a legitimate construction must fail, not pass silently."""
+    alive = _mirror(tmp_path, ["alive/living.py", "alive/model_gateway.py"])
+    text = (alive / "living.py").read_text(encoding="utf-8")
+    needle = "MetaProvider(self.k.settings).structured("
+    assert needle in text
+    (alive / "living.py").write_text(
+        text.replace(needle, "_removed_provider_call(", 1), encoding="utf-8"
+    )
+    violations = check_allowlist(find_meta_constructions(alive, tmp_path / "scripts"))
+    assert (
+        "alive/living.py",
+        "reason",
+        ["structured"],
+        ["missing-expected-site"],
+        0,
+        1,
+    ) in violations
+
+
+def test_ratchet_detects_unused_assigned_instance(tmp_path):
+    """R3: an unused provider assignment must be reported, not dropped."""
+    alive = _mirror(tmp_path, ["alive/cognition.py", "alive/model_gateway.py"])
+    text = (alive / "cognition.py").read_text(encoding="utf-8")
+    anchor = "    async def command(self, data):\n        async with self.command_lock:"
+    assert anchor in text
+    injected = (
+        "    async def command(self, data):\n"
+        "        r3_unused = MetaProvider(self.k.settings)\n"
+        "        async with self.command_lock:"
+    )
+    (alive / "cognition.py").write_text(text.replace(anchor, injected, 1), encoding="utf-8")
+    findings = find_meta_constructions(alive, tmp_path / "scripts")
+    assert any(
+        f[0].endswith("cognition.py") and f[1] == "command" and "unused-assignment" in f[3]
+        for f in findings
+    )
+    violations = check_allowlist(findings)
+    assert any(
+        v[0].endswith("cognition.py") and v[1] == "command" and "unused-assignment" in v[3]
+        for v in violations
+    )
+
+
+def test_ratchet_nested_scope_counted_once(tmp_path):
+    """A construction inside a nested function is attributed to it exactly once."""
+    alive = tmp_path / "alive"
+    alive.mkdir()
+    (tmp_path / "scripts").mkdir()
+    (alive / "nested.py").write_text(
+        "from alive.providers import MetaProvider\n"
+        "async def outer(settings):\n"
+        "    async def inner():\n"
+        "        return await MetaProvider(settings).structured('i', {}, {}, model='m')\n"
+        "    return await inner()\n",
+        encoding="utf-8",
+    )
+    violations = check_allowlist(find_meta_constructions(alive, tmp_path / "scripts"))
+    mine = [v for v in violations if v[0] == "alive/nested.py"]
+    assert mine == [("alive/nested.py", "inner", ["structured"], ["chained"], 1, None)]
+
+
+def test_ratchet_detects_class_body_construction(tmp_path):
+    """R3: class-level constructions are scanned (previously invisible)."""
+    alive = tmp_path / "alive"
+    alive.mkdir()
+    (tmp_path / "scripts").mkdir()
+    (alive / "holder.py").write_text(
+        "from alive.providers import MetaProvider\n"
+        "class Holder:\n"
+        "    provider = MetaProvider(None)\n"
+        "\n"
+        "async def use():\n"
+        "    return await Holder.provider.discover()\n",
+        encoding="utf-8",
+    )
+    violations = check_allowlist(find_meta_constructions(alive, tmp_path / "scripts"))
+    assert (
+        "alive/holder.py",
+        "<class Holder>",
+        ["ambiguous"],
+        ["unused-assignment"],
+        1,
+        None,
+    ) in violations
 
 
 def test_credentials_allowlist_matches_repo():
