@@ -1,0 +1,19 @@
+{
+  "version": "alive-eval-01-controls-v1",
+  "note": "Shortcut controls are development/diagnostic instruments. Neither is an independent adjudicator; both fail authentic unfamiliar material (see R2 report strata).",
+  "S-surface-cue-v1.0": {
+    "version": "surface-cue-v1.0",
+    "tuning_basis": "v1.4 development templates; pattern set overlaps public evaluation template families",
+    "independence": "template-informed",
+    "status": "preserved-historical-control",
+    "code_sha256": "482bd6362bd764d16c954d19892d011728abad5fc07107273bca51e246a9feaa"
+  },
+  "V-shortcut-control-v2.0": {
+    "version": "shortcut-control-v2.0",
+    "tuning_basis": "R2 development split only; no eval-driven threshold changes after the freeze record",
+    "independence": "evaluation-informed",
+    "status": "active-diagnostic-comparator",
+    "code_sha256": "d1c8b66769db6245ea127fba3a769a0b5359909661ddde64db01f6971d6a8282",
+    "independence_detail": "V was diagnosed on public evaluation cases during R2 development; its rules were changed only on taxonomy grounds verified against development cases, but prior exposure to evaluation outcomes is disclosed rather than denied."
+  }
+}

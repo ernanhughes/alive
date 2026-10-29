@@ -1,0 +1,40 @@
+{
+  "version": "alive-eval-01-policy-v1",
+  "scope": "Eligibility and custody rules for the trusted custodian evaluator. Decision numbers (retention floors, margins, citation floor) remain the frozen v1.6 decision contract; this policy governs which evaluations may yield a verdict at all.",
+  "forbidden": [
+    "Accepting caller-supplied aggregate metrics as authoritative.",
+    "Deriving scope from a command-line flag alone.",
+    "Treating a submitter-generated manifest as independent attestation.",
+    "Using public tasks or draft labels for a final verdict.",
+    "Tuning any value to observed semantic-model results."
+  ],
+  "min_holdout_cases": 8,
+  "required_arms": ["A", "B0", "S", "V", "C", "D"],
+  "min_independent_families": 20,
+  "min_useful_cases": 20,
+  "min_scored_cases": 30,
+  "allowed_protocols": [
+    {"version": "notebook03a-v1.6", "use": "diagnostic and sealed evaluation"}
+  ],
+  "allowed_scorers": [
+    {"module": "scripts.notebook03a_r2_protocol", "version": "notebook03a-v1.6"}
+  ],
+  "citation_policy": {
+    "min_precision": 0.2,
+    "require_full_recall": true,
+    "note": "Values mirror the frozen v1.6 decision contract. The custodian re-derives them from per-case records; it never trusts a caller-supplied pass rate."
+  },
+  "uncertainty_policy": {
+    "resamples": 1000,
+    "seed": 20261029,
+    "level": 0.95,
+    "rule": "Verdict requires the retention interval lower bound at/above floor, the misleading interval upper bound at/below cap, and paired-difference intervals clear of both margins. Otherwise INCONCLUSIVE."
+  },
+  "units": {
+    "min_holdout_cases": {"unit": "count", "denominator": "cases in the sealed package"},
+    "required_arms": {"unit": "list", "denominator": "comparator arms with complete records"},
+    "min_independent_families": {"unit": "count", "denominator": "distinct template families evaluated"},
+    "min_useful_cases": {"unit": "count", "denominator": "useful gold cases scored"},
+    "min_scored_cases": {"unit": "count", "denominator": "scored tasks for a verdict"}
+  }
+}
