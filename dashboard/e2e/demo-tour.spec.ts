@@ -147,12 +147,15 @@ test("disabled: the tab refuses and the API says no", async ({ page }) => {
   await shot(page, "06-disabled");
 });
 
-test("record: a RECORDED walkthrough, never presented as live", async ({ browser }) => {
+test("record: a RECORDED storyboard, never presented as live", async ({ browser }) => {
   test.skip(PHASE !== "record");
-  mkdirSync(SHOTS, { recursive: true });
+  mkdirSync(SHOTS + "/recorded", { recursive: true });
+  // Video needs Playwright's ffmpeg (`npx playwright install ffmpeg`); the storyboard does not.
   const context = await browser.newContext({
-    recordVideo: { dir: SHOTS + "/video", size: { width: 1280, height: 800 } },
     viewport: { width: 1280, height: 800 },
+    ...(process.env.DEMO_VIDEO
+      ? { recordVideo: { dir: SHOTS + "/recorded/video", size: { width: 1280, height: 800 } } }
+      : {}),
   });
   const page = await context.newPage();
   await page.addInitScript(() => {
@@ -166,8 +169,14 @@ test("record: a RECORDED walkthrough, never presented as live", async ({ browser
     });
   });
   await open(page);
-  await page.waitForTimeout(1500);
-  await runOnce(page, "\\d+");
-  await page.waitForTimeout(2500);
+  await page.getByRole("button", { name: "Start demonstration" }).click();
+  for (const [i, key] of KEYS.entries()) {
+    const step = page.locator(`[data-step="${key}"]`);
+    await expect(step).toBeVisible({ timeout: 45000 });
+    await step.scrollIntoViewIfNeeded();
+    const n = String(i + 1).padStart(2, "0");
+    await page.screenshot({ path: `${SHOTS}/recorded/RECORDED-${n}-${key}.png` });
+  }
+  await expect(page.getByRole("heading", { name: /Run #\d+ · completed/ })).toBeVisible();
   await context.close();
 });
