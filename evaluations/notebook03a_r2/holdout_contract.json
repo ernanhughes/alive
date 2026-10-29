@@ -1,0 +1,72 @@
+{
+  "version": "notebook03a-r2-holdout-v1",
+  "status_values": [
+    "HOLDOUT_PENDING",
+    "SEALED"
+  ],
+  "current_status": "HOLDOUT_PENDING",
+  "required_files": [
+    "tasks.json",
+    "annotations.json",
+    "independent_submission.json"
+  ],
+  "task_split": "independent_heldout",
+  "label_requirements": {
+    "status": "adjudicated",
+    "independence": "external_attested",
+    "min_distinct_reviewers": 2,
+    "author_distinct_from_reviewers": true
+  },
+  "manifest_requirements": {
+    "access_restricted_attested": true,
+    "independent_annotation_status": "ADJUDICATED",
+    "implementer_exposure_events": []
+  },
+  "forbidden_reuse": [
+    "public task IDs",
+    "public family IDs",
+    "public source hashes"
+  ],
+  "validation_is_structural_only": true,
+  "public_families": [
+    "05ad49cb44348c6d",
+    "0b1efbffd1e7a1e6",
+    "1a97ca26ffd41891",
+    "1fbff13649515db0",
+    "2c3b55e535ef85d9",
+    "3034516cb59ca2ed",
+    "31259446430b78b1",
+    "32c987231f17d824",
+    "3edd8a8be4cb07ef",
+    "413bff88532d0b62",
+    "5b7c03c975c2fe96",
+    "61c882cd022e627a",
+    "692252cf328bd664",
+    "6bcf5458064f0d34",
+    "75bd1dbb2dba97f9",
+    "7b86535f5f25b31a",
+    "7e0b9fd2496cb390",
+    "83b02e09cd08de0d",
+    "888f987debd05c56",
+    "8a586461f075ef7a",
+    "8ab301dae0ab8ae5",
+    "8fde8cb9098f904e",
+    "91a116939049ff7b",
+    "93b00a8b5a248a32",
+    "9cdd3bf499ac0c9c",
+    "a7f54089f59b4faf",
+    "acbe891a4334e67a",
+    "b02062aa9fa36b42",
+    "b490a481c680cd6b",
+    "bb17ea545a5f070b",
+    "be1b8e3984629de3",
+    "c069ed280fe14ace",
+    "c54b5f314d2255a6",
+    "cd183a884f5b351a",
+    "d92f5ed5e43d2479",
+    "e630a62db347f5e1",
+    "f486e000f3c447af",
+    "f77d39471f1739bc",
+    "ff90be42f143c52e"
+  ]
+}
