@@ -32,9 +32,11 @@ import { CognitionPane } from "./Cognition";
 import { BrowserProvenance } from "./BrowserProvenance";
 import type { BrowserObservation } from "./BrowserProvenance";
 import { LivingPane } from "./Living";
+import { DemoTourPane } from "./DemoTour";
 
 const tabs = [
   "Overview",
+  "Demonstration",
   "Living",
   "Live events",
   "Memory",
@@ -46,6 +48,7 @@ const tabs = [
 type Tab = (typeof tabs)[number];
 const icons = [
   Layers3,
+  Play,
   Leaf,
   Radio,
   BrainCircuit,
@@ -276,14 +279,14 @@ export function App() {
           <div className="page-heading">
             <div>
               <div className="eyebrow">
-                {tab === "Living" ? "ALIVE-04 / CONTINUING EXPERIENCE" : tab === "Cognition"
+                {tab === "Demonstration" ? "ALIVE / GUIDED DEMONSTRATION" : tab === "Living" ? "ALIVE-04 / CONTINUING EXPERIENCE" : tab === "Cognition"
                   ? "ALIVE-02 / COGNITIVE SOCIETY"
                   : "ALIVE-01 / FIRST CONTACT"}
               </div>
               <h1>
                 {tab === "Overview"
                   ? "Something is becoming."
-                  : tab === "Living" ? "The living experience." : tab === "Live events"
+                  : tab === "Demonstration" ? "Evidence, remembered and withdrawn." : tab === "Living" ? "The living experience." : tab === "Live events"
                     ? "The stream of experience."
                     : tab === "Memory"
                       ? "Experience, remembered."
@@ -296,7 +299,7 @@ export function App() {
                             : "A persistent presence."}
               </h1>
               <p>
-                {tab === "Living" ? "Observe a consequence. See what experience changes." : tab === "Overview"
+                {tab === "Demonstration" ? "A guided, offline walk through ALIVE's evidence lifecycle." : tab === "Living" ? "Observe a consequence. See what experience changes." : tab === "Overview"
                   ? "Observe the runtime. Follow its attention. See what stays."
                   : "Inspect the real state of your local ALIVE runtime."}
               </p>
@@ -871,6 +874,7 @@ export function App() {
             </section>
           )}
           {tab === "Cognition" && token && <CognitionPane token={token} />}
+          {tab === "Demonstration" && token && <DemoTourPane token={token} />}
           {tab === "Living" && token && <LivingPane token={token} />}
           <footer>
             <span>

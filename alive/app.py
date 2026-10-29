@@ -19,6 +19,7 @@ from alive.cognition import Cognition
 from alive.cognitive_api import public_router, router
 from alive.config import Settings, prepare_local
 from alive.db import Database
+from alive.demo_tour import router as demo_tour_router
 from alive.experiment.api import router as experiment_router
 from alive.experiment_approval import ExperimentApprovals
 from alive.experiment_budget import BudgetedExperiments as Experiments
@@ -194,6 +195,7 @@ def create_app(settings=None):
     app.include_router(living_router(app, ready))
     app.include_router(web_router(app, ready))
     app.include_router(exploration_router(app, ready))
+    app.include_router(demo_tour_router(app, ready))
     app.include_router(living_world_router(app))
     app.include_router(public_router(app))
 
