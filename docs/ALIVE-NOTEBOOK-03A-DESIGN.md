@@ -61,7 +61,7 @@ controlled text is explicitly identified in provenance, not presented as histori
 Public development and public evaluation cases, gold annotations, annotation notes and
 baseline outputs are separate files. Both public splits are IMPLEMENTER_EXPOSED, not blind.
 Family and duplicate-source checks prevent known variants crossing public splits. Prepared
-payloads whitelist source text/hash, claim text/spans, context and question; they omit task
+payloads whitelist source text/hash, claim text/spans, context and question; they also withhold annotation-selected supporting-span hints and omit task
 IDs, split, family, provenance labels, annotation notes and gold. Structural checks cannot
 detect all semantic leakage or prove labels correct; independent review is necessary.
 
@@ -89,6 +89,12 @@ request; persisted caps, cancellation and restart state; source revalidation; st
 output/citation checking; usage ledger. Single-source R4 and schema/request identity binding
 must be qualified before dispatch. 03A provides no dispatcher, consent issuer or approval.
 Model-output import/execution is disabled in the CLI; pure scoring tests are offline fixtures.
+A future production operation must accept owned snapshot/memory IDs plus claim spans,
+resolve them through Core, and build the whitelisted payload server-side. The fixture
+`access` fields are declared experimental conditions, never production authorization proof.
+Natural-language rationale, scope and forbidden-conclusion compliance require independent
+03B output adjudication. Matching category/conditions/citations is only a provisional
+operational score; an exact quote cannot prove entailment of arbitrary prose.
 
 Carry-forward risk register (production API is unchanged in 03A):
 

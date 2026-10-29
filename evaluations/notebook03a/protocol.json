@@ -1,5 +1,5 @@
 {
-  "version": "notebook03a-v1.2",
+  "version": "notebook03a-v1.3",
   "baseline_commit": "a9bcf8673818e85246a268c308b64d2080792b96",
   "hypothesis": "A future structured semantic policy may improve useful evidence-grounded findings over always-abstain and reduce misleading candidates relative to lexical retrieval, without violating integrity/governance gates. This is untested.",
   "available_cases": 40,
@@ -37,7 +37,7 @@
   ],
   "amendments": "Append a new version and amendment rationale; never overwrite v1 evidence.",
   "files_sha256": {
-    "amendments.json": "90b60183ac47f1035fed528c59342521baa4829e2d0fb2cb42a0233b715f5aa2",
+    "amendments.json": "a89212e2a2fec1b6ed408527680fe0c8a149efe59f8004cb26e716777c4d3755",
     "annotations.json": "3e120694306f7a44d6e6116c2e1796ea8774d6073ed6960b180f264ac43c83c6",
     "annotation_notes.json": "2f2bf34e2f0273f439ba1b79972bb8eefbd1c67fb134be4d76be2d314ad49d4b",
     "independent_submission.json": "524a20de65d3b56181c135b65b5c98edab5824ccf37bb904f780f847510db6e4",
@@ -46,11 +46,20 @@
     "initial_schemas.json": "3c2996c58f221bf67748a575be05bbcd77b49bc153423ec6ac6dcf9d2ee94e96",
     "metrics.json": "ad5ba48540cf0df3e0b935e9a25b1eb74d6ff25bae978a2914d621b8c5636daf",
     "origins.json": "d63034b3bb3d41fb8c8af581614f73f28e69cb55e228703dcd4f81a3fbf2046e",
+    "pretools_protocol.json": "4c452dc6c58c91a815fc37fee4e0f0bdb47c1d8e42afef176411fc061b920bb7",
     "previous_protocol.json": "a090fe53109e4bd667a2fb13ddde189578a9cfc40a6707240e3dc95d3bb717ab",
     "previous_schemas.json": "ee32741afba6f5d0349afa5ec4a4c840c5c5bc9215e2f7503d390c01b7a2b9fd",
     "prompts.json": "8844533a4dccf14957562bce5b72a8b55ce1ca94120dff4056b8d7f5bdd1618a",
     "schemas.json": "588421d2ebcc464b785c428fdd653fd675ec858c530e33c84e8ec560c65b1f63",
     "tasks.json": "b3f68b5387379524b6255acc7a941f573b7b2d83f399962fd1925aac4f88bfc4"
   },
-  "hash_normalization": "UTF-8 bytes with CRLF normalized to LF"
+  "hash_normalization": "UTF-8 bytes with CRLF normalized to LF",
+  "tools_sha256": {
+    "scripts/notebook03a.py": "3d150584162cd95c6673b2ffec3041388b398075581df76be9581b5e10321512",
+    "scripts/notebook03a_protocol.py": "132632daa46b3ccd4d28ffbe6828cfb916a17b078b95af84cfdd155a9940d12c"
+  },
+  "documents_sha256": {
+    "docs/ALIVE-NOTEBOOK-03A-DESIGN.md": "35643ac38908d23b55de87ae65730b1e7da2a3114b3a4936ff892f0553a0dd5a",
+    "docs/ALIVE-NOTEBOOK-03A-PROTOCOL.md": "e4cc5ac010bb7601085ed97251a9c63642b97b216a37bdaedae2e04506db1a4c"
+  }
 }

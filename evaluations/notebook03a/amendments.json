@@ -26,5 +26,20 @@
     "changed": [
       "schemas.json"
     ]
+  },
+  {
+    "version": "notebook03a-v1.3",
+    "parent_protocol_sha256": "4c452dc6c58c91a815fc37fee4e0f0bdb47c1d8e42afef176411fc061b920bb7",
+    "phase": "After deterministic public baseline replay; before any model execution",
+    "reason": "Freeze final validator/scorer/replay source fingerprints and complete file inventory. Unknown relationships cannot authorize substantive use; arm modes must match. No cases, labels, prompts or expected baseline decisions changed. Strengthened custodian gate fails before reading unqualified external gold. Withhold author-selected supporting-span hints from inference payloads; complete bounded sources remain identical. No task texts, labels or baseline decisions change.",
+    "preserved": [
+      "pretools_protocol.json"
+    ],
+    "changed": [
+      "tool fingerprints and validation rules",
+      "payload preparation whitelist",
+      "explicit pending-holdout metadata",
+      "document fingerprints"
+    ]
   }
 ]
