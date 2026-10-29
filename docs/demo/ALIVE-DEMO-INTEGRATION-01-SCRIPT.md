@@ -1,8 +1,10 @@
 # ALIVE demonstration — 90-second script
 
-For a presenter at `http://localhost:8000` after `docker compose up --build -d`. Enter the local
-token once (`alive-dev-token-replace-for-local-use-000` unless you set your own). Everything below
-runs offline; no provider key is set and none can be used.
+For a presenter at `http://localhost:8000` after `./scripts/demo.ps1` (it creates this checkout's
+token, then runs `docker compose up -d --build`). Paste the token once: `init.ps1` copied it to the
+clipboard and it is also in `.env` as `ALIVE_API_TOKEN`. Run it in the **same checkout** that starts
+Docker; tokens are per checkout (`docs/DEMO-CREDENTIALS.md`). Everything below runs offline; no
+provider key is set and none can be used.
 
 **Say the label out loud.** The page carries `DETERMINISTIC LOCAL FIXTURE — NOT LIVE META`. Do not
 call the comparison "AI reasoning", "verified", or "ALIVE found the truth".

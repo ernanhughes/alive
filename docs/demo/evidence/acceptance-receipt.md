@@ -1,5 +1,8 @@
 # Clean-clone acceptance receipt
 
+> Recorded at `ac33075`, **before #59** removed compose's shared default token. The flow as documented
+> now was re-run on `main`: see [`acceptance-receipt-main-33c7796.md`](acceptance-receipt-main-33c7796.md).
+
 * Commit under test: `ac330758bda5d1642ca5421e8bfca3636e5b3e05` (a fresh `git clone` of the pushed branch; no local changes).
   Later commits on the branch touch documentation and evidence only; no runtime file changed after this SHA.
 * Command: `pwsh scripts/demo-acceptance.ps1 -Port 8090 -Record` (disposable compose project, clean volumes,

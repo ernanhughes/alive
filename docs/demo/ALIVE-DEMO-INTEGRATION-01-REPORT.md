@@ -129,8 +129,8 @@ product defect. The last run is the one reported.
 ```powershell
 git clone --branch feat/alive-demo-integration-01 https://github.com/ernanhughes/alive.git
 cd alive
-docker compose up --build -d          # app on http://localhost:8000, local fixture only
-# open http://localhost:8000, enter alive-dev-token-replace-for-local-use-000, Demonstration, Start
+./scripts/demo.ps1                    # creates the per-checkout token, then docker compose up -d --build
+# open http://localhost:8000, paste the token (on your clipboard; also in .env), Demonstration, Start
 ```
 
 Scripted, on clean volumes under a disposable project (needs Docker, uv, Node, Chrome):
@@ -151,7 +151,9 @@ pwsh scripts/demo-acceptance.ps1 -Record            # add -Port 8090 if 8000 is 
   is a summary the tour wrote.
 * **Offline fonts.** `style.css` `@import`s Google Fonts (pre-existing); offline it falls back to system
   fonts. Nothing else is fetched from the network.
-* **Token entry.** The dashboard asks for the local token once (compose default is in the README).
+* **Token entry.** The dashboard asks for the local token once. Since #59 there is no shared default:
+  `scripts/init.ps1` creates a per-checkout token (clipboard and `.env`), and compose refuses to start
+  without one. The recorded evidence below predates #59; the re-run on `main` is `evidence/acceptance-receipt-main-33c7796.md`.
 * **Windows + Chrome only verified.** Linux Docker host and other browsers were not run. The Docker
   image itself is Linux and was built from the fresh clone.
 * **Extension lane** (host Chrome) is unchanged and was not re-run here; it is not proof of one-click
