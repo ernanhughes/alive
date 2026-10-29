@@ -26,7 +26,7 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-alive}:${POSTGRES_PASSWORD:-change-me-for-local-use}@db:5432/${POSTGRES_DB:-alive}
-      ALIVE_API_TOKEN: ${ALIVE_API_TOKEN:-alive-dev-token-replace-for-local-use-000}
+      ALIVE_API_TOKEN: ${ALIVE_API_TOKEN:?Run scripts/init.ps1 in this checkout to set ALIVE_API_TOKEN}
       ALIVE_ALLOWED_ORIGINS: '["http://localhost:${ALIVE_HOST_PORT:-8000}","http://127.0.0.1:${ALIVE_HOST_PORT:-8000}"]'
       ALIVE_BROWSER_ORIGINS: '["http://app:8000","http://localhost:${ALIVE_HOST_PORT:-8000}","http://127.0.0.1:8000"]'
       ALIVE_COGNITIVE_PROVIDER: ${ALIVE_COGNITIVE_PROVIDER:-mock}

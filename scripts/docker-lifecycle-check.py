@@ -30,7 +30,17 @@ FIXTURES = Path(__file__).resolve().parents[1] / "fixtures" / "demo_live_01"
 IDENTITY_HOST = "http://127.0.0.1:8000/demo-live-01/"
 BEHAVIOR = "Return the current UTC date and time, with tzinfo None."
 DEPRECATION = "Deprecated since version 3.12: Use datetime.now() with UTC instead."
-DEFAULT_TOKEN = "alive-dev-token-replace-for-local-use-000"
+
+
+def env_file_token():
+    env_path = Path(__file__).resolve().parents[1] / ".env"
+    if not env_path.exists():
+        return ""
+    for line in env_path.read_text(encoding="utf-8").splitlines():
+        if line.strip().startswith("ALIVE_API_TOKEN="):
+            value = line.split("=", 1)[1].strip()
+            return value.strip('"').strip("'")
+    return ""
 
 
 def post(client, path, body, expected=200):
@@ -161,12 +171,14 @@ def main():
     parser.add_argument(
         "--base-url", default=os.environ.get("ALIVE_BASE_URL", "http://localhost:8000")
     )
-    parser.add_argument("--token", default=os.environ.get("ALIVE_API_TOKEN", DEFAULT_TOKEN))
+    parser.add_argument("--token", default=os.environ.get("ALIVE_API_TOKEN") or env_file_token())
     parser.add_argument(
         "--phase", choices=["run", "after-restart", "expect-refused"], default="run"
     )
     parser.add_argument("--goal-id", default="")
     args = parser.parse_args()
+    if not args.token.strip():
+        parser.error("--token, ALIVE_API_TOKEN, or ALIVE_API_TOKEN in .env is required")
     headers = {"Authorization": f"Bearer {args.token.strip()}"}
     with httpx.Client(base_url=args.base_url.rstrip("/"), timeout=60, headers=headers) as client:
         if args.phase == "run":
