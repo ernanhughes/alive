@@ -74,9 +74,13 @@ def test_the_child_receives_only_the_allow_listed_environment(runner, monkeypatc
         "SYSTEMROOT",
         "SYSTEMDRIVE",
         "WINDIR",
+        # The Python test double (not Pi, which is Node) sets this itself at startup under a C
+        # locale (PEP 538), so it appears in the child's environment without ALIVE passing it.
+        "LC_CTYPE",
     }
     unexpected = {k for k in keys if k.upper() not in {a.upper() for a in allowed}}
     assert not unexpected, unexpected
+    assert "LC_CTYPE" not in pi_runner.build_env(Path("c"), Path("t"))  # ALIVE never passes it
 
 
 def test_pi_runs_offline_without_telemetry_or_update_checks(runner):
