@@ -1,0 +1,1080 @@
+{
+    "version": "2.0.0",
+    "problemMatchers": [
+        {
+            "name": "ruff",
+            "owner": "ruff",
+            "fileLocation": [
+                "relative",
+                "${workspaceFolder}"
+            ],
+            "pattern": {
+                "regexp": "^(.+?):(\\d+):(\\d+): (.*)$",
+                "file": 1,
+                "line": 2,
+                "column": 3,
+                "message": 4
+            }
+        },
+        {
+            "name": "pytest",
+            "owner": "pytest",
+            "fileLocation": [
+                "relative",
+                "${workspaceFolder}"
+            ],
+            "pattern": {
+                "regexp": "^(?:FAILED|ERROR) ([^:]+)(?:::\\S+)? - (.*)$",
+                "file": 1,
+                "message": 2
+            }
+        },
+        {
+            "name": "alive-uvicorn",
+            "owner": "alive-uvicorn",
+            "pattern": {
+                "regexp": "^\\u0000$"
+            },
+            "background": {
+                "activeOnStart": true,
+                "beginsPattern": "Started server process",
+                "endsPattern": "Application startup complete"
+            }
+        },
+        {
+            "name": "alive-vite",
+            "owner": "alive-vite",
+            "pattern": {
+                "regexp": "^\\u0000$"
+            },
+            "background": {
+                "activeOnStart": true,
+                "beginsPattern": "VITE v",
+                "endsPattern": "Local:\\s+http://127\\.0\\.0\\.1:5173"
+            }
+        }
+    ],
+    "inputs": [
+        {
+            "id": "migrationMessage",
+            "type": "promptString",
+            "description": "Alembic migration message",
+            "default": "describe schema change"
+        },
+        {
+            "id": "pytestTarget",
+            "type": "promptString",
+            "description": "pytest file or directory",
+            "default": "tests"
+        },
+        {
+            "id": "archivePath",
+            "type": "promptString",
+            "description": "Evidence archive directory to verify",
+            "default": "archives/ALIVE-14-R1"
+        },
+        {
+            "id": "dockerToken",
+            "type": "promptString",
+            "description": "ALIVE_API_TOKEN for the composed app (use the value from .env, or the compose default)",
+            "default": "",
+            "password": true
+        }
+    ],
+    "tasks": [
+        {
+            "label": "Setup: Python dependencies (uv sync)",
+            "detail": "Install locked backend and development dependencies with uv.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "sync",
+                "--locked"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Setup: dashboard dependencies (npm ci)",
+            "detail": "Install the locked dashboard dependencies.",
+            "type": "shell",
+            "command": "npm",
+            "windows": {
+                "command": "npm.cmd"
+            },
+            "args": [
+                "ci"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/dashboard"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Setup: local state directory",
+            "detail": "Create the ignored .alive directory used by the SQLite fallback, token and evidence.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "-c",
+                "from pathlib import Path; Path('.alive').mkdir(parents=True, exist_ok=True)"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "DB: upgrade head",
+            "detail": "Apply all Alembic migrations to the configured database.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "alembic",
+                "upgrade",
+                "head"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Setup: generate API token",
+            "detail": "Print a random URL-safe token to paste into ALIVE_API_TOKEN in .env.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "-c",
+                "import secrets; print(secrets.token_urlsafe(32))"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Setup: bootstrap",
+            "detail": "uv sync --locked, npm ci, then migrate. Copy .env.example to .env first.",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Setup: Python dependencies (uv sync)",
+                "Setup: dashboard dependencies (npm ci)",
+                "Setup: local state directory",
+                "DB: upgrade head"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Dev: full stack (Windows scripts/dev.ps1)",
+            "detail": "Migrate, then launch hidden backend and Vite processes. Stop with the Dev: stop task.",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}/scripts/dev.ps1"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Dev: backend (uvicorn)",
+            "detail": "Foreground backend on http://127.0.0.1:8000 with API docs at /docs.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "uvicorn",
+                "alive.app:app",
+                "--host",
+                "127.0.0.1",
+                "--port",
+                "8000"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "isBackground": true,
+            "problemMatcher": [
+                "$alive-uvicorn"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Dev: dashboard (Vite)",
+            "detail": "Foreground Vite server on http://127.0.0.1:5173.",
+            "type": "shell",
+            "command": "npm",
+            "windows": {
+                "command": "npm.cmd"
+            },
+            "args": [
+                "run",
+                "dev"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/dashboard"
+            },
+            "isBackground": true,
+            "problemMatcher": [
+                "$alive-vite"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Dev: stop (Windows scripts/stop.ps1)",
+            "detail": "Stop only the backend and Vite processes recorded by scripts/dev.ps1.",
+            "type": "shell",
+            "command": "powershell",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}/scripts/stop.ps1"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Dev: show local token",
+            "detail": "Print the generated .alive/token for the dashboard. Never share this value.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "-c",
+                "from pathlib import Path; p = Path('.alive/token'); print(p.read_text().strip() if p.exists() else 'No .alive/token; set ALIVE_API_TOKEN in .env')"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "DB: current revision",
+            "detail": "Show the database revision currently applied.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "alembic",
+                "current"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "DB: history",
+            "detail": "Show the Alembic revision history.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "alembic",
+                "history",
+                "--verbose"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "DB: new migration (autogenerate)",
+            "detail": "Generate a revision from the current model metadata; review the file before committing.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "alembic",
+                "revision",
+                "--autogenerate",
+                "-m",
+                "${input:migrationMessage}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Test: current file",
+            "detail": "Run the open test file with pytest.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "pytest",
+                "-q",
+                "--color=no",
+                "${relativeFile}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$pytest"
+            ],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Test: full suite (pytest)",
+            "detail": "Full backend suite. This is the pre-merge gate and takes several minutes.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "pytest",
+                "-q",
+                "--color=no"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$pytest"
+            ],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Test: quick (changed files)",
+            "detail": "Bounded smoke net plus name-matched tests for changes (base origin/main). Not a full-suite pass.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "scripts/test_run.py",
+                "--mode",
+                "quick",
+                "--explain"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "NO_COLOR": "1"
+                }
+            },
+            "problemMatcher": [
+                "$pytest"
+            ],
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Test: affected (changed files)",
+            "detail": "Quick tier plus import dependents and risk rules (base origin/main). Still not a full-suite pass.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "scripts/test_run.py",
+                "--mode",
+                "affected",
+                "--explain"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "NO_COLOR": "1"
+                }
+            },
+            "problemMatcher": [
+                "$pytest"
+            ],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Test: Docker tier (dry run)",
+            "detail": "Show the container-relevant selection and Docker flag without running it.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "scripts/test_run.py",
+                "--mode",
+                "docker",
+                "--dry-run",
+                "--explain"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "NO_COLOR": "1"
+                }
+            },
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Test: Docker tier",
+            "detail": "Container-relevant pytest subset plus compose build, migrations, smoke and isolated E2E.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "scripts/test_run.py",
+                "--mode",
+                "docker",
+                "--explain"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "NO_COLOR": "1"
+                }
+            },
+            "problemMatcher": [
+                "$pytest"
+            ],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Test: custom target",
+            "detail": "Run pytest against a file or directory entered at run time.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "pytest",
+                "-q",
+                "--color=no",
+                "${input:pytestTarget}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$pytest"
+            ],
+            "group": "test"
+        },
+        {
+            "label": "Test: extension (Node)",
+            "detail": "Run the Chrome extension unit tests that CI runs.",
+            "type": "shell",
+            "command": "node",
+            "args": [
+                "--test",
+                "tests/extension-panel.test.cjs",
+                "tests/extension-background.test.cjs",
+                "tests/extension-capture.test.cjs",
+                "tests/extension-live-background.test.cjs",
+                "tests/extension-live-companion.test.cjs"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Test: dashboard unit (Vitest)",
+            "detail": "Run the dashboard React/TypeScript unit tests.",
+            "type": "shell",
+            "command": "npm",
+            "windows": {
+                "command": "npm.cmd"
+            },
+            "args": [
+                "test"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/dashboard"
+            },
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Test: dashboard E2E (Playwright)",
+            "detail": "Requires the backend on :8000 and Vite on :5173.",
+            "type": "shell",
+            "command": "npm",
+            "windows": {
+                "command": "npm.cmd"
+            },
+            "args": [
+                "run",
+                "test:e2e"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/dashboard"
+            },
+            "problemMatcher": [],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Test: notebook capture (Node)",
+            "detail": "Run the notebook capture test that CI runs.",
+            "type": "shell",
+            "command": "node",
+            "args": [
+                "--test",
+                "tests/notebook-capture.test.cjs"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": "test"
+        },
+        {
+            "label": "Lint: ruff check",
+            "detail": "Check backend, migrations, scripts and tests without changing files.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "ruff",
+                "check",
+                "--color",
+                "never",
+                "alive",
+                "migrations",
+                "scripts",
+                "tests"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$ruff"
+            ],
+            "group": "test",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Lint: ruff check (fix)",
+            "detail": "Apply Ruff's safe automatic fixes.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "ruff",
+                "check",
+                "--fix",
+                "--color",
+                "never",
+                "alive",
+                "migrations",
+                "scripts",
+                "tests"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$ruff"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Format: ruff format",
+            "detail": "Format Python sources with Ruff.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "ruff",
+                "format",
+                "alive",
+                "migrations",
+                "scripts",
+                "tests"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Format: ruff format (check)",
+            "detail": "Fail if Python sources are not Ruff-formatted.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "ruff",
+                "format",
+                "--check",
+                "alive",
+                "migrations",
+                "scripts",
+                "tests"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Build: dashboard",
+            "detail": "Type-check and build the production dashboard bundle.",
+            "type": "shell",
+            "command": "npm",
+            "windows": {
+                "command": "npm.cmd"
+            },
+            "args": [
+                "run",
+                "build"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/dashboard",
+                "env": {
+                    "NO_COLOR": "1"
+                }
+            },
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "clear": true
+            }
+        },
+        {
+            "label": "Verify: backend",
+            "detail": "Ruff check, format check, then the full pytest suite.",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Lint: ruff check",
+                "Format: ruff format (check)",
+                "Test: full suite (pytest)"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Verify: dashboard",
+            "detail": "Vitest, extension tests, then the production build.",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Test: dashboard unit (Vitest)",
+                "Test: extension (Node)",
+                "Build: dashboard"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Verify: all",
+            "detail": "Run the main backend and dashboard gates from CI locally.",
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Verify: backend",
+                "Verify: dashboard"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "Verify: evidence archive",
+            "detail": "Verify a SHA-256 archive manifest and reject unlisted payloads.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "scripts/verify_archive.py",
+                "${input:archivePath}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Demo: First Contact (mock)",
+            "detail": "Stop dev servers first. Starts its own backend and adds experience to the current database.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "-m",
+                "scripts.first_contact",
+                "--runner",
+                "mock"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$pytest"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Demo: First Contact (Pi)",
+            "detail": "Stop dev servers first. Requires configured local Pi credentials and ALIVE_PI_COMMAND.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "-m",
+                "scripts.first_contact",
+                "--runner",
+                "pi"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$pytest"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Demo: First Thought (mock)",
+            "detail": "Stop dev servers first. Offline engineering run; evidence stays under .alive.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "-m",
+                "scripts.first_thought",
+                "--provider",
+                "mock"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$pytest"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Demo: extension smoke",
+            "detail": "Load the real extension in a disposable stable-Chrome profile.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "-m",
+                "scripts.extension_smoke"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Demo: verify retrieval",
+            "detail": "Check the running backend's retrieval evidence. Start the backend first.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "-m",
+                "scripts.verify_retrieval"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: up (build)",
+            "detail": "Build and start the composed app at http://localhost:8080.",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "compose",
+                "up",
+                "--build",
+                "-d"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Docker: down",
+            "detail": "Stop and remove the composed app containers.",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "compose",
+                "down"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: logs (app)",
+            "detail": "Follow the composed application logs.",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "compose",
+                "logs",
+                "-f",
+                "app"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Docker: shell (app)",
+            "detail": "Open a shell in the running app container for inspection.",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "compose",
+                "exec",
+                "app",
+                "sh"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Docker: smoke test",
+            "detail": "Run the host smoke test against the composed app.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "scripts/docker-smoke-test.py",
+                "--token",
+                "${input:dockerToken}"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Docker: E2E",
+            "detail": "Run the isolated compose.e2e.yaml workflow. Disposable volumes.",
+            "type": "shell",
+            "command": "docker",
+            "args": [
+                "compose",
+                "-f",
+                "compose.e2e.yaml",
+                "up",
+                "--build",
+                "--abort-on-container-exit",
+                "--exit-code-from",
+                "e2e"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Site: build (Hugo)",
+            "detail": "Build the production notebook site. Requires Hugo.",
+            "type": "shell",
+            "command": "hugo",
+            "args": [
+                "--source",
+                "site",
+                "--environment",
+                "production",
+                "--cleanDestinationDir"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Site: serve (Hugo)",
+            "detail": "Serve the notebook site locally. Requires Hugo.",
+            "type": "shell",
+            "command": "hugo",
+            "args": [
+                "server",
+                "--source",
+                "site"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "clear": true
+            }
+        },
+        {
+            "label": "Site: verify notebook",
+            "detail": "Validate built notebook output in site/public.",
+            "type": "shell",
+            "command": "uv",
+            "args": [
+                "run",
+                "python",
+                "site/notebook.py",
+                "check",
+                "--public",
+                "site/public"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
