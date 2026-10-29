@@ -6,13 +6,22 @@ built React dashboard + PostgreSQL/pgvector).
 ## Quick start
 
 ```powershell
-Copy-Item .env.example .env   # optional; safe local defaults exist
-docker compose up --build -d
+./scripts/demo.ps1     # creates this checkout's token, then docker compose up -d --build
 ```
 
-Open [http://localhost:8000](http://localhost:8000). When prompted for the local
-token, use your `ALIVE_API_TOKEN` value (or the compose default
-`alive-dev-token-replace-for-local-use-000`, local use only).
+Open [http://localhost:8000](http://localhost:8000) and paste the token once. `scripts/init.ps1`
+(run by `demo.ps1`) copies it to your clipboard and writes it to `.env` as `ALIVE_API_TOKEN`.
+The token is **per checkout**: see [docs/DEMO-CREDENTIALS.md](../docs/DEMO-CREDENTIALS.md).
+
+There is no shared default token. `docker compose up` on its own stops with a "Run
+scripts/init.ps1 in this checkout" message when `.env` has no `ALIVE_API_TOKEN`; that is intended.
+
+Without PowerShell: copy `.env.example` to `.env`, set `ALIVE_API_TOKEN` to a random value of at
+least 24 visible ASCII characters, then run `docker compose up --build -d`. For example:
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(32))"
+```
 
 The app is published on host port **8000** because that is the port the Chrome
 extension is built for (its permissions, authorised pages and default backend,
@@ -65,7 +74,7 @@ disable seeding.
 Smoke test (host, needs `ALIVE_API_TOKEN` matching the app):
 
 ```powershell
-$env:ALIVE_API_TOKEN="alive-dev-token-replace-for-local-use-000"
+$env:ALIVE_API_TOKEN = ((Get-Content .env | Select-String '^ALIVE_API_TOKEN=').Line -split '=', 2)[1]
 uv run python scripts/docker-smoke-test.py --base-url http://localhost:8000
 ```
 
@@ -80,7 +89,7 @@ Browser E2E against the composed app (Playwright, needs Chrome):
 
 ```powershell
 $env:ALIVE_BASE_URL="http://localhost:8000"
-$env:ALIVE_API_TOKEN="alive-dev-token-replace-for-local-use-000"
+$env:ALIVE_API_TOKEN = ((Get-Content .env | Select-String '^ALIVE_API_TOKEN=').Line -split '=', 2)[1]
 cd dashboard; npx playwright test e2e/docker.spec.ts; cd ..
 ```
 

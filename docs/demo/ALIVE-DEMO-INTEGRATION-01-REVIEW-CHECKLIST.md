@@ -47,8 +47,10 @@ falsify the claim.
       audit read. A fixture is never presented as a replay of a live result.
 
 ## 5. Docker-only cold start
-- [ ] From a fresh clone: `docker compose up --build -d`, open `http://localhost:8000`, enter the
-      local token, click **Start**. No Hugo, no Chrome in Docker, no extension, no key.
+- [ ] From a fresh clone: `./scripts/demo.ps1` (runs `init.ps1`, then `docker compose up -d --build`),
+      open `http://localhost:8000`, paste the per-checkout token, click **Start**. No Hugo, no
+      Chrome in Docker, no extension, no key. (A bare `docker compose up` now stops with a "run
+      scripts/init.ps1" message by design.)
 - [ ] `docs/demo/evidence/` shows the run; `scripts/demo-acceptance.ps1` reproduces it on clean volumes
       under a disposable compose project.
 - [ ] The page still loads fonts from Google when online; offline it falls back to system fonts
