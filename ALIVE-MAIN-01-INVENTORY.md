@@ -67,11 +67,13 @@ No stashes. No unpushed commits except cocoder WS-* and feat/alive-docker-01.
   `codex/fix-review-probes`, `codex/i1-a2-qualification`, `opencode/alive-04-interim`
   branch refs (no worktrees, fully in main).
 
-## 7. Proposed merge manifest (Phase 3, REQUIRES APPROVAL before execution)
+## 7. Merge manifest status (updated post-merge)
 
-1. Rebase `feat/alive-docker-01` onto `origin/main @ 83a8061`, requalify fully
-   (Phase 2), merge PR #48.
-2. No other merges proposed: every other branch is already in main.
-3. Explicitly NOT merging: cocoder WS-* (unreviewed machine candidates).
+MERGED by repository owner (regular merge commit, exact approved head
+`0182e0b`): `4b74f3c` (Merge PR #48). Agent performed no merge. Phase 5
+validates the merged `main`; see `ALIVE-MAIN-01-PHASE-5.md`. Original proposal
+below is retained for the record:
 
-No `main` merge has been executed. Awaiting manifest approval.
+1. ~~Rebase `feat/alive-docker-01`...~~ done pre-merge; requalified; merged.
+2. Nothing else — every other branch was already in `main`.
+3. Explicitly NOT merged: cocoder WS-* (unreviewed machine candidates).
