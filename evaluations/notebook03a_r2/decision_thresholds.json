@@ -1,0 +1,41 @@
+{
+  "version": "notebook03a-r2-decision-v1",
+  "scope": "Pre-registered success/failure for future semantic arms (C general, D structured). No inference authorized by R2; thresholds frozen before any model result and validated strictly (no defaults).",
+  "forbidden": [
+    "Tuning thresholds to an observed semantic-model result.",
+    "Replacing dual retention+false-advance requirements with a single composite.",
+    "Claiming generalization from synthetic/draft-label results or from abstention alone.",
+    "Using public eval as a sealed test after exposure for tuning.",
+    "Declaring PROGRESS on public/exposed cases."
+  ],
+  "min_useful_retention": 0.5,
+  "max_misleading_advance_rate": 0.1,
+  "margin_over_surface_retention": 0.1,
+  "tolerance_over_surface_misleading": 0.05,
+  "margin_over_general_retention": 0.05,
+  "tolerance_over_general_misleading": 0.05,
+  "min_scored_cases": 30,
+  "min_independent_families": 20,
+  "min_useful_cases": 20,
+  "min_citation_precision": 0.2,
+  "require_full_citation_recall": true,
+  "bootstrap_resamples": 1000,
+  "bootstrap_seed": 20261029,
+  "ci_level": 0.95,
+  "units": {
+    "min_useful_retention": {"unit": "rate", "denominator": "useful gold scored"},
+    "max_misleading_advance_rate": {"unit": "rate", "denominator": "scored tasks"},
+    "margin_over_surface_retention": {"unit": "rate delta", "denominator": "D minus S retention"},
+    "tolerance_over_surface_misleading": {"unit": "rate delta", "denominator": "D minus S misleading"},
+    "margin_over_general_retention": {"unit": "rate delta", "denominator": "D minus C retention"},
+    "tolerance_over_general_misleading": {"unit": "rate delta", "denominator": "D minus C misleading"},
+    "min_scored_cases": {"unit": "count", "denominator": "scored tasks for a verdict"},
+    "min_independent_families": {"unit": "count", "denominator": "distinct template families"},
+    "min_useful_cases": {"unit": "count", "denominator": "useful gold scored"},
+    "min_citation_precision": {"unit": "rate", "denominator": "required chars covered / cited chars"},
+    "require_full_citation_recall": {"unit": "flag", "denominator": "recall must equal 1.0"},
+    "bootstrap_resamples": {"unit": "count", "denominator": "family resamples"},
+    "bootstrap_seed": {"unit": "seed", "denominator": "deterministic resampling"},
+    "ci_level": {"unit": "rate", "denominator": "percentile interval mass"}
+  }
+}

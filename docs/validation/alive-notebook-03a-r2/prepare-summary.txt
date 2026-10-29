@@ -1,0 +1,48 @@
+{
+  "protocol_version": "notebook03a-v1.6",
+  "independent_holdout_status": "PENDING_INDEPENDENT_LABELING",
+  "independent_cases_available": 0,
+  "protocol_sha256": "ce6fdeaf662f98f531c5a723ad7f92ec0d0f77aa3220269bdde45c992781b87b",
+  "validation": {
+    "status": "PUBLIC_COMPLETE",
+    "cases": 66,
+    "missing_or_pending_annotations": [],
+    "splits": {
+      "development": 16,
+      "public_evaluation": 50
+    },
+    "categories": {
+      "supersession": 9,
+      "unknown": 12,
+      "scoped_change": 8,
+      "corroboration_candidate": 5,
+      "unsupported_claim": 9,
+      "independent_observations": 9,
+      "substantive_connection": 9,
+      "contradiction_candidate": 5
+    },
+    "annotation_independence": "IMPLEMENTER_EXPOSED; NOT BLIND"
+  },
+  "neutral_question": {
+    "distinct_questions": 1,
+    "is_neutral_uniform": true,
+    "question": "Assess the relationship between the supplied claims and evidence. State what is supported, what remains uncertain, and whether the evidence should influence the current conclusion."
+  },
+  "shortcut_v2": {
+    "version": "shortcut-control-v2.0",
+    "params": {
+      "overlap_high": 0.3,
+      "overlap_low": 0.08,
+      "max_cite_chars": 400,
+      "dev_basis": "16 development cases, v1.4 templates; frozen pre-evaluation"
+    },
+    "code_sha256": "d1c8b66769db6245ea127fba3a769a0b5359909661ddde64db01f6971d6a8282"
+  },
+  "model_calls": 0,
+  "spend_micro_usd": 0,
+  "access_refused": [
+    "7cfb76d29a801fe2",
+    "90cd334cc5220fd3"
+  ],
+  "note": "Neutral question for every task; no payload is transmitted."
+}

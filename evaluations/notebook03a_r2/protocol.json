@@ -1,0 +1,74 @@
+{
+  "version": "notebook03a-v1.6",
+  "baseline_commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+  "r2_base_commit": "b9978da6bededa88ad013952d2c165f85cc8cac",
+  "r2_base_note": "origin/main with PR #46 merged. v1.4 and v1.5 evidence preserved byte-unchanged; v1.5 is a historical draft.",
+  "hypothesis": "A future structured semantic qualifier may preserve useful evidence-grounded findings and detect specific corrections without winning by surface cues or abstention alone, under a decision procedure a pattern-matching shortcut cannot pass. Untested.",
+  "available_cases": 66,
+  "target_cases_with_sealed_holdout": 78,
+  "independent_cases_available": 0,
+  "independent_status": "PENDING_INDEPENDENT_LABELING",
+  "holdout_status": "HOLDOUT_PENDING",
+  "public_splits_exposed": true,
+  "arms": {
+    "A": "Actual current lexical connection Core API on pair tasks; no semantic category inference. Single-source support is NOT_APPLICABLE.",
+    "B": "Actual Notebook-02 integrity qualifier on pair tasks (actual outcome recorded); nonsemantic unknowns; single-source support NOT_APPLICABLE.",
+    "B0": "Explicit constant-abstain reference on every authorized task; not a simulated model or Core single-source feature.",
+    "S": "Frozen surface-cue-v1.0 regex/phrase/overlap control (offline, deterministic); preserved for regression.",
+    "V": "Shortcut-control-v2.0 honest lexical/surface/inference-feature baseline (offline, deterministic); dev-tuned, frozen pre-evaluation.",
+    "C": "Same-evidence general model, NOT RUN.",
+    "D": "Structured qualification procedure, same evidence/settings/schema/model family as C, NOT RUN."
+  },
+  "settings_proposal_not_authorization": {
+    "provider": "UNSELECTED",
+    "model": "UNSELECTED",
+    "temperature": 0,
+    "attempts_per_arm_case": 1,
+    "automatic_retries": 0,
+    "max_input_tokens_including_schema": 8192,
+    "max_output_tokens": 800,
+    "max_evidence_characters": 4000,
+    "max_serialized_payload_characters": 16000,
+    "max_calls": 156,
+    "spend_ceiling_usd_proposed": 1.0,
+    "authorized_spend_usd": 0,
+    "pre_dispatch": "Freeze exact supported model/settings and verified worst-case pricing under separate owner approval or amend; this proposal grants no permission."
+  },
+  "failure_criteria": [
+    "Any hard gate violation invalidates the run.",
+    "Missing/duplicate outcomes or altered frozen inputs invalidate comparison.",
+    "No PROGRESS verdict on public/exposed cases, ever.",
+    "No superiority claim from abstention alone, from matching a shortcut control, or from draft labels.",
+    "Any held-out answer exposure invalidates blind use for subsequent tuning.",
+    "Retention and misleading conditions both required; no composite substitution.",
+    "Missing comparators, adjudicated gold, holdout, or citation evidence yields INCONCLUSIVE."
+  ],
+  "amendments": "Append a new version and amendment rationale; never overwrite v1/v1.5 evidence.",
+  "files_sha256": {
+    "adjudication_spec.md": "949a3ae3e96f62809790025e5547ca02ea767907f33de82e1c48c9fa832d0147",
+    "amendments.json": "7faec5dc78b143215f00a17341f1b90fc81fcefb442a20d0b353ed0209adbdef",
+    "annotation_notes.json": "ce197eab16455942b7d3cb9b7ad0640399523e86c897a2c71438c91397bc7ec4",
+    "annotations.json": "3c2c8712c5a74f6a81fde8ce288c36c592ac25238486cf538b5c2eb1a641259a",
+    "decision_thresholds.json": "45af0a6787976528ace33a47e8d495cea04d3e367486810da92be89487d9875b",
+    "handle_mapping.json": "867ccacb22a997ac5d8609a47a3ded3c9fb018fafdead9b553dc507234244719",
+    "holdout_contract.json": "2bac86b0cd9b1ba5988bf85144c0bc3f092ccf49e39b207bb12c01d5291a0169",
+    "holdout_contract.md": "1b3f3f1c61b25e3c1340441d7fe01c0e43914216ebcc801d78a656fea0b149d5",
+    "independent_submission.json": "524a20de65d3b56181c135b65b5c98edab5824ccf37bb904f780f847510db6e4",
+    "metrics.json": "d765d37629438516c95cb173c771b22c2ccc9e8304e8fcebc10ae34bb09dfe85",
+    "origins.json": "e814618530c205e8b41d8b30b0d9ced56315bb309fb09838c5c53bad59752aeb",
+    "prompts.json": "04525df8f901efba5b7f541c04d48da0cc5858ae6a94f20f77accecc80590c41",
+    "schemas.json": "863e3cc15c4c9d9f558ac72488a0d211f5a233b97d21bb1c6e9229717210e3cc",
+    "tasks.json": "ef12019062366b499638ad3b279a17e687f310da804db1249d65f2994a9bd163",
+    "uncertainty_procedure.md": "0184a213a88706929d663314c9dfccf47f54f1a68716528e465705553d7f5a3e"
+  },
+  "hash_normalization": "UTF-8 bytes with CRLF normalized to LF",
+  "tools_sha256": {
+    "scripts/notebook03a_r2.py": "f63286306f2a02c10d35d3b657cb5a01f6463db3e9619cba8a2f85fa5ece85c3",
+    "scripts/notebook03a_r2_protocol.py": "5c6297a8c89e1353d9fc102ea20ed188e285886e2072ed7427aeb4f66eae94fa",
+    "scripts/notebook03a_r2_shortcut.py": "d1c8b66769db6245ea127fba3a769a0b5359909661ddde64db01f6971d6a8282"
+  },
+  "documents_sha256": {
+    "docs/ALIVE-NOTEBOOK-03A-R2-DESIGN.md": "27b3c67208e69853f68f6860eaea51018055e727dde1b0c00772b061be79598b",
+    "docs/ALIVE-NOTEBOOK-03A-R2-PROTOCOL.md": "8aaa998421d05656d12e026eac9c6248f01e0ecc673ea6652bf27517b0f6b4f2"
+  }
+}

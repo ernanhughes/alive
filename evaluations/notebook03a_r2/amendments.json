@@ -1,0 +1,94 @@
+[
+  {
+    "version": "notebook03a-v1.1",
+    "parent_protocol_sha256": "a66642132b3e77a209006958e8c171c4e73adee152043ec891ce7d66762c5e9d",
+    "phase": "Before any baseline replay/model execution",
+    "reason": "Require directed supersession identities so source reversal cannot silently reverse replacement; treat date-only same-entity examples as insufficient rather than overclaiming independent observations. No output-driven tuning.",
+    "preserved": [
+      "initial_protocol.json",
+      "initial_annotations.json",
+      "initial_schemas.json"
+    ],
+    "changed": [
+      "annotations.json",
+      "schemas.json"
+    ]
+  },
+  {
+    "version": "notebook03a-v1.2",
+    "parent_protocol_sha256": "a090fe53109e4bd667a2fb13ddde189578a9cfc40a6707240e3dc95d3bb717ab",
+    "phase": "Before baseline replay/model execution",
+    "reason": "Permit independently controlled held-out task packages while forbidding a repo-accessible task from claiming that split. Validate declared package hash shapes. This schema change does not collect or attest actual independent labels.",
+    "preserved": [
+      "previous_protocol.json",
+      "previous_schemas.json"
+    ],
+    "changed": [
+      "schemas.json"
+    ]
+  },
+  {
+    "version": "notebook03a-v1.3",
+    "parent_protocol_sha256": "4c452dc6c58c91a815fc37fee4e0f0bdb47c1d8e42afef176411fc061b920bb7",
+    "phase": "After deterministic public baseline replay; before any model execution",
+    "reason": "Freeze final validator/scorer/replay source fingerprints and complete file inventory. Unknown relationships cannot authorize substantive use; arm modes must match. No cases, labels, prompts or expected baseline decisions changed. Strengthened custodian gate fails before reading unqualified external gold. Withhold author-selected supporting-span hints from inference payloads; complete bounded sources remain identical. No task texts, labels or baseline decisions change.",
+    "preserved": [
+      "pretools_protocol.json"
+    ],
+    "changed": [
+      "tool fingerprints and validation rules",
+      "payload preparation whitelist",
+      "explicit pending-holdout metadata",
+      "document fingerprints"
+    ]
+  },
+  {
+    "version": "notebook03a-v1.4",
+    "parent_protocol_sha256": "82df0bedea48465c5e92a7d55fccf7cbfdaf52f615ec46789acdd894833a621c",
+    "phase": "Adversarial source review before any semantic output/model execution",
+    "reason": "Require complete R1 replacement wording and R2 comparator/corpus/generalization qualifications rather than truncated gold excerpts. No task source text, inference payload, category, usefulness label or baseline policy decision changes.",
+    "preserved": [
+      "prequalification_protocol.json",
+      "prequalification_annotations.json"
+    ],
+    "changed": [
+      "required gold evidence spans",
+      "protocol/document fingerprints"
+    ]
+  },
+  {
+    "version": "notebook03a-v1.5",
+    "parent_protocol_sha256": "ffba53c718a5600b7d0d03a8727a034031bcf7efb58e18b9bee2667244a7acc7",
+    "phase": "Before any R1 baseline replay/model execution; preserves v1.4 evidence byte-unchanged",
+    "reason": "Harden evaluation validity after independent review: add 26 public-evaluation cases covering all categories with authentic/difficult/adversarial material; add frozen surface-cue control S; add misleading-advance/non-use/false-abstention metrics with pre-registered dual thresholds; add citation precision/recall diagnostic with long distractor passages; adjudicate taxonomy disputes with provisional corrections; withhold version/temporal/system context cues; record actual B output; add template-similarity diagnostic; compare full normalized replay; clarify custodian limits and unknown/unknown rule; handle missing Git revisions as controlled errors. No model inference; no v1.4 file changes.",
+    "preserved": [
+      "evaluations/notebook03a/* byte-unchanged (v1.4 protocol, tasks, annotations, origins, prompts, schemas, metrics, baselines)"
+    ],
+    "changed": [
+      "R1 tasks/annotations/origins/annotation_notes (+26 eval, 1 provisional correction)",
+      "R1 metrics v2 (misleading/non-use/citation)",
+      "R1 decision thresholds (dual retention+false-advance, surface margin, INCONCLUSIVE)",
+      "R1 surface-cue-v1.0 control",
+      "R1 payload whitelist (withhold version/temporal/system)",
+      "R1 replay/validation/scoring (actual B, similarity, normalized comparison, Git-error handling)"
+    ]
+  },
+  {
+    "version": "notebook03a-v1.6",
+    "parent_protocol_sha256": "036eab610f7ae3948dee2919b9d477ea6a8e96c78fd952d2fea810411c4c354c",
+    "phase": "Before any R2 baseline replay/model execution; preserves v1.4 and v1.5 byte-unchanged",
+    "reason": "Repair decision integrity after independent review: validated flat threshold contract (no silent defaults); layered PROGRESS policy (public can never yield PROGRESS; blind requires holdout, adjudicated gold, all comparators); family-level paired bootstrap uncertainty; new shortcut-control-v2.0 family (v1.0 preserved); decontaminated annotation package with opaque handles; neutral uniform question (recording v1.6 transformation); meaningful citation gate; adjudication plan mechanism; sealed-holdout handoff contract; CI enforcement. No model inference; no v1.4/v1.5 file changes.",
+    "preserved": [
+      "evaluations/notebook03a/* byte-unchanged (v1.4)",
+      "evaluations/notebook03a_r1/* byte-unchanged (v1.5)"
+    ],
+    "changed": [
+      "R2 tasks (neutral question on all 66; IDs/families/splits/claims/sources unchanged)",
+      "R2 annotation package (opaque handles, no splits/families/answers)",
+      "R2 threshold contract (flat validated)",
+      "R2 scoring (citation gate + family uncertainty)",
+      "R2 shortcut control v2.0",
+      "R2 runner (validate/prepare/baseline/score/submission/audit-package/decide)"
+    ]
+  }
+]

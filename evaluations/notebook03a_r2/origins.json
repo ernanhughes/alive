@@ -1,0 +1,1196 @@
+{
+  "05ad49cb44348c6d": {
+    "s0": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-12.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "1068575be389fe9f32e0fd540c20a5f355ac671fd9e8c195d7e2d7f490c797a5",
+      "quote": "- at least two shared content terms: `same_concept`, status `candidate`;",
+      "start": 3299,
+      "note": "Verbatim pinned engineering passage"
+    },
+    "s1": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "- Contradictory, unrelated and weakly related fixtures were labelled `same_concept`,\n  `complementary` or `no_supported_connection`; the corrected labels are\n  `topic_overlap_candidate`, `weak_lexical_overlap` and `insufficient_evidence`.",
+      "start": 2184,
+      "note": "Verbatim pinned engineering passage"
+    }
+  },
+  "3034516cb59ca2ed": {
+    "s0": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-12.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "1068575be389fe9f32e0fd540c20a5f355ac671fd9e8c195d7e2d7f490c797a5",
+      "quote": "**No retrieval advantage is claimed.** The strong history-access control achieved the same\nprecision and recall as ranked cross-page retrieval on this small corpus. The comparison shows that\nthe capability works, not that ranking or connection synthesis improves research outcomes.",
+      "start": 5068,
+      "note": "Verbatim pinned engineering passage"
+    },
+    "s1": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "The full-history control contained the relevant source for 9/9 positive queries (mean 12 eligible\nsame-goal rows), but it has no ranking. That control shows that access to history existed in\nALIVE-12; the changed result is the ability to select the right rows from the eligible history.\n\nAll predeclared criteria passed:\n\n- Crowding regression: 0 missing-memory failures for the corrected arm.\n- Recall@3 improvement over recency: +0.4815 (predeclared threshold +0.20).\n- MRR improvement over recency: +0.5741 (predeclared threshold +0.20).\n- Missing failures not worse than recency: 0 vs 4.\n- Negative queries: 3/3 correct abstentions.\n\nClassification: **RETRIEVAL_ADVANTAGE_DEMONSTRATED** for this frozen controlled lexical corpus.\nThis is not evidence of semantic paraphrase, cross-lingual retrieval, owner-perceived usefulness, or\na general research advantage.",
+      "start": 9035,
+      "note": "Verbatim pinned engineering passage"
+    }
+  },
+  "7b86535f5f25b31a": {
+    "s0": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-11.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "57542e78e5e5fe5c5733064a360991593cd995ed08eb0e922b51ca177435f5c4",
+      "quote": "- ALIVE-11 contains **two paid campaigns**, 16 recorded calls, 8,732 charged tokens and\n  approximately $0.023665 estimated spend.",
+      "start": 384,
+      "note": "Verbatim pinned engineering passage"
+    },
+    "s1": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-14.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "d95232e196752119fa1c377ff4f2552fda350fab7eb950422fac4677aaf6f5b4",
+      "quote": "- No owner ratings or paid Meta calls were collected.",
+      "start": 8976,
+      "note": "Verbatim pinned engineering passage"
+    }
+  },
+  "6bcf5458064f0d34": {
+    "s0": {
+      "kind": "controlled",
+      "document": "docs/ALIVE-12.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "1068575be389fe9f32e0fd540c20a5f355ac671fd9e8c195d7e2d7f490c797a5",
+      "quote": "Retrieval advantage: **NOT DEMONSTRATED**.",
+      "start": 122,
+      "note": "Synthetic presentation attack with verbatim retained ALIVE-12 qualification; not a historical headline."
+    }
+  },
+  "93b00a8b5a248a32": {
+    "s0": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "General semantic or owner-usefulness superiority: **NOT DEMONSTRATED**.",
+      "start": 283,
+      "note": "Verbatim pinned engineering passage"
+    },
+    "s1": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "General semantic or owner-usefulness superiority: **NOT DEMONSTRATED**.",
+      "start": 283,
+      "note": "Verbatim pinned engineering passage"
+    }
+  },
+  "7e0b9fd2496cb390": {
+    "s0": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "This is not evidence of semantic paraphrase, cross-lingual retrieval, owner-perceived usefulness, or\na general research advantage.",
+      "start": 9769,
+      "note": "Verbatim pinned engineering passage"
+    },
+    "s1": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-14.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "d95232e196752119fa1c377ff4f2552fda350fab7eb950422fac4677aaf6f5b4",
+      "quote": "The predeclared criteria all passed. The ALIVE-14 gain over ALIVE-13 is **rank-1 ordering and MRR**\non the long-excerpt cases; recall and precision are unchanged. The gain over the recency baseline is\nlarger but still controlled and lexical. This is not evidence of semantic superiority.",
+      "start": 6036,
+      "note": "Verbatim pinned engineering passage"
+    }
+  },
+  "b490a481c680cd6b": {
+    "s0": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "The baseline ranker is deliberately simple and explainable:\n\n- Normalise lower-case content terms of at least three characters.\n- Exclude the reviewed stopword list.\n- Score `2 * |current ∩ historical| + |goal ∩ historical - current|`.\n- Require at least one current/historical content-term overlap; goal words alone are not evidence.\n- Break ties by recency (newest first), then by stable research-row ID.\n- Deduplicate by source SHA-256.\n- Return `scoped_lexical_v1` with the matched terms and ranking version. No model or embedding call\n  is made.",
+      "start": 3386,
+      "note": "Verbatim pinned engineering passage"
+    },
+    "s1": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-14.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "d95232e196752119fa1c377ff4f2552fda350fab7eb950422fac4677aaf6f5b4",
+      "quote": "Research retrieval retains the ALIVE-13 ranker as a frozen comparator and adds\n`alive14-bm25-v1`:\n\n- goal vocabulary is removed from the query before scoring;\n- document frequency and inverse document frequency are computed over the eligible same-goal\n  research rows;\n- BM25 term saturation and document-length normalisation stop long prose from winning merely by\n  containing more words;\n- overlapping terms without a discriminating IDF are rejected once the corpus has at least three\n  eligible documents;\n- a conservative score floor preserves abstention;\n- ties break by recency and stable row ID.\n\nThis remains lexical retrieval. It is not promoted to semantic retrieval.",
+      "start": 1525,
+      "note": "Verbatim pinned engineering passage"
+    }
+  },
+  "61c882cd022e627a": {
+    "s0": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-12.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "1068575be389fe9f32e0fd540c20a5f355ac671fd9e8c195d7e2d7f490c797a5",
+      "quote": "Retrieval itself performs no model call and sends no historical text externally.",
+      "start": 2389,
+      "note": "Verbatim pinned engineering passage"
+    },
+    "s1": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "No model or embedding call\n  is made.",
+      "start": 3899,
+      "note": "Verbatim pinned engineering passage"
+    }
+  },
+  "b465507d3f62d4f9": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "dc3dd31b8920aa8e": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "64f5a94c1f9fd726": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "ff665aee3f1227d4": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "961260ac197e0f55": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "a36ef919a47b8193": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "94ce49da1fa38a05": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "a8fa8137e65649de": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "21ec9832cd5a5b23": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "86eb6aea5b9d1f52": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "84d9e791fd85b6ee": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "b505a4a0f184deb8": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "286cbd9e168027ea": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "2c31b98a8adf9716": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "32552d380a1a2769": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "4dd17166a1a9d94a": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "5f8934aa43f7f5f0": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "9a4ea2d7c6200d70": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "b3a677ae0c417562": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "5aae89c1e9f8f803": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "ac5fa2b2e74482da": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "6d50a5dc985bab39": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "5afc3dfb886e9c39": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "38abe608c94b557f": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "6b978533c472aab6": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "21ac0b9ee6495a00": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "ac11a285be6b131c": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "56ad779e80f2f115": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "e3a56c3973946019": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "d733952487197795": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "7cfb76d29a801fe2": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "90cd334cc5220fd3": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored controlled scenario; not historical evidence"
+    }
+  },
+  "3691906bf8e1e3d6": {
+    "s0": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "The panel's withdrawal command used\nthe last saved research ID rather than the displayed result.",
+      "start": 1375,
+      "note": "Verbatim pinned engineering passage"
+    },
+    "s1": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "Each displayed research result carries its own `memory_id`. The panel creates a per-result\n**Withdraw this memory** action that sends that explicit `researchId` to the background worker.",
+      "start": 5844,
+      "note": "Verbatim pinned engineering passage"
+    }
+  },
+  "e5b6c9d3112b9cbb": {
+    "s0": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-14.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "d95232e196752119fa1c377ff4f2552fda350fab7eb950422fac4677aaf6f5b4",
+      "quote": "ALIVE-13 treated an empty `memory_types` collection as \"all types\".",
+      "start": 979,
+      "note": "Verbatim pinned engineering passage"
+    },
+    "s1": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-14.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "d95232e196752119fa1c377ff4f2552fda350fab7eb950422fac4677aaf6f5b4",
+      "quote": "ALIVE-14 replaces that\ncontract with:\n\n- `memory_types=None` -> the restrictive general allowlist;\n- `memory_types=ALL_MEMORY_TYPES` -> the explicit privileged all-types selector;\n- `memory_types=[]` or `()` -> `ValueError`.",
+      "start": 1047,
+      "note": "Verbatim pinned engineering passage"
+    }
+  },
+  "e5db68ab3481da61": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "15e4d708a755cba5": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "fb609078e1e14047": {
+    "s0": {
+      "kind": "controlled",
+      "document": "docs/ALIVE-14.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "d95232e196752119fa1c377ff4f2552fda350fab7eb950422fac4677aaf6f5b4",
+      "quote": "This is not evidence of semantic superiority.",
+      "start": 6278,
+      "note": "Synthetic universal headline with verbatim retained ALIVE-14 qualification plus distractor context; not a historical headline."
+    }
+  },
+  "3ebbb4edcf281bed": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "6507aac27b463f70": {
+    "s0": {
+      "kind": "controlled",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "General semantic or owner-usefulness superiority: **NOT DEMONSTRATED**.",
+      "start": 283,
+      "note": "Synthetic superiority headline with verbatim retained ALIVE-13 limitation; not a historical headline."
+    }
+  },
+  "0237f56037e8458e": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "9cdbf3dec7c093a5": {
+    "s0": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-12.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "1068575be389fe9f32e0fd540c20a5f355ac671fd9e8c195d7e2d7f490c797a5",
+      "quote": "- A connection is only an evidence-linked **candidate**, not proof that two sources corroborate.",
+      "start": 2470,
+      "note": "Verbatim pinned engineering passage"
+    },
+    "s1": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "The explanation states that lexical overlap does\nnot establish agreement, support, contradiction or corroboration.",
+      "start": 7192,
+      "note": "Verbatim pinned engineering passage"
+    }
+  },
+  "26ebdc9a4afa8b47": {
+    "s0": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "- The corrected ranker is deterministic lexical overlap. It does not understand paraphrase,\n  negation, entailment, contradiction or complementarity semantically.",
+      "start": 12354,
+      "note": "Verbatim pinned engineering passage"
+    },
+    "s1": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-14.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "d95232e196752119fa1c377ff4f2552fda350fab7eb950422fac4677aaf6f5b4",
+      "quote": "This remains lexical retrieval. It is not promoted to semantic retrieval.",
+      "start": 2129,
+      "note": "Verbatim pinned engineering passage"
+    }
+  },
+  "b387ee2188559423": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "400b17387b3ffc66": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "93abc8dd638ef850": {
+    "s0": {
+      "kind": "controlled",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "| C corrected scoped lexical | 0.6296 | 1.0000 | 1.0000 | 1.0000 | 9 | 3/3 | 0.3462 | 0 | 5.314 ms |",
+      "start": 8598,
+      "note": "Retained ALIVE-13 result row with explicit corpus context; not a new measurement."
+    },
+    "s1": {
+      "kind": "controlled",
+      "document": "docs/ALIVE-14.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "d95232e196752119fa1c377ff4f2552fda350fab7eb950422fac4677aaf6f5b4",
+      "quote": "| C ALIVE-14 BM25 | 0.4444 | 1.0000 | 1.0000 | 1.0000 | 9 | 3/3 | 0.5294 | 0 | 4.964 ms |",
+      "start": 5760,
+      "note": "Retained ALIVE-14 result row with explicit corpus context; not a new measurement."
+    }
+  },
+  "7913437ce98dca7b": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "a2219c4e0ae60b22": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "df9ff73b80aa7801": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "7de4abc0b8b5f7c8": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "c1bed2335c2be817": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "8d998896f5618a2b": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "d354b7122224de52": {
+    "s0": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-10.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "cc87cad1045217225da8c2b058ea77812a13ac7ded2d86b5a7b9d7c40d46c08b",
+      "quote": "Chrome version: `155.0.8059.85`. The extension was real; the actual service worker, storage,\nobserver, panel, backend and SQLite path were exercised.",
+      "start": 6900,
+      "note": "Verbatim pinned engineering passage"
+    },
+    "s1": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "Score `2 * |current ∩ historical| + |goal ∩ historical - current|`.",
+      "start": 3554,
+      "note": "Verbatim pinned engineering passage"
+    }
+  },
+  "f87b3212b7f3bfcb": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "c09cf12d25e085e4": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "fe099cd6f4689060": {
+    "s0": {
+      "kind": "authentic",
+      "document": "docs/ALIVE-12.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "1068575be389fe9f32e0fd540c20a5f355ac671fd9e8c195d7e2d7f490c797a5",
+      "quote": "The next qualification should add a distractor-rich corpus and an independently labelled\nconnection-usefulness task before considering automatic ranking adaptation.",
+      "start": 7762,
+      "note": "Verbatim pinned engineering passage"
+    },
+    "s1": {
+      "kind": "controlled",
+      "document": "docs/ALIVE-13.md",
+      "commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+      "document_sha256": "211bbb782685bf82f4a00258fe5a8b3c41f26c86b336c2cb20d93f88f229e8c3",
+      "quote": "- 36 research memories across 3 goals (Python memory, JavaScript asynchronous runtime, browser\n  storage/caching).\n- 60 ordinary-memory distractors inserted before any research projection.",
+      "start": 7545,
+      "note": "Retained corpus description with explicit label limitation; not a new experiment."
+    }
+  },
+  "57cb5dc2add6695c": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "63fe55540cee588a": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  },
+  "aa210b67086b2323": {
+    "s0": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    },
+    "s1": {
+      "kind": "synthetic",
+      "document": null,
+      "commit": null,
+      "document_sha256": null,
+      "quote": null,
+      "start": null,
+      "note": "Implementer-authored R1 adversarial scenario; not historical evidence"
+    }
+  }
+}

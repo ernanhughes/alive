@@ -107,3 +107,11 @@ jobs:
       - run: uv run python -m scripts.notebook03a validate
       - run: uv run python -m scripts.notebook03a submission
       - run: uv run python -m scripts.notebook03a baseline --check-against docs/validation/alive-notebook-03a/expected-baselines-v14.json --output "$RUNNER_TEMP/notebook03a-baseline.json"
+      - run: uv run python -m scripts.notebook03a_r1 validate
+      - run: uv run python -m scripts.notebook03a_r1 submission
+      - run: uv run python -m scripts.notebook03a_r1 baseline --check-against docs/validation/alive-notebook-03a-r1/expected-baselines.json --output "$RUNNER_TEMP/notebook03a-r1-baseline.json"
+      - run: uv run python -m scripts.notebook03a_r2 validate
+      - run: uv run python -m scripts.notebook03a_r2 submission
+      - run: uv run python -m scripts.notebook03a_r2 audit-package
+      - run: uv run python -m scripts.notebook03a_r2 baseline --check-against docs/validation/alive-notebook-03a-r2/expected-baselines.json --output "$RUNNER_TEMP/notebook03a-r2-baseline.json"
+      - run: uv run pytest -q tests/test_notebook03a.py tests/test_notebook03a_r1.py tests/test_notebook03a_r2.py
