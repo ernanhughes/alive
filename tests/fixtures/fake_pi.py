@@ -184,7 +184,10 @@ def main():
             send({"type": "agent_settled"})
             continue
         # Model-call scenarios: make real requests to the egress, as Pi's provider layer would.
-        calls = int(rest.split()[0]) if scenario == "multi" and rest.split() else 1
+        calls = 1
+        if scenario == "multi":
+            count, _, rest = rest.partition(chr(32))
+            calls = int(count)
         text = None
         for _ in range(calls):
             model = "gpt-evil" if scenario == "wrong-model" else None

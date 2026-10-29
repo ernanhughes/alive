@@ -230,7 +230,16 @@ class PiRunner:
         return self._install or locate_pi(self.settings)
 
     async def run(
-        self, *, prompt, base_url, token, max_tokens, deadline, on_event=None, install=None
+        self,
+        *,
+        prompt,
+        base_url,
+        token,
+        max_tokens,
+        deadline,
+        on_event=None,
+        on_running=None,
+        install=None,
     ):
         install = install or self.install()
         result = PiResult()
@@ -252,6 +261,10 @@ class PiRunner:
             )
             stderr_task = asyncio.ensure_future(self._drain_stderr(managed, result))
             async with asyncio.timeout(deadline):
+                if on_running is not None:
+                    # Pi calls the egress the moment it gets the prompt, so the run must already
+                    # be admitted as RUNNING by then.
+                    await on_running()
                 await self._conversation(managed, prompt, token, result, on_event)
         except TimeoutError:
             result.failure = PiRunFailure("pi_deadline", f"no settlement within {deadline}s")
