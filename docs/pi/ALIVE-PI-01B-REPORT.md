@@ -7,14 +7,15 @@ throwaway credential.
 | | |
 | --- | --- |
 | Branch | `feat/alive-pi-01b` |
-| Base | `fix/alive-f002-cancellation-settlement` @ `c0fe57e` (PR #64, F-002), which is itself cut from `main` |
-| `main` at the time | `df7866e` |
+| Base | `main` @ `ad34e40`, which includes PR #64 (the F-002 fix) |
+| Branch point | `c0fe57e`, the F-002 fix commit (the local runs below were made on this base) |
 | Code under test | the head SHA recorded in the PR description (this file is part of that head) |
 | Platform of local runs | Windows 11 (Python 3.13, Node v25.8.2 locally; Node v24.22.2 in Docker), Docker 29.8.0 |
 
-PI-01B stacks on PR #64 because the Pi path must not be able to leave a `ModelInvocation`
-permanently `reserved` (the audit gate for PI-01B). Review #64 first; the diff of this PR against its
-base contains only PI-01B.
+PI-01B was built on the F-002 fix because the Pi path must not be able to leave a `ModelInvocation`
+permanently `reserved` (the audit gate for PI-01B). #64 merged while this PR was open, so the PR
+targets `main`; the diff contains only PI-01B. The local test results were obtained at the branch
+point; the merge commit `ad34e40` adds no code beyond `c0fe57e`, and CI re-runs the suite against it.
 
 ## A. Findings
 
