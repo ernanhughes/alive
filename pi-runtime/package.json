@@ -1,0 +1,12 @@
+{
+  "name": "alive-pi-runtime",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Pinned Pi coding-agent runtime, used only when ALIVE_MODEL_TRANSPORT=pi (ALIVE-PI-01B). Install with: npm ci --ignore-scripts",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "dependencies": {
+    "@earendil-works/pi-coding-agent": "1.4.0"
+  }
+}

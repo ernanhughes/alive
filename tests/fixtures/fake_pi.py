@@ -156,8 +156,12 @@ def main():
             send({"type": "alive_fake.child", "pid": child.pid})
         if scenario == "no-settle":
             time.sleep(120)
-        if scenario == "env":
-            last_text = json.dumps(sorted(os.environ))
+        if scenario in ("env", "envvalues"):
+            last_text = json.dumps(
+                {k: v for k, v in os.environ.items() if k.startswith("PI_")}
+                if scenario == "envvalues"
+                else sorted(os.environ)
+            )
             send(assistant(last_text))
             send({"type": "agent_end"})
             send({"type": "agent_settled"})

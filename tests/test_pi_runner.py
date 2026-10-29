@@ -79,6 +79,14 @@ def test_the_child_receives_only_the_allow_listed_environment(runner, monkeypatc
     assert not unexpected, unexpected
 
 
+def test_pi_runs_offline_without_telemetry_or_update_checks(runner):
+    values = json.loads(go(runner, "SCENARIO:envvalues").text)
+    assert values["PI_OFFLINE"] == "1"
+    assert values["PI_TELEMETRY"] == "0"
+    assert values["PI_SKIP_VERSION_CHECK"] == "1"
+    assert values["PI_CODING_AGENT_DIR"].endswith("config")  # the per-run directory
+
+
 def test_the_developers_own_pi_configuration_is_unreachable(runner):
     report = json.loads(go(runner, "SCENARIO:canary").text)
     assert report["home"] == "config"  # HOME is the per-run directory, not the developer's
