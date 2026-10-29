@@ -92,6 +92,8 @@ Open the [dashboard](http://127.0.0.1:5173) and enter your local token. The [API
 
 Stop the development processes with `./scripts/stop.ps1`. For foreground processes, use the separate commands in [development instructions](docs/DEVELOPMENT.md).
 
+VS Code users can run the same workflow from the committed tasks and debug configurations. Run **Tasks: Run Task** -> **Setup: bootstrap** and see [.vscode/README.md](.vscode/README.md).
+
 ## First Contact
 
 Stop the backend first. This demonstration owns its backend processes, restarts them and **adds** test experience to your existing ALIVE database. It never drops or resets it.

@@ -47,6 +47,12 @@ Read `.alive/token` locally if no token is configured. It is never returned by a
 
 Windows needs Tornado's selector bridge for pyzmq while retaining a Proactor event loop for Playwright/Pi subprocesses. The dependency is included; its informational runtime warning is expected. Do not switch the entire app to a Selector loop to silence it. Uvicorn is launched with one worker and without auto-reload.
 
+## VS Code
+
+The shared `.vscode` configuration provides setup, development, test, lint, demo, Docker and site tasks, FastAPI and pytest debug configurations, and recommended extensions. Open the repository root, accept the recommendations, copy `.env.example` to `.env`, and run **Tasks: Run Task** -> **Setup: bootstrap**. `python.defaultInterpreterPath` resolves `.venv` on Windows and POSIX; select the interpreter manually if VS Code prompts.
+
+`Dev: full stack` wraps `scripts/dev.ps1` on Windows. `Dev: backend` and `Dev: dashboard` are cross-platform foreground tasks. The Testing view uses the repository's pytest settings; `Test: quick` and `Test: affected` map to the tiers in [the test strategy](testing/ALIVE-TEST-STRATEGY.md) and do not replace the full suite. `Verify: all` runs the main backend and dashboard CI gates locally. See [.vscode/README.md](../.vscode/README.md) for the full task and debugging reference.
+
 ## Pi
 
 Install/configure Pi outside this repository; consult the installed `pi --help` and `pi auth check --provider PROVIDER --json --no-refresh`. Never use credential-printing commands in shared logs.

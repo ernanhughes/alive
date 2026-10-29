@@ -1,0 +1,120 @@
+{
+    "python.defaultInterpreterPath": "${workspaceFolder}/.venv",
+    "python.terminal.activateEnvironment": true,
+    "python.terminal.useEnvFile": true,
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.diagnosticMode": "openFilesOnly",
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.autoSearchPaths": true,
+    "python.analysis.indexing": true,
+    "python.analysis.exclude": [
+        "**/.alive/**",
+        "**/dashboard/dist/**",
+        "**/node_modules/**",
+        "**/site/public/**"
+    ],
+    "python.testing.pytestEnabled": true,
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.autoTestDiscoverOnSaveEnabled": true,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.encoding": "utf8",
+    "files.exclude": {
+        "**/.pytest_cache": true,
+        "**/.ruff_cache": true,
+        "**/.venv": true,
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/node_modules": true,
+        "**/dashboard/dist": true,
+        "**/dashboard/playwright-report": true,
+        "**/dashboard/test-results": true,
+        "**/site/public": true
+    },
+    "search.exclude": {
+        "**/.alive/**": true,
+        "**/.pytest_cache/**": true,
+        "**/.ruff_cache/**": true,
+        "**/.venv/**": true,
+        "**/__pycache__/**": true,
+        "**/dashboard/dist/**": true,
+        "**/dashboard/playwright-report/**": true,
+        "**/dashboard/test-results/**": true,
+        "**/node_modules/**": true,
+        "**/site/public/**": true
+    },
+    "files.watcherExclude": {
+        "**/.alive/**": true,
+        "**/.pytest_cache/**": true,
+        "**/.ruff_cache/**": true,
+        "**/.venv/**": true,
+        "**/__pycache__/**": true,
+        "**/dashboard/dist/**": true,
+        "**/dashboard/playwright-report/**": true,
+        "**/dashboard/test-results/**": true,
+        "**/node_modules/**": true,
+        "**/site/public/**": true
+    },
+    "terminal.integrated.cwd": "${workspaceFolder}",
+    "terminal.integrated.env.windows": {
+        "PYTHONUTF8": "1"
+    },
+    "[python]": {
+        "editor.defaultFormatter": "charliermarsh.ruff",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.fixAll.ruff": "explicit",
+            "source.organizeImports.ruff": "explicit"
+        },
+        "editor.tabSize": 4,
+        "editor.rulers": [
+            100
+        ]
+    },
+    "[javascript]": {
+        "editor.tabSize": 2
+    },
+    "[typescript]": {
+        "editor.tabSize": 2
+    },
+    "[typescriptreact]": {
+        "editor.tabSize": 2
+    },
+    "[json]": {
+        "editor.tabSize": 2
+    },
+    "[jsonc]": {
+        "editor.tabSize": 2
+    },
+    "[yaml]": {
+        "editor.tabSize": 2
+    },
+    "[css]": {
+        "editor.tabSize": 2
+    },
+    "[html]": {
+        "editor.tabSize": 2
+    },
+    "[markdown]": {
+        "editor.wordWrap": "on",
+        "editor.formatOnSave": false
+    },
+    "typescript.tsdk": "dashboard/node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "ruff.importStrategy": "fromEnvironment",
+    "yaml.schemas": {
+        "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json": [
+            "compose*.yaml",
+            "compose*.yml"
+        ],
+        "https://json.schemastore.org/github-workflow.json": [
+            ".github/workflows/*.yml",
+            ".github/workflows/*.yaml"
+        ]
+    }
+}
