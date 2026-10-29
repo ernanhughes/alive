@@ -25,8 +25,8 @@
       {
         "source_id": "s1",
         "start": 0,
-        "end": 220,
-        "text": "- Contradictory, unrelated and weakly related fixtures were labelled `same_concept`,\n  `complementary` or `no_supported_connection`; the corrected labels are\n  `topic_overlap_candidate`, `weak_lexical_overlap` and `insuf"
+        "end": 238,
+        "text": "- Contradictory, unrelated and weakly related fixtures were labelled `same_concept`,\n  `complementary` or `no_supported_connection`; the corrected labels are\n  `topic_overlap_candidate`, `weak_lexical_overlap` and `insufficient_evidence`."
       }
     ],
     "forbidden_conclusions": [
@@ -183,15 +183,27 @@
     "required_evidence": [
       {
         "source_id": "s0",
-        "start": 39,
-        "end": 90,
-        "text": "The strong history-access control achieved the same"
+        "start": 0,
+        "end": 281,
+        "text": "**No retrieval advantage is claimed.** The strong history-access control achieved the same\nprecision and recall as ranked cross-page retrieval on this small corpus. The comparison shows that\nthe capability works, not that ranking or connection synthesis improves research outcomes."
+      },
+      {
+        "source_id": "s1",
+        "start": 0,
+        "end": 286,
+        "text": "The full-history control contained the relevant source for 9/9 positive queries (mean 12 eligible\nsame-goal rows), but it has no ranking. That control shows that access to history existed in\nALIVE-12; the changed result is the ability to select the right rows from the eligible history."
+      },
+      {
+        "source_id": "s1",
+        "start": 394,
+        "end": 469,
+        "text": "- Recall@3 improvement over recency: +0.4815 (predeclared threshold +0.20)."
       },
       {
         "source_id": "s1",
         "start": 638,
-        "end": 733,
-        "text": "Classification: **RETRIEVAL_ADVANTAGE_DEMONSTRATED** for this frozen controlled lexical corpus."
+        "end": 864,
+        "text": "Classification: **RETRIEVAL_ADVANTAGE_DEMONSTRATED** for this frozen controlled lexical corpus.\nThis is not evidence of semantic paraphrase, cross-lingual retrieval, owner-perceived usefulness, or\na general research advantage."
       }
     ],
     "forbidden_conclusions": [

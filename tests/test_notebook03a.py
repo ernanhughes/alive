@@ -28,7 +28,7 @@ def task_for(corpus, relationship):
 
 def test_frozen_public_corpus_and_schemas_are_complete(corpus):
     tasks, labels, origins = corpus
-    assert p.verify_freeze()["version"] == "notebook03a-v1.3"
+    assert p.verify_freeze()["version"] == "notebook03a-v1.4"
     result = p.validate_corpus(tasks, labels, origins)
     assert result["cases"] == 40 and result["status"] == "PUBLIC_COMPLETE"
     assert result["splits"] == {"development": 16, "public_evaluation": 24}
@@ -320,3 +320,23 @@ def test_frozen_protocol_document_fingerprints():
     protocol = p.verify_freeze()
     for name, wanted in protocol["documents_sha256"].items():
         assert p.file_digest(p.ROOT / name) == wanted
+
+
+def test_scoped_result_requires_comparator_and_generalization_limits(corpus):
+    tasks, labels, _ = corpus
+    task = next(
+        t for t in tasks if any("strong history-access control" in s.text for s in t.sources)
+    )
+    label = next(a for a in labels if a.task_id == task.id)
+    good = semantic_fixture(task, label)
+    assert (
+        p.score([task], [label], [good], "D", allow_offline_fixtures=True)[
+            "correct_substantive_judgments"
+        ]
+        == 1
+    )
+    # Category and exact quotations alone are not enough when scope qualifications are omitted.
+    reduced = replace(good, evidence=[label.required_evidence[-1]])
+    result = p.score([task], [label], [reduced], "D", allow_offline_fixtures=True)
+    assert result["correct_substantive_judgments"] == 0
+    assert result["unsupported_substantive_judgments"] == 1

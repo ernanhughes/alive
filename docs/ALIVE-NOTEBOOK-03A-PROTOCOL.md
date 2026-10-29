@@ -1,6 +1,6 @@
 # ALIVE-NOTEBOOK-03A — frozen protocol
 
-Protocol: `evaluations/notebook03a/protocol.json`, version `notebook03a-v1.3`. Baseline main:
+Protocol: `evaluations/notebook03a/protocol.json`, version `notebook03a-v1.4`. Baseline main:
 `a9bcf8673818e85246a268c308b64d2080792b96`. No inference or spending is authorized.
 
 ## Hypothesis and primary task
@@ -165,7 +165,7 @@ be admitted. No caller-supplied access bit or synthetic ledger can substitute fo
 Inputs, draft annotations, prompts, schema exports and metrics have LF-normalized SHA-256
 fingerprints in protocol.json. Earlier draft protocol/schema/annotation snapshots remain
 preserved. Amendments before replay added directed replacements, corrected date-only
-uncertainty, and defined external package isolation gates. Changes after freeze must append
+uncertainty, defined external package isolation gates, and strengthened R1/R2 required qualification spans. Changes after freeze must append
 an amendment/new version and retain the previous evidence. Baseline expectations are derived
 from measured policy replay, stored separately from gold, and compared deterministically
 in CI; do not rewrite them merely to conceal changed baseline behavior.
