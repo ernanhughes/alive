@@ -66,27 +66,57 @@ def _validate_api_token(token: str) -> str:
     return token
 
 
+def _current_user_sid() -> str:
+    identity = subprocess.run(
+        ["whoami", "/user", "/fo", "csv", "/nh"],
+        capture_output=True,
+        text=True,
+        errors="replace",
+        check=True,
+        timeout=5,
+    )
+    sid = next(csv.reader([identity.stdout.strip()]))[1].strip()
+    if not sid.startswith("S-1-"):
+        raise ValueError("Cannot determine local token owner")
+    return sid
+
+
 def _restrict_token_file(path: str):
     if os.name == "nt":
-        # chmod(0600) does not enforce a private Windows DACL. Remove inherited
-        # grants before writing any secret; use the owner's SID, not a localized name.
-        identity = subprocess.run(
-            ["whoami", "/user", "/fo", "csv", "/nh"],
-            capture_output=True,
-            text=True,
-            errors="replace",
-            check=True,
-            timeout=5,
-        )
-        sid = next(csv.reader([identity.stdout.strip()]))[1]
-        if not sid.startswith("S-1-"):
-            raise ValueError("Cannot determine local token owner")
-        subprocess.run(
-            ["icacls", path, "/inheritance:r", "/grant:r", f"*{sid}:(F)"],
-            capture_output=True,
-            check=True,
-            timeout=5,
-        )
+        # chmod(0600) does not enforce a private Windows DACL. Set an exact
+        # protected owner-only DACL before writing any secret. icacls
+        # /grant:r leaves other explicit default ACEs in place on some hosts,
+        # so use the Win32 security API and the owner's SID, not a localized name.
+        import ctypes
+        from ctypes import wintypes
+
+        advapi32 = ctypes.WinDLL("advapi32", use_last_error=True)
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        advapi32.ConvertStringSecurityDescriptorToSecurityDescriptorW.argtypes = [
+            wintypes.LPCWSTR,
+            wintypes.DWORD,
+            ctypes.POINTER(ctypes.c_void_p),
+            ctypes.POINTER(wintypes.ULONG),
+        ]
+        advapi32.ConvertStringSecurityDescriptorToSecurityDescriptorW.restype = wintypes.BOOL
+        advapi32.SetFileSecurityW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, ctypes.c_void_p]
+        advapi32.SetFileSecurityW.restype = wintypes.BOOL
+        kernel32.LocalFree.argtypes = [ctypes.c_void_p]
+        kernel32.LocalFree.restype = ctypes.c_void_p
+
+        # DACL_SECURITY_INFORMATION | PROTECTED_DACL_SECURITY_INFORMATION
+        information = 0x00000004 | 0x80000000
+        sid = _current_user_sid()
+        descriptor = ctypes.c_void_p()
+        if not advapi32.ConvertStringSecurityDescriptorToSecurityDescriptorW(
+            f"D:P(A;;FA;;;{sid})", 1, ctypes.byref(descriptor), None
+        ):
+            raise ctypes.WinError(ctypes.get_last_error())
+        try:
+            if not advapi32.SetFileSecurityW(path, information, descriptor):
+                raise ctypes.WinError(ctypes.get_last_error())
+        finally:
+            kernel32.LocalFree(descriptor)
     # mkstemp already creates with mode0600 on POSIX; never broaden it.
 
 
