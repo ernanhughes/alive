@@ -31,6 +31,10 @@ services:
       ALIVE_BROWSER_ORIGINS: '["http://app:8000","http://localhost:8080","http://127.0.0.1:8000"]'
       ALIVE_COGNITIVE_PROVIDER: ${ALIVE_COGNITIVE_PROVIDER:-mock}
       ALIVE_DEMO_MODE: ${ALIVE_DEMO_MODE:-true}
+      # Optional live-inference credentials. Empty by default (no paid calls).
+      # Set ALIVE_META_API_KEY in an ignored .env file; never commit it.
+      ALIVE_META_API_KEY: ${ALIVE_META_API_KEY:-}
+      ALIVE_META_MODEL: ${ALIVE_META_MODEL:-muse-spark-1.3}
     ports:
       - "127.0.0.1:8080:8000"
     volumes:
