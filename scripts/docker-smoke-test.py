@@ -1,6 +1,6 @@
 """Host-runnable Docker smoke test for ALIVE-DOCKER-01.
 
-Usage: python scripts/docker-smoke-test.py [--base-url http://localhost:8080]
+Usage: python scripts/docker-smoke-test.py [--base-url http://localhost:8000]
 
 Exercises the real composed application: static UI, fixture pages, and the
 authenticated API workflow. No inference, no paid providers.
@@ -28,7 +28,7 @@ def check(name):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--base-url", default=os.environ.get("ALIVE_BASE_URL", "http://localhost:8080")
+        "--base-url", default=os.environ.get("ALIVE_BASE_URL", "http://localhost:8000")
     )
     parser.add_argument("--token", default=os.environ.get("ALIVE_API_TOKEN", ""))
     args = parser.parse_args()

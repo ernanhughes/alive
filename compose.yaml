@@ -27,16 +27,23 @@ services:
     environment:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-alive}:${POSTGRES_PASSWORD:-change-me-for-local-use}@db:5432/${POSTGRES_DB:-alive}
       ALIVE_API_TOKEN: ${ALIVE_API_TOKEN:-alive-dev-token-replace-for-local-use-000}
-      ALIVE_ALLOWED_ORIGINS: '["http://localhost:8080","http://127.0.0.1:8080"]'
-      ALIVE_BROWSER_ORIGINS: '["http://app:8000","http://localhost:8080","http://127.0.0.1:8000"]'
+      ALIVE_ALLOWED_ORIGINS: '["http://localhost:${ALIVE_HOST_PORT:-8000}","http://127.0.0.1:${ALIVE_HOST_PORT:-8000}"]'
+      ALIVE_BROWSER_ORIGINS: '["http://app:8000","http://localhost:${ALIVE_HOST_PORT:-8000}","http://127.0.0.1:8000"]'
       ALIVE_COGNITIVE_PROVIDER: ${ALIVE_COGNITIVE_PROVIDER:-mock}
       ALIVE_DEMO_MODE: ${ALIVE_DEMO_MODE:-true}
+      # Deterministic, non-external fixture providers (local_fixture_claim, local_stub_invalid)
+      # for the pinned /demo-live-01 mirrors. Tied to demo mode so it is off whenever demo mode is
+      # off. The paid Meta claim/research flags are deliberately not set here.
+      ALIVE_RELATIONSHIP_ALLOW_TEST_PROVIDERS: ${ALIVE_DEMO_MODE:-true}
       # Optional live-inference credentials. Empty by default (no paid calls).
       # Set ALIVE_META_API_KEY in an ignored .env file; never commit it.
       ALIVE_META_API_KEY: ${ALIVE_META_API_KEY:-}
       ALIVE_META_MODEL: ${ALIVE_META_MODEL:-muse-spark-1.3}
     ports:
-      - "127.0.0.1:8080:8000"
+      # Host port 8000 matches the unpacked Chrome extension (host_permissions, authorised
+      # pages, default backend) and the server's PAGES allow-list. Overriding it also moves the
+      # dashboard, but the extension will not follow.
+      - "127.0.0.1:${ALIVE_HOST_PORT:-8000}:8000"
     volumes:
       - alive-appdata:/app/.alive
     healthcheck:

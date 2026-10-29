@@ -4,7 +4,7 @@ import { test, expect } from "@playwright/test";
 // No Chrome automation here: the slim runtime image has no managed Chrome, so the
 // Browser tab cannot succeed. This spec exercises the genuine UI workflow that
 // works offline (goals, memory search, mock agent) plus the pinned fixture pages.
-const APP = (process.env.ALIVE_BASE_URL || "http://localhost:8080").replace(
+const APP = (process.env.ALIVE_BASE_URL || "http://localhost:8000").replace(
   /\/$/,
   "",
 );
