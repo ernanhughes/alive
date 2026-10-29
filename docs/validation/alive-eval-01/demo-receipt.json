@@ -1,0 +1,600 @@
+{
+  "MECHANISM_DEMO_NOTE": {
+    "SYNTHETIC_MECHANISM_DEMO": "Fixture tasks, gold, outputs, and custody were generated in-repo to exercise the custodian path. This receipt demonstrates the mechanism only and must never be read as a blinded result."
+  },
+  "evaluator": "alive-eval-01-v1",
+  "verdict": "PROGRESS",
+  "reasons": [
+    "clears absolute, citation, family-interval, and paired-margin gates"
+  ],
+  "entailment": "requires_human_adjudication",
+  "scope_determined": {
+    "scope": "blind",
+    "requested": "blind",
+    "reason": "sealed package validated"
+  },
+  "custody": {
+    "custody_valid": true,
+    "reason": "structural custody checks pass; human must confirm the access boundary for QUALIFIED custody",
+    "gold_adjudicated": true,
+    "custodian": "custodian-1"
+  },
+  "fingerprints": {
+    "protocol_sha256": "2f5d6f783af5949b5c6cc6a964f709f355500f79340c2c082e3cd001b63e8ec2",
+    "protocol_version": "notebook03a-v1.6",
+    "scorer_version": "notebook03a-v1.6",
+    "scorer_sha256": "775b0d365b8140e761fb76ea17ae231f71eb5822e89214c1ac4ccb1b32f7e527"
+  },
+  "metrics": {
+    "A": {
+      "arm": "A",
+      "total_tasks": 30,
+      "scored_tasks": 30,
+      "unscored_missing_annotations": 0,
+      "not_applicable": 0,
+      "access_refused": 0,
+      "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS_R2",
+      "correct_substantive_judgments": 0,
+      "substantive_judgments": 0,
+      "unsupported_substantive_judgments": 0,
+      "unsupported_assertions": 0,
+      "substantive_precision": null,
+      "category_accuracy": 0.0,
+      "category_accuracy_excluding_unknown_unknown": 0.0,
+      "unknown_unknown_matches": 0,
+      "category_accuracy_rule": "unknown/unknown counts toward category_accuracy; excluded variant reported separately; neither counts as substantive judgment",
+      "sufficiency_accuracy": 0.0,
+      "useful_findings": 30,
+      "useful_findings_retained": 0,
+      "useful_finding_retention": 0.0,
+      "missed_useful_findings": 30,
+      "false_abstentions": 0,
+      "false_abstention_rate": 0.0,
+      "useful_candidates_retained": 30,
+      "useful_candidate_recall": 1.0,
+      "insufficient_cases": 0,
+      "correct_insufficient_abstention": 0,
+      "correct_insufficient_abstention_rate": null,
+      "non_useful_cases": 0,
+      "correct_non_use_decisions": 0,
+      "correct_non_use_rate": null,
+      "misleading_advances": 0,
+      "misleading_advance_rate": 0.0,
+      "misleading_advance_rule": "S/V/C/D: unsupported substantive judgments / scored; A: retain_candidate on non-useful-or-insufficient / scored; B/B0: 0 by construction",
+      "citation_precision_mean": null,
+      "citation_recall_mean": 0.0,
+      "citation_cases": 0,
+      "citation_limitation": "Exact-span overlap only; cannot establish entailment. Invented spans fail closed via validation.",
+      "retention_wilson95_case_independence_not_assumed": [
+        0,
+        0.113517091390478
+      ],
+      "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+      "confusion_matrix": [
+        {
+          "gold": "substantive_connection",
+          "predicted": "unknown",
+          "count": 30
+        }
+      ],
+      "per_category": {
+        "substantive_connection": {
+          "cases": 30,
+          "category_correct": 0,
+          "useful_findings": 30,
+          "useful_retained": 0
+        }
+      },
+      "decisions": {
+        "retain_candidate": 30
+      },
+      "model_calls": 0,
+      "cost_micro_usd": 0,
+      "citation_gate": {
+        "assertions_checked": 0,
+        "assertions_passed": 0,
+        "pass_rate": null,
+        "min_precision": 0.2,
+        "require_full_recall": true,
+        "rule": "Accepted findings need exact spans, full required coverage, and precision at/above floor. Failures are misleading advances."
+      },
+      "gated_useful_findings_retained": 0,
+      "gated_useful_finding_retention": 0.0,
+      "gated_misleading_advances": 0,
+      "gated_misleading_advance_rate": 0.0
+    },
+    "B0": {
+      "arm": "B0",
+      "total_tasks": 30,
+      "scored_tasks": 30,
+      "unscored_missing_annotations": 0,
+      "not_applicable": 0,
+      "access_refused": 0,
+      "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS_R2",
+      "correct_substantive_judgments": 0,
+      "substantive_judgments": 0,
+      "unsupported_substantive_judgments": 0,
+      "unsupported_assertions": 0,
+      "substantive_precision": null,
+      "category_accuracy": 0.0,
+      "category_accuracy_excluding_unknown_unknown": 0.0,
+      "unknown_unknown_matches": 0,
+      "category_accuracy_rule": "unknown/unknown counts toward category_accuracy; excluded variant reported separately; neither counts as substantive judgment",
+      "sufficiency_accuracy": 0.0,
+      "useful_findings": 30,
+      "useful_findings_retained": 0,
+      "useful_finding_retention": 0.0,
+      "missed_useful_findings": 30,
+      "false_abstentions": 30,
+      "false_abstention_rate": 1.0,
+      "useful_candidates_retained": 0,
+      "useful_candidate_recall": 0.0,
+      "insufficient_cases": 0,
+      "correct_insufficient_abstention": 0,
+      "correct_insufficient_abstention_rate": null,
+      "non_useful_cases": 0,
+      "correct_non_use_decisions": 0,
+      "correct_non_use_rate": null,
+      "misleading_advances": 0,
+      "misleading_advance_rate": 0.0,
+      "misleading_advance_rule": "S/V/C/D: unsupported substantive judgments / scored; A: retain_candidate on non-useful-or-insufficient / scored; B/B0: 0 by construction",
+      "citation_precision_mean": null,
+      "citation_recall_mean": 0.0,
+      "citation_cases": 0,
+      "citation_limitation": "Exact-span overlap only; cannot establish entailment. Invented spans fail closed via validation.",
+      "retention_wilson95_case_independence_not_assumed": [
+        0,
+        0.113517091390478
+      ],
+      "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+      "confusion_matrix": [
+        {
+          "gold": "substantive_connection",
+          "predicted": "unknown",
+          "count": 30
+        }
+      ],
+      "per_category": {
+        "substantive_connection": {
+          "cases": 30,
+          "category_correct": 0,
+          "useful_findings": 30,
+          "useful_retained": 0
+        }
+      },
+      "decisions": {
+        "abstain": 30
+      },
+      "model_calls": 0,
+      "cost_micro_usd": 0,
+      "citation_gate": {
+        "assertions_checked": 0,
+        "assertions_passed": 0,
+        "pass_rate": null,
+        "min_precision": 0.2,
+        "require_full_recall": true,
+        "rule": "Accepted findings need exact spans, full required coverage, and precision at/above floor. Failures are misleading advances."
+      },
+      "gated_useful_findings_retained": 0,
+      "gated_useful_finding_retention": 0.0,
+      "gated_misleading_advances": 0,
+      "gated_misleading_advance_rate": 0.0
+    },
+    "S": {
+      "arm": "S",
+      "total_tasks": 30,
+      "scored_tasks": 30,
+      "unscored_missing_annotations": 0,
+      "not_applicable": 0,
+      "access_refused": 0,
+      "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS_R2",
+      "correct_substantive_judgments": 0,
+      "substantive_judgments": 0,
+      "unsupported_substantive_judgments": 0,
+      "unsupported_assertions": 0,
+      "substantive_precision": null,
+      "category_accuracy": 0.0,
+      "category_accuracy_excluding_unknown_unknown": 0.0,
+      "unknown_unknown_matches": 0,
+      "category_accuracy_rule": "unknown/unknown counts toward category_accuracy; excluded variant reported separately; neither counts as substantive judgment",
+      "sufficiency_accuracy": 0.0,
+      "useful_findings": 30,
+      "useful_findings_retained": 0,
+      "useful_finding_retention": 0.0,
+      "missed_useful_findings": 30,
+      "false_abstentions": 30,
+      "false_abstention_rate": 1.0,
+      "useful_candidates_retained": 0,
+      "useful_candidate_recall": 0.0,
+      "insufficient_cases": 0,
+      "correct_insufficient_abstention": 0,
+      "correct_insufficient_abstention_rate": null,
+      "non_useful_cases": 0,
+      "correct_non_use_decisions": 0,
+      "correct_non_use_rate": null,
+      "misleading_advances": 0,
+      "misleading_advance_rate": 0.0,
+      "misleading_advance_rule": "S/V/C/D: unsupported substantive judgments / scored; A: retain_candidate on non-useful-or-insufficient / scored; B/B0: 0 by construction",
+      "citation_precision_mean": null,
+      "citation_recall_mean": 0.0,
+      "citation_cases": 0,
+      "citation_limitation": "Exact-span overlap only; cannot establish entailment. Invented spans fail closed via validation.",
+      "retention_wilson95_case_independence_not_assumed": [
+        0,
+        0.113517091390478
+      ],
+      "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+      "confusion_matrix": [
+        {
+          "gold": "substantive_connection",
+          "predicted": "unknown",
+          "count": 30
+        }
+      ],
+      "per_category": {
+        "substantive_connection": {
+          "cases": 30,
+          "category_correct": 0,
+          "useful_findings": 30,
+          "useful_retained": 0
+        }
+      },
+      "decisions": {
+        "abstain": 30
+      },
+      "model_calls": 0,
+      "cost_micro_usd": 0,
+      "citation_gate": {
+        "assertions_checked": 0,
+        "assertions_passed": 0,
+        "pass_rate": null,
+        "min_precision": 0.2,
+        "require_full_recall": true,
+        "rule": "Accepted findings need exact spans, full required coverage, and precision at/above floor. Failures are misleading advances."
+      },
+      "gated_useful_findings_retained": 0,
+      "gated_useful_finding_retention": 0.0,
+      "gated_misleading_advances": 0,
+      "gated_misleading_advance_rate": 0.0
+    },
+    "V": {
+      "arm": "V",
+      "total_tasks": 30,
+      "scored_tasks": 30,
+      "unscored_missing_annotations": 0,
+      "not_applicable": 0,
+      "access_refused": 0,
+      "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS_R2",
+      "correct_substantive_judgments": 0,
+      "substantive_judgments": 0,
+      "unsupported_substantive_judgments": 0,
+      "unsupported_assertions": 0,
+      "substantive_precision": null,
+      "category_accuracy": 0.0,
+      "category_accuracy_excluding_unknown_unknown": 0.0,
+      "unknown_unknown_matches": 0,
+      "category_accuracy_rule": "unknown/unknown counts toward category_accuracy; excluded variant reported separately; neither counts as substantive judgment",
+      "sufficiency_accuracy": 0.0,
+      "useful_findings": 30,
+      "useful_findings_retained": 0,
+      "useful_finding_retention": 0.0,
+      "missed_useful_findings": 30,
+      "false_abstentions": 30,
+      "false_abstention_rate": 1.0,
+      "useful_candidates_retained": 0,
+      "useful_candidate_recall": 0.0,
+      "insufficient_cases": 0,
+      "correct_insufficient_abstention": 0,
+      "correct_insufficient_abstention_rate": null,
+      "non_useful_cases": 0,
+      "correct_non_use_decisions": 0,
+      "correct_non_use_rate": null,
+      "misleading_advances": 0,
+      "misleading_advance_rate": 0.0,
+      "misleading_advance_rule": "S/V/C/D: unsupported substantive judgments / scored; A: retain_candidate on non-useful-or-insufficient / scored; B/B0: 0 by construction",
+      "citation_precision_mean": null,
+      "citation_recall_mean": 0.0,
+      "citation_cases": 0,
+      "citation_limitation": "Exact-span overlap only; cannot establish entailment. Invented spans fail closed via validation.",
+      "retention_wilson95_case_independence_not_assumed": [
+        0,
+        0.113517091390478
+      ],
+      "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+      "confusion_matrix": [
+        {
+          "gold": "substantive_connection",
+          "predicted": "unknown",
+          "count": 30
+        }
+      ],
+      "per_category": {
+        "substantive_connection": {
+          "cases": 30,
+          "category_correct": 0,
+          "useful_findings": 30,
+          "useful_retained": 0
+        }
+      },
+      "decisions": {
+        "abstain": 30
+      },
+      "model_calls": 0,
+      "cost_micro_usd": 0,
+      "citation_gate": {
+        "assertions_checked": 0,
+        "assertions_passed": 0,
+        "pass_rate": null,
+        "min_precision": 0.2,
+        "require_full_recall": true,
+        "rule": "Accepted findings need exact spans, full required coverage, and precision at/above floor. Failures are misleading advances."
+      },
+      "gated_useful_findings_retained": 0,
+      "gated_useful_finding_retention": 0.0,
+      "gated_misleading_advances": 0,
+      "gated_misleading_advance_rate": 0.0
+    },
+    "C": {
+      "arm": "C",
+      "total_tasks": 30,
+      "scored_tasks": 30,
+      "unscored_missing_annotations": 0,
+      "not_applicable": 0,
+      "access_refused": 0,
+      "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS_R2",
+      "correct_substantive_judgments": 20,
+      "substantive_judgments": 20,
+      "unsupported_substantive_judgments": 0,
+      "unsupported_assertions": 0,
+      "substantive_precision": 1.0,
+      "category_accuracy": 0.6666666666666666,
+      "category_accuracy_excluding_unknown_unknown": 0.6666666666666666,
+      "unknown_unknown_matches": 0,
+      "category_accuracy_rule": "unknown/unknown counts toward category_accuracy; excluded variant reported separately; neither counts as substantive judgment",
+      "sufficiency_accuracy": 0.6666666666666666,
+      "useful_findings": 30,
+      "useful_findings_retained": 20,
+      "useful_finding_retention": 0.6666666666666666,
+      "missed_useful_findings": 10,
+      "false_abstentions": 10,
+      "false_abstention_rate": 0.3333333333333333,
+      "useful_candidates_retained": 0,
+      "useful_candidate_recall": 0.0,
+      "insufficient_cases": 0,
+      "correct_insufficient_abstention": 0,
+      "correct_insufficient_abstention_rate": null,
+      "non_useful_cases": 0,
+      "correct_non_use_decisions": 0,
+      "correct_non_use_rate": null,
+      "misleading_advances": 0,
+      "misleading_advance_rate": 0.0,
+      "misleading_advance_rule": "S/V/C/D: unsupported substantive judgments / scored; A: retain_candidate on non-useful-or-insufficient / scored; B/B0: 0 by construction",
+      "citation_precision_mean": 1.0,
+      "citation_recall_mean": 0.6666666666666666,
+      "citation_cases": 20,
+      "citation_limitation": "Exact-span overlap only; cannot establish entailment. Invented spans fail closed via validation.",
+      "retention_wilson95_case_independence_not_assumed": [
+        0.48779725813830266,
+        0.807697044731538
+      ],
+      "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+      "confusion_matrix": [
+        {
+          "gold": "substantive_connection",
+          "predicted": "substantive_connection",
+          "count": 20
+        },
+        {
+          "gold": "substantive_connection",
+          "predicted": "unknown",
+          "count": 10
+        }
+      ],
+      "per_category": {
+        "substantive_connection": {
+          "cases": 30,
+          "category_correct": 20,
+          "useful_findings": 30,
+          "useful_retained": 20
+        }
+      },
+      "decisions": {
+        "abstain": 10,
+        "use_with_qualification": 20
+      },
+      "model_calls": 0,
+      "cost_micro_usd": 0,
+      "citation_gate": {
+        "assertions_checked": 20,
+        "assertions_passed": 20,
+        "pass_rate": 1.0,
+        "min_precision": 0.2,
+        "require_full_recall": true,
+        "rule": "Accepted findings need exact spans, full required coverage, and precision at/above floor. Failures are misleading advances."
+      },
+      "gated_useful_findings_retained": 20,
+      "gated_useful_finding_retention": 0.6666666666666666,
+      "gated_misleading_advances": 0,
+      "gated_misleading_advance_rate": 0.0
+    },
+    "D": {
+      "arm": "D",
+      "total_tasks": 30,
+      "scored_tasks": 30,
+      "unscored_missing_annotations": 0,
+      "not_applicable": 0,
+      "access_refused": 0,
+      "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS_R2",
+      "correct_substantive_judgments": 30,
+      "substantive_judgments": 30,
+      "unsupported_substantive_judgments": 0,
+      "unsupported_assertions": 0,
+      "substantive_precision": 1.0,
+      "category_accuracy": 1.0,
+      "category_accuracy_excluding_unknown_unknown": 1.0,
+      "unknown_unknown_matches": 0,
+      "category_accuracy_rule": "unknown/unknown counts toward category_accuracy; excluded variant reported separately; neither counts as substantive judgment",
+      "sufficiency_accuracy": 1.0,
+      "useful_findings": 30,
+      "useful_findings_retained": 30,
+      "useful_finding_retention": 1.0,
+      "missed_useful_findings": 0,
+      "false_abstentions": 0,
+      "false_abstention_rate": 0.0,
+      "useful_candidates_retained": 0,
+      "useful_candidate_recall": 0.0,
+      "insufficient_cases": 0,
+      "correct_insufficient_abstention": 0,
+      "correct_insufficient_abstention_rate": null,
+      "non_useful_cases": 0,
+      "correct_non_use_decisions": 0,
+      "correct_non_use_rate": null,
+      "misleading_advances": 0,
+      "misleading_advance_rate": 0.0,
+      "misleading_advance_rule": "S/V/C/D: unsupported substantive judgments / scored; A: retain_candidate on non-useful-or-insufficient / scored; B/B0: 0 by construction",
+      "citation_precision_mean": 1.0,
+      "citation_recall_mean": 1.0,
+      "citation_cases": 30,
+      "citation_limitation": "Exact-span overlap only; cannot establish entailment. Invented spans fail closed via validation.",
+      "retention_wilson95_case_independence_not_assumed": [
+        0.8864829086095221,
+        1
+      ],
+      "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+      "confusion_matrix": [
+        {
+          "gold": "substantive_connection",
+          "predicted": "substantive_connection",
+          "count": 30
+        }
+      ],
+      "per_category": {
+        "substantive_connection": {
+          "cases": 30,
+          "category_correct": 30,
+          "useful_findings": 30,
+          "useful_retained": 30
+        }
+      },
+      "decisions": {
+        "use_with_qualification": 30
+      },
+      "model_calls": 0,
+      "cost_micro_usd": 0,
+      "citation_gate": {
+        "assertions_checked": 30,
+        "assertions_passed": 30,
+        "pass_rate": 1.0,
+        "min_precision": 0.2,
+        "require_full_recall": true,
+        "rule": "Accepted findings need exact spans, full required coverage, and precision at/above floor. Failures are misleading advances."
+      },
+      "gated_useful_findings_retained": 30,
+      "gated_useful_finding_retention": 1.0,
+      "gated_misleading_advances": 0,
+      "gated_misleading_advance_rate": 0.0
+    }
+  },
+  "uncertainty": {
+    "method": "custodian family-level paired bootstrap (gated flags)",
+    "families": 20,
+    "max_family_share": 0.06666666666666667,
+    "imbalance_warning": false,
+    "resamples": 1000,
+    "seed": 20261029,
+    "level": 0.95,
+    "draws_per_arm": {
+      "A": 1000,
+      "B0": 1000,
+      "C": 1000,
+      "D": 1000,
+      "S": 1000,
+      "V": 1000
+    },
+    "arms": {
+      "A": {
+        "retention": [
+          0.0,
+          0.0
+        ],
+        "misleading": [
+          0.0,
+          0.0
+        ]
+      },
+      "B0": {
+        "retention": [
+          0.0,
+          0.0
+        ],
+        "misleading": [
+          0.0,
+          0.0
+        ]
+      },
+      "C": {
+        "retention": [
+          0.5882352941176471,
+          0.8
+        ],
+        "misleading": [
+          0.0,
+          0.0
+        ]
+      },
+      "D": {
+        "retention": [
+          1.0,
+          1.0
+        ],
+        "misleading": [
+          0.0,
+          0.0
+        ]
+      },
+      "S": {
+        "retention": [
+          0.0,
+          0.0
+        ],
+        "misleading": [
+          0.0,
+          0.0
+        ]
+      },
+      "V": {
+        "retention": [
+          0.0,
+          0.0
+        ],
+        "misleading": [
+          0.0,
+          0.0
+        ]
+      }
+    },
+    "paired_differences": {
+      "D-S_retention": [
+        1.0,
+        1.0
+      ],
+      "D-S_misleading": [
+        0.0,
+        0.0
+      ],
+      "D-C_retention": [
+        0.19999999999999996,
+        0.4117647058823529
+      ],
+      "D-C_misleading": [
+        0.0,
+        0.0
+      ]
+    }
+  },
+  "underpowered": false,
+  "imbalance_warning": false,
+  "submitted_summary_echo": null,
+  "summary_authoritative": false,
+  "policy_version": "alive-eval-01-policy-v1"
+}

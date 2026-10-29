@@ -1,0 +1,5 @@
+{
+  "evaluator": "alive-eval-01-v1",
+  "policy": "alive-eval-01-policy-v1",
+  "status": "POLICY_VALID"
+}
