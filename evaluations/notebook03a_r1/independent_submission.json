@@ -1,0 +1,10 @@
+{
+  "set_id": "notebook03-independent-01",
+  "custodian": "UNASSIGNED",
+  "access_restricted_attested": false,
+  "implementer_exposure_events": [],
+  "independent_annotation_status": "PENDING_INDEPENDENT_LABELING",
+  "inputs_sha256": null,
+  "gold_sha256": null,
+  "target_cases": 12
+}

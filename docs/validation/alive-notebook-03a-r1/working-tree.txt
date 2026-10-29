@@ -1,0 +1,10 @@
+?? .vscode/
+?? docs/ALIVE-NOTEBOOK-03A-R1-DESIGN.md
+?? docs/ALIVE-NOTEBOOK-03A-R1-PROTOCOL.md
+?? docs/validation/alive-notebook-03a-r1/
+?? docs/validation_placeholder.json
+?? evaluations/notebook03a_r1/
+?? scripts/notebook03a_r1.py
+?? scripts/notebook03a_r1_protocol.py
+?? scripts/notebook03a_r1_surface.py
+?? tests/test_notebook03a_r1.py

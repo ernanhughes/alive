@@ -1,0 +1,39 @@
+{
+  "diagnostics": {
+    "candidate_recall": "Retain-candidate decisions on useful gold cases / useful gold cases; distinct from semantic finding retention.",
+    "category_accuracy": "Accepted relationship matches / scored cases, INCLUDING unknown/unknown as matches. category_accuracy_excluding_unknown_unknown reported separately; neither counts as substantive judgment.",
+    "citation_precision": "Mean over cases with required evidence of (required chars covered by citations / total cited chars). Overly broad citations score low precision despite high recall. Exact-span overlap only; not entailment.",
+    "citation_recall": "Mean over cases with required evidence of (required chars covered / total required chars).",
+    "confusion_matrix": "Accepted gold category set versus predicted category; ambiguous sets stay combined.",
+    "coverage": "Every task must have exactly one outcome. Refused and predeclared API-inapplicable tasks are counted and reported separately.",
+    "sufficiency_accuracy": "Sufficiency matches / scored cases."
+  },
+  "hard_gates": [
+    "authorization/disclosure",
+    "unknown source/claim references",
+    "non-exact citations",
+    "missing governed execution consent",
+    "budget/cancellation violations"
+  ],
+  "misleading_advance": {
+    "A_lexical": "retain_candidate on non-useful-or-insufficient gold / scored cases.",
+    "B_B0": "0 by construction (never advance).",
+    "S_C_D_semantic": "Unsupported substantive judgments (proposed relationship failing any acceptance check: category/sufficiency/applicability/decision/required-evidence/directed-refs) / scored cases.",
+    "definition": "Count cases where the system advances an unsupported relationship or recommends using inappropriate evidence."
+  },
+  "model_admission": "C/D actual execution and record admission unavailable in 03A-R1; missing governance adapter fails closed. Offline scoring fixtures allowed only by explicit unit-test API flag, never CLI. S surface heuristic is offline deterministic control, no consent gate.",
+  "non_use_and_abstention": {
+    "correct_non_use": "Correct set_aside/abstain on non-useful gold (useful_finding=false) / non-useful scored. For S/C/D: accepted judgments with decision in gold decisions on non-useful. For B/B0: abstain on non-useful. For A: abstain only (retains never count).",
+    "correct_insufficient_abstention": "Explicit abstentions on insufficient gold cases / insufficient gold cases.",
+    "false_abstention": "Abstain decisions on useful gold cases / useful gold cases.",
+    "missed_useful_findings": "Useful gold cases minus accepted retained useful findings."
+  },
+  "primary": {
+    "correct_substantive_judgments": "Count substantive proposals with accepted category, sufficiency, applicability, decision AND complete required gold evidence coverage.",
+    "unsupported_substantive_judgments": "Substantive proposals failing any of those adjudicated acceptance conditions. Provisional draft labels do not establish factual falsity.",
+    "useful_finding_retention": "Accepted evidence-covered substantive findings on useful gold cases / useful gold cases. Unsupported-claim corrections can count as useful. Semantic arms S/C/D only; lexical A reports useful_candidate_recall separately."
+  },
+  "unknown_and_pending": "Pending/missing gold is unscored and reported incomplete; explicit unknown/insufficient labels are valid epistemic targets, not filled-in answers.",
+  "uncertainty": "Paired task-level discordances plus family grouping. Wilson 95% intervals are illustrative under an independence assumption not satisfied by template variants; no significance or generalization claims.",
+  "version": "notebook03-metrics-v2-r1"
+}

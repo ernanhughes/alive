@@ -1,0 +1,43 @@
+{
+  "version": "notebook03a-r1-decision-v1",
+  "scope": "Pre-registered success/failure for future Notebook-03B semantic arms (C general, D structured). No inference authorized by R1; thresholds frozen before any model result.",
+  "comparators": {
+    "A": "Existing lexical policy (deterministic-lexical-connection-v1).",
+    "B0": "Always-abstain policy (explicit constant control).",
+    "S": "Surface-cue heuristic (surface-cue-v1.0, frozen). A model must not be credited for merely outperforming B0 while matching S.",
+    "C": "Same-evidence general-model baseline (when run). D must exceed C under identical evidence/settings/schema with only procedure differing."
+  },
+  "primary_requirements": {
+    "min_useful_retention": 0.5,
+    "max_misleading_advance_rate": 0.1,
+    "rule": "Both retention>=min AND misleading<=max required. Neither condition can be replaced by a single composite score. Useful retention = accepted substantive findings on useful gold / useful gold scored. Misleading = unsupported substantive judgments / scored (S/C/D) as defined in metrics v2."
+  },
+  "surface_margin": {
+    "margin_over_surface": 0.1,
+    "misleading_tolerance_over_surface": 0.05,
+    "rule": "D retention must exceed S retention by >=0.10 AND D misleading must not exceed S misleading by >0.05. Outperforming B0 alone while matching S is NO_PROGRESS."
+  },
+  "sample_size": {
+    "min_scored_cases": 30,
+    "note": "Thresholds justified against control performance and available sample (66 R1 cases, 50 eval, 12 authentic, template families correlated). With 45 useful cases, retention 0.5 requires >=23 retained; Wilson intervals remain illustrative only (non-independent families). Small authentic stratum (n=12) cannot support narrow superiority claims; report INCONCLUSIVE when underpowered."
+  },
+  "verdicts": {
+    "PROGRESS": "Meets retention AND misleading caps AND surface margin on the frozen R1 eval (and, when available, independent holdout) with >=min cases.",
+    "NO_PROGRESS": "Fails retention, exceeds misleading cap, or does not beat surface by margin.",
+    "INCONCLUSIVE": "Insufficient scored cases, missing metrics, arm not run, or holdout exposure invalidating blind use. Explicit INCONCLUSIVE required; do not default to progress or failure."
+  },
+  "formulas": {
+    "useful_finding_retention": "useful_findings_retained / useful_findings (scored useful gold).",
+    "misleading_advance_rate": "misleading_advances / scored_tasks.",
+    "correct_non_use_rate": "correct_non_use_decisions / non_useful_cases (diagnostic, not gating).",
+    "false_abstention_rate": "false_abstentions / useful_findings (diagnostic).",
+    "category_accuracy": "category matches (including unknown/unknown) / scored; excluding-unknown variant reported separately.",
+    "sufficiency_accuracy": "sufficiency matches / scored."
+  },
+  "forbidden": [
+    "Tuning thresholds to an observed semantic-model result.",
+    "Replacing dual retention+false-advance requirements with a single composite.",
+    "Claiming generalization from synthetic/draft-label results or from abstention alone.",
+    "Using public eval as a sealed test after exposure for tuning."
+  ]
+}

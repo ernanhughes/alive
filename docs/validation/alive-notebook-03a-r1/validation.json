@@ -1,0 +1,35 @@
+{
+  "protocol_version": "notebook03a-v1.5",
+  "independent_holdout_status": "PENDING_INDEPENDENT_LABELING",
+  "independent_cases_available": 0,
+  "protocol_sha256": "0a0e6b0bc5b030af8a2265879a8b6cb09c2fbf7155eeb164b10ecdca274c24d1",
+  "validation": {
+    "status": "PUBLIC_COMPLETE",
+    "cases": 66,
+    "missing_or_pending_annotations": [],
+    "splits": {
+      "development": 16,
+      "public_evaluation": 50
+    },
+    "categories": {
+      "supersession": 9,
+      "unknown": 12,
+      "scoped_change": 8,
+      "corroboration_candidate": 5,
+      "unsupported_claim": 9,
+      "independent_observations": 9,
+      "substantive_connection": 9,
+      "contradiction_candidate": 5
+    },
+    "annotation_independence": "IMPLEMENTER_EXPOSED; NOT BLIND"
+  },
+  "template_similarity": {
+    "threshold": 0.55,
+    "families": 39,
+    "cross_split_hits": [],
+    "limitation": "Token-Jaccard heuristic only; misses paraphrases with different vocabulary and may flag coincidental overlap. Not a proof of independence or leakage."
+  },
+  "surface_version": "surface-cue-v1.0",
+  "model_calls": 0,
+  "spend_micro_usd": 0
+}
