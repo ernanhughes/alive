@@ -39,7 +39,7 @@ async function open(page: Page) {
   await page.goto(APP + "/");
   await expect(page.locator(".connection")).toContainText("Backend connected");
   await page.getByRole("button", { name: "Demonstration", exact: true }).click();
-  await expect(page.getByText("Pinned sources")).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Pinned sources" })).toBeVisible();
 }
 const shot = (page: Page, name: string) =>
   page.screenshot({ path: `${SHOTS}/${name}.png`, fullPage: true });

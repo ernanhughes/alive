@@ -49,6 +49,8 @@ function Phase($phase) {
   try { npx playwright test e2e/demo-tour.spec.ts --reporter=list } finally { Pop-Location }
 }
 
+# A previous failed run of THIS disposable project must not block the next one.
+docker compose -p $Project down -v --remove-orphans 2>$null | Out-Null
 $busy = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue
 if ($busy) { throw "Host port $Port is in use by pid $($busy[0].OwningProcess); pass -Port <free port>" }
 Step "commit under test" { git rev-parse HEAD; $global:LASTEXITCODE = 0 }
