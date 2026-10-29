@@ -1,0 +1,3 @@
+Baseline: a9bcf8673818e85246a268c308b64d2080792b96
+PASS: production alive/, browser permissions/UI, migrations, source documents/site, old evaluation evidence, archives and frozen experiments unchanged.
+PASS: final input, tool and normative-document fingerprints match protocol v1.4.

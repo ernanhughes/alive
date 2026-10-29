@@ -104,3 +104,6 @@ jobs:
       - run: node --test tests/notebook-capture.test.cjs
       - run: uv run python -m scripts.notebook02_evaluation --output "$RUNNER_TEMP/notebook02-evaluation.json"
       - run: uv run python -m scripts.notebook02_evaluation --derive-from docs/validation/alive-notebook-02/evaluation.json --output "$RUNNER_TEMP/notebook02-r1-derived.json"
+      - run: uv run python -m scripts.notebook03a validate
+      - run: uv run python -m scripts.notebook03a submission
+      - run: uv run python -m scripts.notebook03a baseline --check-against docs/validation/alive-notebook-03a/expected-baselines-v14.json --output "$RUNNER_TEMP/notebook03a-baseline.json"

@@ -1,0 +1,27 @@
+{
+  "version": "notebook03-metrics-v1",
+  "primary": {
+    "correct_substantive_judgments": "Count substantive proposals with accepted category, sufficiency, applicability, decision AND complete required gold evidence coverage.",
+    "unsupported_substantive_judgments": "Substantive proposals failing any of those adjudicated acceptance conditions. Provisional draft labels do not establish factual falsity.",
+    "useful_finding_retention": "Accepted evidence-covered substantive findings on useful gold cases / useful gold cases. Unsupported-claim corrections can count as useful.",
+    "correct_insufficient_abstention": "Explicit abstentions on insufficient gold cases / insufficient gold cases.",
+    "missed_useful_findings": "Useful gold cases minus accepted retained useful findings."
+  },
+  "diagnostics": {
+    "candidate_recall": "Retain-candidate decisions on useful gold cases / useful gold cases; distinct from semantic finding retention.",
+    "category_accuracy": "Accepted relationship matches / scored cases, including unknown predictions.",
+    "sufficiency_accuracy": "Sufficiency matches / scored cases.",
+    "confusion_matrix": "Accepted gold category set versus predicted category; ambiguous sets stay combined.",
+    "coverage": "Every task must have exactly one outcome. Refused and predeclared API-inapplicable tasks are counted and reported separately."
+  },
+  "unknown_and_pending": "Pending/missing gold is unscored and reported incomplete; explicit unknown/insufficient labels are valid epistemic targets, not filled-in answers.",
+  "uncertainty": "Paired task-level discordances plus family grouping. Wilson 95% intervals are illustrative under an independence assumption not satisfied by template variants; no significance or generalization claims.",
+  "hard_gates": [
+    "authorization/disclosure",
+    "unknown source/claim references",
+    "non-exact citations",
+    "missing governed execution consent",
+    "budget/cancellation violations"
+  ],
+  "model_admission": "C/D actual execution and record admission unavailable in 03A; missing governance adapter fails closed. Offline scoring fixtures are allowed only by explicit unit-test API flag, never CLI."
+}

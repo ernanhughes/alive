@@ -1,0 +1,162 @@
+{
+  "05ad49cb44348c6d": {
+    "development_description": "auth-r1",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "3034516cb59ca2ed": {
+    "development_description": "auth-r2",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "7b86535f5f25b31a": {
+    "development_description": "auth-r3",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "6bcf5458064f0d34": {
+    "development_description": "auth-r4",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "93b00a8b5a248a32": {
+    "development_description": "auth-duplicate",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "7e0b9fd2496cb390": {
+    "development_description": "auth-limitations",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "b490a481c680cd6b": {
+    "development_description": "auth-ranking",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "61c882cd022e627a": {
+    "development_description": "auth-offline",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "b465507d3f62d4f9": {
+    "development_description": "controlled-0-0",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "dc3dd31b8920aa8e": {
+    "development_description": "controlled-0-1",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "64f5a94c1f9fd726": {
+    "development_description": "controlled-0-2",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "ff665aee3f1227d4": {
+    "development_description": "controlled-0-3",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "961260ac197e0f55": {
+    "development_description": "controlled-1-0",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "a36ef919a47b8193": {
+    "development_description": "controlled-1-1",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "94ce49da1fa38a05": {
+    "development_description": "controlled-1-2",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "a8fa8137e65649de": {
+    "development_description": "controlled-1-3",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "21ec9832cd5a5b23": {
+    "development_description": "controlled-2-0",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "86eb6aea5b9d1f52": {
+    "development_description": "controlled-2-1",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "84d9e791fd85b6ee": {
+    "development_description": "controlled-2-2",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "b505a4a0f184deb8": {
+    "development_description": "controlled-2-3",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "286cbd9e168027ea": {
+    "development_description": "controlled-3-0",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "2c31b98a8adf9716": {
+    "development_description": "controlled-3-1",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "32552d380a1a2769": {
+    "development_description": "controlled-3-2",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "4dd17166a1a9d94a": {
+    "development_description": "controlled-3-3",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "5f8934aa43f7f5f0": {
+    "development_description": "controlled-4-0",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "9a4ea2d7c6200d70": {
+    "development_description": "controlled-4-1",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "b3a677ae0c417562": {
+    "development_description": "controlled-4-2",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "5aae89c1e9f8f803": {
+    "development_description": "controlled-4-3",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "ac5fa2b2e74482da": {
+    "development_description": "controlled-5-0",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "6d50a5dc985bab39": {
+    "development_description": "controlled-5-1",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "5afc3dfb886e9c39": {
+    "development_description": "controlled-5-2",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "38abe608c94b557f": {
+    "development_description": "controlled-5-3",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "6b978533c472aab6": {
+    "development_description": "controlled-6-0",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "21ac0b9ee6495a00": {
+    "development_description": "controlled-6-1",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "ac11a285be6b131c": {
+    "development_description": "controlled-6-2",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "56ad779e80f2f115": {
+    "development_description": "controlled-6-3",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "e3a56c3973946019": {
+    "development_description": "controlled-7-0",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "d733952487197795": {
+    "development_description": "controlled-7-1",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "7cfb76d29a801fe2": {
+    "development_description": "controlled-7-2 access-guard perturbation",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  },
+  "90cd334cc5220fd3": {
+    "development_description": "controlled-7-3 access-guard perturbation",
+    "review_status": "NOT_INDEPENDENTLY_ADJUDICATED"
+  }
+}

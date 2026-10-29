@@ -1,0 +1,40 @@
+{
+  "protocol_version": "notebook03a-v1.4",
+  "independent_holdout_status": "PENDING_INDEPENDENT_LABELING",
+  "independent_cases_available": 0,
+  "protocol_sha256": "ffba53c718a5600b7d0d03a8727a034031bcf7efb58e18b9bee2667244a7acc7",
+  "validation": {
+    "status": "PUBLIC_COMPLETE",
+    "cases": 40,
+    "missing_or_pending_annotations": [],
+    "splits": {
+      "development": 16,
+      "public_evaluation": 24
+    },
+    "categories": {
+      "supersession": 5,
+      "unknown": 8,
+      "scoped_change": 6,
+      "corroboration_candidate": 4,
+      "unsupported_claim": 5,
+      "independent_observations": 5,
+      "substantive_connection": 3,
+      "contradiction_candidate": 4
+    },
+    "annotation_independence": "IMPLEMENTER_EXPOSED; NOT BLIND"
+  },
+  "model_calls": 0,
+  "spend_micro_usd": 0,
+  "submission": {
+    "set_id": "notebook03-independent-01",
+    "custodian": "UNASSIGNED",
+    "access_restricted_attested": false,
+    "implementer_exposure_events": [],
+    "independent_annotation_status": "PENDING_INDEPENDENT_LABELING",
+    "inputs_sha256": null,
+    "gold_sha256": null,
+    "target_cases": 12
+  },
+  "attested_eligibility": false,
+  "limitation": "Attestation validation is not access-control verification. No blind holdout is currently available."
+}

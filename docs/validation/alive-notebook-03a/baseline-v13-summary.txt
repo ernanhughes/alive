@@ -1,0 +1,1578 @@
+{
+  "protocol_version": "notebook03a-v1.3",
+  "independent_holdout_status": "PENDING_INDEPENDENT_LABELING",
+  "independent_cases_available": 0,
+  "protocol_sha256": "82df0bedea48465c5e92a7d55fccf7cbfdaf52f615ec46789acdd894833a621c",
+  "validation": {
+    "status": "PUBLIC_COMPLETE",
+    "cases": 40,
+    "missing_or_pending_annotations": [],
+    "splits": {
+      "development": 16,
+      "public_evaluation": 24
+    },
+    "categories": {
+      "supersession": 5,
+      "unknown": 8,
+      "scoped_change": 6,
+      "corroboration_candidate": 4,
+      "unsupported_claim": 5,
+      "independent_observations": 5,
+      "substantive_connection": 3,
+      "contradiction_candidate": 4
+    },
+    "annotation_independence": "IMPLEMENTER_EXPOSED; NOT BLIND"
+  },
+  "model_calls": 0,
+  "spend_micro_usd": 0,
+  "metrics": {
+    "A": {
+      "arm": "A",
+      "total_tasks": 40,
+      "scored_tasks": 29,
+      "unscored_missing_annotations": 0,
+      "not_applicable": 9,
+      "access_refused": 2,
+      "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+      "correct_substantive_judgments": 0,
+      "substantive_judgments": 0,
+      "unsupported_substantive_judgments": 0,
+      "substantive_precision": null,
+      "category_accuracy": 0.06896551724137931,
+      "sufficiency_accuracy": 0.0,
+      "useful_findings": 22,
+      "useful_findings_retained": 0,
+      "useful_finding_retention": 0.0,
+      "missed_useful_findings": 22,
+      "useful_candidates_retained": 22,
+      "useful_candidate_recall": 1.0,
+      "insufficient_cases": 2,
+      "correct_insufficient_abstention": 0,
+      "correct_insufficient_abstention_rate": 0.0,
+      "retention_wilson95_case_independence_not_assumed": [
+        1.3877787807814457e-17,
+        0.14865952572596125
+      ],
+      "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+      "confusion_matrix": [
+        {
+          "gold": "contradiction_candidate",
+          "predicted": "unknown",
+          "count": 4
+        },
+        {
+          "gold": "corroboration_candidate",
+          "predicted": "unknown",
+          "count": 4
+        },
+        {
+          "gold": "independent_observations",
+          "predicted": "unknown",
+          "count": 5
+        },
+        {
+          "gold": "scoped_change",
+          "predicted": "unknown",
+          "count": 6
+        },
+        {
+          "gold": "substantive_connection",
+          "predicted": "unknown",
+          "count": 3
+        },
+        {
+          "gold": "supersession",
+          "predicted": "unknown",
+          "count": 5
+        },
+        {
+          "gold": "unknown",
+          "predicted": "unknown",
+          "count": 2
+        }
+      ],
+      "per_category": {
+        "supersession": {
+          "cases": 5,
+          "category_correct": 0,
+          "useful_findings": 5,
+          "useful_retained": 0
+        },
+        "scoped_change": {
+          "cases": 6,
+          "category_correct": 0,
+          "useful_findings": 6,
+          "useful_retained": 0
+        },
+        "corroboration_candidate": {
+          "cases": 4,
+          "category_correct": 0,
+          "useful_findings": 4,
+          "useful_retained": 0
+        },
+        "independent_observations": {
+          "cases": 5,
+          "category_correct": 0,
+          "useful_findings": 0,
+          "useful_retained": 0
+        },
+        "substantive_connection": {
+          "cases": 3,
+          "category_correct": 0,
+          "useful_findings": 3,
+          "useful_retained": 0
+        },
+        "contradiction_candidate": {
+          "cases": 4,
+          "category_correct": 0,
+          "useful_findings": 4,
+          "useful_retained": 0
+        },
+        "unknown": {
+          "cases": 2,
+          "category_correct": 2,
+          "useful_findings": 0,
+          "useful_retained": 0
+        }
+      },
+      "decisions": {
+        "retain_candidate": 29,
+        "not_applicable": 9,
+        "refuse": 2
+      },
+      "model_calls": 0,
+      "cost_micro_usd": 0
+    },
+    "B": {
+      "arm": "B",
+      "total_tasks": 40,
+      "scored_tasks": 29,
+      "unscored_missing_annotations": 0,
+      "not_applicable": 9,
+      "access_refused": 2,
+      "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+      "correct_substantive_judgments": 0,
+      "substantive_judgments": 0,
+      "unsupported_substantive_judgments": 0,
+      "substantive_precision": null,
+      "category_accuracy": 0.06896551724137931,
+      "sufficiency_accuracy": 0.0,
+      "useful_findings": 22,
+      "useful_findings_retained": 0,
+      "useful_finding_retention": 0.0,
+      "missed_useful_findings": 22,
+      "useful_candidates_retained": 0,
+      "useful_candidate_recall": 0.0,
+      "insufficient_cases": 2,
+      "correct_insufficient_abstention": 2,
+      "correct_insufficient_abstention_rate": 1.0,
+      "retention_wilson95_case_independence_not_assumed": [
+        1.3877787807814457e-17,
+        0.14865952572596125
+      ],
+      "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+      "confusion_matrix": [
+        {
+          "gold": "contradiction_candidate",
+          "predicted": "unknown",
+          "count": 4
+        },
+        {
+          "gold": "corroboration_candidate",
+          "predicted": "unknown",
+          "count": 4
+        },
+        {
+          "gold": "independent_observations",
+          "predicted": "unknown",
+          "count": 5
+        },
+        {
+          "gold": "scoped_change",
+          "predicted": "unknown",
+          "count": 6
+        },
+        {
+          "gold": "substantive_connection",
+          "predicted": "unknown",
+          "count": 3
+        },
+        {
+          "gold": "supersession",
+          "predicted": "unknown",
+          "count": 5
+        },
+        {
+          "gold": "unknown",
+          "predicted": "unknown",
+          "count": 2
+        }
+      ],
+      "per_category": {
+        "supersession": {
+          "cases": 5,
+          "category_correct": 0,
+          "useful_findings": 5,
+          "useful_retained": 0
+        },
+        "scoped_change": {
+          "cases": 6,
+          "category_correct": 0,
+          "useful_findings": 6,
+          "useful_retained": 0
+        },
+        "corroboration_candidate": {
+          "cases": 4,
+          "category_correct": 0,
+          "useful_findings": 4,
+          "useful_retained": 0
+        },
+        "independent_observations": {
+          "cases": 5,
+          "category_correct": 0,
+          "useful_findings": 0,
+          "useful_retained": 0
+        },
+        "substantive_connection": {
+          "cases": 3,
+          "category_correct": 0,
+          "useful_findings": 3,
+          "useful_retained": 0
+        },
+        "contradiction_candidate": {
+          "cases": 4,
+          "category_correct": 0,
+          "useful_findings": 4,
+          "useful_retained": 0
+        },
+        "unknown": {
+          "cases": 2,
+          "category_correct": 2,
+          "useful_findings": 0,
+          "useful_retained": 0
+        }
+      },
+      "decisions": {
+        "abstain": 29,
+        "not_applicable": 9,
+        "refuse": 2
+      },
+      "model_calls": 0,
+      "cost_micro_usd": 0
+    },
+    "B0": {
+      "arm": "B0",
+      "total_tasks": 40,
+      "scored_tasks": 38,
+      "unscored_missing_annotations": 0,
+      "not_applicable": 0,
+      "access_refused": 2,
+      "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+      "correct_substantive_judgments": 0,
+      "substantive_judgments": 0,
+      "unsupported_substantive_judgments": 0,
+      "substantive_precision": null,
+      "category_accuracy": 0.15789473684210525,
+      "sufficiency_accuracy": 0.0,
+      "useful_findings": 27,
+      "useful_findings_retained": 0,
+      "useful_finding_retention": 0.0,
+      "missed_useful_findings": 27,
+      "useful_candidates_retained": 0,
+      "useful_candidate_recall": 0.0,
+      "insufficient_cases": 6,
+      "correct_insufficient_abstention": 6,
+      "correct_insufficient_abstention_rate": 1.0,
+      "retention_wilson95_case_independence_not_assumed": [
+        6.938893903907228e-18,
+        0.12455903714463581
+      ],
+      "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+      "confusion_matrix": [
+        {
+          "gold": "contradiction_candidate",
+          "predicted": "unknown",
+          "count": 4
+        },
+        {
+          "gold": "corroboration_candidate",
+          "predicted": "unknown",
+          "count": 4
+        },
+        {
+          "gold": "independent_observations",
+          "predicted": "unknown",
+          "count": 5
+        },
+        {
+          "gold": "scoped_change",
+          "predicted": "unknown",
+          "count": 6
+        },
+        {
+          "gold": "substantive_connection",
+          "predicted": "unknown",
+          "count": 3
+        },
+        {
+          "gold": "supersession",
+          "predicted": "unknown",
+          "count": 5
+        },
+        {
+          "gold": "unknown",
+          "predicted": "unknown",
+          "count": 6
+        },
+        {
+          "gold": "unsupported_claim",
+          "predicted": "unknown",
+          "count": 5
+        }
+      ],
+      "per_category": {
+        "supersession": {
+          "cases": 5,
+          "category_correct": 0,
+          "useful_findings": 5,
+          "useful_retained": 0
+        },
+        "unknown": {
+          "cases": 6,
+          "category_correct": 6,
+          "useful_findings": 0,
+          "useful_retained": 0
+        },
+        "scoped_change": {
+          "cases": 6,
+          "category_correct": 0,
+          "useful_findings": 6,
+          "useful_retained": 0
+        },
+        "corroboration_candidate": {
+          "cases": 4,
+          "category_correct": 0,
+          "useful_findings": 4,
+          "useful_retained": 0
+        },
+        "unsupported_claim": {
+          "cases": 5,
+          "category_correct": 0,
+          "useful_findings": 5,
+          "useful_retained": 0
+        },
+        "independent_observations": {
+          "cases": 5,
+          "category_correct": 0,
+          "useful_findings": 0,
+          "useful_retained": 0
+        },
+        "substantive_connection": {
+          "cases": 3,
+          "category_correct": 0,
+          "useful_findings": 3,
+          "useful_retained": 0
+        },
+        "contradiction_candidate": {
+          "cases": 4,
+          "category_correct": 0,
+          "useful_findings": 4,
+          "useful_retained": 0
+        }
+      },
+      "decisions": {
+        "abstain": 38,
+        "refuse": 2
+      },
+      "model_calls": 0,
+      "cost_micro_usd": 0
+    }
+  },
+  "strata": {
+    "pair": {
+      "A": {
+        "arm": "A",
+        "total_tasks": 31,
+        "scored_tasks": 29,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 0,
+        "access_refused": 2,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": 0.06896551724137931,
+        "sufficiency_accuracy": 0.0,
+        "useful_findings": 22,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": 0.0,
+        "missed_useful_findings": 22,
+        "useful_candidates_retained": 22,
+        "useful_candidate_recall": 1.0,
+        "insufficient_cases": 2,
+        "correct_insufficient_abstention": 0,
+        "correct_insufficient_abstention_rate": 0.0,
+        "retention_wilson95_case_independence_not_assumed": [
+          1.3877787807814457e-17,
+          0.14865952572596125
+        ],
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [
+          {
+            "gold": "contradiction_candidate",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "corroboration_candidate",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "independent_observations",
+            "predicted": "unknown",
+            "count": 5
+          },
+          {
+            "gold": "scoped_change",
+            "predicted": "unknown",
+            "count": 6
+          },
+          {
+            "gold": "substantive_connection",
+            "predicted": "unknown",
+            "count": 3
+          },
+          {
+            "gold": "supersession",
+            "predicted": "unknown",
+            "count": 5
+          },
+          {
+            "gold": "unknown",
+            "predicted": "unknown",
+            "count": 2
+          }
+        ],
+        "per_category": {
+          "supersession": {
+            "cases": 5,
+            "category_correct": 0,
+            "useful_findings": 5,
+            "useful_retained": 0
+          },
+          "scoped_change": {
+            "cases": 6,
+            "category_correct": 0,
+            "useful_findings": 6,
+            "useful_retained": 0
+          },
+          "corroboration_candidate": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "independent_observations": {
+            "cases": 5,
+            "category_correct": 0,
+            "useful_findings": 0,
+            "useful_retained": 0
+          },
+          "substantive_connection": {
+            "cases": 3,
+            "category_correct": 0,
+            "useful_findings": 3,
+            "useful_retained": 0
+          },
+          "contradiction_candidate": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "unknown": {
+            "cases": 2,
+            "category_correct": 2,
+            "useful_findings": 0,
+            "useful_retained": 0
+          }
+        },
+        "decisions": {
+          "retain_candidate": 29,
+          "refuse": 2
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      },
+      "B": {
+        "arm": "B",
+        "total_tasks": 31,
+        "scored_tasks": 29,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 0,
+        "access_refused": 2,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": 0.06896551724137931,
+        "sufficiency_accuracy": 0.0,
+        "useful_findings": 22,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": 0.0,
+        "missed_useful_findings": 22,
+        "useful_candidates_retained": 0,
+        "useful_candidate_recall": 0.0,
+        "insufficient_cases": 2,
+        "correct_insufficient_abstention": 2,
+        "correct_insufficient_abstention_rate": 1.0,
+        "retention_wilson95_case_independence_not_assumed": [
+          1.3877787807814457e-17,
+          0.14865952572596125
+        ],
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [
+          {
+            "gold": "contradiction_candidate",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "corroboration_candidate",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "independent_observations",
+            "predicted": "unknown",
+            "count": 5
+          },
+          {
+            "gold": "scoped_change",
+            "predicted": "unknown",
+            "count": 6
+          },
+          {
+            "gold": "substantive_connection",
+            "predicted": "unknown",
+            "count": 3
+          },
+          {
+            "gold": "supersession",
+            "predicted": "unknown",
+            "count": 5
+          },
+          {
+            "gold": "unknown",
+            "predicted": "unknown",
+            "count": 2
+          }
+        ],
+        "per_category": {
+          "supersession": {
+            "cases": 5,
+            "category_correct": 0,
+            "useful_findings": 5,
+            "useful_retained": 0
+          },
+          "scoped_change": {
+            "cases": 6,
+            "category_correct": 0,
+            "useful_findings": 6,
+            "useful_retained": 0
+          },
+          "corroboration_candidate": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "independent_observations": {
+            "cases": 5,
+            "category_correct": 0,
+            "useful_findings": 0,
+            "useful_retained": 0
+          },
+          "substantive_connection": {
+            "cases": 3,
+            "category_correct": 0,
+            "useful_findings": 3,
+            "useful_retained": 0
+          },
+          "contradiction_candidate": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "unknown": {
+            "cases": 2,
+            "category_correct": 2,
+            "useful_findings": 0,
+            "useful_retained": 0
+          }
+        },
+        "decisions": {
+          "abstain": 29,
+          "refuse": 2
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      },
+      "B0": {
+        "arm": "B0",
+        "total_tasks": 31,
+        "scored_tasks": 29,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 0,
+        "access_refused": 2,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": 0.06896551724137931,
+        "sufficiency_accuracy": 0.0,
+        "useful_findings": 22,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": 0.0,
+        "missed_useful_findings": 22,
+        "useful_candidates_retained": 0,
+        "useful_candidate_recall": 0.0,
+        "insufficient_cases": 2,
+        "correct_insufficient_abstention": 2,
+        "correct_insufficient_abstention_rate": 1.0,
+        "retention_wilson95_case_independence_not_assumed": [
+          1.3877787807814457e-17,
+          0.14865952572596125
+        ],
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [
+          {
+            "gold": "contradiction_candidate",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "corroboration_candidate",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "independent_observations",
+            "predicted": "unknown",
+            "count": 5
+          },
+          {
+            "gold": "scoped_change",
+            "predicted": "unknown",
+            "count": 6
+          },
+          {
+            "gold": "substantive_connection",
+            "predicted": "unknown",
+            "count": 3
+          },
+          {
+            "gold": "supersession",
+            "predicted": "unknown",
+            "count": 5
+          },
+          {
+            "gold": "unknown",
+            "predicted": "unknown",
+            "count": 2
+          }
+        ],
+        "per_category": {
+          "supersession": {
+            "cases": 5,
+            "category_correct": 0,
+            "useful_findings": 5,
+            "useful_retained": 0
+          },
+          "scoped_change": {
+            "cases": 6,
+            "category_correct": 0,
+            "useful_findings": 6,
+            "useful_retained": 0
+          },
+          "corroboration_candidate": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "independent_observations": {
+            "cases": 5,
+            "category_correct": 0,
+            "useful_findings": 0,
+            "useful_retained": 0
+          },
+          "substantive_connection": {
+            "cases": 3,
+            "category_correct": 0,
+            "useful_findings": 3,
+            "useful_retained": 0
+          },
+          "contradiction_candidate": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "unknown": {
+            "cases": 2,
+            "category_correct": 2,
+            "useful_findings": 0,
+            "useful_retained": 0
+          }
+        },
+        "decisions": {
+          "abstain": 29,
+          "refuse": 2
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      }
+    },
+    "claim_support": {
+      "A": {
+        "arm": "A",
+        "total_tasks": 9,
+        "scored_tasks": 0,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 9,
+        "access_refused": 0,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": null,
+        "sufficiency_accuracy": null,
+        "useful_findings": 0,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": null,
+        "missed_useful_findings": 0,
+        "useful_candidates_retained": 0,
+        "useful_candidate_recall": null,
+        "insufficient_cases": 0,
+        "correct_insufficient_abstention": 0,
+        "correct_insufficient_abstention_rate": null,
+        "retention_wilson95_case_independence_not_assumed": null,
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [],
+        "per_category": {},
+        "decisions": {
+          "not_applicable": 9
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      },
+      "B": {
+        "arm": "B",
+        "total_tasks": 9,
+        "scored_tasks": 0,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 9,
+        "access_refused": 0,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": null,
+        "sufficiency_accuracy": null,
+        "useful_findings": 0,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": null,
+        "missed_useful_findings": 0,
+        "useful_candidates_retained": 0,
+        "useful_candidate_recall": null,
+        "insufficient_cases": 0,
+        "correct_insufficient_abstention": 0,
+        "correct_insufficient_abstention_rate": null,
+        "retention_wilson95_case_independence_not_assumed": null,
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [],
+        "per_category": {},
+        "decisions": {
+          "not_applicable": 9
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      },
+      "B0": {
+        "arm": "B0",
+        "total_tasks": 9,
+        "scored_tasks": 9,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 0,
+        "access_refused": 0,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": 0.4444444444444444,
+        "sufficiency_accuracy": 0.0,
+        "useful_findings": 5,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": 0.0,
+        "missed_useful_findings": 5,
+        "useful_candidates_retained": 0,
+        "useful_candidate_recall": 0.0,
+        "insufficient_cases": 4,
+        "correct_insufficient_abstention": 4,
+        "correct_insufficient_abstention_rate": 1.0,
+        "retention_wilson95_case_independence_not_assumed": [
+          0,
+          0.43449149475208104
+        ],
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [
+          {
+            "gold": "unknown",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "unsupported_claim",
+            "predicted": "unknown",
+            "count": 5
+          }
+        ],
+        "per_category": {
+          "unknown": {
+            "cases": 4,
+            "category_correct": 4,
+            "useful_findings": 0,
+            "useful_retained": 0
+          },
+          "unsupported_claim": {
+            "cases": 5,
+            "category_correct": 0,
+            "useful_findings": 5,
+            "useful_retained": 0
+          }
+        },
+        "decisions": {
+          "abstain": 9
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      }
+    },
+    "authentic": {
+      "A": {
+        "arm": "A",
+        "total_tasks": 7,
+        "scored_tasks": 7,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 0,
+        "access_refused": 0,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": 0.0,
+        "sufficiency_accuracy": 0.0,
+        "useful_findings": 6,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": 0.0,
+        "missed_useful_findings": 6,
+        "useful_candidates_retained": 6,
+        "useful_candidate_recall": 1.0,
+        "insufficient_cases": 0,
+        "correct_insufficient_abstention": 0,
+        "correct_insufficient_abstention_rate": null,
+        "retention_wilson95_case_independence_not_assumed": [
+          0,
+          0.3903430336530645
+        ],
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [
+          {
+            "gold": "independent_observations",
+            "predicted": "unknown",
+            "count": 1
+          },
+          {
+            "gold": "scoped_change",
+            "predicted": "unknown",
+            "count": 2
+          },
+          {
+            "gold": "substantive_connection",
+            "predicted": "unknown",
+            "count": 3
+          },
+          {
+            "gold": "supersession",
+            "predicted": "unknown",
+            "count": 1
+          }
+        ],
+        "per_category": {
+          "supersession": {
+            "cases": 1,
+            "category_correct": 0,
+            "useful_findings": 1,
+            "useful_retained": 0
+          },
+          "scoped_change": {
+            "cases": 2,
+            "category_correct": 0,
+            "useful_findings": 2,
+            "useful_retained": 0
+          },
+          "substantive_connection": {
+            "cases": 3,
+            "category_correct": 0,
+            "useful_findings": 3,
+            "useful_retained": 0
+          },
+          "independent_observations": {
+            "cases": 1,
+            "category_correct": 0,
+            "useful_findings": 0,
+            "useful_retained": 0
+          }
+        },
+        "decisions": {
+          "retain_candidate": 7
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      },
+      "B": {
+        "arm": "B",
+        "total_tasks": 7,
+        "scored_tasks": 7,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 0,
+        "access_refused": 0,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": 0.0,
+        "sufficiency_accuracy": 0.0,
+        "useful_findings": 6,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": 0.0,
+        "missed_useful_findings": 6,
+        "useful_candidates_retained": 0,
+        "useful_candidate_recall": 0.0,
+        "insufficient_cases": 0,
+        "correct_insufficient_abstention": 0,
+        "correct_insufficient_abstention_rate": null,
+        "retention_wilson95_case_independence_not_assumed": [
+          0,
+          0.3903430336530645
+        ],
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [
+          {
+            "gold": "independent_observations",
+            "predicted": "unknown",
+            "count": 1
+          },
+          {
+            "gold": "scoped_change",
+            "predicted": "unknown",
+            "count": 2
+          },
+          {
+            "gold": "substantive_connection",
+            "predicted": "unknown",
+            "count": 3
+          },
+          {
+            "gold": "supersession",
+            "predicted": "unknown",
+            "count": 1
+          }
+        ],
+        "per_category": {
+          "supersession": {
+            "cases": 1,
+            "category_correct": 0,
+            "useful_findings": 1,
+            "useful_retained": 0
+          },
+          "scoped_change": {
+            "cases": 2,
+            "category_correct": 0,
+            "useful_findings": 2,
+            "useful_retained": 0
+          },
+          "substantive_connection": {
+            "cases": 3,
+            "category_correct": 0,
+            "useful_findings": 3,
+            "useful_retained": 0
+          },
+          "independent_observations": {
+            "cases": 1,
+            "category_correct": 0,
+            "useful_findings": 0,
+            "useful_retained": 0
+          }
+        },
+        "decisions": {
+          "abstain": 7
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      },
+      "B0": {
+        "arm": "B0",
+        "total_tasks": 7,
+        "scored_tasks": 7,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 0,
+        "access_refused": 0,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": 0.0,
+        "sufficiency_accuracy": 0.0,
+        "useful_findings": 6,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": 0.0,
+        "missed_useful_findings": 6,
+        "useful_candidates_retained": 0,
+        "useful_candidate_recall": 0.0,
+        "insufficient_cases": 0,
+        "correct_insufficient_abstention": 0,
+        "correct_insufficient_abstention_rate": null,
+        "retention_wilson95_case_independence_not_assumed": [
+          0,
+          0.3903430336530645
+        ],
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [
+          {
+            "gold": "independent_observations",
+            "predicted": "unknown",
+            "count": 1
+          },
+          {
+            "gold": "scoped_change",
+            "predicted": "unknown",
+            "count": 2
+          },
+          {
+            "gold": "substantive_connection",
+            "predicted": "unknown",
+            "count": 3
+          },
+          {
+            "gold": "supersession",
+            "predicted": "unknown",
+            "count": 1
+          }
+        ],
+        "per_category": {
+          "supersession": {
+            "cases": 1,
+            "category_correct": 0,
+            "useful_findings": 1,
+            "useful_retained": 0
+          },
+          "scoped_change": {
+            "cases": 2,
+            "category_correct": 0,
+            "useful_findings": 2,
+            "useful_retained": 0
+          },
+          "substantive_connection": {
+            "cases": 3,
+            "category_correct": 0,
+            "useful_findings": 3,
+            "useful_retained": 0
+          },
+          "independent_observations": {
+            "cases": 1,
+            "category_correct": 0,
+            "useful_findings": 0,
+            "useful_retained": 0
+          }
+        },
+        "decisions": {
+          "abstain": 7
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      }
+    },
+    "controlled": {
+      "A": {
+        "arm": "A",
+        "total_tasks": 1,
+        "scored_tasks": 0,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 1,
+        "access_refused": 0,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": null,
+        "sufficiency_accuracy": null,
+        "useful_findings": 0,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": null,
+        "missed_useful_findings": 0,
+        "useful_candidates_retained": 0,
+        "useful_candidate_recall": null,
+        "insufficient_cases": 0,
+        "correct_insufficient_abstention": 0,
+        "correct_insufficient_abstention_rate": null,
+        "retention_wilson95_case_independence_not_assumed": null,
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [],
+        "per_category": {},
+        "decisions": {
+          "not_applicable": 1
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      },
+      "B": {
+        "arm": "B",
+        "total_tasks": 1,
+        "scored_tasks": 0,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 1,
+        "access_refused": 0,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": null,
+        "sufficiency_accuracy": null,
+        "useful_findings": 0,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": null,
+        "missed_useful_findings": 0,
+        "useful_candidates_retained": 0,
+        "useful_candidate_recall": null,
+        "insufficient_cases": 0,
+        "correct_insufficient_abstention": 0,
+        "correct_insufficient_abstention_rate": null,
+        "retention_wilson95_case_independence_not_assumed": null,
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [],
+        "per_category": {},
+        "decisions": {
+          "not_applicable": 1
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      },
+      "B0": {
+        "arm": "B0",
+        "total_tasks": 1,
+        "scored_tasks": 1,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 0,
+        "access_refused": 0,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": 0.0,
+        "sufficiency_accuracy": 0.0,
+        "useful_findings": 1,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": 0.0,
+        "missed_useful_findings": 1,
+        "useful_candidates_retained": 0,
+        "useful_candidate_recall": 0.0,
+        "insufficient_cases": 0,
+        "correct_insufficient_abstention": 0,
+        "correct_insufficient_abstention_rate": null,
+        "retention_wilson95_case_independence_not_assumed": [
+          0,
+          0.7934567085261071
+        ],
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [
+          {
+            "gold": "unsupported_claim",
+            "predicted": "unknown",
+            "count": 1
+          }
+        ],
+        "per_category": {
+          "unsupported_claim": {
+            "cases": 1,
+            "category_correct": 0,
+            "useful_findings": 1,
+            "useful_retained": 0
+          }
+        },
+        "decisions": {
+          "abstain": 1
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      }
+    },
+    "synthetic": {
+      "A": {
+        "arm": "A",
+        "total_tasks": 32,
+        "scored_tasks": 22,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 8,
+        "access_refused": 2,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": 0.09090909090909091,
+        "sufficiency_accuracy": 0.0,
+        "useful_findings": 16,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": 0.0,
+        "missed_useful_findings": 16,
+        "useful_candidates_retained": 16,
+        "useful_candidate_recall": 1.0,
+        "insufficient_cases": 2,
+        "correct_insufficient_abstention": 0,
+        "correct_insufficient_abstention_rate": 0.0,
+        "retention_wilson95_case_independence_not_assumed": [
+          0,
+          0.19361341827271994
+        ],
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [
+          {
+            "gold": "contradiction_candidate",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "corroboration_candidate",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "independent_observations",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "scoped_change",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "supersession",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "unknown",
+            "predicted": "unknown",
+            "count": 2
+          }
+        ],
+        "per_category": {
+          "scoped_change": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "corroboration_candidate": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "independent_observations": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 0,
+            "useful_retained": 0
+          },
+          "supersession": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "contradiction_candidate": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "unknown": {
+            "cases": 2,
+            "category_correct": 2,
+            "useful_findings": 0,
+            "useful_retained": 0
+          }
+        },
+        "decisions": {
+          "not_applicable": 8,
+          "retain_candidate": 22,
+          "refuse": 2
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      },
+      "B": {
+        "arm": "B",
+        "total_tasks": 32,
+        "scored_tasks": 22,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 8,
+        "access_refused": 2,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": 0.09090909090909091,
+        "sufficiency_accuracy": 0.0,
+        "useful_findings": 16,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": 0.0,
+        "missed_useful_findings": 16,
+        "useful_candidates_retained": 0,
+        "useful_candidate_recall": 0.0,
+        "insufficient_cases": 2,
+        "correct_insufficient_abstention": 2,
+        "correct_insufficient_abstention_rate": 1.0,
+        "retention_wilson95_case_independence_not_assumed": [
+          0,
+          0.19361341827271994
+        ],
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [
+          {
+            "gold": "contradiction_candidate",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "corroboration_candidate",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "independent_observations",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "scoped_change",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "supersession",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "unknown",
+            "predicted": "unknown",
+            "count": 2
+          }
+        ],
+        "per_category": {
+          "scoped_change": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "corroboration_candidate": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "independent_observations": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 0,
+            "useful_retained": 0
+          },
+          "supersession": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "contradiction_candidate": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "unknown": {
+            "cases": 2,
+            "category_correct": 2,
+            "useful_findings": 0,
+            "useful_retained": 0
+          }
+        },
+        "decisions": {
+          "not_applicable": 8,
+          "abstain": 22,
+          "refuse": 2
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      },
+      "B0": {
+        "arm": "B0",
+        "total_tasks": 32,
+        "scored_tasks": 30,
+        "unscored_missing_annotations": 0,
+        "not_applicable": 0,
+        "access_refused": 2,
+        "annotation_status": "PROVISIONAL_PUBLIC_DRAFT_LABELS",
+        "correct_substantive_judgments": 0,
+        "substantive_judgments": 0,
+        "unsupported_substantive_judgments": 0,
+        "substantive_precision": null,
+        "category_accuracy": 0.2,
+        "sufficiency_accuracy": 0.0,
+        "useful_findings": 20,
+        "useful_findings_retained": 0,
+        "useful_finding_retention": 0.0,
+        "missed_useful_findings": 20,
+        "useful_candidates_retained": 0,
+        "useful_candidate_recall": 0.0,
+        "insufficient_cases": 6,
+        "correct_insufficient_abstention": 6,
+        "correct_insufficient_abstention_rate": 1.0,
+        "retention_wilson95_case_independence_not_assumed": [
+          0,
+          0.16113012549493322
+        ],
+        "uncertainty": "Illustrative binomial interval only; related families violate independent-case assumptions. No significance claim.",
+        "confusion_matrix": [
+          {
+            "gold": "contradiction_candidate",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "corroboration_candidate",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "independent_observations",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "scoped_change",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "supersession",
+            "predicted": "unknown",
+            "count": 4
+          },
+          {
+            "gold": "unknown",
+            "predicted": "unknown",
+            "count": 6
+          },
+          {
+            "gold": "unsupported_claim",
+            "predicted": "unknown",
+            "count": 4
+          }
+        ],
+        "per_category": {
+          "unknown": {
+            "cases": 6,
+            "category_correct": 6,
+            "useful_findings": 0,
+            "useful_retained": 0
+          },
+          "scoped_change": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "corroboration_candidate": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "unsupported_claim": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "independent_observations": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 0,
+            "useful_retained": 0
+          },
+          "supersession": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          },
+          "contradiction_candidate": {
+            "cases": 4,
+            "category_correct": 0,
+            "useful_findings": 4,
+            "useful_retained": 0
+          }
+        },
+        "decisions": {
+          "abstain": 30,
+          "refuse": 2
+        },
+        "model_calls": 0,
+        "cost_micro_usd": 0
+      }
+    }
+  },
+  "paired_candidate_decisions": {
+    "A_retains_B_declines": 29,
+    "B_retains_A_declines": 0,
+    "note": "Candidate actions only, not semantic judgment performance."
+  },
+  "not_run": {
+    "C": "NOT RUN",
+    "D": "NOT RUN"
+  },
+  "execution_commit": "2ecaaa42f423d3c0e2b5c5c11fa17a6a3786ef09",
+  "runner_sha256": "3d150584162cd95c6673b2ffec3041388b398075581df76be9581b5e10321512",
+  "contract_sha256": "132632daa46b3ccd4d28ffbe6828cfb916a17b078b95af84cfdd155a9940d12c"
+}

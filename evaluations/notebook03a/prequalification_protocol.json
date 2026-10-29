@@ -1,0 +1,65 @@
+{
+  "version": "notebook03a-v1.3",
+  "baseline_commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+  "hypothesis": "A future structured semantic policy may improve useful evidence-grounded findings over always-abstain and reduce misleading candidates relative to lexical retrieval, without violating integrity/governance gates. This is untested.",
+  "available_cases": 40,
+  "target_cases_with_independent_holdout": 52,
+  "independent_cases_available": 0,
+  "independent_status": "PENDING_INDEPENDENT_LABELING",
+  "public_splits_exposed": true,
+  "arms": {
+    "A": "Actual current lexical connection Core API on pair tasks; no semantic category inference. Single-source support is NOT_APPLICABLE.",
+    "B": "Actual Notebook-02 integrity qualifier on pair tasks; nonsemantic unknowns; single-source support NOT_APPLICABLE.",
+    "B0": "Explicit constant-abstain reference on every authorized task; not a simulated model or Core single-source feature.",
+    "C": "Same-evidence general model, NOT RUN.",
+    "D": "Structured qualification procedure, same evidence/settings/schema/model family as C, NOT RUN."
+  },
+  "settings_proposal_not_authorization": {
+    "provider": "UNSELECTED",
+    "model": "UNSELECTED",
+    "temperature": 0,
+    "attempts_per_arm_case": 1,
+    "automatic_retries": 0,
+    "max_input_tokens_including_schema": 8192,
+    "max_output_tokens": 800,
+    "max_evidence_characters": 4000,
+    "max_serialized_payload_characters": 16000,
+    "max_calls": 104,
+    "spend_ceiling_usd_proposed": 1.0,
+    "authorized_spend_usd": 0,
+    "pre_dispatch": "Freeze exact supported model/settings and verified worst-case pricing under separate owner approval or amend; this proposal grants no permission."
+  },
+  "failure_criteria": [
+    "Any hard gate violation invalidates the run.",
+    "Missing/duplicate outcomes or altered frozen inputs invalidate comparison.",
+    "No superiority claim from public author labels or from abstention alone.",
+    "Any held-out answer exposure invalidates blind use for subsequent tuning."
+  ],
+  "amendments": "Append a new version and amendment rationale; never overwrite v1 evidence.",
+  "files_sha256": {
+    "amendments.json": "a89212e2a2fec1b6ed408527680fe0c8a149efe59f8004cb26e716777c4d3755",
+    "annotations.json": "3e120694306f7a44d6e6116c2e1796ea8774d6073ed6960b180f264ac43c83c6",
+    "annotation_notes.json": "2f2bf34e2f0273f439ba1b79972bb8eefbd1c67fb134be4d76be2d314ad49d4b",
+    "independent_submission.json": "524a20de65d3b56181c135b65b5c98edab5824ccf37bb904f780f847510db6e4",
+    "initial_annotations.json": "df19e87b77c36020f189e3ef950c787c81f16bcf13aef374946f2ad2f595b45a",
+    "initial_protocol.json": "a66642132b3e77a209006958e8c171c4e73adee152043ec891ce7d66762c5e9d",
+    "initial_schemas.json": "3c2996c58f221bf67748a575be05bbcd77b49bc153423ec6ac6dcf9d2ee94e96",
+    "metrics.json": "ad5ba48540cf0df3e0b935e9a25b1eb74d6ff25bae978a2914d621b8c5636daf",
+    "origins.json": "d63034b3bb3d41fb8c8af581614f73f28e69cb55e228703dcd4f81a3fbf2046e",
+    "pretools_protocol.json": "4c452dc6c58c91a815fc37fee4e0f0bdb47c1d8e42afef176411fc061b920bb7",
+    "previous_protocol.json": "a090fe53109e4bd667a2fb13ddde189578a9cfc40a6707240e3dc95d3bb717ab",
+    "previous_schemas.json": "ee32741afba6f5d0349afa5ec4a4c840c5c5bc9215e2f7503d390c01b7a2b9fd",
+    "prompts.json": "8844533a4dccf14957562bce5b72a8b55ce1ca94120dff4056b8d7f5bdd1618a",
+    "schemas.json": "588421d2ebcc464b785c428fdd653fd675ec858c530e33c84e8ec560c65b1f63",
+    "tasks.json": "b3f68b5387379524b6255acc7a941f573b7b2d83f399962fd1925aac4f88bfc4"
+  },
+  "hash_normalization": "UTF-8 bytes with CRLF normalized to LF",
+  "tools_sha256": {
+    "scripts/notebook03a.py": "3d150584162cd95c6673b2ffec3041388b398075581df76be9581b5e10321512",
+    "scripts/notebook03a_protocol.py": "132632daa46b3ccd4d28ffbe6828cfb916a17b078b95af84cfdd155a9940d12c"
+  },
+  "documents_sha256": {
+    "docs/ALIVE-NOTEBOOK-03A-DESIGN.md": "35643ac38908d23b55de87ae65730b1e7da2a3114b3a4936ff892f0553a0dd5a",
+    "docs/ALIVE-NOTEBOOK-03A-PROTOCOL.md": "e4cc5ac010bb7601085ed97251a9c63642b97b216a37bdaedae2e04506db1a4c"
+  }
+}

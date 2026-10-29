@@ -1,0 +1,59 @@
+[
+  {
+    "version": "notebook03a-v1.1",
+    "parent_protocol_sha256": "a66642132b3e77a209006958e8c171c4e73adee152043ec891ce7d66762c5e9d",
+    "phase": "Before any baseline replay/model execution",
+    "reason": "Require directed supersession identities so source reversal cannot silently reverse replacement; treat date-only same-entity examples as insufficient rather than overclaiming independent observations. No output-driven tuning.",
+    "preserved": [
+      "initial_protocol.json",
+      "initial_annotations.json",
+      "initial_schemas.json"
+    ],
+    "changed": [
+      "annotations.json",
+      "schemas.json"
+    ]
+  },
+  {
+    "version": "notebook03a-v1.2",
+    "parent_protocol_sha256": "a090fe53109e4bd667a2fb13ddde189578a9cfc40a6707240e3dc95d3bb717ab",
+    "phase": "Before baseline replay/model execution",
+    "reason": "Permit independently controlled held-out task packages while forbidding a repo-accessible task from claiming that split. Validate declared package hash shapes. This schema change does not collect or attest actual independent labels.",
+    "preserved": [
+      "previous_protocol.json",
+      "previous_schemas.json"
+    ],
+    "changed": [
+      "schemas.json"
+    ]
+  },
+  {
+    "version": "notebook03a-v1.3",
+    "parent_protocol_sha256": "4c452dc6c58c91a815fc37fee4e0f0bdb47c1d8e42afef176411fc061b920bb7",
+    "phase": "After deterministic public baseline replay; before any model execution",
+    "reason": "Freeze final validator/scorer/replay source fingerprints and complete file inventory. Unknown relationships cannot authorize substantive use; arm modes must match. No cases, labels, prompts or expected baseline decisions changed. Strengthened custodian gate fails before reading unqualified external gold. Withhold author-selected supporting-span hints from inference payloads; complete bounded sources remain identical. No task texts, labels or baseline decisions change.",
+    "preserved": [
+      "pretools_protocol.json"
+    ],
+    "changed": [
+      "tool fingerprints and validation rules",
+      "payload preparation whitelist",
+      "explicit pending-holdout metadata",
+      "document fingerprints"
+    ]
+  },
+  {
+    "version": "notebook03a-v1.4",
+    "parent_protocol_sha256": "82df0bedea48465c5e92a7d55fccf7cbfdaf52f615ec46789acdd894833a621c",
+    "phase": "Adversarial source review before any semantic output/model execution",
+    "reason": "Require complete R1 replacement wording and R2 comparator/corpus/generalization qualifications rather than truncated gold excerpts. No task source text, inference payload, category, usefulness label or baseline policy decision changes.",
+    "preserved": [
+      "prequalification_protocol.json",
+      "prequalification_annotations.json"
+    ],
+    "changed": [
+      "required gold evidence spans",
+      "protocol/document fingerprints"
+    ]
+  }
+]

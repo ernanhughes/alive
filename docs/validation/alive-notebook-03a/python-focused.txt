@@ -1,0 +1,20 @@
+.......F..................                                               [100%]
+================================== FAILURES ===================================
+_____________ test_family_or_duplicate_source_cannot_cross_splits _____________
+
+corpus = ([Task(id='05ad49cb44348c6d', family='05ad49cb44348c6d', split='development', kind='pair', question='Which specific re...308b64d2080792b96', 'document_sha256': '1068575be389fe9f32e0fd540c20a5f355ac671fd9e8c195d7e2d7f490c797a5', ...}}, ...})
+
+    def test_family_or_duplicate_source_cannot_cross_splits(corpus):
+        tasks, labels, origins = corpus
+        first = tasks[0]
+        altered = [
+            replace(first, split="public_evaluation" if first.split == "development" else "development")
+        ] + tasks[1:]
+>       with pytest.raises(ValueError, match="crosses splits"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_notebook03a.py:85: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_notebook03a.py::test_family_or_duplicate_source_cannot_cross_splits
+1 failed, 25 passed in 3.11s
