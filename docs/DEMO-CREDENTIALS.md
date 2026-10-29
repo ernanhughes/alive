@@ -31,6 +31,38 @@ Then start one environment from that same checkout:
 Paste the clipboard token once into the dashboard or extension. The dashboard keeps it in
 `sessionStorage` for the tab; the extension keeps it in `chrome.storage.local`.
 
+## Preflight check
+
+```powershell
+uv run python scripts/verify_demo_credentials.py
+```
+
+The verifier checks, without printing any token value:
+
+- `.env` and `.alive/token` exist, are valid, and agree;
+- both have private permissions/ACLs;
+- the application loader resolves the same token;
+- `docker compose config` resolves the same token;
+- every running ALIVE container is reported, including containers from other checkouts,
+  other tokens, and other published ports;
+- the live endpoint rejects no token and a wrong token, and accepts the configured token.
+
+It exits with status 1 on a failure. Useful forms:
+
+```powershell
+# Check a server you are about to demo against (for example a worktree on :8080)
+uv run python scripts/verify_demo_credentials.py --base-url http://127.0.0.1:8080 --require-live
+
+# Check another checkout without changing it
+uv run python scripts/verify_demo_credentials.py --root C:\Projects\alive-worktrees\alive-pi-01a-r2
+
+# Create/sync the token first, then verify
+uv run python scripts/verify_demo_credentials.py --fix --require-live
+```
+
+`scripts/demo.ps1` and `scripts/dev.ps1` run the same preflight automatically before they
+report that the demo is ready.
+
 ## Do not mix checkouts
 
 A token from `C:\Projects\alive\.alive/token` does not authenticate a container started from
