@@ -1,0 +1,12 @@
+{
+  "baseline": "1b6da07b856e497b3a44a9e1b9794e94adff55ab",
+  "implementation": "6e312d9e146a6e668996f1ad73e5fbfd45e05d1f",
+  "audit_source": "a918454",
+  "source_files_sha256": {
+    "alive/config.py": "91cc5def11c140cee96147a6e0b3697e9f7927d47ffb2ccec37911cc6b34d9f3",
+    "alive/app.py": "cf957be53a30cd3ce627636a400a3cf9f88dbd8784baad8f2041a52979ada317",
+    "tests/test_authentication_tokens.py": "6f6f5f5e8669f554405b26052ed5e6a3dc4499044b5c96bd1d39539d5d9edc2d"
+  },
+  "original_probe_sha256": "98c65a736741b3e94a44f9b089a270b2db325b30400d7777baf450a780671f6f",
+  "probe_assertions_changed": false
+}

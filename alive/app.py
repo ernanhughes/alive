@@ -171,7 +171,7 @@ def create_app(settings=None):
         request: Request, credentials: HTTPAuthorizationCredentials | None = Depends(bearer)
     ):
         value = credentials.credentials if credentials else ""
-        if not hmac.compare_digest(value.encode(), token.encode()):
+        if not value or not token or not hmac.compare_digest(value.encode(), token.encode()):
             raise HTTPException(401, "A local ALIVE bearer token is required")
         origin = request.headers.get("origin")
         if (
@@ -490,8 +490,12 @@ def create_app(settings=None):
         try:
             # First-frame authentication avoids secrets in URLs and HTTP access logs.
             first = await asyncio.wait_for(ws.receive_json(), 5)
+            value = first.get("token") if isinstance(first, dict) else None
             if (
-                not hmac.compare_digest(str(first.get("token", "")).encode(), token.encode())
+                not isinstance(value, str)
+                or not value
+                or not token
+                or not hmac.compare_digest(value.encode(), token.encode())
                 or not kernel.ready
             ):
                 await ws.close(code=1008)

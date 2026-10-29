@@ -1,0 +1,2 @@
+# Preserve synthetic probes and test receipts without newline normalization.
+* -text whitespace=cr-at-eol

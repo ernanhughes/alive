@@ -1,0 +1,16 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______ test_empty_persisted_token_never_allows_unauthenticated_access ________
+C:\Projects\alive-audit-01\docs\audits\ALIVE-AUDIT-01\test_adversarial.py:192: in test_empty_persisted_token_never_allows_unauthenticated_access
+    assert read.status_code == 401
+E   assert 200 == 401
+E    +  where 200 = <Response [200 OK]>.status_code
+============================== warnings summary ===============================
+docs/audits/ALIVE-AUDIT-01/test_adversarial.py::test_empty_persisted_token_never_allows_unauthenticated_access
+  C:\Projects\alive-audit-01\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+    self._get_loop()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED ..\alive-audit-01\docs\audits\ALIVE-AUDIT-01\test_adversarial.py::test_empty_persisted_token_never_allows_unauthenticated_access
+1 failed, 19 deselected, 1 warning in 1.71s

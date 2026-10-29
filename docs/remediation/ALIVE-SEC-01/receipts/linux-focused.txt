@@ -1,0 +1,12 @@
+Resolved 6 packages in 172ms
+Downloading pygments (1.2MiB)
+ Downloaded pygments
+Prepared 5 packages in 261ms
+Installed 5 packages in 66ms
+ + iniconfig==2.3.1
+ + pluggy==1.7.0
+ + pygments==2.21.0
+ + pytest==9.1.1
+ + pytest-asyncio==1.4.1
+.................................                                        [100%]
+33 passed in 13.24s

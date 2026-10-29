@@ -1,0 +1,153 @@
+FFFFFFFFF.FFF...FFFFFFFF.F                                               [100%]
+================================== FAILURES ===================================
+_______ test_invalid_persisted_token_refuses_startup_without_rotation[] _______
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:44: in test_invalid_persisted_token_refuses_startup_without_rotation
+    with pytest.raises(ValueError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+___ test_invalid_persisted_token_refuses_startup_without_rotation[ \t\r\n] ____
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:44: in test_invalid_persisted_token_refuses_startup_without_rotation
+    with pytest.raises(ValueError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+_ test_invalid_persisted_token_refuses_startup_without_rotation[xxxxxxxxxxxxxxxxxxxxxxx] _
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:44: in test_invalid_persisted_token_refuses_startup_without_rotation
+    with pytest.raises(ValueError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+_ test_invalid_persisted_token_refuses_startup_without_rotation[xxxxxxxxxxxxxxxxxxxxxxxx space] _
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:44: in test_invalid_persisted_token_refuses_startup_without_rotation
+    with pytest.raises(ValueError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+_ test_invalid_persisted_token_refuses_startup_without_rotation[xxxxxxxxxxxxxxxxxxxxxxxx\x00] _
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:44: in test_invalid_persisted_token_refuses_startup_without_rotation
+    with pytest.raises(ValueError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+_ test_invalid_persisted_token_refuses_startup_without_rotation[xxxxxxxxxxxxxxxxxxxxxxxx\ninside] _
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:44: in test_invalid_persisted_token_refuses_startup_without_rotation
+    with pytest.raises(ValueError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+_ test_invalid_persisted_token_refuses_startup_without_rotation[non-ascii-\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa] _
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:44: in test_invalid_persisted_token_refuses_startup_without_rotation
+    with pytest.raises(ValueError) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+_ test_invalid_persisted_token_refuses_startup_without_rotation[\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff] _
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:47: in test_invalid_persisted_token_refuses_startup_without_rotation
+    assert "token" in str(error.value).lower()
+E   assert 'token' in "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"
+E    +  where "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte" = <built-in method lower of str object at 0x000002A4247AADB0>()
+E    +    where <built-in method lower of str object at 0x000002A4247AADB0> = "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte".lower
+E    +      where "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte" = str(UnicodeDecodeError('utf-8', b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff', 0, 1, 'invalid start byte'))
+E    +        where UnicodeDecodeError('utf-8', b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff', 0, 1, 'invalid start byte') = <ExceptionInfo UnicodeDecodeError('utf-8', b'\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff', 0, 1, 'invalid start byte') tblen=6>.value
+_____ test_configured_token_has_same_validation[                        ] _____
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:55: in test_configured_token_has_same_validation
+    with pytest.raises(ValueError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+__ test_configured_token_has_same_validation[xxxxxxxxxxxxxxxxxxxxxxxx space] __
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:55: in test_configured_token_has_same_validation
+    with pytest.raises(ValueError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+___ test_configured_token_has_same_validation[xxxxxxxxxxxxxxxxxxxxxxxx\x00] ___
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:55: in test_configured_token_has_same_validation
+    with pytest.raises(ValueError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+_ test_configured_token_has_same_validation[\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea] _
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:55: in test_configured_token_has_same_validation
+    with pytest.raises(ValueError):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE ValueError
+_ test_empty_expected_token_still_cannot_authorize_http_or_websocket[frame0] __
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:94: in test_empty_expected_token_still_cannot_authorize_http_or_websocket
+    assert client.get("/api/v1/alive").status_code == 401
+E   AssertionError: assert 200 == 401
+E    +  where 200 = <Response [200 OK]>.status_code
+E    +    where <Response [200 OK]> = get('/api/v1/alive')
+E    +      where get = <starlette.testclient.TestClient object at 0x000002A4240E3BB0>.get
+_ test_empty_expected_token_still_cannot_authorize_http_or_websocket[frame1] __
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:94: in test_empty_expected_token_still_cannot_authorize_http_or_websocket
+    assert client.get("/api/v1/alive").status_code == 401
+E   AssertionError: assert 200 == 401
+E    +  where 200 = <Response [200 OK]>.status_code
+E    +    where <Response [200 OK]> = get('/api/v1/alive')
+E    +      where get = <starlette.testclient.TestClient object at 0x000002A4240E28B0>.get
+_ test_empty_expected_token_still_cannot_authorize_http_or_websocket[frame2] __
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:94: in test_empty_expected_token_still_cannot_authorize_http_or_websocket
+    assert client.get("/api/v1/alive").status_code == 401
+E   AssertionError: assert 200 == 401
+E    +  where 200 = <Response [200 OK]>.status_code
+E    +    where <Response [200 OK]> = get('/api/v1/alive')
+E    +      where get = <starlette.testclient.TestClient object at 0x000002A426C6A0F0>.get
+_ test_empty_expected_token_still_cannot_authorize_http_or_websocket[frame3] __
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:94: in test_empty_expected_token_still_cannot_authorize_http_or_websocket
+    assert client.get("/api/v1/alive").status_code == 401
+E   AssertionError: assert 200 == 401
+E    +  where 200 = <Response [200 OK]>.status_code
+E    +    where <Response [200 OK]> = get('/api/v1/alive')
+E    +      where get = <starlette.testclient.TestClient object at 0x000002A426E1FCE0>.get
+_ test_empty_expected_token_still_cannot_authorize_http_or_websocket[frame4] __
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:94: in test_empty_expected_token_still_cannot_authorize_http_or_websocket
+    assert client.get("/api/v1/alive").status_code == 401
+E   AssertionError: assert 200 == 401
+E    +  where 200 = <Response [200 OK]>.status_code
+E    +    where <Response [200 OK]> = get('/api/v1/alive')
+E    +      where get = <starlette.testclient.TestClient object at 0x000002A426C94C00>.get
+_ test_empty_expected_token_still_cannot_authorize_http_or_websocket[frame5] __
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:94: in test_empty_expected_token_still_cannot_authorize_http_or_websocket
+    assert client.get("/api/v1/alive").status_code == 401
+E   AssertionError: assert 200 == 401
+E    +  where 200 = <Response [200 OK]>.status_code
+E    +    where <Response [200 OK]> = get('/api/v1/alive')
+E    +      where get = <starlette.testclient.TestClient object at 0x000002A4272945A0>.get
+_ test_empty_expected_token_still_cannot_authorize_http_or_websocket[frame6] __
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:94: in test_empty_expected_token_still_cannot_authorize_http_or_websocket
+    assert client.get("/api/v1/alive").status_code == 401
+E   AssertionError: assert 200 == 401
+E    +  where 200 = <Response [200 OK]>.status_code
+E    +    where <Response [200 OK]> = get('/api/v1/alive')
+E    +      where get = <starlette.testclient.TestClient object at 0x000002A4274B0270>.get
+__________________ test_first_creation_is_stable_and_private __________________
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:119: in test_first_creation_is_stable_and_private
+    assert result.returncode == 0
+E   assert 1 == 0
+E    +  where 1 = CompletedProcess(args=['powershell.exe', '-NoProfile', '-Command', "$acl=Get-Acl -LiteralPath '.alive/token'; if(-not ...Get-Acl:String) [], CommandNotFoundException\r\n    + FullyQualifiedErrorId : CouldNotAutoloadMatchingModule\r\n \r\n").returncode
+_________ test_failure_before_publication_does_not_leave_empty_token __________
+C:\Projects\alive-sec-01\tests\test_authentication_tokens.py:134: in test_failure_before_publication_does_not_leave_empty_token
+    with pytest.raises((OSError, ValueError)):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE any of (OSError, ValueError)
+============================== warnings summary ===============================
+tests/test_authentication_tokens.py: 10 warnings
+  C:\Projects\alive-audit-01\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+    self._get_loop()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_authentication_tokens.py::test_invalid_persisted_token_refuses_startup_without_rotation[]
+FAILED tests/test_authentication_tokens.py::test_invalid_persisted_token_refuses_startup_without_rotation[ \t\r\n]
+FAILED tests/test_authentication_tokens.py::test_invalid_persisted_token_refuses_startup_without_rotation[xxxxxxxxxxxxxxxxxxxxxxx]
+FAILED tests/test_authentication_tokens.py::test_invalid_persisted_token_refuses_startup_without_rotation[xxxxxxxxxxxxxxxxxxxxxxxx space]
+FAILED tests/test_authentication_tokens.py::test_invalid_persisted_token_refuses_startup_without_rotation[xxxxxxxxxxxxxxxxxxxxxxxx\x00]
+FAILED tests/test_authentication_tokens.py::test_invalid_persisted_token_refuses_startup_without_rotation[xxxxxxxxxxxxxxxxxxxxxxxx\ninside]
+FAILED tests/test_authentication_tokens.py::test_invalid_persisted_token_refuses_startup_without_rotation[non-ascii-\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa\xe9\x9b\xaa]
+FAILED tests/test_authentication_tokens.py::test_invalid_persisted_token_refuses_startup_without_rotation[\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff]
+FAILED tests/test_authentication_tokens.py::test_configured_token_has_same_validation[                        ]
+FAILED tests/test_authentication_tokens.py::test_configured_token_has_same_validation[xxxxxxxxxxxxxxxxxxxxxxxx space]
+FAILED tests/test_authentication_tokens.py::test_configured_token_has_same_validation[xxxxxxxxxxxxxxxxxxxxxxxx\x00]
+FAILED tests/test_authentication_tokens.py::test_configured_token_has_same_validation[\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea\u96ea]
+FAILED tests/test_authentication_tokens.py::test_empty_expected_token_still_cannot_authorize_http_or_websocket[frame0]
+FAILED tests/test_authentication_tokens.py::test_empty_expected_token_still_cannot_authorize_http_or_websocket[frame1]
+FAILED tests/test_authentication_tokens.py::test_empty_expected_token_still_cannot_authorize_http_or_websocket[frame2]
+FAILED tests/test_authentication_tokens.py::test_empty_expected_token_still_cannot_authorize_http_or_websocket[frame3]
+FAILED tests/test_authentication_tokens.py::test_empty_expected_token_still_cannot_authorize_http_or_websocket[frame4]
+FAILED tests/test_authentication_tokens.py::test_empty_expected_token_still_cannot_authorize_http_or_websocket[frame5]
+FAILED tests/test_authentication_tokens.py::test_empty_expected_token_still_cannot_authorize_http_or_websocket[frame6]
+FAILED tests/test_authentication_tokens.py::test_first_creation_is_stable_and_private
+FAILED tests/test_authentication_tokens.py::test_failure_before_publication_does_not_leave_empty_token
+21 failed, 5 passed, 10 warnings in 5.67s
