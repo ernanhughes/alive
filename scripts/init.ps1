@@ -165,6 +165,7 @@ try {
         Write-Host 'Local demo:  ./scripts/dev.ps1'
         Write-Host 'Tokens are per checkout; keep this script and the running app in the same checkout.'
         Write-Host 'Restart a running app, or recreate a running compose stack, to apply a changed token.'
+        Write-Host 'Verify with: uv run python scripts/verify_demo_credentials.py'
     }
 } finally {
     Pop-Location

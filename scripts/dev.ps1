@@ -36,5 +36,12 @@ foreach ($endpoint in @('http://127.0.0.1:8000/api/v1/health','http://127.0.0.1:
         throw "ALIVE startup did not become ready: $endpoint"
     }
 }
+& uv run python scripts/verify_demo_credentials.py --base-url http://127.0.0.1:8000 --require-live --no-docker
+if ($LASTEXITCODE) {
+    Stop-Process -Id $backend.Id,$dashboard.Id -ErrorAction SilentlyContinue
+    Remove-Item -LiteralPath .alive\dev-processes.json -ErrorAction SilentlyContinue
+    throw 'Credential preflight failed; fix the token before using the demo.'
+}
+
 Write-Host 'Dashboard: http://127.0.0.1:5173 | Backend: http://127.0.0.1:8000/docs'
 Write-Host 'Local token is configured in .env and synced to .alive/token. Stop with ./scripts/stop.ps1'
