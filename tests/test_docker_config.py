@@ -35,7 +35,9 @@ def test_e2e_environment_is_isolated():
     e2e = read("compose.e2e.yaml")
     assert "alive-e2e-pgdata" in e2e and "alive-e2e-appdata" in e2e
     assert "alive-pgdata" not in e2e.replace("alive-e2e-pgdata", "")
-    assert "scripts/docker-e2e.py" in e2e
+    # The test runner must override the server entrypoint; a Compose `command:`
+    # would be swallowed by ENTRYPOINT and silently run a second server.
+    assert "entrypoint" in e2e and "scripts/docker-e2e.py" in e2e
     assert "ALIVE_DEMO_MODE" in e2e
 
 

@@ -32,7 +32,7 @@ COPY --chown=alive:alive alive/ ./alive/
 COPY --chown=alive:alive migrations/ ./migrations/
 COPY --chown=alive:alive fixtures/ ./fixtures/
 COPY --chown=alive:alive config/ ./config/
-COPY --chown=alive:alive scripts/docker-demo-seed.py ./scripts/docker-demo-seed.py
+COPY --chown=alive:alive scripts/docker-demo-seed.py scripts/docker-e2e.py scripts/docker-smoke-test.py ./scripts/
 COPY --chown=alive:alive docker/entrypoint.sh docker/healthcheck.py ./docker/
 COPY --from=frontend-build --chown=alive:alive /build/dashboard/dist ./dashboard/dist
 RUN chmod +x docker/entrypoint.sh

@@ -44,10 +44,10 @@ services:
     depends_on:
       app:
         condition: service_healthy
+    entrypoint: ["python", "scripts/docker-e2e.py"]
     environment:
       ALIVE_BASE_URL: http://app:8000
       ALIVE_API_TOKEN: ${ALIVE_API_TOKEN:-alive-e2e-token-replace-for-local-use-0}
-    command: ["python", "scripts/docker-e2e.py"]
     restart: "no"
 
 volumes:
