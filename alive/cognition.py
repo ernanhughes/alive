@@ -43,6 +43,24 @@ class BudgetExhausted(RuntimeError):
     pass
 
 
+async def complete_despite_cancel(work):
+    """Run `work` to completion even if the awaiting task is cancelled again meanwhile.
+
+    Settlement of a reserved invocation must not be abortable by a second cancellation. The cancel
+    is not lost: it is re-raised once the work has finished.
+    """
+    inner = asyncio.ensure_future(work)
+    cancelled = False
+    while not inner.done():
+        try:
+            await asyncio.shield(inner)
+        except asyncio.CancelledError:
+            cancelled = True
+    inner.result()  # a failed settlement is surfaced, not swallowed
+    if cancelled:
+        raise asyncio.CancelledError()
+
+
 class Cognition:
     def __init__(self, kernel, memory):
         self.k, self.memory = kernel, memory
@@ -670,6 +688,48 @@ class Cognition:
         return snapshot
 
     async def call_role(self, run_id, role, context):
+        """Run one role invocation. Every exit leaves its ModelInvocation settled (F-002).
+
+        The reservation commits inside a transaction, so a cancellation delivered while that
+        transaction exits used to bypass the handler that settles the row. One outer handler now
+        owns the invocation from the start of the reservation to the end of settlement.
+        """
+        ledger = {}
+        try:
+            return await self._invoke_role(run_id, role, context, ledger)
+        except BaseException as exc:
+            if ledger.get("call_id"):
+                await self._settle_after_failure(exc, ledger)
+            raise
+
+    async def _settle_after_failure(self, exc, ledger):
+        k = self.k
+        call_id, reserve = ledger["call_id"], ledger["reserve"]
+        usage = getattr(exc, "usage", None) or ledger.get("usage", {})
+        started = ledger.get("started")
+        latency = (time.monotonic() - started) * 1000 if started is not None else 0.0
+
+        async def settle():
+            async with k.lock, k.db.sessions.begin() as session:
+                call = await session.get(ModelInvocation, call_id)
+                if call is None or call.status != "reserved":
+                    return  # the reservation rolled back, or the row is already settled
+                call.status = "cancelled" if isinstance(exc, asyncio.CancelledError) else "failed"
+                call.error = str(exc) if isinstance(exc, ProviderError) else type(exc).__name__
+                if "rejected_text" in ledger:
+                    call.output_json = {
+                        "invalid_visible_output": redact(ledger["rejected_text"]),
+                        "validation": "rejected",
+                    }
+                call.latency_ms = latency
+                call.usage = usage | {
+                    "charged_tokens": reserve,
+                    "reason": "conservative reservation retained",
+                }
+
+        await complete_despite_cancel(settle())
+
+    async def _invoke_role(self, run_id, role, context, ledger):
         k = self.k
         schema = RoleOutput.model_json_schema()
         prompt = role_prompt(role)
@@ -717,6 +777,8 @@ class Cognition:
                 "tokens": row.usage["tokens"] + reserve,
             }
             call_id = call.id
+            # Recorded before the transaction exits: a cancel during the commit still finds it.
+            ledger["call_id"], ledger["reserve"] = call_id, reserve
             provider = control.provider
             self.k.add_event(
                 session,
@@ -730,50 +792,39 @@ class Cognition:
                 },
                 correlation=run_id,
             )
-        started = time.monotonic()
+        ledger["started"] = started = time.monotonic()
         usage = {}
-        try:
-            if provider == "meta":
-                generated = await gateway_for(k.settings, "cognition.role").structured(
-                    StructuredRequest(
-                        operation="cognition.role",
-                        instructions=prompt,
-                        data=context,
-                        schema=schema,
-                        model=model,
-                        max_output=cfg.output_tokens,
-                        correlation=call_id,
-                    )
+        if provider == "meta":
+            generated = await gateway_for(k.settings, "cognition.role").structured(
+                StructuredRequest(
+                    operation="cognition.role",
+                    instructions=prompt,
+                    data=context,
+                    schema=schema,
+                    model=model,
+                    max_output=cfg.output_tokens,
+                    correlation=call_id,
                 )
-                usage = generated.usage
+            )
+            usage = ledger["usage"] = generated.usage
+            try:
                 output = RoleOutput.model_validate_json(generated.text)
-            else:
-                await asyncio.sleep(0)
-                output = mock_role(role, context)
-                usage = {
-                    "prompt_tokens": 0,
-                    "completion_tokens": 0,
-                    "total_tokens": 0,
-                    "mode": "controlled_fixture",
-                }
+                validate_references(output, context)
+            except Exception:
+                # Only a genuinely rejected response is recorded as rejected; a response that was
+                # valid but not yet settled when a cancel arrived is not.
+                ledger["rejected_text"] = generated.text
+                raise
+        else:
+            await asyncio.sleep(0)
+            output = mock_role(role, context)
+            usage = {
+                "prompt_tokens": 0,
+                "completion_tokens": 0,
+                "total_tokens": 0,
+                "mode": "controlled_fixture",
+            }
             validate_references(output, context)
-        except BaseException as exc:
-            usage = getattr(exc, "usage", usage) or usage
-            async with k.lock, k.db.sessions.begin() as session:
-                call = await session.get(ModelInvocation, call_id)
-                call.status = "cancelled" if isinstance(exc, asyncio.CancelledError) else "failed"
-                call.error = str(exc) if isinstance(exc, ProviderError) else type(exc).__name__
-                if "generated" in locals():
-                    call.output_json = {
-                        "invalid_visible_output": redact(generated.text),
-                        "validation": "rejected",
-                    }
-                call.latency_ms = (time.monotonic() - started) * 1000
-                call.usage = usage | {
-                    "charged_tokens": reserve,
-                    "reason": "conservative reservation retained",
-                }
-            raise
         latency = (time.monotonic() - started) * 1000
         actual = usage.get("total_tokens")
         charged = actual if isinstance(actual, int) and actual >= 0 else reserve
@@ -1137,6 +1188,27 @@ class Cognition:
                 return
             self._transition(session, run, target)
             run.error = error
+            # Safety net for F-002: a terminal run never keeps a `reserved` invocation. The normal
+            # path settles it where it fails; this covers any path that did not. Completion is
+            # genuinely unknown here, so it is "interrupted" (as restart recovery labels it) and the
+            # conservative charge is retained. Settled rows are never rewritten.
+            for call in (
+                await session.scalars(
+                    select(ModelInvocation).where(
+                        ModelInvocation.investigation_id == run_id,
+                        ModelInvocation.status == "reserved",
+                    )
+                )
+            ).all():
+                call.status = "interrupted"
+                call.error = (
+                    "Run became terminal before settlement; provider completion unknown; "
+                    "charged reserved tokens"
+                )
+                call.usage = (call.usage or {}) | {
+                    "charged_tokens": call.reserved_tokens,
+                    "reason": "conservative reservation retained",
+                }
             goal = await session.get(Goal, run.goal_id)
             if goal and target in ("FAILED", "CANCELLED", "ABSTAINED"):
                 goal.status = "proposed"
