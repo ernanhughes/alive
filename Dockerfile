@@ -25,7 +25,9 @@ WORKDIR /app
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
 COPY --chown=alive:alive pyproject.toml uv.lock alembic.ini ./
 USER alive
-RUN uv sync --locked --no-dev
+RUN uv sync --locked --no-dev \
+    && mkdir -p /app/.alive /app/dashboard \
+    && chmod 700 /app/.alive
 COPY --chown=alive:alive alive/ ./alive/
 COPY --chown=alive:alive migrations/ ./migrations/
 COPY --chown=alive:alive fixtures/ ./fixtures/
