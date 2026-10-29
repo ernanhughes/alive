@@ -35,6 +35,8 @@ services:
       # for the pinned /demo-live-01 mirrors. Tied to demo mode so it is off whenever demo mode is
       # off. The paid Meta claim/research flags are deliberately not set here.
       ALIVE_RELATIONSHIP_ALLOW_TEST_PROVIDERS: ${ALIVE_DEMO_MODE:-true}
+      # Enables the one-click Demonstration tab (alive/demo_tour.py). Same demo-mode gate.
+      ALIVE_DEMO_TOUR_ENABLED: ${ALIVE_DEMO_MODE:-true}
       # Optional live-inference credentials. Empty by default (no paid calls).
       # Set ALIVE_META_API_KEY in an ignored .env file; never commit it.
       ALIVE_META_API_KEY: ${ALIVE_META_API_KEY:-}
