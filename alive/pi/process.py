@@ -3,15 +3,20 @@
 Killing only the direct child leaves Node descendants running. A run is therefore never reported
 as cleanly cancelled until the tree is confirmed empty:
 
-* POSIX: the child leads its own session/process group; the group is SIGKILLed and polled until
-  no process remains in it.
-* Windows: the child is placed in a Job Object (`KILL_ON_JOB_CLOSE`); terminating the job kills
-  every descendant, including ones that outlived their parent, and the job's active-process count
-  is read back to confirm it reached zero.
+* Windows: the child is created SUSPENDED, placed in a Job Object (`KILL_ON_JOB_CLOSE`) and only
+  then resumed, so it can never run (or fork) outside the job. Terminating the job kills every
+  descendant, including ones that outlived their parent, and the job's active-process count is
+  read back to confirm it reached zero.
+* POSIX: a process group is NOT containment: a descendant can call setsid()/setpgid() and leave it.
+  Membership is therefore the union of (a) the group and session, (b) every descendant by parent
+  pid, and (c) every process whose environment carries this run's unique tag (which also finds a
+  detached grandchild whose parent has already exited). Cleanup freezes the members with SIGSTOP
+  until the set stops growing (a stopped process cannot fork), SIGKILLs them, then polls until no
+  live member remains. "Confirmed" means exactly that, and no more.
 
-On Windows the child is assigned to the job just after it starts, so a descendant spawned in that
-first instant would escape. Pi runs with tools and extensions disabled and spawns no children, so
-the job is defense in depth there; the tests exercise the tree kill with a real grandchild.
+Limit (stated, not hidden): without cgroups or a PID namespace, a descendant that BOTH is orphaned
+before cleanup and scrubs its own environment cannot be found. This is process hygiene for a
+child that is not trying to escape; it is not an OS sandbox.
 """
 
 import asyncio
@@ -21,8 +26,10 @@ import signal
 import subprocess
 import sys
 import time
+import uuid
 
 WINDOWS = sys.platform == "win32"
+TAG_ENV = "ALIVE_PI_RUN_TAG"
 
 if WINDOWS:
     import ctypes
@@ -96,6 +103,11 @@ if WINDOWS:
     _JOB_KILL_ON_CLOSE = 0x2000
     _EXTENDED_LIMITS, _ACCOUNTING = 9, 1
     _PROCESS_SET_QUOTA_TERMINATE = 0x0100 | 0x0001
+    _PROCESS_SUSPEND_RESUME = 0x0800
+    _CREATE_SUSPENDED = 0x00000004
+    _ntdll = ctypes.WinDLL("ntdll")
+    _ntdll.NtResumeProcess.restype = ctypes.c_long
+    _ntdll.NtResumeProcess.argtypes = [wintypes.HANDLE]
 
 
 class ProcessTreeError(RuntimeError):
@@ -124,9 +136,10 @@ async def shielded(work):
 class ManagedProcess:
     """A child whose whole process tree can be terminated and the result confirmed."""
 
-    def __init__(self, process, job=None):
+    def __init__(self, process, job=None, tag=None):
         self.process = process
         self.job = job
+        self.tag = tag
         self.pid = process.pid
         self.stdin, self.stdout, self.stderr = process.stdin, process.stdout, process.stderr
         self._terminated = False
@@ -134,9 +147,13 @@ class ManagedProcess:
     @classmethod
     async def spawn(cls, argv, *, env, cwd, limit=4 * 1024 * 1024):
         kwargs = {}
+        tag = uuid.uuid4().hex  # unique to this child; inherited by everything it starts
+        env = {**env, TAG_ENV: tag}
         if WINDOWS:
             kwargs["creationflags"] = (
-                subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.CREATE_NO_WINDOW
+                subprocess.CREATE_NEW_PROCESS_GROUP
+                | subprocess.CREATE_NO_WINDOW
+                | _CREATE_SUSPENDED  # nothing runs until it is inside the job
             )
         else:
             kwargs["start_new_session"] = True
@@ -154,11 +171,12 @@ class ManagedProcess:
         if WINDOWS:
             try:
                 job = _create_job_for(process.pid)
+                _resume(process.pid)
             except BaseException:
                 with contextlib.suppress(ProcessLookupError):
                     process.kill()
                 raise
-        return cls(process, job)
+        return cls(process, job, tag)
 
     @property
     def returncode(self):
@@ -185,8 +203,7 @@ class ManagedProcess:
             with contextlib.suppress(ProcessLookupError):
                 self.process.kill()
         else:
-            with contextlib.suppress(ProcessLookupError, PermissionError):
-                os.killpg(self.pid, signal.SIGKILL)
+            _kill_posix_tree(self.pid, self.tag)
 
     async def _confirm(self, within):
         deadline = time.monotonic() + within
@@ -208,16 +225,9 @@ class ManagedProcess:
                 self.job, _ACCOUNTING, ctypes.byref(info), ctypes.sizeof(info), None
             )
             return bool(ok) and info.ActiveProcesses == 0
-        try:
-            os.killpg(self.pid, 0)
-        except ProcessLookupError:
-            return True
-        except PermissionError:
-            return False
-        # A group that only holds zombies still answers; reap ours so it can disappear.
-        if self.process.returncode is not None:
-            return not _group_has_live_members(self.pid)
-        return False
+        if self.process.returncode is None:
+            return False  # our own child has not even been reaped yet
+        return not _posix_members(self.pid, self.tag)
 
     def _close_job(self):
         if WINDOWS and self.job:
@@ -225,23 +235,85 @@ class ManagedProcess:
             self.job = None
 
 
-def _group_has_live_members(pgid):
-    """POSIX: whether any non-zombie process remains in the group (zombies are not alive)."""
+def _proc_table():
+    """Linux: {pid: (ppid, pgid, sid, state)} from /proc. Raises OSError if unreadable."""
+    table = {}
+    for entry in os.listdir("/proc"):
+        if not entry.isdigit():
+            continue
+        try:
+            with open(f"/proc/{entry}/stat", encoding="utf-8", errors="replace") as handle:
+                fields = handle.read().rsplit(")", 1)[1].split()
+            table[int(entry)] = (int(fields[1]), int(fields[2]), int(fields[3]), fields[0])
+        except (OSError, IndexError, ValueError):
+            continue  # it exited while we were looking
+    return table
+
+
+def _has_tag(pid, needle):
     try:
-        for entry in os.listdir("/proc"):
-            if not entry.isdigit():
-                continue
-            try:
-                with open(f"/proc/{entry}/stat", encoding="utf-8") as handle:
-                    fields = handle.read().rsplit(")", 1)[1].split()
-            except (OSError, IndexError):
-                continue
-            state, group = fields[0], int(fields[2])
-            if group == pgid and state != "Z":
-                return True
+        with open(f"/proc/{pid}/environ", "rb") as handle:
+            return needle in handle.read().split(b"\0")
     except OSError:
-        return True  # cannot prove it empty; do not claim confirmation
-    return False
+        return False
+
+
+def _posix_members(root_pid, tag):
+    """Live (non-zombie) processes that belong to the run, however they got out of its group."""
+    try:
+        table = _proc_table()
+    except OSError:
+        return {root_pid}  # cannot enumerate: never claim the tree is empty
+    children = {}
+    for pid, (ppid, _pgid, _sid, _state) in table.items():
+        children.setdefault(ppid, []).append(pid)
+    members, stack = set(), [root_pid]
+    while stack:  # (b) every descendant by parent pid, whatever group or session it moved to
+        pid = stack.pop()
+        if pid in members:
+            continue
+        if pid in table:
+            members.add(pid)
+        stack.extend(children.get(pid, ()))
+    for pid, (_ppid, pgid, sid, _state) in table.items():  # (a) the group and session
+        if pgid == root_pid or sid == root_pid:
+            members.add(pid)
+    if tag:  # (c) anything carrying this run's tag, e.g. a detached grandchild already orphaned
+        needle = f"{TAG_ENV}={tag}".encode()
+        members.update(pid for pid in table if pid not in members and _has_tag(pid, needle))
+    members.discard(os.getpid())
+    return {pid for pid in members if table.get(pid, (0, 0, 0, "Z"))[3] != "Z"}
+
+
+def _kill_posix_tree(root_pid, tag):
+    """Freeze, then kill, every member. A stopped process cannot fork, so it cannot outrun us."""
+    frozen = set()
+    for _ in range(50):
+        members = _posix_members(root_pid, tag)
+        fresh = members - frozen
+        if not fresh:
+            break
+        for pid in fresh:
+            with contextlib.suppress(ProcessLookupError, PermissionError):
+                os.kill(pid, signal.SIGSTOP)
+        frozen |= members
+    with contextlib.suppress(ProcessLookupError, PermissionError):
+        os.killpg(root_pid, signal.SIGKILL)
+    for pid in frozen:
+        with contextlib.suppress(ProcessLookupError, PermissionError):
+            os.kill(pid, signal.SIGKILL)
+
+
+def _resume(pid):
+    """Windows: start a process that was created suspended (it is already inside the job)."""
+    handle = _k32.OpenProcess(_PROCESS_SUSPEND_RESUME, False, pid)
+    if not handle:
+        raise ProcessTreeError("cannot open the child to resume it")
+    try:
+        if _ntdll.NtResumeProcess(handle) != 0:
+            raise ProcessTreeError("cannot resume the child")
+    finally:
+        _k32.CloseHandle(handle)
 
 
 def _create_job_for(pid):

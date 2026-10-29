@@ -153,3 +153,12 @@ def test_request_sequence_numbers_are_unique_within_a_run(tmp_path):
 
 def test_the_run_token_is_stored_only_as_a_hash(tmp_path):
     assert "token" not in {c.name for c in PiRun.__table__.columns if c.name != "token_sha256"}
+
+
+def test_a_slot_that_was_never_sent_can_be_rejected_but_not_ambiguous():
+    assert (
+        states.advance(states.R_ADMITTED, states.R_REJECTED, states.REQUEST_TRANSITIONS)
+        == states.R_REJECTED
+    )
+    with pytest.raises(states.IllegalTransition):
+        states.advance(states.R_ADMITTED, states.R_AMBIGUOUS, states.REQUEST_TRANSITIONS)

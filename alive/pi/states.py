@@ -35,7 +35,8 @@ R_REJECTED = "rejected"  # refused by ALIVE before any dispatch (limit, state, m
 
 REQUEST_TERMINAL = frozenset({R_SETTLED, R_FAILED, R_AMBIGUOUS, R_REJECTED})
 REQUEST_TRANSITIONS = {
-    R_ADMITTED: {R_DISPATCHED, R_FAILED},
+    # A slot that is reconciled before its dispatch marker was written was never sent: rejected.
+    R_ADMITTED: {R_DISPATCHED, R_FAILED, R_REJECTED},
     R_DISPATCHED: {R_SETTLED, R_FAILED, R_AMBIGUOUS},
 }
 

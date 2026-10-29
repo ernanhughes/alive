@@ -1,6 +1,7 @@
 # ALIVE-PI-01B — qualification report
 
-Status: **draft PR, awaiting independent review.** Not merged. No paid inference was performed: every
+Status: **draft PR. The first candidate (`b2208a8`) was independently reviewed and BLOCKED; this
+version remediates that review and needs re-review.** Not merged. No paid inference was performed: every
 provider call in every test and integration run below went to a scripted local server with a
 throwaway credential.
 
@@ -141,12 +142,23 @@ the `pi-runtime` stage is a one-line change but would make `pi` transport unavai
 
 ## G. Remaining limitations (not demonstrated)
 
-* **Linux process-tree supervision is untested locally** (POSIX process group + `/proc`); CI's
-  Ubuntu job is the first run. The Windows Job Object is assigned just after spawn, so a grandchild
-  spawned in that instant is theoretically not in the job.
+* **Linux containment is best-effort, not a sandbox.** The first candidate's confirmation was
+  falsified by the review (a `setsid()` grandchild survived while `cleanup_confirmed` was true).
+  It is now fixed, but a descendant that is both orphaned before cleanup and scrubs its own
+  environment cannot be found without cgroups or a PID namespace (see the architecture notes).
 * Real Pi was exercised only for the paths above. **Pi's behaviour on a protocol it was not tested
   with** (other versions, other providers, tool-calling models) is unknown; the pin is the control.
 * Pi is built into the default image, adding ~0.36 GB.
+* The locked tree contains `undici` 8.10.2, which `npm audit` flags (excessive-content-encoding DoS;
+  custom-TLS-option loss). Exploitability here is **not established** (Pi talks only to ALIVE's
+  loopback and uses no custom TLS callback) but it is a known dependency risk. An integrity hash is
+  not a vulnerability scan.
+* The run token is a local bearer: Pi, and any same-user process able to read the per-run temp
+  directory or probe the loopback port, can use it for that one run's single slot.
+* Event/stdout flood handling is bounded (frame size, retained-event caps) but was not stress-tested
+  with a large stream of *valid* frames.
+* Startup recovery runs only in the process that owns the database (kernel ownership); concurrent
+  multi-backend crash behaviour was not exercised. The Pi runtime is module-global: one app per process.
 * `--ignore-scripts` skips two dependency install scripts; Pi 1.4.0 was verified to run without them
   on this platform only.
 * No real Meta provider was contacted. Real provider behaviour (streaming, rate limits, usage
@@ -181,3 +193,26 @@ Independent review instructions — please review in this order, at the exact he
 Windows at the reviewed head SHA, and (c) the independent review finding no double-dispatch,
 isolation-escape, or non-terminal-state defect. If CI shows a POSIX process-tree failure, **REVISE**
 before PI-02. Nothing here authorizes starting PI-02 or any paid inference.
+
+## Remediation of the independent review (R1)
+
+The review of `b2208a8` (Codex, retained outside the repository) returned **BLOCKED** with two
+blockers and five further findings. All were reproduced independently on this checkout before any
+change, then fixed, each with a regression that fails on the old code:
+
+| ID | Severity | Finding | Fix | Regression |
+| --- | --- | --- | --- | --- |
+| PIB-01 | BLOCKER | Linux cleanup confirmed while a `setsid()` grandchild lived | Membership by group+session+descendants+run tag; freeze, kill, poll; Windows child created suspended into the job | `tests/test_pi_process.py` (4 POSIX tests run in Docker as uid 10000; they fail on the old `process.py`) |
+| PIB-03 | BLOCKER | An admitted HTTP handler dispatched after the run was `CANCELLED`; a request stayed `admitted` under a terminal run | Atomic `_dispatch` (run must be `RUNNING`); `_settle` rejects never-sent slots in the run-terminal transaction; recovery repairs pending rows under terminal runs | `tests/test_pi_lifecycle.py` |
+| PIB-02 | HIGH | Cancel between durable transitions left the run `ADMITTED` | One lifecycle owner (own task) with idempotent `_abandon`/`_settle` from first durable write | `test_cancel_after_every_durable_transition_ends_terminal` (PREPARED/ADMITTED/STARTING) and 2 more |
+| PIB-04 | HIGH | Recovery turned an already-`ambiguous` request's run into `CANCELLED` | Ambiguous rows count as possible dispatch; any live state → `UNKNOWN` | 56-combination recovery matrix test with invariants |
+| PIB-05 | HIGH | `ALIVE_PI_MAX_PROVIDER_REQUESTS=2` allowed two dispatches under one reservation | Setting validated to exactly 1; gateway refuses anything else before any write | `test_the_provider_request_ceiling_cannot_be_raised_above_one` |
+| PIB-06 | MEDIUM | Event redaction retained prompt text and a run token used as a key | Allowlist rebuild: unknown keys dropped, text hashed, labels checked, numbers by key, bounded; Pi-reported identity/usage reduced; retained-event cap | `tests/test_pi_runner.py` redaction tests |
+| PIB-07 | MEDIUM | Env test derived its oracle from `build_env`, so an added proxy variable passed | Literal expected key set, hostile parent env, exact values | `test_build_env_is_exactly_the_written_out_allowlist` and the child-env test |
+
+Also from the review: the pinned CLI bundle digest is now **enforced** (`ALIVE_PI_BUNDLE_SHA256`)
+rather than only recorded; the "loads no Pi code" claim for the default transport was overstated and
+is corrected above; the `undici` advisory and the same-user-process limits are recorded in G.
+
+**Remediation evidence is in the PR description** (commands, platform, exact SHA). The review's own
+reproductions remain the acceptance test: a re-reviewer should re-run them against the new head.

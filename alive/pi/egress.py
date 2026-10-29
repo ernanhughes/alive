@@ -199,7 +199,13 @@ class PiEgress:
         ctx.idle.clear()
         started = time.monotonic()
         try:
-            await self._mark(request_id, states.R_DISPATCHED)  # durable BEFORE the upstream call
+            # Durable BEFORE the upstream call, and only if the run still holds authority: run
+            # conclusion takes the same lock, so a cancelled or concluded run can never be
+            # followed by a late dispatch from a handler that was already admitted.
+            if not await self._dispatch(request_id):
+                return self._error(
+                    409, "refused: run_not_running", "refused", reason="run_not_running"
+                )
             try:
                 generation = await ctx.gateway.structured(ctx.approved)
             except ProviderError as exc:
@@ -286,6 +292,39 @@ class PiEgress:
     async def _reject(self, ctx, inbound_sha256, reason):
         await self._admit(ctx, inbound_sha256, {}, reason)
 
+    async def _dispatch(self, request_id):
+        """Atomically move an admitted slot to `dispatched`, iff its run is still RUNNING.
+
+        Returns False (and rejects the slot) when the run was cancelled or concluded in between.
+        """
+        k = self.kernel
+        async with k.lock, k.db.sessions.begin() as session:
+            row = await session.get(PiProviderRequest, request_id)
+            run = await session.get(PiRun, row.run_id)
+            if row.state != states.R_ADMITTED:
+                return False
+            if run.state != states.RUNNING:
+                row.state = states.advance(row.state, states.R_REJECTED, states.REQUEST_TRANSITIONS)
+                row.error_category, row.updated_at = "run_not_running", now()
+                k.add_event(
+                    session,
+                    "pi.provider_request.rejected",
+                    {"run_id": row.run_id, "seq": row.seq, "reason": "run_not_running"},
+                    source="pi",
+                    correlation=row.run_id,
+                )
+                return False
+            row.state = states.advance(row.state, states.R_DISPATCHED, states.REQUEST_TRANSITIONS)
+            row.updated_at = now()
+            k.add_event(
+                session,
+                "pi.provider_request.dispatched",
+                {"run_id": row.run_id, "seq": row.seq, "request_id": row.id},
+                source="pi",
+                correlation=row.run_id,
+            )
+            return True
+
     async def _mark(self, request_id, new_state):
         k = self.kernel
         async with k.lock, k.db.sessions.begin() as session:
@@ -304,6 +343,8 @@ class PiEgress:
         k = self.kernel
         async with k.lock, k.db.sessions.begin() as session:
             row = await session.get(PiProviderRequest, request_id)
+            if row.state in states.REQUEST_TERMINAL:
+                return  # the run already reconciled this slot (e.g. ambiguous); that stands
             row.state = states.advance(row.state, states.R_SETTLED, states.REQUEST_TRANSITIONS)
             row.http_status = 200
             row.usage_json = generation.usage or None  # unknown stays NULL, never 0

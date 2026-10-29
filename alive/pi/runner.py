@@ -49,24 +49,63 @@ SETTINGS = {"retry": {"enabled": False, "provider": {"maxRetries": 0}}}
 MAX_MALFORMED_FRAMES = 5
 PROMPT_ID, TEXT_ID, STATS_ID = "alive-prompt", "alive-text", "alive-stats"
 
-# Event fields whose string values are kept verbatim; every other string is replaced by its hash,
-# so a retained event can show what happened without disclosing prompts or credentials.
-SAFE_STRING_KEYS = frozenset(
+# What a retained Pi event may contain. Pi's output is UNTRUSTED: it can put anything in a key or a
+# value, so an event is rebuilt from this allowlist rather than scrubbed. Unknown keys are dropped
+# (and counted), free text is always hashed, protocol labels survive only if they are known ones.
+EVENT_TYPES = frozenset(
     {
-        "type",
-        "id",
-        "command",
-        "disposition",
-        "role",
-        "provider",
-        "model",
-        "stopReason",
-        "reason",
-        "api",
-        "toolName",
-        "name",
+        "response",
+        "agent_start",
+        "agent_end",
+        "agent_settled",
+        "turn_start",
+        "turn_end",
+        "message_start",
+        "message_update",
+        "message_end",
+        "tool_execution_start",
+        "tool_execution_update",
+        "tool_execution_end",
+        "auto_retry_start",
+        "auto_retry_end",
+        "queue_update",
+        "compaction_start",
+        "compaction_end",
+        "alive.malformed_frame",
     }
 )
+LABELS = {  # key -> the only string values kept verbatim
+    "type": EVENT_TYPES,
+    "role": frozenset({"user", "assistant", "toolResult", "system"}),
+    "stopReason": frozenset({"stop", "length", "toolUse", "error", "aborted"}),
+    "disposition": frozenset({"started", "handled", "queued"}),
+    "command": frozenset({"prompt", "get_last_assistant_text", "get_session_stats", "abort"}),
+    "provider": frozenset({PROVIDER_ID}),
+    "model": frozenset({MODEL_ID}),
+    "api": frozenset({"openai-completions"}),
+    "id": frozenset({PROMPT_ID, TEXT_ID, STATS_ID}),
+}
+FREE_TEXT_KEYS = frozenset({"error", "reason", "text", "content", "toolName", "name", "thinking"})
+STRUCTURE_KEYS = frozenset({"data", "message", "usage", "cost", "details"})
+NUMBER_KEYS = frozenset(
+    {
+        "input",
+        "output",
+        "cacheRead",
+        "cacheWrite",
+        "totalTokens",
+        "total",
+        "userMessages",
+        "assistantMessages",
+        "toolCalls",
+        "toolResults",
+        "totalMessages",
+        "timestamp",
+    }
+)
+BOOL_KEYS = frozenset({"success"})
+ALLOWED_KEYS = frozenset(LABELS) | FREE_TEXT_KEYS | STRUCTURE_KEYS | NUMBER_KEYS | BOOL_KEYS
+MAX_EVENT_DEPTH, MAX_EVENT_LIST = 6, 20
 
 
 class PiRunFailure(RuntimeError):
@@ -145,6 +184,9 @@ def locate_pi(settings):
     with cli.open("rb") as handle:
         for block in iter(lambda: handle.read(1 << 20), b""):
             digest.update(block)
+    pinned = settings.alive_pi_bundle_sha256
+    if pinned and digest.hexdigest() != pinned:
+        raise PiRunFailure("pi_bundle_mismatch", "the Pi bundle is not the pinned bundle")
     return PiInstall(node, str(cli), meta["version"], digest.hexdigest())
 
 
@@ -206,19 +248,59 @@ def flags_identity(max_tokens):
     ).hexdigest()
 
 
-def redact_event(value, secrets=(), key=None):
-    """Keep the shape of an event; hash free text so no prompt or credential is retained."""
+def redact_event(value, secrets=(), key=None, depth=0):
+    """Rebuild an untrusted Pi event from the allowlist. Nothing outside it is retained."""
+    if depth > MAX_EVENT_DEPTH:
+        return {"truncated": True}
     if isinstance(value, dict):
-        return {k: redact_event(v, secrets, k) for k, v in value.items()}
+        kept = {}
+        dropped = 0
+        for name, item in value.items():
+            if name in ALLOWED_KEYS:
+                kept[name] = redact_event(item, secrets, name, depth + 1)
+            else:
+                dropped += 1  # the key itself may be hostile (a prompt or a token): never copied
+        if dropped:
+            kept["_dropped_keys"] = dropped
+        return kept
     if isinstance(value, list):
-        return [redact_event(v, secrets, key) for v in value]
+        out = [redact_event(item, secrets, key, depth + 1) for item in value[:MAX_EVENT_LIST]]
+        if len(value) > MAX_EVENT_LIST:
+            out.append({"truncated": len(value) - MAX_EVENT_LIST})
+        return out
     if isinstance(value, str):
         if any(secret and secret in value for secret in secrets):
             return {"redacted": "credential", "sha256": sha256_text(value)}
-        if key in SAFE_STRING_KEYS and len(value) <= 80:
+        if key in LABELS and value in LABELS[key]:
             return value
         return {"sha256": sha256_text(value), "chars": len(value)}
-    return value
+    if isinstance(value, bool):
+        return value if key in BOOL_KEYS else None
+    if isinstance(value, int | float):
+        return value if key in NUMBER_KEYS else None
+    return None
+
+
+def label_or_hash(value, allowed):
+    """A protocol label reported by Pi, kept only if it is one we know; else an opaque marker."""
+    if value is None or value in allowed:
+        return value
+    return "unexpected:" + sha256_text(str(value))[:16]
+
+
+def numeric_only(value, depth=0):
+    """Pi's own usage/cost report, reduced to numbers under known keys (it is untrusted)."""
+    if not isinstance(value, dict) or depth > 2:
+        return None
+    out = {}
+    for name, item in value.items():
+        if name in NUMBER_KEYS and isinstance(item, int | float) and not isinstance(item, bool):
+            out[name] = item
+        elif name in STRUCTURE_KEYS and isinstance(item, dict):
+            nested = numeric_only(item, depth + 1)
+            if nested:
+                out[name] = nested
+    return out or None
 
 
 class PiRunner:
@@ -322,7 +404,8 @@ class PiRunner:
 
     async def _record(self, record, token, result, on_event):
         redacted = redact_event(record, (token,))
-        result.events.append(redacted)
+        if len(result.events) < MAX_EVENT_LIST * 10:
+            result.events.append(redacted)
         if on_event is not None:
             await on_event(redacted)
 
@@ -347,10 +430,14 @@ class PiRunner:
             elif kind == "message_end":
                 message = record.get("message") or {}
                 if message.get("role") == "assistant":
-                    result.observed_provider = message.get("provider")
-                    result.observed_model = message.get("model")
-                    result.stop_reason = message.get("stopReason")
-                    result.pi_usage = message.get("usage")
+                    result.observed_provider = label_or_hash(
+                        message.get("provider"), LABELS["provider"]
+                    )
+                    result.observed_model = label_or_hash(message.get("model"), LABELS["model"])
+                    result.stop_reason = label_or_hash(
+                        message.get("stopReason"), LABELS["stopReason"]
+                    )
+                    result.pi_usage = numeric_only(message.get("usage"))
             elif kind == "agent_settled":
                 result.settled = True
                 break

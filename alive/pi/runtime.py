@@ -5,7 +5,7 @@ Recovery rule (never negotiable): after a restart a request that was `dispatched
 Governor reservation (the `ModelInvocation`) keeps its conservative charge.
 """
 
-from sqlalchemy import select
+from sqlalchemy import or_, select
 
 from alive.models import now
 from alive.pi import states
@@ -46,10 +46,22 @@ class PiRuntime:
 
 
 async def recover(kernel):
-    """Settle every non-terminal Pi run left by a previous process. Never re-dispatches."""
+    """Settle every Pi run (and request) a previous process left unfinished. Never re-dispatches.
+
+    A request that was `dispatched` OR is already `ambiguous` may have reached the provider, so its
+    run is UNKNOWN, never CANCELLED. A request still `admitted` never reached the provider and is
+    rejected. Pending requests are repaired even under a run that is already terminal.
+    """
     async with kernel.lock, kernel.db.sessions.begin() as session:
+        pending = select(PiProviderRequest.run_id).where(
+            PiProviderRequest.state.in_((states.R_ADMITTED, states.R_DISPATCHED))
+        )
         runs = (
-            await session.scalars(select(PiRun).where(PiRun.state.notin_(states.RUN_TERMINAL)))
+            await session.scalars(
+                select(PiRun).where(
+                    or_(PiRun.state.notin_(states.RUN_TERMINAL), PiRun.id.in_(pending))
+                )
+            )
         ).all()
         for run in runs:
             requests = (
@@ -57,23 +69,40 @@ async def recover(kernel):
                     select(PiProviderRequest).where(PiProviderRequest.run_id == run.id)
                 )
             ).all()
-            possibly_sent = False
+            repaired = False
             for request in requests:
                 if request.state == states.R_DISPATCHED:
                     request.state, request.error_category = states.R_AMBIGUOUS, "restart"
-                    request.updated_at = now()
-                    possibly_sent = True
+                    request.updated_at, repaired = now(), True
                 elif request.state == states.R_ADMITTED:
                     request.state, request.error_category = (
-                        states.R_FAILED,
+                        states.R_REJECTED,
                         "restart_before_dispatch",
                     )
-                    request.updated_at = now()
-            if possibly_sent and run.state == states.RUNNING:
+                    request.updated_at, repaired = now(), True
+            possibly_sent = any(r.state == states.R_AMBIGUOUS for r in requests)
+            if run.state in states.RUN_TERMINAL:
+                if repaired:  # the run's own terminal state stands; only the rows were stale
+                    kernel.add_event(
+                        session,
+                        "pi.run.repaired",
+                        {"run_id": run.id, "state": run.state},
+                        source="pi",
+                        correlation=run.id,
+                    )
+                continue
+            if possibly_sent:
                 new, reason = states.UNKNOWN, "restart_after_possible_dispatch"
+            elif any(r.state in (states.R_SETTLED, states.R_FAILED) for r in requests):
+                new, reason = states.CANCELLED, "restart_after_dispatch_resolved"
             else:
                 new, reason = states.CANCELLED, "restart"
-            run.state = states.advance(run.state, new, states.RUN_TRANSITIONS)
+            try:
+                run.state = states.advance(run.state, new, states.RUN_TRANSITIONS)
+            except states.IllegalTransition:
+                if new != states.UNKNOWN:
+                    raise
+                run.state = states.UNKNOWN  # record the truth even from an inconsistent state
             run.terminal_reason, run.finished_at, run.updated_at = reason, now(), now()
             kernel.add_event(
                 session,

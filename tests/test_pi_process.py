@@ -140,3 +140,136 @@ def test_shielded_work_finishes_even_if_the_caller_is_cancelled_again():
         return list(done)  # ...but the cleanup still completed first
 
     assert asyncio.run(scenario()) == ["cleaned"]
+
+
+# --- PIB-01: a process group is not containment (POSIX) ---
+
+posix_only = pytest.mark.skipif(sys.platform == "win32", reason="POSIX sessions and /proc")
+
+ESCAPED_GRANDCHILD_LIVE_PARENT = (
+    "import subprocess, sys, time;"
+    f"g = subprocess.Popen([sys.executable, '-c', {GRANDCHILD!r}], start_new_session=True);"
+    "print(g.pid, flush=True); time.sleep(120)"
+)
+ESCAPED_GRANDCHILD_EXITED_PARENT = (
+    "import subprocess, sys;"
+    f"g = subprocess.Popen([sys.executable, '-c', {GRANDCHILD!r}], start_new_session=True);"
+    "print(g.pid, flush=True)"
+)
+FORKS_ESCAPING_CHILDREN = (
+    "import subprocess, sys, time;"
+    "pids = [];"
+    "[pids.append(subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(120)'],"
+    " start_new_session=True).pid) for _ in range(30)];"
+    "print(','.join(map(str, pids)), flush=True); time.sleep(120)"
+)
+
+
+@posix_only
+def test_a_grandchild_in_its_own_session_is_found_killed_and_not_falsely_confirmed():
+    """The reviewed defect: cleanup_confirmed=True while a setsid() descendant was still alive."""
+
+    async def scenario():
+        managed = await spawn(ESCAPED_GRANDCHILD_LIVE_PARENT)
+        grandchild = await grandchild_pid(managed)
+        assert os.getsid(grandchild) != os.getsid(managed.pid)  # it really left the session
+        assert os.getpgid(grandchild) != managed.pid  # and the process group
+        empty_while_alive = managed.tree_is_empty()
+        confirmed = await managed.terminate_tree()
+        return grandchild, empty_while_alive, confirmed
+
+    grandchild, empty_while_alive, confirmed = asyncio.run(scenario())
+    assert empty_while_alive is False
+    assert confirmed is True
+    assert wait_dead(grandchild)  # confirmation now means the escaped descendant is really gone
+
+
+@posix_only
+def test_an_escaped_grandchild_whose_parent_already_exited_is_found_by_its_tag():
+    async def scenario():
+        managed = await spawn(ESCAPED_GRANDCHILD_EXITED_PARENT)
+        grandchild = await grandchild_pid(managed)
+        for _ in range(200):
+            if not pid_alive(managed.pid):
+                break
+            await asyncio.sleep(0.05)
+        assert not pid_alive(managed.pid) and pid_alive(grandchild)
+        assert proc._posix_members(managed.pid, managed.tag)  # found although orphaned
+        for _ in range(100):  # once our child is reaped, "empty" must still be False
+            if managed.process.returncode is not None:
+                break
+            await asyncio.sleep(0.05)
+        assert managed.process.returncode is not None
+        assert managed.tree_is_empty() is False
+        return grandchild, await managed.terminate_tree()
+
+    grandchild, confirmed = asyncio.run(scenario())
+    assert confirmed is True
+    assert wait_dead(grandchild)
+
+
+@posix_only
+def test_many_escaping_children_are_frozen_then_all_killed():
+    async def scenario():
+        managed = await spawn(FORKS_ESCAPING_CHILDREN)
+        line = (await asyncio.wait_for(managed.stdout.readline(), 20)).decode().strip()
+        children = [int(pid) for pid in line.split(",")]
+        confirmed = await managed.terminate_tree()
+        return children, confirmed, proc._posix_members(managed.pid, managed.tag)
+
+    children, confirmed, remaining = asyncio.run(scenario())
+    assert confirmed is True and not remaining
+    assert all(wait_dead(pid) for pid in children)
+
+
+@posix_only
+def test_a_stopped_process_cannot_hide_a_descendant_from_cleanup():
+    """SIGSTOPped members are still found and killed (cleanup freezes them itself)."""
+
+    async def scenario():
+        managed = await spawn(ESCAPED_GRANDCHILD_LIVE_PARENT)
+        grandchild = await grandchild_pid(managed)
+        os.kill(grandchild, 19)  # SIGSTOP
+        confirmed = await managed.terminate_tree()
+        return grandchild, confirmed
+
+    grandchild, confirmed = asyncio.run(scenario())
+    assert confirmed is True and wait_dead(grandchild)
+
+
+@pytest.mark.skipif(sys.platform != "win32", reason="Windows Job Object")
+def test_a_windows_child_starts_only_inside_the_job():
+    """Created suspended, assigned, then resumed: the very first thing it does is already jobbed."""
+
+    async def scenario():
+        managed = await spawn(PARENT_KEEPS_GRANDCHILD)
+        grandchild = await grandchild_pid(managed)  # forked in the child's first instant
+        confirmed = await managed.terminate_tree()
+        return grandchild, confirmed
+
+    grandchild, confirmed = asyncio.run(scenario())
+    assert confirmed is True and wait_dead(grandchild)
+
+
+ESCAPED_GRANDCHILD_WITH_SCRUBBED_ENV = (
+    "import subprocess, sys, time;"
+    f"g = subprocess.Popen([sys.executable, '-c', {GRANDCHILD!r}], env={{}},"
+    " start_new_session=True);"
+    "print(g.pid, flush=True); time.sleep(120)"
+)
+
+
+@posix_only
+def test_a_grandchild_that_scrubs_its_environment_is_still_found_while_its_parent_lives():
+    """The tag cannot find it; the parent-pid walk does (the two are independent mechanisms)."""
+
+    async def scenario():
+        managed = await spawn(ESCAPED_GRANDCHILD_WITH_SCRUBBED_ENV)
+        grandchild = await grandchild_pid(managed)
+        with open(f"/proc/{grandchild}/environ", "rb") as handle:
+            assert proc.TAG_ENV.encode() not in handle.read()  # it really has no tag
+        confirmed = await managed.terminate_tree()
+        return grandchild, confirmed
+
+    grandchild, confirmed = asyncio.run(scenario())
+    assert confirmed is True and wait_dead(grandchild)

@@ -16,6 +16,18 @@ FAKE = str(Path(__file__).resolve().parent / "fixtures" / "fake_pi.py")
 TOKEN = "run-token-for-tests-0123456789abcdef"
 
 
+@pytest.fixture(autouse=True)
+def fake_pi_bookkeeping_events(monkeypatch):
+    """The fake Pi reports child pids / provider status as extra events; allow just those here."""
+    monkeypatch.setitem(
+        pi_runner.LABELS,
+        "type",
+        pi_runner.EVENT_TYPES | {"alive_fake.child", "alive_fake.provider_call"},
+    )
+    monkeypatch.setattr(pi_runner, "ALLOWED_KEYS", pi_runner.ALLOWED_KEYS | {"pid", "status"})
+    monkeypatch.setattr(pi_runner, "NUMBER_KEYS", pi_runner.NUMBER_KEYS | {"pid", "status"})
+
+
 @pytest.fixture
 def runner(settings):
     return PiRunner(settings, install=PiInstall(sys.executable, FAKE, "1.4.0", "f" * 64))
@@ -64,23 +76,58 @@ def test_pi_is_launched_with_every_authority_disabled(runner):
     assert argv == list(pi_runner.FLAGS)
 
 
+# The expected environment is written out here, NOT derived from build_env: an oracle computed from
+# the implementation would authorize anything the implementation added (review finding PIB-07).
+EXPECTED_BUILD_ENV = {
+    "PI_CODING_AGENT_DIR",
+    "PI_OFFLINE",
+    "PI_TELEMETRY",
+    "PI_SKIP_VERSION_CHECK",
+    "HOME",
+    "USERPROFILE",
+    "TMPDIR",
+    "TEMP",
+    "TMP",
+} | ({"SYSTEMROOT"} if sys.platform == "win32" else set())
+SPAWN_ADDS_TAG = {"ALIVE_PI_RUN_TAG"}  # ManagedProcess tags every child (process-tree containment)
+ADDED_BY_THE_PYTHON_DOUBLE = {"SYSTEMDRIVE", "WINDIR", "LC_CTYPE"}  # loader / PEP 538, not ALIVE
+HOSTILE_PARENT_ENV = {
+    "DEV_CANARY_SECRET": "must-not-reach-pi",
+    "ALIVE_API_TOKEN": "must-not-reach-pi",
+    "ALIVE_META_API_KEY": "must-not-reach-pi",
+    "MODEL_API_KEY": "must-not-reach-pi",
+    "PI_API_KEY": "must-not-reach-pi",
+    "OPENAI_API_KEY": "must-not-reach-pi",
+    "ANTHROPIC_API_KEY": "must-not-reach-pi",
+    "HTTP_PROXY": "http://proxy.invalid:9000",
+    "HTTPS_PROXY": "http://proxy.invalid:9000",
+    "ALL_PROXY": "http://proxy.invalid:9000",
+    "NO_PROXY": "*",
+    "NODE_OPTIONS": "--require=/nonexistent.js",
+    "NODE_EXTRA_CA_CERTS": "/nonexistent.pem",
+    "NODE_TLS_REJECT_UNAUTHORIZED": "0",
+    "PI_CONFIG_DIR": "/dev/nonexistent",
+    "PATH": "/nonexistent",
+}
+
+
+def test_build_env_is_exactly_the_written_out_allowlist(monkeypatch):
+    for name, value in HOSTILE_PARENT_ENV.items():
+        monkeypatch.setenv(name, value)
+    env = pi_runner.build_env(Path("c"), Path("t"))
+    assert {k.upper() for k in env} == {k.upper() for k in EXPECTED_BUILD_ENV}
+    assert not set(HOSTILE_PARENT_ENV) & set(env)
+
+
 def test_the_child_receives_only_the_allow_listed_environment(runner, monkeypatch):
-    for name in ("DEV_CANARY_SECRET", "ALIVE_API_TOKEN", "MODEL_API_KEY", "PI_API_KEY"):
-        monkeypatch.setenv(name, "must-not-reach-pi")
-    keys = set(json.loads(go(runner, "SCENARIO:env").text))
-    assert not any("must" in k or "CANARY" in k or "TOKEN" in k or "API_KEY" in k for k in keys)
-    assert "PATH" not in keys  # nothing is inherited; node is invoked by absolute path
-    allowed = set(pi_runner.build_env(Path("c"), Path("t"))) | {
-        "SYSTEMROOT",
-        "SYSTEMDRIVE",
-        "WINDIR",
-        # The Python test double (not Pi, which is Node) sets this itself at startup under a C
-        # locale (PEP 538), so it appears in the child's environment without ALIVE passing it.
-        "LC_CTYPE",
-    }
-    unexpected = {k for k in keys if k.upper() not in {a.upper() for a in allowed}}
+    for name, value in HOSTILE_PARENT_ENV.items():
+        monkeypatch.setenv(name, value)
+    keys = {k.upper() for k in json.loads(go(runner, "SCENARIO:env").text)}
+    assert not keys & {name.upper() for name in HOSTILE_PARENT_ENV}
+    expected = EXPECTED_BUILD_ENV | SPAWN_ADDS_TAG
+    unexpected = keys - {k.upper() for k in expected} - ADDED_BY_THE_PYTHON_DOUBLE
     assert not unexpected, unexpected
-    assert "LC_CTYPE" not in pi_runner.build_env(Path("c"), Path("t"))  # ALIVE never passes it
+    assert {k.upper() for k in EXPECTED_BUILD_ENV | SPAWN_ADDS_TAG} <= keys
 
 
 def test_pi_runs_offline_without_telemetry_or_update_checks(runner):
@@ -198,6 +245,7 @@ def make_package(tmp_path, *, name="@earendil-works/pi-coding-agent", version="1
 
 
 def test_the_pinned_version_is_verified_and_a_mismatch_is_refused(settings, tmp_path):
+    settings.alive_pi_bundle_sha256 = ""  # this test is about name/version; the digest has its own
     settings.alive_pi_cli = make_package(tmp_path)
     install = pi_runner.locate_pi(settings)
     assert install.version == "1.4.0" and len(install.bundle_sha256) == 64
@@ -222,3 +270,89 @@ def test_a_missing_bundle_is_unavailable_not_a_crash(settings, tmp_path):
     with pytest.raises(PiRunFailure) as error:
         pi_runner.locate_pi(settings)
     assert error.value.category == "pi_unavailable"
+
+
+# --- PIB-06: Pi output is untrusted; retained events are rebuilt from an allowlist ---
+
+PROMPT_CANARY = "PRIVATE-PROMPT-CANARY-DO-NOT-RETAIN"
+
+
+def test_a_hostile_key_or_short_safe_field_cannot_carry_a_prompt_or_the_run_token():
+    token = "review-only-single-run-token-not-real"
+    event = {
+        "type": "message_update",
+        "reason": PROMPT_CANARY,  # a short "safe-looking" field used to be retained verbatim
+        "stopReason": PROMPT_CANARY,
+        "role": PROMPT_CANARY,
+        "provider": PROMPT_CANARY,
+        token: "a hostile JSON key equal to the run token",
+        PROMPT_CANARY: "a hostile JSON key equal to the prompt",
+        "message": {"role": "assistant", "content": [{"type": "text", "text": PROMPT_CANARY}]},
+    }
+    encoded = json.dumps(pi_runner.redact_event(event, (token,)))
+    assert PROMPT_CANARY not in encoded and token not in encoded
+    assert pi_runner.redact_event(event, (token,))["_dropped_keys"] == 2
+    assert pi_runner.redact_event(event, (token,))["type"] == "message_update"  # real labels stay
+
+
+def test_known_protocol_labels_and_numbers_survive_but_nothing_else():
+    event = {
+        "type": "message_end",
+        "message": {
+            "role": "assistant",
+            "provider": "alive-egress",
+            "model": "alive-approved",
+            "stopReason": "stop",
+            "usage": {"input": 3, "output": 4, "totalTokens": 7, "note": PROMPT_CANARY},
+        },
+    }
+    kept = pi_runner.redact_event(event)
+    assert kept["message"]["stopReason"] == "stop"
+    assert kept["message"]["usage"] == {
+        "input": 3,
+        "output": 4,
+        "totalTokens": 7,
+        "_dropped_keys": 1,
+    }
+    assert PROMPT_CANARY not in json.dumps(kept)
+
+
+def test_depth_and_list_length_are_bounded():
+    deep = current = {}
+    for _ in range(40):
+        current["data"] = {}
+        current = current["data"]
+    assert json.dumps(pi_runner.redact_event(deep)).count("data") < 10
+    many = {"data": [{"input": i} for i in range(1000)]}
+    assert len(pi_runner.redact_event(many)["data"]) == pi_runner.MAX_EVENT_LIST + 1
+
+
+def test_untrusted_identity_and_usage_reported_by_pi_are_reduced():
+    assert pi_runner.label_or_hash("alive-egress", {"alive-egress"}) == "alive-egress"
+    odd = pi_runner.label_or_hash(PROMPT_CANARY, {"alive-egress"})
+    assert odd.startswith("unexpected:") and PROMPT_CANARY not in odd
+    assert pi_runner.numeric_only(
+        {"input": 5, "cost": {"total": 0.0, "x": "no"}, "z": PROMPT_CANARY}
+    ) == {
+        "input": 5,
+        "cost": {"total": 0.0},
+    }
+    assert pi_runner.numeric_only("not a dict") is None
+
+
+# --- supply chain: the pinned bundle's bytes are enforced, not just recorded ---
+
+
+def test_a_same_version_bundle_with_different_bytes_is_refused(settings, tmp_path):
+    settings.alive_pi_cli = str(make_package(tmp_path))
+    with pytest.raises(PiRunFailure) as refused:
+        pi_runner.locate_pi(settings)
+    assert refused.value.category == "pi_bundle_mismatch"
+
+
+def test_the_pinned_digest_is_what_gets_accepted(settings, tmp_path):
+    settings.alive_pi_cli = str(make_package(tmp_path))
+    settings.alive_pi_bundle_sha256 = pi_runner.sha256_text("// bundle")
+    assert pi_runner.locate_pi(settings).bundle_sha256 == settings.alive_pi_bundle_sha256
+    settings.alive_pi_bundle_sha256 = ""  # an operator may disable the pin, explicitly
+    assert pi_runner.locate_pi(settings).version == "1.4.0"

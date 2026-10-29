@@ -31,8 +31,12 @@ class Settings(BaseSettings):
     alive_pi_cli: str = ""  # explicit Pi bundle path; empty = derived from alive_pi_runtime_dir
     alive_pi_runtime_dir: str = "pi-runtime"  # holds the lockfile-pinned Pi install
     alive_pi_pinned_version: str = "1.4.0"  # a different installed version is refused
+    # SHA-256 of the pinned Pi CLI bundle (identical on Windows and Linux). Enforced,
+    # not just recorded: a same-version bundle with other bytes is refused.
+    alive_pi_bundle_sha256: str = "e79626f2dd6f94aa45d30f3fa63cd84319a6eefcd150b353cfaf274366926774"
     alive_pi_run_deadline: float = Field(120, ge=1, le=900)  # absolute per-run deadline, seconds
-    alive_pi_max_provider_requests: int = Field(1, ge=1, le=4)  # upstream requests per Pi run
+    # One Governor reservation pays for exactly one provider request; PiGateway refuses any other.
+    alive_pi_max_provider_requests: int = Field(1, ge=1, le=1)
     alive_agent_timeout: float = Field(120, ge=1)
     alive_meta_url: str = ""
     alive_meta_model: str = "muse-spark-1.3"
