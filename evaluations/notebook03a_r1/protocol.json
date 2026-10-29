@@ -1,0 +1,65 @@
+{
+  "version": "notebook03a-v1.5",
+  "baseline_commit": "a9bcf8673818e85246a268c308b64d2080792b96",
+  "r1_base_commit": "785e1024a22fca0402741b7a2ebad984af7fc10b",
+  "r1_base_note": "origin/main with PR #45 merged (reviewed head 8546536 within). v1.4 evidence preserved byte-unchanged.",
+  "hypothesis": "A future structured semantic policy may preserve useful evidence-grounded findings and detect specific corrections while reducing unsupported connections relative to lexical candidates, without winning by surface cues or abstention alone. Untested.",
+  "available_cases": 66,
+  "target_cases_with_independent_holdout": 78,
+  "independent_cases_available": 0,
+  "independent_status": "PENDING_INDEPENDENT_LABELING",
+  "public_splits_exposed": true,
+  "arms": {
+    "A": "Actual current lexical connection Core API on pair tasks; no semantic category inference. Single-source support is NOT_APPLICABLE.",
+    "B": "Actual Notebook-02 integrity qualifier on pair tasks (actual outcome recorded); nonsemantic unknowns; single-source support NOT_APPLICABLE.",
+    "B0": "Explicit constant-abstain reference on every authorized task; not a simulated model or Core single-source feature.",
+    "S": "Frozen surface-cue-v1.0 regex/phrase/overlap control (offline, deterministic); genuine baseline, not a lookup table.",
+    "C": "Same-evidence general model, NOT RUN.",
+    "D": "Structured qualification procedure, same evidence/settings/schema/model family as C, NOT RUN."
+  },
+  "settings_proposal_not_authorization": {
+    "provider": "UNSELECTED",
+    "model": "UNSELECTED",
+    "temperature": 0,
+    "attempts_per_arm_case": 1,
+    "automatic_retries": 0,
+    "max_input_tokens_including_schema": 8192,
+    "max_output_tokens": 800,
+    "max_evidence_characters": 4000,
+    "max_serialized_payload_characters": 16000,
+    "max_calls": 156,
+    "spend_ceiling_usd_proposed": 1.0,
+    "authorized_spend_usd": 0,
+    "pre_dispatch": "Freeze exact supported model/settings and verified worst-case pricing under separate owner approval or amend; this proposal grants no permission."
+  },
+  "failure_criteria": [
+    "Any hard gate violation invalidates the run.",
+    "Missing/duplicate outcomes or altered frozen inputs invalidate comparison.",
+    "No superiority claim from public author labels, from abstention alone, or from matching the surface-cue control.",
+    "Any held-out answer exposure invalidates blind use for subsequent tuning.",
+    "Both retention and misleading conditions required; no composite substitution."
+  ],
+  "amendments": "Append a new version and amendment rationale; never overwrite v1 evidence. v1.4 preserved under evaluations/notebook03a/.",
+  "files_sha256": {
+    "amendments.json": "9cf6da3de09f39c59eb5880fffe4e4f91ad440ba87cc6f45f3f70a50d223924d",
+    "annotation_notes.json": "ce197eab16455942b7d3cb9b7ad0640399523e86c897a2c71438c91397bc7ec4",
+    "annotations.json": "3c2c8712c5a74f6a81fde8ce288c36c592ac25238486cf538b5c2eb1a641259a",
+    "decision_thresholds.json": "375be010a50368db6f3b3cdfeb9bbc74b1acfe39ef0ecc03070a849467b30d12",
+    "independent_submission.json": "524a20de65d3b56181c135b65b5c98edab5824ccf37bb904f780f847510db6e4",
+    "metrics.json": "af9272aad64083d63dee3161d4317f3405c16c629327b313f227b4576f3d329f",
+    "origins.json": "e814618530c205e8b41d8b30b0d9ced56315bb309fb09838c5c53bad59752aeb",
+    "prompts.json": "8844533a4dccf14957562bce5b72a8b55ce1ca94120dff4056b8d7f5bdd1618a",
+    "schemas.json": "a89e8daeee92ae64ac72f8f802c66916146ebf2aa4ae5638ba3b2c0093bbde2a",
+    "tasks.json": "b253785148860cfc682e9622a512c0a90453099f632ec26862b9d28fa47c27fb"
+  },
+  "hash_normalization": "UTF-8 bytes with CRLF normalized to LF",
+  "tools_sha256": {
+    "scripts/notebook03a_r1.py": "f4791a9578d319a7723626dcc9fff19c842346c45501b55c6bc2e4da6ed9c16d",
+    "scripts/notebook03a_r1_protocol.py": "8c2b29c51bf09097f9b6a297c30fa6d357f0731f6f35685d2dbc5d9cbe162018",
+    "scripts/notebook03a_r1_surface.py": "482bd6362bd764d16c954d19892d011728abad5fc07107273bca51e246a9feaa"
+  },
+  "documents_sha256": {
+    "docs/ALIVE-NOTEBOOK-03A-R1-DESIGN.md": "2fcd651ae5d026ffe734139142e5f0dd4bd4ad77b85769c5bd45967c4eee2427",
+    "docs/ALIVE-NOTEBOOK-03A-R1-PROTOCOL.md": "7f53d0bff91621d871826a12377d10e0a6bba74ea3198118acc3489456fb569f"
+  }
+}

@@ -1,0 +1,810 @@
+{
+  "task": {
+    "$defs": {
+      "Claim": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "current",
+              "historical",
+              "presented"
+            ],
+            "title": "Role",
+            "type": "string"
+          },
+          "passage": {
+            "$ref": "#/$defs/Span"
+          },
+          "proposition": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Proposition"
+          },
+          "qualifiers": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Qualifiers",
+            "type": "array"
+          },
+          "version_context": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Version Context"
+          },
+          "temporal_context": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Temporal Context"
+          },
+          "system_context": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "System Context"
+          }
+        },
+        "required": [
+          "id",
+          "role",
+          "passage"
+        ],
+        "title": "Claim",
+        "type": "object"
+      },
+      "Source": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "text": {
+            "maxLength": 2000,
+            "minLength": 10,
+            "title": "Text",
+            "type": "string"
+          },
+          "sha256": {
+            "pattern": "^[0-9a-f]{64}$",
+            "title": "Sha256",
+            "type": "string"
+          },
+          "access": {
+            "default": "fixture_authorized",
+            "enum": [
+              "fixture_authorized",
+              "withdrawn",
+              "unauthorized"
+            ],
+            "title": "Access",
+            "type": "string"
+          },
+          "untrusted_title": {
+            "maxLength": 200,
+            "title": "Untrusted Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "text",
+          "sha256",
+          "untrusted_title"
+        ],
+        "title": "Source",
+        "type": "object"
+      },
+      "Span": {
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          },
+          "start": {
+            "minimum": 0,
+            "title": "Start",
+            "type": "integer"
+          },
+          "end": {
+            "exclusiveMinimum": 0,
+            "title": "End",
+            "type": "integer"
+          },
+          "text": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_id",
+          "start",
+          "end",
+          "text"
+        ],
+        "title": "Span",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "id": {
+        "pattern": "^[0-9a-f]{16}$",
+        "title": "Id",
+        "type": "string"
+      },
+      "family": {
+        "pattern": "^[0-9a-f]{16}$",
+        "title": "Family",
+        "type": "string"
+      },
+      "split": {
+        "enum": [
+          "development",
+          "public_evaluation",
+          "independent_heldout"
+        ],
+        "title": "Split",
+        "type": "string"
+      },
+      "kind": {
+        "enum": [
+          "pair",
+          "claim_support"
+        ],
+        "title": "Kind",
+        "type": "string"
+      },
+      "question": {
+        "maxLength": 500,
+        "minLength": 10,
+        "title": "Question",
+        "type": "string"
+      },
+      "claims": {
+        "items": {
+          "$ref": "#/$defs/Claim"
+        },
+        "maxItems": 2,
+        "minItems": 1,
+        "title": "Claims",
+        "type": "array"
+      },
+      "sources": {
+        "items": {
+          "$ref": "#/$defs/Source"
+        },
+        "maxItems": 2,
+        "minItems": 1,
+        "title": "Sources",
+        "type": "array"
+      },
+      "supporting_passages": {
+        "items": {
+          "$ref": "#/$defs/Span"
+        },
+        "title": "Supporting Passages",
+        "type": "array"
+      }
+    },
+    "required": [
+      "id",
+      "family",
+      "split",
+      "kind",
+      "question",
+      "claims",
+      "sources"
+    ],
+    "title": "Task",
+    "type": "object"
+  },
+  "annotation": {
+    "$defs": {
+      "Span": {
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          },
+          "start": {
+            "minimum": 0,
+            "title": "Start",
+            "type": "integer"
+          },
+          "end": {
+            "exclusiveMinimum": 0,
+            "title": "End",
+            "type": "integer"
+          },
+          "text": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_id",
+          "start",
+          "end",
+          "text"
+        ],
+        "title": "Span",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "task_id": {
+        "title": "Task Id",
+        "type": "string"
+      },
+      "status": {
+        "enum": [
+          "draft",
+          "adjudicated",
+          "pending"
+        ],
+        "title": "Status",
+        "type": "string"
+      },
+      "author": {
+        "minLength": 1,
+        "title": "Author",
+        "type": "string"
+      },
+      "independence": {
+        "enum": [
+          "implementer_authored",
+          "external_attested"
+        ],
+        "title": "Independence",
+        "type": "string"
+      },
+      "reviewers": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Reviewers",
+        "type": "array"
+      },
+      "relationships": {
+        "items": {
+          "enum": [
+            "substantive_connection",
+            "corroboration_candidate",
+            "contradiction_candidate",
+            "supersession",
+            "scoped_change",
+            "independent_observations",
+            "unsupported_claim",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Relationships",
+        "type": "array"
+      },
+      "sufficiency": {
+        "enum": [
+          "sufficient_for_candidate",
+          "insufficient",
+          "unknown"
+        ],
+        "title": "Sufficiency",
+        "type": "string"
+      },
+      "applicability": {
+        "enum": [
+          "applicable",
+          "scoped",
+          "not_applicable",
+          "unknown"
+        ],
+        "title": "Applicability",
+        "type": "string"
+      },
+      "decisions": {
+        "items": {
+          "enum": [
+            "use_with_qualification",
+            "set_aside",
+            "abstain"
+          ],
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Decisions",
+        "type": "array"
+      },
+      "useful_finding": {
+        "title": "Useful Finding",
+        "type": "boolean"
+      },
+      "rationale": {
+        "minLength": 10,
+        "title": "Rationale",
+        "type": "string"
+      },
+      "required_evidence": {
+        "items": {
+          "$ref": "#/$defs/Span"
+        },
+        "title": "Required Evidence",
+        "type": "array"
+      },
+      "forbidden_conclusions": {
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Forbidden Conclusions",
+        "type": "array"
+      },
+      "ambiguity_notes": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Ambiguity Notes"
+      },
+      "superseded_claim_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Superseded Claim Ref"
+      },
+      "replacement_claim_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Replacement Claim Ref"
+      }
+    },
+    "required": [
+      "task_id",
+      "status",
+      "author",
+      "independence",
+      "relationships",
+      "sufficiency",
+      "applicability",
+      "decisions",
+      "useful_finding",
+      "rationale",
+      "required_evidence",
+      "forbidden_conclusions"
+    ],
+    "title": "Annotation",
+    "type": "object"
+  },
+  "prediction": {
+    "$defs": {
+      "Span": {
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          },
+          "start": {
+            "minimum": 0,
+            "title": "Start",
+            "type": "integer"
+          },
+          "end": {
+            "exclusiveMinimum": 0,
+            "title": "End",
+            "type": "integer"
+          },
+          "text": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_id",
+          "start",
+          "end",
+          "text"
+        ],
+        "title": "Span",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "description": "Proposed 03B model output schema only; no dispatch/admission implementation.",
+    "properties": {
+      "relationship": {
+        "enum": [
+          "substantive_connection",
+          "corroboration_candidate",
+          "contradiction_candidate",
+          "supersession",
+          "scoped_change",
+          "independent_observations",
+          "unsupported_claim",
+          "unknown"
+        ],
+        "title": "Relationship",
+        "type": "string"
+      },
+      "evidence_sufficiency": {
+        "enum": [
+          "sufficient_for_candidate",
+          "insufficient",
+          "unknown"
+        ],
+        "title": "Evidence Sufficiency",
+        "type": "string"
+      },
+      "applicability": {
+        "enum": [
+          "applicable",
+          "scoped",
+          "not_applicable",
+          "unknown"
+        ],
+        "title": "Applicability",
+        "type": "string"
+      },
+      "decision": {
+        "enum": [
+          "use_with_qualification",
+          "set_aside",
+          "abstain"
+        ],
+        "title": "Decision",
+        "type": "string"
+      },
+      "claim_refs": {
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Claim Refs",
+        "type": "array"
+      },
+      "evidence": {
+        "items": {
+          "$ref": "#/$defs/Span"
+        },
+        "title": "Evidence",
+        "type": "array"
+      },
+      "scope_differences": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Scope Differences",
+        "type": "array"
+      },
+      "limitations": {
+        "items": {
+          "type": "string"
+        },
+        "minItems": 1,
+        "title": "Limitations",
+        "type": "array"
+      },
+      "review_required": {
+        "const": true,
+        "default": true,
+        "title": "Review Required",
+        "type": "boolean"
+      },
+      "superseded_claim_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Superseded Claim Ref"
+      },
+      "replacement_claim_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Replacement Claim Ref"
+      }
+    },
+    "required": [
+      "relationship",
+      "evidence_sufficiency",
+      "applicability",
+      "decision",
+      "claim_refs",
+      "evidence",
+      "scope_differences",
+      "limitations"
+    ],
+    "title": "Prediction",
+    "type": "object"
+  },
+  "exposure": {
+    "additionalProperties": false,
+    "properties": {
+      "set_id": {
+        "title": "Set Id",
+        "type": "string"
+      },
+      "custodian": {
+        "title": "Custodian",
+        "type": "string"
+      },
+      "access_restricted_attested": {
+        "title": "Access Restricted Attested",
+        "type": "boolean"
+      },
+      "implementer_exposure_events": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Implementer Exposure Events",
+        "type": "array"
+      },
+      "independent_annotation_status": {
+        "enum": [
+          "PENDING_INDEPENDENT_LABELING",
+          "ADJUDICATED"
+        ],
+        "title": "Independent Annotation Status",
+        "type": "string"
+      },
+      "inputs_sha256": {
+        "anyOf": [
+          {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Inputs Sha256"
+      },
+      "gold_sha256": {
+        "anyOf": [
+          {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "title": "Gold Sha256"
+      },
+      "target_cases": {
+        "minimum": 1,
+        "title": "Target Cases",
+        "type": "integer"
+      }
+    },
+    "required": [
+      "set_id",
+      "custodian",
+      "access_restricted_attested",
+      "implementer_exposure_events",
+      "independent_annotation_status",
+      "inputs_sha256",
+      "gold_sha256",
+      "target_cases"
+    ],
+    "title": "Exposure",
+    "type": "object"
+  },
+  "outcome": {
+    "$defs": {
+      "Span": {
+        "additionalProperties": false,
+        "properties": {
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          },
+          "start": {
+            "minimum": 0,
+            "title": "Start",
+            "type": "integer"
+          },
+          "end": {
+            "exclusiveMinimum": 0,
+            "title": "End",
+            "type": "integer"
+          },
+          "text": {
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Text",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_id",
+          "start",
+          "end",
+          "text"
+        ],
+        "title": "Span",
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "description": "R1 outcome with surface-heuristic arm. v1.4 arms/modes preserved.",
+    "properties": {
+      "task_id": {
+        "title": "Task Id",
+        "type": "string"
+      },
+      "arm": {
+        "enum": [
+          "A",
+          "B",
+          "B0",
+          "S",
+          "C",
+          "D"
+        ],
+        "title": "Arm",
+        "type": "string"
+      },
+      "mode": {
+        "enum": [
+          "lexical",
+          "integrity",
+          "constant_control",
+          "surface_heuristic",
+          "offline_scoring_fixture"
+        ],
+        "title": "Mode",
+        "type": "string"
+      },
+      "action": {
+        "enum": [
+          "retain_candidate",
+          "use_with_qualification",
+          "set_aside",
+          "abstain",
+          "refuse",
+          "not_applicable"
+        ],
+        "title": "Action",
+        "type": "string"
+      },
+      "relationship": {
+        "default": "unknown",
+        "title": "Relationship",
+        "type": "string"
+      },
+      "sufficiency": {
+        "default": "unknown",
+        "title": "Sufficiency",
+        "type": "string"
+      },
+      "applicability": {
+        "default": "unknown",
+        "title": "Applicability",
+        "type": "string"
+      },
+      "evidence": {
+        "items": {
+          "$ref": "#/$defs/Span"
+        },
+        "title": "Evidence",
+        "type": "array"
+      },
+      "claim_refs": {
+        "items": {
+          "type": "string"
+        },
+        "title": "Claim Refs",
+        "type": "array"
+      },
+      "raw_policy": {
+        "title": "Raw Policy",
+        "type": "string"
+      },
+      "superseded_claim_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Superseded Claim Ref"
+      },
+      "replacement_claim_ref": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "null"
+          }
+        ],
+        "default": null,
+        "title": "Replacement Claim Ref"
+      }
+    },
+    "required": [
+      "task_id",
+      "arm",
+      "mode",
+      "action",
+      "raw_policy"
+    ],
+    "title": "OutcomeR1",
+    "type": "object"
+  }
+}
