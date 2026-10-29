@@ -135,7 +135,66 @@ def test_first_creation_is_stable_and_private(local_settings):
         )
         assert dacl.startswith("D:P")
         assert len(re.findall(r"\([^()]+\)", dacl)) == 1
-        assert re.search(r"\(A;;FA;;;S-1-[0-9-]+\)", dacl)
+        assert re.search(r"\(A;;FA;;;(?:S-1-[0-9-]+|LA|OW)\)", dacl)
+
+
+@pytest.mark.skipif(os.name != "nt", reason="Windows DACL semantics")
+def test_windows_restrict_removes_extra_explicit_aces(tmp_path):
+    import csv
+    import re
+    import subprocess
+
+    from alive.config import _restrict_token_file
+
+    def saved_dacl() -> str:
+        subprocess.run(
+            ["icacls", str(path), "/save", str(tmp_path / "acl.txt"), "/q"],
+            capture_output=True,
+            check=True,
+            timeout=5,
+        )
+        return (
+            (tmp_path / "acl.txt")
+            .read_text(encoding="utf-16-le")
+            .removeprefix("\ufeff")
+            .splitlines()[1]
+        )
+
+    path = tmp_path / "token"
+    path.write_text("x", encoding="ascii")
+    identity = subprocess.run(
+        ["whoami", "/user", "/fo", "csv", "/nh"],
+        capture_output=True,
+        text=True,
+        check=True,
+        timeout=5,
+    )
+    sid = next(csv.reader([identity.stdout.strip()]))[1].strip()
+    # Reproduce a process token whose default DACL has several explicit grants.
+    setup = subprocess.run(
+        [
+            "icacls",
+            str(path),
+            "/inheritance:r",
+            "/grant:r",
+            f"*{sid}:(F)",
+            "*S-1-5-18:(F)",
+            "*S-1-5-32-544:(F)",
+        ],
+        capture_output=True,
+        check=False,
+        timeout=5,
+    )
+    if setup.returncode != 0:
+        pytest.skip("filesystem does not permit explicit ACL setup")
+    assert len(re.findall(r"\([^()]+\)", saved_dacl())) > 1
+
+    _restrict_token_file(str(path))
+
+    dacl = saved_dacl()
+    assert dacl.startswith("D:P")
+    assert len(re.findall(r"\([^()]+\)", dacl)) == 1
+    assert re.search(r"\(A;;FA;;;(?:S-1-[0-9-]+|LA|OW)\)", dacl)
 
 
 def test_concurrent_first_creation_never_publishes_partial_or_replaces_winner(local_settings):
