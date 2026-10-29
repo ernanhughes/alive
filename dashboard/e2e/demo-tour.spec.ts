@@ -140,10 +140,15 @@ test("disabled: the tab refuses and the API says no", async ({ page }) => {
   await open(page);
   await expect(page.getByText("Demonstration unavailable")).toBeVisible();
   await expect(page.getByRole("button", { name: "Start demonstration" })).toBeDisabled();
+  // Earlier runs persist on the same volumes by design; a refused request must add nothing.
+  const demoGoals = async () =>
+    ((await (await page.request.get(APP + BX, { headers })).json()).goals as any[]).filter((g) =>
+      /Demonstration \d/.test(g.data?.instruction || ""),
+    ).length;
+  const before = await demoGoals();
   const refused = await page.request.post(APP + "/api/v1/demo-tour/runs", { headers, data: {} });
   expect(refused.status()).toBe(403);
-  const goals = (await (await page.request.get(APP + BX, { headers })).json()).goals as unknown[];
-  expect(goals.filter((g: any) => /Demonstration \d/.test(g.data?.instruction || ""))).toEqual([]);
+  expect(await demoGoals()).toBe(before);
   await shot(page, "06-disabled");
 });
 
