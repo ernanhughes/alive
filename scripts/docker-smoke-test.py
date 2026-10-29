@@ -9,6 +9,7 @@ authenticated API workflow. No inference, no paid providers.
 import argparse
 import os
 import sys
+import time
 import uuid
 
 import httpx
@@ -100,7 +101,12 @@ def main():
         )
         assert run.status_code == 200, f"agent HTTP {run.status_code}"
         run_id = run.json()["id"]
-        result = client.get(f"/api/v1/agents/runs/{run_id}", headers=headers).json()
+        result = None
+        for _ in range(30):
+            result = client.get(f"/api/v1/agents/runs/{run_id}", headers=headers).json()
+            if result["status"] in ("completed", "failed"):
+                break
+            time.sleep(1)
         assert result["status"] == "completed", f"mock run status {result['status']}"
         print("PASS agents: deterministic mock run completed")
 
