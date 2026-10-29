@@ -240,9 +240,11 @@ class PiRunner:
         on_event=None,
         on_running=None,
         install=None,
+        result=None,
     ):
+        # A caller may hand in the result so what was learned survives a cancellation.
         install = install or self.install()
-        result = PiResult()
+        result = result if result is not None else PiResult()
         root = Path(tempfile.mkdtemp(prefix="alive-pi-"))
         config_dir, work_dir, temp_dir = root / "config", root / "cwd", root / "tmp"
         for directory in (config_dir, work_dir, temp_dir):

@@ -4,7 +4,8 @@
 made inline by cognition roles. No behaviour change: same request body, same
 headers, same reservation and accounting (those stay with the caller).
 
-PI-01B will add a Pi-backed gateway behind this same protocol; every other
+PI-01B adds a Pi-backed gateway (`alive.pi.gateway.PiGateway`) behind this same protocol, selected
+by `ALIVE_MODEL_TRANSPORT=pi` (default `direct`); every other
 `MetaProvider` construction site is enumerated in the ratchet allow-list in
 `tests/test_model_gateway.py` and must not gain new siblings.
 """
@@ -60,5 +61,10 @@ class DirectMetaGateway:
 def gateway_for(settings, operation: str) -> ModelGateway:
     """Return the gateway for an operation. Unknown operations fail closed."""
     if operation == "cognition.role":
+        if settings.alive_model_transport == "pi":
+            # Imported lazily so the default (direct) path never loads any Pi code.
+            from alive.pi.gateway import PiGateway
+
+            return PiGateway(settings, operation)
         return DirectMetaGateway(settings, operation=operation)
     raise KeyError(f"No gateway registered for operation {operation!r}")

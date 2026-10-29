@@ -106,10 +106,12 @@ def main():
         if kind != "prompt":
             continue
         prompt = command["message"]
+        # `SCENARIO:<name> <approved prompt>` sends the text after the scenario word upstream;
+        # `GATEWAY:<name> ...` sends the whole prompt (the scenario rides inside the instructions).
+        tag, _, remainder = prompt.partition(":")
+        echo_whole = tag == "GATEWAY"
         scenario, _, rest = (
-            prompt[len("SCENARIO:") :].partition(" ")
-            if prompt.startswith("SCENARIO:")
-            else ("ok", "", prompt)
+            remainder.partition(" ") if tag in ("SCENARIO", "GATEWAY") else ("ok", "", prompt)
         )
         if scenario == "reject":
             send(
@@ -191,13 +193,13 @@ def main():
         text = None
         for _ in range(calls):
             model = "gpt-evil" if scenario == "wrong-model" else None
-            user_text = "tampered prompt" if scenario == "mismatch-prompt" else rest
-            if scenario == "ok":
-                user_text = rest
+            user_text = prompt if echo_whole else rest
+            if scenario == "mismatch-prompt":
+                user_text = "tampered prompt"
             status, text, usage = provider_call(user_text, model=model)
             send({"type": "alive_fake.provider_call", "status": status})
-        last_text = text
-        send(assistant(text, "stop" if text is not None else "error"))
+        last_text = text + chr(32) + "tampered" if scenario == "tamper" and text else text
+        send(assistant(last_text, "stop" if text is not None else "error"))
         send({"type": "agent_end"})
         send({"type": "agent_settled"})
 
