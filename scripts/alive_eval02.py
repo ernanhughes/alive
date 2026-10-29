@@ -1,4 +1,9 @@
-"""Qualification-aware evaluation CLI (ALIVE-EVAL-02). Never executes a model."""
+"""Qualification-aware evaluation CLI (ALIVE-EVAL-02 R2). Never executes a model.
+
+Trust roots are evaluator-pinned constants. This CLI accepts no
+--trust-anchors, --pinned-bootstrap, or --sealed-root overrides: qualification
+paths must not be redirectable by callers.
+"""
 
 import argparse
 import json
@@ -7,10 +12,9 @@ from pathlib import Path
 from scripts.alive_eval01_custodian import CUSTODIAN_POLICY_PATH
 from scripts.alive_eval02_custodian import (
     EVAL02_VERSION,
-    TRUST_ANCHORS_PATH,
+    SEALED_ROOT,
     evaluate_v2,
     is_qualified_progress,
-    load_pinned_bootstrap,
     load_trust_anchors,
     verify_receipt,
 )
@@ -29,26 +33,24 @@ def main():
     parser.add_argument("--request", type=Path)
     parser.add_argument("--output", type=Path)
     parser.add_argument("--receipt", type=Path)
-    parser.add_argument("--trust-anchors", type=Path)
-    parser.add_argument("--pinned-bootstrap", type=Path)
-    parser.add_argument("--sealed-root", type=Path)
     args = parser.parse_args()
-    extra = {
-        "trust_anchors_path": args.trust_anchors,
-        "pinned_path": args.pinned_bootstrap,
-        "sealed_root": args.sealed_root,
-    }
     if args.command == "verify":
-        policy = load_pinned_bootstrap(args.pinned_bootstrap) if args.pinned_bootstrap else None
-        anchors = load_trust_anchors(args.trust_anchors or TRUST_ANCHORS_PATH)
+        anchors = load_trust_anchors()
+        sealed_present = any(SEALED_ROOT.glob("*.json")) if SEALED_ROOT.is_dir() else False
+        blockers = []
+        if not anchors["custodians"]:
+            blockers.append("no independent custodians registered")
+        if not sealed_present:
+            blockers.append("no sealed custody artifacts")
+        blockers.append("signature verification backend unavailable")
         print(
             json.dumps(
                 {
                     "evaluator": EVAL02_VERSION,
                     "status": "POLICY_VALID",
-                    "pinned_bootstrap": policy,
-                    "independent_custodians": anchors["independent_custodians"],
-                    "qualified_reachable": bool(anchors["independent_custodians"]),
+                    "independent_custodians": sorted(anchors["custodians"]),
+                    "qualified_reachable": False,
+                    "qualified_blockers": blockers,
                 },
                 indent=2,
             )
@@ -72,7 +74,6 @@ def main():
                 "policy_path": args.policy or CUSTODIAN_POLICY_PATH,
                 "contract_path": args.contract,
             },
-            **extra,
         )
         print(
             json.dumps(
@@ -91,7 +92,7 @@ def main():
 
         receipt = strict_json_load(args.receipt)
         request = strict_json_load(args.request)
-        valid = verify_receipt(
+        verified = verify_receipt(
             receipt,
             request,
             {
@@ -102,15 +103,14 @@ def main():
                 "policy_path": args.policy or CUSTODIAN_POLICY_PATH,
                 "contract_path": args.contract,
             },
-            **extra,
         )
         print(
             json.dumps(
                 {
-                    "valid": valid,
-                    "qualified_progress": is_qualified_progress(receipt),
-                    "custody_state": receipt.get("custody_state"),
-                    "verdict": receipt.get("verdict"),
+                    "valid": True,
+                    "qualified_progress": is_qualified_progress(verified),
+                    "custody_state": verified.receipt.get("custody_state"),
+                    "verdict": verified.receipt.get("verdict"),
                 },
                 indent=2,
             )

@@ -1,25 +1,25 @@
-"""Independent-custody evaluation gate (ALIVE-EVAL-02). Offline, no model calls.
+"""Independent-custody evaluation gate (ALIVE-EVAL-02 R2). Offline, no model calls.
 
-v1 (`alive_eval01_custodian`) proved structural validation: recomputed metrics,
-exact binding, scope derivation, forgery battery. It cannot distinguish a
-submitter who invents a distinct custodian identity from a genuine independent
-custodian, so v1 verdicts must never count as qualified progress.
+R1 review demonstrated that caller-controlled trust-root overrides
+(--sealed-root and friends) let a submitter manufacture QUALIFIED / PROGRESS /
+ESTABLISHED without touching application code. R2 closes that boundary:
 
-v2 keeps every v1 structural check and adds the trust layer:
+- Trust roots are evaluator-pinned constants. No CLI flag, request field, or
+  function parameter can redirect them; tests reach alternatives only by
+  monkeypatching module constants (in-process only, never a trust boundary).
+- QUALIFIED additionally requires: custodian identity in the active,
+  unrevoked, unexpired administrator-controlled registry; a sealed record with
+  a detached signature whose signed payload binds the exact package identity;
+  canonical (repo-pinned) policy and contract; governed execution provenance;
+  verified deterministic controls; and signature-math verification. The math
+  backend does not exist yet, so QUALIFIED is unreachable by construction.
+- `verify_receipt` returns a `VerifiedReceipt` object. `is_qualified_progress`
+  accepts only that type, so hand-typed dictionaries can never authenticate.
+- Diagnostic evaluation is unchanged in honesty: improvement is measured and
+  reported, but never qualified.
 
-- Machine-enforced custody states from the trust-model vocabulary:
-  CUSTODY_NOT_ESTABLISHED / IMPLEMENTED_UNQUALIFIED / QUALIFIED.
-- QUALIFIED requires sealed custody artifacts committed in the evaluator's own
-  pinned sealed root plus a human-confirmed boundary. No anchor is configured,
-  so QUALIFIED is unreachable by construction and PROGRESS can never issue.
-- Diagnostic improvement is still measured honestly (IMPROVEMENT_OBSERVED)
-  but reported alongside verdict INCONCLUSIVE/NO_PROGRESS and
-  scientific_qualification NOT_ESTABLISHED.
-- Receipts bind canonical fingerprints of every input; verification rejects
-  tampering, substitution, and cross-package replay.
-
-v1 is preserved byte-unchanged as the historical implementation; v2 is the
-authoritative entry point for new qualification attempts.
+v1 (`alive_eval01_custodian`) is preserved byte-unchanged as the historical
+implementation; v2 is the authoritative entry point for new attempts.
 """
 
 import hashlib
@@ -35,6 +35,9 @@ EVAL02_ROOT = Path(__file__).resolve().parents[1] / "evaluations" / "alive-eval-
 TRUST_ANCHORS_PATH = EVAL02_ROOT / "trust_anchors.json"
 PINNED_BOOTSTRAP_PATH = EVAL02_ROOT / "pinned_bootstrap.json"
 SEALED_ROOT = EVAL02_ROOT / "sealed"
+REPO_ROOT = Path(__file__).resolve().parents[1]
+CANONICAL_POLICY_PATH = REPO_ROOT / "evaluations" / "alive-eval-01" / "custodian_policy.json"
+CANONICAL_CONTRACT_PATH = REPO_ROOT / "evaluations" / "notebook03a_r2" / "decision_thresholds.json"
 
 CUSTODY_NOT_ESTABLISHED = "CUSTODY_NOT_ESTABLISHED"
 IMPLEMENTED_UNQUALIFIED = "IMPLEMENTED_UNQUALIFIED"
@@ -53,7 +56,7 @@ def source_commit() -> str | None:
     try:
         out = subprocess.run(
             ["git", "rev-parse", "HEAD"],
-            cwd=Path(__file__).resolve().parents[1],
+            cwd=REPO_ROOT,
             capture_output=True,
             text=True,
             timeout=15,
@@ -65,17 +68,44 @@ def source_commit() -> str | None:
         return None
 
 
-def load_trust_anchors(path=TRUST_ANCHORS_PATH):
-    raw = v1.strict_json_load(path)
+def load_trust_anchors(path=None):
+    """Load the administrator-controlled trust registry (evaluator-pinned path).
+
+    Entries beyond the legacy string list carry key identity, algorithm,
+    status and expiry. No caller-supplied path is ever consulted. The default
+    resolves at call time so tests may monkeypatch the module constant.
+    """
+    raw = v1.strict_json_load(path or TRUST_ANCHORS_PATH)
     if not isinstance(raw, dict):
         raise ValueError("trust anchors must be a JSON object")
-    custodians = raw.get("independent_custodians", [])
-    if not isinstance(custodians, list) or any(not isinstance(c, str) for c in custodians):
+    simple = raw.get("independent_custodians", [])
+    if not isinstance(simple, list) or any(not isinstance(c, str) for c in simple):
         raise ValueError("independent_custodians must be a list of strings")
-    return {"version": raw.get("version"), "independent_custodians": sorted(set(custodians))}
+    detailed = raw.get("custodians", {})
+    if not isinstance(detailed, dict):
+        raise ValueError("custodians must be an object")
+    entries = {}
+    for name in sorted(set(simple)):
+        entries[name] = {
+            "key_fingerprint": None,
+            "algorithm": None,
+            "status": "active",
+            "expires": None,
+        }
+    for name, entry in detailed.items():
+        if not isinstance(entry, dict):
+            raise ValueError(f"custodian entry {name} must be an object")
+        entries[name] = {
+            "key_fingerprint": entry.get("key_fingerprint"),
+            "algorithm": entry.get("algorithm"),
+            "status": entry.get("status", "active"),
+            "expires": entry.get("expires"),
+        }
+    return {"version": raw.get("version"), "custodians": entries}
 
 
-def load_pinned_bootstrap(path=PINNED_BOOTSTRAP_PATH):
+def load_pinned_bootstrap(path=None):
+    path = path or PINNED_BOOTSTRAP_PATH
     raw = v1.strict_json_load(path)
     pinned = {}
     for key in ("bootstrap_seed", "bootstrap_resamples", "ci_level"):
@@ -95,81 +125,146 @@ def load_pinned_bootstrap(path=PINNED_BOOTSTRAP_PATH):
     return pinned
 
 
-def check_sealed_custody(custody_dir, tasks, labels, sealed_root=SEALED_ROOT):
-    """Match the submitted custody record against repo-pinned sealed artifacts.
+def _dumped(obj):
+    return obj.model_dump() if hasattr(obj, "model_dump") else obj
 
-    Returns (matched, detail). A match requires a byte-identical sealed record
-    whose package/gold hashes bind the evaluated inputs and which carries a
-    human-confirmed access boundary. An empty sealed root never matches.
+
+def assess_sealed_custody(custody_dir, tasks, labels):
+    """Assess the sealed custody record against evaluator-pinned roots.
+
+    Every root is a module constant pointing inside this repository; there is
+    no parameter, flag, or request field that redirects them. Returns a detail
+    dict; ``qualified_ready`` is True only when every independently checkable
+    condition holds (signature math is verified by ``signature_math_ok``,
+    which fail-closes until a verification backend exists).
     """
+    detail = {
+        "record_present": False,
+        "record_sealed": False,
+        "hashes_bind": False,
+        "boundary_confirmed": False,
+        "custodian_authorized": False,
+        "signature_present": False,
+        "signature_binds_package": False,
+        "signature_math_ok": False,
+        "signature_detail": "signature verification backend unavailable",
+        "canonical_policy_match": False,
+        "canonical_contract_match": False,
+        "qualified_ready": False,
+    }
     if custody_dir is None:
-        return False, "no custody directory supplied"
-    sealed_root = Path(sealed_root)
+        detail["signature_detail"] = "no custody directory supplied"
+        return detail
     try:
         submitted = (Path(custody_dir) / "custody.json").read_bytes()
     except OSError as exc:
-        return False, f"unreadable custody record: {exc}"
-    task_bytes = canonical([t.model_dump() for t in tasks])
-    gold_bytes = canonical([a.model_dump() for a in labels])
-    candidates = []
-    if sealed_root.is_dir():
-        candidates = sorted(sealed_root.glob("*.json"))
-    for path in candidates:
-        try:
-            sealed = path.read_bytes()
-        except OSError:
-            continue
-        if sealed != submitted:
-            continue
-        try:
-            record = json.loads(sealed.decode())
-        except ValueError:
-            continue
-        if record.get("package_sha256") != v1.hash_bytes(task_bytes):
-            continue
-        if record.get("gold_sha256") != v1.hash_bytes(gold_bytes):
-            continue
-        boundary = record.get("human_boundary_confirmed") or {}
-        if boundary.get("confirmed") is True and boundary.get("confirmer"):
-            return True, f"sealed artifact {path.name} with confirmed boundary"
-        return False, "sealed record lacks a human-confirmed boundary"
-    return False, "no sealed custody artifact matches this evaluation"
+        detail["signature_detail"] = f"unreadable custody record: {exc}"
+        return detail
+    detail["record_present"] = True
+    try:
+        record = json.loads(submitted.decode())
+    except ValueError:
+        return detail
+    task_bytes = canonical([_dumped(t) for t in tasks])
+    gold_bytes = canonical([_dumped(a) for a in labels])
+    sealed_file = SEALED_ROOT / "custody.json"
+    try:
+        sealed = sealed_file.read_bytes()
+    except OSError:
+        return detail
+    if sealed != submitted:
+        return detail
+    detail["record_sealed"] = True
+    if record.get("package_sha256") != v1.hash_bytes(task_bytes):
+        return detail
+    if record.get("gold_sha256") != v1.hash_bytes(gold_bytes):
+        return detail
+    detail["hashes_bind"] = True
+    boundary = record.get("human_boundary_confirmed") or {}
+    if not (boundary.get("confirmed") is True and boundary.get("confirmer")):
+        return detail
+    detail["boundary_confirmed"] = True
+    anchors = load_trust_anchors()
+    entry = anchors["custodians"].get(record.get("custodian") or "")
+    if entry is None or entry.get("status") != "active":
+        detail["signature_detail"] = "custodian not in active trust registry"
+        return detail
+    if entry.get("expires") is not None:
+        detail["signature_detail"] = "custodian entry has an expiry; expiry enforcement pending"
+        return detail
+    detail["custodian_authorized"] = True
+    sig_file = SEALED_ROOT / "custody.json.sig"
+    try:
+        sig_blob = json.loads(sig_file.read_bytes().decode())
+    except (OSError, ValueError):
+        detail["signature_detail"] = "missing or unreadable detached signature"
+        return detail
+    detail["signature_present"] = True
+    package_identity = fingerprint(
+        {
+            "tasks": hashlib.sha256(task_bytes).hexdigest(),
+            "gold": hashlib.sha256(gold_bytes).hexdigest(),
+        }
+    )
+    if sig_blob.get("custodian") != record.get("custodian"):
+        detail["signature_detail"] = "signature custodian mismatch"
+        return detail
+    if sig_blob.get("signed_package_identity") != package_identity:
+        detail["signature_detail"] = "signature does not bind this package (replay rejected)"
+        return detail
+    detail["signature_binds_package"] = True
+    # Signature math has no verification backend in the standard library and no
+    # new dependency is authorized for this change: fail closed, explicitly.
+    return detail
 
 
-def determine_custody_state(structural, sealed_ok, scope):
+def determine_custody_state(structural, sealed, scope, canonical_match, execution_ok):
     """Machine-enforced custody state. Manifest strings are never consulted."""
     if not structural.get("custody_valid"):
         return CUSTODY_NOT_ESTABLISHED, structural.get("reason", "structural checks failed")
-    if scope.get("scope") == "blind" and structural.get("gold_adjudicated") and sealed_ok[0]:
-        return QUALIFIED, f"independently authenticated: {sealed_ok[1]}"
-    if scope.get("scope") == "blind" and structural.get("gold_adjudicated"):
-        return (
-            IMPLEMENTED_UNQUALIFIED,
-            "structurally valid but no independently authenticated custody; "
-            f"sealed check: {sealed_ok[1]}",
-        )
-    return (
-        IMPLEMENTED_UNQUALIFIED,
-        f"diagnostic posture: scope={scope.get('scope')}; {sealed_ok[1]}",
-    )
+    if (
+        scope.get("scope") == "blind"
+        and structural.get("gold_adjudicated")
+        and sealed.get("qualified_ready")
+        and canonical_match
+        and execution_ok
+    ):
+        return QUALIFIED, "independently authenticated custody verified"
+    reasons = []
+    if scope.get("scope") != "blind":
+        reasons.append(f"scope={scope.get('scope')}")
+    if not structural.get("gold_adjudicated"):
+        reasons.append("gold not adjudicated")
+    if not sealed.get("qualified_ready"):
+        reasons.append(f"sealed: {sealed.get('signature_detail')}")
+    if not canonical_match:
+        reasons.append("policy/contract differ from repo-pinned canonical inputs")
+    if not execution_ok:
+        reasons.append("no governed execution provenance")
+    if not reasons:
+        reasons.append("independent authentication unavailable")
+    return IMPLEMENTED_UNQUALIFIED, "structurally valid but unqualified: " + "; ".join(reasons)
 
 
-def require_consistent_counts(metrics, required_arms):
-    """Counts must agree across compared arms; disagreement rejects the package."""
-    counts = {}
-    for arm in required_arms:
-        if arm not in metrics:
-            continue
-        counts[arm] = (
-            metrics[arm].get("useful_findings", 0),
-            metrics[arm].get("scored_tasks", 0),
-        )
-    if len(set(counts.values())) > 1:
-        raise ValueError(f"inconsistent arm counts across comparators: {counts}")
-    arm = next((a for a in ("D", "C", "S", "V") if a in counts), next(iter(counts), None))
-    if arm is None:
-        raise ValueError("no comparator arms with counts present")
-    return {"useful": counts[arm][0], "scored": counts[arm][1]}
+def require_applicable_counts(metrics, required_arms):
+    """Counts are per-arm from the candidate outward; no cross-arm equalization.
+
+    Eligibility floors apply to the candidate arm D. Comparator arms report
+    their own counts; paired comparisons additionally gate on overlap.
+    """
+    if "D" not in metrics:
+        raise ValueError("candidate arm D outputs missing")
+    return {
+        "useful": metrics["D"].get("useful_findings", 0),
+        "scored": metrics["D"].get("scored_tasks", 0),
+    }
+
+
+def overlap_scored(flags, arm_a, arm_b):
+    """Tasks scored under both arms (paired-comparison eligible)."""
+    ids_a = {i for i, v in flags.get(arm_a, {}).items() if v is not None}
+    ids_b = {i for i, v in flags.get(arm_b, {}).items() if v is not None}
+    return len(ids_a & ids_b)
 
 
 def cross_family_duplicates(tasks):
@@ -177,7 +272,7 @@ def cross_family_duplicates(tasks):
     seen = {}
     for task in tasks:
         for source in task.sources:
-            text = " ".join(str(source.text).split())
+            text = " ".join(str(source.text).split()).casefold()
             if not text:
                 continue
             owners = seen.setdefault(text, set())
@@ -196,7 +291,6 @@ def paired_interval(flags, tasks, contract, arm_a, arm_b, metric, seed):
     members = {}
     for t in tasks:
         members.setdefault(t.family, []).append(t.id)
-    by_id_flags = flags
     rng = random.Random(seed)
     level = contract["ci_level"]
     alpha = 1.0 - level
@@ -206,7 +300,7 @@ def paired_interval(flags, tasks, contract, arm_a, arm_b, metric, seed):
         ids = [i for f in chosen for i in members[f]]
         acc = {}
         for arm in (arm_a, arm_b):
-            vals = [by_id_flags[arm][i] for i in ids if by_id_flags[arm].get(i) is not None]
+            vals = [flags[arm][i] for i in ids if flags[arm].get(i) is not None]
             if metric == "retention":
                 useful = [v for v in vals if v["useful"]]
                 acc[arm] = sum(v["retained"] for v in useful) / len(useful) if useful else 0.0
@@ -219,15 +313,16 @@ def paired_interval(flags, tasks, contract, arm_a, arm_b, metric, seed):
     return [lo, hi]
 
 
-def decide_v2(tasks, metrics, intervals, flags, scope, policy, contract, pinned, duplicates):
+def decide_v2(
+    tasks, metrics, intervals, flags, normalized, scope, policy, contract, pinned, duplicates
+):
     """Corrected decision: absolute, paired, and V-gate evidence classified.
 
     Returns (outcome, reasons, underpowered, diagnostics) with outcome in
     {improvement_supported, no_improvement_demonstrated, indeterminate}.
-    The caller maps outcome + custody mode to verdict/diagnostic_result.
     """
     reasons = []
-    diagnostics = {"comparator_diagnostics": None, "paired": {}}
+    diagnostics = {"comparator_diagnostics": None, "paired": {}, "overlap": {}}
     if scope["scope"] != "blind":
         return (
             "indeterminate",
@@ -250,7 +345,7 @@ def decide_v2(tasks, metrics, intervals, flags, scope, policy, contract, pinned,
             True,
             diagnostics,
         )
-    counts = require_consistent_counts(metrics, policy["required_arms"])
+    counts = require_applicable_counts(metrics, policy["required_arms"])
     underpowered = False
     if intervals["families"] < policy["min_independent_families"]:
         underpowered = True
@@ -274,38 +369,46 @@ def decide_v2(tasks, metrics, intervals, flags, scope, policy, contract, pinned,
     mis_cap = contract["max_misleading_advance_rate"]
     failed, undetermined = [], []
 
-    arm_d, arm_c = metrics["D"], metrics.get("C", {})
+    arm_d = metrics["D"]
     iv_d = intervals["arms"].get("D", {})
-    gate_checks = [
-        (
-            "D retention gate",
-            arm_d["gated_useful_finding_retention"] >= ret_floor,
-            iv_d.get("retention", [0, 0]),
-            ret_floor,
-            None,
-        ),
-        (
-            "D misleading gate",
-            arm_d["gated_misleading_advance_rate"] <= mis_cap,
-            iv_d.get("misleading", [1, 1]),
-            None,
-            mis_cap,
-        ),
-    ]
-    for name, value_ok, interval, floor, cap in gate_checks:
+
+    def classify_absolute(value_ok, interval, floor=None, cap=None):
         lo, hi = interval
         if floor is not None:
-            status = "pass" if (value_ok and lo >= floor) else ("fail" if hi < floor else "indet")
-        else:
-            status = "pass" if (value_ok and hi <= cap) else ("fail" if lo > cap else "indet")
-        if status == "fail":
-            failed.append(name)
-        elif status == "indet":
-            undetermined.append(f"{name} cannot distinguish")
+            if value_ok and lo >= floor:
+                return "pass"
+            if not value_ok and hi < floor:
+                return "fail"
+            return "indeterminate"
+        if value_ok and hi <= cap:
+            return "pass"
+        if not value_ok and lo > cap:
+            return "fail"
+        return "indeterminate"
+
+    ret_status = classify_absolute(
+        arm_d["gated_useful_finding_retention"] >= ret_floor,
+        iv_d.get("retention", [0, 0]),
+        floor=ret_floor,
+    )
+    mis_status = classify_absolute(
+        arm_d["gated_misleading_advance_rate"] <= mis_cap,
+        iv_d.get("misleading", [1, 1]),
+        cap=mis_cap,
+    )
+    if ret_status == "fail":
+        failed.append("D retention gate (point and interval below floor)")
+    elif ret_status == "indeterminate":
+        undetermined.append("D retention gate cannot distinguish")
+    if mis_status == "fail":
+        failed.append("D misleading gate (point and interval above cap)")
+    elif mis_status == "indeterminate":
+        undetermined.append("D misleading gate cannot distinguish")
     if (arm_d.get("citation_gate") or {}).get("pass_rate", 0) != 1.0:
         failed.append("D citation gate")
+    arm_c = metrics.get("C", {})
     c_iv = intervals["arms"].get("C", {})
-    comparator_diagnostics = {
+    diagnostics["comparator_diagnostics"] = {
         "C_absolute": {
             "retention_point": arm_c.get("gated_useful_finding_retention"),
             "retention_interval": c_iv.get("retention"),
@@ -331,42 +434,72 @@ def decide_v2(tasks, metrics, intervals, flags, scope, policy, contract, pinned,
 
     seed = pinned["bootstrap_seed"]
     pairs = {}
-    for key, margin, tolerance in (
-        ("D-S_retention", contract["margin_over_surface_retention"], None),
-        ("D-S_misleading", None, contract["tolerance_over_surface_misleading"]),
-        ("D-C_retention", contract["margin_over_general_retention"], None),
-        ("D-C_misleading", None, contract["tolerance_over_general_misleading"]),
+    for key, arm_b, margin, tolerance in (
+        ("D-S_retention", "S", contract["margin_over_surface_retention"], None),
+        ("D-S_misleading", "S", None, contract["tolerance_over_surface_misleading"]),
+        ("D-C_retention", "C", contract["margin_over_general_retention"], None),
+        ("D-C_misleading", "C", None, contract["tolerance_over_general_misleading"]),
     ):
         iv = intervals["paired_differences"].get(key)
         if not iv:
             undetermined.append(f"paired interval {key} unavailable")
             continue
+        overlap = overlap_scored(flags, "D", arm_b)
+        diagnostics["overlap"][key] = overlap
+        if overlap < policy["min_scored_cases"]:
+            undetermined.append(f"paired {key} has only {overlap} overlapping scored cases")
+            pairs[key] = {"interval": iv, "result": "indeterminate", "overlap": overlap}
+            continue
         result = classify_paired(iv, margin=margin, tolerance=tolerance)
-        pairs[key] = {"interval": iv, "result": result}
+        pairs[key] = {"interval": iv, "result": result, "overlap": overlap}
         if result == "fail":
             failed.append(f"paired {key} {iv} demonstrates no advantage")
         elif result == "indeterminate":
             undetermined.append(f"paired {key} {iv} cannot distinguish advantage")
     dv_ret = paired_interval(flags, tasks, contract, "D", "V", "retention", seed)
     dv_mis = paired_interval(flags, tasks, contract, "D", "V", "misleading", seed)
-    pairs["D-V_retention"] = {"interval": dv_ret, "result": None}
-    pairs["D-V_misleading"] = {"interval": dv_mis, "result": None}
+    dv_overlap = overlap_scored(flags, "D", "V")
     if "V" not in metrics:
         undetermined.append("V comparator outputs unavailable")
+        pairs["D-V_retention"] = {
+            "interval": dv_ret,
+            "result": "indeterminate",
+            "overlap": dv_overlap,
+        }
+        pairs["D-V_misleading"] = {
+            "interval": dv_mis,
+            "result": "indeterminate",
+            "overlap": dv_overlap,
+        }
+    elif dv_overlap < policy["min_scored_cases"]:
+        undetermined.append(f"D-V has only {dv_overlap} overlapping scored cases")
+        pairs["D-V_retention"] = {
+            "interval": dv_ret,
+            "result": "indeterminate",
+            "overlap": dv_overlap,
+        }
+        pairs["D-V_misleading"] = {
+            "interval": dv_mis,
+            "result": "indeterminate",
+            "overlap": dv_overlap,
+        }
     else:
         v_ok = dv_ret[0] >= 0 and dv_mis[1] <= 0
         v_bad = dv_ret[1] < 0 or dv_mis[0] > 0
-        pairs["D-V_retention"]["result"] = (
-            "pass" if dv_ret[0] >= 0 else ("fail" if dv_ret[1] < 0 else "indeterminate")
-        )
-        pairs["D-V_misleading"]["result"] = (
-            "pass" if dv_mis[1] <= 0 else ("fail" if dv_mis[0] > 0 else "indeterminate")
-        )
+        pairs["D-V_retention"] = {
+            "interval": dv_ret,
+            "result": "pass" if dv_ret[0] >= 0 else ("fail" if dv_ret[1] < 0 else "indeterminate"),
+            "overlap": dv_overlap,
+        }
+        pairs["D-V_misleading"] = {
+            "interval": dv_mis,
+            "result": "pass" if dv_mis[1] <= 0 else ("fail" if dv_mis[0] > 0 else "indeterminate"),
+            "overlap": dv_overlap,
+        }
         if v_bad:
             failed.append(f"D loses to evaluation-informed V control {dv_ret} {dv_mis}")
         elif not v_ok:
             undetermined.append(f"D vs V inconclusive {dv_ret} {dv_mis}")
-    diagnostics["comparator_diagnostics"] = comparator_diagnostics
     diagnostics["paired"] = pairs
     if failed:
         return "no_improvement_demonstrated", failed + undetermined, False, diagnostics
@@ -380,13 +513,14 @@ def decide_v2(tasks, metrics, intervals, flags, scope, policy, contract, pinned,
     )
 
 
-def evaluate_v2(request, paths, trust_anchors_path=None, pinned_path=None, sealed_root=None):
-    """Run the v2 custodian pipeline. Returns a qualification-aware receipt."""
-    trust_anchors_path = trust_anchors_path or TRUST_ANCHORS_PATH
-    pinned_path = pinned_path or PINNED_BOOTSTRAP_PATH
-    sealed_root = sealed_root or SEALED_ROOT
-    anchors = load_trust_anchors(trust_anchors_path)
-    pinned = load_pinned_bootstrap(pinned_path)
+def evaluate_v2(request, paths):
+    """Run the v2 custodian pipeline. Trust roots are evaluator-pinned constants.
+
+    No parameter, flag, or request field redirects the trust roots; tests reach
+    alternatives only by monkeypatching module constants in-process.
+    """
+    anchors = load_trust_anchors()
+    pinned = load_pinned_bootstrap()
     policy = v1.load_custodian_policy(paths["policy_path"])
     v1.strict_json_loads(Path(paths["contract_path"]).read_text(encoding="utf-8"))
     contract = v1.validate_decision_contract_strict(
@@ -418,19 +552,29 @@ def evaluate_v2(request, paths, trust_anchors_path=None, pinned_path=None, seale
         policy,
     )
     custody = v1.validate_custody(paths.get("custody_dir"), tasks, labels, request.get("submitter"))
-    sealed = check_sealed_custody(paths.get("custody_dir"), tasks, labels, sealed_root)
+    sealed = assess_sealed_custody(paths.get("custody_dir"), tasks, labels)
     scope = v1.determine_scope(
         tasks, {**custody, "requested_scope": request.get("requested_scope")}
     )
-    custody_state, custody_reason = determine_custody_state(custody, sealed, scope)
+    canonical_policy = v1.strict_json_load(CANONICAL_POLICY_PATH)
+    canonical_contract = v1.strict_json_load(CANONICAL_CONTRACT_PATH)
+    supplied_policy = v1.strict_json_load(paths["policy_path"])
+    supplied_contract = v1.strict_json_load(paths["contract_path"])
+    policy_match = canonical(supplied_policy) == canonical(canonical_policy)
+    contract_match = canonical(supplied_contract) == canonical(canonical_contract)
+    canonical_match = policy_match and contract_match
+    execution_ok = False
     metrics = {}
     for arm, outs in normalized.items():
         metrics[arm] = score_r2(tasks, labels, outs, arm, contract, allow_offline_fixtures=True)
     flags = v1.gated_flags(tasks, labels, normalized, contract)
     intervals = v1.family_intervals(tasks, flags, contract)
     duplicates = cross_family_duplicates(tasks)
+    custody_state, custody_reason = determine_custody_state(
+        custody, sealed, scope, canonical_match, execution_ok
+    )
     outcome, outcome_reasons, underpowered, decision_diagnostics = decide_v2(
-        tasks, metrics, intervals, flags, scope, policy, contract, pinned, duplicates
+        tasks, metrics, intervals, flags, normalized, scope, policy, contract, pinned, duplicates
     )
     mode = "qualified" if custody_state == QUALIFIED else "diagnostic"
     if mode == "qualified" and outcome == "improvement_supported" and scope["scope"] == "blind":
@@ -477,7 +621,10 @@ def evaluate_v2(request, paths, trust_anchors_path=None, pinned_path=None, seale
         "entailment": "requires_human_adjudication",
         "scope_determined": scope,
         "custody": {k: v for k, v in custody.items()},
-        "sealed_match": {"matched": sealed[0], "detail": sealed[1]},
+        "sealed_assessment": sealed,
+        "trust_anchors_sha256": fingerprint(anchors),
+        "canonical_policy_match": policy_match,
+        "canonical_contract_match": contract_match,
         "fingerprints": {
             "tasks_sha256": hashlib.sha256(task_bytes).hexdigest(),
             "gold_sha256": hashlib.sha256(gold_bytes).hexdigest(),
@@ -492,15 +639,15 @@ def evaluate_v2(request, paths, trust_anchors_path=None, pinned_path=None, seale
             "source_commit": commit,
             "source_commit_available": commit is not None,
             "evaluator_version": EVAL02_VERSION,
-            "trust_anchors_sha256": fingerprint(anchors),
             "pinned_bootstrap_sha256": fingerprint(pinned),
             "bootstrap_seed_source": "evaluator_pinned",
             "bootstrap_seed_claimed": contract["bootstrap_seed"],
             "execution_provenance": "offline_fixture_unprovenanced",
+            "governed_execution": False,
+            "controls_verified": False,
         },
         "metrics": metrics,
         "uncertainty": intervals,
-        "paired_v_gate": "computed in decide_v2; see reasons",
         "underpowered": underpowered,
         "reasons": outcome_reasons,
         "decision_diagnostics": decision_diagnostics,
@@ -517,11 +664,29 @@ def evaluate_v2(request, paths, trust_anchors_path=None, pinned_path=None, seale
     return receipt
 
 
-def verify_receipt(
-    receipt, request, paths, trust_anchors_path=None, pinned_path=None, sealed_root=None
-):
-    """Recompute input fingerprints and reject tampering, substitution, replay."""
-    if receipt.get("evaluator") != EVAL02_VERSION:
+class VerifiedReceipt:
+    """A receipt that passed full re-verification against bound artifacts.
+
+    Only this type satisfies `is_qualified_progress`. Plain dictionaries,
+    however carefully typed, never authenticate.
+    """
+
+    __slots__ = ("receipt", "package_identity", "custody_state", "verified_fields")
+
+    def __init__(self, receipt, package_identity, custody_state, verified_fields):
+        self.receipt = receipt
+        self.package_identity = package_identity
+        self.custody_state = custody_state
+        self.verified_fields = verified_fields
+
+
+def verify_receipt(receipt, request, paths):
+    """Recompute input fingerprints and reject tampering, substitution, replay.
+
+    Returns a VerifiedReceipt; raises ValueError on any mismatch. QUALIFIED
+    receipts additionally require their sealed artifacts to verify now.
+    """
+    if not isinstance(receipt, dict) or receipt.get("evaluator") != EVAL02_VERSION:
         raise ValueError("not a v2 receipt; historical receipts never qualify")
     for key in (
         "fingerprints",
@@ -529,15 +694,13 @@ def verify_receipt(
         "evaluation_mode",
         "verdict",
         "scientific_qualification",
+        "diagnostic_result",
     ):
         if key not in receipt:
             raise ValueError(f"receipt missing required field: {key}")
     recomputed = evaluate_v2(
         {**request, "submitted_summary": receipt.get("submitted_summary_echo")},
         {**paths, "output_path": None},
-        trust_anchors_path=trust_anchors_path,
-        pinned_path=pinned_path,
-        sealed_root=sealed_root,
     )
     for key in (
         "tasks_sha256",
@@ -565,27 +728,41 @@ def verify_receipt(
         if receipt.get(key) != recomputed.get(key):
             raise ValueError(f"receipt field mismatch after recomputation: {key}")
     if receipt["custody_state"] == QUALIFIED:
-        matched, _ = check_sealed_custody(
+        sealed = assess_sealed_custody(
             paths.get("custody_dir"),
             v1.load_package_tasks(paths["package_dir"]),
             v1.load_package_gold(paths["gold_dir"]),
-            sealed_root or SEALED_ROOT,
         )
-        if not matched:
-            raise ValueError("QUALIFIED receipt has no matching sealed artifact")
-    return True
+        if not sealed.get("qualified_ready"):
+            raise ValueError("QUALIFIED receipt has no verifying sealed artifacts now")
+    return VerifiedReceipt(
+        receipt=receipt,
+        package_identity=receipt["fingerprints"]["package_identity"],
+        custody_state=receipt["custody_state"],
+        verified_fields=sorted(receipt["fingerprints"])
+        + [
+            "custody_state",
+            "evaluation_mode",
+            "verdict",
+            "diagnostic_result",
+            "scientific_qualification",
+        ],
+    )
 
 
-def is_qualified_progress(receipt):
-    """Strict gate for consumers: only an authenticated QUALIFIED PROGRESS counts."""
+def is_qualified_progress(maybe_receipt):
+    """Strict consumer gate: only a verified QUALIFIED PROGRESS receipt counts."""
+    if not isinstance(maybe_receipt, VerifiedReceipt):
+        return False
+    receipt = maybe_receipt.receipt
     try:
         return bool(
-            receipt.get("evaluator") == EVAL02_VERSION
-            and receipt.get("custody_state") == QUALIFIED
+            receipt.get("custody_state") == QUALIFIED
             and receipt.get("evaluation_mode") == "qualified"
             and receipt.get("verdict") == "PROGRESS"
             and receipt.get("scope_determined", {}).get("scope") == "blind"
             and receipt.get("scientific_qualification") == "ESTABLISHED"
+            and maybe_receipt.custody_state == QUALIFIED
         )
     except AttributeError:
         return False
