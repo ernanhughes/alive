@@ -134,8 +134,45 @@ def test_first_creation_is_stable_and_private(local_settings):
             Path("acl.txt").read_text(encoding="utf-16-le").removeprefix("\ufeff").splitlines()[1]
         )
         assert dacl.startswith("D:P")
-        assert len(re.findall(r"\([^()]+\)", dacl)) == 1
-        assert re.search(r"\(A;;FA;;;S-1-[0-9-]+\)", dacl)
+        assert len(re.findall(r"\([^()]+\)", dacl)) == 1, dacl
+        assert re.search(r"\(A;;FA;;;[A-Z0-9-]+\)", dacl), dacl
+
+
+@pytest.mark.skipif(os.name != "nt", reason="Windows DACLs")
+def test_restricting_removes_explicit_rules_left_by_the_creator(tmp_path):
+    """Regression: `/inheritance:r` alone keeps EXPLICIT rules.
+
+    An elevated creator's file carries explicit SYSTEM / Administrators / OWNER RIGHTS rules, so
+    on GitHub's elevated Windows runner the token file kept four rules instead of one. Seed such
+    rules (and a broad one) on any account and require that only the owner's grant survives.
+    """
+    import re
+    import subprocess
+
+    from alive.config import _restrict_token_file
+
+    target = tmp_path / "token"
+    target.write_text("placeholder", encoding="ascii")
+    subprocess.run(
+        ["icacls", str(target), "/grant", "*S-1-5-18:(F)", "*S-1-5-32-544:(F)", "*S-1-1-0:(R)"],
+        capture_output=True,
+        check=True,
+        timeout=5,
+    )
+    _restrict_token_file(str(target))
+    acl = tmp_path / "acl.txt"
+    subprocess.run(
+        ["icacls", str(target), "/save", str(acl), "/q"],
+        capture_output=True,
+        check=True,
+        timeout=5,
+    )
+    dacl = acl.read_text(encoding="utf-16-le").removeprefix("﻿").splitlines()[1]
+    rules = re.findall(r"\([^()]+\)", dacl)
+    assert dacl.startswith("D:P") and len(rules) == 1, dacl
+    assert re.fullmatch(r"\(A;;FA;;;[A-Z0-9-]+\)", rules[0]), dacl
+    for broad in ("SY", "BA", "WD", "BU", "AU", "OW", "IU"):
+        assert f";;;{broad})" not in dacl, (broad, dacl)
 
 
 def test_concurrent_first_creation_never_publishes_partial_or_replaces_winner(local_settings):

@@ -8,7 +8,8 @@ import sys
 import tempfile
 from pathlib import Path
 
-sys.path.insert(0, ".")
+REPO = os.getcwd()
+sys.path.insert(0, REPO)
 
 
 def sh(*args):

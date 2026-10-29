@@ -80,6 +80,10 @@ def _restrict_token_file(path: str):
         sid = next(csv.reader([identity.stdout.strip()]))[1]
         if not sid.startswith("S-1-"):
             raise ValueError("Cannot determine local token owner")
+        # An elevated creator's file can carry EXPLICIT SYSTEM/Administrators/OWNER RIGHTS rules
+        # that /inheritance:r does not touch. Reset to the default inherited ACL first so that
+        # removing inheritance leaves nothing behind but the single owner grant.
+        subprocess.run(["icacls", path, "/reset"], capture_output=True, check=True, timeout=5)
         subprocess.run(
             ["icacls", path, "/inheritance:r", "/grant:r", f"*{sid}:(F)"],
             capture_output=True,
