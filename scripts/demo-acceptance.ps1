@@ -10,10 +10,13 @@ your own `alive_*` volumes, then drives the demonstration in real Chrome:
   5. ALIVE_DEMO_MODE=false                    -> the tab refuses, API says 403
 No provider key is set and no paid call is possible. Needs Docker, uv, Node and Chrome.
 
-  pwsh scripts/demo-acceptance.ps1 [-Project alive-demo-accept] [-Record] [-KeepRunning]
+  pwsh scripts/demo-acceptance.ps1 [-Project alive-demo-accept] [-Port 8000] [-Record] [-KeepRunning]
+
+The web demonstration works on any free host port; only the Chrome-extension lane needs 8000.
 #>
 param(
   [string]$Project = "alive-demo-accept",
+  [int]$Port = 8000,
   [switch]$Record,
   [switch]$KeepRunning
 )
@@ -21,7 +24,8 @@ $ErrorActionPreference = "Stop"
 $root = Split-Path -Parent $PSScriptRoot
 Set-Location $root
 $env:ALIVE_API_TOKEN = "alive-dev-token-replace-for-local-use-000"
-$env:ALIVE_BASE_URL = "http://localhost:8000"
+$env:ALIVE_HOST_PORT = "$Port"
+$env:ALIVE_BASE_URL = "http://localhost:$Port"
 $env:DEMO_E2E = "1"
 $env:DEMO_STATE_FILE = Join-Path $root ".alive/demo-acceptance/state.json"
 $evidence = Join-Path $root "docs/demo/evidence"
@@ -45,6 +49,8 @@ function Phase($phase) {
   try { npx playwright test e2e/demo-tour.spec.ts --reporter=list } finally { Pop-Location }
 }
 
+$busy = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue
+if ($busy) { throw "Host port $Port is in use by pid $($busy[0].OwningProcess); pass -Port <free port>" }
 Step "commit under test" { git rev-parse HEAD; $global:LASTEXITCODE = 0 }
 Step "clean volumes (disposable project only)" { docker compose -p $Project down -v --remove-orphans }
 Remove-Item -Recurse -Force (Split-Path $env:DEMO_STATE_FILE) -ErrorAction SilentlyContinue
