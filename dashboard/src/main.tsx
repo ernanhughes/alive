@@ -17,7 +17,7 @@ import {
   Waypoints,
   X,
 } from "lucide-react";
-import { base, mergeEvents, request } from "./api";
+import { base, mergeEvents, request, wsBase } from "./api";
 import type {
   AliveEvent,
   Capabilities,
@@ -112,7 +112,9 @@ export function App() {
     [searchMode, setSearchMode] = useState(""),
     [objective, setObjective] = useState(""),
     [runner, setRunner] = useState("mock");
-  const [url, setUrl] = useState(base + "/demo"),
+  const [url, setUrl] = useState(
+    base ? base + "/demo" : "http://127.0.0.1:8000/demo",
+  ),
     [sessionId, setSessionId] = useState(""),
     [selector, setSelector] = useState("#change"),
     [value, setValue] = useState("A green light appeared in the habitat."),
@@ -155,9 +157,7 @@ export function App() {
       timer: ReturnType<typeof setTimeout>,
       disposed = false;
     function connect() {
-      socket = new WebSocket(
-        base.replace("http", "ws") + "/api/v1/events/stream",
-      );
+      socket = new WebSocket(wsBase());
       socket.onopen = () =>
         socket?.send(JSON.stringify({ token, after: cursor.current }));
       socket.onmessage = (e) => {

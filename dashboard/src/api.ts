@@ -50,7 +50,31 @@ export interface Capabilities {
   pi: { configured: boolean };
   providers: { meta: { configured: boolean } };
 }
-export const base = "http://127.0.0.1:8000";
+export function resolveApiBase(): string {
+  const configured = (
+    (import.meta.env.VITE_ALIVE_API_BASE as string | undefined) || ""
+  ).trim();
+  if (configured) return configured.replace(/\/$/, "");
+  if (
+    typeof window !== "undefined" &&
+    (window.location.port === "5173" || window.location.port === "5174")
+  )
+    return "http://127.0.0.1:8000";
+  return "";
+}
+export const base = resolveApiBase();
+export function wsBase(): string {
+  if (base.startsWith("http"))
+    return base.replace("http", "ws") + "/api/v1/events/stream";
+  if (typeof window !== "undefined")
+    return (
+      window.location.protocol.replace("http", "ws") +
+      "//" +
+      window.location.host +
+      "/api/v1/events/stream"
+    );
+  return "ws://127.0.0.1:8000/api/v1/events/stream";
+}
 export async function request<T>(
   path: string,
   token: string,

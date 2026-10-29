@@ -450,6 +450,34 @@ def create_app(settings=None):
     async def demo():
         return FileResponse(Path(__file__).with_name("demo.html"))
 
+    # Docker production serving: when dashboard/dist exists (built in the app
+    # image), serve the real dashboard UI from the same origin as the API.
+    # Additive only: skipped entirely in development checkouts without dist.
+    _DIST = Path(__file__).resolve().parents[1] / "dashboard" / "dist"
+    if (_DIST / "index.html").is_file():
+        from fastapi.staticfiles import StaticFiles
+
+        if (_DIST / "assets").is_dir():
+            app.mount("/assets", StaticFiles(directory=_DIST / "assets"), name="dashboard-assets")
+
+        @app.get("/", include_in_schema=False)
+        async def dashboard_index():
+            return FileResponse(_DIST / "index.html")
+
+        @app.get("/{path:path}", include_in_schema=False)
+        async def dashboard_spa(path: str):
+            if path.startswith(("api/", "demo", "demo-live-01/", "docs", "openapi.json", "redoc")):
+                raise HTTPException(404, "Not found")
+            if path:
+                candidate = _DIST / path
+                try:
+                    candidate.resolve().relative_to(_DIST.resolve())
+                except ValueError:
+                    raise HTTPException(404, "Not found")
+                if candidate.is_file():
+                    return FileResponse(candidate)
+            return FileResponse(_DIST / "index.html")
+
     @app.websocket("/api/v1/events/stream")
     async def stream(ws: WebSocket):
         origin = ws.headers.get("origin")
