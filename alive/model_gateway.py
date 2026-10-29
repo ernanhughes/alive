@@ -33,13 +33,19 @@ class ModelGateway(Protocol):
 class DirectMetaGateway:
     """Production gateway: unchanged MetaProvider dispatch."""
 
-    def __init__(self, settings, transport=None):
+    def __init__(self, settings, operation: str, transport=None):
         self.settings = settings
+        self.operation = operation
         # Test seam only: an httpx transport for the upstream call. None in
         # production, where the real Meta endpoint is used.
         self.transport = transport
 
     async def structured(self, req: StructuredRequest) -> Generation:
+        if req.operation != self.operation:
+            raise ValueError(
+                f"Operation mismatch: gateway serves {self.operation!r}, "
+                f"request claims {req.operation!r}; refusing dispatch"
+            )
         return await MetaProvider(self.settings).structured(
             req.instructions,
             req.data,
@@ -54,5 +60,5 @@ class DirectMetaGateway:
 def gateway_for(settings, operation: str) -> ModelGateway:
     """Return the gateway for an operation. Unknown operations fail closed."""
     if operation == "cognition.role":
-        return DirectMetaGateway(settings)
+        return DirectMetaGateway(settings, operation=operation)
     raise KeyError(f"No gateway registered for operation {operation!r}")
