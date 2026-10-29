@@ -1,0 +1,6 @@
+{
+  "status": "HOLDOUT_PENDING",
+  "independent_cases_available": 0,
+  "independent_annotation_status": "PENDING_INDEPENDENT_LABELING",
+  "note": "No sealed holdout package has been supplied by an independent custodian. Public cases remain diagnostic only."
+}

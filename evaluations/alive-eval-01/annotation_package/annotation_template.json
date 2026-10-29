@@ -1,0 +1,35 @@
+{
+  "$schema_note": "One entry per opaque handle. Reviewers label independently; adjudicator resolves. No model answers, no gold labels.",
+  "entries": [
+    {
+      "handle": "<opaque handle>",
+      "reviewer_id": "<reviewer-1>",
+      "relationships": ["<category>"],
+      "sufficiency": "<sufficient_for_candidate|insufficient|unknown>",
+      "applicability": "<applicable|scoped|not_applicable|unknown>",
+      "decisions": ["<use_with_qualification|set_aside|abstain>"],
+      "useful_finding": false,
+      "rationale": "<cite what the passages do and do not establish>",
+      "required_evidence": [
+        {"source_id": "<s0|s1>", "start": 0, "end": 0, "text": "<exact substring>"}
+      ],
+      "forbidden_conclusions": ["<what the evidence does NOT support>"],
+      "ambiguity_notes": null,
+      "exclude_from_category_accuracy": false,
+      "superseded_claim_ref": null,
+      "replacement_claim_ref": null,
+      "disagreement": {
+        "reviewer_2_id": "<id>",
+        "reviewer_2_relationships": [],
+        "nature_of_disagreement": "<text>",
+        "resolution": "<pending|adjudicated>"
+      },
+      "adjudication": {
+        "status": "<draft|pending|adjudicated>",
+        "adjudicator_id": "<id>",
+        "independence": "<implementer_authored|external_attested>",
+        "reviewer_ids": []
+      }
+    }
+  ]
+}
