@@ -358,17 +358,18 @@ def select(
     cats = classify_changed(changed)
     changed_mods = {c: _module_of(c) for c in changed}
 
+    # Full mode is the comprehensive tier: no change set, docs-only included, may shrink it.
+    if mode == "full":
+        for tf in all_tests:
+            add(tf, "full mode: comprehensive qualification")
+        return sorted(selected), reasons, meta
+
     # Docs-only fast path (unless executable docs/scripts changed).
     non_docs = [c for c in changed if cats.get(c) != "docs"]
     if changed and not non_docs:
         for tf in ALWAYS_FILES:
             add(tf, "always-run smoke/config safety net (docs-only change)")
         meta["note"] = "documentation-only change: minimal smoke selection"
-        return sorted(selected), reasons, meta
-
-    if mode == "full":
-        for tf in all_tests:
-            add(tf, "full mode: comprehensive qualification")
         return sorted(selected), reasons, meta
 
     # Import-based mapping (direct + one-hop importers).
