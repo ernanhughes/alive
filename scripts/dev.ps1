@@ -1,6 +1,7 @@
 param([switch]$Install)
 $ErrorActionPreference = 'Stop'
 Set-Location (Split-Path $PSScriptRoot -Parent)
+& (Join-Path $PSScriptRoot 'init.ps1') -Quiet
 foreach ($port in @(8000, 5173)) {
     $socket = [System.Net.Sockets.TcpClient]::new()
     try { $socket.Connect('127.0.0.1', $port) } catch { }
@@ -36,4 +37,4 @@ foreach ($endpoint in @('http://127.0.0.1:8000/api/v1/health','http://127.0.0.1:
     }
 }
 Write-Host 'Dashboard: http://127.0.0.1:5173 | Backend: http://127.0.0.1:8000/docs'
-Write-Host 'Read .alive/token locally to connect. Stop with ./scripts/stop.ps1'
+Write-Host 'Local token is configured in .env and synced to .alive/token. Stop with ./scripts/stop.ps1'

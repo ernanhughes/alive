@@ -22,6 +22,12 @@ def test_compose_defines_postgres_and_app():
     assert "ALIVE_COGNITIVE_PROVIDER" in compose
 
 
+def test_compose_requires_one_explicit_api_token():
+    compose = read("compose.yaml")
+    assert "${ALIVE_API_TOKEN:?" in compose
+    assert "alive-dev-token-replace-for-local-use-000" not in compose
+
+
 def compose_default_port():
     match = re.search(r"ALIVE_HOST_PORT:-(\d+)\}:8000", read("compose.yaml"))
     assert match, "compose must publish the app on ${ALIVE_HOST_PORT:-<port>}"
