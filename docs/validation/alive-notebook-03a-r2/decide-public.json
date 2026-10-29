@@ -1,0 +1,189 @@
+{
+  "protocol_version": "notebook03a-v1.6",
+  "independent_holdout_status": "PENDING_INDEPENDENT_LABELING",
+  "independent_cases_available": 0,
+  "protocol_sha256": "ce6fdeaf662f98f531c5a723ad7f92ec0d0f77aa3220269bdde45c992781b87b",
+  "validation": {
+    "status": "PUBLIC_COMPLETE",
+    "cases": 66,
+    "missing_or_pending_annotations": [],
+    "splits": {
+      "development": 16,
+      "public_evaluation": 50
+    },
+    "categories": {
+      "supersession": 9,
+      "unknown": 12,
+      "scoped_change": 8,
+      "corroboration_candidate": 5,
+      "unsupported_claim": 9,
+      "independent_observations": 9,
+      "substantive_connection": 9,
+      "contradiction_candidate": 5
+    },
+    "annotation_independence": "IMPLEMENTER_EXPOSED; NOT BLIND"
+  },
+  "neutral_question": {
+    "distinct_questions": 1,
+    "is_neutral_uniform": true,
+    "question": "Assess the relationship between the supplied claims and evidence. State what is supported, what remains uncertain, and whether the evidence should influence the current conclusion."
+  },
+  "shortcut_v2": {
+    "version": "shortcut-control-v2.0",
+    "params": {
+      "overlap_high": 0.3,
+      "overlap_low": 0.08,
+      "max_cite_chars": 400,
+      "dev_basis": "16 development cases, v1.4 templates; frozen pre-evaluation"
+    },
+    "code_sha256": "d1c8b66769db6245ea127fba3a769a0b5359909661ddde64db01f6971d6a8282"
+  },
+  "model_calls": 0,
+  "spend_micro_usd": 0,
+  "decision": {
+    "engineering_validity": {
+      "verdict": "VALID",
+      "reason": "Frozen inputs, tools, and contract verified."
+    },
+    "public_diagnostic": {
+      "A": {
+        "retention": 0.0,
+        "misleading": 0.24,
+        "scored": 50,
+        "note": "DIAGNOSTIC_ONLY: public/exposed cases; never a research verdict."
+      },
+      "B": {
+        "retention": 0.0,
+        "misleading": 0.0,
+        "scored": 50,
+        "note": "DIAGNOSTIC_ONLY: public/exposed cases; never a research verdict."
+      },
+      "B0": {
+        "retention": 0.0,
+        "misleading": 0.0,
+        "scored": 64,
+        "note": "DIAGNOSTIC_ONLY: public/exposed cases; never a research verdict."
+      },
+      "S": {
+        "retention": 0.4888888888888889,
+        "misleading": 0.21875,
+        "scored": 64,
+        "note": "DIAGNOSTIC_ONLY: public/exposed cases; never a research verdict."
+      },
+      "V": {
+        "retention": 0.5333333333333333,
+        "misleading": 0.25,
+        "scored": 64,
+        "note": "DIAGNOSTIC_ONLY: public/exposed cases; never a research verdict."
+      }
+    },
+    "blind_readiness": {
+      "verdict": "NOT_READY",
+      "reason": "Missing: blind evaluation scope (public/exposed cases cannot yield PROGRESS); sealed holdout package (HOLDOUT_PENDING); independently adjudicated gold; comparator C results; comparator D results.",
+      "missing": [
+        "blind evaluation scope (public/exposed cases cannot yield PROGRESS)",
+        "sealed holdout package (HOLDOUT_PENDING)",
+        "independently adjudicated gold",
+        "comparator C results",
+        "comparator D results"
+      ]
+    },
+    "final": {
+      "verdict": "INCONCLUSIVE",
+      "reason": "Missing: blind evaluation scope (public/exposed cases cannot yield PROGRESS); sealed holdout package (HOLDOUT_PENDING); independently adjudicated gold; comparator C results; comparator D results."
+    },
+    "thresholds_consumed": [
+      "bootstrap_resamples",
+      "bootstrap_seed",
+      "ci_level",
+      "margin_over_general_retention",
+      "margin_over_surface_retention",
+      "max_misleading_advance_rate",
+      "min_citation_precision",
+      "min_independent_families",
+      "min_scored_cases",
+      "min_useful_cases",
+      "min_useful_retention",
+      "require_full_citation_recall",
+      "tolerance_over_general_misleading",
+      "tolerance_over_surface_misleading"
+    ]
+  },
+  "uncertainty": {
+    "method": "family-level paired bootstrap (precomputed case flags)",
+    "families": 39,
+    "resamples": 1000,
+    "seed": 20261029,
+    "level": 0.95,
+    "arms": {
+      "A": {
+        "retention": [
+          0.0,
+          0.0
+        ],
+        "misleading": [
+          0.0,
+          0.0
+        ]
+      },
+      "B": {
+        "retention": [
+          0.0,
+          0.0
+        ],
+        "misleading": [
+          0.0,
+          0.0
+        ]
+      },
+      "B0": {
+        "retention": [
+          0.0,
+          0.0
+        ],
+        "misleading": [
+          0.0,
+          0.0
+        ]
+      },
+      "S": {
+        "retention": [
+          0.225,
+          0.6764705882352942
+        ],
+        "misleading": [
+          0.12,
+          0.36923076923076925
+        ]
+      },
+      "V": {
+        "retention": [
+          0.34375,
+          0.7358490566037735
+        ],
+        "misleading": [
+          0.1095890410958904,
+          0.35714285714285715
+        ]
+      }
+    },
+    "paired_differences": {},
+    "limitation": "Sensitivity bounds under family exchangeability, not population inference. Families are few and deliberately selected; a 3-case shift inside one family moves the point estimate without changing the interval's meaning."
+  },
+  "underpowered_warning": false,
+  "holdout": {
+    "status": "HOLDOUT_PENDING",
+    "missing": [
+      "custodian-supplied sealed package"
+    ],
+    "contract_version": "notebook03a-r2-holdout-v1"
+  },
+  "context": {
+    "scope": "public_diagnostic",
+    "holdout_available": false,
+    "gold_adjudicated": false,
+    "exposure_events": [],
+    "n_families": 39,
+    "freeze_ok": true
+  }
+}
