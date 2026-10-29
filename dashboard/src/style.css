@@ -988,3 +988,68 @@ hr {
 .living-carry .living-predictions { margin: 0; }
 .living-experience pre { max-height: 420px; overflow: auto; font-size: 10px; }
 @media(max-width: 950px) { .living-encounters, .living-carry { grid-template-columns: 1fr; } .living-process { grid-template-columns: repeat(4, 1fr); row-gap: 20px; } .living-hero { padding: 25px; } .living-provenance { grid-template-columns: 1fr; } }
+
+/* ALIVE-DEMO-INTEGRATION-01: guided demonstration */
+.tour { display: grid; gap: 16px; }
+.tour-banner {
+  display: inline-block;
+  margin: 4px 0;
+  padding: 8px 12px;
+  border: 1px solid #d9b44a;
+  border-radius: 7px;
+  background: #fff4d6;
+  color: #5c4300;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+}
+.tour-consent { max-width: 70ch; }
+.tour-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+.tour-step {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #d5ddd2;
+  border-radius: 9px;
+  background: #fff;
+}
+.tour-step.failed { border-color: #c0392b; }
+.tour-step h3 { margin: 0 0 2px; font-size: 15px; }
+.tour-step p { margin: 0 0 6px; }
+.tour-n {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #24352e;
+  color: #fff;
+  font-weight: 650;
+}
+.tour-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+.tour-chip {
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #d5ddd2;
+  background: #f4f5f0;
+  font-size: 12px;
+}
+.tour-chip.fixture_provider { background: #fff4d6; border-color: #d9b44a; color: #5c4300; }
+.tour-chip.audit_read { background: #eef1f8; border-color: #b8c3de; }
+.tour-quote {
+  margin: 6px 0;
+  padding: 6px 10px;
+  border-left: 3px solid #7a9a86;
+  background: #f4f8f3;
+}
+.tour-quote small { display: block; text-transform: uppercase; font-size: 11px; opacity: 0.7; }
+.tour-facts { display: grid; gap: 2px 14px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); margin: 6px 0; }
+.tour-facts div { display: flex; gap: 6px; }
+.tour-facts dt { opacity: 0.7; text-transform: capitalize; }
+.tour-facts dd { margin: 0; overflow-wrap: anywhere; font-family: ui-monospace, monospace; font-size: 12.5px; }
+.tour-compare table, .tour table { border-collapse: collapse; }
+.tour table td, .tour table th { padding: 6px 14px 6px 0; text-align: left; }
+button.link { border: 0; background: none; padding: 0 6px; text-decoration: underline; }
+@media (max-width: 640px) {
+  .tour-step { grid-template-columns: 1fr; }
+}

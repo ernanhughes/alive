@@ -84,3 +84,25 @@ def test_full_mode_selects_everything():
     selected, _, _ = _files("full", ["alive/browser.py"])
     _, _, all_tests = test_select.build_indexes()
     assert selected == sorted(all_tests)
+
+
+def test_full_mode_selects_everything_even_for_a_docs_only_change():
+    """`--mode full` is the comprehensive tier; a docs-only change must not shrink it.
+
+    Regression: the docs-only fast path used to return before the full-mode branch, so
+    `--mode full --changed docs/x.md` selected only the two smoke files.
+    """
+    every, _, _ = _files("full", ["scripts/test_select.py"])
+    assert len(every) > 10
+    for changed in (["docs/x.md"], ["README.md"], ["docs/a.md", "docs/b.md"]):
+        selected, reasons, meta = _files("full", changed)
+        assert selected == every, changed
+        assert all("full mode" in r for rs in reasons.values() for r in rs)
+        assert "note" not in meta
+
+
+def test_docs_only_fast_path_is_unchanged_for_the_other_modes():
+    for mode in ("quick", "affected", "docker"):
+        selected, _, meta = _files(mode, ["docs/x.md"])
+        assert 0 < len(selected) < 10, mode
+        assert "documentation-only" in str(meta.get("note")), mode

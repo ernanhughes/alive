@@ -73,7 +73,7 @@ hostname `db` never reaches browser JS: the browser only talks to
 | Variable | Required locally? | Sensitive? |
 | --- | --- | --- |
 | `DATABASE_URL` / `ALIVE_DSN` | yes (Compose provides `postgresql+asyncpg://alive:…@db:5432/alive`) | yes (password) — never baked into layers, only runtime env |
-| `ALIVE_API_TOKEN` | yes (≥24 chars); generated to `.alive/token` if empty | yes — dev default documented as local-only |
+| `ALIVE_API_TOKEN` | yes (≥24 chars); generated to `.alive/token` if empty | yes - required; `scripts/init.ps1` writes one token to `.env` and `.alive/token` |
 | `POSTGRES_DB/USER/PASSWORD` | yes (Compose defaults, overridable) | yes (password) |
 | `ALIVE_ALLOWED_ORIGINS`, `ALIVE_BROWSER_ORIGINS` | yes (safe local defaults in Compose) | no |
 | `ALIVE_META_API_KEY` / aliases, `ALIVE_META_URL/BASE_URL/MODEL`, `ALIVE_ROLE_MODELS` | only for live inference; empty by default | yes — never committed, never in images |

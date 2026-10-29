@@ -12,7 +12,7 @@ An existing empty/whitespace `.alive/token` file could supply an empty expected 
 
 `prepare_local` now applies one token contract to configured and persisted tokens: at least 24 visible ASCII characters, without spaces/control characters or non-ASCII. Persisted LF/CRLF text-file endings remain compatible. Existing invalid files are rejected with a sanitized startup error and remain byte-for-byte unchanged; no automatic rotation occurs. Invalid UTF-8 decoder context is suppressed so startup tracebacks cannot disclose raw credential bytes.
 
-First creation writes a unique private temporary file, flushes/fsyncs it, then publishes it with a non-overwriting hard link. Competing creators read and validate the winner. Failure before publication leaves no empty final token file; temporary files are cleaned up. On POSIX `mkstemp` uses mode0600 and a new `.alive` directory mode0700. On Windows the temporary file's inherited grants are removed and a single current-owner FullAccess DACL is applied **before secret bytes are written**, using bounded `whoami` and `icacls` invocations. A filesystem unable to support secure publication fails closed rather than using an overwriting fallback.
+First creation writes a unique private temporary file, flushes/fsyncs it, then publishes it with a non-overwriting hard link. Competing creators read and validate the winner. Failure before publication leaves no empty final token file; temporary files are cleaned up. On POSIX `mkstemp` uses mode0600 and a new `.alive` directory mode0700. On Windows the temporary file's inherited grants are removed and a single current-owner FullAccess DACL is applied **before secret bytes are written**, using a bounded `whoami` lookup and the Win32 `SetFileSecurityW` API. A filesystem unable to support secure publication fails closed rather than using an overwriting fallback.
 
 HTTP and WebSocket consumers also independently reject absent/empty incoming credentials and an empty expected token. WebSocket authentication requires a string token and closes with1008 on refusal; no credentials are placed in URLs.
 
@@ -43,6 +43,14 @@ Full Linux/Windows GitHub CI status must be read at the final PR head; focused r
 
 The legacy unversioned token format cannot identify arbitrary truncation that still leaves24 or more valid characters; that limitation also applies to the configured-token minimum-length contract. Below-minimum truncation is rejected, and an old client credential cannot match changed stored bytes. This fix does not invent a checksum format or rotate compatible existing tokens.
 
-Existing valid token files are not rewritten or automatically re-permissioned. Operators with an invalid file must explicitly restore a valid credential or configure a valid `ALIVE_API_TOKEN`; the server will not repair it silently. Windows first-use creation requires the standard `whoami`/`icacls` utilities and hard-link support. The change does not defend against a privileged/local attacker who controls the project directory or process environment.
+Existing valid token files are not rewritten or automatically re-permissioned. Operators with an invalid file must explicitly restore a valid credential or configure a valid `ALIVE_API_TOKEN`; the server will not repair it silently. Windows first-use creation requires the standard `whoami` utility, the Win32 security API and hard-link support. The change does not defend against a privileged/local attacker who controls the project directory or process environment.
 
 No real provider credential was read or printed, and no paid inference was run. All frozen evaluation/archive material, the original audit commit/receipts and the owner's original checkout remain unchanged. This is F-001 remediation evidence only, not full-system assurance, human approval, or acceptance of unresolved P0/P1 risk.
+
+## Post-merge CI correction (29 October 2026)
+
+PR #56 merged at `94b0e9a` from reviewed head `626a3d1`, but its full Windows CI job was already failing at that head. The focused receipt's 33 passing Windows tests did not include the hosted-runner DACL behavior exercised by the full suite.
+
+The failing assertion expected one access rule after `icacls /inheritance:r /grant:r`. The GitHub Windows runner's process default DACL carried four explicit ACEs (`LA`, `SY`, `BA`, `OW`), and `/grant:r` only replaces the named SID's grant; it does not remove the other explicit ACEs. The DACL was still protected and limited to the owner, Administrators and SYSTEM, so this was not an unprivileged disclosure, but it did not satisfy the documented single-owner rule.
+
+The correction replaces the `icacls` mutation with `SetFileSecurityW` and an exact `D:P(A;;FA;;;SID)` descriptor. A regression now pre-populates extra explicit ACEs and proves they are removed. Focused authentication tests pass locally; the full hosted Windows/Linux CI result at the correction head is still required before this correction is treated as verified.
