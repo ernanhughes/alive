@@ -27,11 +27,11 @@ def token():
     for path in ("/app/.alive/token", ".alive/token"):
         try:
             with open(path, encoding="utf-8") as handle:
-                if handle.read().strip():
-                    with open(path, encoding="utf-8") as reread:
-                        return reread.read().strip()
+                value = handle.read().strip()
         except OSError:
             continue
+        if value:
+            return value
     return ""
 
 

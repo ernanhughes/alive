@@ -25,9 +25,14 @@ sys.exit(1)
 EOF
 }
 
-if python -c "import sys; sys.exit(0 if '+asyncpg' in __import__('os').environ.get('DATABASE_URL','') or __import__('os').environ.get('DATABASE_URL','').startswith('postgresql') else 1)"; then
+case "${DATABASE_URL:-}" in
+*postgres*)
   wait_for_postgres
-fi
+  ;;
+*)
+  echo "Non-PostgreSQL DATABASE_URL; skipping TCP wait" >&2
+  ;;
+esac
 
 echo "Running database migrations (alembic upgrade head)..." >&2
 alembic upgrade head
