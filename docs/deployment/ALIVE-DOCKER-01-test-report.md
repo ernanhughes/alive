@@ -1,7 +1,9 @@
 # ALIVE-DOCKER-01 — Validation and Acceptance Report
 
 Branch: `feat/alive-docker-01`
-Base commit (origin/main): `b9978da6bbededa88ad013952d2c165f85cc8cac`
+Base commit (origin/main): `83a8061ea1ce9e3acfd5f44427716c87e7b679d0`
+(rebased from `b9978da` after PRs #47 and #49 merged; requalified from clean
+volumes on the new base)
 Final implementation commit: HEAD of `feat/alive-docker-01` at push time
 (recorded in the draft PR description).
 Toolchain: Docker 29.8.0, Docker Compose v5.5.1, Windows 11 + Docker Desktop.
@@ -69,8 +71,9 @@ unchanged afterwards (7 goals, exactly 1 marker goal).
 
 - Host smoke test `scripts/docker-smoke-test.py`: 8/8 checks pass.
 - New `tests/test_docker_config.py`: 7/7 pass.
-- Full unit suite `pytest -q`: 516 passed, 7 skipped, 1 xfailed, exit 0
-  (SQLite-based; PostgreSQL/Chrome/Pi acceptance covered separately by design).
+- Full unit suite `pytest -q` on the rebased head: 562 passed, 7 skipped,
+  1 xfailed, exit 0 (SQLite-based; PostgreSQL/Chrome/Pi acceptance covered
+  separately by design).
 - Dashboard production build (`tsc -b && vite build` inside Docker): pass.
 - Playwright `dashboard/e2e/docker.spec.ts` against the composed app in real
   Chrome: 2/2 passed (production UI journey + offline fixtures).
@@ -105,7 +108,7 @@ pre-existing untracked notebook files in the original checkout untouched).
 | G7 | Application data survives restart | PASS |
 | G8 | E2E environment is isolated | PASS |
 | G9 | Browser integration test passes | PASS (Playwright docker.spec.ts 2/2 in real Chrome + hand-driven UI journey) |
-| G10 | Existing core test suite has no new regressions | PASS (516 passed, 7 skipped, 1 xfailed) |
+| G10 | Existing core test suite has no new regressions | PASS (562 passed, 7 skipped, 1 xfailed, on rebased head) |
 | G11 | No secrets in images or commits | PASS (no provider keys in env, layers, or commits; dev-only placeholder token documented as local-only) |
 | G12 | No unrelated source changes or branch interference | PASS |
 
