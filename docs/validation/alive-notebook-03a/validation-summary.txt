@@ -1,0 +1,28 @@
+{
+  "protocol_version": "notebook03a-v1.3",
+  "independent_holdout_status": "PENDING_INDEPENDENT_LABELING",
+  "independent_cases_available": 0,
+  "protocol_sha256": "82df0bedea48465c5e92a7d55fccf7cbfdaf52f615ec46789acdd894833a621c",
+  "validation": {
+    "status": "PUBLIC_COMPLETE",
+    "cases": 40,
+    "missing_or_pending_annotations": [],
+    "splits": {
+      "development": 16,
+      "public_evaluation": 24
+    },
+    "categories": {
+      "supersession": 5,
+      "unknown": 8,
+      "scoped_change": 6,
+      "corroboration_candidate": 4,
+      "unsupported_claim": 5,
+      "independent_observations": 5,
+      "substantive_connection": 3,
+      "contradiction_candidate": 4
+    },
+    "annotation_independence": "IMPLEMENTER_EXPOSED; NOT BLIND"
+  },
+  "model_calls": 0,
+  "spend_micro_usd": 0
+}
