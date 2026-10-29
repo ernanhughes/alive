@@ -29,6 +29,7 @@ from alive.cognitive_schema import (
     ExperienceRecord,
     RoleOutput,
 )
+from alive.model_gateway import StructuredRequest, gateway_for
 from alive.models import Event, Goal, Memory, now, record, uid
 from alive.providers import MetaProvider, ProviderError
 from alive.society import ROLE_SPEC_VERSION, evaluate, mock_role, role_prompt, validate_references
@@ -733,13 +734,16 @@ class Cognition:
         usage = {}
         try:
             if provider == "meta":
-                generated = await MetaProvider(k.settings).structured(
-                    prompt,
-                    context,
-                    schema,
-                    model=model,
-                    max_output=cfg.output_tokens,
-                    correlation=call_id,
+                generated = await gateway_for(k.settings, "cognition.role").structured(
+                    StructuredRequest(
+                        operation="cognition.role",
+                        instructions=prompt,
+                        data=context,
+                        schema=schema,
+                        model=model,
+                        max_output=cfg.output_tokens,
+                        correlation=call_id,
+                    )
                 )
                 usage = generated.usage
                 output = RoleOutput.model_validate_json(generated.text)
