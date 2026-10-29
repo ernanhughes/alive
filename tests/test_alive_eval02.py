@@ -215,21 +215,20 @@ def test_replayed_outputs_from_another_package_fail(tmp_path):
 
 def test_rewritten_gold_invalidates_receipt(tmp_path):
     rec, ctx = _run(tmp_path)
-    assert (
-        c2.verify_receipt(
-            rec,
-            ctx["req"],
-            {
-                "package_dir": ctx["pkg"],
-                "gold_dir": ctx["gold"],
-                "outputs_path": ctx["op"],
-                "custody_dir": ctx["custdir"],
-                "policy_path": cust.CUSTODIAN_POLICY_PATH,
-                "contract_path": CONTRACT,
-            },
-        )
-        is True
+    verified = c2.verify_receipt(
+        rec,
+        ctx["req"],
+        {
+            "package_dir": ctx["pkg"],
+            "gold_dir": ctx["gold"],
+            "outputs_path": ctx["op"],
+            "custody_dir": ctx["custdir"],
+            "policy_path": cust.CUSTODIAN_POLICY_PATH,
+            "contract_path": CONTRACT,
+        },
     )
+    assert isinstance(verified, c2.VerifiedReceipt)
+    assert verified.custody_state == "IMPLEMENTED_UNQUALIFIED"
     annotations = json.loads((ctx["gold"] / "annotations.json").read_text())
     annotations[0]["useful_finding"] = False
     (ctx["gold"] / "annotations.json").write_text(json.dumps(annotations))
@@ -365,21 +364,20 @@ def test_valid_diagnostic_evaluation_reports_improvement(tmp_path):
     assert rec["scientific_qualification"] == "NOT_ESTABLISHED"
     assert rec["scope_determined"]["scope"] == "blind"
     assert c2.is_qualified_progress(rec) is False
-    assert (
-        c2.verify_receipt(
-            rec,
-            ctx["req"],
-            {
-                "package_dir": ctx["pkg"],
-                "gold_dir": ctx["gold"],
-                "outputs_path": ctx["op"],
-                "custody_dir": ctx["custdir"],
-                "policy_path": cust.CUSTODIAN_POLICY_PATH,
-                "contract_path": CONTRACT,
-            },
-        )
-        is True
+    verified = c2.verify_receipt(
+        rec,
+        ctx["req"],
+        {
+            "package_dir": ctx["pkg"],
+            "gold_dir": ctx["gold"],
+            "outputs_path": ctx["op"],
+            "custody_dir": ctx["custdir"],
+            "policy_path": cust.CUSTODIAN_POLICY_PATH,
+            "contract_path": CONTRACT,
+        },
     )
+    assert isinstance(verified, c2.VerifiedReceipt)
+    assert verified.package_identity == rec["fingerprints"]["package_identity"]
 
 
 def test_qualified_unreachable_without_anchor(tmp_path):
@@ -391,7 +389,8 @@ def test_qualified_unreachable_without_anchor(tmp_path):
     assert sealed == []
     rec, _ = _run(tmp_path)
     assert rec["custody_state"] != "QUALIFIED"
-    assert "no sealed custody artifact" in rec["custody_reason"]
+    assert "unqualified" in rec["custody_reason"]
+    assert "sealed" in rec["custody_reason"]
 
 
 def test_v1_receipts_rejected_as_qualified(tmp_path):
@@ -424,20 +423,19 @@ def test_structural_invalid_inputs_fail_closed(tmp_path):
     assert c2.is_qualified_progress(rec) is False
 
 
-def test_counts_must_agree_across_arms():
-    good = {
-        "D": {"useful_findings": 20, "scored_tasks": 30},
-        "C": {"useful_findings": 20, "scored_tasks": 30},
-        "S": {"useful_findings": 20, "scored_tasks": 30},
-        "V": {"useful_findings": 20, "scored_tasks": 30},
-    }
-    assert c2.require_consistent_counts(good, ["A", "B0", "S", "V", "C", "D"]) == {
-        "useful": 20,
-        "scored": 30,
-    }
-    bad = dict(good, D={"useful_findings": 19, "scored_tasks": 30})
-    with pytest.raises(ValueError, match="inconsistent arm counts"):
-        c2.require_consistent_counts(bad, ["A", "B0", "S", "V", "C", "D"])
+def test_counts_come_from_candidate_arm_not_cross_arm_max():
+    counts = c2.require_applicable_counts(
+        {
+            "D": {"useful_findings": 20, "scored_tasks": 30},
+            "C": {"useful_findings": 20, "scored_tasks": 28},
+            "S": {"useful_findings": 18, "scored_tasks": 27},
+            "V": {"useful_findings": 20, "scored_tasks": 30},
+        },
+        ["A", "B0", "S", "V", "C", "D"],
+    )
+    assert counts == {"useful": 20, "scored": 30}
+    with pytest.raises(ValueError, match="candidate arm D"):
+        c2.require_applicable_counts({"C": {"useful_findings": 1, "scored_tasks": 1}}, ["C"])
 
 
 def test_intervals_deterministic(tmp_path):
