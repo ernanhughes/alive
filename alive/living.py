@@ -60,9 +60,7 @@ class Living:
                 ledger = [dict(c) for c in journey.data["ledger"]]
                 for call in ledger:
                     if call["status"] == "reserved":
-                        settle_control(
-                            control, call["reserved_tokens"], call["reserved_tokens"]
-                        )
+                        settle_control(control, call["reserved_tokens"], call["reserved_tokens"])
                         call.update(
                             status="interrupted",
                             error="unknown provider completion",

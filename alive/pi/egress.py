@@ -101,6 +101,9 @@ class _QuietServer(uvicorn.Server):
 class PiEgress:
     def __init__(self, kernel, upstream_transport=None):
         self.kernel = kernel
+        self.workflow_guard = (
+            None  # Installed by the host; workflow reservations fail closed without it.
+        )
         # Test seam only: an httpx transport for the UPSTREAM call. None in production.
         self.upstream_transport = upstream_transport
         self.contexts = {}
@@ -314,6 +317,37 @@ class PiEgress:
                     correlation=row.run_id,
                 )
                 return False
+            from alive.cognitive_models import ModelInvocation
+
+            call = (
+                await session.get(ModelInvocation, run.reservation_ref)
+                if run.reservation_ref
+                else None
+            )
+            if call is not None and call.input_json.get("workflow_stage_id"):
+                allowed = False
+                if self.workflow_guard is not None:
+                    try:
+                        allowed = await self.workflow_guard(session, call)
+                    except Exception:
+                        allowed = False
+                if not allowed:
+                    row.state = states.advance(
+                        row.state, states.R_REJECTED, states.REQUEST_TRANSITIONS
+                    )
+                    row.error_category, row.updated_at = "workflow_authority_revoked", now()
+                    k.add_event(
+                        session,
+                        "pi.provider_request.rejected",
+                        {
+                            "run_id": row.run_id,
+                            "seq": row.seq,
+                            "reason": row.error_category,
+                        },
+                        source="pi",
+                        correlation=row.run_id,
+                    )
+                    return False
             row.state = states.advance(row.state, states.R_DISPATCHED, states.REQUEST_TRANSITIONS)
             row.updated_at = now()
             k.add_event(

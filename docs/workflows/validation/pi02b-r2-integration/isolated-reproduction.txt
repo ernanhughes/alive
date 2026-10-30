@@ -1,0 +1,432 @@
+.......E.....xs.................                                         [100%]
+=================================== ERRORS ====================================
+_______ ERROR at setup of test_unlisted_notebook_urls_cannot_be_granted _______
+
+self = <sqlalchemy.engine.base.Connection object at 0x000001FFC071A470>
+dialect = <sqlalchemy.dialects.sqlite.aiosqlite.SQLiteDialect_aiosqlite object at 0x000001FFC09AF9D0>
+context = <sqlalchemy.dialects.sqlite.aiosqlite.SQLiteExecutionContext_aiosqlite object at 0x000001FFC00B0E90>
+statement = <sqlalchemy.dialects.sqlite.base.SQLiteCompiler object at 0x000001FFC071A7A0>
+parameters = [('running',)]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -> CursorResult[Any]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+
+        effective_parameters: Optional[_AnyExecuteParams]
+
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+
+        if self._has_events or self.engine._has_events:
+            for fn in self.dispatch.before_cursor_execute:
+                str_statement, effective_parameters = fn(
+                    self,
+                    cursor,
+                    str_statement,
+                    effective_parameters,
+                    context,
+                    context.executemany,
+                )
+
+        if self._echo:
+            self._log_info(str_statement)
+
+            stats = context._get_cache_stats()
+
+            if not self.engine.hide_parameters:
+                self._log_info(
+                    "[%s] %r",
+                    stats,
+                    sql_util._repr_params(
+                        effective_parameters,
+                        batches=10,
+                        ismulti=context.executemany,
+                    ),
+                )
+            else:
+                self._log_info(
+                    "[%s] [SQL parameters hidden due to hide_parameters=True]",
+                    stats,
+                )
+
+        evt_handled: bool = False
+        try:
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+>                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+..\alive\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1976:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\alive\.venv\Lib\site-packages\sqlalchemy\engine\default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+..\alive\.venv\Lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:213: in execute
+    self._adapt_connection._handle_exception(error)
+..\alive\.venv\Lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:373: in _handle_exception
+    raise error
+..\alive\.venv\Lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:195: in execute
+    self.await_(_cursor.execute(operation, parameters))
+..\alive\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py:132: in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\aiosqlite\cursor.py:40: in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+..\alive\.venv\Lib\site-packages\aiosqlite\cursor.py:32: in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\aiosqlite\core.py:160: in _execute
+    return await future
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tx = <_queue.SimpleQueue object at 0x000001FFC0945BA0>
+
+    def _connection_worker_thread(tx: _TxQueue):
+        """
+        Execute function calls on a separate thread.
+
+        :meta private:
+        """
+        while True:
+            # Continues running until all queue items are processed,
+            # even after connection is closed (so we can finalize all
+            # futures)
+
+            future, function = tx.get()
+
+            try:
+                LOG.debug("executing %s", function)
+>               result = function()
+                         ^^^^^^^^^^
+E               sqlite3.OperationalError: no such table: experiment_runs
+
+..\alive\.venv\Lib\site-packages\aiosqlite\core.py:63: OperationalError
+
+The above exception was the direct cause of the following exception:
+
+fixturedef = <FixtureDef argname='client' scope='function' baseid='tests'>
+request = <SubRequest 'client' for <Function test_unlisted_notebook_urls_cannot_be_granted>>
+
+    @pytest.hookimpl(wrapper=True)
+    def pytest_fixture_setup(fixturedef: FixtureDef, request) -> object | None:
+        if (
+            fixturedef.argname == "event_loop_policy"
+            and fixturedef.func.__module__ != __name__
+        ):
+            warnings.warn(
+                PytestDeprecationWarning(_EVENT_LOOP_POLICY_FIXTURE_DEPRECATION_WARNING),
+            )
+        asyncio_mode = _get_asyncio_mode(request.config)
+        if not _is_asyncio_fixture_function(fixturedef.func):
+            if asyncio_mode == Mode.STRICT:
+                # Ignore async fixtures without explicit asyncio mark in strict mode
+                # This applies to pytest_trio fixtures, for example
+                return (yield)
+            if not _is_coroutine_or_asyncgen(fixturedef.func):
+>               return (yield)
+                        ^^^^^
+
+..\alive\.venv\Lib\site-packages\pytest_asyncio\plugin.py:927:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\conftest.py:44: in client
+    with TestClient(
+..\alive\.venv\Lib\site-packages\starlette\testclient.py:572: in __enter__
+    portal.call(self.wait_startup)
+..\alive\.venv\Lib\site-packages\anyio\from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\alive\.venv\Lib\site-packages\anyio\from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\starlette\testclient.py:608: in wait_startup
+    await receive()
+..\alive\.venv\Lib\site-packages\starlette\testclient.py:599: in receive
+    self.task.result()
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\concurrent\futures\_base.py:449: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\alive\.venv\Lib\site-packages\anyio\from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\starlette\testclient.py:589: in lifespan
+    await self.app(scope, self.stream_receive.receive, self.stream_send.send)
+..\alive\.venv\Lib\site-packages\fastapi\applications.py:1181: in __call__
+    await lifespan(
+..\alive\.venv\Lib\site-packages\fastapi\telemetry\_runtime.py:238: in lifespan
+    await app(scope, wrapped_receive, wrapped_send)
+..\alive\.venv\Lib\site-packages\starlette\applications.py:96: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\alive\.venv\Lib\site-packages\starlette\middleware\errors.py:151: in __call__
+    await self.app(scope, receive, send)
+..\alive\.venv\Lib\site-packages\fastapi\telemetry\_asgi.py:151: in __call__
+    await self.app(scope, receive, send)
+..\alive\.venv\Lib\site-packages\starlette\middleware\base.py:103: in __call__
+    await self.app(scope, receive, send)
+..\alive\.venv\Lib\site-packages\starlette\middleware\cors.py:79: in __call__
+    await self.app(scope, receive, send)
+..\alive\.venv\Lib\site-packages\starlette\middleware\exceptions.py:49: in __call__
+    await self.app(scope, receive, send)
+..\alive\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py:18: in __call__
+    await self.app(scope, receive, send)
+..\alive\.venv\Lib\site-packages\starlette\routing.py:683: in __call__
+    await self.middleware_stack(scope, receive, send)
+..\alive\.venv\Lib\site-packages\fastapi\routing.py:2798: in app
+    await self.lifespan(scope, receive, send)
+..\alive\.venv\Lib\site-packages\starlette\routing.py:661: in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\fastapi\routing.py:248: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\fastapi\routing.py:248: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\fastapi\routing.py:248: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\fastapi\routing.py:248: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\fastapi\routing.py:248: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\fastapi\routing.py:248: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\fastapi\routing.py:248: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\fastapi\routing.py:248: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\fastapi\routing.py:248: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\fastapi\routing.py:248: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\fastapi\routing.py:248: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\fastapi\routing.py:248: in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+               ^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\contextlib.py:214: in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+alive\app.py:109: in lifespan
+    await app.state.experiments.initialize()
+alive\experiment\service.py:91: in initialize
+    await session.scalars(
+..\alive\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py:562: in scalars
+    result = await self.execute(
+..\alive\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py:449: in execute
+    result = await greenlet_spawn(
+..\alive\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py:201: in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\sqlalchemy\orm\session.py:2373: in execute
+    return self._execute_internal(
+..\alive\.venv\Lib\site-packages\sqlalchemy\orm\session.py:2271: in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+..\alive\.venv\Lib\site-packages\sqlalchemy\orm\context.py:306: in orm_execute_statement
+    result = conn.execute(
+..\alive\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1428: in execute
+    return meth(
+..\alive\.venv\Lib\site-packages\sqlalchemy\sql\elements.py:526: in _execute_on_connection
+    return connection._execute_clauseelement(
+..\alive\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1650: in _execute_clauseelement
+    ret = self._execute_context(
+..\alive\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1855: in _execute_context
+    return self._exec_single_context(
+..\alive\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1995: in _exec_single_context
+    self._handle_dbapi_exception(
+..\alive\.venv\Lib\site-packages\sqlalchemy\engine\base.py:2372: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+..\alive\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1976: in _exec_single_context
+    self.dialect.do_execute(
+..\alive\.venv\Lib\site-packages\sqlalchemy\engine\default.py:964: in do_execute
+    cursor.execute(statement, parameters)
+..\alive\.venv\Lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:213: in execute
+    self._adapt_connection._handle_exception(error)
+..\alive\.venv\Lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:373: in _handle_exception
+    raise error
+..\alive\.venv\Lib\site-packages\sqlalchemy\dialects\sqlite\aiosqlite.py:195: in execute
+    self.await_(_cursor.execute(operation, parameters))
+..\alive\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py:132: in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py:196: in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\aiosqlite\cursor.py:40: in execute
+    await self._execute(self._cursor.execute, sql, parameters)
+..\alive\.venv\Lib\site-packages\aiosqlite\cursor.py:32: in _execute
+    return await self._conn._execute(fn, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\aiosqlite\core.py:160: in _execute
+    return await future
+           ^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+tx = <_queue.SimpleQueue object at 0x000001FFC0945BA0>
+
+    def _connection_worker_thread(tx: _TxQueue):
+        """
+        Execute function calls on a separate thread.
+
+        :meta private:
+        """
+        while True:
+            # Continues running until all queue items are processed,
+            # even after connection is closed (so we can finalize all
+            # futures)
+
+            future, function = tx.get()
+
+            try:
+                LOG.debug("executing %s", function)
+>               result = function()
+                         ^^^^^^^^^^
+E               sqlalchemy.exc.OperationalError: (sqlite3.OperationalError) no such table: experiment_runs
+E               [SQL: SELECT experiment_runs.id, experiment_runs.instance_id, experiment_runs.phase, experiment_runs.provider, experiment_runs.status, experiment_runs.data, experiment_runs.created_at, experiment_runs.updated_at
+E               FROM experiment_runs
+E               WHERE experiment_runs.status = ?]
+E               [parameters: ('running',)]
+E               (Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+..\alive\.venv\Lib\site-packages\aiosqlite\core.py:63: OperationalError
+============================== warnings summary ===============================
+tests/test_notebook_01.py::test_unlisted_notebook_urls_cannot_be_granted
+tests/test_notebook_01.py::test_cross_page_retrieval_returns_the_earlier_chapter_with_exact_source_text
+tests/test_notebook_01.py::test_scoped_change_pair_is_retrieved_within_top_three_but_not_ranked_first
+tests/test_notebook_01.py::test_retrieval_abstains_without_an_eligible_memory
+tests/test_notebook_01.py::test_withdrawn_memory_is_not_retrieved
+tests/test_notebook_01.py::test_terminology_only_pair_is_shown_as_a_lexical_candidate_never_as_support
+tests/test_notebook_01.py::test_terminology_only_pair_should_abstain
+  C:\Projects\alive\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+    self._get_loop()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+ERROR tests/test_notebook_01.py::test_unlisted_notebook_urls_cannot_be_granted
+29 passed, 1 skipped, 1 xfailed, 7 warnings, 1 error in 13.36s

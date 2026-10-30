@@ -1,0 +1,16 @@
+{
+  "status": "PASS",
+  "actual_container_restart": true,
+  "unchanged_api_bodies": 6,
+  "replay_passes": 3,
+  "durable_counts": [
+    "workflow_runs|2",
+    "workflow_stage_runs|7",
+    "workflow_executions|2",
+    "model_invocations|1",
+    "pi_runs|1",
+    "pi_provider_requests|1",
+    "cognitive_messages|3",
+    "intelligence_learning_updates|0"
+  ]
+}

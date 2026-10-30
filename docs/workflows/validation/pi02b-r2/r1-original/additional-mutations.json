@@ -1,0 +1,117 @@
+[
+  {
+    "mutation": "A1 stage claim is not a compare-and-set",
+    "result": "SURVIVED",
+    "failed": [],
+    "rc": 0,
+    "errors": false
+  },
+  {
+    "mutation": "A2 owner revocation ignored by authority check",
+    "result": "CAUGHT",
+    "failed": [
+      "FAILED tests/test_workflow_cancellation.py::test_revocation_after_reservation_is_fenced_before_real_pi_upstream - AssertionError: a revoked workflow reached its provider"
+    ],
+    "rc": 1,
+    "errors": false
+  },
+  {
+    "mutation": "A3 context withdrawal ignored",
+    "result": "CAUGHT",
+    "failed": [
+      "FAILED tests/test_workflow_execution.py::test_changes_after_admission_fail_closed_and_release_governor[withdrawn] - AssertionError: assert 'COMPLETED' == 'FAILED'"
+    ],
+    "rc": 1,
+    "errors": false
+  },
+  {
+    "mutation": "A4 Governor configuration change ignored",
+    "result": "SURVIVED",
+    "failed": [],
+    "rc": 0,
+    "errors": false
+  },
+  {
+    "mutation": "A5 possible provider effect not preserved as UNKNOWN",
+    "result": "CAUGHT",
+    "failed": [
+      "FAILED tests/test_workflow_authority.py::test_restart_reconciles_ambiguous_stage_without_dispatch - AssertionError: assert 'CANCELLED' == 'UNKNOWN'"
+    ],
+    "rc": 1,
+    "errors": false
+  },
+  {
+    "mutation": "A6 cancel request never recorded",
+    "result": "CAUGHT",
+    "failed": [
+      "FAILED tests/test_workflow_cancellation.py::test_explicit_cancel_of_pending_run_closes_its_reservation - AssertionError: assert 'COMPLETED' == 'CANCELLED'"
+    ],
+    "rc": 1,
+    "errors": false
+  },
+  {
+    "mutation": "A7 retained stage result not hash-checked on read",
+    "result": "SURVIVED",
+    "failed": [],
+    "rc": 4,
+    "errors": false
+  },
+  {
+    "mutation": "A8 retained artifact not hash-checked on read",
+    "result": "SURVIVED",
+    "failed": [],
+    "rc": 0,
+    "errors": false
+  },
+  {
+    "mutation": "A9 egress guard fails open when the host installs none",
+    "result": "SURVIVED",
+    "failed": [],
+    "rc": 0,
+    "errors": false
+  },
+  {
+    "mutation": "A10 model authority: approved model not compared",
+    "result": "SURVIVED",
+    "failed": [],
+    "rc": 0,
+    "errors": false
+  },
+  {
+    "mutation": "A11 Pi response linkage not checked before completing the stage",
+    "result": "CAUGHT",
+    "failed": [
+      "FAILED tests/test_workflow_authority.py::test_process_exit_or_incomplete_receipt_cannot_complete_stage[output] - AssertionError: incomplete Pi receipt was accepted"
+    ],
+    "rc": 1,
+    "errors": false
+  },
+  {
+    "mutation": "A12 dependency completion not required before a stage starts",
+    "result": "SURVIVED",
+    "failed": [],
+    "rc": 0,
+    "errors": false
+  },
+  {
+    "mutation": "A13 unclaimed-inquiry requirement dropped",
+    "result": "SURVIVED",
+    "failed": [],
+    "rc": 0,
+    "errors": false
+  },
+  {
+    "mutation": "A14 execution slot not released on success",
+    "result": "SURVIVED",
+    "failed": [],
+    "rc": 0,
+    "errors": false
+  },
+  {
+    "mutation": "A15 execution deadline not enforced at authority checks",
+    "result": "SURVIVED",
+    "failed": [],
+    "rc": 0,
+    "errors": false
+  }
+]

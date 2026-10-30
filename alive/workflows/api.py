@@ -5,13 +5,43 @@ built from explicit field lists and contain hashes and opaque references only: n
 run tokens, no prompt text, no file paths.
 """
 
+from typing import Literal
+
 from fastapi import APIRouter, Depends, HTTPException, Path, Query
+from pydantic import BaseModel, ConfigDict, Field
 
 from alive.workflows import store
 from alive.workflows.spec import NAME_RE, graph_of
 
 NAME = Path(pattern=NAME_RE.pattern, description="workflow name")
 VERSION = Path(ge=1, le=1_000_000)
+
+
+class ArtifactView(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    artifact_id: str
+    kind: Literal["workflow_result"]
+    schema_version: str = Field(alias="schema")
+    run_id: str
+    stage_id: str
+    definition_sha256: str
+    input_sha256: str
+    sha256: str
+    classification: Literal["owner_internal"]
+    created_at: str = Field(max_length=64)
+    result: dict
+    assessment: dict
+    evidence_refs: list[str]
+    intelligence_episode_id: None
+    independent_feedback: Literal[False]
+    source_status: Literal["withdrawn", "unchanged"]
+    run_status: str
+    terminal_reason: str | None
+    stage_state: str
+    stage_validation: dict
+    stage_uncertainty: str
+    workflow_completed: bool
+    context_provenance: dict
 
 
 def router(app, ready):
@@ -84,5 +114,14 @@ def router(app, ready):
     @api.get("/workflow-runs/{run_id}/stages")
     async def stages(run_id: str = Path(max_length=36)):
         return {"run_id": run_id, "stages": await found(store.get_stage_runs(kernel(), run_id))}
+
+    @api.get("/workflow-runs/{run_id}/artifacts/{stage_id}", response_model=ArtifactView)
+    async def artifact(run_id: str = Path(max_length=36), stage_id: str = Path(max_length=32)):
+        from alive.workflows.runner import artifact_view
+
+        try:
+            return await artifact_view(kernel(), run_id, stage_id)
+        except (ValueError, KeyError, TypeError):
+            raise HTTPException(404, "Result unavailable or integrity check failed") from None
 
     return api

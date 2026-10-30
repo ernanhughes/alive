@@ -1,0 +1,38 @@
+{
+  "upstream_calls": 1,
+  "run": "FAILED",
+  "reason": "authorization_expired_or_revoked",
+  "stages": {
+    "prepare": [
+      "COMPLETED",
+      null
+    ],
+    "analyze": [
+      "COMPLETED",
+      null
+    ],
+    "validate": [
+      "CANCELLED",
+      "authorization_expired_or_revoked"
+    ],
+    "record": [
+      "CANCELLED",
+      "authorization_expired_or_revoked"
+    ]
+  },
+  "invocations": [
+    "validated"
+  ],
+  "pi_runs": [
+    "SETTLED"
+  ],
+  "pi_requests": [
+    "settled"
+  ],
+  "messages": 1,
+  "reserved": {
+    "calls": 0,
+    "tokens": 0,
+    "tools": 0
+  }
+}

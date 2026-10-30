@@ -27,6 +27,14 @@ class Operation:
 
 _OPERATIONS = (
     Operation(
+        "result.record",
+        "deterministic",
+        "Retain a validated workflow result as an owner-internal CognitiveMessage; "
+        "never independent evidence or learning feedback.",
+        "write",
+        "alive.workflows.adapters:record",
+    ),
+    Operation(
         "context.prepare",
         "deterministic",
         "Assemble the bounded world state an investigation reasons over.",

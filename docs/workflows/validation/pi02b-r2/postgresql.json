@@ -1,0 +1,599 @@
+{
+  "status": "PASS",
+  "qualification": "real pinned Pi; scripted local HTTP provider",
+  "workflows": [
+    {
+      "run": {
+        "id": "f28cb84f-6c86-4eda-9c75-d5a6304cfe31",
+        "workflow": {
+          "name": "research-review",
+          "version": 2,
+          "definition_id": "df021bf1-fadb-4beb-88f5-07c668e4aad3",
+          "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+          "schema_version": 1
+        },
+        "goal_id": "42747e9a-7c33-48a2-ae92-4fa0322509d7",
+        "investigation_id": "f732ada2-ec42-4fff-9635-81e9b66861b7",
+        "trigger": "authorized-execution",
+        "input_ref": "event:ed0996cb-05b6-4a55-bb33-2ffe77937454",
+        "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "authorization_ref": "68f861e2-c297-46ad-b039-30a1a6b6864a",
+        "budget": {
+          "wall_seconds": 120,
+          "max_model_calls": 1,
+          "max_output_tokens": 1536
+        },
+        "status": "COMPLETED",
+        "terminal": true,
+        "terminal_reason": "required_stages_completed",
+        "created_at": "2026-10-30T21:02:08.046597+00:00",
+        "started_at": "2026-10-30T21:02:08.062547+00:00",
+        "finished_at": "2026-10-30T21:02:09.251006+00:00"
+      },
+      "stages": [
+        {
+          "id": "f1ba74d3-1683-422e-875d-fb9a7c0c22e0",
+          "run_id": "f28cb84f-6c86-4eda-9c75-d5a6304cfe31",
+          "stage_id": "prepare",
+          "attempt": 1,
+          "type": "deterministic",
+          "operation": "context.prepare",
+          "state": "COMPLETED",
+          "terminal": true,
+          "input_ref": "workflow:f28cb84f-6c86-4eda-9c75-d5a6304cfe31",
+          "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "output_ref": "event:a5d24bb8-1aa7-4256-b0f0-e11d14fab7eb",
+          "output_sha256": "9bce9d2eb726170b506c58c76c4ea41cb80dcef48a91cbe802e61b5c91a11172",
+          "pi_run_id": null,
+          "model_invocation_id": null,
+          "evidence_refs": [
+            "ed0996cb-05b6-4a55-bb33-2ffe77937454"
+          ],
+          "validation_status": "not_run",
+          "validation": {
+            "contract_status": "not_run",
+            "structural_status": "not_established",
+            "reference_identity_status": "not_established",
+            "semantic_status": "unverified",
+            "independent_verification": false,
+            "uncited_claims_permitted": true
+          },
+          "error_category": null,
+          "error_detail": null,
+          "uncertainty": "none",
+          "created_at": "2026-10-30T21:02:08.049238+00:00",
+          "started_at": "2026-10-30T21:02:08.135492+00:00",
+          "finished_at": "2026-10-30T21:02:08.157591+00:00",
+          "duration_seconds": 0.022099,
+          "model_requested": null,
+          "usage": null,
+          "charged_tokens": null,
+          "cost_usd": null,
+          "cost_status": "no_price_table; unknown is not zero"
+        },
+        {
+          "id": "2e3e3f4a-6049-4ad9-a6b0-7d0b9ff5c82f",
+          "run_id": "f28cb84f-6c86-4eda-9c75-d5a6304cfe31",
+          "stage_id": "analyze",
+          "attempt": 1,
+          "type": "pi_agent",
+          "operation": "cognition.role",
+          "state": "COMPLETED",
+          "terminal": true,
+          "input_ref": "workflow:f28cb84f-6c86-4eda-9c75-d5a6304cfe31",
+          "input_sha256": "61145dca5b16915d7e32985f8b7d571444c46e01deefc9c7ccf48f70db1e3d04",
+          "output_ref": "event:f0ca87ed-716f-4576-894e-9bba85d1d347",
+          "output_sha256": "7c59ec94cff8f8ca00461ebb6076ea7e3bff3ba854c1acd6f0b1b593b1f8f709",
+          "pi_run_id": "afdcea83-f687-4620-9a49-912e0dd795d2",
+          "model_invocation_id": "aa7e2e53-95aa-4341-8ef9-24e2af7276d3",
+          "evidence_refs": [],
+          "validation_status": "passed",
+          "validation": {
+            "contract_status": "passed",
+            "structural_status": "passed",
+            "reference_identity_status": "passed",
+            "semantic_status": "unverified",
+            "independent_verification": false,
+            "uncited_claims_permitted": true
+          },
+          "error_category": null,
+          "error_detail": null,
+          "uncertainty": "none",
+          "created_at": "2026-10-30T21:02:08.049240+00:00",
+          "started_at": "2026-10-30T21:02:08.176973+00:00",
+          "finished_at": "2026-10-30T21:02:09.137163+00:00",
+          "duration_seconds": 0.96019,
+          "model_requested": "muse-spark-1.3",
+          "usage": {
+            "prompt_tokens": 11,
+            "completion_tokens": 7,
+            "total_tokens": 18
+          },
+          "charged_tokens": 18,
+          "cost_usd": null,
+          "cost_status": "no_price_table; unknown is not zero"
+        },
+        {
+          "id": "f3429bcf-c781-4310-b576-9a31a06d9234",
+          "run_id": "f28cb84f-6c86-4eda-9c75-d5a6304cfe31",
+          "stage_id": "validate",
+          "attempt": 1,
+          "type": "validation",
+          "operation": "evidence.validate_references",
+          "state": "COMPLETED",
+          "terminal": true,
+          "input_ref": "workflow:f28cb84f-6c86-4eda-9c75-d5a6304cfe31",
+          "input_sha256": "6088a260a6c8720425f341c46fa90e141b23f093c783415ec4b33d7a65fa2d58",
+          "output_ref": "event:de731dc1-cb01-4611-804d-859be69a2e5d",
+          "output_sha256": "6f616cf90fadf48cc7378d428318b139f557dde86bd03191056270b625410c37",
+          "pi_run_id": null,
+          "model_invocation_id": null,
+          "evidence_refs": [],
+          "validation_status": "passed",
+          "validation": {
+            "contract_status": "passed",
+            "structural_status": "passed",
+            "reference_identity_status": "passed",
+            "semantic_status": "unverified",
+            "independent_verification": false,
+            "uncited_claims_permitted": true
+          },
+          "error_category": null,
+          "error_detail": null,
+          "uncertainty": "none",
+          "created_at": "2026-10-30T21:02:08.049241+00:00",
+          "started_at": "2026-10-30T21:02:09.155428+00:00",
+          "finished_at": "2026-10-30T21:02:09.174538+00:00",
+          "duration_seconds": 0.01911,
+          "model_requested": null,
+          "usage": null,
+          "charged_tokens": null,
+          "cost_usd": null,
+          "cost_status": "no_price_table; unknown is not zero"
+        },
+        {
+          "id": "f281af62-bc22-4fd0-aaec-e17d8cf0adcf",
+          "run_id": "f28cb84f-6c86-4eda-9c75-d5a6304cfe31",
+          "stage_id": "record",
+          "attempt": 1,
+          "type": "deterministic",
+          "operation": "result.record",
+          "state": "COMPLETED",
+          "terminal": true,
+          "input_ref": "workflow:f28cb84f-6c86-4eda-9c75-d5a6304cfe31",
+          "input_sha256": "6f616cf90fadf48cc7378d428318b139f557dde86bd03191056270b625410c37",
+          "output_ref": "event:9d2ce276-a291-4493-a9d3-08949342c402",
+          "output_sha256": "e52e24064b972bdea9c869e2bad9b0150f696e9117d3bbc60db18e92b82c6720",
+          "pi_run_id": null,
+          "model_invocation_id": null,
+          "evidence_refs": [
+            "ed0996cb-05b6-4a55-bb33-2ffe77937454"
+          ],
+          "validation_status": "passed",
+          "validation": {
+            "contract_status": "passed",
+            "structural_status": "passed",
+            "reference_identity_status": "not_established",
+            "semantic_status": "unverified",
+            "independent_verification": false,
+            "uncited_claims_permitted": true
+          },
+          "error_category": null,
+          "error_detail": null,
+          "uncertainty": "none",
+          "created_at": "2026-10-30T21:02:08.049242+00:00",
+          "started_at": "2026-10-30T21:02:09.194021+00:00",
+          "finished_at": "2026-10-30T21:02:09.214739+00:00",
+          "duration_seconds": 0.020718,
+          "model_requested": null,
+          "usage": null,
+          "charged_tokens": null,
+          "cost_usd": null,
+          "cost_status": "no_price_table; unknown is not zero"
+        }
+      ],
+      "artifact": {
+        "kind": "workflow_result",
+        "schema": "workflow-result/v1",
+        "run_id": "f28cb84f-6c86-4eda-9c75-d5a6304cfe31",
+        "stage_id": "record",
+        "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+        "input_sha256": "6f616cf90fadf48cc7378d428318b139f557dde86bd03191056270b625410c37",
+        "classification": "owner_internal",
+        "created_at": "2026-10-30T21:02:09.202051+00:00",
+        "result": {
+          "claims": [
+            {
+              "value": "18",
+              "subject": "Helios battery",
+              "predicate": "endurance_hours",
+              "evidence_refs": []
+            }
+          ],
+          "actions": [],
+          "summary": "observer: assess supplied observation and evidence.",
+          "confidence": 0.9,
+          "criticisms": [],
+          "uncertainties": [],
+          "recommendation": "proceed"
+        },
+        "assessment": {
+          "contract": "citation-identity/v1",
+          "semantic_status": "unverified"
+        },
+        "evidence_refs": [
+          "ed0996cb-05b6-4a55-bb33-2ffe77937454"
+        ],
+        "intelligence_episode_id": null,
+        "independent_feedback": false,
+        "artifact_id": "f281af62-bc22-4fd0-aaec-e17d8cf0adcf",
+        "sha256": "f28b0021adf032826eed5dcc86518c3cb1103a7da2e4e037bee96f6ba78e1993",
+        "source_status": "unchanged",
+        "run_status": "COMPLETED",
+        "terminal_reason": "required_stages_completed",
+        "stage_state": "COMPLETED",
+        "stage_validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "stage_uncertainty": "none",
+        "workflow_completed": true,
+        "context_provenance": {
+          "context_event_id": "ed0996cb-05b6-4a55-bb33-2ffe77937454",
+          "context_sha256": "b60f025afcaf46f9530617e5356f9451bda5eb138dc3dba59ac8b37207082042",
+          "approved": {
+            "source": "controlled-laboratory",
+            "event_type": "workflow.fixture.context",
+            "custody": "controlled_fixture",
+            "consent": "exact_content_and_scope"
+          },
+          "original_source": "controlled-laboratory",
+          "original_event_type": "workflow.fixture.context",
+          "semantic_status": "unverified",
+          "authorization_is_source_authentication": false
+        }
+      }
+    },
+    {
+      "run": {
+        "id": "b7da5a0c-6bc2-4c63-9a6d-25e324e38388",
+        "workflow": {
+          "name": "source-comparison",
+          "version": 1,
+          "definition_id": "c1542a93-feaa-44aa-861a-1b2e160f48b0",
+          "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+          "schema_version": 1
+        },
+        "goal_id": "2b60ff31-b8af-44ee-a3f6-6ca8ca77c47d",
+        "investigation_id": "53cfe06c-9444-4c47-bc9e-f1dcc50707e9",
+        "trigger": "authorized-execution",
+        "input_ref": "event:0819573d-c20d-4226-a451-a40e98256d2a",
+        "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "authorization_ref": "874a13a6-7ec9-4005-ae43-cf5ef864fa5b",
+        "budget": {
+          "wall_seconds": 120,
+          "max_model_calls": 0,
+          "max_output_tokens": 0
+        },
+        "status": "COMPLETED",
+        "terminal": true,
+        "terminal_reason": "required_stages_completed",
+        "created_at": "2026-10-30T21:02:09.441477+00:00",
+        "started_at": "2026-10-30T21:02:09.452715+00:00",
+        "finished_at": "2026-10-30T21:02:09.658691+00:00"
+      },
+      "stages": [
+        {
+          "id": "7bee5c12-0ee4-4454-8f79-4c21aeb553a6",
+          "run_id": "b7da5a0c-6bc2-4c63-9a6d-25e324e38388",
+          "stage_id": "prepare",
+          "attempt": 1,
+          "type": "deterministic",
+          "operation": "context.prepare",
+          "state": "COMPLETED",
+          "terminal": true,
+          "input_ref": "workflow:b7da5a0c-6bc2-4c63-9a6d-25e324e38388",
+          "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "output_ref": "event:231c418f-459f-4c47-9818-17038fe7f5d1",
+          "output_sha256": "610924628fd63410fd483bceb0a84fcb24aaaa9e92c32a21ea52b04c7bbd700a",
+          "pi_run_id": null,
+          "model_invocation_id": null,
+          "evidence_refs": [
+            "0819573d-c20d-4226-a451-a40e98256d2a"
+          ],
+          "validation_status": "not_run",
+          "validation": {
+            "contract_status": "not_run",
+            "structural_status": "not_established",
+            "reference_identity_status": "not_established",
+            "semantic_status": "unverified",
+            "independent_verification": false,
+            "uncited_claims_permitted": true
+          },
+          "error_category": null,
+          "error_detail": null,
+          "uncertainty": "none",
+          "created_at": "2026-10-30T21:02:09.443315+00:00",
+          "started_at": "2026-10-30T21:02:09.492100+00:00",
+          "finished_at": "2026-10-30T21:02:09.522842+00:00",
+          "duration_seconds": 0.030742,
+          "model_requested": null,
+          "usage": null,
+          "charged_tokens": null,
+          "cost_usd": null,
+          "cost_status": "no_price_table; unknown is not zero"
+        },
+        {
+          "id": "656c15c1-74cf-46be-9edb-d327976e97cf",
+          "run_id": "b7da5a0c-6bc2-4c63-9a6d-25e324e38388",
+          "stage_id": "compare",
+          "attempt": 1,
+          "type": "validation",
+          "operation": "evidence.evaluate",
+          "state": "COMPLETED",
+          "terminal": true,
+          "input_ref": "workflow:b7da5a0c-6bc2-4c63-9a6d-25e324e38388",
+          "input_sha256": "092f4a442985895f986587a9bbb4911e5e80643a3063049914c66e7ace3bcc39",
+          "output_ref": "event:085394c6-1fba-4de2-aee6-692717fb2a69",
+          "output_sha256": "cc845a4428691d20b7bda2c9ecb3cc43b9df4c8648280b18536e7ed6a20064d5",
+          "pi_run_id": null,
+          "model_invocation_id": null,
+          "evidence_refs": [
+            "sensor:dd0fcd02-0816-45bf-8265-5e309689586e:1"
+          ],
+          "validation_status": "passed",
+          "validation": {
+            "contract_status": "passed",
+            "structural_status": "passed",
+            "reference_identity_status": "not_established",
+            "semantic_status": "unverified",
+            "independent_verification": false,
+            "uncited_claims_permitted": true
+          },
+          "error_category": null,
+          "error_detail": null,
+          "uncertainty": "none",
+          "created_at": "2026-10-30T21:02:09.443318+00:00",
+          "started_at": "2026-10-30T21:02:09.554649+00:00",
+          "finished_at": "2026-10-30T21:02:09.574425+00:00",
+          "duration_seconds": 0.019776,
+          "model_requested": null,
+          "usage": null,
+          "charged_tokens": null,
+          "cost_usd": null,
+          "cost_status": "no_price_table; unknown is not zero"
+        },
+        {
+          "id": "863b1280-9333-4096-a4f6-eb6199fe7d4f",
+          "run_id": "b7da5a0c-6bc2-4c63-9a6d-25e324e38388",
+          "stage_id": "record",
+          "attempt": 1,
+          "type": "deterministic",
+          "operation": "result.record",
+          "state": "COMPLETED",
+          "terminal": true,
+          "input_ref": "workflow:b7da5a0c-6bc2-4c63-9a6d-25e324e38388",
+          "input_sha256": "cc845a4428691d20b7bda2c9ecb3cc43b9df4c8648280b18536e7ed6a20064d5",
+          "output_ref": "event:45a3403b-4932-4098-aa0a-ed7a05e62a7b",
+          "output_sha256": "c92d88bb2e37cd792b9daffc3167bf34f972b249bea11728791c31de886c8b62",
+          "pi_run_id": null,
+          "model_invocation_id": null,
+          "evidence_refs": [
+            "0819573d-c20d-4226-a451-a40e98256d2a"
+          ],
+          "validation_status": "passed",
+          "validation": {
+            "contract_status": "passed",
+            "structural_status": "passed",
+            "reference_identity_status": "not_established",
+            "semantic_status": "unverified",
+            "independent_verification": false,
+            "uncited_claims_permitted": true
+          },
+          "error_category": null,
+          "error_detail": null,
+          "uncertainty": "none",
+          "created_at": "2026-10-30T21:02:09.443319+00:00",
+          "started_at": "2026-10-30T21:02:09.594436+00:00",
+          "finished_at": "2026-10-30T21:02:09.614969+00:00",
+          "duration_seconds": 0.020533,
+          "model_requested": null,
+          "usage": null,
+          "charged_tokens": null,
+          "cost_usd": null,
+          "cost_status": "no_price_table; unknown is not zero"
+        }
+      ],
+      "artifact": {
+        "kind": "workflow_result",
+        "schema": "workflow-result/v1",
+        "run_id": "b7da5a0c-6bc2-4c63-9a6d-25e324e38388",
+        "stage_id": "record",
+        "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+        "input_sha256": "cc845a4428691d20b7bda2c9ecb3cc43b9df4c8648280b18536e7ed6a20064d5",
+        "classification": "owner_internal",
+        "created_at": "2026-10-30T21:02:09.603682+00:00",
+        "result": {
+          "status": "SUPPORTED",
+          "retained": true,
+          "provenance": "deterministic-exact-source-comparison-v1",
+          "limitations": [
+            "Controlled source verification does not establish general-world truth."
+          ],
+          "conclusion_checks": [],
+          "conclusion_status": "INCONCLUSIVE",
+          "observation_checks": [
+            {
+              "reason": "Value matches source but claim lacks its citation",
+              "status": "SUPPORTED",
+              "evidence_refs": [
+                "sensor:dd0fcd02-0816-45bf-8265-5e309689586e:1"
+              ]
+            }
+          ]
+        },
+        "assessment": {
+          "contract": "controlled-exact-comparison/v1",
+          "semantic_status": "controlled_sources_only"
+        },
+        "evidence_refs": [
+          "0819573d-c20d-4226-a451-a40e98256d2a"
+        ],
+        "intelligence_episode_id": null,
+        "independent_feedback": false,
+        "artifact_id": "863b1280-9333-4096-a4f6-eb6199fe7d4f",
+        "sha256": "f12b596b3a0cfe6b443ac85ccd22d1509d4077731a9acb189a90b0f370bbf274",
+        "source_status": "unchanged",
+        "run_status": "COMPLETED",
+        "terminal_reason": "required_stages_completed",
+        "stage_state": "COMPLETED",
+        "stage_validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "stage_uncertainty": "none",
+        "workflow_completed": true,
+        "context_provenance": {
+          "context_event_id": "0819573d-c20d-4226-a451-a40e98256d2a",
+          "context_sha256": "fd5830691ab96a2523ccc1ecc6e6362476f01f0327d8133737846050556a1bac",
+          "approved": {
+            "source": "controlled-laboratory",
+            "event_type": "workflow.fixture.context",
+            "custody": "controlled_fixture",
+            "consent": "exact_content_and_scope"
+          },
+          "original_source": "controlled-laboratory",
+          "original_event_type": "workflow.fixture.context",
+          "semantic_status": "unverified",
+          "authorization_is_source_authentication": false
+        }
+      }
+    }
+  ],
+  "pi_receipt": {
+    "run_id": "afdcea83-f687-4620-9a49-912e0dd795d2",
+    "operation": "cognition.role",
+    "reservation_ref": "aa7e2e53-95aa-4341-8ef9-24e2af7276d3",
+    "state": "SETTLED",
+    "terminal": true,
+    "terminal_reason": "settled",
+    "created_at": "2026-10-30T21:02:08.226288+00:00",
+    "finished_at": "2026-10-30T21:02:09.093844+00:00",
+    "pi": {
+      "version": "1.4.0",
+      "bundle_sha256": "e79626f2dd6f94aa45d30f3fa63cd84319a6eefcd150b353cfaf274366926774",
+      "flags_sha256": "ab87098c7482234a16079c3b349b263d74765c03ac603bb806ddada29029b260"
+    },
+    "identity": {
+      "requested_upstream_model": "muse-spark-1.3",
+      "pi_observed": {
+        "provider": "alive-egress",
+        "model": "alive-approved"
+      },
+      "pi_expected_alias": {
+        "provider": "alive-egress",
+        "model": "alive-approved"
+      },
+      "matches_expected_alias": true,
+      "note": "The upstream model is chosen by ALIVE; Pi only ever sees its local alias."
+    },
+    "approved_request_sha256": "8d97e7ed9b3d78b32d3844732ff999b868ee4235829673c72217b00090a6537c",
+    "approved_request": {
+      "model": "muse-spark-1.3",
+      "operation": "cognition.role",
+      "max_output": 1536,
+      "schema_sha256": "091d133fd0a82d3654c63824ec1d5737e31e12d0e91ac73a9908fb264804c4ca",
+      "payload_sha256": "4c6a34fa9e24b5bfdbc5b226b2f1ae73b384ffc36e7e5621161b1d3062ba1149"
+    },
+    "requests": {
+      "ceiling": 1,
+      "inbound": 1,
+      "admitted": 1,
+      "counts": {
+        "settled": 1,
+        "failed": 0,
+        "ambiguous": 0,
+        "rejected": 0,
+        "dispatched": 0,
+        "admitted": 0
+      },
+      "items": [
+        {
+          "seq": 1,
+          "state": "settled",
+          "body_sha256_in": "8486cdbf691f6e238fce771b8886a0df4fba97ef48f58b97c6d3816d19a118b0",
+          "approved_request_sha256": "8d97e7ed9b3d78b32d3844732ff999b868ee4235829673c72217b00090a6537c",
+          "model_requested": "muse-spark-1.3",
+          "http_status": 200,
+          "usage": {
+            "total_tokens": 18,
+            "prompt_tokens": 11,
+            "completion_tokens": 7
+          },
+          "cost_usd": null,
+          "latency_ms": 225.11999999915133,
+          "error_category": null,
+          "response_sha256": "3e4da3fce0c408cda90ba63712d1d32c8414f7ec31bb209009621c3a1d56996d"
+        }
+      ]
+    },
+    "settlement": {
+      "cleanup_confirmed": true,
+      "pi_settled": true,
+      "matches_egress_record": true,
+      "tool_events": 0,
+      "malformed_frames": 0,
+      "duration_s": 0.885,
+      "recovered": false
+    },
+    "cost": {
+      "usd": null,
+      "note": "ALIVE has no price table for this transport. Cost is unknown, not zero; Pi's own cost figure for an unpriced custom model is zero and is deliberately not used."
+    }
+  },
+  "provider_requests": 1,
+  "restart": "PASS",
+  "replay": "PASS: zero dispatch, artifacts or learning writes",
+  "intelligence_learning_update_delta": 0,
+  "independent_claim_workers": 3,
+  "claim_worker_processes": 1,
+  "process_lease_probes": [
+    {
+      "status": "PASS",
+      "pid": 46660,
+      "competing_host": "refused_by_production_lease"
+    },
+    {
+      "status": "PASS",
+      "pid": 30364,
+      "successor_host": "owns_production_lease",
+      "replayed_runs": 2,
+      "effect_count_delta": 0
+    }
+  ],
+  "successful_execution_owners": 1,
+  "intelligence_receipt_resolution": {
+    "pi_run_id": "afdcea83-f687-4620-9a49-912e0dd795d2",
+    "model_invocation_id": "aa7e2e53-95aa-4341-8ef9-24e2af7276d3",
+    "operation": "cognition.role",
+    "approved_request_sha256": "8d97e7ed9b3d78b32d3844732ff999b868ee4235829673c72217b00090a6537c",
+    "model_requested": "muse-spark-1.3",
+    "model_observed": null,
+    "usage": {
+      "total_tokens": 18,
+      "prompt_tokens": 11,
+      "completion_tokens": 7
+    },
+    "settlement": "SETTLED",
+    "output_linkage": "upstream receipt hash; parsed ledger output separately validated"
+  },
+  "paid_inference": "NOT_RUN"
+}

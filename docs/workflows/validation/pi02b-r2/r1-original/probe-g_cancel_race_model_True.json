@@ -1,0 +1,118 @@
+{
+  "trials": [
+    {
+      "delay": 0,
+      "run": "CANCELLED",
+      "reason": "cancelled",
+      "invocations": [],
+      "pi_runs": [],
+      "pi_requests": []
+    },
+    {
+      "delay": 0.01,
+      "run": "CANCELLED",
+      "reason": "cancelled",
+      "invocations": [],
+      "pi_runs": [],
+      "pi_requests": []
+    },
+    {
+      "delay": 0.03,
+      "run": "CANCELLED",
+      "reason": "cancelled",
+      "invocations": [],
+      "pi_runs": [],
+      "pi_requests": []
+    },
+    {
+      "delay": 0.06,
+      "run": "CANCELLED",
+      "reason": "cancelled",
+      "invocations": [
+        "cancelled"
+      ],
+      "pi_runs": [
+        "CANCELLED"
+      ],
+      "pi_requests": []
+    },
+    {
+      "delay": 0.1,
+      "run": "CANCELLED",
+      "reason": "cancelled",
+      "invocations": [
+        "cancelled",
+        "cancelled"
+      ],
+      "pi_runs": [
+        "CANCELLED",
+        "CANCELLED"
+      ],
+      "pi_requests": []
+    },
+    {
+      "delay": 0.2,
+      "run": "CANCELLED",
+      "reason": "cancelled",
+      "invocations": [
+        "cancelled",
+        "cancelled",
+        "cancelled"
+      ],
+      "pi_runs": [
+        "CANCELLED",
+        "CANCELLED",
+        "CANCELLED"
+      ],
+      "pi_requests": [
+        "rejected"
+      ]
+    },
+    {
+      "delay": 0.4,
+      "run": "CANCELLED",
+      "reason": "cancelled",
+      "invocations": [
+        "cancelled",
+        "cancelled",
+        "cancelled",
+        "cancelled"
+      ],
+      "pi_runs": [
+        "CANCELLED",
+        "CANCELLED",
+        "CANCELLED",
+        "CANCELLED"
+      ],
+      "pi_requests": [
+        "rejected",
+        "rejected"
+      ]
+    },
+    {
+      "delay": 0.8,
+      "run": "COMPLETED",
+      "reason": "required_stages_completed",
+      "invocations": [
+        "cancelled",
+        "cancelled",
+        "cancelled",
+        "cancelled",
+        "validated"
+      ],
+      "pi_runs": [
+        "CANCELLED",
+        "CANCELLED",
+        "CANCELLED",
+        "CANCELLED",
+        "SETTLED"
+      ],
+      "pi_requests": [
+        "rejected",
+        "rejected",
+        "settled"
+      ]
+    }
+  ],
+  "upstream_calls": 1
+}

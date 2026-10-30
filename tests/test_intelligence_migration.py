@@ -27,7 +27,7 @@ def test_intelligence_migration_parity_and_reversible_upgrade(tmp_path):
             assert {n: bool(v) for n, v in columns.items() if n != "id"} == {
                 c.name: not c.nullable for c in model.columns if c.name != "id"
             }
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0009"
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0010"
     migrate("downgrade", "0008")
     with sqlite3.connect(path) as connection:
         remaining = {

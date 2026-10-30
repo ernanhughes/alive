@@ -1,0 +1,49 @@
+{
+  "returned_status": "FAILED",
+  "returned_reason": "adapter_or_persistence_failure",
+  "artifact_http": 200,
+  "artifact_has_run_status": false,
+  "artifact_keys": [
+    "artifact_id",
+    "assessment",
+    "classification",
+    "created_at",
+    "definition_sha256",
+    "evidence_refs",
+    "independent_feedback",
+    "input_sha256",
+    "intelligence_episode_id",
+    "kind",
+    "result",
+    "run_id",
+    "schema",
+    "sha256",
+    "source_status",
+    "stage_id"
+  ],
+  "run": "FAILED",
+  "reason": "adapter_or_persistence_failure",
+  "stages": {
+    "prepare": [
+      "COMPLETED",
+      null
+    ],
+    "compare": [
+      "COMPLETED",
+      null
+    ],
+    "record": [
+      "COMPLETED",
+      null
+    ]
+  },
+  "invocations": [],
+  "pi_runs": [],
+  "pi_requests": [],
+  "messages": 1,
+  "reserved": {
+    "calls": 0,
+    "tokens": 0,
+    "tools": 0
+  }
+}

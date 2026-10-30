@@ -1,0 +1,4 @@
+{
+  "http": 404,
+  "body": "{\"error\":{\"code\":404,\"message\":\"Result unavailable or integrity check failed\",\"correlation_id\":\"c27ef6a5-bed3-406d-aea9-9580aa873045\"}}"
+}

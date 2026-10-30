@@ -1,0 +1,48 @@
+{
+  "tool": "ALIVE Test Intelligence",
+  "mode": "quick",
+  "status": "passed",
+  "selected": 2,
+  "not_selected": 79,
+  "elapsed_s": 2.6,
+  "selection": "QUICK",
+  "changed": [
+    "docs/workflows/ALIVE-PI-02B-R2-INTEGRATION.md",
+    "docs/workflows/ALIVE-PI-02B-R2-REVIEW.md",
+    "docs/workflows/ALIVE-PI-02B-R2.md",
+    "docs/workflows/validation/pi02b-r2-integration/.gitattributes",
+    "docs/workflows/validation/pi02b-r2-integration/container-replay.json",
+    "docs/workflows/validation/pi02b-r2-integration/container_check.py",
+    "docs/workflows/validation/pi02b-r2-integration/docker-build.txt",
+    "docs/workflows/validation/pi02b-r2-integration/docker-e2e.txt",
+    "docs/workflows/validation/pi02b-r2-integration/docker-postgresql.json",
+    "docs/workflows/validation/pi02b-r2-integration/docker-smoke.txt",
+    "docs/workflows/validation/pi02b-r2-integration/image-parity.json",
+    "docs/workflows/validation/pi02b-r2-integration/isolated-qualified.txt",
+    "docs/workflows/validation/pi02b-r2-integration/isolated-reproduction.txt",
+    "docs/workflows/validation/pi02b-r2-integration/linux-core.txt",
+    "docs/workflows/validation/pi02b-r2-integration/mutations.json",
+    "docs/workflows/validation/pi02b-r2-integration/original-mutations.json"
+  ],
+  "selected_files": [
+    "tests/test_docker_config.py",
+    "tests/test_transport.py"
+  ],
+  "reasons": {
+    "tests/test_transport.py": [
+      "always-run smoke/config safety net (docs-only change)"
+    ],
+    "tests/test_docker_config.py": [
+      "always-run smoke/config safety net (docs-only change)"
+    ]
+  },
+  "meta": {
+    "fallback_full": false,
+    "docker_required": false,
+    "note": "documentation-only change: minimal smoke selection"
+  },
+  "pytest_tail": "17 passed, 1 warning in 0.69s",
+  "disclaimer": "subset selection is not equivalent to a full-suite pass; full-suite qualification still required before merge",
+  "timestamp_utc": "2026-10-30T22:36:50.276034+00:00",
+  "full_suite_still_required": true
+}

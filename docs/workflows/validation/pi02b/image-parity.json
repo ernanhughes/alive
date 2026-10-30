@@ -1,0 +1,54 @@
+{
+  "status": "PASS",
+  "image": "sha256:d309e8d44cbdfa23b871f7ecad7dd65fc574cf01f078c75aad6f70c38c1e1c2e",
+  "production_files": [
+    {
+      "path": "alive/app.py",
+      "sha256": "ae75a8c12127605fc009407597f511ab503b4799497af3216820f415a95d0a23"
+    },
+    {
+      "path": "alive/cognition.py",
+      "sha256": "01da27f51053603dbf05fe1ad1e9dfa2b5c06180affb16be3f9afcedc673123c"
+    },
+    {
+      "path": "alive/pi/egress.py",
+      "sha256": "220e252ef2de3b5e230af4e01b1961498c7138e9abef36f9680e4b4362f5a564"
+    },
+    {
+      "path": "alive/workflows/adapters.py",
+      "sha256": "cf19661bfb411f2cef1f2dbb7b6b498fc0007115bb84c531ec083d00a13e857a"
+    },
+    {
+      "path": "alive/workflows/api.py",
+      "sha256": "9332f5cac0111228ba7fa61b8db0c7ed6ccd29b15ff093b8c559781bba4a7fd4"
+    },
+    {
+      "path": "alive/workflows/context.py",
+      "sha256": "59ac3d207287b83a08723ea8cb2a7405717e9fe6e31d4f02e334c8cebaa7e356"
+    },
+    {
+      "path": "alive/workflows/examples.py",
+      "sha256": "4d28f735f51e3e55e7652a52ac5a251ef024e0cb3cd4428ecd24e6e6298d0c99"
+    },
+    {
+      "path": "alive/workflows/models.py",
+      "sha256": "b55e148778c2790f43bf2b66edddd32cc37d8c91874de04961dbc9d334ba0b14"
+    },
+    {
+      "path": "alive/workflows/operations.py",
+      "sha256": "43730be702dcd2b42a8d8a366a08899cd89bfbb87410c75c5bbee9773594f9dd"
+    },
+    {
+      "path": "alive/workflows/runner.py",
+      "sha256": "f87e006a42552af622a592b184a1183642d95a153bfc1d9aff88f23400c4310f"
+    },
+    {
+      "path": "alive/workflows/store.py",
+      "sha256": "eaa68ff8c1588a37f14f5e2d810fea294240a06be34fd71faaeb75850395ae3b"
+    },
+    {
+      "path": "migrations/versions/0010_workflow_execution.py",
+      "sha256": "5e25f4ca8d93957d217c53c37182c7df63d811ae1800c1ef3a0990629b1dd9bd"
+    }
+  ]
+}

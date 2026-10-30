@@ -1,0 +1,15 @@
+........                                                                 [100%]
+============================== warnings summary ===============================
+tests/test_workflow_r2_provenance.py::test_browser_context_requires_exact_owner_consent_without_promoting_provenance[approved]
+tests/test_workflow_r2_provenance.py::test_browser_context_requires_exact_owner_consent_without_promoting_provenance[missing]
+tests/test_workflow_r2_provenance.py::test_browser_context_requires_exact_owner_consent_without_promoting_provenance[forged_source]
+tests/test_workflow_r2_provenance.py::test_browser_context_requires_exact_owner_consent_without_promoting_provenance[wrong_goal]
+tests/test_workflow_r2_provenance.py::test_browser_context_requires_exact_owner_consent_without_promoting_provenance[altered]
+tests/test_workflow_r2_provenance.py::test_browser_context_requires_exact_owner_consent_without_promoting_provenance[withdrawn]
+tests/test_workflow_r2_provenance.py::test_browser_context_requires_exact_owner_consent_without_promoting_provenance[unsupported]
+tests/test_workflow_r2_provenance.py::test_public_ingest_cannot_create_or_modify_owner_grants
+  C:\Projects\alive\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+    self._get_loop()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+8 passed, 8 warnings in 5.82s

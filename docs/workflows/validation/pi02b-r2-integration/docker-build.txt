@@ -1,0 +1,161 @@
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 2.67kB done
+#1 DONE 0.1s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 ...
+
+#3 [auth] docker/dockerfile:pull token for registry-1.docker.io
+#3 DONE 0.0s
+
+#2 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#2 DONE 1.0s
+
+#4 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#4 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e 0.1s done
+#4 CACHED
+
+#5 [internal] load metadata for ghcr.io/astral-sh/uv:latest
+#5 ...
+
+#6 [auth] library/node:pull token for registry-1.docker.io
+#6 DONE 0.0s
+
+#7 [auth] library/python:pull token for registry-1.docker.io
+#7 DONE 0.0s
+
+#5 [internal] load metadata for ghcr.io/astral-sh/uv:latest
+#5 DONE 0.5s
+
+#8 [internal] load metadata for docker.io/library/node:24-slim
+#8 ...
+
+#9 [internal] load metadata for docker.io/library/python:3.13-slim
+#9 DONE 0.8s
+
+#8 [internal] load metadata for docker.io/library/node:24-slim
+#8 DONE 0.8s
+
+#10 [internal] load metadata for docker.io/library/node:24.22.2-slim@sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c
+#10 DONE 0.9s
+
+#11 [internal] load .dockerignore
+#11 transferring context:
+#11 transferring context: 437B done
+#11 DONE 0.1s
+
+#12 [internal] load build context
+#12 DONE 0.0s
+
+#13 [frontend-build 1/6] FROM docker.io/library/node:24-slim@sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c
+#13 resolve docker.io/library/node:24-slim@sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c
+#13 resolve docker.io/library/node:24-slim@sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c 0.2s done
+#13 DONE 0.2s
+
+#14 FROM ghcr.io/astral-sh/uv:latest@sha256:af22a52f5eafef3d78e551599d405c02df61919d18028f0cea8eda93bc9986d0
+#14 resolve ghcr.io/astral-sh/uv:latest@sha256:af22a52f5eafef3d78e551599d405c02df61919d18028f0cea8eda93bc9986d0 0.2s done
+#14 DONE 0.2s
+
+#15 [stage-2  1/17] FROM docker.io/library/python:3.13-slim@sha256:2d44738ebf4ce5f63b9d9ea871e9c7cfdc0426f7b0c97cac915fd88ded1d86bb
+#15 resolve docker.io/library/python:3.13-slim@sha256:2d44738ebf4ce5f63b9d9ea871e9c7cfdc0426f7b0c97cac915fd88ded1d86bb 0.2s done
+#15 DONE 0.2s
+
+#16 [pi-runtime 1/4] FROM docker.io/library/node:24.22.2-slim@sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c
+#16 resolve docker.io/library/node:24.22.2-slim@sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c 0.2s done
+#16 DONE 0.2s
+
+#12 [internal] load build context
+#12 transferring context: 2.57MB 0.2s done
+#12 DONE 0.3s
+
+#17 [frontend-build 3/6] COPY dashboard/package.json dashboard/package-lock.json ./dashboard/
+#17 CACHED
+
+#18 [frontend-build 4/6] RUN cd dashboard && npm ci
+#18 CACHED
+
+#19 [frontend-build 2/6] WORKDIR /build
+#19 CACHED
+
+#20 [frontend-build 5/6] COPY dashboard/ ./dashboard/
+#20 CACHED
+
+#21 [stage-2  4/17] COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+#21 CACHED
+
+#22 [stage-2  2/17] RUN apt-get update     && apt-get install -y --no-install-recommends curl postgresql-client     && rm -rf /var/lib/apt/lists/*     && useradd --create-home --uid 10000 alive     && mkdir -p /app && chown alive:alive /app
+#22 CACHED
+
+#23 [stage-2  6/17] COPY --chown=alive:alive pyproject.toml uv.lock alembic.ini ./
+#23 CACHED
+
+#24 [stage-2  5/17] COPY --from=pi-runtime /usr/local/bin/node /usr/local/bin/node
+#24 CACHED
+
+#25 [pi-runtime 3/4] COPY pi-runtime/package.json pi-runtime/package-lock.json ./
+#25 CACHED
+
+#26 [stage-2  3/17] WORKDIR /app
+#26 CACHED
+
+#27 [pi-runtime 2/4] WORKDIR /pi
+#27 CACHED
+
+#28 [stage-2  7/17] RUN uv sync --locked --no-dev     && mkdir -p /app/.alive /app/dashboard     && chmod 700 /app/.alive
+#28 CACHED
+
+#29 [frontend-build 6/6] RUN cd dashboard && npm run build
+#29 CACHED
+
+#30 [pi-runtime 4/4] RUN npm ci --ignore-scripts --no-audit --no-fund
+#30 CACHED
+
+#31 [stage-2  8/17] COPY --chown=alive:alive alive/ ./alive/
+#31 DONE 0.1s
+
+#32 [stage-2  9/17] COPY --chown=alive:alive migrations/ ./migrations/
+#32 DONE 0.2s
+
+#33 [stage-2 10/17] COPY --chown=alive:alive fixtures/ ./fixtures/
+#33 DONE 0.2s
+
+#34 [stage-2 11/17] COPY --chown=alive:alive config/ ./config/
+#34 DONE 0.1s
+
+#35 [stage-2 12/17] COPY --chown=alive:alive scripts/docker-demo-seed.py scripts/docker-e2e.py scripts/docker-smoke-test.py ./scripts/
+#35 DONE 0.2s
+
+#36 [stage-2 13/17] COPY --chown=alive:alive docker/entrypoint.sh docker/healthcheck.py ./docker/
+#36 DONE 0.2s
+
+#37 [stage-2 14/17] COPY --from=frontend-build --chown=alive:alive /build/dashboard/dist ./dashboard/dist
+#37 DONE 0.2s
+
+#38 [stage-2 15/17] COPY --from=pi-runtime --chown=alive:alive /pi/ ./pi-runtime/
+#38 DONE 69.6s
+
+#39 [stage-2 16/17] RUN node --version     && node pi-runtime/node_modules/@earendil-works/pi-coding-agent/dist/bundle/cli.js --version
+#39 2.619 v24.22.2
+#39 3.061 1.4.0
+#39 DONE 3.4s
+
+#40 [stage-2 17/17] RUN chmod +x docker/entrypoint.sh
+#40 DONE 1.4s
+
+#41 exporting to image
+#41 exporting layers
+#41 exporting layers 5.5s done
+#41 exporting manifest sha256:462689f26145396bad297932ecb05eb75b85f0a141507159136c68aece4b2d97 0.1s done
+#41 exporting config sha256:eebb6b862c4e1847f588ad7794efa7be10c4c4de7c5ea41157a44ccf95f00aa0
+#41 exporting config sha256:eebb6b862c4e1847f588ad7794efa7be10c4c4de7c5ea41157a44ccf95f00aa0 0.2s done
+#41 exporting attestation manifest sha256:af7c337cd3f079096e44bc00f023d41d12ba068982fe6ef2a4fbae23d04d6166
+#41 exporting attestation manifest sha256:af7c337cd3f079096e44bc00f023d41d12ba068982fe6ef2a4fbae23d04d6166 0.2s done
+#41 exporting manifest list sha256:0d1d7be0f6db89ebbefb4bf740d17e2b9092a5a7631dd7e740908352d1d1d880
+#41 exporting manifest list sha256:0d1d7be0f6db89ebbefb4bf740d17e2b9092a5a7631dd7e740908352d1d1d880 0.2s done
+#41 naming to docker.io/library/alive-pi02b-r2:integrated
+#41 naming to docker.io/library/alive-pi02b-r2:integrated 0.0s done
+#41 unpacking to docker.io/library/alive-pi02b-r2:integrated
+#41 unpacking to docker.io/library/alive-pi02b-r2:integrated 3.4s done
+#41 DONE 9.8s

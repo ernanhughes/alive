@@ -1,0 +1,16 @@
+{
+  "outcomes": [
+    [
+      "COMPLETED",
+      "required_stages_completed"
+    ],
+    [
+      "COMPLETED",
+      "required_stages_completed"
+    ]
+  ],
+  "slots_after": [
+    null,
+    null
+  ]
+}

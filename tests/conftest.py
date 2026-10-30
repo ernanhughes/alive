@@ -40,9 +40,12 @@ def client(settings):
     # frozen ALIVE-03 experiment suite keeps exercising the full API. Default
     # production startup (create_app without flags) excludes it; see
     # test_arch_boundaries.py.
+    # Construct the opt-in app first so its model tables are registered even
+    # when an isolated suite has not imported any experiment modules yet.
+    app = create_app(settings, include_experiments=True)
     _boot(settings)
     with TestClient(
-        create_app(settings, include_experiments=True),
+        app,
         headers={"Authorization": f"Bearer {TOKEN}"},
     ) as c:
         yield c

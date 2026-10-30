@@ -1,0 +1,22 @@
+[
+ [
+  "B1 dispatch fence: model not compared",
+  "SURVIVED"
+ ],
+ [
+  "B2 dispatch fence: context not compared",
+  "SURVIVED"
+ ],
+ [
+  "B3 dispatch fence: reservation status not required",
+  "SURVIVED"
+ ],
+ [
+  "B4 dispatch fence: stage must be RUNNING dropped",
+  "SURVIVED"
+ ],
+ [
+  "B5 dispatch fence: invocation-stage link dropped",
+  "SURVIVED"
+ ]
+]

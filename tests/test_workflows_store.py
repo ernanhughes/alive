@@ -398,9 +398,37 @@ def test_stage_records_only_accept_known_fields_and_unique_attempts(client):
         client.portal.call(second_attempt_one)
 
 
-def test_a_pi_run_reference_is_stored_but_nothing_validates_it_against_a_runtime(client):
+def test_a_pi_run_reference_requires_an_existing_receipt(client):
     run, _ = open_run(client)
     call(client, store.advance_run, run["id"], states.RUNNING)
+    with pytest.raises(IntegrityError):
+        call(
+            client,
+            store.advance_stage,
+            run["id"],
+            "prepare",
+            states.RUNNING,
+            pi_run_id="11111111-1111-1111-1111-111111111111",
+        )
+
+    async def receipt():
+        from alive.pi.models import PiRun
+
+        async with kernel(client).db.sessions.begin() as session:
+            session.add(
+                PiRun(
+                    id="11111111-1111-1111-1111-111111111111",
+                    instance_id=kernel(client).instance_id,
+                    operation="cognition.role",
+                    idempotency_key="synthetic-workflow-fk",
+                    approved_request_json={},
+                    approved_request_sha256="0" * 64,
+                    requested_json={},
+                    token_sha256="0" * 64,
+                )
+            )
+
+    client.portal.call(receipt)
     stage = call(
         client,
         store.advance_stage,
@@ -466,14 +494,14 @@ def test_registering_inspecting_and_recording_make_no_provider_call_and_start_no
         assert client.get(path).status_code == 200
 
 
-def test_the_workflow_package_never_imports_the_pi_runtime_or_a_provider_client():
+def test_the_workflow_package_never_imports_pi_execution_or_a_provider_client():
     import pathlib
     import re
 
     package = pathlib.Path(store.__file__).parent
     for source in package.glob("*.py"):
         text_ = source.read_text(encoding="utf-8")
-        assert not re.search(r"^\s*(from|import)\s+alive\.(pi|providers)\b", text_, re.M), (
-            source.name
-        )
+        assert not re.search(
+            r"^\s*(from|import)\s+alive\.(providers\b|pi\b(?!\.models\b))", text_, re.M
+        ), source.name
         assert "MetaProvider" not in text_ and "alive_meta_api_key" not in text_, source.name

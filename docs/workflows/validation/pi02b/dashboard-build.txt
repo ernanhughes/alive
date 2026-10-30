@@ -1,0 +1,14 @@
+
+> alive-dashboard@0.2.0 build
+> tsc -b && vite build
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 1939 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                   0.47 kB │ gzip:  0.31 kB
+dist/assets/index-Ay3lzqEm.css   18.30 kB │ gzip:  5.05 kB
+dist/assets/index-CccFdrBe.js   290.44 kB │ gzip: 88.26 kB
+
+✓ built in 259ms

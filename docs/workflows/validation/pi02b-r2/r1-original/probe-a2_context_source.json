@@ -1,0 +1,6 @@
+{
+  "source": "extension",
+  "type": "browser.dom_changed",
+  "start": "admitted",
+  "final": "COMPLETED"
+}

@@ -1,0 +1,128 @@
+{
+  "status": "COMPLETED",
+  "artifact_http": 200,
+  "artifact_keys": [
+    "artifact_id",
+    "assessment",
+    "classification",
+    "created_at",
+    "definition_sha256",
+    "evidence_refs",
+    "independent_feedback",
+    "input_sha256",
+    "intelligence_episode_id",
+    "kind",
+    "result",
+    "run_id",
+    "schema",
+    "sha256",
+    "source_status",
+    "stage_id"
+  ],
+  "leaks": {
+    "api_key": false,
+    "token": false,
+    "windows_path": false,
+    "prompt_marker": false
+  },
+  "non_record_stage_artifact": 404,
+  "unknown_run": 404,
+  "oversize": 422,
+  "no_auth": 401,
+  "write_methods": [
+    405,
+    405,
+    405,
+    405
+  ],
+  "stage_row_keys": [
+    "attempt",
+    "charged_tokens",
+    "cost_status",
+    "cost_usd",
+    "created_at",
+    "duration_seconds",
+    "error_category",
+    "error_detail",
+    "evidence_refs",
+    "finished_at",
+    "id",
+    "input_ref",
+    "input_sha256",
+    "model_invocation_id",
+    "model_requested",
+    "operation",
+    "output_ref",
+    "output_sha256",
+    "pi_run_id",
+    "run_id",
+    "stage_id",
+    "started_at",
+    "state",
+    "terminal",
+    "type",
+    "uncertainty",
+    "usage",
+    "validation_status"
+  ],
+  "artifact_body": {
+    "artifact_id": "318254c6-53e6-4e28-a3af-39a58ccea3a2",
+    "kind": "workflow_result",
+    "schema": "workflow-result/v1",
+    "run_id": "b306cc8e-4c62-43de-97bd-9d175a2ac9ea",
+    "stage_id": "record",
+    "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+    "input_sha256": "6f616cf90fadf48cc7378d428318b139f557dde86bd03191056270b625410c37",
+    "sha256": "0dc35fe9e808c7eed0c3ff534d22374449493cf8d2fb1f64fc4fb8e4ee5bcb2f",
+    "classification": "owner_internal",
+    "created_at": "2026-10-30T20:40:13.904406+00:00",
+    "result": {
+      "summary": "observer: assess supplied observation and evidence.",
+      "claims": [
+        {
+          "subject": "Helios battery",
+          "predicate": "endurance_hours",
+          "value": "18",
+          "evidence_refs": []
+        }
+      ],
+      "actions": [],
+      "criticisms": [],
+      "uncertainties": [],
+      "recommendation": "proceed",
+      "confidence": 0.9
+    },
+    "assessment": {
+      "contract": "citation-identity/v1",
+      "semantic_status": "unverified"
+    },
+    "evidence_refs": [
+      "6984295d-6334-4395-9dea-b8f0337a71d8"
+    ],
+    "intelligence_episode_id": null,
+    "independent_feedback": false,
+    "source_status": "unchanged"
+  },
+  "model_stage_validation": [
+    [
+      "prepare",
+      "not_run",
+      "COMPLETED"
+    ],
+    [
+      "analyze",
+      "passed",
+      "COMPLETED"
+    ],
+    [
+      "validate",
+      "passed",
+      "COMPLETED"
+    ],
+    [
+      "record",
+      "passed",
+      "COMPLETED"
+    ]
+  ]
+}
