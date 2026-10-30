@@ -15,6 +15,7 @@ import httpx
 from playwright.async_api import async_playwright, expect
 
 from alive.config import Settings, prepare_local
+from scripts.alive_logs import ensure_log_dir, log_path
 
 
 def wait_http(url):
@@ -185,8 +186,9 @@ def main():
             "Stop your existing backend before running the owned restart demonstration."
         )
     Path(".alive").mkdir(exist_ok=True)
+    ensure_log_dir()
     subprocess.run([sys.executable, "-m", "alembic", "upgrade", "head"], check=True)
-    log = Path(".alive/first-contact-backend.log").open("w", encoding="utf-8")
+    log = log_path("first-contact-backend.log").open("w", encoding="utf-8")
     backend = None
     dashboard = None
 

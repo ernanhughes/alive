@@ -7,7 +7,7 @@ reorganisation changes.
 
 ## 1. Historical reconciliation (summary)
 
-Full record: `ALIVE-EVAL-02-PHASE-1-RECONCILIATION.md`.
+Full record: `../ALIVE-EVAL-02-PHASE-1-RECONCILIATION.md`.
 Revalidated against current `main`: 9 findings retained as working or correctly
 unqualified; 10 confirmed STILL_PRESENT (incl. the central custody forgery,
 reproduced on `4b74f3c`); 2 NOT_TESTED at Phase 1 (now resolved below).

@@ -62,6 +62,7 @@ class Settings(BaseSettings):
     alive_embedding_path: str = ".alive/models/minilm"
     alive_cognitive_provider: str = "mock"
     alive_headless: bool = True
+    alive_experiments_enabled: bool = False
     alive_workspace: Path = Path(".alive/agent-workspace")
 
     @field_validator("database_url")

@@ -20,8 +20,13 @@ from sqlalchemy.exc import IntegrityError
 from alive.claim_comparison import CLAIM_VERSION, ClaimComparisonOutput, validate_claim
 from alive.cognitive_models import CognitiveControl
 from alive.cognitive_schema import CognitiveConfiguration
-from alive.experiment.metrics import price
-from alive.experiment_budget import charged_micro_usd, check_spend, worst_micro_usd
+from alive.governance.budgets import (
+    charged_micro_usd,
+    check_spend,
+    settle_control,
+    worst_micro_usd,
+)
+from alive.governance.pricing import price
 from alive.models import now, record
 from alive.providers import MetaProvider
 from alive.research_memory import (
@@ -300,7 +305,12 @@ def validate_relationship_output(output, payload):
 
 
 class ResearchRelationships:
-    def __init__(self, research, experiments, settings, approvals=None):
+    def __init__(self, research, experiments=None, settings=None, approvals=None):
+        # ARCH-01: settlement uses alive.governance.budgets; the experiments
+        # handle is a legacy reference kept for backward compatibility only.
+        # Accept both (research, experiments, settings) and (research, settings).
+        if settings is None and hasattr(experiments, "alive_relationship_micro_usd_limit"):
+            settings, experiments = experiments, None
         self.research = research
         self.web = research.web
         self.k = research.k
@@ -1159,7 +1169,7 @@ class ResearchRelationships:
         async with self.k.lock, self.k.db.sessions.begin() as session:
             row = await self.web.get(session, attempt_id, ATTEMPT_KIND)
             control = await session.get(CognitiveControl, self.k.instance_id)
-            self.experiments._settle_control(control, reserve, charged)
+            settle_control(control, reserve, charged)
             self.research.outbound_inflight.discard(row.data["current_snapshot_id"])
             validation = (
                 validate(output, payload)
@@ -1595,7 +1605,7 @@ class ResearchRelationships:
                     raise asyncio.CancelledError
                 return {"analysis": record(row), "connection": None, "abstained": True}
             control = await session.get(CognitiveControl, self.k.instance_id)
-            self.experiments._settle_control(control, reserve, charged)
+            settle_control(control, reserve, charged)
             self.research.outbound_inflight.discard(row.data["historical_memory_id"])
             validation = (
                 (
@@ -2008,7 +2018,7 @@ class ResearchRelationships:
                 )
                 charged = 0 if never_dispatched or local_claim else reserve
                 campaign_digest = row.data.get("campaign_digest")
-                self.experiments._settle_control(control, reserve, charged)
+                settle_control(control, reserve, charged)
                 row.status = "interrupted"
                 row.data = row.data | {
                     "charged_tokens": charged,

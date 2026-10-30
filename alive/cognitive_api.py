@@ -45,9 +45,10 @@ def router(app, ready):
                 await app.state.living.cancel()
             else:
                 raise ValueError("Stop the living journey before changing cognitive control")
-        if app.state.experiments.active:
+        experiments = getattr(app.state, "experiments", None)
+        if experiments is not None and experiments.active:
             if data.command == "stop":
-                await app.state.experiments.cancel()
+                await experiments.cancel()
             else:
                 raise ValueError("Stop the active experiment before changing cognitive control")
         result = await app.state.cognition.command(data)
@@ -62,7 +63,8 @@ def router(app, ready):
             raise ValueError("Stop the documentation note before changing Governor limits")
         if app.state.living.active:
             raise ValueError("Stop the living journey before changing Governor limits")
-        if app.state.experiments.active:
+        experiments = getattr(app.state, "experiments", None)
+        if experiments is not None and experiments.active:
             raise ValueError("Stop the active experiment before changing Governor limits")
         return await app.state.cognition.configure(data)
 

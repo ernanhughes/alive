@@ -8,8 +8,8 @@ from sqlalchemy import select
 
 from alive.cognitive_models import CognitiveControl
 from alive.cognitive_schema import CognitiveConfiguration, RoleOutput
-from alive.experiment.metrics import price
-from alive.experiment_budget import check_spend
+from alive.governance.budgets import check_spend, settle_control
+from alive.governance.pricing import price
 from alive.living_evaluation import assess
 from alive.living_models import LivingJourney, LivingPolicy, LivingTransition
 from alive.living_policy import (
@@ -60,7 +60,7 @@ class Living:
                 ledger = [dict(c) for c in journey.data["ledger"]]
                 for call in ledger:
                     if call["status"] == "reserved":
-                        self.app.state.experiments._settle_control(
+                        settle_control(
                             control, call["reserved_tokens"], call["reserved_tokens"]
                         )
                         call.update(
@@ -122,7 +122,9 @@ class Living:
 
     async def advance(self, journey_id):
         async with self.lock:
-            if self.active or self.app.state.experiments.active or self.app.state.web.active:
+            experiments = getattr(self.app.state, "experiments", None)
+            active_experiments = experiments is not None and experiments.active
+            if self.active or active_experiments or self.app.state.web.active:
                 raise ValueError("Another cognitive worker is active")
             async with self.k.lock, self.k.db.sessions.begin() as session:
                 row = await session.get(LivingJourney, journey_id)
@@ -299,7 +301,7 @@ class Living:
         async with self.k.lock, self.k.db.sessions.begin() as session:
             row = await session.get(LivingJourney, journey_id)
             control = await session.get(CognitiveControl, self.k.instance_id)
-            self.app.state.experiments._settle_control(control, reserve, charged)
+            settle_control(control, reserve, charged)
             settled = call | {
                 "status": "failed" if error else "validated",
                 "usage": usage,
