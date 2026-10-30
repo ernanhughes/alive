@@ -1,0 +1,16 @@
+PASS  migrations apply
+PASS  the shipped definition is seeded as a draft
+PASS  the API requires the token
+PASS  registration is idempotent
+PASS  a changed version is refused
+PASS  an invalid definition is refused
+PASS  concurrent registration has exactly one winner  [1 winners]
+PASS  a run keeps the definition it was opened against
+PASS  stage records are readable
+PASS  no response contains the token or the database URL
+PASS  the shipped definition is unchanged after restart
+PASS  the definition survives a restart
+PASS  the run survives a restart
+PASS  downgrade to 0007 and upgrade again
+
+14/14 checks passed
