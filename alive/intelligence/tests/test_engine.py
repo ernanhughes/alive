@@ -140,7 +140,9 @@ async def test_duplicate_outcomes_and_proposals_cannot_train_twice():
     before = e.policy
     assert e.evaluate_feedback(run.proposal, feedback).status == "duplicate"
     other = OutcomeFeedback.model_validate(feedback.model_dump() | {"id": "other-outcome"})
-    assert e.evaluate_feedback(run.proposal, other).status == "duplicate"
+    assert e.evaluate_feedback(run.proposal, other).status == "rejected"
+    changed = OutcomeFeedback.model_validate(feedback.model_dump() | {"result": "conflicting"})
+    assert e.evaluate_feedback(run.proposal, changed).status == "rejected"
     assert e.policy == before
 
 

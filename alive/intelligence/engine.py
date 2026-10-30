@@ -11,6 +11,7 @@ from .contracts import (
     RevisitResult,
     RunResult,
     TraceEvent,
+    digest,
 )
 from .decision import propose
 from .experience import prepare
@@ -84,7 +85,7 @@ class IntelligenceEngine:
         self.timeout_seconds = timeout_seconds
         self._issued = {}
         self._consumed = set()
-        self._outcomes = set()
+        self._outcomes = {}
 
     @property
     def policy(self) -> EmpiricalPolicy:
@@ -192,6 +193,10 @@ class IntelligenceEngine:
             if issued is None or proposal != issued[0]:
                 raise ValueError("Previously issued proposal required")
             if feedback.id in self._outcomes or proposal.id in self._consumed:
+                if self._outcomes.get(feedback.id) != digest(feedback):
+                    return FeedbackResult(
+                        status="rejected", explanation="Conflicting feedback replay."
+                    )
                 return FeedbackResult(status="duplicate", explanation="Outcome already consumed.")
             _, observation, context, _ = issued
             updated, transition = prepare(
@@ -212,7 +217,7 @@ class IntelligenceEngine:
             )
             # No await or external write: prepared state and deduplication commit together locally.
             self._policy = updated
-            self._outcomes.add(feedback.id)
+            self._outcomes[feedback.id] = digest(feedback)
             self._consumed.add(proposal.id)
             return result
         except ValueError:

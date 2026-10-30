@@ -1,5 +1,10 @@
 # Later work requiring separate review
 
+INT-02 now provides fixture-only transactional persistence, restart/replay and
+authenticated read-only inspection. Live reasoning admission, production evidence
+custody, PI-02B stage execution and active-policy promotion remain unavailable.
+See `docs/validation/alive-int-02/ARCHITECTURE.md`; the items below originated in 01.
+
 1. Design explicit Cognition/Living entry points and source/state compatibility checks;
    retain existing orchestration, browser permissions and owner consent.
 2. Implement a trusted Governor-reserved, exact-request-bound, one-use capability;

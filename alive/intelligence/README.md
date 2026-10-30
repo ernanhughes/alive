@@ -1,8 +1,19 @@
 # Isolated Intelligence subsystem, v1
 
-This package coordinates authorized evidence, bounded structured interpretation,
+**INT-02 integration:** this document describes the preserved INT-01 pure/session API.
+The separate durable fixture adapter, read-only authenticated API, migration and
+restart/replay qualification are documented in
+[`../../docs/validation/alive-int-02/ARCHITECTURE.md`](../../docs/validation/alive-int-02/ARCHITECTURE.md).
+INT-02 does not enable model dispatch or automatic execution of proposals.
+
+INT-02 adds a fixture-only durable integration with real workflow references and
+authenticated read-only inspection. See
+[`ARCHITECTURE.md`](../../docs/validation/alive-int-02/ARCHITECTURE.md) for the
+canonical durable workflow, authority boundaries and production limitations.
+
+The isolated engine coordinates authorized evidence, bounded structured interpretation,
 empirical proposals, independently supplied outcomes and session-local learning.
-It is **not registered with ALIVE production services**. Nothing here executes an
+Live reasoning and feedback are **not admitted by the durable adapter**. Nothing here executes an
 action or grants permission. Importing `alive.intelligence` initializes no runtime,
 provider, database, browser or predictive controller.
 

@@ -1,5 +1,10 @@
 # Design and trust boundaries
 
+INT-02's separate durable fixture adapter, reuse matrix, transactions and read-only
+API are documented in `docs/validation/alive-int-02/ARCHITECTURE.md`. The design
+below describes the preserved isolated engine. Its in-memory limits still apply
+when used directly; durable feedback goes through the explicit store interface.
+
 ```mermaid
 flowchart TD
     Host[Trusted caller / existing Governor and consent services] --> Evidence[Injected evidence admission]

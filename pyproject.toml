@@ -28,7 +28,7 @@ dependencies = [
 dev = ["pytest>=8", "pytest-asyncio>=0.25", "ruff>=0.11"]
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
-testpaths = ["tests"]
+testpaths = ["tests", "alive/intelligence/tests"]
 [tool.ruff]
 target-version = "py313"
 line-length = 100
