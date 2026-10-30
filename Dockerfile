@@ -1,5 +1,9 @@
 # syntax=docker/dockerfile:1
 
+# Pinned Node (version and digest) for the Pi runtime stage and the final image (ALIVE-PI-01B).
+# Pi requires Node >= 22.19. To update: change the tag and digest together, then rebuild.
+ARG NODE_IMAGE=node:24.22.2-slim@sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dcaf34dc9749addbf383b1920c
+
 # Stage 1: build the real dashboard UI.
 FROM node:24-slim AS frontend-build
 WORKDIR /build
@@ -9,6 +13,13 @@ COPY dashboard/ ./dashboard/
 ARG VITE_ALIVE_API_BASE=""
 ENV VITE_ALIVE_API_BASE=${VITE_ALIVE_API_BASE}
 RUN cd dashboard && npm run build
+
+# Stage 1b: the pinned Pi agent, from a lockfile, with install scripts disabled. Pi is only ever
+# run when ALIVE_MODEL_TRANSPORT=pi; the default transport (direct) never starts it.
+FROM ${NODE_IMAGE} AS pi-runtime
+WORKDIR /pi
+COPY pi-runtime/package.json pi-runtime/package-lock.json ./
+RUN npm ci --ignore-scripts --no-audit --no-fund
 
 # Stage 2: reproducible Python runtime serving API + built UI.
 FROM python:3.13-slim
@@ -23,6 +34,7 @@ RUN apt-get update \
     && mkdir -p /app && chown alive:alive /app
 WORKDIR /app
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+COPY --from=pi-runtime /usr/local/bin/node /usr/local/bin/node
 COPY --chown=alive:alive pyproject.toml uv.lock alembic.ini ./
 USER alive
 RUN uv sync --locked --no-dev \
@@ -35,6 +47,10 @@ COPY --chown=alive:alive config/ ./config/
 COPY --chown=alive:alive scripts/docker-demo-seed.py scripts/docker-e2e.py scripts/docker-smoke-test.py ./scripts/
 COPY --chown=alive:alive docker/entrypoint.sh docker/healthcheck.py ./docker/
 COPY --from=frontend-build --chown=alive:alive /build/dashboard/dist ./dashboard/dist
+COPY --from=pi-runtime --chown=alive:alive /pi/ ./pi-runtime/
+# Fail the build, not a run, if the pinned Pi does not start under this Node.
+RUN node --version \
+    && node pi-runtime/node_modules/@earendil-works/pi-coding-agent/dist/bundle/cli.js --version
 RUN chmod +x docker/entrypoint.sh
 EXPOSE 8000
 HEALTHCHECK --interval=10s --timeout=5s --retries=12 --start-period=60s \

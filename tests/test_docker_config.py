@@ -125,3 +125,52 @@ def test_backend_serves_dashboard_without_touching_api():
     assert "dashboard" in app and "dist" in app
     assert "include_router(experiment_router" in app
     assert "/api/v1/health" in app
+
+
+# --- ALIVE-PI-01B: the pinned Pi runtime -------------------------------------------------------
+
+PI_PACKAGE = "@earendil-works/pi-coding-agent"
+PI_INTEGRITY = (
+    "sha512-Z41LpZ3yYHSC/UUps6Mr39UMFPwH8elhJBG9DY1P7kuzsE5qSK/6eMj2EHzO5evJRQWLbKSqUMw"
+    "+4nCNtIyiQg=="
+)
+
+
+def test_pi_runtime_is_pinned_to_one_exact_version_with_an_integrity_hash():
+    package = json.loads(read("pi-runtime/package.json"))
+    assert package["private"] is True
+    assert package["dependencies"] == {PI_PACKAGE: "1.4.0"}  # exact: no ^, ~, or range
+    lock = json.loads(read("pi-runtime/package-lock.json"))
+    pinned = lock["packages"][f"node_modules/{PI_PACKAGE}"]
+    assert pinned["version"] == "1.4.0" and pinned["integrity"] == PI_INTEGRITY
+    from alive.config import Settings
+
+    assert Settings(_env_file=None).alive_pi_pinned_version == "1.4.0"
+
+
+def test_every_locked_pi_dependency_is_hashed_and_comes_from_the_npm_registry():
+    packages = json.loads(read("pi-runtime/package-lock.json"))["packages"]
+    for path, meta in packages.items():
+        if not path:
+            continue
+        assert meta["resolved"].startswith("https://registry.npmjs.org/"), path
+        assert meta["integrity"].startswith("sha512-"), path
+
+
+def test_dockerfile_installs_pi_from_the_lockfile_without_running_install_scripts():
+    dockerfile = read("Dockerfile")
+    assert re.search(
+        r"^ARG NODE_IMAGE=node:\d+\.\d+\.\d+-slim@sha256:[0-9a-f]{64}$", dockerfile, re.M
+    )
+    assert "FROM ${NODE_IMAGE} AS pi-runtime" in dockerfile
+    assert "npm ci --ignore-scripts" in dockerfile
+    assert "pi-runtime/package-lock.json" in dockerfile
+    assert "npm install" not in dockerfile  # only a lockfile-exact install
+    final = dockerfile.split("FROM python:3.13-slim", 1)[1]
+    assert "USER alive" in final.split("COPY --from=pi-runtime --chown=alive:alive", 1)[0]
+    assert "cli.js --version" in dockerfile  # the build proves Pi starts under this Node
+
+
+def test_compose_does_not_switch_the_model_transport_to_pi():
+    for name in ("compose.yaml", "compose.e2e.yaml"):
+        assert "ALIVE_MODEL_TRANSPORT" not in read(name), "the default transport stays direct"

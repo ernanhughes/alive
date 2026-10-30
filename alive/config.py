@@ -4,6 +4,7 @@ import secrets
 import subprocess
 import tempfile
 from pathlib import Path
+from typing import Literal
 
 from pydantic import AliasChoices, Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -23,6 +24,19 @@ class Settings(BaseSettings):
     alive_pi_command: list[str] = ["pi"]
     alive_pi_provider: str = ""
     alive_pi_model: str = ""
+    # ALIVE-PI-01B: which transport carries a migrated model operation. `direct` (default) is the
+    # unchanged MetaProvider path; `pi` runs the operation through a governed Pi child process.
+    alive_model_transport: Literal["direct", "pi"] = "direct"
+    alive_pi_node: str = ""  # absolute path to node; empty = resolve `node` from PATH at run time
+    alive_pi_cli: str = ""  # explicit Pi bundle path; empty = derived from alive_pi_runtime_dir
+    alive_pi_runtime_dir: str = "pi-runtime"  # holds the lockfile-pinned Pi install
+    alive_pi_pinned_version: str = "1.4.0"  # a different installed version is refused
+    # SHA-256 of the pinned Pi CLI bundle (identical on Windows and Linux). Enforced,
+    # not just recorded: a same-version bundle with other bytes is refused.
+    alive_pi_bundle_sha256: str = "e79626f2dd6f94aa45d30f3fa63cd84319a6eefcd150b353cfaf274366926774"
+    alive_pi_run_deadline: float = Field(120, ge=1, le=900)  # absolute per-run deadline, seconds
+    # One Governor reservation pays for exactly one provider request; PiGateway refuses any other.
+    alive_pi_max_provider_requests: int = Field(1, ge=1, le=1)
     alive_agent_timeout: float = Field(120, ge=1)
     alive_meta_url: str = ""
     alive_meta_model: str = "muse-spark-1.3"

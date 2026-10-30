@@ -29,7 +29,25 @@ def test_migration_execution_and_repeat(tmp_path):
             "runtime_state",
         } <= tables
         assert "web_experiences" in tables
+        assert {"pi_runs", "pi_provider_requests"} <= tables
         assert connection.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0008"
+
+
+def test_pi_migration_downgrades_cleanly_to_0006(tmp_path):
+    db = tmp_path / "downgrade.db"
+    env = os.environ | {"DATABASE_URL": f"sqlite+aiosqlite:///{db}"}
+    for command in (["upgrade", "head"], ["downgrade", "0006"]):
+        subprocess.run(
+            [sys.executable, "-m", "alembic", *command], env=env, check=True, capture_output=True
+        )
+    with sqlite3.connect(db) as connection:
+        tables = {
+            row[0]
+            for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")
+        }
+        assert "pi_runs" not in tables and "pi_provider_requests" not in tables
+        assert "web_experiences" in tables  # earlier work is untouched
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0006"
 
 
 def test_workflow_tables_match_the_models_and_the_migration_downgrades(tmp_path):
@@ -69,12 +87,13 @@ def test_workflow_tables_match_the_models_and_the_migration_downgrades(tmp_path)
             "SELECT sql FROM sqlite_master WHERE name = 'workflow_stage_runs'"
         ).fetchone()[0]
         assert "uq_workflow_stage_attempt" in schema and "ck_workflow_stage_state" in schema
-    alembic("downgrade", "0006")
+    alembic("downgrade", "0007")
     with sqlite3.connect(db) as connection:
         remaining = {
             row[0]
             for row in connection.execute("SELECT name FROM sqlite_master WHERE type='table'")
         }
         assert not set(names) & remaining
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0006"
+        assert "pi_runs" in remaining  # the previous migration is untouched
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0007"
     alembic("upgrade", "head")  # and it comes back

@@ -1,7 +1,6 @@
 """Workflow definitions, runs and stage runs (ALIVE-PI-02A).
 
-down_revision is 0006 because PI-01B's 0007 (pi_runs) is not on main yet. Whichever of the two
-merges second changes its down_revision to the other's revision (a one-line edit, no schema change).
+Follows 0007 (pi_runs, PI-01B).
 """
 
 import sqlalchemy as sa
@@ -9,7 +8,7 @@ from alembic import op
 from sqlalchemy.dialects.postgresql import JSONB
 
 revision = "0008"
-down_revision = "0006"
+down_revision = "0007"
 
 J = sa.JSON().with_variant(JSONB(), "postgresql")
 

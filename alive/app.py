@@ -31,6 +31,8 @@ from alive.living_api import public_router as living_world_router
 from alive.living_api import router as living_router
 from alive.memory import GENERAL_MEMORY_TYPES, MemoryService
 from alive.models import AgentRun, BrowserSession, Event, Goal, Memory, now, record
+from alive.pi.api import router as pi_router
+from alive.pi.runtime import PiRuntime, set_runtime
 from alive.provenance import runtime_identity
 from alive.providers import MetaProvider
 from alive.research_blind import ResearchBlind
@@ -88,17 +90,22 @@ def create_app(settings=None):
             app.state.approvals,
         )
         app.state.blind = ResearchBlind(kernel)
+        app.state.pi = PiRuntime(kernel, settings)
+        set_runtime(app.state.pi)
         if kernel.ready:
             await app.state.cognition.initialize()
             await app.state.experiments.initialize()
             await app.state.living.initialize()
             await app.state.web.initialize()
             await app.state.relationships.initialize()
+            await app.state.pi.initialize()  # settle Pi runs a previous process left; no replay
             # Shipped definitions only; there is no HTTP path that registers a workflow.
             app.state.workflow_seed = await seed_builtin(kernel)
         try:
             yield
         finally:
+            await app.state.pi.close()
+            set_runtime(None)
             await app.state.web.close()
             await app.state.living.close()
             await app.state.experiments.close()
@@ -200,6 +207,7 @@ def create_app(settings=None):
     app.include_router(web_router(app, ready))
     app.include_router(exploration_router(app, ready))
     app.include_router(demo_tour_router(app, ready))
+    app.include_router(pi_router(app, ready))
     app.include_router(workflow_router(app, ready))
     app.include_router(living_world_router(app))
     app.include_router(public_router(app))

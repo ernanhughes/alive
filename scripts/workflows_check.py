@@ -3,7 +3,7 @@
     DATABASE_URL=postgresql+asyncpg://... ALIVE_API_TOKEN=<32+ chars> \
         uv run python -m scripts.workflows_check
 
-Applies the migrations (up, down to 0006, up again), starts the real application, and checks the
+Applies the migrations (up, down to 0007, up again), starts the real application, and checks the
 promises that matter on a real server: the shipped definition is seeded, versions are immutable,
 concurrent registration has one winner, runs keep their definition snapshot, history survives a
 restart, and no response leaks the token. No provider is called and no process is started.
@@ -63,7 +63,6 @@ def call(client, fn, *args, **kwargs):
 def main():
     token = os.environ["ALIVE_API_TOKEN"]
     headers = {"Authorization": f"Bearer {token}"}
-    alembic("downgrade", "0006") if os.environ.get("WORKFLOWS_CHECK_REMIGRATE") else None
     alembic("upgrade", "head")
     check("migrations apply", True)
 
@@ -163,9 +162,9 @@ def main():
             call(client, store.get_run, run["id"])["status"] == "RUNNING",
         )
 
-    alembic("downgrade", "0006")
+    alembic("downgrade", "0007")
     alembic("upgrade", "head")
-    check("downgrade to 0006 and upgrade again", True)
+    check("downgrade to 0007 and upgrade again", True)
     print(f"\n{sum(results)}/{len(results)} checks passed")
     return 0 if all(results) else 1
 

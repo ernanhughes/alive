@@ -2,9 +2,9 @@
 
 Status: draft for independent review. PI-02A defines, stores and **shows** workflows. It does **not**
 execute them: no scheduler, no Pi process, no model call, no write endpoint. Execution is PI-02B and
-needs the PI-01B Pi runtime (draft PR #66) to be qualified first.
+needs the PI-01B Pi runtime (PR #66, merged) to pass its independent re-review first.
 
-Base: `main` at `8da23b4`. Independent of PR #66 (no code or table from it is used).
+Base: `main`, after PR #66 (PI-01B) merged. PI-02A itself uses no code or table from it.
 
 ## 1. What is added
 
@@ -29,7 +29,7 @@ would re-create something that already exists.
 | --- | --- | --- | --- | --- | --- |
 | Cognition (`alive/cognition.py`) | Runs one **Investigation**: observer, proposer, optional critic, evaluator; budgets; settlement | `Cognition.execute`, `call_role`, `world_state`, `finish`; tables `investigations`, `model_invocations`, `cognitive_*` | `test_cognition.py`, `test_recovery_budgets.py` | **Reuse and leave alone.** Its stage sequence is the model for a workflow; four of its functions are bound as operations. Consolidation is future work (map in the companion document) | This *is* an orchestration; the workflow must not run beside it. PI-02B must call into it or replace it deliberately, never wrap it |
 | ModelGateway (`alive/model_gateway.py`) | The single audited seam for model calls (`cognition.role` only) | `StructuredRequest`, `gateway_for` | `test_model_gateway.py` ratchets | **Reuse.** `cognition.role` is the only `pi_agent` operation; no new provider client | A second dispatch path would break the ratchet |
-| Agent / Pi runs (`alive/agents.py`, `agent_runs`) | Older agent runner records | `Agents`, table `agent_runs` | `test_agents*` | **Leave alone.** The PI-01B run lifecycle is in PR #66, not on `main`; a stage stores `pi_run_id` as a plain id until it lands | Do not model Pi receipts again; reference them |
+| Agent / Pi runs (`alive/agents.py`, `agent_runs`) | Older agent runner records | `Agents`, table `agent_runs` | `test_agents*` | **Leave alone.** The PI-01B run lifecycle (`pi_runs`, PR #66) is on `main`; a stage stores `pi_run_id` as a plain id until PI-02B adds the foreign key | Do not model Pi receipts again; reference them |
 | Research (`research_memory.py`, `research_relationships.py`, `research_blind.py`, `claim_comparison.py`, `exploration_api.py`) | Research capture, relationships, blind evaluation, claim comparison | Services under `app.state`; tables in `web_experiences`, `memories` | `test_research_*`, `test_notebook*` | **Leave alone.** Future workflow operations, not rewritten here | Not duplicated; nothing new is built |
 | Evidence (`evidence_qualification.py`, `society.validate_references`/`evaluate`) | Qualify and validate evidence | `EvidenceQualifier.qualify`, functions | `test_evidence_qualification.py`, `test_cognition.py` | **Reuse.** Bound as `validation` operations | None |
 | Evidence/artifact persistence | `events`, `memories`, `cognitive_observations`, `experiences`, `web_experiences` | SQLAlchemy models | many | **Reuse by reference.** Stage records hold opaque refs and hashes, never copies | A new artifact store would duplicate this; none is added |
@@ -68,14 +68,12 @@ never be repointed at a newer revision.
 
 **`workflow_stage_runs`**: `id`, `run_id` (**FK RESTRICT**), `stage_id`, `attempt`, snapshot of
 `stage_type`/`operation`, `state`, `input_*`/`output_*` refs and hashes, `pi_run_id` (a plain id; the FK
-to `pi_runs` is PI-02B's, after PR #66 lands), `model_invocation_id` (FK to the existing table),
+to `pi_runs` is PI-02B's), `model_invocation_id` (FK to the existing table),
 `evidence_refs`, `validation_status`, `error_category`/`error_detail`, `uncertainty`, timestamps.
 `UNIQUE(run_id, stage_id, attempt)`; `CHECK` constraints on every enumerated column.
 
 Indexes serve the read patterns: definitions by name, runs by workflow/created and by status, stage
-runs by run. Migration `0008` has `down_revision = "0006"`; PI-01B's `0007` is not on `main`. **Whichever
-of the two merges second changes its `down_revision` to the other** (a one-line edit; no schema
-change). A test asserts column, nullability, index, foreign-key and constraint parity between the
+runs by run. Migration `0008` follows PI-01B's `0007` (`pi_runs`), which is on `main` (PR #66). A test asserts column, nullability, index, foreign-key and constraint parity between the
 migration and the models, and that downgrade/upgrade round-trips.
 
 ## 4. The definition format (`schema_version: 1`)
@@ -190,7 +188,7 @@ records the exact SHA and the GitHub CI run; section 11 lists what is not demons
 | Lint and format | `uv run ruff check alive migrations scripts tests` and `ruff format --check ...` | PASS |
 | New workflow tests | `uv run pytest tests/test_workflows_spec.py tests/test_workflows_store.py tests/test_workflows_api.py tests/test_migrations.py` | PASS (see the full count below) |
 | Full backend suite | `uv run pytest -q -rs` | PASS: 877 passed, 7 skipped (existing), 1 xfailed |
-| Real PostgreSQL (pgvector/pgvector:pg16) | `DATABASE_URL=... uv run python -m scripts.workflows_check` | PASS: 14/14 (migrate, seed, idempotency, 8-way registration race with one winner, run snapshot, restart persistence, no token leak, downgrade to 0006 and up again) |
+| Real PostgreSQL (pgvector/pgvector:pg16) | `DATABASE_URL=... uv run python -m scripts.workflows_check` | PASS: 14/14 (migrate, seed, idempotency, 8-way registration race with one winner, run snapshot, restart persistence, no token leak, downgrade to 0007 and up again) |
 | Existing Docker E2E (migration runs inside the image against PostgreSQL) | `docker compose -f compose.e2e.yaml up --build --abort-on-container-exit --exit-code-from e2e` | PASS: 6 groups |
 | Mutation probes | 28 deliberate breakages of the load-bearing guards | all caught (2 gaps found first, closed with tests) |
 | GitHub CI on Ubuntu and Windows | PR checks | see the PR |
@@ -205,4 +203,4 @@ records the exact SHA and the GitHub CI run; section 11 lists what is not demons
   with direct write access to the database; that case is *detected* on read (hash re-check), not
   prevented.
 * YAML is not accepted (JSON only), to avoid a second parser in a trust-sensitive path.
-* Migration ordering with PR #66 needs the one-line `down_revision` edit described above.
+* The workflow tables do not yet reference `pi_runs`; PI-02B adds that foreign key.
