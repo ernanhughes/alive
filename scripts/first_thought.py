@@ -13,6 +13,7 @@ import httpx
 from playwright.async_api import async_playwright, expect
 
 from alive.config import Settings, prepare_local
+from scripts.alive_logs import ensure_log_dir, log_path
 from scripts.first_contact import wait_http
 
 
@@ -179,7 +180,8 @@ def main():
         raise SystemExit("Stop the existing backend/dashboard before this owned restart demo.")
     subprocess.run([sys.executable, "-m", "alembic", "upgrade", "head"], check=True)
     Path(".alive").mkdir(exist_ok=True)
-    log = Path(".alive/first-thought-backend.log").open("w", encoding="utf-8")
+    ensure_log_dir()
+    log = log_path("first-thought-backend.log").open("w", encoding="utf-8")
     backend = dashboard = None
 
     def launch():
