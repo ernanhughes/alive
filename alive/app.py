@@ -54,6 +54,8 @@ from alive.schemas import (
 from alive.transport import ZmqTransport
 from alive.web_experience import WebCompanion
 from alive.web_experience import router as web_router
+from alive.workflows.api import router as workflow_router
+from alive.workflows.store import seed_builtin
 
 
 def create_app(settings=None):
@@ -97,6 +99,8 @@ def create_app(settings=None):
             await app.state.web.initialize()
             await app.state.relationships.initialize()
             await app.state.pi.initialize()  # settle Pi runs a previous process left; no replay
+            # Shipped definitions only; there is no HTTP path that registers a workflow.
+            app.state.workflow_seed = await seed_builtin(kernel)
         try:
             yield
         finally:
@@ -204,6 +208,7 @@ def create_app(settings=None):
     app.include_router(exploration_router(app, ready))
     app.include_router(demo_tour_router(app, ready))
     app.include_router(pi_router(app, ready))
+    app.include_router(workflow_router(app, ready))
     app.include_router(living_world_router(app))
     app.include_router(public_router(app))
 

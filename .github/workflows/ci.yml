@@ -78,6 +78,7 @@ jobs:
       - run: uv run playwright install --with-deps chrome
       - run: uv run python -m scripts.first_contact --runner mock
       - run: uv run python -m scripts.first_thought --provider mock
+      - run: uv run python -m scripts.workflows_check
   notebook:
     runs-on: ubuntu-latest
     steps:

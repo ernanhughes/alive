@@ -1,0 +1,88 @@
+"""Read-only workflow inspection API (ALIVE-PI-02A). No create, run, cancel or model endpoint.
+
+Everything here is authenticated with the same dependency as the rest of /api/v1. Responses are
+built from explicit field lists and contain hashes and opaque references only: no credentials, no
+run tokens, no prompt text, no file paths.
+"""
+
+from fastapi import APIRouter, Depends, HTTPException, Path, Query
+
+from alive.workflows import store
+from alive.workflows.spec import NAME_RE, graph_of
+
+NAME = Path(pattern=NAME_RE.pattern, description="workflow name")
+VERSION = Path(ge=1, le=1_000_000)
+
+
+def router(app, ready):
+    api = APIRouter(prefix="/api/v1", dependencies=[Depends(ready)])
+
+    def kernel():
+        return app.state.kernel
+
+    async def found(awaitable):
+        try:
+            return await awaitable
+        except store.UnknownWorkflow:
+            raise HTTPException(404, "Unknown workflow or run") from None
+
+    @api.get("/workflow-operations")
+    async def operations():
+        """The closed set of operations a stage may name, and which of them exist today."""
+        return {"operations": store.operation_listing()}
+
+    @api.get("/workflows")
+    async def workflows():
+        grouped = {}
+        for view in await store.list_definitions(kernel()):  # newest version first per name
+            entry = grouped.setdefault(
+                view["name"],
+                {"name": view["name"], "title": view["title"], "latest_version": view["version"],
+                 "latest_status": view["status"], "versions": []},
+            )  # fmt: skip
+            entry["versions"].append(
+                {k: view[k] for k in ("version", "status", "definition_sha256", "stage_count")}
+            )
+        return {"workflows": list(grouped.values())}
+
+    @api.get("/workflows/{name}")
+    async def workflow(name: str = NAME):
+        versions = await store.list_definitions(kernel(), name)
+        if not versions:
+            raise HTTPException(404, "Unknown workflow or run")
+        return {"name": name, "versions": versions}
+
+    @api.get("/workflows/{name}/versions/{version}")
+    async def definition(name: str = NAME, version: int = VERSION):
+        return await found(store.get_definition(kernel(), name, version))
+
+    @api.get("/workflows/{name}/versions/{version}/graph")
+    async def graph(name: str = NAME, version: int = VERSION):
+        """Nodes and edges derived from the stored definition. Plain data for a viewer to escape."""
+        view = await found(store.get_definition(kernel(), name, version))
+        return {
+            "name": name,
+            "version": version,
+            "definition_sha256": view["definition_sha256"],
+            **graph_of(view["definition"]),
+        }
+
+    @api.get("/workflow-runs")
+    async def runs(
+        workflow: str | None = Query(None, pattern=NAME_RE.pattern),
+        status: str | None = Query(None, max_length=20),
+        limit: int = Query(50, ge=1, le=200),
+    ):
+        return {
+            "runs": await store.list_runs(kernel(), workflow=workflow, status=status, limit=limit)
+        }
+
+    @api.get("/workflow-runs/{run_id}")
+    async def run(run_id: str = Path(max_length=36)):
+        return await found(store.get_run(kernel(), run_id))
+
+    @api.get("/workflow-runs/{run_id}/stages")
+    async def stages(run_id: str = Path(max_length=36)):
+        return {"run_id": run_id, "stages": await found(store.get_stage_runs(kernel(), run_id))}
+
+    return api
