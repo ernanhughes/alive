@@ -1,0 +1,4 @@
+PASS HTTP exact durable chain before container restart
+2|2|2|0|0
+PASS HTTP exact chain after container process restart and three replays
+2|2|2|0|0

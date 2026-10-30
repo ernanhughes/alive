@@ -1,0 +1,17 @@
+C:\Projects\alive\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+  self._get_loop()
+PASS  cognition starts on the scripted Meta-compatible provider
+PASS  the investigation completed  [COMPLETED]
+PASS  every model call validated
+PASS  one Pi run per model call
+PASS  every Pi run settled
+PASS  exactly one provider request per Pi run, none retried
+PASS  Pi 1.4.0 observed under its local alias only
+PASS  the provider saw ALIVE's credential, correlation and model; never Pi's token
+PASS  no provider request carried tools or streaming
+PASS  cost is unknown, not zero
+PASS  every process tree was confirmed gone
+PASS  no credential appears in any receipt or event
+PASS  receipts require authentication
+
+13/13 checks passed; 2 scripted provider calls

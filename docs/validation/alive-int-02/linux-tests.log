@@ -1,0 +1,18 @@
+Resolved 60 packages in 1ms
+Downloading pygments (1.2MiB)
+Downloading ruff (10.0MiB)
+ Downloaded pygments
+ Downloaded ruff
+Prepared 6 packages in 1.88s
+Installed 6 packages in 292ms
+ + iniconfig==2.3.1
+ + pluggy==1.7.0
+ + pygments==2.21.0
+ + pytest==9.1.1
+ + pytest-asyncio==1.4.1
+ + ruff==0.17.2
+........................................................................ [ 29%]
+........................................................................ [ 58%]
+........................................................................ [ 88%]
+......s......................                                            [100%]
+244 passed, 1 skipped in 280.83s (0:04:40)
