@@ -10,6 +10,8 @@ INT-02 adds a fixture-only durable integration with real workflow references and
 authenticated read-only inspection. See
 [`ARCHITECTURE.md`](../../docs/validation/alive-int-02/ARCHITECTURE.md) for the
 canonical durable workflow, authority boundaries and production limitations.
+The INT-02 qualification report is
+[`docs/validation/alive-int-02/IMPLEMENTATION-REPORT.md`](../../docs/validation/alive-int-02/IMPLEMENTATION-REPORT.md).
 
 The isolated engine coordinates authorized evidence, bounded structured interpretation,
 empirical proposals, independently supplied outcomes and session-local learning.
@@ -152,9 +154,10 @@ generalization benefit.
 
 ## Explicit limits
 
-No production registration, service persistence, action execution, arbitrary-web
+Durable fixture persistence and read-only inspection are available through the
+INT-02 adapter. Production model/evidence admission, action execution, arbitrary-web
 access, unrestricted Pi skills, model reservation creation, autonomous scheduling,
-code execution, self-modification or autonomous self-improvement. No permission,
+code execution, self-modification and autonomous self-improvement remain unavailable. No permission,
 semantic truth or independent source-authenticity certificate is created by a hash
 or model response. Governor, existing memory access/consent controls, dispatch ledger
 and existing execution services retain their authority. See `DESIGN.md`,

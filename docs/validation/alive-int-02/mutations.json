@@ -1,0 +1,42 @@
+[
+  {
+    "mutation": "trust",
+    "baseline": "PASS",
+    "result": "KILLED",
+    "test": "test_untrusted_observer_self_certification",
+    "exit_code": 1,
+    "receipt": "F                                                                        [100%]\n================================== FAILURES ===================================\n_________________ test_untrusted_observer_self_certification __________________\ntests\\test_intelligence_durable.py:262: in test_untrusted_observer_self_certification\n    with pytest.raises(store.Refused):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n============================== warnings summary ===============================\ntests/test_intelligence_durable.py::test_untrusted_observer_self_certification\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_intelligence_durable.py::test_untrusted_observer_self_certification\n1 failed, 1 warning in 4.60s\n"
+  },
+  {
+    "mutation": "payload",
+    "baseline": "PASS",
+    "result": "KILLED",
+    "test": "test_reward_substitution",
+    "exit_code": 1,
+    "receipt": "F                                                                        [100%]\n================================== FAILURES ===================================\n__________________________ test_reward_substitution ___________________________\ntests\\test_intelligence_durable.py:202: in test_reward_substitution\n    with pytest.raises(store.Refused):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n============================== warnings summary ===============================\ntests/test_intelligence_durable.py::test_reward_substitution\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_intelligence_durable.py::test_reward_substitution - Failed:...\n1 failed, 1 warning in 4.59s\n"
+  },
+  {
+    "mutation": "frozen",
+    "baseline": "PASS",
+    "result": "KILLED",
+    "test": "test_complete_restart_replay_and_read_only_api",
+    "exit_code": 1,
+    "receipt": "F                                                                        [100%]\n================================== FAILURES ===================================\n_______________ test_complete_restart_replay_and_read_only_api ________________\ntests\\test_intelligence_durable.py:100: in test_complete_restart_replay_and_read_only_api\n    assert second[\"active_policy_choice\"] == \"monitor\"\nE   AssertionError: assert 'retrieve' == 'monitor'\nE     \nE     - monitor\nE     + retrieve\n============================== warnings summary ===============================\ntests/test_intelligence_durable.py::test_complete_restart_replay_and_read_only_api\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_intelligence_durable.py::test_complete_restart_replay_and_read_only_api\n1 failed, 1 warning in 3.27s\n"
+  },
+  {
+    "mutation": "update",
+    "baseline": "PASS",
+    "result": "KILLED",
+    "test": "test_complete_restart_replay_and_read_only_api",
+    "exit_code": 1,
+    "receipt": "urable.py:95: in test_complete_restart_replay_and_read_only_api\n    chain = call(client, fixture.lifecycle)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_intelligence_durable.py:27: in call\n    return client.portal.call(lambda: fn(client.app.state.kernel, *args, **kwargs))\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n..\\alive\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:340: in call\n    return cast(T_Retval, self.start_task_soon(func, *args).result())\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nC:\\Users\\ernan\\AppData\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\concurrent\\futures\\_base.py:456: in result\n    return self.__get_result()\n           ^^^^^^^^^^^^^^^^^^^\nC:\\Users\\ernan\\AppData\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\concurrent\\futures\\_base.py:401: in __get_result\n    raise self._exception\n..\\alive\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:265: in _call_func\n    retval = await retval_or_awaitable\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\nalive\\intelligence\\fixture.py:156: in lifecycle\n    return await inspect_chain(kernel, state_id)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nalive\\intelligence\\store.py:712: in inspect_chain\n    require(\nalive\\intelligence\\store.py:50: in require\n    raise Refused(message)\nE   alive.intelligence.store.Refused: Learning sequence changed\n============================== warnings summary ===============================\ntests/test_intelligence_durable.py::test_complete_restart_replay_and_read_only_api\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_intelligence_durable.py::test_complete_restart_replay_and_read_only_api\n1 failed, 1 warning in 6.06s\n"
+  },
+  {
+    "mutation": "workflow",
+    "baseline": "PASS",
+    "result": "KILLED",
+    "test": "test_feedback_revalidates_workflow_before_learning[context]",
+    "exit_code": 1,
+    "receipt": "F                                                                        [100%]\n================================== FAILURES ===================================\n_________ test_feedback_revalidates_workflow_before_learning[context] _________\ntests\\test_intelligence_durable.py:404: in test_feedback_revalidates_workflow_before_learning\n    with pytest.raises(store.Refused):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n============================== warnings summary ===============================\ntests/test_intelligence_durable.py::test_feedback_revalidates_workflow_before_learning[context]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_intelligence_durable.py::test_feedback_revalidates_workflow_before_learning[context]\n1 failed, 1 warning in 9.35s\n"
+  }
+]

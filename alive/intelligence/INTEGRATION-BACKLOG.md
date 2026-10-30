@@ -24,4 +24,5 @@ See `docs/validation/alive-int-02/ARCHITECTURE.md`; the items below originated i
 8. Consider eventual governed self-research only under separate owner authorization,
    frozen evaluation, audited costs, controlled writes and explicit human review.
 
-None of these integration steps is implemented by this milestone.
+INT-02 implements the fixture-only persistence and read-only inspection subset.
+The other production integration steps remain future work.

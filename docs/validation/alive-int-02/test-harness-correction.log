@@ -1,0 +1,70 @@
+............................F..............                              [100%]
+================================== FAILURES ===================================
+__________ test_conflicting_independent_measurement_versions_refused __________
+
+client = <starlette.testclient.TestClient object at 0x0000015AA6580050>
+
+    def test_conflicting_independent_measurement_versions_refused(client):
+        state, episode, source, feedback = setup_episode(client)
+        from alive.intelligence.contracts import Evidence
+
+        measurement = feedback.measurements[0]
+        altered = Evidence.model_validate(
+            measurement.model_dump()
+            | {
+                "id": "second-measurement",
+                "fingerprint": "0" * 64,
+            }
+        )
+        changed = OutcomeFeedback.model_validate(
+            feedback.model_dump()
+            | {
+                "measurements": (measurement, altered),
+            }
+        )
+
+        async def custody(kernel):
+            async with kernel.db.sessions.begin() as session:
+                row = await session.get(Event, source)
+                row.payload = row.payload | {"feedback": changed.model_dump(mode="json")}
+
+>       call(client, custody)
+
+tests\test_intelligence_durable.py:461:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_intelligence_durable.py:27: in call
+    return client.portal.call(lambda: fn(client.app.state.kernel, *args, **kwargs))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\alive\.venv\Lib\site-packages\anyio\from_thread.py:340: in call
+    return cast(T_Retval, self.start_task_soon(func, *args).result())
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\alive\.venv\Lib\site-packages\anyio\from_thread.py:265: in _call_func
+    retval = await retval_or_awaitable
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+kernel = <alive.kernel.Kernel object at 0x0000015AA6382DB0>
+
+    async def custody(kernel):
+        async with kernel.db.sessions.begin() as session:
+            row = await session.get(Event, source)
+>           row.payload = row.payload | {"feedback": changed.model_dump(mode="json")}
+                          ^^^^^^^^^^^
+E           AttributeError: 'NoneType' object has no attribute 'payload'
+
+tests\test_intelligence_durable.py:459: AttributeError
+============================== warnings summary ===============================
+tests/test_intelligence_durable.py: 34 warnings
+tests/test_intelligence_receipts.py: 10 warnings
+  C:\Projects\alive\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+    self._get_loop()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/test_intelligence_durable.py::test_conflicting_independent_measurement_versions_refused
+1 failed, 42 passed, 44 warnings in 27.57s
