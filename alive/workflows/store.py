@@ -6,6 +6,7 @@ HTTP write path. A registration is validated, canonicalised and hashed; a (name,
 immutable, so registering the same bytes again is a no-op and different bytes are refused.
 """
 
+from datetime import UTC
 from importlib import resources
 
 from sqlalchemy import func, select
@@ -114,6 +115,11 @@ def stage_view(row):
         "created_at": _iso(row.created_at),
         "started_at": _iso(row.started_at),
         "finished_at": _iso(row.finished_at),
+        "duration_seconds": (
+            row.finished_at.replace(tzinfo=UTC) - row.started_at.replace(tzinfo=UTC)
+        ).total_seconds()
+        if row.started_at and row.finished_at
+        else None,
     }
 
 
@@ -297,7 +303,33 @@ async def get_stage_runs(kernel, run_id):
                 WorkflowStageRun.created_at, WorkflowStageRun.stage_id, WorkflowStageRun.attempt
             )
         )
-        return [stage_view(row) for row in rows.all()]
+        from alive.cognitive_models import ModelInvocation
+
+        views = []
+        for row in rows.all():
+            view = stage_view(row)
+            call = (
+                await session.get(ModelInvocation, row.model_invocation_id)
+                if row.model_invocation_id
+                else None
+            )
+            if call is not None and call.investigation_id != run.investigation_id:
+                raise UnknownWorkflow(run_id)
+            fields = ("prompt_tokens", "completion_tokens", "total_tokens")
+            usage = call.usage if call else {}
+            view.update(
+                {
+                    "model_requested": call.model if call else None,
+                    "usage": {key: usage[key] for key in fields}
+                    if all(type(usage.get(key)) is int for key in fields)
+                    else None,
+                    "charged_tokens": usage.get("charged_tokens"),
+                    "cost_usd": None,
+                    "cost_status": "no_price_table; unknown is not zero",
+                }
+            )
+            views.append(view)
+        return views
 
 
 async def count_runs(kernel):
@@ -335,49 +367,79 @@ async def open_run(
                 if prior.definition_id != definition.id:
                     raise WorkflowConflict("idempotency key belongs to a different workflow")
                 return run_view(prior), False
-        run = WorkflowRun(
-            id=uid(),
-            instance_id=kernel.instance_id,
-            definition_id=definition.id,
-            workflow_name=definition.name,
-            workflow_version=definition.version,
-            definition_sha256=definition.definition_sha256,
-            schema_version=definition.schema_version,
+        return await create_run(
+            session,
+            kernel,
+            definition,
+            input_ref=input_ref,
+            input_sha256=input_sha256,
             goal_id=goal_id,
             investigation_id=investigation_id,
             trigger=trigger,
-            input_ref=input_ref,
-            input_sha256=input_sha256,
             authorization_ref=authorization_ref,
-            budget_json=budget or {},
+            budget=budget,
             idempotency_key=idempotency_key,
         )
-        session.add(run)
-        await session.flush()
-        for stage in definition.definition_json["stages"]:
-            session.add(
-                WorkflowStageRun(
-                    id=uid(),
-                    run_id=run.id,
-                    stage_id=stage["id"],
-                    stage_type=stage["type"],
-                    operation=stage["operation"],
-                )
+
+
+async def create_run(
+    session,
+    kernel,
+    definition,
+    *,
+    input_ref=None,
+    input_sha256=None,
+    goal_id=None,
+    investigation_id=None,
+    trigger="manual",
+    authorization_ref=None,
+    budget=None,
+    idempotency_key=None,
+):
+    """Shared row/event construction inside a caller-owned transaction."""
+    run = WorkflowRun(
+        id=uid(),
+        instance_id=kernel.instance_id,
+        definition_id=definition.id,
+        workflow_name=definition.name,
+        workflow_version=definition.version,
+        definition_sha256=definition.definition_sha256,
+        schema_version=definition.schema_version,
+        goal_id=goal_id,
+        investigation_id=investigation_id,
+        trigger=trigger,
+        input_ref=input_ref,
+        input_sha256=input_sha256,
+        authorization_ref=authorization_ref,
+        budget_json=budget or {},
+        idempotency_key=idempotency_key,
+    )
+    session.add(run)
+    await session.flush()
+    for stage in definition.definition_json["stages"]:
+        session.add(
+            WorkflowStageRun(
+                id=uid(),
+                run_id=run.id,
+                stage_id=stage["id"],
+                stage_type=stage["type"],
+                operation=stage["operation"],
             )
-        await session.flush()
-        kernel.add_event(
-            session,
-            "workflow.run.opened",
-            {
-                "run_id": run.id,
-                "name": run.workflow_name,
-                "version": run.workflow_version,
-                "definition_sha256": run.definition_sha256,
-            },
-            source="workflow",
-            correlation=run.id,
         )
-        return run_view(run), True
+    await session.flush()
+    kernel.add_event(
+        session,
+        "workflow.run.opened",
+        {
+            "run_id": run.id,
+            "name": run.workflow_name,
+            "version": run.workflow_version,
+            "definition_sha256": run.definition_sha256,
+        },
+        source="workflow",
+        correlation=run.id,
+    )
+    return run_view(run), True
 
 
 async def advance_run(kernel, run_id, new_state, *, reason=None):
@@ -429,6 +491,10 @@ async def advance_stage(kernel, run_id, stage_id, new_state, *, attempt=1, **fie
 
 
 def operation_listing():
+    from alive.workflows.adapters import ADAPTERS
     from alive.workflows.operations import public_view
 
-    return [public_view(operation) for operation in OPERATIONS.values()]
+    return [
+        public_view(operation) | {"executable": operation.id in ADAPTERS}
+        for operation in OPERATIONS.values()
+    ]

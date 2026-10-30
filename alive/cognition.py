@@ -5,6 +5,7 @@ import contextlib
 import hashlib
 import json
 import time
+from contextlib import asynccontextmanager
 from datetime import UTC
 from urllib.parse import urlsplit
 
@@ -687,16 +688,53 @@ class Cognition:
             row.snapshot = snapshot
         return snapshot
 
-    async def call_role(self, run_id, role, context):
+    @asynccontextmanager
+    async def workflow_inquiry(self):
+        """Trusted host transfers an existing auction reservation to an explicit workflow.
+
+        The same auction owns admission/accounting. Holding command_lock prevents the
+        autonomous loop from taking this inquiry. Every exit releases unused reservations.
+        """
+        ledger = {}
+
+        async def prepare():
+            async with self.command_lock:
+                if self.mode != "running":
+                    raise ValueError("Cognition must be explicitly started")
+                inquiry_id = await self.auction()
+                if inquiry_id is None:
+                    raise ValueError("No observation admitted by the Governor")
+                ledger["inquiry_id"] = inquiry_id
+                await self.transition(inquiry_id, "INVESTIGATING")
+
+        try:
+            await complete_despite_cancel(prepare())
+            yield ledger["inquiry_id"]
+        finally:
+            if ledger.get("inquiry_id"):
+                await complete_despite_cancel(
+                    self.finish(
+                        ledger["inquiry_id"],
+                        "CANCELLED",
+                        {"effect": "none", "reason": "workflow_owner_closed"},
+                        truncated=True,
+                    )
+                )
+
+    async def call_role(
+        self, run_id, role, context, *, ledger=None, output_ceiling=None, workflow_claim=None
+    ):
         """Run one role invocation. Every exit leaves its ModelInvocation settled (F-002).
 
         The reservation commits inside a transaction, so a cancellation delivered while that
         transaction exits used to bypass the handler that settles the row. One outer handler now
         owns the invocation from the start of the reservation to the end of settlement.
         """
-        ledger = {}
+        ledger = {} if ledger is None else ledger
         try:
-            return await self._invoke_role(run_id, role, context, ledger)
+            return await self._invoke_role(
+                run_id, role, context, ledger, output_ceiling, workflow_claim
+            )
         except BaseException as exc:
             if ledger.get("call_id"):
                 await self._settle_after_failure(exc, ledger)
@@ -729,7 +767,9 @@ class Cognition:
 
         await complete_despite_cancel(settle())
 
-    async def _invoke_role(self, run_id, role, context, ledger):
+    async def _invoke_role(
+        self, run_id, role, context, ledger, output_ceiling=None, workflow_claim=None
+    ):
         k = self.k
         schema = RoleOutput.model_json_schema()
         prompt = role_prompt(role)
@@ -745,7 +785,12 @@ class Cognition:
             row = await session.get(Investigation, run_id)
             control = await session.get(CognitiveControl, k.instance_id)
             cfg = CognitiveConfiguration.model_validate(control.configuration)
-            reserve += cfg.output_tokens
+            output_limit = cfg.output_tokens
+            if output_ceiling is not None:
+                if type(output_ceiling) is not int or not 64 <= output_ceiling <= 4096:
+                    raise BudgetExhausted("Invalid stage output ceiling")
+                output_limit = min(output_limit, output_ceiling)
+            reserve += output_limit
             if self.mode != "running" or row.state in TERMINAL:
                 raise asyncio.CancelledError()
             if (
@@ -757,6 +802,15 @@ class Cognition:
                     "Per-request or investigation budget exhausted before inference"
                 )
             model = k.settings.alive_role_models.get(role, k.settings.alive_meta_model)
+            workflow_stage = None
+            if workflow_claim is not None:
+                from alive.workflows.context import model_claim
+
+                workflow_stage = await model_claim(
+                    session, k, workflow_claim, role, context, model, output_limit
+                )
+                if control.provider != "meta":
+                    raise ValueError("Workflow Pi stage requires governed Meta transport")
             call = ModelInvocation(
                 id=uid(),
                 investigation_id=run_id,
@@ -771,6 +825,12 @@ class Cognition:
                 reserved_tokens=reserve,
             )
             session.add(call)
+            if workflow_stage is not None:
+                workflow_stage.model_invocation_id = call.id
+                call.input_json = call.input_json | {
+                    "workflow_run_id": workflow_claim[0],
+                    "workflow_stage_id": workflow_stage.id,
+                }
             # Charge worst-case immediately. An interrupted request never gets a free retry.
             row.usage = row.usage | {
                 "calls": row.usage["calls"] + 1,
@@ -802,11 +862,13 @@ class Cognition:
                     data=context,
                     schema=schema,
                     model=model,
-                    max_output=cfg.output_tokens,
+                    max_output=output_limit,
                     correlation=call_id,
                 )
             )
             usage = ledger["usage"] = generated.usage
+            if workflow_claim is not None and len(generated.text.encode("utf-8")) > 65536:
+                raise ValueError("Workflow model output exceeds the retained size ceiling")
             try:
                 output = RoleOutput.model_validate_json(generated.text)
                 validate_references(output, context)
@@ -1181,44 +1243,52 @@ class Cognition:
 
     async def finish(self, run_id, target, outcome, *, truncated=False, error=None):
         async with self.k.lock, self.k.db.sessions.begin() as session:
-            run = await session.get(Investigation, run_id)
-            if not run:
-                raise KeyError("Investigation not found")
-            if run.state in TERMINAL:
-                return
-            self._transition(session, run, target)
-            run.error = error
-            # Safety net for F-002: a terminal run never keeps a `reserved` invocation. The normal
-            # path settles it where it fails; this covers any path that did not. Completion is
-            # genuinely unknown here, so it is "interrupted" (as restart recovery labels it) and the
-            # conservative charge is retained. Settled rows are never rewritten.
-            for call in (
-                await session.scalars(
-                    select(ModelInvocation).where(
-                        ModelInvocation.investigation_id == run_id,
-                        ModelInvocation.status == "reserved",
-                    )
-                )
-            ).all():
-                call.status = "interrupted"
-                call.error = (
-                    "Run became terminal before settlement; provider completion unknown; "
-                    "charged reserved tokens"
-                )
-                call.usage = (call.usage or {}) | {
-                    "charged_tokens": call.reserved_tokens,
-                    "reason": "conservative reservation retained",
-                }
-            goal = await session.get(Goal, run.goal_id)
-            if goal and target in ("FAILED", "CANCELLED", "ABSTAINED"):
-                goal.status = "proposed"
-            action = await session.scalar(
-                select(ActionProposal).where(ActionProposal.investigation_id == run_id)
+            await self.finish_in_session(
+                session, run_id, target, outcome, truncated=truncated, error=error
             )
-            if action and action.status not in ("executed", "rejected"):
-                action.status = "cancelled"
-            control = await session.get(CognitiveControl, self.k.instance_id)
-            self._experience(session, run, control, outcome, truncated=truncated)
+
+    async def finish_in_session(
+        self, session, run_id, target, outcome, *, truncated=False, error=None
+    ):
+        """Same settlement in a caller-owned transaction; no dispatch or external work."""
+        run = await session.get(Investigation, run_id)
+        if not run:
+            raise KeyError("Investigation not found")
+        if run.state in TERMINAL:
+            return
+        self._transition(session, run, target)
+        run.error = error
+        # Safety net for F-002: a terminal run never keeps a `reserved` invocation. The normal
+        # path settles it where it fails; this covers any path that did not. Completion is
+        # genuinely unknown here, so it is "interrupted" (as restart recovery labels it) and the
+        # conservative charge is retained. Settled rows are never rewritten.
+        for call in (
+            await session.scalars(
+                select(ModelInvocation).where(
+                    ModelInvocation.investigation_id == run_id,
+                    ModelInvocation.status == "reserved",
+                )
+            )
+        ).all():
+            call.status = "interrupted"
+            call.error = (
+                "Run became terminal before settlement; provider completion unknown; "
+                "charged reserved tokens"
+            )
+            call.usage = (call.usage or {}) | {
+                "charged_tokens": call.reserved_tokens,
+                "reason": "conservative reservation retained",
+            }
+        goal = await session.get(Goal, run.goal_id)
+        if goal and target in ("FAILED", "CANCELLED", "ABSTAINED"):
+            goal.status = "proposed"
+        action = await session.scalar(
+            select(ActionProposal).where(ActionProposal.investigation_id == run_id)
+        )
+        if action and action.status not in ("executed", "rejected"):
+            action.status = "cancelled"
+        control = await session.get(CognitiveControl, self.k.instance_id)
+        self._experience(session, run, control, outcome, truncated=truncated)
 
     async def detail(self, run_id):
         async with self.k.db.sessions() as session:

@@ -56,6 +56,7 @@ from alive.transport import ZmqTransport
 from alive.web_experience import WebCompanion
 from alive.web_experience import router as web_router
 from alive.workflows.api import router as workflow_router
+from alive.workflows.runner import WorkflowRunner
 from alive.workflows.store import seed_builtin
 
 
@@ -92,6 +93,8 @@ def create_app(settings=None):
         )
         app.state.blind = ResearchBlind(kernel)
         app.state.pi = PiRuntime(kernel, settings)
+        app.state.workflows = WorkflowRunner(kernel, app.state.cognition)
+        app.state.pi.egress.workflow_guard = app.state.workflows.authorize_dispatch
         set_runtime(app.state.pi)
         if kernel.ready:
             await app.state.cognition.initialize()
@@ -102,9 +105,11 @@ def create_app(settings=None):
             await app.state.pi.initialize()  # settle Pi runs a previous process left; no replay
             # Shipped definitions only; there is no HTTP path that registers a workflow.
             app.state.workflow_seed = await seed_builtin(kernel)
+            await app.state.workflows.recover()
         try:
             yield
         finally:
+            await app.state.workflows.close()
             await app.state.pi.close()
             set_runtime(None)
             await app.state.web.close()

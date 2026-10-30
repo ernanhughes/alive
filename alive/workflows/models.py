@@ -105,8 +105,9 @@ class WorkflowStageRun(Base):
     output_ref: Mapped[str | None] = mapped_column(String(200))
     output_sha256: Mapped[str | None] = mapped_column(String(64))
     # A Pi stage links to the PI-01B receipt, which stays authoritative for provider dispatch.
-    # A plain id, not a foreign key: `pi_runs` ships with PI-01B and PI-02B adds the constraint.
-    pi_run_id: Mapped[str | None] = mapped_column(String(36), index=True)
+    pi_run_id: Mapped[str | None] = mapped_column(
+        ForeignKey("pi_runs.id", name="fk_workflow_stage_pi_run"), index=True
+    )
     model_invocation_id: Mapped[str | None] = mapped_column(ForeignKey("model_invocations.id"))
     evidence_refs: Mapped[list] = mapped_column(J, default=list)
     validation_status: Mapped[str] = mapped_column(String(10), default="not_run")
@@ -128,6 +129,23 @@ class WorkflowStageRun(Base):
         ),
         CheckConstraint("attempt >= 1", name="ck_workflow_stage_attempt"),
     )
+
+
+class WorkflowExecution(Base):
+    """One explicit grant, inquiry and execution owner per run. No automatic resumption."""
+
+    __tablename__ = "workflow_executions"
+    run_id: Mapped[str] = mapped_column(ForeignKey("workflow_runs.id"), primary_key=True)
+    authorization_id: Mapped[str] = mapped_column(ForeignKey("events.id"), unique=True)
+    authorization_sha256: Mapped[str] = mapped_column(String(64))
+    investigation_id: Mapped[str] = mapped_column(ForeignKey("investigations.id"), unique=True)
+    instance_id: Mapped[str] = mapped_column(ForeignKey("alive_instances.id"))
+    # Nonterminal runs occupy one database-unique instance slot, independent of Python locks.
+    slot: Mapped[str | None] = mapped_column(String(36), unique=True)
+    owner: Mapped[str | None] = mapped_column(String(36))
+    cancel_requested: Mapped[bool] = mapped_column(default=False)
+    deadline: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
 
 
 # --- historical identity cannot change --------------------------------------------------------

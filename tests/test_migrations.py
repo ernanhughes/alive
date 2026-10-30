@@ -30,7 +30,7 @@ def test_migration_execution_and_repeat(tmp_path):
         } <= tables
         assert "web_experiences" in tables
         assert {"pi_runs", "pi_provider_requests"} <= tables
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0009"
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0010"
 
 
 def test_pi_migration_downgrades_cleanly_to_0006(tmp_path):
@@ -63,7 +63,7 @@ def test_workflow_tables_match_the_models_and_the_migration_downgrades(tmp_path)
         )
 
     alembic("upgrade", "head")
-    names = ("workflow_definitions", "workflow_runs", "workflow_stage_runs")
+    names = ("workflow_definitions", "workflow_runs", "workflow_stage_runs", "workflow_executions")
     with sqlite3.connect(db) as connection:
         for name in names:
             columns = {row[1]: row[3] for row in connection.execute(f"PRAGMA table_info({name})")}
