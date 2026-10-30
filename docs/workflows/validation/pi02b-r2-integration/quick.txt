@@ -1,0 +1,28 @@
+
+ALIVE test run — mode=quick base=HEAD
+Changed: 16 files; selected 2/81 test files
+  tests/test_docker_config.py
+    - always-run smoke/config safety net (docs-only change)
+  tests/test_transport.py
+    - always-run smoke/config safety net (docs-only change)
+Command: C:\Projects\alive\.venv\Scripts\python.exe -m pytest -q tests/test_docker_config.py tests/test_transport.py
+.................                                                        [100%]
+============================== warnings summary ===============================
+tests/test_transport.py::test_actual_zmq_independent_subscriber_and_reconnect
+  C:\Projects\alive\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+    self._get_loop()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+17 passed, 1 warning in 0.69s
+Report written: .r2-quick-receipt.json
+
+ALIVE Test Intelligence
+Selected tests passed
+Selected # 2
+Not selected # 79
+Elapsed # 2.6s
+Selection: QUICK
+- tests/test_docker_config.py
+- tests/test_transport.py
+Docker qualification not executed
+Full-suite qualification still required before merge

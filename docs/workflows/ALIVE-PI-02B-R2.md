@@ -1,5 +1,9 @@
 # ALIVE-PI-02B-R2 remediation and qualification
 
+The [ARCH-01 integration follow-up](ALIVE-PI-02B-R2-INTEGRATION.md) records the later
+combined source and CI corrections. Counts below remain the initial R2 snapshot's
+qualification; use the follow-up and final PR head for the next independent review.
+
 PR #69 remains draft and unmerged. Reviewed R1 commit:
 `b2d06caa59c411a87951afc76440a368717e8dfd`.
 R2 implementation and executable qualification sources:

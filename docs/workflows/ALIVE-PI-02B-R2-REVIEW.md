@@ -1,5 +1,9 @@
 # PI-02B-R2 independent review handoff
 
+Also read the [integrated-source qualification](ALIVE-PI-02B-R2-INTEGRATION.md).
+The branch now includes main's ARCH-01 changes and an opt-in test-fixture ordering
+correction; original R2 results below remain historical, with new receipts separate.
+
 Keep PR #69 draft and unmerged. Review delta from
 `b2d06caa59c411a87951afc76440a368717e8dfd`; implementation commit is
 `a9ec88d1c247f2b692c47f388511660b479c82d5`. Later commits retain qualification,
