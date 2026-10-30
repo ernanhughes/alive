@@ -45,9 +45,7 @@ def _imports_experiment_source(path: Path):
                 hits.append(f"from {node.module} import ... (line {node.lineno})")
         elif isinstance(node, ast.Import):
             for alias in node.names:
-                if alias.name == "alive.experiment" or alias.name.startswith(
-                    "alive.experiment."
-                ):
+                if alias.name == "alive.experiment" or alias.name.startswith("alive.experiment."):
                     hits.append(f"import {alias.name} (line {node.lineno})")
     # Docstrings/comments mentioning the legacy path are not dependencies;
     # only real imports count (handled above). Keep a raw-text guard for the
@@ -77,9 +75,7 @@ def test_default_app_has_no_experiment_endpoints(bare_client):
     assert bare_client.get("/api/v1/experiments").status_code == 404
     assert bare_client.get("/api/v1/experiments/review-pack").status_code == 404
     spec = bare_client.get("/openapi.json").json()
-    assert not any(
-        path.startswith("/api/v1/experiments") for path in spec.get("paths", {})
-    )
+    assert not any(path.startswith("/api/v1/experiments") for path in spec.get("paths", {}))
 
 
 def test_governance_does_not_depend_on_harness():
