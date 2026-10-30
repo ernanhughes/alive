@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "name": "research-review",
+  "version": 1,
+  "title": "Research review",
+  "description": "Prepare context for an inquiry, analyse it with one model call, validate the result against its evidence, then record it. The record stage is declared but unavailable: ALIVE has no standalone evidence-recording operation yet.",
+  "inputs": {
+    "inquiry": {"type": "string", "required": true}
+  },
+  "limits": {"max_wall_seconds": 900, "max_model_calls": 1, "max_total_output_tokens": 4096},
+  "stages": [
+    {
+      "id": "prepare",
+      "title": "Prepare context",
+      "type": "deterministic",
+      "operation": "context.prepare",
+      "inputs": {"inquiry": "$input.inquiry"},
+      "output_schema": {"properties": {"snapshot": {"type": "object"}}, "required": ["snapshot"]}
+    },
+    {
+      "id": "analyze",
+      "title": "Pi analysis",
+      "type": "pi_agent",
+      "operation": "cognition.role",
+      "depends_on": ["prepare"],
+      "inputs": {"role": "proposer", "context": "$stage.prepare.snapshot"},
+      "output_schema": {
+        "properties": {"claims": {"type": "array"}, "abstained": {"type": "boolean"}},
+        "required": ["claims", "abstained"]
+      },
+      "limits": {"timeout_seconds": 120, "max_output_tokens": 1536}
+    },
+    {
+      "id": "validate",
+      "title": "Validate result",
+      "type": "validation",
+      "operation": "evidence.validate_references",
+      "depends_on": ["analyze"],
+      "inputs": {"output": "$stage.analyze.claims"},
+      "output_schema": {
+        "properties": {"valid": {"type": "boolean"}, "problems": {"type": "array"}},
+        "required": ["valid"]
+      }
+    },
+    {
+      "id": "record",
+      "title": "Record evidence",
+      "type": "deterministic",
+      "operation": "evidence.record",
+      "depends_on": ["validate"],
+      "inputs": {"accepted": "$stage.validate.valid"},
+      "output_schema": {"properties": {"recorded": {"type": "boolean"}}, "required": ["recorded"]}
+    }
+  ]
+}
