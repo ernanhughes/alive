@@ -10,6 +10,7 @@ __pycache__/
 .vscode/
 node_modules/
 dashboard/node_modules/
+pi-runtime/node_modules/
 dashboard/dist/
 dashboard/test-results/
 playwright-report/
