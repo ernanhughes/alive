@@ -182,6 +182,8 @@ The extension uses `activeTab`, scripting, storage and the Side Panel API, with 
 ModelGateway and pinned Pi runtime. See the [execution architecture](docs/workflows/ALIVE-PI-02B-ARCHITECTURE.md),
 [qualification report](docs/workflows/ALIVE-PI-02B-REPORT.md) and
 [independent review handoff](docs/workflows/ALIVE-PI-02B-REVIEW.md).
+The [R2 remediation and qualification](docs/workflows/ALIVE-PI-02B-R2.md) addresses
+artifact-state presentation, context provenance and clause-level safeguard tests.
 
 ```powershell
 uv run ruff check alive migrations scripts tests

@@ -6,7 +6,7 @@ from sqlalchemy import select
 from alive.cognitive_models import CognitiveControl, ModelInvocation
 from alive.models import Event, now
 from alive.pi.models import PiProviderRequest
-from alive.workflows import context
+from alive.workflows import context, store
 from alive.workflows.models import WorkflowExecution, WorkflowStageRun
 from tests.workflow_execution_helpers import call, reserved
 from tests.workflow_r2_helpers import gated_run, pi_environment
@@ -77,6 +77,9 @@ def test_dispatch_fence_individual_invariants(client, settings, monkeypatch, cha
         async with k.db.sessions() as session:
             requests = (await session.scalars(select(PiProviderRequest))).all()
             assert len(requests) == 1 and requests[0].state == "rejected"
+        if change not in {"stage_state", "stage_link"}:
+            result = await store.get_run(k, run_id)
+            assert result["terminal_reason"] == "authority_refused"
         return run_id
 
     call(client, probe)

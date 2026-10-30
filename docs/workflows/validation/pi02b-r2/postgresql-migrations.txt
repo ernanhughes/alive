@@ -1,0 +1,8 @@
+PASS upgrade head
+PASS downgrade 0009
+PASS upgrade head
+PASS downgrade 0008
+PASS upgrade head
+PASS downgrade base
+PASS upgrade head
+0010

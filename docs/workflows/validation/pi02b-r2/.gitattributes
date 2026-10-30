@@ -1,2 +1,2 @@
 * text eol=lf
-r1-original/** -text
+r1-original/** -text -diff

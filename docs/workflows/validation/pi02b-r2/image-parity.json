@@ -1,0 +1,92 @@
+{
+  "status": "PASS",
+  "comparison": "exact LF Git blob bytes vs image bytes; working tree separately recorded",
+  "source_commit": "a9ec88d1c247f2b692c47f388511660b479c82d5",
+  "image": "sha256:896322bdef57971449d5acc2bf238d5ddc2e9feacb2c73c97bef668bdba540b8",
+  "files": [
+    {
+      "path": "alive/app.py",
+      "git_blob_sha256": "131ca4c90e5ff7ac3fffaec6c7a6fc366fbbaf495144b7b7fe20057c5b91e844",
+      "image_sha256": "131ca4c90e5ff7ac3fffaec6c7a6fc366fbbaf495144b7b7fe20057c5b91e844",
+      "working_tree_sha256": "ae75a8c12127605fc009407597f511ab503b4799497af3216820f415a95d0a23",
+      "working_tree_lf_sha256": "131ca4c90e5ff7ac3fffaec6c7a6fc366fbbaf495144b7b7fe20057c5b91e844"
+    },
+    {
+      "path": "alive/cognition.py",
+      "git_blob_sha256": "48e0208ed6034c62409bedd14b23da667ff51336129b2e2ae084e95b0f731294",
+      "image_sha256": "48e0208ed6034c62409bedd14b23da667ff51336129b2e2ae084e95b0f731294",
+      "working_tree_sha256": "01da27f51053603dbf05fe1ad1e9dfa2b5c06180affb16be3f9afcedc673123c",
+      "working_tree_lf_sha256": "48e0208ed6034c62409bedd14b23da667ff51336129b2e2ae084e95b0f731294"
+    },
+    {
+      "path": "alive/pi/egress.py",
+      "git_blob_sha256": "57016e67d3694c6175272e1c9605d957881c3e0c42c64f5a2cc3a84cc36cd13c",
+      "image_sha256": "57016e67d3694c6175272e1c9605d957881c3e0c42c64f5a2cc3a84cc36cd13c",
+      "working_tree_sha256": "220e252ef2de3b5e230af4e01b1961498c7138e9abef36f9680e4b4362f5a564",
+      "working_tree_lf_sha256": "57016e67d3694c6175272e1c9605d957881c3e0c42c64f5a2cc3a84cc36cd13c"
+    },
+    {
+      "path": "alive/workflows/adapters.py",
+      "git_blob_sha256": "cf19661bfb411f2cef1f2dbb7b6b498fc0007115bb84c531ec083d00a13e857a",
+      "image_sha256": "cf19661bfb411f2cef1f2dbb7b6b498fc0007115bb84c531ec083d00a13e857a",
+      "working_tree_sha256": "4106f20936dae1bc42d0ecb1e03d651dd7a6af8e9352180b2878f1009978bc13",
+      "working_tree_lf_sha256": "cf19661bfb411f2cef1f2dbb7b6b498fc0007115bb84c531ec083d00a13e857a"
+    },
+    {
+      "path": "alive/workflows/api.py",
+      "git_blob_sha256": "b78ed91961efe89de80ed26ffbf85207d34404ea3f437c3036c13805852fb5c4",
+      "image_sha256": "b78ed91961efe89de80ed26ffbf85207d34404ea3f437c3036c13805852fb5c4",
+      "working_tree_sha256": "df223095450eb1b0b1ce90ec115d53748d28fdf2ff28d6eb626e1e69cc41b00b",
+      "working_tree_lf_sha256": "b78ed91961efe89de80ed26ffbf85207d34404ea3f437c3036c13805852fb5c4"
+    },
+    {
+      "path": "alive/workflows/context.py",
+      "git_blob_sha256": "373b3db575530eb2c5b2c1acdb4808f369aba41b7c5a1928a76c454677aa242a",
+      "image_sha256": "373b3db575530eb2c5b2c1acdb4808f369aba41b7c5a1928a76c454677aa242a",
+      "working_tree_sha256": "8ac6b0548e7c26a137808f93fc0d051883a316dd81163af2a4755f51f632fb1a",
+      "working_tree_lf_sha256": "373b3db575530eb2c5b2c1acdb4808f369aba41b7c5a1928a76c454677aa242a"
+    },
+    {
+      "path": "alive/workflows/examples.py",
+      "git_blob_sha256": "1778ada8e6622acdb4065720135b7b632fab2c3248b9461d1367be1a27e2fb64",
+      "image_sha256": "1778ada8e6622acdb4065720135b7b632fab2c3248b9461d1367be1a27e2fb64",
+      "working_tree_sha256": "9e4e4259c17c6350cba6f076139117ffd851c4681e3583ea9a8f726c75a6761c",
+      "working_tree_lf_sha256": "1778ada8e6622acdb4065720135b7b632fab2c3248b9461d1367be1a27e2fb64"
+    },
+    {
+      "path": "alive/workflows/models.py",
+      "git_blob_sha256": "05b44da90c3cd8bca346215b3fcc32100c4d7de28a7babf6d455d3124cfea514",
+      "image_sha256": "05b44da90c3cd8bca346215b3fcc32100c4d7de28a7babf6d455d3124cfea514",
+      "working_tree_sha256": "b55e148778c2790f43bf2b66edddd32cc37d8c91874de04961dbc9d334ba0b14",
+      "working_tree_lf_sha256": "05b44da90c3cd8bca346215b3fcc32100c4d7de28a7babf6d455d3124cfea514"
+    },
+    {
+      "path": "alive/workflows/operations.py",
+      "git_blob_sha256": "ed2ef8a41735a9ca09803e45a5df804566c7d326a567bb7dd3a3c5edcb176f11",
+      "image_sha256": "ed2ef8a41735a9ca09803e45a5df804566c7d326a567bb7dd3a3c5edcb176f11",
+      "working_tree_sha256": "43730be702dcd2b42a8d8a366a08899cd89bfbb87410c75c5bbee9773594f9dd",
+      "working_tree_lf_sha256": "ed2ef8a41735a9ca09803e45a5df804566c7d326a567bb7dd3a3c5edcb176f11"
+    },
+    {
+      "path": "alive/workflows/runner.py",
+      "git_blob_sha256": "acf0568fb80652d4df692af7da91b5992cf8e7fbe88af12f44c2f3dea72dc3da",
+      "image_sha256": "acf0568fb80652d4df692af7da91b5992cf8e7fbe88af12f44c2f3dea72dc3da",
+      "working_tree_sha256": "640d109dfab0d8244c3bcf79a0d44b6e6719f43ed58891d947a17e713d3d88d5",
+      "working_tree_lf_sha256": "acf0568fb80652d4df692af7da91b5992cf8e7fbe88af12f44c2f3dea72dc3da"
+    },
+    {
+      "path": "alive/workflows/store.py",
+      "git_blob_sha256": "7aa6d069e22f2518363749de3f8faaa18f89fe2f942dc13b4577e5404e811cb3",
+      "image_sha256": "7aa6d069e22f2518363749de3f8faaa18f89fe2f942dc13b4577e5404e811cb3",
+      "working_tree_sha256": "974107869ae92c4a1884418e010238cd34d7da99b82ee18e8c2fce2131b4baaf",
+      "working_tree_lf_sha256": "7aa6d069e22f2518363749de3f8faaa18f89fe2f942dc13b4577e5404e811cb3"
+    },
+    {
+      "path": "migrations/versions/0010_workflow_execution.py",
+      "git_blob_sha256": "5e25f4ca8d93957d217c53c37182c7df63d811ae1800c1ef3a0990629b1dd9bd",
+      "image_sha256": "5e25f4ca8d93957d217c53c37182c7df63d811ae1800c1ef3a0990629b1dd9bd",
+      "working_tree_sha256": "80df5c7eee121f39819507842f6f4db7b57ab6e675333e4999562beebe20f07e",
+      "working_tree_lf_sha256": "5e25f4ca8d93957d217c53c37182c7df63d811ae1800c1ef3a0990629b1dd9bd"
+    }
+  ]
+}
