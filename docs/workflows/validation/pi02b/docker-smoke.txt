@@ -1,0 +1,12 @@
+PASS health: backend ok
+PASS frontend: dashboard index serves bundled UI
+PASS habitat: /demo serves the controlled environment
+PASS fixtures: pinned demo mirror served offline
+PASS database: PostgreSQL backend reported
+PASS goals: create/accept work, invalid transition rejected with 409
+PASS memory: observation ingested and retrieved via postgresql_fts
+PASS agents: deterministic mock run completed
+PASS auth: unauthenticated request rejected
+PASS events: persisted timeline readable
+
+SMOKE OK: 8 checks passed against http://127.0.0.1:18048

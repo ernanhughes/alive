@@ -1,0 +1,59 @@
+........................................................................ [ 16%]
+........................................................................ [ 33%]
+........................................................................ [ 50%]
+........................................................................ [ 67%]
+........................................................................ [ 83%]
+C:\Projects\alive\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <function _ProactorBasePipeTransport.__del__ at 0x000002592941C680>
+
+Traceback (most recent call last):
+  File "C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\proactor_events.py", line 116, in __del__
+    _warn(f"unclosed transport {self!r}", ResourceWarning, source=self)
+                               ^^^^^^^^
+  File "C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\proactor_events.py", line 80, in __repr__
+    info.append(f'fd={self._sock.fileno()}')
+                      ~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\windows_utils.py", line 102, in fileno
+    raise ValueError("I/O operation on closed pipe")
+ValueError: I/O operation on closed pipe
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+C:\Projects\alive\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <function BaseSubprocessTransport.__del__ at 0x00000259293E6A20>
+
+Traceback (most recent call last):
+  File "C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\base_subprocess.py", line 130, in __del__
+    self.close()
+    ~~~~~~~~~~^^
+  File "C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\base_subprocess.py", line 107, in close
+    proto.pipe.close()
+    ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\proactor_events.py", line 109, in close
+    self._loop.call_soon(self._call_connection_lost, None)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\base_events.py", line 827, in call_soon
+    self._check_closed()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\ernan\AppData\Roaming\uv\python\cpython-3.13.3-windows-x86_64-none\Lib\asyncio\base_events.py", line 550, in _check_closed
+    raise RuntimeError('Event loop is closed')
+RuntimeError: Event loop is closed
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+...............................................................ssss.s    [100%]
+============================== warnings summary ===============================
+tests/test_workflows_store.py: 27 warnings
+tests/test_workflows_api.py: 59 warnings
+tests/test_intelligence_durable.py: 36 warnings
+tests/test_intelligence_receipts.py: 10 warnings
+tests/test_model_gateway.py: 14 warnings
+tests/test_cognition.py: 9 warnings
+tests/test_pi_gateway.py: 32 warnings
+tests/test_pi_lifecycle.py: 11 warnings
+tests/test_pi_egress.py: 27 warnings
+  C:\Projects\alive\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+    self._get_loop()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+424 passed, 5 skipped, 225 warnings in 279.52s (0:04:39)

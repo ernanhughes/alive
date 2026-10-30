@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "database": "task-owned disposable pi02b_migrations",
+  "backend": "PostgreSQL 17",
+  "steps": [
+    "alembic upgrade head",
+    "alembic downgrade 0009",
+    "alembic upgrade head"
+  ],
+  "final_version": "0010",
+  "execution_rows": 0,
+  "stage_pi_foreign_key": "fk_workflow_stage_pi_run"
+}

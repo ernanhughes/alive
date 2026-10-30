@@ -1,0 +1,12 @@
+
+> alive-dashboard@0.2.0 test
+> vitest run
+
+
+ RUN  v4.1.12 C:/Projects/alive-pi-02b-execution/dashboard
+
+
+ Test Files  4 passed (4)
+      Tests  15 passed (15)
+   Start at  19:01:00
+   Duration  1.72s (transform 209ms, setup 0ms, import 731ms, tests 534ms, environment 2.79s)

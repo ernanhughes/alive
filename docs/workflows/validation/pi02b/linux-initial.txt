@@ -1,0 +1,47 @@
+Resolved 60 packages in 3ms
+Downloading pygments (1.2MiB)
+Downloading ruff (10.0MiB)
+ Downloaded pygments
+ Downloaded ruff
+Prepared 6 packages in 1.52s
+Installed 6 packages in 315ms
+ + iniconfig==2.3.1
+ + pluggy==1.7.0
+ + pygments==2.21.0
+ + pytest==9.1.1
+ + pytest-asyncio==1.4.1
+ + ruff==0.17.2
+........................................................................ [ 14%]
+........................................................................ [ 29%]
+........................................................................ [ 44%]
+........................................................................ [ 58%]
+........................................................................ [ 73%]
+...................................................s.................... [ 88%]
+.....................F.....................F..............               [100%]
+=================================== FAILURES ===================================
+_________________ test_ratchet_no_new_direct_meta_construction _________________
+
+    def test_ratchet_no_new_direct_meta_construction():
+        root = Path(__file__).resolve().parents[1]
+        violations = check_allowlist(find_meta_constructions(root / "alive", root / "scripts"))
+>       assert violations == [], f"new direct MetaProvider sites: {violations}"
+E       AssertionError: new direct MetaProvider sites: [('scripts/benchmark.py', 'invoke', ['structured'], ['missing-expected-site'], 0, 1), ('scripts/benchmark.py', 'run_benchmark', ['discover'], ['missing-expected-site'], 0, 1), ('scripts/native11.py', 'qualify', ['discover'], ['missing-expected-site'], 0, 1)]
+E       assert [('scripts/be...site'], 0, 1)] == []
+E
+E         Left contains 3 more items, first extra item: ('scripts/benchmark.py', 'invoke', ['structured'], ['missing-expected-site'], 0, 1)
+E         Use -v to get more diff
+
+tests/test_model_gateway.py:1152: AssertionError
+_______________ test_persistent_benchmark_budget_and_paid_opt_in _______________
+
+tmp_path = PosixPath('/tmp/pytest-of-alive/pytest-0/test_persistent_benchmark_budg0')
+
+    def test_persistent_benchmark_budget_and_paid_opt_in(tmp_path):
+>       from scripts.benchmark import BenchmarkBudget, run_benchmark
+E       ModuleNotFoundError: No module named 'scripts.benchmark'
+
+tests/test_recovery_budgets.py:149: ModuleNotFoundError
+=========================== short test summary info ============================
+FAILED tests/test_model_gateway.py::test_ratchet_no_new_direct_meta_construction
+FAILED tests/test_recovery_budgets.py::test_persistent_benchmark_budget_and_paid_opt_in
+2 failed, 487 passed, 1 skipped in 572.25s (0:09:32)
