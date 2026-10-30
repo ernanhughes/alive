@@ -20,8 +20,7 @@ def settings(tmp_path):
     )
 
 
-@pytest.fixture
-def client(settings):
+def _boot(settings):
     import asyncio
 
     from alive.db import Database
@@ -33,5 +32,28 @@ def client(settings):
         await db.engine.dispose()
 
     asyncio.run(schema())
-    with TestClient(create_app(settings), headers={"Authorization": f"Bearer {TOKEN}"}) as c:
+
+
+@pytest.fixture
+def client(settings):
+    # ARCH-01: the shared test client opts into the research harness so the
+    # frozen ALIVE-03 experiment suite keeps exercising the full API. Default
+    # production startup (create_app without flags) excludes it; see
+    # test_arch_boundaries.py.
+    _boot(settings)
+    with TestClient(
+        create_app(settings, include_experiments=True),
+        headers={"Authorization": f"Bearer {TOKEN}"},
+    ) as c:
+        yield c
+
+
+@pytest.fixture
+def bare_client(settings):
+    """Production-only app: no experiment router, no research runner."""
+    _boot(settings)
+    with TestClient(
+        create_app(settings, include_experiments=False),
+        headers={"Authorization": f"Bearer {TOKEN}"},
+    ) as c:
         yield c

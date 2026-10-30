@@ -3,51 +3,44 @@
 The owner authorized $1, 350 calls and 500,000 tokens. The experiment's corpus,
 policy, evaluator, prompts and runner remain byte-for-byte unchanged. This overlay
 only restricts execution. Its source identity is persisted before test unsealing.
+
+ARCH-01: spend math lives in ``alive.governance.budgets`` (the runtime
+canonical home). This module keeps the experiment-specific $1 guard and the
+``BudgetedExperiments`` harness overlay; production runtime code must import
+from ``alive.governance`` instead of this module.
 """
 
 import json
-from decimal import ROUND_CEILING, Decimal
 
 from alive.cognitive_models import CognitiveControl
 from alive.cognitive_schema import CognitiveConfiguration, RoleOutput
-from alive.experiment.freeze import file_hash
-from alive.experiment.metrics import price
 from alive.experiment.prompts import prompt
 from alive.experiment.service import ExperimentAuthorization, ExperimentRun, Experiments
+from alive.governance.budgets import (
+    charged_micro_usd as _charged_micro_usd,
+)
+from alive.governance.budgets import (
+    check_spend as _check_spend,
+)
+from alive.governance.budgets import (
+    worst_micro_usd as _worst_micro_usd,
+)
+from alive.governance.hashing import file_hash
 
 GUARD_SOURCE = "alive/experiment_budget.py"
 MAX_MICRO_USD = 1000000
 
 
 def worst_micro_usd(tokens):
-    # $4.25/M is the highest pinned-model token rate. Integer rounding is upward.
-    return (tokens * 17 + 3) // 4
+    return _worst_micro_usd(tokens)
 
 
 def charged_micro_usd(ledger):
-    total = 0
-    for call in ledger:
-        estimate = price(call.get("usage"))
-        if call["status"] != "validated" or estimate is None:
-            tokens = call.get("cost_liability_tokens", call["reserved_tokens"])
-            total += worst_micro_usd(tokens)
-        else:
-            total += int(
-                (Decimal(str(estimate)) * 1000000).to_integral_value(rounding=ROUND_CEILING)
-            )
-    return total
+    return _charged_micro_usd(ledger)
 
 
 def check_spend(ledger, reserved_tokens, cap=MAX_MICRO_USD):
-    charged = charged_micro_usd(ledger)
-    reserved = worst_micro_usd(reserved_tokens)
-    if charged + reserved > cap:
-        raise ValueError("Application USD ceiling exhausted before inference")
-    return {
-        "charged_micro_usd": charged,
-        "next_reserved_micro_usd": reserved,
-        "ceiling_micro_usd": cap,
-    }
+    return _check_spend(ledger, reserved_tokens, cap=cap)
 
 
 class BudgetedExperiments(Experiments):

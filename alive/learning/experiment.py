@@ -7,7 +7,7 @@ from pathlib import Path
 
 import numpy as np
 
-from alive.experiment.freeze import file_hash
+from alive.governance.hashing import file_hash
 from alive.learning.controller import Controller, arrays
 from alive.learning.environment import (
     ACTIONS,

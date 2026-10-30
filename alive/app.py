@@ -20,9 +20,7 @@ from alive.cognitive_api import public_router, router
 from alive.config import Settings, prepare_local
 from alive.db import Database
 from alive.demo_tour import router as demo_tour_router
-from alive.experiment.api import router as experiment_router
 from alive.experiment_approval import ExperimentApprovals
-from alive.experiment_budget import BudgetedExperiments as Experiments
 from alive.exploration_api import router as exploration_router
 from alive.intelligence.api import router as intelligence_router
 from alive.kernel import Kernel, envelope
@@ -59,8 +57,17 @@ from alive.workflows.api import router as workflow_router
 from alive.workflows.store import seed_builtin
 
 
-def create_app(settings=None):
+def create_app(settings=None, include_experiments=None):
     settings = settings or Settings()
+    if include_experiments is None:
+        include_experiments = bool(getattr(settings, "alive_experiments_enabled", False))
+    # ARCH-01: research harness is opt-in. Importing alive.experiment here keeps
+    # the default production import graph free of the frozen research package.
+    Experiments = None
+    experiment_router = None
+    if include_experiments:
+        from alive.experiment.api import router as experiment_router
+        from alive.experiment_budget import BudgetedExperiments as Experiments
     token = prepare_local(settings)
     db = Database(settings.database_url)
     kernel = None
@@ -79,7 +86,7 @@ def create_app(settings=None):
         app.state.browsers = Browsers(kernel)
         app.state.memory = MemoryService(kernel)
         app.state.cognition = Cognition(kernel, app.state.memory)
-        app.state.experiments = Experiments(kernel)
+        app.state.experiments = Experiments(kernel) if Experiments is not None else None
         app.state.living = Living(app, kernel)
         app.state.web = WebCompanion(app, kernel)
         app.state.research = ResearchMemory(app.state.web, app.state.memory)
@@ -95,7 +102,8 @@ def create_app(settings=None):
         set_runtime(app.state.pi)
         if kernel.ready:
             await app.state.cognition.initialize()
-            await app.state.experiments.initialize()
+            if app.state.experiments is not None:
+                await app.state.experiments.initialize()
             await app.state.living.initialize()
             await app.state.web.initialize()
             await app.state.relationships.initialize()
@@ -109,7 +117,8 @@ def create_app(settings=None):
             set_runtime(None)
             await app.state.web.close()
             await app.state.living.close()
-            await app.state.experiments.close()
+            if app.state.experiments is not None:
+                await app.state.experiments.close()
             await app.state.cognition.close()
             await app.state.agents.close()
             await app.state.browsers.close()
@@ -202,7 +211,8 @@ def create_app(settings=None):
 
     secured = [Depends(ready)]
     app.include_router(router(app, ready))
-    app.include_router(experiment_router(app, ready))
+    if include_experiments and experiment_router is not None:
+        app.include_router(experiment_router(app, ready))
     app.include_router(learning_router(ready))
     app.include_router(living_router(app, ready))
     app.include_router(web_router(app, ready))
@@ -278,7 +288,8 @@ def create_app(settings=None):
 
         await app.state.web.revoke()
         await app.state.living.cancel()
-        await app.state.experiments.cancel()
+        if app.state.experiments is not None:
+            await app.state.experiments.cancel()
         await app.state.cognition.command(AutonomyCommand(command="pause"))
         for session_id in list(app.state.browsers.watchers):
             await app.state.browsers.watch(session_id, False)

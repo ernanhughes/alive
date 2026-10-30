@@ -21,9 +21,9 @@ from alive.evidence_qualification import (
     QualificationRequest,
     QualificationResult,
 )
-from alive.experiment.metrics import price
 from alive.experiment_approval import ApprovalRequest, CampaignRequest
-from alive.experiment_budget import check_spend
+from alive.governance.budgets import check_spend, settle_control
+from alive.governance.pricing import price
 from alive.living_policy import digest as policy_digest
 from alive.models import now, record, uid
 from alive.providers import MetaProvider
@@ -488,7 +488,7 @@ class WebCompanion:
                 if note.status == "reserved":
                     control = await s.get(CognitiveControl, self.k.instance_id)
                     reserve = note.data["reserved_tokens"]
-                    self.app.state.experiments._settle_control(control, reserve, reserve)
+                    settle_control(control, reserve, reserve)
                     note.status = "interrupted"
                     note.data = note.data | {
                         "charged_tokens": reserve,
@@ -507,7 +507,7 @@ class WebCompanion:
                 return
             control = await s.get(CognitiveControl, self.k.instance_id)
             reserve = note.data["reserved_tokens"]
-            self.app.state.experiments._settle_control(control, reserve, reserve)
+            settle_control(control, reserve, reserve)
             note.status = "failed"
             note.data = note.data | {
                 "charged_tokens": reserve,
@@ -1140,10 +1140,13 @@ class WebCompanion:
 
     async def analyse(self, data):
         async with self.lock:
-            if self.active or self.app.state.living.active or self.app.state.experiments.active:
+            experiments = getattr(self.app.state, "experiments", None)
+            active_experiments = experiments is not None and experiments.active
+            if self.active or self.app.state.living.active or active_experiments:
                 raise ValueError("Another cognitive worker is active")
             async with self.k.lock, self.k.db.sessions.begin() as s:
-                if self.app.state.living.active or self.app.state.experiments.active:
+                experiments = getattr(self.app.state, "experiments", None)
+                if self.app.state.living.active or (experiments is not None and experiments.active):
                     raise ValueError("Another cognitive worker is active")
                 snapshot = await self.get(s, data.snapshot_id, "snapshot")
                 grant = await self.valid_grant(s, snapshot.parent_id)
@@ -1319,7 +1322,7 @@ class WebCompanion:
         async with self.k.lock, self.k.db.sessions.begin() as s:
             row = await self.get(s, note_id, "note")
             control = await s.get(CognitiveControl, self.k.instance_id)
-            self.app.state.experiments._settle_control(control, reserve, charged)
+            settle_control(control, reserve, charged)
             row.status = "failed" if error or charged > reserve else "validated"
             row.data = row.data | {
                 "usage": usage,
