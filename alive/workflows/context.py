@@ -42,6 +42,34 @@ def aware(value):
     return value if value.tzinfo else value.replace(tzinfo=UTC)
 
 
+class ContextProvenance(BaseModel):
+    """Custody labels bind authorized use; they do not authenticate page content."""
+
+    model_config = ConfigDict(extra="forbid", frozen=True)
+    source: Literal["controlled-laboratory", "extension", "user"]
+    event_type: str = Field(min_length=1, max_length=100)
+    custody: Literal["controlled_fixture", "untrusted_browser"]
+    consent: Literal["exact_content_and_scope"]
+
+
+def provenance_for(source):
+    eligible = {
+        ("controlled-laboratory", "workflow.fixture.context"): "controlled_fixture",
+        ("extension", "browser.dom_changed"): "untrusted_browser",
+        ("extension", "browser.page_opened"): "untrusted_browser",
+        ("user", "browser.dom_changed"): "untrusted_browser",
+        ("user", "browser.page_opened"): "untrusted_browser",
+    }
+    custody = eligible.get((source.source, source.event_type))
+    require(custody is not None, "unsupported_context_provenance")
+    return ContextProvenance(
+        source=source.source,
+        event_type=source.event_type,
+        custody=custody,
+        consent="exact_content_and_scope",
+    )
+
+
 class Grant(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True)
     version: Literal[1] = 1
@@ -52,6 +80,8 @@ class Grant(BaseModel):
     definition_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     context_event_id: str = Field(min_length=1, max_length=36)
     context_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    # Legacy grants remain readable for forensics; new execution requires provenance.
+    context_provenance: ContextProvenance | None = None
     operations: tuple[str, ...] = Field(min_length=1, max_length=16)
     inputs: dict = Field(default_factory=dict, max_length=16)
     configuration_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
@@ -141,6 +171,10 @@ async def authorized(session, kernel, authorization_id, expected_hash=None):
         and digest(source.payload) == grant.context_sha256
         and source.payload.get("goal_id") == goal.id,
         "context_scope_or_integrity",
+    )
+    require(
+        grant.context_provenance is not None and grant.context_provenance == provenance_for(source),
+        "context_provenance_required_or_changed",
     )
     withdrawn = await session.scalar(
         select(Event.id)

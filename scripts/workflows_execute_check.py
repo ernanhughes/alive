@@ -74,7 +74,29 @@ def main():
     parser.add_argument(
         "--database-url", help="Explicit disposable test database; defaults to temporary SQLite"
     )
+    parser.add_argument(
+        "--process-probe",
+        action="store_true",
+        help="PostgreSQL: independent-process lease exclusion and successor replay",
+    )
     args = parser.parse_args()
+    assert not args.process_probe or (
+        args.database_url and args.database_url.startswith("postgresql+")
+    )
+    process_receipts = []
+
+    def process_probe(*arguments):
+        child = subprocess.run(
+            [sys.executable, "-B", "-m", "scripts.workflows_process_check", *arguments],
+            check=True,
+            capture_output=True,
+            text=True,
+            env=os.environ | {"DATABASE_URL": args.database_url, "ALIVE_META_API_KEY": ""},
+        )
+        receipt = json.loads(child.stdout)
+        assert receipt["pid"] != os.getpid()
+        process_receipts.append(receipt)
+
     server = ThreadingHTTPServer(("127.0.0.1", 0), Provider)
     thread = threading.Thread(target=server.serve_forever, daemon=True)
     thread.start()
@@ -94,6 +116,8 @@ def main():
             headers = {"Authorization": "Bearer " + TOKEN}
             results = []
             with TestClient(create_app(settings), headers=headers) as client:
+                if args.process_probe:
+                    process_probe("--expect-owned")
                 response = client.post(
                     "/api/v1/cognition/control", json={"command": "start", "provider": "meta"}
                 )
@@ -224,6 +248,10 @@ def main():
                         )
                 assert call(restarted, durable_counts) == before
                 assert len(provider_requests) == 1
+            if args.process_probe:
+                replay_path = Path(directory) / "replay.json"
+                replay_path.write_text(json.dumps(results))
+                process_probe("--replay", str(replay_path))
             output = {
                 "status": "PASS",
                 "qualification": "real pinned Pi; scripted local HTTP provider",
@@ -234,6 +262,8 @@ def main():
                 "replay": "PASS: zero dispatch, artifacts or learning writes",
                 "intelligence_learning_update_delta": 0,
                 "independent_claim_workers": 3,
+                "claim_worker_processes": 1,
+                "process_lease_probes": process_receipts,
                 "successful_execution_owners": 1,
                 "intelligence_receipt_resolution": intelligence_receipt,
                 "paid_inference": "NOT_RUN",

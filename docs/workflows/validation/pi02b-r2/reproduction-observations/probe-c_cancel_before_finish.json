@@ -1,0 +1,29 @@
+{
+  "returned_status": "CANCELLED",
+  "artifact_http": 200,
+  "run": "CANCELLED",
+  "reason": "cancelled",
+  "stages": {
+    "prepare": [
+      "COMPLETED",
+      null
+    ],
+    "compare": [
+      "COMPLETED",
+      null
+    ],
+    "record": [
+      "COMPLETED",
+      null
+    ]
+  },
+  "invocations": [],
+  "pi_runs": [],
+  "pi_requests": [],
+  "messages": 1,
+  "reserved": {
+    "calls": 0,
+    "tokens": 0,
+    "tools": 0
+  }
+}

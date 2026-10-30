@@ -373,9 +373,7 @@ class WorkflowRunner:
             reason = (
                 "timeout"
                 if isinstance(error, TimeoutError)
-                else (
-                    str(error) if isinstance(error, Refused) else "adapter_or_persistence_failure"
-                )
+                else (str(error) if isinstance(error, Refused) else "result_persistence_failure")
             )
             await complete_despite_cancel(self._abandon(run_id, owner, reason, states.FAILED))
         finally:
@@ -450,9 +448,25 @@ class WorkflowRunner:
                 run.definition_sha256,
                 digest(data),
             )
-        async with asyncio.timeout(stage.limits.timeout_seconds):
-            result = await ADAPTERS[stage.operation](context)
-        output_valid(stage, result.output)
+        try:
+            async with asyncio.timeout(stage.limits.timeout_seconds):
+                result = await ADAPTERS[stage.operation](context)
+        except Refused:
+            raise
+        except Exception:
+            raise Refused("adapter_execution_failure") from None
+        try:
+            output_valid(stage, result.output)
+        except (ValueError, TypeError):
+            raise Refused("output_validation_failure") from None
+        try:
+            await self._persist_result(run_id, owner, stage, context, result)
+        except Refused:
+            raise
+        except Exception:
+            raise Refused("result_persistence_failure") from None
+
+    async def _persist_result(self, run_id, owner, stage, context, result):
         async with self.k.lock, self.k.db.sessions.begin() as session:
             await self._authority(session, run_id, owner)
             row = await session.get(WorkflowStageRun, context.stage_id)
@@ -556,6 +570,11 @@ class WorkflowRunner:
                                 select(PiProviderRequest).where(PiProviderRequest.run_id == pi.id)
                             )
                         ).all()
+                        if any(
+                            request.error_category == "workflow_authority_revoked"
+                            for request in requests
+                        ):
+                            reason = "authority_refused"
                         possible = (
                             pi.state not in ("FAILED", "CANCELLED")
                             or any(
@@ -724,4 +743,21 @@ async def artifact_view(kernel, run_id, stage_id):
             "artifact_id": artifact.id,
             "sha256": output["sha256"],
             "source_status": "withdrawn" if withdrawn else "unchanged",
+            "run_status": run.status,
+            "terminal_reason": run.terminal_reason,
+            "stage_state": stage.state,
+            "stage_validation": store.validation_view(stage),
+            "stage_uncertainty": stage.uncertainty,
+            "workflow_completed": run.status == states.COMPLETED,
+            "context_provenance": {
+                "context_event_id": grant.context_event_id,
+                "context_sha256": grant.context_sha256,
+                "approved": grant.context_provenance.model_dump()
+                if grant.context_provenance
+                else None,
+                "original_source": source.source,
+                "original_event_type": source.event_type,
+                "semantic_status": "unverified",
+                "authorization_is_source_authentication": False,
+            },
         }

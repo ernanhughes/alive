@@ -1,0 +1,40 @@
+{
+  "returned": "UNKNOWN",
+  "replay": "UNKNOWN",
+  "upstream_calls": 1,
+  "run": "UNKNOWN",
+  "reason": "adapter_or_persistence_failure",
+  "stages": {
+    "prepare": [
+      "COMPLETED",
+      null
+    ],
+    "analyze": [
+      "UNKNOWN",
+      "adapter_or_persistence_failure"
+    ],
+    "validate": [
+      "CANCELLED",
+      "adapter_or_persistence_failure"
+    ],
+    "record": [
+      "CANCELLED",
+      "adapter_or_persistence_failure"
+    ]
+  },
+  "invocations": [
+    "validated"
+  ],
+  "pi_runs": [
+    "SETTLED"
+  ],
+  "pi_requests": [
+    "settled"
+  ],
+  "messages": 1,
+  "reserved": {
+    "calls": 0,
+    "tokens": 0,
+    "tools": 0
+  }
+}

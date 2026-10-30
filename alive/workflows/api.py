@@ -35,6 +35,13 @@ class ArtifactView(BaseModel):
     intelligence_episode_id: None
     independent_feedback: Literal[False]
     source_status: Literal["withdrawn", "unchanged"]
+    run_status: str
+    terminal_reason: str | None
+    stage_state: str
+    stage_validation: dict
+    stage_uncertainty: str
+    workflow_completed: bool
+    context_provenance: dict
 
 
 def router(app, ready):

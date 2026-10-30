@@ -82,7 +82,7 @@ jobs:
       - run: uv run python -m scripts.workflows_check
       - run: uv run python -m scripts.intelligence_check
       - run: npm ci --ignore-scripts --prefix pi-runtime
-      - run: uv run python -m scripts.workflows_execute_check --database-url "$DATABASE_URL"
+      - run: uv run python -m scripts.workflows_execute_check --database-url "$DATABASE_URL" --process-probe
   notebook:
     runs-on: ubuntu-latest
     steps:

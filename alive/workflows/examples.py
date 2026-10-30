@@ -144,6 +144,12 @@ async def fixture_authorization(kernel, inquiry_id, *, model=True, changes=None)
             definition_sha256=selected.definition_sha256,
             context_event_id=event_id,
             context_sha256=digest(payload),
+            context_provenance={
+                "source": "controlled-laboratory",
+                "event_type": "workflow.fixture.context",
+                "custody": "controlled_fixture",
+                "consent": "exact_content_and_scope",
+            },
             operations=tuple(s["operation"] for s in raw["stages"]),
             configuration_sha256=digest(control.configuration),
             models={

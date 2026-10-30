@@ -91,6 +91,23 @@ def run_view(row):
     }
 
 
+def validation_view(row):
+    """Passed is a contract check, never a truth or workflow-completion claim."""
+    checked = row.validation_status == "passed"
+    return {
+        "contract_status": row.validation_status,
+        "structural_status": "passed" if checked else "not_established",
+        "reference_identity_status": (
+            "passed"
+            if checked and row.operation in {"cognition.role", "evidence.validate_references"}
+            else "not_established"
+        ),
+        "semantic_status": "unverified",
+        "independent_verification": False,
+        "uncited_claims_permitted": True,
+    }
+
+
 def stage_view(row):
     return {
         "id": row.id,
@@ -109,6 +126,7 @@ def stage_view(row):
         "model_invocation_id": row.model_invocation_id,
         "evidence_refs": row.evidence_refs,
         "validation_status": row.validation_status,
+        "validation": validation_view(row),
         "error_category": row.error_category,
         "error_detail": row.error_detail,
         "uncertainty": row.uncertainty,

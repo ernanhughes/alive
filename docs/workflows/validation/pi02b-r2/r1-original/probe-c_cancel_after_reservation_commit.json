@@ -1,0 +1,35 @@
+{
+  "upstream_calls": 0,
+  "run": "CANCELLED",
+  "reason": "cancelled",
+  "stages": {
+    "prepare": [
+      "COMPLETED",
+      null
+    ],
+    "analyze": [
+      "CANCELLED",
+      "cancelled"
+    ],
+    "validate": [
+      "CANCELLED",
+      "cancelled"
+    ],
+    "record": [
+      "CANCELLED",
+      "cancelled"
+    ]
+  },
+  "invocations": [
+    "cancelled"
+  ],
+  "pi_runs": [],
+  "pi_requests": [],
+  "messages": 0,
+  "reserved": {
+    "calls": 0,
+    "tokens": 0,
+    "tools": 0
+  },
+  "returned": "CANCELLED"
+}

@@ -1,0 +1,38 @@
+{
+  "upstream_calls": 1,
+  "run": "FAILED",
+  "reason": "unsettled_pi",
+  "stages": {
+    "prepare": [
+      "COMPLETED",
+      null
+    ],
+    "analyze": [
+      "FAILED",
+      "unsettled_pi"
+    ],
+    "validate": [
+      "CANCELLED",
+      "unsettled_pi"
+    ],
+    "record": [
+      "CANCELLED",
+      "unsettled_pi"
+    ]
+  },
+  "invocations": [
+    "validated"
+  ],
+  "pi_runs": [
+    "SETTLED"
+  ],
+  "pi_requests": [
+    "settled"
+  ],
+  "messages": 1,
+  "reserved": {
+    "calls": 0,
+    "tokens": 0,
+    "tools": 0
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "before": {
+    "run": "UNKNOWN",
+    "reason": "interrupted_requires_review",
+    "stages": {
+      "prepare": [
+        "COMPLETED",
+        null
+      ],
+      "analyze": [
+        "UNKNOWN",
+        "interrupted_requires_review"
+      ],
+      "record": [
+        "CANCELLED",
+        "interrupted_requires_review"
+      ],
+      "validate": [
+        "CANCELLED",
+        "interrupted_requires_review"
+      ]
+    },
+    "invocations": [
+      "interrupted"
+    ],
+    "pi_runs": [
+      "UNKNOWN"
+    ],
+    "pi_requests": [
+      "ambiguous"
+    ],
+    "messages": 0,
+    "reserved": {
+      "calls": 0,
+      "tokens": 0,
+      "tools": 0
+    }
+  },
+  "replay": "UNKNOWN",
+  "after": {
+    "run": "UNKNOWN",
+    "reason": "interrupted_requires_review",
+    "stages": {
+      "prepare": [
+        "COMPLETED",
+        null
+      ],
+      "analyze": [
+        "UNKNOWN",
+        "interrupted_requires_review"
+      ],
+      "record": [
+        "CANCELLED",
+        "interrupted_requires_review"
+      ],
+      "validate": [
+        "CANCELLED",
+        "interrupted_requires_review"
+      ]
+    },
+    "invocations": [
+      "interrupted"
+    ],
+    "pi_runs": [
+      "UNKNOWN"
+    ],
+    "pi_requests": [
+      "ambiguous"
+    ],
+    "messages": 0,
+    "reserved": {
+      "calls": 0,
+      "tokens": 0,
+      "tools": 0
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "trials": [
+    {
+      "delay": 0,
+      "run": "CANCELLED",
+      "reason": "cancelled",
+      "invocations": [],
+      "pi_runs": [],
+      "pi_requests": []
+    },
+    {
+      "delay": 0.005,
+      "run": "CANCELLED",
+      "reason": "cancelled",
+      "invocations": [],
+      "pi_runs": [],
+      "pi_requests": []
+    },
+    {
+      "delay": 0.01,
+      "run": "CANCELLED",
+      "reason": "cancelled",
+      "invocations": [],
+      "pi_runs": [],
+      "pi_requests": []
+    },
+    {
+      "delay": 0.02,
+      "run": "CANCELLED",
+      "reason": "cancelled",
+      "invocations": [],
+      "pi_runs": [],
+      "pi_requests": []
+    },
+    {
+      "delay": 0.04,
+      "run": "CANCELLED",
+      "reason": "cancelled",
+      "invocations": [],
+      "pi_runs": [],
+      "pi_requests": []
+    },
+    {
+      "delay": 0.08,
+      "run": "COMPLETED",
+      "reason": "required_stages_completed",
+      "invocations": [],
+      "pi_runs": [],
+      "pi_requests": []
+    }
+  ],
+  "upstream_calls": 0
+}

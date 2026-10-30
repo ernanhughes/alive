@@ -1,0 +1,50 @@
+{
+  "upstream_calls": 1,
+  "starts": [
+    "dict",
+    "dict"
+  ],
+  "distinct_runs": 1,
+  "second_grant": "refused:unclaimed_governor_inquiry_required",
+  "finals": [
+    "COMPLETED",
+    "RUNNING"
+  ],
+  "state": {
+    "run": "COMPLETED",
+    "reason": "required_stages_completed",
+    "stages": {
+      "prepare": [
+        "COMPLETED",
+        null
+      ],
+      "analyze": [
+        "COMPLETED",
+        null
+      ],
+      "validate": [
+        "COMPLETED",
+        null
+      ],
+      "record": [
+        "COMPLETED",
+        null
+      ]
+    },
+    "invocations": [
+      "validated"
+    ],
+    "pi_runs": [
+      "SETTLED"
+    ],
+    "pi_requests": [
+      "settled"
+    ],
+    "messages": 2,
+    "reserved": {
+      "calls": 0,
+      "tokens": 0,
+      "tools": 0
+    }
+  }
+}
