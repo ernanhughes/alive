@@ -120,7 +120,7 @@ Pi API import. Route coverage now explicitly includes all 12 GET routes; formatt
 injection preserves the import boundary. Both fixes passed targeted regression tests.
 No assertion was weakened to admit a write route or provider dependency.
 
-Dashboard: 30 unit tests pass and production build passes. Browser E2E passes against
+Dashboard: 31 unit tests pass and production build passes. Browser E2E passes against
 the real persisted SQLite and Docker/PostgreSQL history, covering authentication,
 stage/Pi/artifact navigation, replay, comparison, distinct graphs, failure/UNKNOWN,
 reload, zero non-GET feature requests and 390-pixel mobile overflow. Screenshots and
@@ -138,3 +138,10 @@ PI-02C requires its own independent review. No authorization/Governor/Pi dispatc
 recovery/provider-routing change, migration, dependency, paid inference, automatic
 merge, PI-03 or Bespoke selector is included. See the independent-review handoff and
 Bespoke readiness report for the next qualification boundaries.
+
+A final frontend concurrency audit added immediate cancellation of timeline pages on
+run/hash/replay/refresh changes and an explicit selected-run identity check. A delayed
+replay-page regression pins this boundary. The corrected Docker source was rebuilt,
+restarted against the same persisted database and passed browser/count verification
+again, with no new provider request. Earlier superseded CI runs were cancelled; final
+qualification is pinned to the corrected head reported in the PR.
