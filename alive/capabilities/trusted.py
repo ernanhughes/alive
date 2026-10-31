@@ -278,7 +278,7 @@ def _source_implementation(identifier, adapter, *files):
         "deterministic",
         "read",
         f"alive.capabilities.source_adapters:{adapter}",
-        None,
+        f"alive.capabilities.source_adapters:{adapter}",  # the legacy "a method exists" binding
         None,
         frozenset({"source.read"}),
         ("alive/capabilities/source_adapters.py", "alive/sources/custody.py", *files),
