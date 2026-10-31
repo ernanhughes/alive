@@ -108,6 +108,12 @@ export function ArtifactPanel({ value }: { value: Artifact }) {
         }}
       />
       <h4>Result</h4>
+      {typeof value.result?.report_markdown === "string" && (
+        <section aria-label="Evidence report">
+          <h4>Evidence report</h4>
+          <pre>{value.result.report_markdown}</pre>
+        </section>
+      )}
       <StructuredRecord value={value.result} />
       <h4>Assessment</h4>
       <StructuredRecord value={value.assessment} />

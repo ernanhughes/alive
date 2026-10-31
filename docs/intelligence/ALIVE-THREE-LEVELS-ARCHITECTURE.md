@@ -1,5 +1,11 @@
 # ALIVE: three levels of intelligence
 
+PI-03C deterministic validation is being implemented independently from main `4e990bf` on
+`codex/pi-03c-validation`; see `../capabilities/PI-03C-ARCHITECTURE.md`. PR #83 remains the
+separate model-security dependency. No L2 production interpreter/composition integration is
+authorized by a green focused validation test, and no Level 2 implementation is included here.
+The older baseline matrix below is historical programme design, not current qualification.
+
 Audited baseline: integrated main `1b97c4dc121c5f6f0962f48590ce78f2bad89d9d` (PI-03B and BESPOKE-01 merged).
 This programme starts with L1-01. Later milestones are dependencies and design contracts, not
 claims of implemented intelligence or independently measured improvement.

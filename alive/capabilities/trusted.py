@@ -326,6 +326,33 @@ _BUILTINS["repository-findings-validator-v1"] = TrustedImplementation(
     (*_ANALYSIS_FILES, "alive/analysis/validation.py", "alive/analysis/report.py"),
     traits=frozenset({"validation.independent"}),
 )
+_VALIDATION_FILES = (
+    "alive/validation/adapters.py",
+    "alive/validation/contracts.py",
+    "alive/analysis/validation.py",
+    "alive/analysis/contracts.py",
+    "alive/capabilities/source_adapters.py",
+    "alive/capabilities/repository.py",
+    "alive/capabilities/contracts.py",
+    "alive/workflows/context.py",
+)
+for _identifier, _adapter, _reads in (
+    ("captured-references-v1", "references", True),
+    ("captured-locators-v1", "locators", True),
+    ("captured-claims-compare-v1", "compare", False),
+    ("captured-report-v1", "compose", False),
+):
+    _BUILTINS[_identifier] = TrustedImplementation(
+        _identifier,
+        "validation",
+        "read" if _reads else "none",
+        f"alive.validation.adapters:{_adapter}",
+        f"alive.validation.adapters:{_adapter}",
+        None,
+        frozenset({"source.read"}) if _reads else frozenset(),
+        _VALIDATION_FILES,
+        traits=frozenset({"validation.independent"}),
+    )
 TRUSTED = MappingProxyType(_BUILTINS)
 
 

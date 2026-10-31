@@ -10,7 +10,12 @@ from types import MappingProxyType
 
 from alive.capabilities.contracts import json_bytes, validate
 from alive.capabilities.manifest import ManifestError, canonical_bytes, parse
-from alive.capabilities.trusted import LEGACY_OPERATIONS, TRUSTED, permission_bits
+from alive.capabilities.trusted import (
+    LEGACY_IMPLEMENTATION_BY_OPERATION,
+    LEGACY_OPERATIONS,
+    TRUSTED,
+    permission_bits,
+)
 
 
 @dataclass(frozen=True)
@@ -334,7 +339,19 @@ class CapabilityRegistry:
     def bind(self, spec, *, legacy_compatibility=False):
         result = {}
         for stage in spec.stages:
-            cap = self.get(stage.operation, getattr(stage, "capability_version", None))
+            version = getattr(stage, "capability_version", None)
+            original = self._entries.get((stage.operation, "1.0.0"))
+            if (
+                version is None
+                and original is not None
+                and original.identity["implementation_id"]
+                in LEGACY_IMPLEMENTATION_BY_OPERATION.values()
+            ):
+                # PI-02's implicit operations mean their original 1.0.0 implementation.
+                # This also holds when the original implementation is reused under a new ID.
+                # A new contract or permission surface must be selected by an explicit pin.
+                version = "1.0.0"
+            cap = self.get(stage.operation, version)
             m = cap.manifest
             requested_hash = getattr(stage, "capability_sha256", None)
             if requested_hash and requested_hash != cap.manifest_sha256:

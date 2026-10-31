@@ -31,6 +31,22 @@ import {
 } from "./model";
 import type { Artifact, Recording } from "./contracts";
 
+it("shows a captured-evidence report as inert text with its validation distinctions", () => {
+  const value = {
+    artifact_id: "synthetic", sha256: "hash", run_id: "run", stage_id: "record",
+    definition_sha256: "definition", workflow_completed: true, run_status: "COMPLETED",
+    terminal_reason: null, source_status: "unchanged", independent_feedback: false,
+    intelligence_episode_id: null, evidence_refs: [], context_provenance: {},
+    result: { report_markdown: "Semantic support: unverified. Independent verification: none.\n<img src=x onerror=alert(1)>" },
+    assessment: { semantic_support: "unverified", independent_verification: false, task_outcome: "unknown" },
+  } as Artifact;
+  const { container } = render(<ArtifactPanel value={value} />);
+  const report = screen.getByRole("region", { name: "Evidence report" });
+  expect(report.textContent).toContain("Semantic support: unverified");
+  expect(report.textContent).toContain("<img src=x onerror=alert(1)>");
+  expect(container.querySelector("img")).toBeNull();
+});
+
 vi.mock("../api", () => ({ request: vi.fn() }));
 const ID = "11111111-1111-1111-1111-111111111111",
   OTHER = "22222222-2222-2222-2222-222222222222";

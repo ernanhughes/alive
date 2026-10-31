@@ -1,6 +1,9 @@
 # PI-03C plan: validation and compositional qualification
 
-Not started. Requires PI-03B review authorization.
+Deterministic implementation is under review on `codex/pi-03c-validation`; see
+`PI-03C-ARCHITECTURE.md`, `PI-03C-VALIDATION-CONTRACTS.md` and `PI-03C-EVALUATION.md`.
+This historical plan is not an exit-gate receipt. The authorized-Pi research composition remains
+dependent on final L1 transport security acceptance; the milestone is not production-qualified.
 
 ## Validation capabilities
 
