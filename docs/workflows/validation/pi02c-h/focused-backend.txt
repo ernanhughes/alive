@@ -1,0 +1,17 @@
+........................................................................ [ 81%]
+................                                                         [100%]
+============================== warnings summary ===============================
+tests/test_workflow_observatory.py: 17 warnings
+tests/test_workflows_api.py: 59 warnings
+tests/test_workflow_observatory_identity.py: 15 warnings
+  C:\Projects\alive\.venv\Lib\site-packages\zmq\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.
+    self._get_loop()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+============================= slowest 5 durations =============================
+2.64s setup    tests/test_workflows_api.py::test_every_read_requires_the_bearer_token[/api/v1/workflow-operations]
+2.25s setup    tests/test_workflow_observatory.py::test_corrupt_or_foreign_history_refused[hash]
+2.18s setup    tests/test_workflow_observatory.py::test_corrupt_or_foreign_history_refused[owner]
+2.16s setup    tests/test_workflow_observatory.py::test_corrupt_or_foreign_history_refused[event_attempt]
+2.13s call     tests/test_workflow_observatory.py::test_actual_pi_receipt_binding_and_deterministic_history
+88 passed, 91 warnings in 108.56s (0:01:48)

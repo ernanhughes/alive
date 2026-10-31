@@ -1,5 +1,5 @@
 import type { RecordedEvent, Timeline } from "./contracts";
-import { timestamp } from "./model";
+import { replayRunOutcome, timestamp } from "./model";
 export function RunTimeline({
   timeline,
   cursor,
@@ -15,6 +15,7 @@ export function RunTimeline({
 }) {
   const events =
     cursor === null ? timeline.events : timeline.events.slice(0, cursor);
+  const outcome = cursor === null ? null : replayRunOutcome(events);
   return (
     <section className="wf-panel" aria-label="Recorded events">
       <h3>
@@ -55,6 +56,7 @@ export function RunTimeline({
             Read-only local replay. No operation is re-executed. Snapshot-only
             transitions are unavailable.
           </p>
+          {outcome && <p role="status">Recorded run outcome: {outcome}</p>}
         </>
       )}
       <ol className="wf-timeline">

@@ -323,6 +323,38 @@ describe("inspection UI", () => {
     expect(container.querySelector("script")).toBeNull();
     expect(screen.getByRole("status").textContent).toContain("UNKNOWN");
   });
+  it("renders feedback and learning fields instead of assuming absent values", () => {
+    const value = {
+      artifact_id: "a",
+      sha256: "hash",
+      run_id: ID,
+      stage_id: "record",
+      definition_sha256: "hash",
+      workflow_completed: true,
+      run_status: "COMPLETED",
+      terminal_reason: null,
+      result: {},
+      assessment: {},
+      evidence_refs: [],
+      context_provenance: {},
+      source_status: "unchanged",
+      independent_feedback: false,
+      intelligence_episode_id: null,
+    } as Artifact;
+    const view = render(<ArtifactPanel value={value} />);
+    expect(screen.getByText("Not recorded")).toBeTruthy();
+    expect(screen.getByText("No linked episode recorded")).toBeTruthy();
+    // Deliberately probe a future response outside today's false/null contract.
+    const linked = {
+      ...value,
+      independent_feedback: true,
+      intelligence_episode_id: "episode-123",
+    } as unknown as Artifact;
+    view.rerender(<ArtifactPanel value={linked} />);
+    expect(screen.getByText("Recorded", { exact: true })).toBeTruthy();
+    expect(screen.getByText("episode-123", { exact: true })).toBeTruthy();
+    expect(screen.queryByText("No linked episode recorded")).toBeNull();
+  });
   it("compares each version and hash without invented quality scores", () => {
     const a = fixture(),
       b = fixture(OTHER);

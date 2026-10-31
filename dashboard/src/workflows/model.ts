@@ -104,6 +104,25 @@ const terminalExecutionEvents = new Set([
   "workflow.run.cancelled",
   "workflow.run.unknown",
 ]);
+const piOutcomes: Record<string, string> = {
+  "pi.run.unknown": "UNKNOWN (Pi run)",
+  "pi.run.failed": "FAILED (Pi run)",
+  "pi.run.cancelled": "CANCELLED (Pi run)",
+};
+const runOutcomes = new Set(["COMPLETED", "FAILED", "CANCELLED", "UNKNOWN"]);
+export function replayRunOutcome(events: RecordedEvent[]): string | null {
+  let outcome: string | null = null;
+  for (const e of events) {
+    if (e.event_type === "workflow.execution.completed") outcome = "completed";
+    if (
+      e.event_type === "workflow.execution.ended" &&
+      e.status &&
+      runOutcomes.has(e.status)
+    )
+      outcome = `ended ${e.status}`;
+  }
+  return outcome;
+}
 export function replayStates(events: RecordedEvent[]): Record<string, string> {
   const states: Record<string, string> = {};
   for (const e of events) {
@@ -112,12 +131,23 @@ export function replayStates(events: RecordedEvent[]): Record<string, string> {
         states[e.stage_id] = "RUNNING";
       if (e.event_type === "workflow.stage.result")
         states[e.stage_id] = "COMPLETED";
+      if (piOutcomes[e.event_type])
+        states[e.stage_id] = piOutcomes[e.event_type];
     }
     if (terminalExecutionEvents.has(e.event_type)) {
       // The run ended, but this does not independently record each stage outcome.
       for (const id of Object.keys(states))
-        if (states[id] === "RUNNING")
-          states[id] = "Ended — outcome not recorded";
+        if (states[id] === "RUNNING") {
+          const status =
+            e.status && runOutcomes.has(e.status)
+              ? e.status
+              : e.event_type.startsWith("workflow.run.")
+                ? e.event_type.slice("workflow.run.".length).toUpperCase()
+                : e.event_type === "workflow.execution.completed"
+                  ? "COMPLETED"
+                  : "(status not recorded)";
+          states[id] = `Run ended ${status}; stage outcome not recorded`;
+        }
     }
   }
   return states;

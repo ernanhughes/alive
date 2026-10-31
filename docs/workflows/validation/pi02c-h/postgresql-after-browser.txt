@@ -1,0 +1,1 @@
+PASS: restarted history reads preserve all durable counts
