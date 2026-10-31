@@ -19,11 +19,13 @@ vi.mock("../api", async () => ({
   request: vi.fn(),
 }));
 const mock = vi.mocked(request);
-const approved = {
-  ...structuredClone(pending),
-  authorization_state: "approved",
-  state: "approved",
-};
+// The recorded grant expires minutes after recording, so the live clock must not decide the test.
+const approved = structuredClone(pending);
+approved.authorization_state = "approved";
+approved.state = "approved";
+approved.terms.proposed_grant_data.expires_at = new Date(
+  Date.now() + 300_000,
+).toISOString();
 function respond(row: unknown) {
   return async (path: string) => {
     if (path === "/admissions/sources") return { sources: [] };
