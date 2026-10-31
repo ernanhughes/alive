@@ -1,5 +1,8 @@
 # PI-03A independent-review handoff
 
+> Superseded for the current state by `PI-03A-R2-REVIEW.md`, written after the independent review of
+> this document's head (`e0db4ae`) returned REVISE. This file is kept as the original handoff.
+
 Scope: declarative governed capabilities. Stop here; PI-03B/C and any selector need separate
 authorization. Nothing is merged automatically.
 

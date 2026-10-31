@@ -99,7 +99,9 @@ def schema(value, depth=0):
             type(options) is list
             and 1 <= len(options) <= 32
             and kind in {"string", "number", "integer", "boolean"}
-            and all(TYPES[kind](v) for v in options),
+            and all(TYPES[kind](v) for v in options)
+            # Duplicates are semantically equal but would hash differently.
+            and len({json_bytes(v) for v in options}) == len(options),
             "schema_enum",
         )
 

@@ -1,3 +1,4 @@
+# ruff: noqa: E501  (the mutation table holds long guard strings verbatim)
 """Replay PI-03A capability-governance mutations in a temporary copy of the repository only.
 
 Each mutant weakens exactly one guard. It is KILLED only if the named behavioural test passes on
@@ -192,6 +193,115 @@ CASES = [
         CONTRACT + "test_runner_checks_the_pinned_version_not_merely_the_latest",
     ),
 ]
+
+
+TRUSTED_PY = "alive/capabilities/trusted.py"
+STORE = "alive/workflows/store.py"
+RES = "tests/test_capability_resolution.py::"
+LEG = "tests/test_capability_legacy_adoption.py::"
+AUTH = "tests/test_capability_registry_authority.py::"
+REUSE = "tests/test_capability_reuse_lifecycle.py::"
+HARD = "tests/test_capability_hardening.py::"
+API = "tests/test_capability_catalog_api.py::"
+PINNED_OLDER = (
+    RES + "test_a_pinned_older_version_runs_its_own_implementation_while_a_newer_one_exists"
+)
+
+# R-series: the independent reviewer's survivors. F-series: one mutant per R2 correction.
+CASES += [
+    ("R1", "runtime resolves 'latest' instead of the pinned identity", EXE,
+     "callback = registry.adapter_for(cap.identity)",
+     'callback = registry.adapter(cap.identity["id"], None)', PINNED_OLDER),
+    ("R1b", "adapter_for skips the identity/fingerprint recheck", REG,
+     '        self.recheck(identity)\n        return self.adapter(identity["id"], identity["version"])',
+     '        return self.adapter(identity["id"], identity["version"])',
+     RES + "test_a_changed_implementation_mapping_makes_a_pinned_identity_refuse"),
+    ("R2", "legacy adoption no longer limited to legacy operations", REG,
+     "                and stage.operation in LEGACY_OPERATIONS\n", "",
+     LEG + "test_adoption_is_limited_to_legacy_operations_even_for_a_historical_row"),
+    ("R3", "legacy adoption accepts a stage that pins a capability version", REG,
+     "                and not stage.capability_version\n", "",
+     LEG + "test_a_historical_definition_that_pins_a_capability_is_not_adopted"),
+    ("R4", "fingerprint ignores the reviewed source bytes", TRUSTED_PY,
+     '            hasher.update((ROOT / path).read_bytes().replace(b"\\r\\n", b"\\n"))\n',
+     "            pass\n",
+     RES + "test_actual_source_bytes_change_the_fingerprint_but_line_endings_do_not"),
+    ("R5", "bind ignores the stage's version pin", REG,
+     'cap = self.get(stage.operation, getattr(stage, "capability_version", None))',
+     "cap = self.get(stage.operation, None)", PINNED_OLDER),
+    ("R6", "workflow references ignore the manifest hash", "alive/capabilities/api.py",
+     'for key in ("id", "version", "manifest_sha256", "implementation_sha256")',
+     'for key in ("id", "version", "implementation_sha256")',
+     API + "test_references_need_the_full_retained_identity[manifest]"),
+    ("R6b", "workflow references ignore the implementation fingerprint",
+     "alive/capabilities/api.py",
+     'for key in ("id", "version", "manifest_sha256", "implementation_sha256")',
+     'for key in ("id", "version", "manifest_sha256")',
+     API + "test_references_need_the_full_retained_identity[implementation]"),
+    ("F2a", "fingerprint ignores which adapter the allowlist selects", TRUSTED_PY,
+     '                    "adapter": self.adapter,\n', "",
+     RES + "test_every_field_that_selects_code_changes_the_fingerprint"),
+    ("F2b", "fingerprint ignores traits", TRUSTED_PY,
+     '                    "traits": sorted(self.traits),\n', "",
+     REUSE + "test_a_trait_change_changes_the_fingerprint"),
+    ("F3a", "an oversize .gitignore is no longer named", REPO,
+     'too_large = str(error) == "repository_file_size_limit"', "too_large = False",
+     READER + "test_oversize_gitignore_fails_closed_with_a_named_reason"),
+    ("F3b", "Windows device names are accepted as paths", REPO,
+     '        and not any(\n            part.split(".")[0].rstrip(" ").casefold() in DEVICE_NAMES for part in path.parts\n        ),\n',
+     "        and True,\n",
+     READER + "test_windows_device_names_are_refused_on_every_platform"),
+    ("F4a", "every new definition may use the legacy contract", STORE,
+     "adopt_legacy=digest in LEGACY_DEFINITION_SHA256", "adopt_legacy=True",
+     LEG + "test_a_new_definition_must_meet_the_full_capability_contract"),
+    ("F4b", "a pre-existing row is no longer adopted", STORE,
+     "await bind_definition(session, kernel, existing, spec, adopt_legacy=True)",
+     "await bind_definition(session, kernel, existing, spec, adopt_legacy=False)",
+     LEG + "test_a_genuinely_historical_definition_is_adopted_under_its_original_contract"),
+    ("F6", "the graph route consults the default catalogue", "alive/workflows/api.py",
+     '**graph_of(view["definition"], operations=registry_for(kernel()).operations),',
+     '**graph_of(view["definition"]),',
+     AUTH + "test_a_yaml_only_capability_is_consistent_across_every_surface"),
+    ("F7", "a run without a snapshot is read through today's catalogue", BND,
+     "    if not stages:\n        return None\n",
+     "    if not stages:\n        return dict(registry_for(kernel).operations)\n",
+     AUTH + "test_a_pi02_run_without_a_snapshot_stays_inspectable_after_its_operation_is_removed"),
+    ("F8a", "the artifact route no longer needs the result-writer trait", RUN,
+     'and "result.writer" in traits  # the retained implementation, not the operation id',
+     "and True",
+     REUSE + "test_only_a_stage_whose_implementation_writes_results_serves_an_artifact"),
+    ("F8b", "record accepts any dependency as independent validation", "alive/workflows/adapters.py",
+     '"validation.independent" in traits_of(item["implementation"])', "True",
+     REUSE + "test_record_accepts_a_dependency_by_what_it_ran_not_by_its_operation_id"),
+    ("F8c", "reference identity is claimed without the implementation trait", STORE,
+     'and ({"model.role", "validation.reference-identity"} & set(traits))', "and True",
+     REUSE + "test_prepare_compare_and_record_work_under_new_ids"),
+    ("F9a", "stage output reaches the generic feed", "alive/kernel.py",
+     'if event_type == "workflow.stage.result" and isinstance(payload, dict):', "if False:",
+     E2E + "test_stage_output_stays_in_run_history_but_not_in_the_generic_feed"),
+    ("F9b", "the REST event feed is not instance scoped", "alive/app.py",
+     ".where(Event.instance_id == kernel.instance_id, Event.sequence_number > after)",
+     ".where(Event.sequence_number > after)",
+     E2E + "test_the_generic_feed_is_scoped_to_this_instance"),
+    ("F9c", "the WebSocket feed is not instance scoped", "alive/app.py",
+     "                                Event.instance_id == kernel.instance_id,\n"
+     "                                Event.sequence_number > cursor,\n",
+     "                                Event.sequence_number > cursor,\n",
+     E2E + "test_the_generic_feed_is_scoped_to_this_instance"),
+    ("F11", "DEL and C1 control characters are accepted in manifest text",
+     "alive/capabilities/manifest.py",
+     'unicodedata.category(c) == "Cc" and c not in "\\n\\t"',
+     'ord(c) < 32 and c not in "\\n\\t"',
+     HARD + "test_every_control_character_is_refused_in_manifest_text"),
+    ("F12", "duplicate enum members are accepted", "alive/capabilities/contracts.py",
+     "            and len({json_bytes(v) for v in options}) == len(options),\n",
+     "            and True,\n",
+     HARD + "test_duplicate_enum_members_are_refused_rather_than_hashed_differently"),
+    ("F15", "activation judges a pinned stage by the newest version", "alive/workflows/spec.py",
+     "return dict(operation.executable_versions).get(stage.capability_version, False)",
+     "return operation.executable",
+     HARD + "test_activation_judges_a_pinned_stage_by_the_version_it_pins"),
+]  # fmt: skip
 
 
 def run(command, scratch, env):

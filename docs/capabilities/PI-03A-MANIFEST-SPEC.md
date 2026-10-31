@@ -21,7 +21,7 @@ name that disagrees with the declared identity.
 | `execution.kind` | `deterministic`, `pi_agent`, `validation` or `approval_gate`. |
 | `execution.side_effects` | `none`, `read` or `write`. |
 | `execution` limits | `timeout_seconds` (1-3600), `max_input_bytes`, `max_output_bytes` (at most 65536), `max_input_items` (1-32), `max_invocations` (exactly 1), `retry_policy` (`none`), optional `max_files`, `max_source_bytes`, `max_model_calls`, `max_output_tokens`. |
-| `permissions` | `filesystem` (`none` or `read_only` with root `authorized_repository`), `network` (`none` or `governed_pi`), `process` (`none`), `evidence` (`none` or `approved_context`), `persistence` (`none` or `workflow_result`). |
+| `permissions` | `filesystem` (`none` or `read_only` with root `authorized_repository`), `network` (`none` or `governed_pi`), `process` (`none`), `evidence` (`none` or `approved_context`), `persistence` (`none` or `workflow_result`). `persistence` governs only whether the capability may create a `workflow_result` artifact; every stage's output is always kept in run history (see the security document). |
 | `inputs`, `outputs` | A closed object contract in the bounded JSON-schema subset below. |
 | `presentation` | `category`, `icon`, up to 12 sorted `tags`. |
 | `deprecated` | Optional boolean. A deprecated capability still executes; it is flagged. |
@@ -35,13 +35,15 @@ Types `object`, `array`, `string`, `integer`, `number`, `boolean`. Keywords: `pr
 `required`, `additionalProperties`, `items`, `minItems`, `maxItems`, `minLength`, `maxLength`,
 `enum`, `minimum`, `maximum`. Objects must state `additionalProperties`, arrays must state
 `maxItems`, strings must state `maxLength`. No `$ref`, patterns, formats, expressions or
-validator code. Nesting is limited to 8 levels. Root contracts must be closed.
+validator code. Nesting is limited to 8 levels. Root contracts must be closed. `enum` members must be unique, because duplicates are semantically equal but would hash differently.
+
+A manifest cannot declare a *trait* (`result.writer`, `model.role` and so on). Traits belong to reviewed implementations and are part of their fingerprint; an unknown field is refused.
 
 ## Parser restrictions
 
 Refused before any hashing: custom or explicit tags, anchors and aliases, merge keys, duplicate
 or non-string keys, more than 8192 YAML events, nesting beyond 16, mappings over 64 keys,
-sequences over 256 items, strings over 4096 characters, control characters, and the
+sequences over 256 items, strings over 4096 characters, every control character other than newline and tab (C0, DEL and C1), and the
 interpolation markers `${`, `{{`, `{%`. Scalars resolve with JSON-style rules only, so `yes`,
 `on`, dates, hex and sexagesimal numbers stay strings.
 

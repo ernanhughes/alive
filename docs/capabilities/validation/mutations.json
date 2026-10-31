@@ -18,9 +18,9 @@
         "if not cap.executable:",
         "False"
       ],
-      "assertion": "^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\concurrent\\futures\\_base.py:401: in __get_result\n    raise self._exception\nC:\\Projects\\alive\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:265: in _call_func\n    retval = await retval_or_awaitable\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_capability_repository_execution.py:242: in probe\n    assert final[\"status\"] == states.FAILED\nE   AssertionError: assert 'COMPLETED' == 'FAILED'\nE     \nE     - FAILED\nE     + COMPLETED\n============================== warnings summary ===============================\ntests/test_capability_repository_execution.py::test_pinned_identity_refuses_a_changed_or_disabled_catalogue_but_history_survives[tampered_manifest]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository_execution.py::test_pinned_identity_refuses_a_changed_or_disabled_catalogue_but_history_survives[tampered_manifest] - AssertionError: assert 'COMPLETED' == 'FAILED'\n  \n  - FAILED\n  + COMPLETED\n1 failed, 1 warning in 3.24s\n",
+      "assertion": "^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\concurrent\\futures\\_base.py:401: in __get_result\n    raise self._exception\nC:\\Projects\\alive\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:265: in _call_func\n    retval = await retval_or_awaitable\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_capability_repository_execution.py:243: in probe\n    assert final[\"status\"] == states.FAILED\nE   AssertionError: assert 'COMPLETED' == 'FAILED'\nE     \nE     - FAILED\nE     + COMPLETED\n============================== warnings summary ===============================\ntests/test_capability_repository_execution.py::test_pinned_identity_refuses_a_changed_or_disabled_catalogue_but_history_survives[tampered_manifest]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository_execution.py::test_pinned_identity_refuses_a_changed_or_disabled_catalogue_but_history_survives[tampered_manifest] - AssertionError: assert 'COMPLETED' == 'FAILED'\n  \n  - FAILED\n  + COMPLETED\n1 failed, 1 warning in 1.27s\n",
       "returncode": 1,
-      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+      "source_sha256": "6d3e9c11cc8d8faa2696c498ab4f5e9a215930869a2268cc0c55a3ebb62e6b5d"
     },
     {
       "id": "C2",
@@ -37,9 +37,9 @@
       "replacements": [
         ""
       ],
-      "assertion": "esult\n    return self.__get_result()\n           ^^^^^^^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\concurrent\\futures\\_base.py:401: in __get_result\n    raise self._exception\nC:\\Projects\\alive\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:265: in _call_func\n    retval = await retval_or_awaitable\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_capability_repository_execution.py:295: in probe\n    assert final[\"status\"] == states.FAILED\nE   AssertionError: assert 'COMPLETED' == 'FAILED'\nE     \nE     - FAILED\nE     + COMPLETED\n============================== warnings summary ===============================\ntests/test_capability_repository_execution.py::test_configuration_loosened_after_the_grant_is_not_silently_accepted\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository_execution.py::test_configuration_loosened_after_the_grant_is_not_silently_accepted - AssertionError: assert 'COMPLETED' == 'FAILED'\n  \n  - FAILED\n  + COMPLETED\n1 failed, 1 warning in 1.24s\n",
+      "assertion": "esult\n    return self.__get_result()\n           ^^^^^^^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\concurrent\\futures\\_base.py:401: in __get_result\n    raise self._exception\nC:\\Projects\\alive\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:265: in _call_func\n    retval = await retval_or_awaitable\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_capability_repository_execution.py:296: in probe\n    assert final[\"status\"] == states.FAILED\nE   AssertionError: assert 'COMPLETED' == 'FAILED'\nE     \nE     - FAILED\nE     + COMPLETED\n============================== warnings summary ===============================\ntests/test_capability_repository_execution.py::test_configuration_loosened_after_the_grant_is_not_silently_accepted\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository_execution.py::test_configuration_loosened_after_the_grant_is_not_silently_accepted - AssertionError: assert 'COMPLETED' == 'FAILED'\n  \n  - FAILED\n  + COMPLETED\n1 failed, 1 warning in 1.32s\n",
       "returncode": 1,
-      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+      "source_sha256": "6d3e9c11cc8d8faa2696c498ab4f5e9a215930869a2268cc0c55a3ebb62e6b5d"
     },
     {
       "id": "C3",
@@ -56,9 +56,9 @@
       "replacements": [
         "if False:"
       ],
-      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____________ test_grant_cannot_change_permissions_or_widen_limits _____________\ntests\\test_capability_contract_enforcement.py:115: in test_grant_cannot_change_permissions_or_widen_limits\n    with pytest.raises(ManifestError, match=\"permissions not approved\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_grant_cannot_change_permissions_or_widen_limits - Failed: DID NOT RAISE ManifestError\n1 failed in 0.17s\n",
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____________ test_grant_cannot_change_permissions_or_widen_limits _____________\ntests\\test_capability_contract_enforcement.py:117: in test_grant_cannot_change_permissions_or_widen_limits\n    with pytest.raises(ManifestError, match=\"permissions not approved\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_grant_cannot_change_permissions_or_widen_limits - Failed: DID NOT RAISE ManifestError\n1 failed in 0.18s\n",
       "returncode": 1,
-      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+      "source_sha256": "6d3e9c11cc8d8faa2696c498ab4f5e9a215930869a2268cc0c55a3ebb62e6b5d"
     },
     {
       "id": "C4",
@@ -75,9 +75,9 @@
       "replacements": [
         "if type(value) is not int:"
       ],
-      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____________ test_grant_cannot_change_permissions_or_widen_limits _____________\ntests\\test_capability_contract_enforcement.py:119: in test_grant_cannot_change_permissions_or_widen_limits\n    with pytest.raises(ManifestError, match=\"cannot widen\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_grant_cannot_change_permissions_or_widen_limits - Failed: DID NOT RAISE ManifestError\n1 failed in 0.17s\n",
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____________ test_grant_cannot_change_permissions_or_widen_limits _____________\ntests\\test_capability_contract_enforcement.py:121: in test_grant_cannot_change_permissions_or_widen_limits\n    with pytest.raises(ManifestError, match=\"cannot widen\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_grant_cannot_change_permissions_or_widen_limits - Failed: DID NOT RAISE ManifestError\n1 failed in 0.18s\n",
       "returncode": 1,
-      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+      "source_sha256": "6d3e9c11cc8d8faa2696c498ab4f5e9a215930869a2268cc0c55a3ebb62e6b5d"
     },
     {
       "id": "C5",
@@ -94,9 +94,9 @@
       "replacements": [
         "False"
       ],
-      "assertion": "...F.....                                                                [100%]\n================================== FAILURES ===================================\n_______ test_manifest_cannot_expand_or_hide_implementation_permissions ________\ntests\\test_capability_registry.py:55: in test_manifest_cannot_expand_or_hide_implementation_permissions\n    with pytest.raises(ManifestError, match=\"ceiling\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_registry.py::test_manifest_cannot_expand_or_hide_implementation_permissions - Failed: DID NOT RAISE ManifestError\n1 failed, 8 passed in 0.46s\n",
+      "assertion": "...F.....                                                                [100%]\n================================== FAILURES ===================================\n_______ test_manifest_cannot_expand_or_hide_implementation_permissions ________\ntests\\test_capability_registry.py:55: in test_manifest_cannot_expand_or_hide_implementation_permissions\n    with pytest.raises(ManifestError, match=\"ceiling\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_registry.py::test_manifest_cannot_expand_or_hide_implementation_permissions - Failed: DID NOT RAISE ManifestError\n1 failed, 8 passed in 0.45s\n",
       "returncode": 1,
-      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+      "source_sha256": "6d3e9c11cc8d8faa2696c498ab4f5e9a215930869a2268cc0c55a3ebb62e6b5d"
     },
     {
       "id": "C6",
@@ -113,9 +113,9 @@
       "replacements": [
         "if False:"
       ],
-      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n__ test_deployment_configuration_may_narrow_but_never_widen_a_manifest_limit __\ntests\\test_capability_contract_enforcement.py:127: in test_deployment_configuration_may_narrow_but_never_widen_a_manifest_limit\n    with pytest.raises(ManifestError, match=\"cannot widen\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_deployment_configuration_may_narrow_but_never_widen_a_manifest_limit - Failed: DID NOT RAISE ManifestError\n1 failed in 0.19s\n",
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n__ test_deployment_configuration_may_narrow_but_never_widen_a_manifest_limit __\ntests\\test_capability_contract_enforcement.py:129: in test_deployment_configuration_may_narrow_but_never_widen_a_manifest_limit\n    with pytest.raises(ManifestError, match=\"cannot widen\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_deployment_configuration_may_narrow_but_never_widen_a_manifest_limit - Failed: DID NOT RAISE ManifestError\n1 failed in 0.19s\n",
       "returncode": 1,
-      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+      "source_sha256": "6d3e9c11cc8d8faa2696c498ab4f5e9a215930869a2268cc0c55a3ebb62e6b5d"
     },
     {
       "id": "C7",
@@ -132,9 +132,9 @@
       "replacements": [
         "if False:\n            raise ValueError(\"capability unavailable\")"
       ],
-      "assertion": "..F.F....                                                                [100%]\n================================== FAILURES ===================================\n_______ test_unknown_implementation_is_discoverable_but_not_executable ________\ntests\\test_capability_registry.py:48: in test_unknown_implementation_is_discoverable_but_not_executable\n    registry.adapter(\"context.prepare\")\nalive\\capabilities\\registry.py:211: in adapter\n    return self._implementations[cap.identity[\"implementation_id\"]].resolve()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   KeyError: 'not-installed-v1'\n_______ test_wrong_fingerprint_is_unavailable_and_does_not_resolve_code _______\ntests\\test_capability_registry.py:68: in test_wrong_fingerprint_is_unavailable_and_does_not_resolve_code\n    with pytest.raises(ValueError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ValueError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_registry.py::test_unknown_implementation_is_discoverable_but_not_executable - KeyError: 'not-installed-v1'\nFAILED tests/test_capability_registry.py::test_wrong_fingerprint_is_unavailable_and_does_not_resolve_code - Failed: DID NOT RAISE ValueError\n2 failed, 7 passed in 0.47s\n",
+      "assertion": "..F.F....                                                                [100%]\n================================== FAILURES ===================================\n_______ test_unknown_implementation_is_discoverable_but_not_executable ________\ntests\\test_capability_registry.py:48: in test_unknown_implementation_is_discoverable_but_not_executable\n    registry.adapter(\"context.prepare\")\nalive\\capabilities\\registry.py:220: in adapter\n    return self._implementations[cap.identity[\"implementation_id\"]].resolve()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   KeyError: 'not-installed-v1'\n_______ test_wrong_fingerprint_is_unavailable_and_does_not_resolve_code _______\ntests\\test_capability_registry.py:68: in test_wrong_fingerprint_is_unavailable_and_does_not_resolve_code\n    with pytest.raises(ValueError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ValueError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_registry.py::test_unknown_implementation_is_discoverable_but_not_executable - KeyError: 'not-installed-v1'\nFAILED tests/test_capability_registry.py::test_wrong_fingerprint_is_unavailable_and_does_not_resolve_code - Failed: DID NOT RAISE ValueError\n2 failed, 7 passed in 0.46s\n",
       "returncode": 1,
-      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+      "source_sha256": "6d3e9c11cc8d8faa2696c498ab4f5e9a215930869a2268cc0c55a3ebb62e6b5d"
     },
     {
       "id": "C8",
@@ -151,9 +151,9 @@
       "replacements": [
         "or False"
       ],
-      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____ test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash _____\ntests\\test_capability_contract_enforcement.py:94: in test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash\n    with pytest.raises(ManifestError, match=\"exceeds capability contract\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash - Failed: DID NOT RAISE ManifestError\n1 failed in 0.17s\n",
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____ test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash _____\ntests\\test_capability_contract_enforcement.py:96: in test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash\n    with pytest.raises(ManifestError, match=\"exceeds capability contract\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash - Failed: DID NOT RAISE ManifestError\n1 failed in 0.17s\n",
       "returncode": 1,
-      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+      "source_sha256": "6d3e9c11cc8d8faa2696c498ab4f5e9a215930869a2268cc0c55a3ebb62e6b5d"
     },
     {
       "id": "C9",
@@ -170,9 +170,9 @@
       "replacements": [
         "if False:"
       ],
-      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____ test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash _____\ntests\\test_capability_contract_enforcement.py:99: in test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash\n    with pytest.raises(ManifestError, match=\"hash mismatch\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash - Failed: DID NOT RAISE ManifestError\n1 failed in 0.18s\n",
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____ test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash _____\ntests\\test_capability_contract_enforcement.py:101: in test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash\n    with pytest.raises(ManifestError, match=\"hash mismatch\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash - Failed: DID NOT RAISE ManifestError\n1 failed in 0.18s\n",
       "returncode": 1,
-      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+      "source_sha256": "6d3e9c11cc8d8faa2696c498ab4f5e9a215930869a2268cc0c55a3ebb62e6b5d"
     },
     {
       "id": "C10",
@@ -189,9 +189,9 @@
       "replacements": [
         "pass"
       ],
-      "assertion": "==============================\n________ test_output_outside_the_declared_contract_is_refused[output0] ________\ntests\\test_capability_contract_enforcement.py:55: in test_output_outside_the_declared_contract_is_refused\n    with pytest.raises(ContractError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ContractError\n________ test_output_outside_the_declared_contract_is_refused[output1] ________\ntests\\test_capability_contract_enforcement.py:55: in test_output_outside_the_declared_contract_is_refused\n    with pytest.raises(ContractError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ContractError\n________ test_output_outside_the_declared_contract_is_refused[output2] ________\ntests\\test_capability_contract_enforcement.py:55: in test_output_outside_the_declared_contract_is_refused\n    with pytest.raises(ContractError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ContractError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_output_outside_the_declared_contract_is_refused[output0] - Failed: DID NOT RAISE ContractError\nFAILED tests/test_capability_contract_enforcement.py::test_output_outside_the_declared_contract_is_refused[output1] - Failed: DID NOT RAISE ContractError\nFAILED tests/test_capability_contract_enforcement.py::test_output_outside_the_declared_contract_is_refused[output2] - Failed: DID NOT RAISE ContractError\n3 failed in 0.18s\n",
+      "assertion": "==============================\n________ test_output_outside_the_declared_contract_is_refused[output0] ________\ntests\\test_capability_contract_enforcement.py:56: in test_output_outside_the_declared_contract_is_refused\n    with pytest.raises(ContractError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ContractError\n________ test_output_outside_the_declared_contract_is_refused[output1] ________\ntests\\test_capability_contract_enforcement.py:56: in test_output_outside_the_declared_contract_is_refused\n    with pytest.raises(ContractError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ContractError\n________ test_output_outside_the_declared_contract_is_refused[output2] ________\ntests\\test_capability_contract_enforcement.py:56: in test_output_outside_the_declared_contract_is_refused\n    with pytest.raises(ContractError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ContractError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_output_outside_the_declared_contract_is_refused[output0] - Failed: DID NOT RAISE ContractError\nFAILED tests/test_capability_contract_enforcement.py::test_output_outside_the_declared_contract_is_refused[output1] - Failed: DID NOT RAISE ContractError\nFAILED tests/test_capability_contract_enforcement.py::test_output_outside_the_declared_contract_is_refused[output2] - Failed: DID NOT RAISE ContractError\n3 failed in 0.18s\n",
       "returncode": 1,
-      "source_sha256": "cf061f721a90f5f9d2efa2d20edbbff2b709485510cfa3f53d7c7c4b8a0ca5b1"
+      "source_sha256": "52133a8deb6ae0d08959d64001b0b85cd4be0599043377606184a99cf49fafcc"
     },
     {
       "id": "C11",
@@ -208,9 +208,9 @@
       "replacements": [
         "pass"
       ],
-      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____________ test_output_size_ceiling_and_result_type_are_enforced ____________\ntests\\test_capability_contract_enforcement.py:62: in test_output_size_ceiling_and_result_type_are_enforced\n    with pytest.raises(Refused, match=\"capability_output_limit\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_output_size_ceiling_and_result_type_are_enforced - Failed: DID NOT RAISE Refused\n1 failed in 0.18s\n",
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____________ test_output_size_ceiling_and_result_type_are_enforced ____________\ntests\\test_capability_contract_enforcement.py:63: in test_output_size_ceiling_and_result_type_are_enforced\n    with pytest.raises(Refused, match=\"capability_output_limit\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_output_size_ceiling_and_result_type_are_enforced - Failed: DID NOT RAISE Refused\n1 failed in 0.19s\n",
       "returncode": 1,
-      "source_sha256": "cf061f721a90f5f9d2efa2d20edbbff2b709485510cfa3f53d7c7c4b8a0ca5b1"
+      "source_sha256": "52133a8deb6ae0d08959d64001b0b85cd4be0599043377606184a99cf49fafcc"
     },
     {
       "id": "C12",
@@ -227,9 +227,9 @@
       "replacements": [
         "pass"
       ],
-      "assertion": "the_declared_contract_is_refused_before_invocation ____\ntests\\test_capability_contract_enforcement.py:86: in test_input_outside_the_declared_contract_is_refused_before_invocation\n    asyncio.run(invoke(registry, binding, grant, context, adapter=adapter))\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\asyncio\\runners.py:195: in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\asyncio\\runners.py:118: in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\asyncio\\base_events.py:719: in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\nalive\\capabilities\\execution.py:47: in invoke\n    call_context = replace(context, capability=cap.identity, resources=resources)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\dataclasses.py:1595: in replace\n    raise TypeError(\"replace() should be called on dataclass instances\")\nE   TypeError: replace() should be called on dataclass instances\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_input_outside_the_declared_contract_is_refused_before_invocation - TypeError: replace() should be called on dataclass instances\n1 failed in 0.20s\n",
+      "assertion": "st_input_outside_the_declared_contract_is_refused_before_invocation ____\ntests\\test_capability_contract_enforcement.py:88: in test_input_outside_the_declared_contract_is_refused_before_invocation\n    asyncio.run(invoke(registry, binding, grant, context))\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\asyncio\\runners.py:195: in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\asyncio\\runners.py:118: in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\asyncio\\base_events.py:719: in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\nalive\\capabilities\\execution.py:47: in invoke\n    call_context = replace(context, capability=cap.identity, resources=resources)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\dataclasses.py:1595: in replace\n    raise TypeError(\"replace() should be called on dataclass instances\")\nE   TypeError: replace() should be called on dataclass instances\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_input_outside_the_declared_contract_is_refused_before_invocation - TypeError: replace() should be called on dataclass instances\n1 failed in 0.22s\n",
       "returncode": 1,
-      "source_sha256": "cf061f721a90f5f9d2efa2d20edbbff2b709485510cfa3f53d7c7c4b8a0ca5b1"
+      "source_sha256": "52133a8deb6ae0d08959d64001b0b85cd4be0599043377606184a99cf49fafcc"
     },
     {
       "id": "C13",
@@ -246,9 +246,9 @@
       "replacements": [
         "True"
       ],
-      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n__ test_a_capability_without_the_writer_permission_cannot_return_an_artifact __\ntests\\test_capability_contract_enforcement.py:71: in test_a_capability_without_the_writer_permission_cannot_return_an_artifact\n    with pytest.raises(Refused, match=\"capability_writer_not_authorized\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_a_capability_without_the_writer_permission_cannot_return_an_artifact - Failed: DID NOT RAISE Refused\n1 failed in 0.17s\n",
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n__ test_a_capability_without_the_writer_permission_cannot_return_an_artifact __\ntests\\test_capability_contract_enforcement.py:72: in test_a_capability_without_the_writer_permission_cannot_return_an_artifact\n    with pytest.raises(Refused, match=\"capability_writer_not_authorized\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_a_capability_without_the_writer_permission_cannot_return_an_artifact - Failed: DID NOT RAISE Refused\n1 failed in 0.18s\n",
       "returncode": 1,
-      "source_sha256": "cf061f721a90f5f9d2efa2d20edbbff2b709485510cfa3f53d7c7c4b8a0ca5b1"
+      "source_sha256": "52133a8deb6ae0d08959d64001b0b85cd4be0599043377606184a99cf49fafcc"
     },
     {
       "id": "C14",
@@ -265,9 +265,9 @@
       "replacements": [
         ","
       ],
-      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n________________ test_reader_requires_exact_owner_scope[hash] _________________\ntests\\test_capability_repository.py:132: in test_reader_requires_exact_owner_scope\n    with pytest.raises(Refused):\n         ^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository.py::test_reader_requires_exact_owner_scope[hash] - Failed: DID NOT RAISE Refused\n1 failed in 0.16s\n",
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n________________ test_reader_requires_exact_owner_scope[hash] _________________\ntests\\test_capability_repository.py:136: in test_reader_requires_exact_owner_scope\n    with pytest.raises(Refused):\n         ^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository.py::test_reader_requires_exact_owner_scope[hash] - Failed: DID NOT RAISE Refused\n1 failed in 0.16s\n",
       "returncode": 1,
-      "source_sha256": "6e510f29e8c990effad4c92e0cf42a624ee1b52411b1bda6ff4dded0531ee980"
+      "source_sha256": "63fde7fc0fd8a9674bc2985062b43a4d7137ba8595f3b9f3b15995af938e0483"
     },
     {
       "id": "C15",
@@ -284,9 +284,9 @@
       "replacements": [
         ","
       ],
-      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n________________ test_reader_requires_exact_owner_scope[paths] ________________\ntests\\test_capability_repository.py:132: in test_reader_requires_exact_owner_scope\n    with pytest.raises(Refused):\n         ^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository.py::test_reader_requires_exact_owner_scope[paths] - Failed: DID NOT RAISE Refused\n1 failed in 0.16s\n",
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n________________ test_reader_requires_exact_owner_scope[paths] ________________\ntests\\test_capability_repository.py:136: in test_reader_requires_exact_owner_scope\n    with pytest.raises(Refused):\n         ^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository.py::test_reader_requires_exact_owner_scope[paths] - Failed: DID NOT RAISE Refused\n1 failed in 0.16s\n",
       "returncode": 1,
-      "source_sha256": "6e510f29e8c990effad4c92e0cf42a624ee1b52411b1bda6ff4dded0531ee980"
+      "source_sha256": "63fde7fc0fd8a9674bc2985062b43a4d7137ba8595f3b9f3b15995af938e0483"
     },
     {
       "id": "C16",
@@ -303,9 +303,9 @@
       "replacements": [
         "pass"
       ],
-      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n________________ test_hardlink_cannot_alias_an_unapproved_file ________________\ntests\\test_capability_repository.py:80: in test_hardlink_cannot_alias_an_unapproved_file\n    assert snapshot.omitted == ((\"readme\", \"repository_hardlink_refused\"),)\nE   AssertionError: assert () == (('readme', '...nk_refused'),)\nE     \nE     Right contains one more item: ('readme', 'repository_hardlink_refused')\nE     \nE     Full diff:\nE     + ()\nE     - (\nE     -     (\nE     -         'readme',\nE     -         'repository_hardlink_refused',\nE     -     ),\nE     - )\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository.py::test_hardlink_cannot_alias_an_unapproved_file - AssertionError: assert () == (('readme', '...nk_refused'),)\n  \n  Right contains one more item: ('readme', 'repository_hardlink_refused')\n  \n  Full diff:\n  + ()\n  - (\n  -     (\n  -         'readme',\n  -         'repository_hardlink_refused',\n  -     ),\n  - )\n1 failed in 0.17s\n",
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n________________ test_hardlink_cannot_alias_an_unapproved_file ________________\ntests\\test_capability_repository.py:84: in test_hardlink_cannot_alias_an_unapproved_file\n    assert snapshot.omitted == ((\"readme\", \"repository_hardlink_refused\"),)\nE   AssertionError: assert () == (('readme', '...nk_refused'),)\nE     \nE     Right contains one more item: ('readme', 'repository_hardlink_refused')\nE     \nE     Full diff:\nE     + ()\nE     - (\nE     -     (\nE     -         'readme',\nE     -         'repository_hardlink_refused',\nE     -     ),\nE     - )\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository.py::test_hardlink_cannot_alias_an_unapproved_file - AssertionError: assert () == (('readme', '...nk_refused'),)\n  \n  Right contains one more item: ('readme', 'repository_hardlink_refused')\n  \n  Full diff:\n  + ()\n  - (\n  -     (\n  -         'readme',\n  -         'repository_hardlink_refused',\n  -     ),\n  - )\n1 failed in 0.17s\n",
       "returncode": 1,
-      "source_sha256": "6e510f29e8c990effad4c92e0cf42a624ee1b52411b1bda6ff4dded0531ee980"
+      "source_sha256": "63fde7fc0fd8a9674bc2985062b43a4d7137ba8595f3b9f3b15995af938e0483"
     },
     {
       "id": "C17",
@@ -322,9 +322,9 @@
       "replacements": [
         "if False:"
       ],
-      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_______________ test_secret_and_ignored_paths_are_never_opened ________________\ntests\\test_capability_repository.py:56: in test_secret_and_ignored_paths_are_never_opened\n    assert opened == [\".gitignore\"]\nE   AssertionError: assert ['.gitignore'...ata.txt', ...] == ['.gitignore']\nE     \nE     Left contains 6 more items, first extra item: '.env.local'\nE     \nE     Full diff:\nE       [\nE           '.gitignore',\nE     +     '.env.local',\nE     +     '.git/config',\nE     +     'credentials.json',\nE     +     'debug.log',\nE     +     'private/data.txt',\nE     +     'server.key',\nE       ]\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository.py::test_secret_and_ignored_paths_are_never_opened - AssertionError: assert ['.gitignore'...ata.txt', ...] == ['.gitignore']\n  \n  Left contains 6 more items, first extra item: '.env.local'\n  \n  Full diff:\n    [\n        '.gitignore',\n  +     '.env.local',\n  +     '.git/config',\n  +     'credentials.json',\n  +     'debug.log',\n  +     'private/data.txt',\n  +     'server.key',\n    ]\n1 failed in 0.16s\n",
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_______________ test_secret_and_ignored_paths_are_never_opened ________________\ntests\\test_capability_repository.py:60: in test_secret_and_ignored_paths_are_never_opened\n    assert opened == [\".gitignore\"]\nE   AssertionError: assert ['.gitignore'...ata.txt', ...] == ['.gitignore']\nE     \nE     Left contains 6 more items, first extra item: '.env.local'\nE     \nE     Full diff:\nE       [\nE           '.gitignore',\nE     +     '.env.local',\nE     +     '.git/config',\nE     +     'credentials.json',\nE     +     'debug.log',\nE     +     'private/data.txt',\nE     +     'server.key',\nE       ]\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository.py::test_secret_and_ignored_paths_are_never_opened - AssertionError: assert ['.gitignore'...ata.txt', ...] == ['.gitignore']\n  \n  Left contains 6 more items, first extra item: '.env.local'\n  \n  Full diff:\n    [\n        '.gitignore',\n  +     '.env.local',\n  +     '.git/config',\n  +     'credentials.json',\n  +     'debug.log',\n  +     'private/data.txt',\n  +     'server.key',\n    ]\n1 failed in 0.17s\n",
       "returncode": 1,
-      "source_sha256": "6e510f29e8c990effad4c92e0cf42a624ee1b52411b1bda6ff4dded0531ee980"
+      "source_sha256": "63fde7fc0fd8a9674bc2985062b43a4d7137ba8595f3b9f3b15995af938e0483"
     },
     {
       "id": "C18",
@@ -341,9 +341,9 @@
       "replacements": [
         "True"
       ],
-      "assertion": "^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\concurrent\\futures\\_base.py:401: in __get_result\n    raise self._exception\nC:\\Projects\\alive\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:265: in _call_func\n    retval = await retval_or_awaitable\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_capability_repository_execution.py:187: in probe\n    assert refused, \"unauthorized capability produced a successful execution\"\nE   AssertionError: unauthorized capability produced a successful execution\nE   assert False\n============================== warnings summary ===============================\ntests/test_capability_repository_execution.py::test_execution_is_refused_without_exact_capability_authority[wrong_hash]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository_execution.py::test_execution_is_refused_without_exact_capability_authority[wrong_hash] - AssertionError: unauthorized capability produced a successful execution\nassert False\n1 failed, 1 warning in 1.26s\n",
+      "assertion": "^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\concurrent\\futures\\_base.py:401: in __get_result\n    raise self._exception\nC:\\Projects\\alive\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:265: in _call_func\n    retval = await retval_or_awaitable\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_capability_repository_execution.py:188: in probe\n    assert refused, \"unauthorized capability produced a successful execution\"\nE   AssertionError: unauthorized capability produced a successful execution\nE   assert False\n============================== warnings summary ===============================\ntests/test_capability_repository_execution.py::test_execution_is_refused_without_exact_capability_authority[wrong_hash]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository_execution.py::test_execution_is_refused_without_exact_capability_authority[wrong_hash] - AssertionError: unauthorized capability produced a successful execution\nassert False\n1 failed, 1 warning in 1.18s\n",
       "returncode": 1,
-      "source_sha256": "00d350bffbb98b7802d29c1140097bbc705a425492a3f190916555052836ad15"
+      "source_sha256": "e71dc4668a44e8be12cf902a1a6a66f2fba58e102b2cf6aac3a3192012af5cd5"
     },
     {
       "id": "C19",
@@ -360,9 +360,484 @@
       "replacements": [
         "True"
       ],
-      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_________ test_runner_checks_the_pinned_version_not_merely_the_latest _________\ntests\\test_capability_contract_enforcement.py:159: in test_runner_checks_the_pinned_version_not_merely_the_latest\n    with pytest.raises(Refused, match=\"operation_not_authorized_or_executable\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_runner_checks_the_pinned_version_not_merely_the_latest - Failed: DID NOT RAISE Refused\n1 failed in 0.19s\n",
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_________ test_runner_checks_the_pinned_version_not_merely_the_latest _________\ntests\\test_capability_contract_enforcement.py:167: in test_runner_checks_the_pinned_version_not_merely_the_latest\n    with pytest.raises(Refused, match=\"operation_not_authorized_or_executable\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_runner_checks_the_pinned_version_not_merely_the_latest - Failed: DID NOT RAISE Refused\n1 failed in 0.20s\n",
       "returncode": 1,
-      "source_sha256": "2919d80fc5ec10bf4f18ca59bd69189c4dbd5c8378a39186d215985a8156e881"
+      "source_sha256": "13f34abbee072e50f0b9cd880ae6ad5994c7612e6c7126676bad33f77907d055"
+    },
+    {
+      "id": "R1",
+      "mutation": "runtime resolves 'latest' instead of the pinned identity",
+      "files": [
+        "alive/capabilities/execution.py"
+      ],
+      "target": "tests/test_capability_resolution.py::test_a_pinned_older_version_runs_its_own_implementation_while_a_newer_one_exists",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "callback = registry.adapter_for(cap.identity)"
+      ],
+      "replacements": [
+        "callback = registry.adapter(cap.identity[\"id\"], None)"
+      ],
+      "assertion": "  [100%]\n================================== FAILURES ===================================\n_ test_a_pinned_older_version_runs_its_own_implementation_while_a_newer_one_exists _\ntests\\test_capability_resolution.py:121: in test_a_pinned_older_version_runs_its_own_implementation_while_a_newer_one_exists\n    assert output[\"context\"] != {\"marker\": \"bound-alternative\"}  # the real prepare ran\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   AssertionError: assert {'marker': 'bound-alternative'} != {'marker': 'bound-alternative'}\n============================== warnings summary ===============================\ntests/test_capability_resolution.py::test_a_pinned_older_version_runs_its_own_implementation_while_a_newer_one_exists\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_resolution.py::test_a_pinned_older_version_runs_its_own_implementation_while_a_newer_one_exists - AssertionError: assert {'marker': 'bound-alternative'} != {'marker': 'bound-alternative'}\n1 failed, 1 warning in 1.12s\n",
+      "returncode": 1,
+      "source_sha256": "52133a8deb6ae0d08959d64001b0b85cd4be0599043377606184a99cf49fafcc"
+    },
+    {
+      "id": "R1b",
+      "mutation": "adapter_for skips the identity/fingerprint recheck",
+      "files": [
+        "alive/capabilities/registry.py"
+      ],
+      "target": "tests/test_capability_resolution.py::test_a_changed_implementation_mapping_makes_a_pinned_identity_refuse",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "self.recheck(identity)\n        return self.adapter(identity[\"id\"], identity[\"version\"])"
+      ],
+      "replacements": [
+        "return self.adapter(identity[\"id\"], identity[\"version\"])"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____ test_a_changed_implementation_mapping_makes_a_pinned_identity_refuse _____\ntests\\test_capability_resolution.py:151: in test_a_changed_implementation_mapping_makes_a_pinned_identity_refuse\n    with pytest.raises(ValueError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ValueError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_resolution.py::test_a_changed_implementation_mapping_makes_a_pinned_identity_refuse - Failed: DID NOT RAISE ValueError\n1 failed in 0.35s\n",
+      "returncode": 1,
+      "source_sha256": "6d3e9c11cc8d8faa2696c498ab4f5e9a215930869a2268cc0c55a3ebb62e6b5d"
+    },
+    {
+      "id": "R2",
+      "mutation": "legacy adoption no longer limited to legacy operations",
+      "files": [
+        "alive/capabilities/registry.py"
+      ],
+      "target": "tests/test_capability_legacy_adoption.py::test_adoption_is_limited_to_legacy_operations_even_for_a_historical_row",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "and stage.operation in LEGACY_OPERATIONS"
+      ],
+      "replacements": [
+        ""
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n___ test_adoption_is_limited_to_legacy_operations_even_for_a_historical_row ___\ntests\\test_capability_legacy_adoption.py:111: in test_adoption_is_limited_to_legacy_operations_even_for_a_historical_row\n    with pytest.raises(DefinitionError, match=\"capability contract\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE DefinitionError\n============================== warnings summary ===============================\ntests/test_capability_legacy_adoption.py::test_adoption_is_limited_to_legacy_operations_even_for_a_historical_row\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_legacy_adoption.py::test_adoption_is_limited_to_legacy_operations_even_for_a_historical_row - Failed: DID NOT RAISE DefinitionError\n1 failed, 1 warning in 0.89s\n",
+      "returncode": 1,
+      "source_sha256": "6d3e9c11cc8d8faa2696c498ab4f5e9a215930869a2268cc0c55a3ebb62e6b5d"
+    },
+    {
+      "id": "R3",
+      "mutation": "legacy adoption accepts a stage that pins a capability version",
+      "files": [
+        "alive/capabilities/registry.py"
+      ],
+      "target": "tests/test_capability_legacy_adoption.py::test_a_historical_definition_that_pins_a_capability_is_not_adopted",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "and not stage.capability_version"
+      ],
+      "replacements": [
+        ""
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_____ test_a_historical_definition_that_pins_a_capability_is_not_adopted ______\ntests\\test_capability_legacy_adoption.py:85: in test_a_historical_definition_that_pins_a_capability_is_not_adopted\n    with pytest.raises(DefinitionError, match=\"capability contract\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE DefinitionError\n============================== warnings summary ===============================\ntests/test_capability_legacy_adoption.py::test_a_historical_definition_that_pins_a_capability_is_not_adopted\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_legacy_adoption.py::test_a_historical_definition_that_pins_a_capability_is_not_adopted - Failed: DID NOT RAISE DefinitionError\n1 failed, 1 warning in 0.90s\n",
+      "returncode": 1,
+      "source_sha256": "6d3e9c11cc8d8faa2696c498ab4f5e9a215930869a2268cc0c55a3ebb62e6b5d"
+    },
+    {
+      "id": "R4",
+      "mutation": "fingerprint ignores the reviewed source bytes",
+      "files": [
+        "alive/capabilities/trusted.py"
+      ],
+      "target": "tests/test_capability_resolution.py::test_actual_source_bytes_change_the_fingerprint_but_line_endings_do_not",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "hasher.update((ROOT / path).read_bytes().replace(b\"\\r\\n\", b\"\\n\"))"
+      ],
+      "replacements": [
+        "pass"
+      ],
+      "assertion": "_bytes_change_the_fingerprint_but_line_endings_do_not ___\ntests\\test_capability_resolution.py:182: in test_actual_source_bytes_change_the_fingerprint_but_line_endings_do_not\n    assert impl.fingerprint() != before\nE   AssertionError: assert 'd727dd482e1af408abb58f5b1431e6d2610555d88a914013e79fe2d92a13210b' != 'd727dd482e1af408abb58f5b1431e6d2610555d88a914013e79fe2d92a13210b'\nE    +  where 'd727dd482e1af408abb58f5b1431e6d2610555d88a914013e79fe2d92a13210b' = fingerprint()\nE    +    where fingerprint = TrustedImplementation(id='x-v1', kind='deterministic', side_effects='read', adapter='a:f', legacy_binding=None, legacy_reason=None, permission_ceiling=frozenset(), source_files=('a.py',), interface='stage-context/v1', traits=frozenset()).fingerprint\n=========================== short test summary info ===========================\nFAILED tests/test_capability_resolution.py::test_actual_source_bytes_change_the_fingerprint_but_line_endings_do_not - AssertionError: assert 'd727dd482e1af408abb58f5b1431e6d2610555d88a914013e79fe2d92a13210b' != 'd727dd482e1af408abb58f5b1431e6d2610555d88a914013e79fe2d92a13210b'\n +  where 'd727dd482e1af408abb58f5b1431e6d2610555d88a914013e79fe2d92a13210b' = fingerprint()\n +    where fingerprint = TrustedImplementation(id='x-v1', kind='deterministic', side_effects='read', adapter='a:f', legacy_binding=None, legacy_reason=None, permission_ceiling=frozenset(), source_files=('a.py',), interface='stage-context/v1', traits=frozenset()).fingerprint\n1 failed in 0.17s\n",
+      "returncode": 1,
+      "source_sha256": "f57a3e37c1799376a5bf80125f0c316a1bf6fcb085c6945b66885aef4dfc4003"
+    },
+    {
+      "id": "R5",
+      "mutation": "bind ignores the stage's version pin",
+      "files": [
+        "alive/capabilities/registry.py"
+      ],
+      "target": "tests/test_capability_resolution.py::test_a_pinned_older_version_runs_its_own_implementation_while_a_newer_one_exists",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "cap = self.get(stage.operation, getattr(stage, \"capability_version\", None))"
+      ],
+      "replacements": [
+        "cap = self.get(stage.operation, None)"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_ test_a_pinned_older_version_runs_its_own_implementation_while_a_newer_one_exists _\ntests\\test_capability_resolution.py:120: in test_a_pinned_older_version_runs_its_own_implementation_while_a_newer_one_exists\n    assert stage_run[\"capability\"][\"version\"] == \"1.0.0\"\nE   AssertionError: assert '2.0.0' == '1.0.0'\nE     \nE     - 1.0.0\nE     ? ^\nE     + 2.0.0\nE     ? ^\n============================== warnings summary ===============================\ntests/test_capability_resolution.py::test_a_pinned_older_version_runs_its_own_implementation_while_a_newer_one_exists\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_resolution.py::test_a_pinned_older_version_runs_its_own_implementation_while_a_newer_one_exists - AssertionError: assert '2.0.0' == '1.0.0'\n  \n  - 1.0.0\n  ? ^\n  + 2.0.0\n  ? ^\n1 failed, 1 warning in 1.09s\n",
+      "returncode": 1,
+      "source_sha256": "6d3e9c11cc8d8faa2696c498ab4f5e9a215930869a2268cc0c55a3ebb62e6b5d"
+    },
+    {
+      "id": "R6",
+      "mutation": "workflow references ignore the manifest hash",
+      "files": [
+        "alive/capabilities/api.py"
+      ],
+      "target": "tests/test_capability_catalog_api.py::test_references_need_the_full_retained_identity[manifest]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "for key in (\"id\", \"version\", \"manifest_sha256\", \"implementation_sha256\")"
+      ],
+      "replacements": [
+        "for key in (\"id\", \"version\", \"implementation_sha256\")"
+      ],
+      "assertion": "                                                   [100%]\n================================== FAILURES ===================================\n__________ test_references_need_the_full_retained_identity[manifest] __________\ntests\\test_capability_catalog_api.py:148: in test_references_need_the_full_retained_identity\n    assert (\"repository-inspection\" in listed) is (change == \"unchanged\")\nE   AssertionError: assert ('repository-inspection' in ['repository-inspection']) is ('manifest' == 'unchanged'\nE     \nE     - unchanged\nE     + manifest)\n============================== warnings summary ===============================\ntests/test_capability_catalog_api.py::test_references_need_the_full_retained_identity[manifest]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_catalog_api.py::test_references_need_the_full_retained_identity[manifest] - AssertionError: assert ('repository-inspection' in ['repository-inspection']) is ('manifest' == 'unchanged'\n  \n  - unchanged\n  + manifest)\n1 failed, 1 warning in 1.12s\n",
+      "returncode": 1,
+      "source_sha256": "e4bc81c601c4b839598d65baa129ab14d5a7c19dfad52bcd311cd852432b037a"
+    },
+    {
+      "id": "R6b",
+      "mutation": "workflow references ignore the implementation fingerprint",
+      "files": [
+        "alive/capabilities/api.py"
+      ],
+      "target": "tests/test_capability_catalog_api.py::test_references_need_the_full_retained_identity[implementation]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "for key in (\"id\", \"version\", \"manifest_sha256\", \"implementation_sha256\")"
+      ],
+      "replacements": [
+        "for key in (\"id\", \"version\", \"manifest_sha256\")"
+      ],
+      "assertion": "               [100%]\n================================== FAILURES ===================================\n_______ test_references_need_the_full_retained_identity[implementation] _______\ntests\\test_capability_catalog_api.py:148: in test_references_need_the_full_retained_identity\n    assert (\"repository-inspection\" in listed) is (change == \"unchanged\")\nE   AssertionError: assert ('repository-inspection' in ['repository-inspection']) is ('implementation' == 'unchanged'\nE     \nE     - unchanged\nE     + implementation)\n============================== warnings summary ===============================\ntests/test_capability_catalog_api.py::test_references_need_the_full_retained_identity[implementation]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_catalog_api.py::test_references_need_the_full_retained_identity[implementation] - AssertionError: assert ('repository-inspection' in ['repository-inspection']) is ('implementation' == 'unchanged'\n  \n  - unchanged\n  + implementation)\n1 failed, 1 warning in 1.07s\n",
+      "returncode": 1,
+      "source_sha256": "e4bc81c601c4b839598d65baa129ab14d5a7c19dfad52bcd311cd852432b037a"
+    },
+    {
+      "id": "F2a",
+      "mutation": "fingerprint ignores which adapter the allowlist selects",
+      "files": [
+        "alive/capabilities/trusted.py"
+      ],
+      "target": "tests/test_capability_resolution.py::test_every_field_that_selects_code_changes_the_fingerprint",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "\"adapter\": self.adapter,"
+      ],
+      "replacements": [
+        ""
+      ],
+      "assertion": "c3ac514986673bd3beb6078956ce8be561695116e3ba15af558107cb8'\n +  where '02059c6c3ac514986673bd3beb6078956ce8be561695116e3ba15af558107cb8' = fingerprint()\n +    where fingerprint = TrustedImplementation(id='context-prepare-v1', kind='deterministic', side_effects='read', adapter='alive.workflows.ada...kflows/context.py', 'alive/society.py', 'alive/cognitive_schema.py'), interface='stage-context/v1', traits=frozenset()).fingerprint\n +      where TrustedImplementation(id='context-prepare-v1', kind='deterministic', side_effects='read', adapter='alive.workflows.ada...kflows/context.py', 'alive/society.py', 'alive/cognitive_schema.py'), interface='stage-context/v1', traits=frozenset()) = <function replace at 0x000001AE91C8AA20>(TrustedImplementation(id='context-prepare-v1', kind='deterministic', side_effects='read', adapter='alive.workflows.ada...kflows/context.py', 'alive/society.py', 'alive/cognitive_schema.py'), interface='stage-context/v1', traits=frozenset()), **{'adapter': 'alive.workflows.adapters:record'})\n +        where <function replace at 0x000001AE91C8AA20> = dataclasses.replace\n +  and   '02059c6c3ac514986673bd3beb6078956ce8be561695116e3ba15af558107cb8' = fingerprint()\n +    where fingerprint = TrustedImplementation(id='context-prepare-v1', kind='deterministic', side_effects='read', adapter='alive.workflows.ada...kflows/context.py', 'alive/society.py', 'alive/cognitive_schema.py'), interface='stage-context/v1', traits=frozenset()).fingerprint\n1 failed, 6 passed in 0.18s\n",
+      "returncode": 1,
+      "source_sha256": "f57a3e37c1799376a5bf80125f0c316a1bf6fcb085c6945b66885aef4dfc4003"
+    },
+    {
+      "id": "F2b",
+      "mutation": "fingerprint ignores traits",
+      "files": [
+        "alive/capabilities/trusted.py"
+      ],
+      "target": "tests/test_capability_reuse_lifecycle.py::test_a_trait_change_changes_the_fingerprint",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "\"traits\": sorted(self.traits),"
+      ],
+      "replacements": [
+        ""
+      ],
+      "assertion": "0e5674bd34' = fingerprint()\n +    where fingerprint = TrustedImplementation(id='result-record-v1', kind='deterministic', side_effects='write', adapter='alive.workflows.adap...kflows/context.py', 'alive/society.py', 'alive/cognitive_schema.py'), interface='stage-context/v1', traits=frozenset()).fingerprint\n +      where TrustedImplementation(id='result-record-v1', kind='deterministic', side_effects='write', adapter='alive.workflows.adap...kflows/context.py', 'alive/society.py', 'alive/cognitive_schema.py'), interface='stage-context/v1', traits=frozenset()) = <function replace at 0x00000230C03FAA20>(TrustedImplementation(id='result-record-v1', kind='deterministic', side_effects='write', adapter='alive.workflows.adap...', 'alive/society.py', 'alive/cognitive_schema.py'), interface='stage-context/v1', traits=frozenset({'result.writer'})), traits=frozenset())\n +        where <function replace at 0x00000230C03FAA20> = <module 'dataclasses' from 'C:\\\\Users\\\\ernan\\\\AppData\\\\Roaming\\\\uv\\\\python\\\\cpython-3.13.3-windows-x86_64-none\\\\Lib\\\\dataclasses.py'>.replace\n +        and   frozenset() = frozenset()\n +  and   'f4457fc21a9e8ee96ccb0922e30856d852af5255793f1a2068e5260e5674bd34' = fingerprint()\n +    where fingerprint = TrustedImplementation(id='result-record-v1', kind='deterministic', side_effects='write', adapter='alive.workflows.adap...', 'alive/society.py', 'alive/cognitive_schema.py'), interface='stage-context/v1', traits=frozenset({'result.writer'})).fingerprint\n1 failed in 0.22s\n",
+      "returncode": 1,
+      "source_sha256": "f57a3e37c1799376a5bf80125f0c316a1bf6fcb085c6945b66885aef4dfc4003"
+    },
+    {
+      "id": "F3a",
+      "mutation": "an oversize .gitignore is no longer named",
+      "files": [
+        "alive/capabilities/repository.py"
+      ],
+      "target": "tests/test_capability_repository.py::test_oversize_gitignore_fails_closed_with_a_named_reason",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "too_large = str(error) == \"repository_file_size_limit\""
+      ],
+      "replacements": [
+        "too_large = False"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n__________ test_oversize_gitignore_fails_closed_with_a_named_reason ___________\ntests\\test_capability_repository.py:168: in test_oversize_gitignore_fails_closed_with_a_named_reason\n    with pytest.raises(Refused, match=\"repository_ignore_too_large\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   AssertionError: Regex pattern did not match.\nE     Expected regex: 'repository_ignore_too_large'\nE     Actual message: 'repository_ignore_unreadable'\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository.py::test_oversize_gitignore_fails_closed_with_a_named_reason - AssertionError: Regex pattern did not match.\n  Expected regex: 'repository_ignore_too_large'\n  Actual message: 'repository_ignore_unreadable'\n1 failed in 0.17s\n",
+      "returncode": 1,
+      "source_sha256": "63fde7fc0fd8a9674bc2985062b43a4d7137ba8595f3b9f3b15995af938e0483"
+    },
+    {
+      "id": "F3b",
+      "mutation": "Windows device names are accepted as paths",
+      "files": [
+        "alive/capabilities/repository.py"
+      ],
+      "target": "tests/test_capability_repository.py::test_windows_device_names_are_refused_on_every_platform",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "and not any(\n            part.split(\".\")[0].rstrip(\" \").casefold() in DEVICE_NAMES for part in path.parts\n        ),"
+      ],
+      "replacements": [
+        "and True,"
+      ],
+      "assertion": "ndows_device_names_are_refused_on_every_platform\n    with pytest.raises(Refused, match=\"repository_path_refused\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n______ test_windows_device_names_are_refused_on_every_platform[con.d/a] _______\ntests\\test_capability_repository.py:156: in test_windows_device_names_are_refused_on_every_platform\n    with pytest.raises(Refused, match=\"repository_path_refused\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository.py::test_windows_device_names_are_refused_on_every_platform[CON] - Failed: DID NOT RAISE Refused\nFAILED tests/test_capability_repository.py::test_windows_device_names_are_refused_on_every_platform[nul.txt] - Failed: DID NOT RAISE Refused\nFAILED tests/test_capability_repository.py::test_windows_device_names_are_refused_on_every_platform[src/COM1] - Failed: DID NOT RAISE Refused\nFAILED tests/test_capability_repository.py::test_windows_device_names_are_refused_on_every_platform[aux.md] - Failed: DID NOT RAISE Refused\nFAILED tests/test_capability_repository.py::test_windows_device_names_are_refused_on_every_platform[Lpt9.log] - Failed: DID NOT RAISE Refused\nFAILED tests/test_capability_repository.py::test_windows_device_names_are_refused_on_every_platform[con.d/a] - Failed: DID NOT RAISE Refused\n6 failed in 0.17s\n",
+      "returncode": 1,
+      "source_sha256": "63fde7fc0fd8a9674bc2985062b43a4d7137ba8595f3b9f3b15995af938e0483"
+    },
+    {
+      "id": "F4a",
+      "mutation": "every new definition may use the legacy contract",
+      "files": [
+        "alive/workflows/store.py"
+      ],
+      "target": "tests/test_capability_legacy_adoption.py::test_a_new_definition_must_meet_the_full_capability_contract",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "adopt_legacy=digest in LEGACY_DEFINITION_SHA256"
+      ],
+      "replacements": [
+        "adopt_legacy=True"
+      ],
+      "assertion": "                                     [100%]\n================================== FAILURES ===================================\n_____ test_a_new_definition_must_meet_the_full_capability_contract[None] ______\ntests\\test_capability_legacy_adoption.py:65: in test_a_new_definition_must_meet_the_full_capability_contract\n    with pytest.raises(DefinitionError, match=\"capability contract\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE DefinitionError\n============================== warnings summary ===============================\ntests/test_capability_legacy_adoption.py::test_a_new_definition_must_meet_the_full_capability_contract[None]\ntests/test_capability_legacy_adoption.py::test_a_new_definition_must_meet_the_full_capability_contract[1.0.0]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_legacy_adoption.py::test_a_new_definition_must_meet_the_full_capability_contract[None] - Failed: DID NOT RAISE DefinitionError\n1 failed, 1 passed, 2 warnings in 1.47s\n",
+      "returncode": 1,
+      "source_sha256": "494f4fc5292bc2e03f81c7fc08af7a2c8ee8434945c3505b75e5de61d80b5069"
+    },
+    {
+      "id": "F4b",
+      "mutation": "a pre-existing row is no longer adopted",
+      "files": [
+        "alive/workflows/store.py"
+      ],
+      "target": "tests/test_capability_legacy_adoption.py::test_a_genuinely_historical_definition_is_adopted_under_its_original_contract",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "await bind_definition(session, kernel, existing, spec, adopt_legacy=True)"
+      ],
+      "replacements": [
+        "await bind_definition(session, kernel, existing, spec, adopt_legacy=False)"
+      ],
+      "assertion": "s\\alive\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:265: in _call_func\n    retval = await retval_or_awaitable\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\nalive\\workflows\\store.py:186: in register_definition\n    await bind_definition(session, kernel, existing, spec, adopt_legacy=False)\nalive\\capabilities\\bindings.py:85: in bind_definition\n    raise DefinitionError([f\"capability contract: {error}\"]) from None\nE   alive.workflows.spec.DefinitionError: capability contract: workflow output does not match capability contract\n============================== warnings summary ===============================\ntests/test_capability_legacy_adoption.py::test_a_genuinely_historical_definition_is_adopted_under_its_original_contract\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_legacy_adoption.py::test_a_genuinely_historical_definition_is_adopted_under_its_original_contract - alive.workflows.spec.DefinitionError: capability contract: workflow output does not match capability contract\n1 failed, 1 warning in 0.88s\n",
+      "returncode": 1,
+      "source_sha256": "494f4fc5292bc2e03f81c7fc08af7a2c8ee8434945c3505b75e5de61d80b5069"
+    },
+    {
+      "id": "F6",
+      "mutation": "the graph route consults the default catalogue",
+      "files": [
+        "alive/workflows/api.py"
+      ],
+      "target": "tests/test_capability_registry_authority.py::test_a_yaml_only_capability_is_consistent_across_every_surface",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "**graph_of(view[\"definition\"], operations=registry_for(kernel()).operations),"
+      ],
+      "replacements": [
+        "**graph_of(view[\"definition\"]),"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_______ test_a_yaml_only_capability_is_consistent_across_every_surface ________\ntests\\test_capability_registry_authority.py:76: in test_a_yaml_only_capability_is_consistent_across_every_surface\n    assert graph[\"nodes\"][0][\"available\"] is True  # was False: default catalogue consulted\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   assert False is True\n============================== warnings summary ===============================\ntests/test_capability_registry_authority.py::test_a_yaml_only_capability_is_consistent_across_every_surface\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_registry_authority.py::test_a_yaml_only_capability_is_consistent_across_every_surface - assert False is True\n1 failed, 1 warning in 1.13s\n",
+      "returncode": 1,
+      "source_sha256": "7e968d4b59da7a7cdf266224c01870958483604e250a075ff06a96239df9a45c"
+    },
+    {
+      "id": "F7",
+      "mutation": "a run without a snapshot is read through today's catalogue",
+      "files": [
+        "alive/capabilities/bindings.py"
+      ],
+      "target": "tests/test_capability_registry_authority.py::test_a_pi02_run_without_a_snapshot_stays_inspectable_after_its_operation_is_removed",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "if not stages:\n        return None"
+      ],
+      "replacements": [
+        "if not stages:\n        return dict(registry_for(kernel).operations)"
+      ],
+      "assertion": "\nC:\\Projects\\alive\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:265: in _call_func\n    retval = await retval_or_awaitable\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\nalive\\workflows\\observatory.py:255: in inspected_run\n    run, definition, stages = await records(session, kernel, run_id)\n                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nalive\\workflows\\observatory.py:77: in records\n    raise store.UnknownWorkflow(\"Invalid retained definition\") from None\nE   alive.workflows.store.UnknownWorkflow: 'Invalid retained definition'\n============================== warnings summary ===============================\ntests/test_capability_registry_authority.py::test_a_pi02_run_without_a_snapshot_stays_inspectable_after_its_operation_is_removed\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_registry_authority.py::test_a_pi02_run_without_a_snapshot_stays_inspectable_after_its_operation_is_removed - alive.workflows.store.UnknownWorkflow: 'Invalid retained definition'\n1 failed, 1 warning in 1.50s\n",
+      "returncode": 1,
+      "source_sha256": "e71dc4668a44e8be12cf902a1a6a66f2fba58e102b2cf6aac3a3192012af5cd5"
+    },
+    {
+      "id": "F8a",
+      "mutation": "the artifact route no longer needs the result-writer trait",
+      "files": [
+        "alive/workflows/runner.py"
+      ],
+      "target": "tests/test_capability_reuse_lifecycle.py::test_only_a_stage_whose_implementation_writes_results_serves_an_artifact",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "and \"result.writer\" in traits  # the retained implementation, not the operation id"
+      ],
+      "replacements": [
+        "and True"
+      ],
+      "assertion": "utures\\_base.py:456: in result\n    return self.__get_result()\n           ^^^^^^^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\concurrent\\futures\\_base.py:401: in __get_result\n    raise self._exception\nC:\\Projects\\alive\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:265: in _call_func\n    retval = await retval_or_awaitable\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\nalive\\workflows\\runner.py:726: in artifact_view\n    artifact = await session.get(CognitiveMessage, output[\"artifact_id\"])\n                                                   ^^^^^^^^^^^^^^^^^^^^^\nE   KeyError: 'artifact_id'\n============================== warnings summary ===============================\ntests/test_capability_reuse_lifecycle.py::test_only_a_stage_whose_implementation_writes_results_serves_an_artifact\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_reuse_lifecycle.py::test_only_a_stage_whose_implementation_writes_results_serves_an_artifact - KeyError: 'artifact_id'\n1 failed, 1 warning in 1.61s\n",
+      "returncode": 1,
+      "source_sha256": "13f34abbee072e50f0b9cd880ae6ad5994c7612e6c7126676bad33f77907d055"
+    },
+    {
+      "id": "F8b",
+      "mutation": "record accepts any dependency as independent validation",
+      "files": [
+        "alive/workflows/adapters.py"
+      ],
+      "target": "tests/test_capability_reuse_lifecycle.py::test_record_accepts_a_dependency_by_what_it_ran_not_by_its_operation_id",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "\"validation.independent\" in traits_of(item[\"implementation\"])"
+      ],
+      "replacements": [
+        "True"
+      ],
+      "assertion": " Refused\n_ test_record_accepts_a_dependency_by_what_it_ran_not_by_its_operation_id[cognition-role-v1-False] _\ntests\\test_capability_reuse_lifecycle.py:180: in test_record_accepts_a_dependency_by_what_it_ran_not_by_its_operation_id\n    with pytest.raises(Refused, match=\"independent_validation_dependency_required\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n_ test_record_accepts_a_dependency_by_what_it_ran_not_by_its_operation_id[not-installed-v1-False] _\ntests\\test_capability_reuse_lifecycle.py:180: in test_record_accepts_a_dependency_by_what_it_ran_not_by_its_operation_id\n    with pytest.raises(Refused, match=\"independent_validation_dependency_required\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_reuse_lifecycle.py::test_record_accepts_a_dependency_by_what_it_ran_not_by_its_operation_id[context-prepare-v1-False] - Failed: DID NOT RAISE Refused\nFAILED tests/test_capability_reuse_lifecycle.py::test_record_accepts_a_dependency_by_what_it_ran_not_by_its_operation_id[cognition-role-v1-False] - Failed: DID NOT RAISE Refused\nFAILED tests/test_capability_reuse_lifecycle.py::test_record_accepts_a_dependency_by_what_it_ran_not_by_its_operation_id[not-installed-v1-False] - Failed: DID NOT RAISE Refused\n3 failed, 2 passed in 0.23s\n",
+      "returncode": 1,
+      "source_sha256": "8be618cea6737742cfcb9bac2b5a49e31407879768e4292cbd54defb21b8c651"
+    },
+    {
+      "id": "F8c",
+      "mutation": "reference identity is claimed without the implementation trait",
+      "files": [
+        "alive/workflows/store.py"
+      ],
+      "target": "tests/test_capability_reuse_lifecycle.py::test_prepare_compare_and_record_work_under_new_ids",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "and ({\"model.role\", \"validation.reference-identity\"} & set(traits))"
+      ],
+      "replacements": [
+        "and True"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_____________ test_prepare_compare_and_record_work_under_new_ids ______________\ntests\\test_capability_reuse_lifecycle.py:81: in test_prepare_compare_and_record_work_under_new_ids\n    assert compare[\"reference_identity_status\"] == \"not_established\"\nE   AssertionError: assert 'passed' == 'not_established'\nE     \nE     - not_established\nE     + passed\n============================== warnings summary ===============================\ntests/test_capability_reuse_lifecycle.py::test_prepare_compare_and_record_work_under_new_ids\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_reuse_lifecycle.py::test_prepare_compare_and_record_work_under_new_ids - AssertionError: assert 'passed' == 'not_established'\n  \n  - not_established\n  + passed\n1 failed, 1 warning in 1.55s\n",
+      "returncode": 1,
+      "source_sha256": "494f4fc5292bc2e03f81c7fc08af7a2c8ee8434945c3505b75e5de61d80b5069"
+    },
+    {
+      "id": "F9a",
+      "mutation": "stage output reaches the generic feed",
+      "files": [
+        "alive/kernel.py"
+      ],
+      "target": "tests/test_capability_repository_execution.py::test_stage_output_stays_in_run_history_but_not_in_the_generic_feed",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "if event_type == \"workflow.stage.result\" and isinstance(payload, dict):"
+      ],
+      "replacements": [
+        "if False:"
+      ],
+      "assertion": "2e68-4a82-9066-b030eeb267de\",\"causation_id\":null,\"timestamp\":\"2026-10-31T13:45:11.292906Z\",\"payload\":{\"investigation_id\":\"ef76aa67-2e68-4a82-9066-b030eeb267de\",\"state\":\"COMPLETED\"},\"sequence_number\":27},{\"schema_version\":1,\"event_id\":\"eea03bde-cbd1-4634-934f-5e31db1667b8\",\"instance_id\":\"78b98c88-9ba3-41eb-a612-f252fd4a15b0\",\"event_type\":\"cognition.experience_recorded\",\"source\":\"kernel\",\"correlation_id\":\"ef76aa67-2e68-4a82-9066-b030eeb267de\",\"causation_id\":null,\"timestamp\":\"2026-10-31T13:45:11.296807Z\",\"payload\":{\"experience_id\":\"bcca573f-97da-405f-afe4-7ce3fd889d39\",\"investigation_id\":\"ef76aa67-2e68-4a82-9066-b030eeb267de\",\"state\":\"COMPLETED\"},\"sequence_number\":28},{\"schema_version\":1,\"event_id\":\"08f7fb75-41cd-4804-97d1-5530030ae426\",\"instance_id\":\"78b98c88-9ba3-41eb-a612-f252fd4a15b0\",\"event_type\":\"workflow.execution.completed\",\"source\":\"workflow\",\"correlation_id\":\"7b08f11b-afeb-464c-95d2-b83ffee61839\",\"causation_id\":null,\"timestamp\":\"2026-10-31T13:45:11.298667Z\",\"payload\":{\"run_id\":\"7b08f11b-afeb-464c-95d2-b83ffee61839\"},\"sequence_number\":29},{\"schema_version\":1,\"event_id\":\"969d05e8-6183-4ef3-9d80-7abba1abc4cf\",\"instance_id\":\"78b98c88-9ba3-41eb-a612-f252fd4a15b0\",\"event_type\":\"alive.heartbeat\",\"source\":\"kernel\",\"correlation_id\":\"4cdccb73-450e-43fb-9df5-5cb3af186397\",\"causation_id\":null,\"timestamp\":\"2026-10-31T13:45:11.304976Z\",\"payload\":{\"state_version\":5,\"drive\":\"commitment\",\"unfinished_goals\":1},\"sequence_number\":30}]\n  ?           +++++++++)\n1 failed, 1 warning in 1.19s\n",
+      "returncode": 1,
+      "source_sha256": "c054bd022ce62d50c6d6d29ae1dce827815616df45a4a771566d06b598e1efea"
+    },
+    {
+      "id": "F9b",
+      "mutation": "the REST event feed is not instance scoped",
+      "files": [
+        "alive/app.py"
+      ],
+      "target": "tests/test_capability_repository_execution.py::test_the_generic_feed_is_scoped_to_this_instance",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        ".where(Event.instance_id == kernel.instance_id, Event.sequence_number > after)"
+      ],
+      "replacements": [
+        ".where(Event.sequence_number > after)"
+      ],
+      "assertion": "9e-b643-63dab4c37206\",\"causation_id\":null,\"timestamp\":\"2026-10-31T13:45:17.165902Z\",\"payload\":{},\"sequence_number\":32}]\nE     ?           +++++++++++++++++++\n============================== warnings summary ===============================\ntests/test_capability_repository_execution.py::test_the_generic_feed_is_scoped_to_this_instance\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository_execution.py::test_the_generic_feed_is_scoped_to_this_instance - assert 'other-instance-data' not in '[{\"schema_v...number\":32}]'\n  \n  'other-instance-data' is contained here:\n    \"marker\":\"other-instance-data\"},\"sequence_number\":31},{\"schema_version\":1,\"event_id\":\"1a595d60-ff1f-400e-82c2-98ae9fb03989\",\"instance_id\":\"2fe3ba6f-57fc-4ce7-be73-244898a44483\",\"event_type\":\"own.event\",\"source\":\"test\",\"correlation_id\":\"2f90ad46-794a-4c9e-b643-63dab4c37206\",\"causation_id\":null,\"timestamp\":\"2026-10-31T13:45:17.165902Z\",\"payload\":{},\"sequence_number\":32}]\n  ?           +++++++++++++++++++\n1 failed, 1 warning in 1.21s\n",
+      "returncode": 1,
+      "source_sha256": "e02aef23d56bf8e488a0b15c5234f58ff8b23a6b6df1ca98ceee24160e24681e"
+    },
+    {
+      "id": "F9c",
+      "mutation": "the WebSocket feed is not instance scoped",
+      "files": [
+        "alive/app.py"
+      ],
+      "target": "tests/test_capability_repository_execution.py::test_the_generic_feed_is_scoped_to_this_instance",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "Event.instance_id == kernel.instance_id,\n                                Event.sequence_number > cursor,"
+      ],
+      "replacements": [
+        "Event.sequence_number > cursor,"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n______________ test_the_generic_feed_is_scoped_to_this_instance _______________\ntests\\test_capability_repository_execution.py:417: in test_the_generic_feed_is_scoped_to_this_instance\n    assert first[\"event_type\"] == \"own.event\"  # the foreign event was skipped, not delivered\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   AssertionError: assert 'foreign.event' == 'own.event'\nE     \nE     - own.event\nE     + foreign.event\n============================== warnings summary ===============================\ntests/test_capability_repository_execution.py::test_the_generic_feed_is_scoped_to_this_instance\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository_execution.py::test_the_generic_feed_is_scoped_to_this_instance - AssertionError: assert 'foreign.event' == 'own.event'\n  \n  - own.event\n  + foreign.event\n1 failed, 1 warning in 1.20s\n",
+      "returncode": 1,
+      "source_sha256": "e02aef23d56bf8e488a0b15c5234f58ff8b23a6b6df1ca98ceee24160e24681e"
+    },
+    {
+      "id": "F11",
+      "mutation": "DEL and C1 control characters are accepted in manifest text",
+      "files": [
+        "alive/capabilities/manifest.py"
+      ],
+      "target": "tests/test_capability_hardening.py::test_every_control_character_is_refused_in_manifest_text",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "unicodedata.category(c) == \"Cc\" and c not in \"\\n\\t\""
+      ],
+      "replacements": [
+        "ord(c) < 32 and c not in \"\\n\\t\""
+      ],
+      "assertion": "======================= FAILURES ===================================\n_______ test_every_control_character_is_refused_in_manifest_text[\\\\x7f] _______\ntests\\test_capability_hardening.py:29: in test_every_control_character_is_refused_in_manifest_text\n    with pytest.raises(ManifestError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n_______ test_every_control_character_is_refused_in_manifest_text[\\\\x85] _______\ntests\\test_capability_hardening.py:29: in test_every_control_character_is_refused_in_manifest_text\n    with pytest.raises(ManifestError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n_______ test_every_control_character_is_refused_in_manifest_text[\\\\x9f] _______\ntests\\test_capability_hardening.py:29: in test_every_control_character_is_refused_in_manifest_text\n    with pytest.raises(ManifestError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_hardening.py::test_every_control_character_is_refused_in_manifest_text[\\\\x7f] - Failed: DID NOT RAISE ManifestError\nFAILED tests/test_capability_hardening.py::test_every_control_character_is_refused_in_manifest_text[\\\\x85] - Failed: DID NOT RAISE ManifestError\nFAILED tests/test_capability_hardening.py::test_every_control_character_is_refused_in_manifest_text[\\\\x9f] - Failed: DID NOT RAISE ManifestError\n3 failed, 3 passed in 0.20s\n",
+      "returncode": 1,
+      "source_sha256": "cd86d16eb49489b8e2396582ddf6310736ed7dddd9e0d6cbabbf824db88bc368"
+    },
+    {
+      "id": "F12",
+      "mutation": "duplicate enum members are accepted",
+      "files": [
+        "alive/capabilities/contracts.py"
+      ],
+      "target": "tests/test_capability_hardening.py::test_duplicate_enum_members_are_refused_rather_than_hashed_differently",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "and len({json_bytes(v) for v in options}) == len(options),"
+      ],
+      "replacements": [
+        "and True,"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n___ test_duplicate_enum_members_are_refused_rather_than_hashed_differently ____\ntests\\test_capability_hardening.py:51: in test_duplicate_enum_members_are_refused_rather_than_hashed_differently\n    with pytest.raises(ManifestError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_hardening.py::test_duplicate_enum_members_are_refused_rather_than_hashed_differently - Failed: DID NOT RAISE ManifestError\n1 failed in 0.16s\n",
+      "returncode": 1,
+      "source_sha256": "ea8cbc0202e5c496a7a21cfcdbae24975434a9db7afb4f93f91f4dace983a975"
+    },
+    {
+      "id": "F15",
+      "mutation": "activation judges a pinned stage by the newest version",
+      "files": [
+        "alive/workflows/spec.py"
+      ],
+      "target": "tests/test_capability_hardening.py::test_activation_judges_a_pinned_stage_by_the_version_it_pins",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "return dict(operation.executable_versions).get(stage.capability_version, False)"
+      ],
+      "replacements": [
+        "return operation.executable"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n________ test_activation_judges_a_pinned_stage_by_the_version_it_pins _________\ntests\\test_capability_hardening.py:101: in test_activation_judges_a_pinned_stage_by_the_version_it_pins\n    activatable(newest_disabled, pin=\"1.0.0\")  # the pinned version runs even though latest does not\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_capability_hardening.py:96: in activatable\n    check_activatable(spec, registry.operations)\nalive\\workflows\\spec.py:363: in check_activatable\n    raise DefinitionError(\nE   alive.workflows.spec.DefinitionError: operation 'context.prepare' is unavailable: Disabled by deployment policy\n=========================== short test summary info ===========================\nFAILED tests/test_capability_hardening.py::test_activation_judges_a_pinned_stage_by_the_version_it_pins - alive.workflows.spec.DefinitionError: operation 'context.prepare' is unavailable: Disabled by deployment policy\n1 failed in 0.18s\n",
+      "returncode": 1,
+      "source_sha256": "cefe0faa2f305bc2e28448f52b591186404b79e78b1a846aa57a21b952c24f3e"
     }
   ]
 }

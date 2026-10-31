@@ -225,7 +225,12 @@ def test_record_requires_actual_validation_dependency():
     context = SimpleNamespace(
         inputs={"result": {"opinion": "true"}, "assessment": {"valid": True}},
         dependencies={
-            "model": {"operation": "cognition.role", "validation_status": "passed", "output": {}}
+            "model": {
+                "operation": "cognition.role",
+                "implementation": "cognition-role-v1",  # what the runner records from the snapshot
+                "validation_status": "passed",
+                "output": {},
+            }
         },
     )
     with pytest.raises(Refused, match="independent_validation_dependency_required"):

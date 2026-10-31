@@ -16,7 +16,7 @@ from alive.workflows.adapters import StageResult
 from alive.workflows.context import Refused
 from alive.workflows.examples import stage
 from alive.workflows.runner import executable
-from alive.workflows.spec import parse_definition
+from alive.workflows.spec import DefinitionError, parse_definition
 from tests.test_capability_repository_execution import workflow
 from tests.workflow_execution_helpers import replace_adapters
 
@@ -130,7 +130,7 @@ def test_deployment_configuration_may_narrow_but_never_widen_a_manifest_limit():
         CapabilityRegistry([manifest], limits={"context.prepare": {"timeout_seconds": 3601}})
 
 
-def test_runner_checks_the_pinned_version_not_merely_the_latest():
+def test_runner_checks_the_pinned_version_not_merely_the_latest(monkeypatch):
     one = parse(yaml.safe_dump(declared()))
     two = parse(yaml.safe_dump(declared(version="2.0.0")))
     registry = CapabilityRegistry([one, two], disabled=("context.prepare@1.0.0",))
@@ -158,6 +158,12 @@ def test_runner_checks_the_pinned_version_not_merely_the_latest():
     }
     raw["stages"][0]["capability_version"] = "1.0.0"
     spec = parse_definition(raw, operations=registry.operations)
+    # Activation is version-aware and refuses a disabled pinned version first (F15)...
+    with pytest.raises(DefinitionError, match="unavailable"):
+        executable(spec, grant, registry)
+    # ...and the runner's own check still holds when activation is bypassed, so neither layer is
+    # the only thing standing between a disabled version and an execution.
+    monkeypatch.setattr("alive.workflows.runner.check_activatable", lambda *_a, **_k: None)
     with pytest.raises(Refused, match="operation_not_authorized_or_executable"):
         executable(spec, grant, registry)
     raw["stages"][0]["capability_version"] = "2.0.0"

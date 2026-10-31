@@ -351,9 +351,14 @@ def _check_ref(spec, by_id, ancestors, stage, name, value):
 
 def check_activatable(spec, operations=OPERATIONS):
     """A definition may only become `active` if every operation it names can actually run."""
-    unavailable = sorted(
-        {s.operation for s in spec.stages if not operations[s.operation].executable}
-    )
+
+    def runnable(stage):
+        operation = operations[stage.operation]
+        if stage.capability_version:  # a pinned stage is judged by the version it pins
+            return dict(operation.executable_versions).get(stage.capability_version, False)
+        return operation.executable
+
+    unavailable = sorted({s.operation for s in spec.stages if not runnable(s)})
     if unavailable:
         raise DefinitionError(
             [

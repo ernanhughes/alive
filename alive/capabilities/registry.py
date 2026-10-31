@@ -24,6 +24,9 @@ class Operation:
     unavailable_reason: str | None = None
     executable: bool = False
     workflow_unavailable_reason: str | None = None
+    # (version, executable) for every installed version, so a definition that pins a version is
+    # judged by that version and not by whichever is newest.
+    executable_versions: tuple[tuple[str, bool], ...] = ()
 
     @property
     def available(self):
@@ -115,7 +118,12 @@ class CapabilityRegistry:
         self._entries = MappingProxyType(entries)
         known = {ident for ident, _ in entries} | {f"{i}@{v}" for i, v in entries}
         if disabled - known:
-            raise ManifestError("unknown disabled capability")
+            # Fail closed: ignoring an unknown id would let a typo leave a capability enabled.
+            raise ManifestError(
+                "ALIVE_DISABLED_CAPABILITIES names no installed capability: "
+                + ", ".join(sorted(disabled - known))
+                + " (remove the entry, or restore the manifest, before restarting)"
+            )
         self._implementations = MappingProxyType(dict(implementations))
         self._snapshots = MappingProxyType({s.reference: s for s in snapshots})
         if len(self._snapshots) != len(tuple(snapshots)):
@@ -141,6 +149,7 @@ class CapabilityRegistry:
                 legacy_reason,
                 cap.executable,
                 cap.reason,
+                tuple(sorted((v.manifest["version"], v.executable) for v in versions)),
             )
         self.operations = MappingProxyType(operations)
         policies = {}

@@ -46,7 +46,11 @@ on restart.
 
 1. Write an async function taking the stage context and returning `StageResult`.
 2. Register a `TrustedImplementation` in `trusted.py` with its kind, side effects, permission
-   ceiling, adapter name and source files. This is a code review, not a configuration step.
+   ceiling, the `module:function` adapter reference, source files and any traits. The reference
+   is part of the implementation's fingerprint. If other code relies on what the implementation
+   *is* (a result writer, a model role, an independent validator), express that as a trait and
+   check the trait of the stage's retained implementation, never an operation id. This is a code
+   review, not a configuration step.
 3. Write the manifest as above, with matching permissions.
 4. Add tests for the contract and, if it reads or writes anything, for each bound.
 
@@ -60,16 +64,37 @@ on restart.
 ## Test commands (fast loop)
 
 ```bash
-uv run pytest -q tests/test_capability_manifests.py tests/test_capability_registry.py
+uv run pytest -q tests/test_capability_manifests.py tests/test_capability_registry.py tests/test_capability_hardening.py
 uv run pytest -q tests/test_capability_repository.py tests/test_capability_contract_enforcement.py
+uv run pytest -q tests/test_capability_resolution.py tests/test_capability_legacy_adoption.py
+uv run pytest -q tests/test_capability_registry_authority.py tests/test_capability_reuse_lifecycle.py
 uv run pytest -q tests/test_capability_repository_execution.py tests/test_capability_catalog_api.py
 uv run pytest -q tests/test_capability_cli.py
 npm --prefix dashboard test -- src/capabilities/
 npm --prefix dashboard run build
-uv run python scripts/capability_mutations.py
+uv run python scripts/capability_mutations.py          # all mutants; --only C1 F9a --merge for a few
+```
+
+Platform and database checks (opt in; none run in the fast loop):
+
+```bash
+# The pinned Pi must be installed for the Pi-backed workflow suites.
+npm ci --ignore-scripts --prefix pi-runtime
+
+# PostgreSQL: a DISPOSABLE EMPTY database (the test refuses one that has tables).
+docker run --rm -d --name alive-pg-check -p 55433:5432 -e POSTGRES_PASSWORD=check -e POSTGRES_USER=check -e POSTGRES_DB=check pgvector/pgvector:pg16
+ALIVE_TEST_POSTGRES_URL=postgresql+asyncpg://check:check@127.0.0.1:55433/check uv run pytest -q tests/test_capability_postgres.py
+
+# POSIX filesystem behaviour (FIFOs) on Linux, with the repository mounted read-only.
+docker run --rm -v "$PWD:/review:ro" -w /review --entrypoint /bin/sh <image> -c "uv pip install --python /app/.venv/bin/python pytest && /app/.venv/bin/python -m pytest -q tests/test_capability_repository.py"
 ```
 
 `tests/test_capability_repository_execution.py` is the end-to-end demonstration: a hostile
 fixture repository, a registered workflow, an exact owner grant, the real `WorkflowRunner`, no
-model call, refusal without the grant, refusal after a tampered or disabled catalogue, and
-history that remains readable afterwards.
+model call, refusal without the grant, refusal after a tampered, disabled or loosened
+configuration, history that remains readable, and the event-feed retention checks.
+`tests/test_capability_reuse_lifecycle.py` runs every reusable implementation, including the
+pinned Pi against a scripted provider, under different capability ids.
+
+Fault injection in tests uses `replace_adapters` (tests/workflow_execution_helpers.py), which
+patches the registry class for one test. Production has no override.
