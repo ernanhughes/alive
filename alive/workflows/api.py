@@ -44,7 +44,7 @@ class ArtifactView(BaseModel):
     context_provenance: dict
 
 
-def router(app, ready):
+def router(app, ready, pi_receipt):
     api = APIRouter(prefix="/api/v1", dependencies=[Depends(ready)])
 
     def kernel():
@@ -114,6 +114,30 @@ def router(app, ready):
     @api.get("/workflow-runs/{run_id}/stages")
     async def stages(run_id: str = Path(max_length=36)):
         return {"run_id": run_id, "stages": await found(store.get_stage_runs(kernel(), run_id))}
+
+    @api.get("/workflow-runs/{run_id}/inspection")
+    async def inspection(run_id: str = Path(max_length=36)):
+        from alive.workflows.observatory import inspected_run
+
+        return await found(inspected_run(kernel(), run_id))
+
+    @api.get("/workflow-runs/{run_id}/timeline")
+    async def timeline(
+        run_id: str = Path(max_length=36),
+        after: int = Query(0, ge=0),
+        limit: int = Query(200, ge=1, le=500),
+    ):
+        from alive.workflows.observatory import timeline as projection
+
+        return await found(projection(kernel(), run_id, after=after, limit=limit))
+
+    @api.get("/workflow-runs/{run_id}/stages/{attempt_id}/pi-receipt")
+    async def stage_receipt(
+        run_id: str = Path(max_length=36), attempt_id: str = Path(max_length=36)
+    ):
+        from alive.workflows.observatory import stage_receipt as projection
+
+        return await found(projection(kernel(), run_id, attempt_id, pi_receipt))
 
     @api.get("/workflow-runs/{run_id}/artifacts/{stage_id}", response_model=ArtifactView)
     async def artifact(run_id: str = Path(max_length=36), stage_id: str = Path(max_length=32)):

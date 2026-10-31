@@ -202,6 +202,16 @@
     <button id="blind-archive" disabled>Archive revealed evaluation</button>
     <details><summary>Runtime identity</summary><pre id="state">Awaiting connection.</pre></details>
     </details>
+    <section aria-label="Workflow inspection">
+      <h2>Inspect a workflow</h2>
+      <label>Workflow <input id="workflow-name" maxlength="64" placeholder="research-review" /></label>
+      <label>Version <input id="workflow-version" type="number" min="1" max="1000000" value="2" /></label>
+      <label>Run ID (optional) <input id="workflow-run" maxlength="36" /></label>
+      <label>Stage ID (optional) <input id="workflow-stage" maxlength="32" /></label>
+      <button id="workflow-open">Open workflow observatory</button>
+      <p id="workflow-status">Navigation only. No authorization or private context is sent in the link.</p>
+    </section>
+    <script src="workflow-nav.js" type="module"></script>
     <script src="panel.js" type="module"></script>
     <script src="live-companion.js" type="module"></script>
   </body>

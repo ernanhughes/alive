@@ -1,0 +1,89 @@
+{
+  "baseline": "PI-02C",
+  "runs": [
+    {
+      "label": "research",
+      "id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+      "status": "COMPLETED",
+      "workflow": {
+        "name": "research-review",
+        "version": 2,
+        "definition_id": "4dcc089a-c65c-4528-b8ca-942f73377470",
+        "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+        "schema_version": 1
+      }
+    },
+    {
+      "label": "research_v3",
+      "id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+      "status": "COMPLETED",
+      "workflow": {
+        "name": "research-review",
+        "version": 3,
+        "definition_id": "8b8f6617-f3f4-4fc5-9a04-794bbbff0008",
+        "definition_sha256": "8e6c178e4d6cd6760f7cc7828327a2d6173b1104293220203878319e40ea8703",
+        "schema_version": 1
+      }
+    },
+    {
+      "label": "deterministic",
+      "id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+      "status": "COMPLETED",
+      "workflow": {
+        "name": "source-comparison",
+        "version": 1,
+        "definition_id": "e6aa03a8-6336-4c90-aeb6-c5f67bac5f68",
+        "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+        "schema_version": 1
+      }
+    },
+    {
+      "label": "goal_cancel",
+      "id": "945e8924-76d1-4c26-b08c-bb7c71f53e7f",
+      "status": "FAILED",
+      "workflow": {
+        "name": "source-comparison",
+        "version": 1,
+        "definition_id": "e6aa03a8-6336-4c90-aeb6-c5f67bac5f68",
+        "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+        "schema_version": 1
+      }
+    },
+    {
+      "label": "ambiguous",
+      "id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+      "status": "UNKNOWN",
+      "workflow": {
+        "name": "research-review",
+        "version": 2,
+        "definition_id": "4dcc089a-c65c-4528-b8ca-942f73377470",
+        "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+        "schema_version": 1
+      }
+    },
+    {
+      "label": "partial",
+      "id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+      "status": "FAILED",
+      "workflow": {
+        "name": "research-review",
+        "version": 2,
+        "definition_id": "4dcc089a-c65c-4528-b8ca-942f73377470",
+        "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+        "schema_version": 1
+      }
+    }
+  ],
+  "provider_requests": 4,
+  "counts_after_seed": {
+    "model_invocations": 4,
+    "pi_runs": 4,
+    "pi_provider_requests": 4,
+    "workflow_runs": 6,
+    "cognitive_messages": 7,
+    "intelligence_learning_updates": 0,
+    "workflow_artifacts": 4
+  },
+  "paid_inference": "NOT_RUN",
+  "restart_replay": "PASS: unchanged invocation/Pi/request/run/artifact/learning counts"
+}

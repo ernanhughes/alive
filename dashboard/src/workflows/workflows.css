@@ -1,0 +1,246 @@
+.workflow-observatory {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  max-width: 1400px;
+  margin: auto;
+  min-width: 0;
+  width: 100%;
+  color: #263e2d;
+  overflow-wrap: anywhere;
+}
+.wf-heading {
+  height: auto;
+  padding: 0;
+  border: 0;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  align-items: center;
+}
+.wf-graph {
+  min-width: 0;
+}
+.wf-structured {
+  margin: 10px 0;
+}
+.wf-structured > div {
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e6d8;
+}
+.wf-structured dt {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.wf-structured dd {
+  margin: 6px 0 6px 16px;
+  white-space: pre-wrap;
+}
+.wf-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.wf-tabs button[aria-selected="true"] {
+  background: #d8e9bd;
+  border-color: #486c38;
+}
+.wf-heading h2 {
+  font-size: 28px;
+  margin: 6px 0;
+}
+.wf-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.wf-controls > label {
+  min-width: 0;
+  flex: 1;
+}
+.wf-controls label,
+.workflow-observatory label {
+  display: grid;
+  gap: 8px;
+}
+.workflow-observatory select,
+.workflow-observatory input {
+  max-width: 100%;
+  padding: 10px;
+  border-radius: 6px;
+}
+.wf-panel {
+  border: 1px solid #d6dfcc;
+  background: #fffef8;
+  padding: 20px;
+  border-radius: 12px;
+  min-width: 0;
+}
+.wf-panel h3 {
+  margin-top: 0;
+}
+.wf-panel small {
+  font-weight: normal;
+}
+.wf-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px;
+}
+.wf-facts div {
+  min-width: 0;
+}
+.wf-facts dt {
+  font-size: 12px;
+  color: #536b51;
+}
+.wf-facts dd {
+  margin: 4px 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-size: 13px;
+}
+.workflow-observatory pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-height: 400px;
+  overflow: auto;
+}
+.workflow-observatory code {
+  overflow-wrap: anywhere;
+}
+.workflow-observatory button {
+  cursor: pointer;
+  padding: 9px 13px;
+  margin: 4px;
+  border: 1px solid #718d7c;
+  border-radius: 6px;
+  color: #263e2d;
+  background: #eaf1df;
+}
+.workflow-observatory button:focus-visible,
+.workflow-observatory a:focus-visible {
+  outline: 3px solid #c8e597;
+  outline-offset: 3px;
+}
+.workflow-observatory button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.wf-canvas {
+  overflow: auto;
+  padding: 14px;
+  border: 1px solid #34443d;
+  border-radius: 12px;
+}
+.wf-canvas svg {
+  min-width: 600px;
+  width: 100%;
+  max-height: 600px;
+  color: #91a99b;
+}
+.wf-node {
+  fill: #172d22;
+  stroke: #748f7d;
+  stroke-width: 1.5;
+}
+.wf-node.selected {
+  stroke: #d4edaf;
+  stroke-width: 3;
+}
+.wf-canvas text {
+  fill: #e3eee5;
+  font-size: 12px;
+}
+.wf-canvas .wf-node-state {
+  fill: #b7c9bd;
+  font-size: 10px;
+}
+.wf-stage-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  gap: 8px;
+}
+.wf-stage-list li {
+  flex: 1;
+  min-width: 150px;
+}
+.wf-stage-list button {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+  text-align: left;
+  min-height: 95px;
+}
+.wf-stage-list button[aria-pressed="true"] {
+  border-color: #d4edaf;
+}
+.wf-stage-list small {
+  overflow-wrap: anywhere;
+}
+.wf-timeline {
+  padding-left: 24px;
+  max-height: 450px;
+  overflow: auto;
+}
+.wf-timeline li {
+  padding: 12px;
+  border-bottom: 1px solid #34443d;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.wf-timeline time {
+  font-size: 12px;
+  color: #536b51;
+}
+.wf-comparison {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.wf-table-scroll {
+  overflow: auto;
+}
+.workflow-observatory table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.workflow-observatory th,
+.workflow-observatory td {
+  border-bottom: 1px solid #44564c;
+  text-align: left;
+  padding: 12px;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+.workflow-observatory [role="alert"] {
+  border-left: 3px solid #e6b072;
+  padding: 12px;
+  background: #33291e;
+}
+.workflow-observatory a {
+  color: #365d35;
+}
+@media (max-width: 750px) {
+  .wf-heading {
+    display: block;
+  }
+  .wf-comparison {
+    grid-template-columns: 1fr;
+  }
+  .wf-panel {
+    padding: 14px;
+  }
+  .wf-controls {
+    display: grid;
+  }
+  .wf-stage-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}

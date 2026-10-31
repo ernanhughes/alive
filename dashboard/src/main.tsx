@@ -33,6 +33,7 @@ import { BrowserProvenance } from "./BrowserProvenance";
 import type { BrowserObservation } from "./BrowserProvenance";
 import { LivingPane } from "./Living";
 import { DemoTourPane } from "./DemoTour";
+import { WorkflowsPane } from "./workflows/WorkflowsPane";
 
 const tabs = [
   "Overview",
@@ -44,6 +45,7 @@ const tabs = [
   "Browser",
   "Runtime",
   "Cognition",
+  "Workflows",
 ] as const;
 type Tab = (typeof tabs)[number];
 const icons = [
@@ -56,6 +58,7 @@ const icons = [
   Globe2,
   Waypoints,
   BrainCircuit,
+  Waypoints,
 ];
 const time = (s: string | null | undefined) =>
   s ? new Date(s).toLocaleTimeString("en-GB") : "Awaiting heartbeat";
@@ -93,7 +96,7 @@ export function EventList({ events }: { events: AliveEvent[] }) {
   );
 }
 export function App() {
-  const [tab, setTab] = useState<Tab>("Overview");
+  const [tab, setTab] = useState<Tab>(() => window.location.hash.startsWith("#workflows?") ? "Workflows" : "Overview");
   const [token, setToken] = useState(
     () => sessionStorage.getItem("alive-token") || "",
   );
@@ -279,12 +282,12 @@ export function App() {
           <div className="page-heading">
             <div>
               <div className="eyebrow">
-                {tab === "Demonstration" ? "ALIVE / GUIDED DEMONSTRATION" : tab === "Living" ? "ALIVE-04 / CONTINUING EXPERIENCE" : tab === "Cognition"
+                {tab === "Workflows" ? "ALIVE-PI-02C / WORKFLOW OBSERVATORY" : tab === "Demonstration" ? "ALIVE / GUIDED DEMONSTRATION" : tab === "Living" ? "ALIVE-04 / CONTINUING EXPERIENCE" : tab === "Cognition"
                   ? "ALIVE-02 / COGNITIVE SOCIETY"
                   : "ALIVE-01 / FIRST CONTACT"}
               </div>
               <h1>
-                {tab === "Overview"
+                {tab === "Workflows" ? "Execution, made inspectable." : tab === "Overview"
                   ? "Something is becoming."
                   : tab === "Demonstration" ? "Evidence, remembered and withdrawn." : tab === "Living" ? "The living experience." : tab === "Live events"
                     ? "The stream of experience."
@@ -304,7 +307,7 @@ export function App() {
                   : "Inspect the real state of your local ALIVE runtime."}
               </p>
             </div>
-            <button
+            {tab !== "Workflows" && <button
               disabled={busy || !state}
               className="primary"
               onClick={() =>
@@ -315,7 +318,7 @@ export function App() {
             >
               {running ? <Pause size={15} /> : <Play size={15} />}{" "}
               {running ? "Suspend runtime" : "Start runtime"}
-            </button>
+            </button>}
           </div>
           {!token && (
             <form
@@ -874,6 +877,7 @@ export function App() {
             </section>
           )}
           {tab === "Cognition" && token && <CognitionPane token={token} />}
+          {tab === "Workflows" && token && <WorkflowsPane token={token} />}
           {tab === "Demonstration" && token && <DemoTourPane token={token} />}
           {tab === "Living" && token && <LivingPane token={token} />}
           <footer>

@@ -30,6 +30,7 @@ from alive.living_api import public_router as living_world_router
 from alive.living_api import router as living_router
 from alive.memory import GENERAL_MEMORY_TYPES, MemoryService
 from alive.models import AgentRun, BrowserSession, Event, Goal, Memory, now, record
+from alive.pi.api import receipt as pi_receipt
 from alive.pi.api import router as pi_router
 from alive.pi.runtime import PiRuntime, set_runtime
 from alive.provenance import runtime_identity
@@ -224,7 +225,7 @@ def create_app(settings=None, include_experiments=None):
     app.include_router(exploration_router(app, ready))
     app.include_router(demo_tour_router(app, ready))
     app.include_router(pi_router(app, ready))
-    app.include_router(workflow_router(app, ready))
+    app.include_router(workflow_router(app, ready, pi_receipt))
     app.include_router(intelligence_router(app, ready))
     app.include_router(living_world_router(app))
     app.include_router(public_router(app))
