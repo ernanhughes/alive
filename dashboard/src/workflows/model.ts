@@ -96,15 +96,30 @@ export function layout(graph: Graph): Map<string, { x: number; y: number }> {
   return result;
 }
 // This is an event projection, never a reconstruction from the final snapshot.
+const terminalExecutionEvents = new Set([
+  "workflow.execution.completed",
+  "workflow.execution.ended",
+  "workflow.run.completed",
+  "workflow.run.failed",
+  "workflow.run.cancelled",
+  "workflow.run.unknown",
+]);
 export function replayStates(events: RecordedEvent[]): Record<string, string> {
   const states: Record<string, string> = {};
-  for (const e of events)
+  for (const e of events) {
     if (e.stage_id) {
       if (e.event_type === "workflow.stage.claimed")
         states[e.stage_id] = "RUNNING";
       if (e.event_type === "workflow.stage.result")
         states[e.stage_id] = "COMPLETED";
     }
+    if (terminalExecutionEvents.has(e.event_type)) {
+      // The run ended, but this does not independently record each stage outcome.
+      for (const id of Object.keys(states))
+        if (states[id] === "RUNNING")
+          states[id] = "Ended — outcome not recorded";
+    }
+  }
   return states;
 }
 export function totals(stages: StageRun[]) {
