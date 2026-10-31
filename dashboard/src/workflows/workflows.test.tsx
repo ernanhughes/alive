@@ -388,6 +388,41 @@ describe("inspection UI", () => {
     await Promise.resolve();
     expect(screen.queryByText(ID)).toBeNull();
   });
+  it("cancels an in-flight replay page before switching runs and ignores its late result", async () => {
+    const a = fixture(),
+      b = fixture(OTHER);
+    a.timeline.has_more = true;
+    install([a, b]);
+    const normal = vi.mocked(request).getMockImplementation()!;
+    let release!: (v: unknown) => void, signal: AbortSignal | undefined;
+    vi.mocked(request).mockImplementation((path, ...args) => {
+      if (path.includes("/timeline?after=")) {
+        signal = args[3];
+        return new Promise((r) => {
+          release = r;
+        });
+      }
+      return normal(path, ...args);
+    });
+    window.location.hash = link({ workflow: "example", version: 2, run: ID });
+    render(<WorkflowsPane token="test" />);
+    await screen.findByRole("heading", { name: "Run " + ID });
+    fireEvent.click(screen.getByRole("tab", { name: "Recorded events" }));
+    fireEvent.click(screen.getByText("Replay recorded events"));
+    fireEvent.click(screen.getByText("Load next event page"));
+    await waitFor(() => expect(release).toBeTruthy());
+    fireEvent.change(screen.getByRole("combobox", { name: "Execution run" }), {
+      target: { value: OTHER },
+    });
+    expect(signal?.aborted).toBe(true);
+    await screen.findByRole("heading", { name: "Run " + OTHER });
+    await act(async () => {
+      release({ ...a.timeline, has_more: false });
+      await Promise.resolve();
+    });
+    expect(screen.queryByRole("heading", { name: "Run " + ID })).toBeNull();
+    expect(screen.getByRole("heading", { name: "Run " + OTHER })).toBeTruthy();
+  });
   it("aborts reads on unmount and does not poll terminal history", async () => {
     install();
     function Probe() {

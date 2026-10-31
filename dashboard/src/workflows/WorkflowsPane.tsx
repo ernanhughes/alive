@@ -57,7 +57,8 @@ function Observatory({ token }: { token: string }) {
   const candidate = frozen || observed.data;
   const identityMismatch =
     candidate &&
-    (candidate.run.workflow.name !== name ||
+    (candidate.run.id !== runId ||
+      candidate.run.workflow.name !== name ||
       candidate.run.workflow.version !== version);
   const record = identityMismatch ? null : candidate;
   useEffect(() => {
@@ -142,6 +143,8 @@ function Observatory({ token }: { token: string }) {
     function hash() {
       const s = parseLink(location.hash);
       if (!s) return;
+      pageController.current?.abort();
+      setMoreBusy(false);
       setName(s.workflow);
       setVersion(s.version);
       setRunId(s.run || "");
@@ -155,6 +158,7 @@ function Observatory({ token }: { token: string }) {
     return () => window.removeEventListener("hashchange", hash);
   }, []);
   function chooseRun(id: string) {
+    pageController.current?.abort();
     const selectedRun = runs.find((r) => r.id === id);
     if (selectedRun) setVersion(selectedRun.workflow.version);
     setRunId(id);
@@ -171,6 +175,8 @@ function Observatory({ token }: { token: string }) {
     setSelected("");
   }
   function replay(n: number | null) {
+    pageController.current?.abort();
+    setMoreBusy(false);
     if (n !== null && !frozen && record)
       setFrozen({ ...record, timeline: extra || record.timeline });
     if (n === null) {
@@ -233,6 +239,8 @@ function Observatory({ token }: { token: string }) {
         </div>
         <button
           onClick={() => {
+            pageController.current?.abort();
+            setMoreBusy(false);
             setCursor(null);
             setFrozen(null);
             setExtra(null);
