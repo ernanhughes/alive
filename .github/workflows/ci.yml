@@ -46,7 +46,7 @@ jobs:
           cache-dependency-path: dashboard/package-lock.json
       - run: npm ci
       - run: npm test
-      - run: node --test ../tests/extension-panel.test.cjs
+      - run: node --test ../tests/extension-panel.test.cjs ../tests/extension-workflows.test.cjs
       - run: node --test ../tests/extension-background.test.cjs
       - run: node --test ../tests/extension-capture.test.cjs ../tests/extension-live-background.test.cjs ../tests/extension-live-companion.test.cjs
       - run: npm run build

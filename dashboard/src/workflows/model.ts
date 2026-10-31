@@ -49,6 +49,14 @@ export function timestamp(value: string | null | undefined): string {
   if (!value || !Number.isFinite(Date.parse(value))) return "Not recorded";
   return new Date(value).toLocaleString("en-GB");
 }
+export function duration(
+  start: string | null,
+  finish: string | null,
+): number | null {
+  if (!start || !finish) return null;
+  const elapsed = (Date.parse(finish) - Date.parse(start)) / 1000;
+  return Number.isFinite(elapsed) && elapsed >= 0 ? elapsed : null;
+}
 export function text(value: unknown): string {
   const raw =
     typeof value === "string"

@@ -1,5 +1,5 @@
 import type { Recording } from "./contracts";
-import { totals } from "./model";
+import { duration, totals } from "./model";
 import { Facts } from "./StageInspector";
 export function RunComparison({
   left,
@@ -31,6 +31,10 @@ export function RunComparison({
                   Version: r.run.workflow.version,
                   Hash: r.run.workflow.definition_sha256,
                   Status: r.run.status,
+                  "Duration (seconds)": duration(
+                    r.run.started_at,
+                    r.run.finished_at,
+                  ),
                   Reason: r.run.terminal_reason,
                   "Model invocations": t.calls,
                   Tokens: t.tokens ?? "Unknown",

@@ -8,7 +8,14 @@ import type {
   WorkflowSummary,
 } from "./contracts";
 import { read } from "./client";
-import { link, parseLink, replayStates, timestamp, totals } from "./model";
+import {
+  duration,
+  link,
+  parseLink,
+  replayStates,
+  timestamp,
+  totals,
+} from "./model";
 import { useRecording } from "./useRecording";
 import { WorkflowGraph } from "./WorkflowGraph";
 import { StageInspector, Facts } from "./StageInspector";
@@ -294,6 +301,10 @@ function Observatory({ token }: { token: string }) {
               "Definition hash": record.run.workflow.definition_sha256,
               Started: timestamp(record.run.started_at),
               Finished: timestamp(record.run.finished_at),
+              "Duration (seconds)": duration(
+                record.run.started_at,
+                record.run.finished_at,
+              ),
               "Completed stages": `${t!.completed}/${record.stages.length}`,
               "Model invocations": t!.calls,
               Tokens: t!.tokens ?? "Unknown",
