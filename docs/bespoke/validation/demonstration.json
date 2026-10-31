@@ -1,0 +1,3359 @@
+{
+  "protocol": "bespoke-demonstration/v1",
+  "source_comparison": {
+    "recommendation": {
+      "id": "28156a91-b1ec-48ce-8684-c217fbba7d7c",
+      "created_at": "2026-10-31T14:24:29.065052+00:00",
+      "principal": "independent-fixture-owner",
+      "selection_sha256": "34f367362ea03b42f37866bc5365f46e10ea2b83177e9e8b133d2fafa2884308",
+      "selection": {
+        "schema_version": "bespoke-rationale/v1",
+        "policy_version": "bespoke-selector/v1",
+        "scoring_version": "bespoke-suitability/v1",
+        "policy_sha256": "4e8eedfd26b3f01a9e1bcff816d5934ee0d51d41e246e0a4a30526b779fedb31",
+        "context_sha256": "651f8df22b24d7f6e0e4821f57cb4d7198f1d74fb89bf9f498e0066f1503d702",
+        "catalogue_sha256": "c3953f80a1897ea272ee772e8cce164325d058726cda381b7d5faad8c50802e0",
+        "context": {
+          "context_schema": "bespoke-context/v1",
+          "goal_ref": "3d22adce-c9c7-49ec-a62b-2ab22b110ac8",
+          "investigation_ref": "141c5719-5131-45a0-b56f-0605f0afb4e6",
+          "source_ref": "1215933c-da53-4f2a-ae5b-0017afbaa0aa",
+          "source_sha256": "84e6986ca8d2be5aa63f23095f231e67a707ff5b8a683193f2991e85b6212f01",
+          "surface": "controlled_evidence",
+          "provenance": {
+            "source": "controlled-laboratory",
+            "event_type": "workflow.fixture.context",
+            "custody": "controlled_fixture",
+            "consent": "exact_content_and_scope"
+          },
+          "claims_count": 1,
+          "sources_count": 1,
+          "repositories": [],
+          "inputs_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "intent_origin": "explicit_user",
+          "inferred_intent": null
+        },
+        "objective": {
+          "kind": "compare_claims",
+          "requested_outcome": "Compare controlled claims"
+        },
+        "constraints": {
+          "max_model_calls": 0,
+          "max_wall_seconds": 120,
+          "max_output_tokens": 0,
+          "outbound_allowed": false,
+          "permissions": [
+            "repository.read",
+            "evidence.read",
+            "workflow.write"
+          ]
+        },
+        "candidates": [
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "controlled-comparison",
+              "version": "1.0.0",
+              "name": "Source comparison",
+              "description": "Compare claims with controlled sources; does not verify truth in the world.",
+              "context_types": [
+                "controlled_evidence"
+              ],
+              "intents": [
+                "assess_claims",
+                "compare_claims"
+              ],
+              "workflow": {
+                "name": "source-comparison",
+                "version": 1,
+                "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "compare",
+                  "id": "evidence.evaluate",
+                  "version": "1.0.0",
+                  "manifest_sha256": "ae3b17d36c23e592a203d4319cf2296a966e752b1c818d4236b5d48dfada8032"
+                },
+                {
+                  "stage_id": "prepare",
+                  "id": "context.prepare",
+                  "version": "1.0.0",
+                  "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed"
+                },
+                {
+                  "stage_id": "record",
+                  "id": "result.record",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read",
+                  "workflow.write"
+                ]
+              },
+              "required_evidence": "claims_and_sources",
+              "output_artifact": "workflow_result",
+              "validation": "controlled_comparison",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "a1e60cb3de2a06b1010b9a29599374a93869dc4952676f9973d6cb7ad66228fb",
+            "eligible": true,
+            "reasons": [],
+            "definition_id": "ab8edb7b-3d63-419c-8b34-986995dd710a",
+            "binding_sha256": "c91f32b22f480ab73fc25172f200e95aabcad56178f5905f709d839b1bda274b",
+            "capability_identities": [
+              {
+                "id": "evidence.evaluate",
+                "version": "1.0.0",
+                "manifest_sha256": "ae3b17d36c23e592a203d4319cf2296a966e752b1c818d4236b5d48dfada8032",
+                "implementation_id": "evidence-evaluate-v1",
+                "implementation_sha256": "9ea23d2b3879f056c0e4b9c07e21809f6834bc64220735b7ed77d3628214b002"
+              },
+              {
+                "id": "context.prepare",
+                "version": "1.0.0",
+                "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed",
+                "implementation_id": "context-prepare-v1",
+                "implementation_sha256": "a68c6d16c30b274ed11812a750a29c6f2b5cfa5ff69e6ea1fff57d62e3ac4fc3"
+              },
+              {
+                "id": "result.record",
+                "version": "1.0.0",
+                "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+                "implementation_id": "result-record-v1",
+                "implementation_sha256": "fad9de4fb695d3a3b8566dc7cdce8ddc86947c52a356a82e9e0a09e3f677cb6f"
+              }
+            ],
+            "capability_policies": [
+              "46376e8f43a1131b2bc44d6ed86bb39e41931c192b12e9e156d35396c265a502",
+              "166a9366c91f539f8545af0809afe1ed0ff3e2059ebaa022748ddba871a81c6b",
+              "b611d9c4c763753aee53a59c9a7d41f66ab9df29c25f763c0a1b168a56729188"
+            ],
+            "procedure_sha256": "d5069406a14a5908a13b1e358b38770ae6d600a60746c1af531e23e7d2742242",
+            "graph": {
+              "name": "source-comparison",
+              "version": 1,
+              "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+              "nodes": [
+                {
+                  "id": "prepare",
+                  "title": "Prepare",
+                  "type": "deterministic",
+                  "operation": "context.prepare",
+                  "available": true
+                },
+                {
+                  "id": "compare",
+                  "title": "Compare",
+                  "type": "validation",
+                  "operation": "evidence.evaluate",
+                  "available": true
+                },
+                {
+                  "id": "record",
+                  "title": "Record",
+                  "type": "deterministic",
+                  "operation": "result.record",
+                  "available": true
+                }
+              ],
+              "edges": [
+                {
+                  "from": "prepare",
+                  "to": "compare"
+                },
+                {
+                  "from": "compare",
+                  "to": "record"
+                }
+              ]
+            },
+            "suitability": 98,
+            "factors": {
+              "explicit_goal_alignment": 40,
+              "captured_context_match": 25,
+              "required_evidence_present": 15,
+              "validation_contract": 10,
+              "resource_headroom": 5,
+              "operational_simplicity": 3
+            }
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "bounded-evidence-review",
+              "version": "1.0.0",
+              "name": "Bounded evidence review",
+              "description": "One governed model analysis followed by reference identity checks; semantics remain unverified.",
+              "context_types": [
+                "browser_document",
+                "controlled_evidence"
+              ],
+              "intents": [
+                "assess_claims",
+                "explore_arguments"
+              ],
+              "workflow": {
+                "name": "research-review",
+                "version": 2,
+                "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "analyze",
+                  "id": "cognition.role",
+                  "version": "1.0.0",
+                  "manifest_sha256": "02346040dfcaaf223dfc355c6bdecb5934069ca5e69ecd671f34f3d14c1c28c5"
+                },
+                {
+                  "stage_id": "prepare",
+                  "id": "context.prepare",
+                  "version": "1.0.0",
+                  "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed"
+                },
+                {
+                  "stage_id": "record",
+                  "id": "result.record",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca"
+                },
+                {
+                  "stage_id": "validate",
+                  "id": "evidence.validate_references",
+                  "version": "1.0.0",
+                  "manifest_sha256": "dcc2ca1d88f925f13bd81e8c39235834e94652aecb127aeccdd29bd3c6e9bd3d"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 1,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 1536,
+                "outbound_allowed": true,
+                "permissions": [
+                  "evidence.read",
+                  "model.infer",
+                  "workflow.write"
+                ]
+              },
+              "required_evidence": "claims_and_sources",
+              "output_artifact": "workflow_result",
+              "validation": "reference_identity",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "1e556a9de46fd491ad4b344a39c88bd9ed00cdb8ca767ea095fc35b555f01d54",
+            "eligible": false,
+            "reasons": [
+              "deployment_policy_conflict",
+              "objective_incompatible",
+              "permission_not_grantable",
+              "resource_limit_exceeded",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "captured-repository",
+              "version": "1.0.0",
+              "name": "Repository inspection",
+              "description": "Inspect approved captured files only; no code review or semantic verification.",
+              "context_types": [
+                "repository"
+              ],
+              "intents": [
+                "inspect_implementation"
+              ],
+              "workflow": {
+                "name": "repository-inspection",
+                "version": 1,
+                "definition_sha256": "133dceeb47193544a46c205cc366f58af9839016156c683e328776403ab749bf"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "inspect",
+                  "id": "repository.inspect",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9c5af82970cf5a9b9b3f77af66c55517f3767f8250042ba89ed30d30ba2844fe"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "repository.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "captured_files",
+              "validation": "none",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "c76e6994d59cd20bb122719874cef152d21ebeb0a412a450d1ee3c220c5fd7c6",
+            "eligible": false,
+            "reasons": [
+              "objective_incompatible",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "discussion-source",
+              "version": "1.0.0",
+              "name": "Discussion Source",
+              "description": "Future requirement: source ingestion is not installed. This template cannot execute.",
+              "context_types": [
+                "browser_document"
+              ],
+              "intents": [
+                "explore_arguments"
+              ],
+              "workflow": {
+                "name": "discussion-source",
+                "version": 1,
+                "definition_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "extract",
+                  "id": "browser.prepare-source",
+                  "version": "1.0.0",
+                  "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "workflow_result",
+              "validation": "none",
+              "status": "future",
+              "presentation": {
+                "category": "future",
+                "icon": "layers",
+                "tags": [
+                  "unavailable"
+                ]
+              }
+            },
+            "recipe_sha256": "ddf21222a5750811f1ecff2e4107fd7ddc2ce05e3a256b903fb608844fe6d645",
+            "eligible": false,
+            "reasons": [
+              "missing_capability",
+              "objective_incompatible",
+              "recipe_unavailable",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "scientific-document",
+              "version": "1.0.0",
+              "name": "Scientific Document",
+              "description": "Future requirement: source ingestion is not installed. This template cannot execute.",
+              "context_types": [
+                "browser_document"
+              ],
+              "intents": [
+                "assess_claims"
+              ],
+              "workflow": {
+                "name": "scientific-document",
+                "version": 1,
+                "definition_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "extract",
+                  "id": "document.extract",
+                  "version": "1.0.0",
+                  "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "workflow_result",
+              "validation": "none",
+              "status": "future",
+              "presentation": {
+                "category": "future",
+                "icon": "layers",
+                "tags": [
+                  "unavailable"
+                ]
+              }
+            },
+            "recipe_sha256": "4b6c11246b1cb347803949e7ae8b3f73eff1a71e97976c43045c7ae6f8074fe3",
+            "eligible": false,
+            "reasons": [
+              "missing_capability",
+              "objective_incompatible",
+              "recipe_unavailable",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          }
+        ],
+        "selected_recipe_sha256": "a1e60cb3de2a06b1010b9a29599374a93869dc4952676f9973d6cb7ad66228fb",
+        "state": "recommended",
+        "authorization": "unavailable",
+        "uncertainty": [
+          "Suitability is a rule-based score, not measured outcome quality.",
+          "Source identity and reference checks do not establish semantic truth.",
+          "Production owner authorization is unavailable; selection cannot execute."
+        ],
+        "distinct_procedures": 1,
+        "outcome_ref": null,
+        "independent_feedback_ref": null,
+        "selection_model_calls": 0
+      }
+    },
+    "run": {
+      "id": "ae57d62b-b5a0-4bc6-968a-338ff63fe3c2",
+      "workflow": {
+        "name": "source-comparison",
+        "version": 1,
+        "definition_id": "ab8edb7b-3d63-419c-8b34-986995dd710a",
+        "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+        "schema_version": 1
+      },
+      "goal_id": "3d22adce-c9c7-49ec-a62b-2ab22b110ac8",
+      "investigation_id": "141c5719-5131-45a0-b56f-0605f0afb4e6",
+      "trigger": "authorized-execution",
+      "input_ref": "event:1215933c-da53-4f2a-ae5b-0017afbaa0aa",
+      "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "authorization_ref": "fde1478f-7e69-48f3-a65d-a3727d649c22",
+      "budget": {
+        "max_model_calls": 0,
+        "max_output_tokens": 0,
+        "wall_seconds": 120
+      },
+      "status": "COMPLETED",
+      "terminal": true,
+      "terminal_reason": "required_stages_completed",
+      "created_at": "2026-10-31T14:24:29.355203",
+      "started_at": "2026-10-31T14:24:29.373107",
+      "finished_at": "2026-10-31T14:24:30.081922"
+    },
+    "scientific_controlled_fixture": {
+      "id": "a70bbccd-0613-4679-a191-d8ed1d28ff05",
+      "created_at": "2026-10-31T14:24:29.221888+00:00",
+      "principal": "independent-fixture-owner",
+      "selection_sha256": "b4f2b6f678cf4df75b204a7b1f178bf43553b663ddffa71b9ee26ac77c397e1c",
+      "selection": {
+        "schema_version": "bespoke-rationale/v1",
+        "policy_version": "bespoke-selector/v1",
+        "scoring_version": "bespoke-suitability/v1",
+        "policy_sha256": "4e8eedfd26b3f01a9e1bcff816d5934ee0d51d41e246e0a4a30526b779fedb31",
+        "context_sha256": "651f8df22b24d7f6e0e4821f57cb4d7198f1d74fb89bf9f498e0066f1503d702",
+        "catalogue_sha256": "3cdbd572ddd9f91041bcaaa46dee88a9543d78c7303cc39b4841ceb5697aebef",
+        "context": {
+          "context_schema": "bespoke-context/v1",
+          "goal_ref": "3d22adce-c9c7-49ec-a62b-2ab22b110ac8",
+          "investigation_ref": "141c5719-5131-45a0-b56f-0605f0afb4e6",
+          "source_ref": "1215933c-da53-4f2a-ae5b-0017afbaa0aa",
+          "source_sha256": "84e6986ca8d2be5aa63f23095f231e67a707ff5b8a683193f2991e85b6212f01",
+          "surface": "controlled_evidence",
+          "provenance": {
+            "source": "controlled-laboratory",
+            "event_type": "workflow.fixture.context",
+            "custody": "controlled_fixture",
+            "consent": "exact_content_and_scope"
+          },
+          "claims_count": 1,
+          "sources_count": 1,
+          "repositories": [],
+          "inputs_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "intent_origin": "explicit_user",
+          "inferred_intent": null
+        },
+        "objective": {
+          "kind": "assess_claims",
+          "requested_outcome": "Compare scientific claims in controlled sources; no extraction or semantic verification"
+        },
+        "constraints": {
+          "max_model_calls": 0,
+          "max_wall_seconds": 120,
+          "max_output_tokens": 0,
+          "outbound_allowed": false,
+          "permissions": [
+            "repository.read",
+            "evidence.read",
+            "workflow.write"
+          ]
+        },
+        "candidates": [
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "controlled-comparison",
+              "version": "1.0.0",
+              "name": "Source comparison",
+              "description": "Compare claims with controlled sources; does not verify truth in the world.",
+              "context_types": [
+                "controlled_evidence"
+              ],
+              "intents": [
+                "assess_claims",
+                "compare_claims"
+              ],
+              "workflow": {
+                "name": "source-comparison",
+                "version": 1,
+                "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "compare",
+                  "id": "evidence.evaluate",
+                  "version": "1.0.0",
+                  "manifest_sha256": "ae3b17d36c23e592a203d4319cf2296a966e752b1c818d4236b5d48dfada8032"
+                },
+                {
+                  "stage_id": "prepare",
+                  "id": "context.prepare",
+                  "version": "1.0.0",
+                  "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed"
+                },
+                {
+                  "stage_id": "record",
+                  "id": "result.record",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read",
+                  "workflow.write"
+                ]
+              },
+              "required_evidence": "claims_and_sources",
+              "output_artifact": "workflow_result",
+              "validation": "controlled_comparison",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "a1e60cb3de2a06b1010b9a29599374a93869dc4952676f9973d6cb7ad66228fb",
+            "eligible": true,
+            "reasons": [],
+            "definition_id": "ab8edb7b-3d63-419c-8b34-986995dd710a",
+            "binding_sha256": "c91f32b22f480ab73fc25172f200e95aabcad56178f5905f709d839b1bda274b",
+            "capability_identities": [
+              {
+                "id": "evidence.evaluate",
+                "version": "1.0.0",
+                "manifest_sha256": "ae3b17d36c23e592a203d4319cf2296a966e752b1c818d4236b5d48dfada8032",
+                "implementation_id": "evidence-evaluate-v1",
+                "implementation_sha256": "9ea23d2b3879f056c0e4b9c07e21809f6834bc64220735b7ed77d3628214b002"
+              },
+              {
+                "id": "context.prepare",
+                "version": "1.0.0",
+                "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed",
+                "implementation_id": "context-prepare-v1",
+                "implementation_sha256": "a68c6d16c30b274ed11812a750a29c6f2b5cfa5ff69e6ea1fff57d62e3ac4fc3"
+              },
+              {
+                "id": "result.record",
+                "version": "1.0.0",
+                "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+                "implementation_id": "result-record-v1",
+                "implementation_sha256": "fad9de4fb695d3a3b8566dc7cdce8ddc86947c52a356a82e9e0a09e3f677cb6f"
+              }
+            ],
+            "capability_policies": [
+              "46376e8f43a1131b2bc44d6ed86bb39e41931c192b12e9e156d35396c265a502",
+              "166a9366c91f539f8545af0809afe1ed0ff3e2059ebaa022748ddba871a81c6b",
+              "b611d9c4c763753aee53a59c9a7d41f66ab9df29c25f763c0a1b168a56729188"
+            ],
+            "procedure_sha256": "d5069406a14a5908a13b1e358b38770ae6d600a60746c1af531e23e7d2742242",
+            "graph": {
+              "name": "source-comparison",
+              "version": 1,
+              "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+              "nodes": [
+                {
+                  "id": "prepare",
+                  "title": "Prepare",
+                  "type": "deterministic",
+                  "operation": "context.prepare",
+                  "available": true
+                },
+                {
+                  "id": "compare",
+                  "title": "Compare",
+                  "type": "validation",
+                  "operation": "evidence.evaluate",
+                  "available": true
+                },
+                {
+                  "id": "record",
+                  "title": "Record",
+                  "type": "deterministic",
+                  "operation": "result.record",
+                  "available": true
+                }
+              ],
+              "edges": [
+                {
+                  "from": "prepare",
+                  "to": "compare"
+                },
+                {
+                  "from": "compare",
+                  "to": "record"
+                }
+              ]
+            },
+            "suitability": 98,
+            "factors": {
+              "explicit_goal_alignment": 40,
+              "captured_context_match": 25,
+              "required_evidence_present": 15,
+              "validation_contract": 10,
+              "resource_headroom": 5,
+              "operational_simplicity": 3
+            }
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "bounded-evidence-review",
+              "version": "1.0.0",
+              "name": "Bounded evidence review",
+              "description": "One governed model analysis followed by reference identity checks; semantics remain unverified.",
+              "context_types": [
+                "browser_document",
+                "controlled_evidence"
+              ],
+              "intents": [
+                "assess_claims",
+                "explore_arguments"
+              ],
+              "workflow": {
+                "name": "research-review",
+                "version": 2,
+                "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "analyze",
+                  "id": "cognition.role",
+                  "version": "1.0.0",
+                  "manifest_sha256": "02346040dfcaaf223dfc355c6bdecb5934069ca5e69ecd671f34f3d14c1c28c5"
+                },
+                {
+                  "stage_id": "prepare",
+                  "id": "context.prepare",
+                  "version": "1.0.0",
+                  "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed"
+                },
+                {
+                  "stage_id": "record",
+                  "id": "result.record",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca"
+                },
+                {
+                  "stage_id": "validate",
+                  "id": "evidence.validate_references",
+                  "version": "1.0.0",
+                  "manifest_sha256": "dcc2ca1d88f925f13bd81e8c39235834e94652aecb127aeccdd29bd3c6e9bd3d"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 1,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 1536,
+                "outbound_allowed": true,
+                "permissions": [
+                  "evidence.read",
+                  "model.infer",
+                  "workflow.write"
+                ]
+              },
+              "required_evidence": "claims_and_sources",
+              "output_artifact": "workflow_result",
+              "validation": "reference_identity",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "1e556a9de46fd491ad4b344a39c88bd9ed00cdb8ca767ea095fc35b555f01d54",
+            "eligible": false,
+            "reasons": [
+              "deployment_policy_conflict",
+              "permission_not_grantable",
+              "resource_limit_exceeded",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "captured-repository",
+              "version": "1.0.0",
+              "name": "Repository inspection",
+              "description": "Inspect approved captured files only; no code review or semantic verification.",
+              "context_types": [
+                "repository"
+              ],
+              "intents": [
+                "inspect_implementation"
+              ],
+              "workflow": {
+                "name": "repository-inspection",
+                "version": 1,
+                "definition_sha256": "133dceeb47193544a46c205cc366f58af9839016156c683e328776403ab749bf"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "inspect",
+                  "id": "repository.inspect",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9c5af82970cf5a9b9b3f77af66c55517f3767f8250042ba89ed30d30ba2844fe"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "repository.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "captured_files",
+              "validation": "none",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "c76e6994d59cd20bb122719874cef152d21ebeb0a412a450d1ee3c220c5fd7c6",
+            "eligible": false,
+            "reasons": [
+              "objective_incompatible",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "discussion-source",
+              "version": "1.0.0",
+              "name": "Discussion Source",
+              "description": "Future requirement: source ingestion is not installed. This template cannot execute.",
+              "context_types": [
+                "browser_document"
+              ],
+              "intents": [
+                "explore_arguments"
+              ],
+              "workflow": {
+                "name": "discussion-source",
+                "version": 1,
+                "definition_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "extract",
+                  "id": "browser.prepare-source",
+                  "version": "1.0.0",
+                  "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "workflow_result",
+              "validation": "none",
+              "status": "future",
+              "presentation": {
+                "category": "future",
+                "icon": "layers",
+                "tags": [
+                  "unavailable"
+                ]
+              }
+            },
+            "recipe_sha256": "ddf21222a5750811f1ecff2e4107fd7ddc2ce05e3a256b903fb608844fe6d645",
+            "eligible": false,
+            "reasons": [
+              "missing_capability",
+              "objective_incompatible",
+              "recipe_unavailable",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "scientific-document",
+              "version": "1.0.0",
+              "name": "Scientific Document",
+              "description": "Future requirement: source ingestion is not installed. This template cannot execute.",
+              "context_types": [
+                "browser_document"
+              ],
+              "intents": [
+                "assess_claims"
+              ],
+              "workflow": {
+                "name": "scientific-document",
+                "version": 1,
+                "definition_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "extract",
+                  "id": "document.extract",
+                  "version": "1.0.0",
+                  "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "workflow_result",
+              "validation": "none",
+              "status": "future",
+              "presentation": {
+                "category": "future",
+                "icon": "layers",
+                "tags": [
+                  "unavailable"
+                ]
+              }
+            },
+            "recipe_sha256": "4b6c11246b1cb347803949e7ae8b3f73eff1a71e97976c43045c7ae6f8074fe3",
+            "eligible": false,
+            "reasons": [
+              "missing_capability",
+              "recipe_unavailable",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          }
+        ],
+        "selected_recipe_sha256": "a1e60cb3de2a06b1010b9a29599374a93869dc4952676f9973d6cb7ad66228fb",
+        "state": "recommended",
+        "authorization": "unavailable",
+        "uncertainty": [
+          "Suitability is a rule-based score, not measured outcome quality.",
+          "Source identity and reference checks do not establish semantic truth.",
+          "Production owner authorization is unavailable; selection cannot execute."
+        ],
+        "distinct_procedures": 1,
+        "outcome_ref": null,
+        "independent_feedback_ref": null,
+        "selection_model_calls": 0
+      }
+    },
+    "discussion": {
+      "id": "0bf878f9-eb13-4607-94a9-38330b87bf0c",
+      "created_at": "2026-10-31T14:24:29.175277+00:00",
+      "principal": "independent-fixture-owner",
+      "selection_sha256": "b78469ab67c943dba55f0621edf9916df12527d54ba29f845f638be73ac1e31c",
+      "selection": {
+        "schema_version": "bespoke-rationale/v1",
+        "policy_version": "bespoke-selector/v1",
+        "scoring_version": "bespoke-suitability/v1",
+        "policy_sha256": "4e8eedfd26b3f01a9e1bcff816d5934ee0d51d41e246e0a4a30526b779fedb31",
+        "context_sha256": "651f8df22b24d7f6e0e4821f57cb4d7198f1d74fb89bf9f498e0066f1503d702",
+        "catalogue_sha256": "e54240b7edb9e50a6fcee51cc9c73dad0a9b17850a6d623c5565c300d2bf774f",
+        "context": {
+          "context_schema": "bespoke-context/v1",
+          "goal_ref": "3d22adce-c9c7-49ec-a62b-2ab22b110ac8",
+          "investigation_ref": "141c5719-5131-45a0-b56f-0605f0afb4e6",
+          "source_ref": "1215933c-da53-4f2a-ae5b-0017afbaa0aa",
+          "source_sha256": "84e6986ca8d2be5aa63f23095f231e67a707ff5b8a683193f2991e85b6212f01",
+          "surface": "controlled_evidence",
+          "provenance": {
+            "source": "controlled-laboratory",
+            "event_type": "workflow.fixture.context",
+            "custody": "controlled_fixture",
+            "consent": "exact_content_and_scope"
+          },
+          "claims_count": 1,
+          "sources_count": 1,
+          "repositories": [],
+          "inputs_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "intent_origin": "explicit_user",
+          "inferred_intent": null
+        },
+        "objective": {
+          "kind": "explore_arguments",
+          "requested_outcome": "Explore a captured discussion"
+        },
+        "constraints": {
+          "max_model_calls": 0,
+          "max_wall_seconds": 120,
+          "max_output_tokens": 0,
+          "outbound_allowed": false,
+          "permissions": [
+            "repository.read",
+            "evidence.read",
+            "workflow.write"
+          ]
+        },
+        "candidates": [
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "bounded-evidence-review",
+              "version": "1.0.0",
+              "name": "Bounded evidence review",
+              "description": "One governed model analysis followed by reference identity checks; semantics remain unverified.",
+              "context_types": [
+                "browser_document",
+                "controlled_evidence"
+              ],
+              "intents": [
+                "assess_claims",
+                "explore_arguments"
+              ],
+              "workflow": {
+                "name": "research-review",
+                "version": 2,
+                "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "analyze",
+                  "id": "cognition.role",
+                  "version": "1.0.0",
+                  "manifest_sha256": "02346040dfcaaf223dfc355c6bdecb5934069ca5e69ecd671f34f3d14c1c28c5"
+                },
+                {
+                  "stage_id": "prepare",
+                  "id": "context.prepare",
+                  "version": "1.0.0",
+                  "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed"
+                },
+                {
+                  "stage_id": "record",
+                  "id": "result.record",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca"
+                },
+                {
+                  "stage_id": "validate",
+                  "id": "evidence.validate_references",
+                  "version": "1.0.0",
+                  "manifest_sha256": "dcc2ca1d88f925f13bd81e8c39235834e94652aecb127aeccdd29bd3c6e9bd3d"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 1,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 1536,
+                "outbound_allowed": true,
+                "permissions": [
+                  "evidence.read",
+                  "model.infer",
+                  "workflow.write"
+                ]
+              },
+              "required_evidence": "claims_and_sources",
+              "output_artifact": "workflow_result",
+              "validation": "reference_identity",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "1e556a9de46fd491ad4b344a39c88bd9ed00cdb8ca767ea095fc35b555f01d54",
+            "eligible": false,
+            "reasons": [
+              "deployment_policy_conflict",
+              "permission_not_grantable",
+              "resource_limit_exceeded",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "captured-repository",
+              "version": "1.0.0",
+              "name": "Repository inspection",
+              "description": "Inspect approved captured files only; no code review or semantic verification.",
+              "context_types": [
+                "repository"
+              ],
+              "intents": [
+                "inspect_implementation"
+              ],
+              "workflow": {
+                "name": "repository-inspection",
+                "version": 1,
+                "definition_sha256": "133dceeb47193544a46c205cc366f58af9839016156c683e328776403ab749bf"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "inspect",
+                  "id": "repository.inspect",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9c5af82970cf5a9b9b3f77af66c55517f3767f8250042ba89ed30d30ba2844fe"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "repository.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "captured_files",
+              "validation": "none",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "c76e6994d59cd20bb122719874cef152d21ebeb0a412a450d1ee3c220c5fd7c6",
+            "eligible": false,
+            "reasons": [
+              "objective_incompatible",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "controlled-comparison",
+              "version": "1.0.0",
+              "name": "Source comparison",
+              "description": "Compare claims with controlled sources; does not verify truth in the world.",
+              "context_types": [
+                "controlled_evidence"
+              ],
+              "intents": [
+                "assess_claims",
+                "compare_claims"
+              ],
+              "workflow": {
+                "name": "source-comparison",
+                "version": 1,
+                "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "compare",
+                  "id": "evidence.evaluate",
+                  "version": "1.0.0",
+                  "manifest_sha256": "ae3b17d36c23e592a203d4319cf2296a966e752b1c818d4236b5d48dfada8032"
+                },
+                {
+                  "stage_id": "prepare",
+                  "id": "context.prepare",
+                  "version": "1.0.0",
+                  "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed"
+                },
+                {
+                  "stage_id": "record",
+                  "id": "result.record",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read",
+                  "workflow.write"
+                ]
+              },
+              "required_evidence": "claims_and_sources",
+              "output_artifact": "workflow_result",
+              "validation": "controlled_comparison",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "a1e60cb3de2a06b1010b9a29599374a93869dc4952676f9973d6cb7ad66228fb",
+            "eligible": false,
+            "reasons": [
+              "objective_incompatible"
+            ],
+            "definition_id": "ab8edb7b-3d63-419c-8b34-986995dd710a",
+            "binding_sha256": "c91f32b22f480ab73fc25172f200e95aabcad56178f5905f709d839b1bda274b",
+            "capability_identities": [
+              {
+                "id": "evidence.evaluate",
+                "version": "1.0.0",
+                "manifest_sha256": "ae3b17d36c23e592a203d4319cf2296a966e752b1c818d4236b5d48dfada8032",
+                "implementation_id": "evidence-evaluate-v1",
+                "implementation_sha256": "9ea23d2b3879f056c0e4b9c07e21809f6834bc64220735b7ed77d3628214b002"
+              },
+              {
+                "id": "context.prepare",
+                "version": "1.0.0",
+                "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed",
+                "implementation_id": "context-prepare-v1",
+                "implementation_sha256": "a68c6d16c30b274ed11812a750a29c6f2b5cfa5ff69e6ea1fff57d62e3ac4fc3"
+              },
+              {
+                "id": "result.record",
+                "version": "1.0.0",
+                "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+                "implementation_id": "result-record-v1",
+                "implementation_sha256": "fad9de4fb695d3a3b8566dc7cdce8ddc86947c52a356a82e9e0a09e3f677cb6f"
+              }
+            ],
+            "capability_policies": [
+              "46376e8f43a1131b2bc44d6ed86bb39e41931c192b12e9e156d35396c265a502",
+              "166a9366c91f539f8545af0809afe1ed0ff3e2059ebaa022748ddba871a81c6b",
+              "b611d9c4c763753aee53a59c9a7d41f66ab9df29c25f763c0a1b168a56729188"
+            ],
+            "procedure_sha256": "d5069406a14a5908a13b1e358b38770ae6d600a60746c1af531e23e7d2742242",
+            "graph": {
+              "name": "source-comparison",
+              "version": 1,
+              "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+              "nodes": [
+                {
+                  "id": "prepare",
+                  "title": "Prepare",
+                  "type": "deterministic",
+                  "operation": "context.prepare",
+                  "available": true
+                },
+                {
+                  "id": "compare",
+                  "title": "Compare",
+                  "type": "validation",
+                  "operation": "evidence.evaluate",
+                  "available": true
+                },
+                {
+                  "id": "record",
+                  "title": "Record",
+                  "type": "deterministic",
+                  "operation": "result.record",
+                  "available": true
+                }
+              ],
+              "edges": [
+                {
+                  "from": "prepare",
+                  "to": "compare"
+                },
+                {
+                  "from": "compare",
+                  "to": "record"
+                }
+              ]
+            },
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "discussion-source",
+              "version": "1.0.0",
+              "name": "Discussion Source",
+              "description": "Future requirement: source ingestion is not installed. This template cannot execute.",
+              "context_types": [
+                "browser_document"
+              ],
+              "intents": [
+                "explore_arguments"
+              ],
+              "workflow": {
+                "name": "discussion-source",
+                "version": 1,
+                "definition_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "extract",
+                  "id": "browser.prepare-source",
+                  "version": "1.0.0",
+                  "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "workflow_result",
+              "validation": "none",
+              "status": "future",
+              "presentation": {
+                "category": "future",
+                "icon": "layers",
+                "tags": [
+                  "unavailable"
+                ]
+              }
+            },
+            "recipe_sha256": "ddf21222a5750811f1ecff2e4107fd7ddc2ce05e3a256b903fb608844fe6d645",
+            "eligible": false,
+            "reasons": [
+              "missing_capability",
+              "recipe_unavailable",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "scientific-document",
+              "version": "1.0.0",
+              "name": "Scientific Document",
+              "description": "Future requirement: source ingestion is not installed. This template cannot execute.",
+              "context_types": [
+                "browser_document"
+              ],
+              "intents": [
+                "assess_claims"
+              ],
+              "workflow": {
+                "name": "scientific-document",
+                "version": 1,
+                "definition_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "extract",
+                  "id": "document.extract",
+                  "version": "1.0.0",
+                  "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "workflow_result",
+              "validation": "none",
+              "status": "future",
+              "presentation": {
+                "category": "future",
+                "icon": "layers",
+                "tags": [
+                  "unavailable"
+                ]
+              }
+            },
+            "recipe_sha256": "4b6c11246b1cb347803949e7ae8b3f73eff1a71e97976c43045c7ae6f8074fe3",
+            "eligible": false,
+            "reasons": [
+              "missing_capability",
+              "objective_incompatible",
+              "recipe_unavailable",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          }
+        ],
+        "selected_recipe_sha256": null,
+        "state": "abstained",
+        "authorization": "unavailable",
+        "uncertainty": [
+          "Suitability is a rule-based score, not measured outcome quality.",
+          "Source identity and reference checks do not establish semantic truth.",
+          "Production owner authorization is unavailable; selection cannot execute."
+        ],
+        "distinct_procedures": 0,
+        "outcome_ref": null,
+        "independent_feedback_ref": null,
+        "selection_model_calls": 0
+      }
+    },
+    "installed_capabilities": {
+      "catalog_sha256": "0fc686ed37d7cff21981b2902ba7ac8c08375ee7af903f55a7121ea50878027d",
+      "capabilities": [
+        {
+          "id": "approval.request",
+          "version": "1.0.0",
+          "name": "Approval Request",
+          "description": "Block a run until the owner approves or refuses.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "unavailable",
+          "workflow_available": false,
+          "unavailable_reason": "Trusted workflow implementation is not installed",
+          "deprecated": false,
+          "kind": "approval_gate",
+          "side_effects": "none",
+          "effect_class": "none",
+          "permission_classes": [],
+          "manifest_sha256": "da7e5d473ad14116b29a6c814d67f25928848846d40d2dc219193a6b673121e0",
+          "implementation_state": "missing"
+        },
+        {
+          "id": "cognition.role",
+          "version": "1.0.0",
+          "name": "Cognition Role",
+          "description": "One structured model call through the audited ModelGateway seam (PI-02B routes it through the approved Pi transport).",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "available",
+          "workflow_available": true,
+          "unavailable_reason": null,
+          "deprecated": false,
+          "kind": "pi_agent",
+          "side_effects": "none",
+          "effect_class": "model",
+          "permission_classes": [
+            "Read of owner-approved evidence context",
+            "Model inference through existing Pi admission"
+          ],
+          "manifest_sha256": "02346040dfcaaf223dfc355c6bdecb5934069ca5e69ecd671f34f3d14c1c28c5",
+          "implementation_state": "installed"
+        },
+        {
+          "id": "context.prepare",
+          "version": "1.0.0",
+          "name": "Context Prepare",
+          "description": "Assemble the bounded world state an investigation reasons over.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "available",
+          "workflow_available": true,
+          "unavailable_reason": null,
+          "deprecated": false,
+          "kind": "deterministic",
+          "side_effects": "read",
+          "effect_class": "read",
+          "permission_classes": [
+            "Read of owner-approved evidence context"
+          ],
+          "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed",
+          "implementation_state": "installed"
+        },
+        {
+          "id": "evidence.evaluate",
+          "version": "1.0.0",
+          "name": "Evidence Evaluate",
+          "description": "Compare observed and proposed content against its sources.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "available",
+          "workflow_available": true,
+          "unavailable_reason": null,
+          "deprecated": false,
+          "kind": "validation",
+          "side_effects": "none",
+          "effect_class": "none",
+          "permission_classes": [
+            "Read of owner-approved evidence context"
+          ],
+          "manifest_sha256": "ae3b17d36c23e592a203d4319cf2296a966e752b1c818d4236b5d48dfada8032",
+          "implementation_state": "installed"
+        },
+        {
+          "id": "evidence.qualify",
+          "version": "1.0.0",
+          "name": "Evidence Qualify",
+          "description": "Qualify a source as evidence for a claim.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "unavailable",
+          "workflow_available": false,
+          "unavailable_reason": "Trusted workflow implementation is not installed",
+          "deprecated": false,
+          "kind": "validation",
+          "side_effects": "read",
+          "effect_class": "read",
+          "permission_classes": [
+            "Read of owner-approved evidence context"
+          ],
+          "manifest_sha256": "a818afe1b79cc04628ec71de5f7b7d3106e836647d12e9d0d76d3f9b05cdb781",
+          "implementation_state": "missing"
+        },
+        {
+          "id": "evidence.record",
+          "version": "1.0.0",
+          "name": "Evidence Record",
+          "description": "Persist an accepted result and its provenance as evidence.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "unavailable",
+          "workflow_available": false,
+          "unavailable_reason": "Trusted workflow implementation is not installed",
+          "deprecated": false,
+          "kind": "deterministic",
+          "side_effects": "write",
+          "effect_class": "writes",
+          "permission_classes": [],
+          "manifest_sha256": "70cb4dde2e073272aa4c4a1de2d05e6500d0ea66bf1209141fb1a5cf03b50a21",
+          "implementation_state": "missing"
+        },
+        {
+          "id": "evidence.validate_references",
+          "version": "1.0.0",
+          "name": "Evidence Validate References",
+          "description": "Check that every claim in a role output cites evidence that was actually supplied.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "available",
+          "workflow_available": true,
+          "unavailable_reason": null,
+          "deprecated": false,
+          "kind": "validation",
+          "side_effects": "none",
+          "effect_class": "none",
+          "permission_classes": [
+            "Read of owner-approved evidence context"
+          ],
+          "manifest_sha256": "dcc2ca1d88f925f13bd81e8c39235834e94652aecb127aeccdd29bd3c6e9bd3d",
+          "implementation_state": "installed"
+        },
+        {
+          "id": "memory.retrieve",
+          "version": "1.0.0",
+          "name": "Memory Retrieve",
+          "description": "Retrieve stored memories matching a query.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "unavailable",
+          "workflow_available": false,
+          "unavailable_reason": "Trusted workflow implementation is not installed",
+          "deprecated": false,
+          "kind": "deterministic",
+          "side_effects": "read",
+          "effect_class": "read",
+          "permission_classes": [
+            "Read of owner-approved evidence context"
+          ],
+          "manifest_sha256": "bbc478cfd8f6fafce8619be0b06fbcb711ebc571ea8bfd06933586d80dcdeeb8",
+          "implementation_state": "missing"
+        },
+        {
+          "id": "repository.inspect",
+          "version": "1.0.0",
+          "name": "Repository Inspection",
+          "description": "Inspect an explicit bounded selection from an owner-approved immutable repository content capture. Retrieval is not semantic verification.",
+          "category": "development",
+          "icon": "folder-search",
+          "tags": [
+            "code",
+            "inspection",
+            "repository"
+          ],
+          "status": "available",
+          "workflow_available": true,
+          "unavailable_reason": null,
+          "deprecated": false,
+          "kind": "deterministic",
+          "side_effects": "read",
+          "effect_class": "read",
+          "permission_classes": [
+            "Bounded read of an owner-approved repository capture"
+          ],
+          "manifest_sha256": "9c5af82970cf5a9b9b3f77af66c55517f3767f8250042ba89ed30d30ba2844fe",
+          "implementation_state": "installed"
+        },
+        {
+          "id": "result.record",
+          "version": "1.0.0",
+          "name": "Result Record",
+          "description": "Retain a validated workflow result as an owner-internal CognitiveMessage; never independent evidence or learning feedback.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "available",
+          "workflow_available": true,
+          "unavailable_reason": null,
+          "deprecated": false,
+          "kind": "deterministic",
+          "side_effects": "write",
+          "effect_class": "writes",
+          "permission_classes": [
+            "Read of owner-approved evidence context",
+            "Persistence of a workflow result through the existing writer"
+          ],
+          "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+          "implementation_state": "installed"
+        }
+      ]
+    },
+    "selection_seconds": 0.06765379999706056,
+    "record_bytes": 11082,
+    "model_calls": 0,
+    "paid_inference": false
+  },
+  "repository": {
+    "recommendation": {
+      "id": "c54771d3-15c0-4e92-bf87-01175ec30c2f",
+      "created_at": "2026-10-31T14:24:32.388535+00:00",
+      "principal": "independent-fixture-owner",
+      "selection_sha256": "248592b051d31888360a191f14fe7b1690c444b87604dc5e18db0a673101e2fd",
+      "selection": {
+        "schema_version": "bespoke-rationale/v1",
+        "policy_version": "bespoke-selector/v1",
+        "scoring_version": "bespoke-suitability/v1",
+        "policy_sha256": "4e8eedfd26b3f01a9e1bcff816d5934ee0d51d41e246e0a4a30526b779fedb31",
+        "context_sha256": "5312e8cd222ae2b9a4e7e18790dc87a1f7cc546b2e92aa7db88bcfd14e20d153",
+        "catalogue_sha256": "77d88ad275c15934137b6921b20129e56057e21bcc0118e316726ec6ad42f50e",
+        "context": {
+          "context_schema": "bespoke-context/v1",
+          "goal_ref": "7e176b3c-af70-4e57-820b-3c633acce886",
+          "investigation_ref": "d74661f0-3d0c-4375-bf78-72f6546b375a",
+          "source_ref": "c22bb19f-f527-45f6-a624-f6a956a5c3c1",
+          "source_sha256": "85c78378ff1942e61cc9b42d90c1940c2c863788b4eee33c386b985c31827e09",
+          "surface": "repository",
+          "provenance": {
+            "source": "controlled-laboratory",
+            "event_type": "workflow.fixture.context",
+            "custody": "controlled_fixture",
+            "consent": "exact_content_and_scope"
+          },
+          "claims_count": 1,
+          "sources_count": 1,
+          "repositories": [
+            {
+              "repository_ref": "fixture-repo",
+              "snapshot_sha256": "7c6b84f414f40fdb477c16adc90ff194ac5ab44ae9b1795a91489882cc943ad7",
+              "paths": [
+                "README.md"
+              ]
+            }
+          ],
+          "inputs_sha256": "484e21eb64cb59def8e22c8710d6b9a605245689b55cb4358df4c940553db578",
+          "intent_origin": "explicit_user",
+          "inferred_intent": null
+        },
+        "objective": {
+          "kind": "inspect_implementation",
+          "requested_outcome": "Inspect approved files"
+        },
+        "constraints": {
+          "max_model_calls": 0,
+          "max_wall_seconds": 120,
+          "max_output_tokens": 0,
+          "outbound_allowed": false,
+          "permissions": [
+            "repository.read",
+            "evidence.read",
+            "workflow.write"
+          ]
+        },
+        "candidates": [
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "captured-repository",
+              "version": "1.0.0",
+              "name": "Repository inspection",
+              "description": "Inspect approved captured files only; no code review or semantic verification.",
+              "context_types": [
+                "repository"
+              ],
+              "intents": [
+                "inspect_implementation"
+              ],
+              "workflow": {
+                "name": "repository-inspection",
+                "version": 1,
+                "definition_sha256": "133dceeb47193544a46c205cc366f58af9839016156c683e328776403ab749bf"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "inspect",
+                  "id": "repository.inspect",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9c5af82970cf5a9b9b3f77af66c55517f3767f8250042ba89ed30d30ba2844fe"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "repository.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "captured_files",
+              "validation": "none",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "c76e6994d59cd20bb122719874cef152d21ebeb0a412a450d1ee3c220c5fd7c6",
+            "eligible": true,
+            "reasons": [],
+            "definition_id": "377ded84-c289-4cbb-b12e-aab91924e15d",
+            "binding_sha256": "54e3ece2fece4c4316bf87c2b652b7abafaffcfff9a67cecf8d54294c7366ca9",
+            "capability_identities": [
+              {
+                "id": "repository.inspect",
+                "version": "1.0.0",
+                "manifest_sha256": "9c5af82970cf5a9b9b3f77af66c55517f3767f8250042ba89ed30d30ba2844fe",
+                "implementation_id": "repository-inspector-v1",
+                "implementation_sha256": "3ca0a2fe1aa4055d98a34872572c1bbcf95ed359a2dbef4eb0252d24bc7d1510"
+              }
+            ],
+            "capability_policies": [
+              "841d940af2f5dcff9987178299b6ecded80b1a16cb5a3e779967db913c456bb3"
+            ],
+            "procedure_sha256": "daa2bc8864b2f33996f92da34c1301e7dd62dcea3d1cc387179e4ab118866381",
+            "graph": {
+              "name": "repository-inspection",
+              "version": 1,
+              "definition_sha256": "133dceeb47193544a46c205cc366f58af9839016156c683e328776403ab749bf",
+              "nodes": [
+                {
+                  "id": "inspect",
+                  "title": "Inspect",
+                  "type": "deterministic",
+                  "operation": "repository.inspect",
+                  "available": true
+                }
+              ],
+              "edges": []
+            },
+            "suitability": 90,
+            "factors": {
+              "explicit_goal_alignment": 40,
+              "captured_context_match": 25,
+              "required_evidence_present": 15,
+              "validation_contract": 0,
+              "resource_headroom": 5,
+              "operational_simplicity": 5
+            }
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "bounded-evidence-review",
+              "version": "1.0.0",
+              "name": "Bounded evidence review",
+              "description": "One governed model analysis followed by reference identity checks; semantics remain unverified.",
+              "context_types": [
+                "browser_document",
+                "controlled_evidence"
+              ],
+              "intents": [
+                "assess_claims",
+                "explore_arguments"
+              ],
+              "workflow": {
+                "name": "research-review",
+                "version": 2,
+                "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "analyze",
+                  "id": "cognition.role",
+                  "version": "1.0.0",
+                  "manifest_sha256": "02346040dfcaaf223dfc355c6bdecb5934069ca5e69ecd671f34f3d14c1c28c5"
+                },
+                {
+                  "stage_id": "prepare",
+                  "id": "context.prepare",
+                  "version": "1.0.0",
+                  "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed"
+                },
+                {
+                  "stage_id": "record",
+                  "id": "result.record",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca"
+                },
+                {
+                  "stage_id": "validate",
+                  "id": "evidence.validate_references",
+                  "version": "1.0.0",
+                  "manifest_sha256": "dcc2ca1d88f925f13bd81e8c39235834e94652aecb127aeccdd29bd3c6e9bd3d"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 1,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 1536,
+                "outbound_allowed": true,
+                "permissions": [
+                  "evidence.read",
+                  "model.infer",
+                  "workflow.write"
+                ]
+              },
+              "required_evidence": "claims_and_sources",
+              "output_artifact": "workflow_result",
+              "validation": "reference_identity",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "1e556a9de46fd491ad4b344a39c88bd9ed00cdb8ca767ea095fc35b555f01d54",
+            "eligible": false,
+            "reasons": [
+              "deployment_policy_conflict",
+              "objective_incompatible",
+              "permission_not_grantable",
+              "resource_limit_exceeded",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "controlled-comparison",
+              "version": "1.0.0",
+              "name": "Source comparison",
+              "description": "Compare claims with controlled sources; does not verify truth in the world.",
+              "context_types": [
+                "controlled_evidence"
+              ],
+              "intents": [
+                "assess_claims",
+                "compare_claims"
+              ],
+              "workflow": {
+                "name": "source-comparison",
+                "version": 1,
+                "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "compare",
+                  "id": "evidence.evaluate",
+                  "version": "1.0.0",
+                  "manifest_sha256": "ae3b17d36c23e592a203d4319cf2296a966e752b1c818d4236b5d48dfada8032"
+                },
+                {
+                  "stage_id": "prepare",
+                  "id": "context.prepare",
+                  "version": "1.0.0",
+                  "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed"
+                },
+                {
+                  "stage_id": "record",
+                  "id": "result.record",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read",
+                  "workflow.write"
+                ]
+              },
+              "required_evidence": "claims_and_sources",
+              "output_artifact": "workflow_result",
+              "validation": "controlled_comparison",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "a1e60cb3de2a06b1010b9a29599374a93869dc4952676f9973d6cb7ad66228fb",
+            "eligible": false,
+            "reasons": [
+              "objective_incompatible",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "discussion-source",
+              "version": "1.0.0",
+              "name": "Discussion Source",
+              "description": "Future requirement: source ingestion is not installed. This template cannot execute.",
+              "context_types": [
+                "browser_document"
+              ],
+              "intents": [
+                "explore_arguments"
+              ],
+              "workflow": {
+                "name": "discussion-source",
+                "version": 1,
+                "definition_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "extract",
+                  "id": "browser.prepare-source",
+                  "version": "1.0.0",
+                  "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "workflow_result",
+              "validation": "none",
+              "status": "future",
+              "presentation": {
+                "category": "future",
+                "icon": "layers",
+                "tags": [
+                  "unavailable"
+                ]
+              }
+            },
+            "recipe_sha256": "ddf21222a5750811f1ecff2e4107fd7ddc2ce05e3a256b903fb608844fe6d645",
+            "eligible": false,
+            "reasons": [
+              "missing_capability",
+              "objective_incompatible",
+              "recipe_unavailable",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "scientific-document",
+              "version": "1.0.0",
+              "name": "Scientific Document",
+              "description": "Future requirement: source ingestion is not installed. This template cannot execute.",
+              "context_types": [
+                "browser_document"
+              ],
+              "intents": [
+                "assess_claims"
+              ],
+              "workflow": {
+                "name": "scientific-document",
+                "version": 1,
+                "definition_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "extract",
+                  "id": "document.extract",
+                  "version": "1.0.0",
+                  "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "workflow_result",
+              "validation": "none",
+              "status": "future",
+              "presentation": {
+                "category": "future",
+                "icon": "layers",
+                "tags": [
+                  "unavailable"
+                ]
+              }
+            },
+            "recipe_sha256": "4b6c11246b1cb347803949e7ae8b3f73eff1a71e97976c43045c7ae6f8074fe3",
+            "eligible": false,
+            "reasons": [
+              "missing_capability",
+              "objective_incompatible",
+              "recipe_unavailable",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          }
+        ],
+        "selected_recipe_sha256": "c76e6994d59cd20bb122719874cef152d21ebeb0a412a450d1ee3c220c5fd7c6",
+        "state": "recommended",
+        "authorization": "unavailable",
+        "uncertainty": [
+          "Suitability is a rule-based score, not measured outcome quality.",
+          "Source identity and reference checks do not establish semantic truth.",
+          "Production owner authorization is unavailable; selection cannot execute."
+        ],
+        "distinct_procedures": 1,
+        "outcome_ref": null,
+        "independent_feedback_ref": null,
+        "selection_model_calls": 0
+      }
+    },
+    "run": {
+      "id": "0efa1716-bcd9-461b-99cb-a7d6634232ce",
+      "workflow": {
+        "name": "repository-inspection",
+        "version": 1,
+        "definition_id": "377ded84-c289-4cbb-b12e-aab91924e15d",
+        "definition_sha256": "133dceeb47193544a46c205cc366f58af9839016156c683e328776403ab749bf",
+        "schema_version": 1
+      },
+      "goal_id": "7e176b3c-af70-4e57-820b-3c633acce886",
+      "investigation_id": "d74661f0-3d0c-4375-bf78-72f6546b375a",
+      "trigger": "authorized-execution",
+      "input_ref": "event:c22bb19f-f527-45f6-a624-f6a956a5c3c1",
+      "input_sha256": "e8addb8176e0198be441d2727e6992f450adfb6d68746961820cb1179efed813",
+      "authorization_ref": "d110dcfc-2680-4a9e-8322-8b09bce3beaa",
+      "budget": {
+        "max_model_calls": 0,
+        "max_output_tokens": 0,
+        "wall_seconds": 120
+      },
+      "status": "COMPLETED",
+      "terminal": true,
+      "terminal_reason": "required_stages_completed",
+      "created_at": "2026-10-31T14:24:32.589322",
+      "started_at": "2026-10-31T14:24:32.604332",
+      "finished_at": "2026-10-31T14:24:32.840988"
+    },
+    "scientific_controlled_fixture": {
+      "id": "66350282-6083-4e65-9629-34e2f499d77c",
+      "created_at": "2026-10-31T14:24:32.472407+00:00",
+      "principal": "independent-fixture-owner",
+      "selection_sha256": "f43b67956afb5f927b173a477eaec64eaa18cbdea4e602cbbe29b07550e6cc7b",
+      "selection": {
+        "schema_version": "bespoke-rationale/v1",
+        "policy_version": "bespoke-selector/v1",
+        "scoring_version": "bespoke-suitability/v1",
+        "policy_sha256": "4e8eedfd26b3f01a9e1bcff816d5934ee0d51d41e246e0a4a30526b779fedb31",
+        "context_sha256": "5312e8cd222ae2b9a4e7e18790dc87a1f7cc546b2e92aa7db88bcfd14e20d153",
+        "catalogue_sha256": "9b94346f0a17209f3ff6e5760468a95aa004f086174ed15da1472ad665ea1c1d",
+        "context": {
+          "context_schema": "bespoke-context/v1",
+          "goal_ref": "7e176b3c-af70-4e57-820b-3c633acce886",
+          "investigation_ref": "d74661f0-3d0c-4375-bf78-72f6546b375a",
+          "source_ref": "c22bb19f-f527-45f6-a624-f6a956a5c3c1",
+          "source_sha256": "85c78378ff1942e61cc9b42d90c1940c2c863788b4eee33c386b985c31827e09",
+          "surface": "repository",
+          "provenance": {
+            "source": "controlled-laboratory",
+            "event_type": "workflow.fixture.context",
+            "custody": "controlled_fixture",
+            "consent": "exact_content_and_scope"
+          },
+          "claims_count": 1,
+          "sources_count": 1,
+          "repositories": [
+            {
+              "repository_ref": "fixture-repo",
+              "snapshot_sha256": "7c6b84f414f40fdb477c16adc90ff194ac5ab44ae9b1795a91489882cc943ad7",
+              "paths": [
+                "README.md"
+              ]
+            }
+          ],
+          "inputs_sha256": "484e21eb64cb59def8e22c8710d6b9a605245689b55cb4358df4c940553db578",
+          "intent_origin": "explicit_user",
+          "inferred_intent": null
+        },
+        "objective": {
+          "kind": "assess_claims",
+          "requested_outcome": "Compare scientific claims in controlled sources; no extraction or semantic verification"
+        },
+        "constraints": {
+          "max_model_calls": 0,
+          "max_wall_seconds": 120,
+          "max_output_tokens": 0,
+          "outbound_allowed": false,
+          "permissions": [
+            "repository.read",
+            "evidence.read",
+            "workflow.write"
+          ]
+        },
+        "candidates": [
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "bounded-evidence-review",
+              "version": "1.0.0",
+              "name": "Bounded evidence review",
+              "description": "One governed model analysis followed by reference identity checks; semantics remain unverified.",
+              "context_types": [
+                "browser_document",
+                "controlled_evidence"
+              ],
+              "intents": [
+                "assess_claims",
+                "explore_arguments"
+              ],
+              "workflow": {
+                "name": "research-review",
+                "version": 2,
+                "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "analyze",
+                  "id": "cognition.role",
+                  "version": "1.0.0",
+                  "manifest_sha256": "02346040dfcaaf223dfc355c6bdecb5934069ca5e69ecd671f34f3d14c1c28c5"
+                },
+                {
+                  "stage_id": "prepare",
+                  "id": "context.prepare",
+                  "version": "1.0.0",
+                  "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed"
+                },
+                {
+                  "stage_id": "record",
+                  "id": "result.record",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca"
+                },
+                {
+                  "stage_id": "validate",
+                  "id": "evidence.validate_references",
+                  "version": "1.0.0",
+                  "manifest_sha256": "dcc2ca1d88f925f13bd81e8c39235834e94652aecb127aeccdd29bd3c6e9bd3d"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 1,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 1536,
+                "outbound_allowed": true,
+                "permissions": [
+                  "evidence.read",
+                  "model.infer",
+                  "workflow.write"
+                ]
+              },
+              "required_evidence": "claims_and_sources",
+              "output_artifact": "workflow_result",
+              "validation": "reference_identity",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "1e556a9de46fd491ad4b344a39c88bd9ed00cdb8ca767ea095fc35b555f01d54",
+            "eligible": false,
+            "reasons": [
+              "deployment_policy_conflict",
+              "permission_not_grantable",
+              "resource_limit_exceeded",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "captured-repository",
+              "version": "1.0.0",
+              "name": "Repository inspection",
+              "description": "Inspect approved captured files only; no code review or semantic verification.",
+              "context_types": [
+                "repository"
+              ],
+              "intents": [
+                "inspect_implementation"
+              ],
+              "workflow": {
+                "name": "repository-inspection",
+                "version": 1,
+                "definition_sha256": "133dceeb47193544a46c205cc366f58af9839016156c683e328776403ab749bf"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "inspect",
+                  "id": "repository.inspect",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9c5af82970cf5a9b9b3f77af66c55517f3767f8250042ba89ed30d30ba2844fe"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "repository.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "captured_files",
+              "validation": "none",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "c76e6994d59cd20bb122719874cef152d21ebeb0a412a450d1ee3c220c5fd7c6",
+            "eligible": false,
+            "reasons": [
+              "objective_incompatible"
+            ],
+            "definition_id": "377ded84-c289-4cbb-b12e-aab91924e15d",
+            "binding_sha256": "54e3ece2fece4c4316bf87c2b652b7abafaffcfff9a67cecf8d54294c7366ca9",
+            "capability_identities": [
+              {
+                "id": "repository.inspect",
+                "version": "1.0.0",
+                "manifest_sha256": "9c5af82970cf5a9b9b3f77af66c55517f3767f8250042ba89ed30d30ba2844fe",
+                "implementation_id": "repository-inspector-v1",
+                "implementation_sha256": "3ca0a2fe1aa4055d98a34872572c1bbcf95ed359a2dbef4eb0252d24bc7d1510"
+              }
+            ],
+            "capability_policies": [
+              "841d940af2f5dcff9987178299b6ecded80b1a16cb5a3e779967db913c456bb3"
+            ],
+            "procedure_sha256": "daa2bc8864b2f33996f92da34c1301e7dd62dcea3d1cc387179e4ab118866381",
+            "graph": {
+              "name": "repository-inspection",
+              "version": 1,
+              "definition_sha256": "133dceeb47193544a46c205cc366f58af9839016156c683e328776403ab749bf",
+              "nodes": [
+                {
+                  "id": "inspect",
+                  "title": "Inspect",
+                  "type": "deterministic",
+                  "operation": "repository.inspect",
+                  "available": true
+                }
+              ],
+              "edges": []
+            },
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "controlled-comparison",
+              "version": "1.0.0",
+              "name": "Source comparison",
+              "description": "Compare claims with controlled sources; does not verify truth in the world.",
+              "context_types": [
+                "controlled_evidence"
+              ],
+              "intents": [
+                "assess_claims",
+                "compare_claims"
+              ],
+              "workflow": {
+                "name": "source-comparison",
+                "version": 1,
+                "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "compare",
+                  "id": "evidence.evaluate",
+                  "version": "1.0.0",
+                  "manifest_sha256": "ae3b17d36c23e592a203d4319cf2296a966e752b1c818d4236b5d48dfada8032"
+                },
+                {
+                  "stage_id": "prepare",
+                  "id": "context.prepare",
+                  "version": "1.0.0",
+                  "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed"
+                },
+                {
+                  "stage_id": "record",
+                  "id": "result.record",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read",
+                  "workflow.write"
+                ]
+              },
+              "required_evidence": "claims_and_sources",
+              "output_artifact": "workflow_result",
+              "validation": "controlled_comparison",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "a1e60cb3de2a06b1010b9a29599374a93869dc4952676f9973d6cb7ad66228fb",
+            "eligible": false,
+            "reasons": [
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "discussion-source",
+              "version": "1.0.0",
+              "name": "Discussion Source",
+              "description": "Future requirement: source ingestion is not installed. This template cannot execute.",
+              "context_types": [
+                "browser_document"
+              ],
+              "intents": [
+                "explore_arguments"
+              ],
+              "workflow": {
+                "name": "discussion-source",
+                "version": 1,
+                "definition_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "extract",
+                  "id": "browser.prepare-source",
+                  "version": "1.0.0",
+                  "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "workflow_result",
+              "validation": "none",
+              "status": "future",
+              "presentation": {
+                "category": "future",
+                "icon": "layers",
+                "tags": [
+                  "unavailable"
+                ]
+              }
+            },
+            "recipe_sha256": "ddf21222a5750811f1ecff2e4107fd7ddc2ce05e3a256b903fb608844fe6d645",
+            "eligible": false,
+            "reasons": [
+              "missing_capability",
+              "objective_incompatible",
+              "recipe_unavailable",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "scientific-document",
+              "version": "1.0.0",
+              "name": "Scientific Document",
+              "description": "Future requirement: source ingestion is not installed. This template cannot execute.",
+              "context_types": [
+                "browser_document"
+              ],
+              "intents": [
+                "assess_claims"
+              ],
+              "workflow": {
+                "name": "scientific-document",
+                "version": 1,
+                "definition_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "extract",
+                  "id": "document.extract",
+                  "version": "1.0.0",
+                  "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "workflow_result",
+              "validation": "none",
+              "status": "future",
+              "presentation": {
+                "category": "future",
+                "icon": "layers",
+                "tags": [
+                  "unavailable"
+                ]
+              }
+            },
+            "recipe_sha256": "4b6c11246b1cb347803949e7ae8b3f73eff1a71e97976c43045c7ae6f8074fe3",
+            "eligible": false,
+            "reasons": [
+              "missing_capability",
+              "recipe_unavailable",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          }
+        ],
+        "selected_recipe_sha256": null,
+        "state": "abstained",
+        "authorization": "unavailable",
+        "uncertainty": [
+          "Suitability is a rule-based score, not measured outcome quality.",
+          "Source identity and reference checks do not establish semantic truth.",
+          "Production owner authorization is unavailable; selection cannot execute."
+        ],
+        "distinct_procedures": 0,
+        "outcome_ref": null,
+        "independent_feedback_ref": null,
+        "selection_model_calls": 0
+      }
+    },
+    "discussion": {
+      "id": "ceb2b1ab-9743-45cb-8e6a-fb0517c23630",
+      "created_at": "2026-10-31T14:24:32.422971+00:00",
+      "principal": "independent-fixture-owner",
+      "selection_sha256": "332503e3a7938a95508c9695d655c67a8e8ff192df3c39c41625cb8438bd9ba2",
+      "selection": {
+        "schema_version": "bespoke-rationale/v1",
+        "policy_version": "bespoke-selector/v1",
+        "scoring_version": "bespoke-suitability/v1",
+        "policy_sha256": "4e8eedfd26b3f01a9e1bcff816d5934ee0d51d41e246e0a4a30526b779fedb31",
+        "context_sha256": "5312e8cd222ae2b9a4e7e18790dc87a1f7cc546b2e92aa7db88bcfd14e20d153",
+        "catalogue_sha256": "07eedbaeef3dbb8cf2293fd56df338ffb3cb94cfa61da66d8a71ac55a6fb1881",
+        "context": {
+          "context_schema": "bespoke-context/v1",
+          "goal_ref": "7e176b3c-af70-4e57-820b-3c633acce886",
+          "investigation_ref": "d74661f0-3d0c-4375-bf78-72f6546b375a",
+          "source_ref": "c22bb19f-f527-45f6-a624-f6a956a5c3c1",
+          "source_sha256": "85c78378ff1942e61cc9b42d90c1940c2c863788b4eee33c386b985c31827e09",
+          "surface": "repository",
+          "provenance": {
+            "source": "controlled-laboratory",
+            "event_type": "workflow.fixture.context",
+            "custody": "controlled_fixture",
+            "consent": "exact_content_and_scope"
+          },
+          "claims_count": 1,
+          "sources_count": 1,
+          "repositories": [
+            {
+              "repository_ref": "fixture-repo",
+              "snapshot_sha256": "7c6b84f414f40fdb477c16adc90ff194ac5ab44ae9b1795a91489882cc943ad7",
+              "paths": [
+                "README.md"
+              ]
+            }
+          ],
+          "inputs_sha256": "484e21eb64cb59def8e22c8710d6b9a605245689b55cb4358df4c940553db578",
+          "intent_origin": "explicit_user",
+          "inferred_intent": null
+        },
+        "objective": {
+          "kind": "explore_arguments",
+          "requested_outcome": "Explore a captured discussion"
+        },
+        "constraints": {
+          "max_model_calls": 0,
+          "max_wall_seconds": 120,
+          "max_output_tokens": 0,
+          "outbound_allowed": false,
+          "permissions": [
+            "repository.read",
+            "evidence.read",
+            "workflow.write"
+          ]
+        },
+        "candidates": [
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "bounded-evidence-review",
+              "version": "1.0.0",
+              "name": "Bounded evidence review",
+              "description": "One governed model analysis followed by reference identity checks; semantics remain unverified.",
+              "context_types": [
+                "browser_document",
+                "controlled_evidence"
+              ],
+              "intents": [
+                "assess_claims",
+                "explore_arguments"
+              ],
+              "workflow": {
+                "name": "research-review",
+                "version": 2,
+                "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "analyze",
+                  "id": "cognition.role",
+                  "version": "1.0.0",
+                  "manifest_sha256": "02346040dfcaaf223dfc355c6bdecb5934069ca5e69ecd671f34f3d14c1c28c5"
+                },
+                {
+                  "stage_id": "prepare",
+                  "id": "context.prepare",
+                  "version": "1.0.0",
+                  "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed"
+                },
+                {
+                  "stage_id": "record",
+                  "id": "result.record",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca"
+                },
+                {
+                  "stage_id": "validate",
+                  "id": "evidence.validate_references",
+                  "version": "1.0.0",
+                  "manifest_sha256": "dcc2ca1d88f925f13bd81e8c39235834e94652aecb127aeccdd29bd3c6e9bd3d"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 1,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 1536,
+                "outbound_allowed": true,
+                "permissions": [
+                  "evidence.read",
+                  "model.infer",
+                  "workflow.write"
+                ]
+              },
+              "required_evidence": "claims_and_sources",
+              "output_artifact": "workflow_result",
+              "validation": "reference_identity",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "1e556a9de46fd491ad4b344a39c88bd9ed00cdb8ca767ea095fc35b555f01d54",
+            "eligible": false,
+            "reasons": [
+              "deployment_policy_conflict",
+              "permission_not_grantable",
+              "resource_limit_exceeded",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "captured-repository",
+              "version": "1.0.0",
+              "name": "Repository inspection",
+              "description": "Inspect approved captured files only; no code review or semantic verification.",
+              "context_types": [
+                "repository"
+              ],
+              "intents": [
+                "inspect_implementation"
+              ],
+              "workflow": {
+                "name": "repository-inspection",
+                "version": 1,
+                "definition_sha256": "133dceeb47193544a46c205cc366f58af9839016156c683e328776403ab749bf"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "inspect",
+                  "id": "repository.inspect",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9c5af82970cf5a9b9b3f77af66c55517f3767f8250042ba89ed30d30ba2844fe"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "repository.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "captured_files",
+              "validation": "none",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "c76e6994d59cd20bb122719874cef152d21ebeb0a412a450d1ee3c220c5fd7c6",
+            "eligible": false,
+            "reasons": [
+              "objective_incompatible"
+            ],
+            "definition_id": "377ded84-c289-4cbb-b12e-aab91924e15d",
+            "binding_sha256": "54e3ece2fece4c4316bf87c2b652b7abafaffcfff9a67cecf8d54294c7366ca9",
+            "capability_identities": [
+              {
+                "id": "repository.inspect",
+                "version": "1.0.0",
+                "manifest_sha256": "9c5af82970cf5a9b9b3f77af66c55517f3767f8250042ba89ed30d30ba2844fe",
+                "implementation_id": "repository-inspector-v1",
+                "implementation_sha256": "3ca0a2fe1aa4055d98a34872572c1bbcf95ed359a2dbef4eb0252d24bc7d1510"
+              }
+            ],
+            "capability_policies": [
+              "841d940af2f5dcff9987178299b6ecded80b1a16cb5a3e779967db913c456bb3"
+            ],
+            "procedure_sha256": "daa2bc8864b2f33996f92da34c1301e7dd62dcea3d1cc387179e4ab118866381",
+            "graph": {
+              "name": "repository-inspection",
+              "version": 1,
+              "definition_sha256": "133dceeb47193544a46c205cc366f58af9839016156c683e328776403ab749bf",
+              "nodes": [
+                {
+                  "id": "inspect",
+                  "title": "Inspect",
+                  "type": "deterministic",
+                  "operation": "repository.inspect",
+                  "available": true
+                }
+              ],
+              "edges": []
+            },
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "controlled-comparison",
+              "version": "1.0.0",
+              "name": "Source comparison",
+              "description": "Compare claims with controlled sources; does not verify truth in the world.",
+              "context_types": [
+                "controlled_evidence"
+              ],
+              "intents": [
+                "assess_claims",
+                "compare_claims"
+              ],
+              "workflow": {
+                "name": "source-comparison",
+                "version": 1,
+                "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "compare",
+                  "id": "evidence.evaluate",
+                  "version": "1.0.0",
+                  "manifest_sha256": "ae3b17d36c23e592a203d4319cf2296a966e752b1c818d4236b5d48dfada8032"
+                },
+                {
+                  "stage_id": "prepare",
+                  "id": "context.prepare",
+                  "version": "1.0.0",
+                  "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed"
+                },
+                {
+                  "stage_id": "record",
+                  "id": "result.record",
+                  "version": "1.0.0",
+                  "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read",
+                  "workflow.write"
+                ]
+              },
+              "required_evidence": "claims_and_sources",
+              "output_artifact": "workflow_result",
+              "validation": "controlled_comparison",
+              "status": "active",
+              "presentation": {
+                "category": "bespoke",
+                "icon": "layers",
+                "tags": [
+                  "bounded",
+                  "governed"
+                ]
+              }
+            },
+            "recipe_sha256": "a1e60cb3de2a06b1010b9a29599374a93869dc4952676f9973d6cb7ad66228fb",
+            "eligible": false,
+            "reasons": [
+              "objective_incompatible",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "discussion-source",
+              "version": "1.0.0",
+              "name": "Discussion Source",
+              "description": "Future requirement: source ingestion is not installed. This template cannot execute.",
+              "context_types": [
+                "browser_document"
+              ],
+              "intents": [
+                "explore_arguments"
+              ],
+              "workflow": {
+                "name": "discussion-source",
+                "version": 1,
+                "definition_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "extract",
+                  "id": "browser.prepare-source",
+                  "version": "1.0.0",
+                  "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "workflow_result",
+              "validation": "none",
+              "status": "future",
+              "presentation": {
+                "category": "future",
+                "icon": "layers",
+                "tags": [
+                  "unavailable"
+                ]
+              }
+            },
+            "recipe_sha256": "ddf21222a5750811f1ecff2e4107fd7ddc2ce05e3a256b903fb608844fe6d645",
+            "eligible": false,
+            "reasons": [
+              "missing_capability",
+              "recipe_unavailable",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          },
+          {
+            "recipe": {
+              "schema_version": 1,
+              "id": "scientific-document",
+              "version": "1.0.0",
+              "name": "Scientific Document",
+              "description": "Future requirement: source ingestion is not installed. This template cannot execute.",
+              "context_types": [
+                "browser_document"
+              ],
+              "intents": [
+                "assess_claims"
+              ],
+              "workflow": {
+                "name": "scientific-document",
+                "version": 1,
+                "definition_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+              },
+              "capabilities": [
+                {
+                  "stage_id": "extract",
+                  "id": "document.extract",
+                  "version": "1.0.0",
+                  "manifest_sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+                }
+              ],
+              "limits": {
+                "max_model_calls": 0,
+                "max_wall_seconds": 120,
+                "max_output_tokens": 0,
+                "outbound_allowed": false,
+                "permissions": [
+                  "evidence.read"
+                ]
+              },
+              "required_evidence": "approved_capture",
+              "output_artifact": "workflow_result",
+              "validation": "none",
+              "status": "future",
+              "presentation": {
+                "category": "future",
+                "icon": "layers",
+                "tags": [
+                  "unavailable"
+                ]
+              }
+            },
+            "recipe_sha256": "4b6c11246b1cb347803949e7ae8b3f73eff1a71e97976c43045c7ae6f8074fe3",
+            "eligible": false,
+            "reasons": [
+              "missing_capability",
+              "objective_incompatible",
+              "recipe_unavailable",
+              "unsupported_context",
+              "workflow_unavailable"
+            ],
+            "definition_id": null,
+            "binding_sha256": null,
+            "capability_identities": [],
+            "capability_policies": [],
+            "procedure_sha256": null,
+            "graph": null,
+            "suitability": 0,
+            "factors": {}
+          }
+        ],
+        "selected_recipe_sha256": null,
+        "state": "abstained",
+        "authorization": "unavailable",
+        "uncertainty": [
+          "Suitability is a rule-based score, not measured outcome quality.",
+          "Source identity and reference checks do not establish semantic truth.",
+          "Production owner authorization is unavailable; selection cannot execute."
+        ],
+        "distinct_procedures": 0,
+        "outcome_ref": null,
+        "independent_feedback_ref": null,
+        "selection_model_calls": 0
+      }
+    },
+    "installed_capabilities": {
+      "catalog_sha256": "0fc686ed37d7cff21981b2902ba7ac8c08375ee7af903f55a7121ea50878027d",
+      "capabilities": [
+        {
+          "id": "approval.request",
+          "version": "1.0.0",
+          "name": "Approval Request",
+          "description": "Block a run until the owner approves or refuses.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "unavailable",
+          "workflow_available": false,
+          "unavailable_reason": "Trusted workflow implementation is not installed",
+          "deprecated": false,
+          "kind": "approval_gate",
+          "side_effects": "none",
+          "effect_class": "none",
+          "permission_classes": [],
+          "manifest_sha256": "da7e5d473ad14116b29a6c814d67f25928848846d40d2dc219193a6b673121e0",
+          "implementation_state": "missing"
+        },
+        {
+          "id": "cognition.role",
+          "version": "1.0.0",
+          "name": "Cognition Role",
+          "description": "One structured model call through the audited ModelGateway seam (PI-02B routes it through the approved Pi transport).",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "available",
+          "workflow_available": true,
+          "unavailable_reason": null,
+          "deprecated": false,
+          "kind": "pi_agent",
+          "side_effects": "none",
+          "effect_class": "model",
+          "permission_classes": [
+            "Read of owner-approved evidence context",
+            "Model inference through existing Pi admission"
+          ],
+          "manifest_sha256": "02346040dfcaaf223dfc355c6bdecb5934069ca5e69ecd671f34f3d14c1c28c5",
+          "implementation_state": "installed"
+        },
+        {
+          "id": "context.prepare",
+          "version": "1.0.0",
+          "name": "Context Prepare",
+          "description": "Assemble the bounded world state an investigation reasons over.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "available",
+          "workflow_available": true,
+          "unavailable_reason": null,
+          "deprecated": false,
+          "kind": "deterministic",
+          "side_effects": "read",
+          "effect_class": "read",
+          "permission_classes": [
+            "Read of owner-approved evidence context"
+          ],
+          "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed",
+          "implementation_state": "installed"
+        },
+        {
+          "id": "evidence.evaluate",
+          "version": "1.0.0",
+          "name": "Evidence Evaluate",
+          "description": "Compare observed and proposed content against its sources.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "available",
+          "workflow_available": true,
+          "unavailable_reason": null,
+          "deprecated": false,
+          "kind": "validation",
+          "side_effects": "none",
+          "effect_class": "none",
+          "permission_classes": [
+            "Read of owner-approved evidence context"
+          ],
+          "manifest_sha256": "ae3b17d36c23e592a203d4319cf2296a966e752b1c818d4236b5d48dfada8032",
+          "implementation_state": "installed"
+        },
+        {
+          "id": "evidence.qualify",
+          "version": "1.0.0",
+          "name": "Evidence Qualify",
+          "description": "Qualify a source as evidence for a claim.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "unavailable",
+          "workflow_available": false,
+          "unavailable_reason": "Trusted workflow implementation is not installed",
+          "deprecated": false,
+          "kind": "validation",
+          "side_effects": "read",
+          "effect_class": "read",
+          "permission_classes": [
+            "Read of owner-approved evidence context"
+          ],
+          "manifest_sha256": "a818afe1b79cc04628ec71de5f7b7d3106e836647d12e9d0d76d3f9b05cdb781",
+          "implementation_state": "missing"
+        },
+        {
+          "id": "evidence.record",
+          "version": "1.0.0",
+          "name": "Evidence Record",
+          "description": "Persist an accepted result and its provenance as evidence.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "unavailable",
+          "workflow_available": false,
+          "unavailable_reason": "Trusted workflow implementation is not installed",
+          "deprecated": false,
+          "kind": "deterministic",
+          "side_effects": "write",
+          "effect_class": "writes",
+          "permission_classes": [],
+          "manifest_sha256": "70cb4dde2e073272aa4c4a1de2d05e6500d0ea66bf1209141fb1a5cf03b50a21",
+          "implementation_state": "missing"
+        },
+        {
+          "id": "evidence.validate_references",
+          "version": "1.0.0",
+          "name": "Evidence Validate References",
+          "description": "Check that every claim in a role output cites evidence that was actually supplied.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "available",
+          "workflow_available": true,
+          "unavailable_reason": null,
+          "deprecated": false,
+          "kind": "validation",
+          "side_effects": "none",
+          "effect_class": "none",
+          "permission_classes": [
+            "Read of owner-approved evidence context"
+          ],
+          "manifest_sha256": "dcc2ca1d88f925f13bd81e8c39235834e94652aecb127aeccdd29bd3c6e9bd3d",
+          "implementation_state": "installed"
+        },
+        {
+          "id": "memory.retrieve",
+          "version": "1.0.0",
+          "name": "Memory Retrieve",
+          "description": "Retrieve stored memories matching a query.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "unavailable",
+          "workflow_available": false,
+          "unavailable_reason": "Trusted workflow implementation is not installed",
+          "deprecated": false,
+          "kind": "deterministic",
+          "side_effects": "read",
+          "effect_class": "read",
+          "permission_classes": [
+            "Read of owner-approved evidence context"
+          ],
+          "manifest_sha256": "bbc478cfd8f6fafce8619be0b06fbcb711ebc571ea8bfd06933586d80dcdeeb8",
+          "implementation_state": "missing"
+        },
+        {
+          "id": "repository.inspect",
+          "version": "1.0.0",
+          "name": "Repository Inspection",
+          "description": "Inspect an explicit bounded selection from an owner-approved immutable repository content capture. Retrieval is not semantic verification.",
+          "category": "development",
+          "icon": "folder-search",
+          "tags": [
+            "code",
+            "inspection",
+            "repository"
+          ],
+          "status": "available",
+          "workflow_available": true,
+          "unavailable_reason": null,
+          "deprecated": false,
+          "kind": "deterministic",
+          "side_effects": "read",
+          "effect_class": "read",
+          "permission_classes": [
+            "Bounded read of an owner-approved repository capture"
+          ],
+          "manifest_sha256": "9c5af82970cf5a9b9b3f77af66c55517f3767f8250042ba89ed30d30ba2844fe",
+          "implementation_state": "installed"
+        },
+        {
+          "id": "result.record",
+          "version": "1.0.0",
+          "name": "Result Record",
+          "description": "Retain a validated workflow result as an owner-internal CognitiveMessage; never independent evidence or learning feedback.",
+          "category": "legacy",
+          "icon": "layers",
+          "tags": [
+            "workflow"
+          ],
+          "status": "available",
+          "workflow_available": true,
+          "unavailable_reason": null,
+          "deprecated": false,
+          "kind": "deterministic",
+          "side_effects": "write",
+          "effect_class": "writes",
+          "permission_classes": [
+            "Read of owner-approved evidence context",
+            "Persistence of a workflow result through the existing writer"
+          ],
+          "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+          "implementation_state": "installed"
+        }
+      ]
+    },
+    "selection_seconds": 0.033762999999453314,
+    "record_bytes": 10329,
+    "model_calls": 0,
+    "paid_inference": false
+  }
+}

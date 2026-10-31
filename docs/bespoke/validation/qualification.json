@@ -1,0 +1,47 @@
+{
+  "production_code_head": "d499a1026363c8f9eabe80ee7d790f49646ee248",
+  "source_image_parity": {
+    "alive/app.py": "eee26277854f6b9ddf2fd087e1a3ae215248e5aaa4ea10fa3bba19ef535390da",
+    "alive/bespoke/__init__.py": "934ea6d9c75b6a5071c15b818200fc42ec52effbf6703b326a801bee6b036db2",
+    "alive/bespoke/api.py": "bbef005cd3d98ab7bcc0cf9a62f33d85c2454c16a12486422a4650ea48e17621",
+    "alive/bespoke/context.py": "e951dbecd22683eb1139f58b812f99aa3e7e63a7cdc03242d99a50b47c2f2ea6",
+    "alive/bespoke/contracts.py": "c896c2a00160b68fb2ab3e6aca22c9a2b75673b43a7f8e563130804f980a609c",
+    "alive/bespoke/handoff.py": "4ec23bbb888e4ce988de8d1c6f506e6b382beeefc8b59d7aa800eca62db4f0e4",
+    "alive/bespoke/models.py": "c5ed71a595c9300da12a48f5f211f5bba6741801bbdbfd265cdabab5fd34e0e1",
+    "alive/bespoke/recipes.py": "d11df546815e254fa34cc305f4bd253ee80bf66f3386203d209891e14167cb8c",
+    "alive/bespoke/recipes/bounded-evidence-review.yaml": "f121fe93ddce4a315fed427171f3454e69f5cf295b2a1f9022a1c64020416051",
+    "alive/bespoke/recipes/captured-repository.yaml": "ffc424a2e7787b1ccf2c98b0153315b63681c47ceda15aa10fbb37279f74eaab",
+    "alive/bespoke/recipes/controlled-comparison.yaml": "6ae8f84bc0d8bcc34acd97514caa0c52904cec85efd713ff44acdf742e492349",
+    "alive/bespoke/recipes/discussion-source.yaml": "7068bd8f1d17673e89767acd4b6ab691b8c932e826171f9d87f1f801b031521d",
+    "alive/bespoke/recipes/scientific-document.yaml": "c976a80b2701f6546cd1d03c01c4ed7a40c14973374dba0a07b5051174d9e567",
+    "alive/bespoke/selector.py": "cb6fd51edfe9ddaf921b70301247d1713867919f348fd1c7f67201a1fb2284a0",
+    "alive/bespoke/store.py": "42be64e25c75886d73f01a8179201196b670ddca022e2522e9813c47ffc7bcbb",
+    "alive/capabilities/manifest.py": "823bd4523a3eb07cb45e7fddd94f7949ba2f7269b7c2b57419d2b7f906cd1f42"
+  },
+  "docker_image": "sha256:e31fd1b287bcaff41befc3ec0bda7aeb91731a29cec3c2521892a55081d9b53f",
+  "docker_smoke": "8 passed; Bespoke authenticated catalogue 5 recipes with execution disabled",
+  "focused_regressions": 154,
+  "dashboard_tests": 105,
+  "browser_e2e": {
+    "desktop_1440": "passed",
+    "mobile_390": "passed",
+    "historical_writes": 0
+  },
+  "mutations": {
+    "KILLED": 11,
+    "SURVIVED": 0,
+    "INVALID": 0
+  },
+  "performance": {
+    "source_comparison": {
+      "selection_seconds": 0.06765379999706056,
+      "record_bytes": 11082
+    },
+    "repository": {
+      "selection_seconds": 0.033762999999453314,
+      "record_bytes": 10329
+    }
+  },
+  "independent_review": "pending; these are implementation-authored receipts",
+  "full_ci": "final-head links and statuses maintained in the draft PR description"
+}

@@ -365,3 +365,57 @@ def test_record_tampering_and_orm_mutations_are_refused(client, approved):
 
     call(client, sql_tamper)
     assert client.get(BASE + "/recommendations/" + first["id"]).status_code == 409
+
+
+def test_future_recipe_with_real_dependencies_still_cannot_be_selected(client, approved):
+    recipe = next(r for r in load_catalogue() if r.id == "controlled-comparison")
+    client.app.state.bespoke_recipes = (recipe.model_copy(update={"status": "future"}),)
+    result = recommend(client, approved).json()["selection"]
+    assert result["state"] == "abstained"
+    assert result["candidates"][0]["reasons"] == ["recipe_unavailable"]
+
+
+@pytest.mark.parametrize("pin", ["workflow", "capability"])
+def test_recipe_exact_pins_are_mandatory(client, approved, pin):
+    recipe = next(r for r in load_catalogue() if r.id == "controlled-comparison")
+    if pin == "workflow":
+        recipe = recipe.model_copy(
+            update={"workflow": recipe.workflow.model_copy(update={"definition_sha256": "0" * 64})}
+        )
+    else:
+        pins = list(recipe.capabilities)
+        pins[0] = pins[0].model_copy(update={"manifest_sha256": "0" * 64})
+        recipe = recipe.model_copy(update={"capabilities": pins})
+    client.app.state.bespoke_recipes = (recipe,)
+    result = recommend(client, approved).json()["selection"]
+    assert result["state"] == "abstained"
+    assert (
+        "workflow_identity_changed" if pin == "workflow" else "capability_identity_changed"
+    ) in result["candidates"][0]["reasons"]
+
+
+def test_suitability_precedes_lexical_tie_break(client, approved):
+    recipe = next(r for r in load_catalogue() if r.id == "controlled-comparison")
+    weaker = recipe.model_copy(update={"id": "aaa-weaker", "validation": "none"})
+    client.app.state.bespoke_recipes = (weaker, recipe)
+    result = recommend(client, approved).json()
+    assert selected(result)["recipe"]["id"] == "controlled-comparison"
+    assert (
+        result["selection"]["candidates"][0]["suitability"]
+        > result["selection"]["candidates"][1]["suitability"]
+    )
+
+
+def test_changed_selection_policy_is_not_silently_used_for_handoff(client, approved, monkeypatch):
+    from alive.bespoke.selector import POLICY
+
+    first = recommend(client, approved).json()
+    monkeypatch.setitem(POLICY, "deadline_seconds", 6)
+    with pytest.raises(Refused, match="selection_policy_changed"):
+        call(
+            client,
+            trusted_handoff,
+            client.app.state.bespoke_recipes,
+            first["id"],
+            approved["approval_ref"],
+        )
