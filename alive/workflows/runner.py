@@ -107,6 +107,23 @@ def executable(spec, grant, registry=None):
             require(TYPES[declaration.type](grant.inputs[name]), "workflow_input_type")
 
 
+ANALYSIS_ROLE = "repository_analyst"
+
+
+def analysis_binding(call, stage, grant):
+    """The typed analysis call is exactly what the owner approved, at the moment of dispatch."""
+    from alive.analysis.contracts import INSTRUCTIONS, role_contract
+
+    stored = call.input_json
+    resources = grant.capabilities[stage.stage_id]["resources"]
+    return (
+        stored["instructions"] == INSTRUCTIONS
+        and grant.role_contracts.get(call.role) == role_contract()
+        and stored.get("context_sha256") == digest(stored["context"])
+        and stored["context"]["source"]["source_sha256"] == resources["content_sha256"]
+    )
+
+
 async def result_event(session, stage):
     require(stage.output_ref and stage.output_ref.startswith("event:"), "result_unavailable")
     event = await session.scalar(select(Event).where(Event.id == stage.output_ref[6:]))
@@ -176,7 +193,11 @@ class WorkflowRunner:
                 and call.status == "reserved"
                 and call.investigation_id == run.investigation_id
                 and grant.models.get(call.role) == call.model
-                and call.input_json["context"] == approved,
+                and (
+                    call.input_json["context"] == approved
+                    if call.role != ANALYSIS_ROLE
+                    else analysis_binding(call, stage, grant)
+                ),
                 "dispatch_stage_binding",
             )
             return True

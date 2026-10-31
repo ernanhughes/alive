@@ -685,7 +685,9 @@ class Cognition:
             row.snapshot = snapshot
         return snapshot
 
-    async def admit_owner_workflow(self, session, inquiry_id, goal_id, context_id, objective):
+    async def admit_owner_workflow(
+        self, session, inquiry_id, goal_id, context_id, objective, *, model=False
+    ):
         """Admission service holds command_lock, kernel lock and this transaction.
 
         This reserves an explicit, already owner-approved inquiry without starting autonomy,
@@ -693,10 +695,18 @@ class Cognition:
         """
         from alive.workflows.context import require
 
-        require(
-            self.mode in ("stopped", "paused") and (self.worker is None or self.worker.done()),
-            "pause_autonomy_before_owner_admission",
-        )
+        if model:
+            # A model call needs the same explicitly started Meta cognition as every PI-02
+            # workflow; the owner's start is the only thing that selects the provider.
+            require(
+                self.mode == "running" and (self.worker is None or self.worker.done()),
+                "start_cognition_before_model_admission",
+            )
+        else:
+            require(
+                self.mode in ("stopped", "paused") and (self.worker is None or self.worker.done()),
+                "pause_autonomy_before_owner_admission",
+            )
         require(
             not await session.scalar(
                 select(Investigation.id).where(~Investigation.state.in_(TERMINAL)).limit(1)
@@ -704,6 +714,7 @@ class Cognition:
             "governor_inquiry_busy",
         )
         control = await session.get(CognitiveControl, self.k.instance_id)
+        require(not model or control.provider == "meta", "meta_provider_required")
         config = CognitiveConfiguration.model_validate(control.configuration)
         require(config.wall_seconds >= 30, "governor_wall_ceiling")
         reserve, enough = investigation_reservation(control, config)
@@ -780,7 +791,15 @@ class Cognition:
                 )
 
     async def call_role(
-        self, run_id, role, context, *, ledger=None, output_ceiling=None, workflow_claim=None
+        self,
+        run_id,
+        role,
+        context,
+        *,
+        ledger=None,
+        output_ceiling=None,
+        workflow_claim=None,
+        spec=None,
     ):
         """Run one role invocation. Every exit leaves its ModelInvocation settled (F-002).
 
@@ -791,7 +810,7 @@ class Cognition:
         ledger = {} if ledger is None else ledger
         try:
             return await self._invoke_role(
-                run_id, role, context, ledger, output_ceiling, workflow_claim
+                run_id, role, context, ledger, output_ceiling, workflow_claim, spec
             )
         except BaseException as exc:
             if ledger.get("call_id"):
@@ -826,11 +845,13 @@ class Cognition:
         await complete_despite_cancel(settle())
 
     async def _invoke_role(
-        self, run_id, role, context, ledger, output_ceiling=None, workflow_claim=None
+        self, run_id, role, context, ledger, output_ceiling=None, workflow_claim=None, spec=None
     ):
         k = self.k
-        schema = RoleOutput.model_json_schema()
-        prompt = role_prompt(role)
+        if spec is not None and (workflow_claim is None or role != spec.role):
+            raise ValueError("A typed analysis role runs only inside an authorized workflow stage")
+        schema = RoleOutput.model_json_schema() if spec is None else spec.schema
+        prompt = role_prompt(role) if spec is None else spec.instructions
         reserve = (
             len(
                 json.dumps(
@@ -865,7 +886,7 @@ class Cognition:
                 from alive.workflows.context import model_claim
 
                 workflow_stage = await model_claim(
-                    session, k, workflow_claim, role, context, model, output_limit
+                    session, k, workflow_claim, role, context, model, output_limit, analysis=spec
                 )
                 if control.provider != "meta":
                     raise ValueError("Workflow Pi stage requires governed Meta transport")
@@ -876,7 +897,7 @@ class Cognition:
                 provider=control.provider,
                 model=model if control.provider == "meta" else "controlled-role-fixture-v1",
                 input_json={
-                    "role_spec_version": ROLE_SPEC_VERSION,
+                    "role_spec_version": ROLE_SPEC_VERSION if spec is None else spec.version,
                     "instructions": prompt,
                     "context": context,
                 },
@@ -884,6 +905,10 @@ class Cognition:
             )
             session.add(call)
             if workflow_stage is not None:
+                if spec is not None:
+                    from alive.workflows.context import digest
+
+                    call.input_json = call.input_json | {"context_sha256": digest(context)}
                 workflow_stage.model_invocation_id = call.id
                 call.input_json = call.input_json | {
                     "workflow_run_id": workflow_claim[0],
@@ -928,8 +953,11 @@ class Cognition:
             if workflow_claim is not None and len(generated.text.encode("utf-8")) > 65536:
                 raise ValueError("Workflow model output exceeds the retained size ceiling")
             try:
-                output = RoleOutput.model_validate_json(generated.text)
-                validate_references(output, context)
+                if spec is None:
+                    output = RoleOutput.model_validate_json(generated.text)
+                    validate_references(output, context)
+                else:
+                    output = spec.parse(generated.text)
             except Exception:
                 # Only a genuinely rejected response is recorded as rejected; a response that was
                 # valid but not yet settled when a cancel arrived is not.
@@ -961,18 +989,17 @@ class Cognition:
             }
         if charged > reserve:
             raise BudgetExhausted("Provider usage exceeded conservative reservation")
-        await self.message(
-            run_id,
-            role,
-            {
+        if spec is None:
+            sender = role
+            kind = {
                 "observer": "observation",
                 "proposer": "proposal",
                 "critic": "critique",
                 "evaluator": "evaluation",
-            }[role],
-            output.model_dump(),
-            call_id,
-        )
+            }[role]
+        else:
+            sender, kind = "observer", "observation"
+        await self.message(run_id, sender, kind, output.model_dump(), call_id)
         return output
 
     async def charge_tool(self, run_id):

@@ -236,8 +236,12 @@ async def authorized(session, kernel, authorization_id, expected_hash=None):
     return grant, spec, definition, inquiry, context, authorization_hash
 
 
-async def model_claim(session, kernel, claim, role, context, model, output_limit):
-    """Called inside Cognition's existing reservation transaction, before dispatch is possible."""
+async def model_claim(session, kernel, claim, role, context, model, output_limit, analysis=None):
+    """Called inside Cognition's existing reservation transaction, before dispatch is possible.
+
+    `analysis` is a typed analysis role (L1-02). It changes only which implementation, role contract
+    and input binding the owner's grant must name; every other check is shared.
+    """
     run_id, stage_id, owner = claim
     execution = await session.get(WorkflowExecution, run_id)
     run = await session.get(WorkflowRun, run_id)
@@ -264,21 +268,28 @@ async def model_claim(session, kernel, claim, role, context, model, output_limit
     capability = grant.capabilities[selected.id]
     require(
         capability["identity"]["id"] == stage.operation
-        and capability["identity"]["implementation_id"] == "cognition-role-v1"
+        and capability["identity"]["implementation_id"]
+        == ("cognition-role-v1" if analysis is None else analysis.implementation_id)
         and capability["limits"]["max_model_calls"] == 1,
         "model_stage_capability_required",
     )
     require(
         grant.outbound_approved
         and grant.models.get(role) == model
-        and grant.role_contracts.get(role) == role_contract(role)
-        and context == approved
+        and grant.role_contracts.get(role)
+        == (role_contract(role) if analysis is None else analysis.contract)
+        and (analysis is None or role == analysis.role)
+        and context == (approved if analysis is None else analysis.context_for(analysis.inputs))
         and inquiry.id == run.investigation_id
         and aware(execution.deadline) > now()
         and kernel.settings.alive_model_transport == "pi",
         "exact_model_authority_required",
     )
-    require(stage.input_sha256 == digest({"role": role, "context": context}), "model_input_changed")
+    require(
+        stage.input_sha256
+        == digest({"role": role, "context": context} if analysis is None else analysis.inputs),
+        "model_input_changed",
+    )
     require(
         output_limit <= selected.limits.max_output_tokens <= grant.max_output_tokens
         and output_limit <= capability["limits"]["max_output_tokens"]

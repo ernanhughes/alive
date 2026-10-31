@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic import Field
 
 from alive.bespoke.contracts import Hash, Objective, Ref
@@ -5,6 +7,9 @@ from alive.capabilities.manifest import Strict
 
 
 class ReviewRequest(Strict):
+    profile: Literal["approved-repository-inspection", "approved-repository-analysis"] = (
+        "approved-repository-inspection"
+    )
     goal_ref: Ref
     approval_ref: Ref
     recipe_sha256: Hash
