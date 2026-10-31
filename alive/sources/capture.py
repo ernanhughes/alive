@@ -88,8 +88,16 @@ def document_content(file):
     require(suffix != ".pdf", "document_format_unsupported_pdf_parser_not_installed")
     require(suffix in documents.FORMATS, "document_format_unsupported")
     require(not path.is_symlink() and not path.is_junction(), "document_link_refused")
-    parent = path.resolve(strict=True).parent
-    raw = _read(parent, path.name, documents.MAX_DOCUMENT_BYTES)
+    try:
+        parent = path.resolve(strict=True).parent
+        raw = _read(parent, path.name, documents.MAX_DOCUMENT_BYTES)
+    except Refused as error:
+        # The same categories on every platform, and in the document's own vocabulary.
+        too_big = str(error) == "repository_file_size_limit"
+        raise Refused("document_size_refused" if too_big else "document_unreadable") from None
+    except OSError:
+        # Never surface an operating-system message: it can name host paths.
+        raise Refused("document_unreadable") from None
     return documents.extract(raw, documents.FORMATS[suffix])
 
 

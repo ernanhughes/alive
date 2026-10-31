@@ -27,6 +27,7 @@ FORMATS = {
 MAX_DOCUMENT_BYTES = 262144
 MAX_SECTIONS = 512
 MAX_SECTION_CHARS = 32768
+MAX_HTML_DEPTH = 100
 TEXT_BLOCK_LINES = 60
 HEADINGS = {f"h{n}" for n in range(1, 7)}
 SKIPPED = {"script", "style", "noscript", "template", "svg", "head"}
@@ -112,7 +113,8 @@ def html_sections(markup):
             sections.append(make_section(len(sections), state["heading"], body, 0, 0))
         state["heading"], state["parts"] = "", []
 
-    def walk(node):
+    def walk(node, depth=0):
+        require(depth <= MAX_HTML_DEPTH, "document_nesting_refused")
         for child in node.children:
             if isinstance(child, Comment):
                 continue
@@ -125,7 +127,7 @@ def html_sections(markup):
                     flush()
                     state["heading"] = re.sub(r"\s+", " ", child.get_text(" ", strip=True))
                     continue
-                walk(child)
+                walk(child, depth + 1)
                 if child.name in BLOCKS:
                     state["parts"].append("\n")
 

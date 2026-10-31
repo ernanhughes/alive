@@ -485,3 +485,58 @@ def test_the_new_capabilities_appear_in_the_catalogue_with_honest_permissions(cl
     assert "alive." not in str(detail) and "custody" not in str(
         detail["capability"]["implementation"]
     )
+
+
+# --- retention: what leaves custody, and what survives withdrawal ---------------------------------
+
+
+def test_source_content_never_reaches_the_generic_feed_or_custody_events(client, repository):
+    prepare(client)
+    marker = "UNIQUE-CONTENT-MARKER-7f3a"
+    content = capture.repository_content(repository)
+    content["files"] = [
+        {**f, "content": marker, "sha256": hashlib_sha(marker), "bytes": len(marker)}
+        if f["path"] == "README.md"
+        else f
+        for f in content["files"]
+    ]
+    row, approval = call(client, lambda k: approve(k, content, "repository", "repository.inspect"))
+    final, _, output = execute(
+        client, "repository.inspect", "1.1.0", approval,
+        {"source_ref": row["id"], "mode": "read", "paths": ["README.md"]},
+    )  # fmt: skip
+    assert final["status"] == "COMPLETED" and output["files"][0]["content"] == marker
+    feed = client.get("/api/v1/events?limit=500")
+    assert feed.status_code == 200 and marker not in feed.text  # stage output is withheld
+    types = {e["event_type"] for e in feed.json()}
+    assert {"source.captured", "source.approved"} <= types  # decisions are visible, content is not
+
+
+def hashlib_sha(text):
+    import hashlib
+
+    return hashlib.sha256(text.encode()).hexdigest()
+
+
+def test_history_stays_inspectable_after_the_source_is_withdrawn(client, repository):
+    prepare(client)
+    content = capture.repository_content(repository)
+    row, approval = call(client, lambda k: approve(k, content, "repository", "repository.inspect"))
+    inputs = {"source_ref": row["id"], "mode": "list", "paths": []}
+    final, stage, _ = execute(client, "repository.inspect", "1.1.0", approval, inputs)
+    assert final["status"] == "COMPLETED"
+    withdrawn = call(
+        client, lambda k: custody.withdraw(k, approval["id"], reason="withdrawn", principal="owner")
+    )
+    assert withdrawn["withdrawn_at"]
+    # The record of what happened is unchanged and readable...
+    stages = client.get(f"/api/v1/workflow-runs/{final['id']}/stages").json()["stages"]
+    assert stages[0]["capability"]["version"] == "1.1.0" and stages[0]["state"] == "COMPLETED"
+    assert client.get(f"/api/v1/workflow-runs/{final['id']}/inspection").status_code == 200
+    # ...custody metadata still tells the truth about the withdrawal...
+    (listed,) = call(client, custody.list_approvals)
+    assert listed["id"] == approval["id"] and listed["withdrawn_reason"] == "withdrawn"
+    assert call(client, custody.get_capture, row["id"])["content_sha256"] == row["content_sha256"]
+    # ...but nothing can use the source again, even with the same earlier grant resources.
+    again, again_stage, _ = execute(client, "repository.inspect", "1.1.0", approval, inputs)
+    assert again["status"] == states.FAILED and again_stage["error_category"] == "source_withdrawn"

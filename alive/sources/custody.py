@@ -19,6 +19,7 @@ from dataclasses import dataclass
 from datetime import timedelta
 
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 
 from alive.capabilities.contracts import json_bytes
 from alive.capabilities.manifest import ID as CAPABILITY_ID
@@ -223,10 +224,22 @@ def checked_scope(source_type, content, scope):
     return {"items": sorted(items)}
 
 
-async def approve(
+async def approve(kernel, capture_id, **terms):
+    """The owner's explicit decision. A lost race on the idempotency key returns the winner."""
+    for attempt in (1, 2):
+        try:
+            return await approve_once(kernel, capture_id, **terms)
+        except IntegrityError:
+            # Another process recorded the same request first; the retry finds it and either
+            # returns it or refuses a conflicting reuse of the request id.
+            if attempt == 2:
+                raise
+
+
+async def approve_once(
     kernel, capture_id, *, confirm_sha256, operations, scope, ttl_seconds, principal, request_id
 ):
-    """The owner's explicit decision. The caller must restate the exact digest it inspected."""
+    """One attempt. The caller must restate the exact digest it inspected."""
     require(
         type(operations) in (list, tuple)
         and 1 <= len(operations) <= 8
