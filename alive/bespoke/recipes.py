@@ -16,7 +16,16 @@ def parse_recipe(raw):
     for items in (recipe.context_types, recipe.intents, recipe.limits.permissions):
         if len(set(items)) != len(items):
             raise ManifestError("duplicate recipe set item")
-    return recipe
+    return recipe.model_copy(
+        update={
+            "context_types": sorted(recipe.context_types),
+            "intents": sorted(recipe.intents),
+            "capabilities": sorted(recipe.capabilities, key=lambda p: p.stage_id),
+            "limits": recipe.limits.model_copy(
+                update={"permissions": sorted(recipe.limits.permissions)}
+            ),
+        }
+    )
 
 
 def recipe_hash(recipe):
