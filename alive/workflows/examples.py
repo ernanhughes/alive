@@ -140,7 +140,12 @@ async def fixture_authorization(
         )
         from alive.capabilities.bindings import binding_record, registry_for
 
-        capability_binding = await binding_record(session, kernel, selected)
+        # A caller may point the grant at a definition it registered itself; the capability
+        # binding must belong to that same definition, not to the default one.
+        bound = selected
+        if changes and "definition_id" in changes:
+            bound = await session.get(WorkflowDefinition, changes["definition_id"])
+        capability_binding = await binding_record(session, kernel, bound)
         grant = Grant(
             principal="independent-fixture-owner",
             goal_id=inquiry.goal_id,

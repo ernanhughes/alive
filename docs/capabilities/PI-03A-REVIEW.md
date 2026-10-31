@@ -40,7 +40,7 @@ validates nothing, so it now reports `not_run`; an end-to-end test pins it.
 | `tests/test_capability_repository_execution.py` (real runner, hostile fixture) | passed |
 | `tests/test_capability_catalog_api.py`, `test_capability_cli.py` | passed |
 | `tests/test_workflows_store.py`, `test_workflows_api.py`, `test_workflow_execution.py` | 104 passed |
-| Workflow-adjacent regression (authority, cancellation, observatory, r2/r3, transactions, migration) | see "Regression" below |
+| Workflow-adjacent regression (authority, cancellation, observatory, r2/r3, transactions, migration) | see "Regression" below; Pi-backed cases not verifiable locally |
 | `npm --prefix dashboard test -- src/capabilities/` | 13 passed |
 | `npm --prefix dashboard test -- src/workflows/` | 44 passed |
 | `npm --prefix dashboard run build` | passed |
@@ -66,6 +66,24 @@ hash pin, input and output contracts, output size, writer permission, reader has
 hardlink and secret handling, retained binding hash and the runner's executable check.
 Not mutated: parser rejection rules (covered by their own adversarial tests), trusted
 implementation resolution, stage-identity corruption, and the catalogue API.
+
+## Regression
+
+`tests/test_workflow_{authority,cancellation,observatory,observatory_identity,r2_*,r3_guards,
+transactions,execution_migration}.py` were run on this branch. 25 tests failed.
+
+- 3 were real regressions from the earlier PI-03A commit and are fixed here:
+  `test_control_dependency_blocks_stage_even_without_an_output_reference` and
+  `test_real_stage_timeout_keeps_category_effects_and_settlement[deterministic|run_deadline]`.
+  They register their own definition and pass its id to `fixture_authorization`, which built the
+  capability binding from the default definition (`exact_capability_owner_grant_required`). They
+  pass after the fixture was corrected.
+- The remaining 22 are timeouts in tests that start the real Pi subprocess. The same files were run
+  at the pre-PI-03A commit `c1cdd17` with the same virtualenv: 26 failed and 25 passed there, and
+  the 22 failures are common to both. They are therefore environmental on the development host and
+  say nothing, good or bad, about the Pi-backed capability path (`cognition.role`). A CI run with a
+  working Pi runtime is required before this is accepted. The failing sets differed slightly
+  between runs (a few fence cases), consistent with timing sensitivity.
 
 ## Not run (and why)
 
