@@ -6,6 +6,7 @@ from alive.cognitive_models import ModelInvocation
 from alive.models import Event
 from alive.pi.models import PiProviderRequest, PiRun
 from alive.workflows import store
+from alive.workflows.context import digest
 from alive.workflows.models import WorkflowDefinition, WorkflowRun, WorkflowStageRun
 from alive.workflows.spec import graph_of, hash_of_stored, parse_definition
 
@@ -89,11 +90,24 @@ async def records(session, kernel, run_id):
 
 
 async def attached_pi(session, kernel, run, stage):
-    if not stage.pi_run_id:
+    if not stage.pi_run_id and not stage.model_invocation_id:
         return None
     require(stage.model_invocation_id is not None)
     call = await session.get(ModelInvocation, stage.model_invocation_id)
-    pi = await session.get(PiRun, stage.pi_run_id)
+    if stage.pi_run_id:
+        pi = await session.get(PiRun, stage.pi_run_id)
+    else:
+        # During execution the stage's final Pi pointer is not yet persisted.
+        # The actual unique reservation binding still identifies its durable Pi.
+        matches = (
+            await session.scalars(
+                select(PiRun).where(PiRun.reservation_ref == stage.model_invocation_id).limit(2)
+            )
+        ).all()
+        require(len(matches) <= 1)
+        pi = matches[0] if matches else None
+        if pi is None:
+            return None
     require(
         call is not None
         and pi is not None
@@ -143,12 +157,30 @@ async def timeline(kernel, run_id, *, after=0, limit=200):
         ).all()
         events = []
         for event in rows[:limit]:
+            require(isinstance(event.payload, dict))
             stage = by_pi.get(event.correlation_id) if event.source == "pi" else None
             if event.source == "workflow":
                 require(event.payload.get("run_id") == run.id)
+                if event.event_type == "workflow.run.opened":
+                    require(
+                        (
+                            event.payload.get("name"),
+                            event.payload.get("version"),
+                            event.payload.get("definition_sha256"),
+                        )
+                        == (run.workflow_name, run.workflow_version, run.definition_sha256)
+                    )
                 if event.event_type.startswith("workflow.stage."):
                     stage = by_attempt.get(event.payload.get("stage_id"))
                     require(stage is not None)
+                    if event.event_type == "workflow.stage.result":
+                        try:
+                            valid_output = (
+                                digest(event.payload.get("output")) == stage.output_sha256
+                            )
+                        except (ValueError, TypeError):
+                            valid_output = False
+                        require(stage.output_ref == "event:" + event.id and valid_output)
             # Never expose result/context/prompt/event payloads. Only safe identity facts.
             events.append(
                 {
@@ -158,7 +190,11 @@ async def timeline(kernel, run_id, *, after=0, limit=200):
                     "run_id": run.id,
                     "stage_id": stage.stage_id if stage else None,
                     "attempt_id": stage.id if stage else None,
-                    "pi_run_id": stage.pi_run_id if stage else None,
+                    "pi_run_id": event.correlation_id
+                    if event.source == "pi"
+                    else stage.pi_run_id
+                    if stage
+                    else None,
                     "output_ref": stage.output_ref
                     if stage and stage.output_ref == "event:" + event.id
                     else None,
@@ -207,8 +243,14 @@ async def stage_receipt(kernel, run_id, attempt_id, render_receipt):
 
 async def inspected_run(kernel, run_id):
     async with kernel.db.sessions() as session:
-        run, definition, _ = await records(session, kernel, run_id)
+        run, definition, stages = await records(session, kernel, run_id)
+        pi_links = {}
+        for stage in stages:
+            pi = await attached_pi(session, kernel, run, stage)
+            if pi:
+                pi_links[stage.id] = pi.id
         return {
+            "pi_links": pi_links,
             "run": store.run_view(run),
             "definition": store.definition_view(definition, full=True),
             "graph": {

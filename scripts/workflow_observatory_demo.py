@@ -16,12 +16,16 @@ import sys
 import threading
 from http.server import ThreadingHTTPServer
 from pathlib import Path
+from types import SimpleNamespace
+from urllib.parse import urlparse
 
+import httpx
 from fastapi.testclient import TestClient
 from sqlalchemy import func, select
 
 from alive.app import create_app
 from alive.cognitive_models import CognitiveMessage, ModelInvocation
+from alive.db import Database
 from alive.intelligence.models import IntelligenceLearningUpdate
 from alive.pi.models import PiProviderRequest, PiRun
 from alive.workflows import store
@@ -72,8 +76,9 @@ async def counts(kernel):
         return result
 
 
-def verify(client, manifest):
-    before = call(client, counts)
+def verify(client, manifest, read_counts=None):
+    read_counts = read_counts or (lambda: call(client, counts))
+    before = read_counts()
     for run in manifest["runs"]:
         base = f"/api/v1/workflow-runs/{run['id']}"
         inspection = client.get(base + "/inspection")
@@ -93,7 +98,7 @@ def verify(client, manifest):
                 artifact = client.get(base + "/artifacts/record")
                 assert artifact.status_code == 200, artifact.text
                 assert artifact.json()["workflow_completed"] == (run["status"] == "COMPLETED")
-    assert before == call(client, counts) == manifest["counts_after_seed"]
+    assert before == read_counts() == manifest["counts_after_seed"]
     return before
 
 
@@ -234,6 +239,9 @@ def main():
     parser.add_argument("--database-url")
     parser.add_argument("--seed", action="store_true")
     parser.add_argument("--serve", type=int)
+    parser.add_argument(
+        "--verify-url", help="Read-only verification of an already running loopback app"
+    )
     args = parser.parse_args()
     directory = args.directory.resolve()
     settings = settings_for(directory, 1)
@@ -255,11 +263,36 @@ def main():
         seed(settings, directory)
     else:
         manifest = json.loads((directory / "manifest.json").read_text())
-        with TestClient(
-            create_app(settings), headers={"Authorization": "Bearer " + TOKEN}
-        ) as client:
-            verify(client, manifest)
-        print("PASS: restarted history reads preserve all six durable counts")
+        if args.verify_url:
+            target = urlparse(args.verify_url)
+            if (
+                target.scheme != "http"
+                or target.hostname not in {"127.0.0.1", "localhost"}
+                or target.username
+                or target.password
+                or target.path not in {"", "/"}
+                or target.query
+                or target.fragment
+            ):
+                raise SystemExit("Verification URL must be a plain loopback HTTP origin")
+
+            async def read_counts():
+                db = Database(settings.database_url)
+                try:
+                    return await counts(SimpleNamespace(db=db))
+                finally:
+                    await db.engine.dispose()
+
+            with httpx.Client(
+                base_url=args.verify_url, headers={"Authorization": "Bearer " + TOKEN}
+            ) as client:
+                verify(client, manifest, lambda: asyncio.run(read_counts()))
+        else:
+            with TestClient(
+                create_app(settings), headers={"Authorization": "Bearer " + TOKEN}
+            ) as client:
+                verify(client, manifest)
+        print("PASS: restarted history reads preserve all durable counts")
     if args.serve:
         import uvicorn
 

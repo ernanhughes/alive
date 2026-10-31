@@ -191,7 +191,12 @@ function install(records = [fixture()]) {
       };
     const r = records.find((r) => path.includes(r.run.id)) || records[0];
     if (path.endsWith("/inspection"))
-      return { run: r.run, definition: r.definition, graph: r.graph };
+      return {
+        run: r.run,
+        definition: r.definition,
+        graph: r.graph,
+        pi_links: r.pi_links,
+      };
     if (path.endsWith("/stages")) return { run_id: r.run.id, stages: r.stages };
     if (path.includes("/timeline")) return r.timeline;
     if (path.startsWith("/workflow-runs?"))
@@ -395,6 +400,18 @@ describe("inspection UI", () => {
     expect(signal.aborted).toBe(false);
     view.unmount();
     expect(signal.aborted).toBe(true);
+  });
+  it("uses the server-validated reservation attachment while the final stage Pi pointer is absent", async () => {
+    const r = fixture();
+    r.stages[0].model_invocation_id = "call";
+    r.pi_links = { [r.stages[0].id]: "actual-pi" };
+    install([r]);
+    function Probe() {
+      const s = useRecording(ID, "test", false);
+      return <div>{s.data?.stages[0].pi_run_id}</div>;
+    }
+    render(<Probe />);
+    expect(await screen.findByText("actual-pi")).toBeTruthy();
   });
   it("backs off repeated failures and stops after five attempts", async () => {
     vi.useFakeTimers();

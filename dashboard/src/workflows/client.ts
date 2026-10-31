@@ -29,7 +29,13 @@ export async function recording(
   ]);
   if (stages.run_id !== id || inspection.run.id !== id)
     throw new Error("Run identity mismatch");
-  return assertRecording({ ...inspection, stages: stages.stages, timeline });
+  const attachedStages = stages.stages.map((stage) => {
+    const attached = inspection.pi_links?.[stage.id];
+    if (stage.pi_run_id && attached && stage.pi_run_id !== attached)
+      throw new Error("Receipt identity mismatch");
+    return { ...stage, pi_run_id: attached || stage.pi_run_id };
+  });
+  return assertRecording({ ...inspection, stages: attachedStages, timeline });
 }
 export function artifact(
   id: string,

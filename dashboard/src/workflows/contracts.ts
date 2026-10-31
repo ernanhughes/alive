@@ -123,6 +123,7 @@ export interface Timeline {
   history_note: string;
 }
 export interface Inspection {
+  pi_links?: Record<string, string>;
   run: WorkflowRun;
   definition: Definition;
   graph: Graph;

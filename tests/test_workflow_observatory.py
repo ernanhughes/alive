@@ -1,5 +1,7 @@
 """Read-model qualification against persisted executions, never frontend fixtures."""
 
+import asyncio
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import func, select, update
@@ -9,10 +11,11 @@ from alive.intelligence.models import IntelligenceLearningUpdate
 from alive.models import Event
 from alive.pi.models import PiProviderRequest, PiRun
 from alive.workflows import store
+from alive.workflows.context import digest
 from alive.workflows.models import WorkflowDefinition, WorkflowRun, WorkflowStageRun
 from tests.test_workflows_api import demo
 from tests.workflow_execution_helpers import call, lifecycle, observation, prepare
-from tests.workflow_r2_helpers import pi_environment
+from tests.workflow_r2_helpers import gated_run, pi_environment
 
 
 @pytest.fixture
@@ -51,13 +54,15 @@ def test_timeline_bounded_ordered_payload_redacted_and_no_effect(client, run):
                 source="workflow",
                 correlation=run["id"],
             )
-            k.add_event(
+            result = k.add_event(
                 s,
                 "workflow.stage.result",
                 {"run_id": run["id"], "stage_id": stage.id, "output": {"prompt": "NEVER-RENDER"}},
                 source="workflow",
                 correlation=run["id"],
             )
+            stage.output_ref = "event:" + str(result.event_id)
+            stage.output_sha256 = digest(result.payload["output"])
 
     call(client, seed)
 
@@ -92,7 +97,19 @@ def test_timeline_bounded_ordered_payload_redacted_and_no_effect(client, run):
         assert client.get(path + "/timeline?" + query).status_code == 422
 
 
-@pytest.mark.parametrize("corruption", ["owner", "hash", "version", "stage", "event_attempt"])
+@pytest.mark.parametrize(
+    "corruption",
+    [
+        "owner",
+        "hash",
+        "version",
+        "stage",
+        "event_attempt",
+        "opened_identity",
+        "result_hash",
+        "malformed_payload",
+    ],
+)
 def test_corrupt_or_foreign_history_refused(client, run, corruption):
     async def corrupt(k):
         async with k.lock, k.db.sessions.begin() as s:
@@ -119,6 +136,39 @@ def test_corrupt_or_foreign_history_refused(client, run, corruption):
                     .where(WorkflowStageRun.run_id == run["id"])
                     .values(operation="unknown.operation")
                 )
+            elif corruption in {"opened_identity", "malformed_payload"}:
+                payload = (
+                    ["invalid"]
+                    if corruption == "malformed_payload"
+                    else {
+                        "run_id": run["id"],
+                        "name": "wrong",
+                        "version": 1,
+                        "definition_sha256": run["workflow"]["definition_sha256"],
+                    }
+                )
+                await s.execute(
+                    update(Event)
+                    .where(
+                        Event.correlation_id == run["id"], Event.event_type == "workflow.run.opened"
+                    )
+                    .values(payload=payload)
+                )
+            elif corruption == "result_hash":
+                stage = await s.scalar(
+                    select(WorkflowStageRun).where(
+                        WorkflowStageRun.run_id == run["id"], WorkflowStageRun.stage_id == "prepare"
+                    )
+                )
+                result = k.add_event(
+                    s,
+                    "workflow.stage.result",
+                    {"run_id": run["id"], "stage_id": stage.id, "output": {"answer": "tampered"}},
+                    source="workflow",
+                    correlation=run["id"],
+                )
+                stage.output_ref = "event:" + str(result.event_id)
+                stage.output_sha256 = "0" * 64
             else:
                 k.add_event(
                     s,
@@ -138,10 +188,25 @@ def test_corrupt_or_foreign_history_refused(client, run, corruption):
 
 def test_actual_pi_receipt_binding_and_deterministic_history(client, settings, monkeypatch):
     upstream = pi_environment(client, settings, monkeypatch)
-    result, _ = call(
-        client,
-        lambda k: lifecycle(k, client.app.state.cognition, client.app.state.workflows, model=True),
-    )
+
+    async def before_dispatch(k, _):
+        run_id = next(iter(client.app.state.workflows.tasks))
+        inspected = await asyncio.to_thread(
+            client.get, f"/api/v1/workflow-runs/{run_id}/inspection"
+        )
+        assert inspected.json()["run"]["status"] == "RUNNING"
+        stages = await asyncio.to_thread(client.get, f"/api/v1/workflow-runs/{run_id}/stages")
+        assert any(
+            s["state"] == "RUNNING" and s["model_invocation_id"] for s in stages.json()["stages"]
+        )
+        assert len(inspected.json()["pi_links"]) == 1
+        timeline = await asyncio.to_thread(client.get, f"/api/v1/workflow-runs/{run_id}/timeline")
+        assert timeline.status_code == 200
+        assert any(e["event_type"] == "pi.run.prepared" for e in timeline.json()["events"])
+        assert not upstream.calls, "Observation dispatched the paused Pi call"
+
+    identity = call(client, lambda k: gated_run(client, k, before_dispatch))
+    result = call(client, store.get_run, identity)
     assert result["status"] == "COMPLETED" and len(upstream.calls) == 1
     base = f"/api/v1/workflow-runs/{result['id']}"
     stages = client.get(base + "/stages").json()["stages"]
