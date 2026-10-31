@@ -1,4 +1,4 @@
-"""Replay R1 source mutations in an isolated copy; never rewrite the working source."""
+"""Replay R1/R2 and bounded R3 mutations in isolation; never rewrite working source."""
 
 import ast
 import json
@@ -14,6 +14,7 @@ AUDIT = ROOT / "docs/workflows/validation/pi02b-r2/r1-original/scripts"
 FENCE = "tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants"
 HISTORY = "tests/test_workflow_r2_history.py::"
 INVARIANTS = "tests/test_workflow_r2_invariants.py::"
+R3 = "tests/test_workflow_r3_guards.py::"
 TARGETS = {
     "A1": INVARIANTS + "test_completed_stage_cannot_be_claimed_again_even_by_current_run_owner",
     "A2": FENCE + "[revoke]",
@@ -39,7 +40,51 @@ TARGETS = {
     "B4": FENCE + "[stage_state]",
     "B5": FENCE + "[stage_link]",
     "C1": FENCE + "[expiry]",
+    "R3_timeout": R3 + "test_real_stage_timeout_keeps_category_effects_and_settlement",
+    "R3_goal": R3
+    + "test_goal_cancellation_route_prevents_new_dispatch_and_preserves_possible_effects",
+    "R3_invocation": R3 + "test_stage_cannot_reserve_a_second_real_model_invocation",
+    "R3_sources": R3 + "test_context_contract_is_enforced[source_ids]",
+    "R3_action": R3 + "test_context_contract_is_enforced[action_kind]",
+    "R3_stage_run": R3 + "test_inconsistent_associations_cannot_cross_actual_dispatch[other_run]",
+    "R3_inquiry": R3 + "test_inconsistent_associations_cannot_cross_actual_dispatch[other_inquiry]",
 }
+for _field in (
+    "definition_sha256",
+    "workflow_name",
+    "workflow_version",
+    "goal_id",
+    "authorization_ref",
+    "input_sha256",
+):
+    TARGETS["R3_" + _field] = (
+        R3 + "test_run_identity_corruption_is_rejected_at_the_fence[" + _field + "]"
+    )
+
+
+def r3_cases(symbols):
+    runner, context = symbols["RUNNER"], symbols["CONTEXT"]
+    clauses = [
+        ("R3_goal", context, 'and goal.status in ("active", "accepted")'),
+        ("R3_invocation", context, "and stage.model_invocation_id is None,"),
+        ("R3_sources", context, 'and context["source_event_ids"] == [source.id]'),
+        ("R3_action", context, 'and context["requested_action_kind"] == "record_analysis",'),
+        ("R3_stage_run", runner, "and stage.run_id == run.id"),
+        ("R3_inquiry", runner, "and call.investigation_id == run.investigation_id"),
+        ("R3_definition_sha256", runner, "and run.definition_sha256 == grant.definition_sha256"),
+        ("R3_workflow_name", runner, "and run.workflow_name == spec.name"),
+        ("R3_workflow_version", runner, "and run.workflow_version == spec.version"),
+        ("R3_goal_id", runner, "and run.goal_id == grant.goal_id"),
+        ("R3_authorization_ref", runner, "and run.authorization_ref == execution.authorization_id"),
+        ("R3_input_sha256", runner, "and run.input_sha256 == digest(grant.inputs),"),
+    ]
+    return [
+        ("R3_timeout", runner, "except (Refused, TimeoutError):", "except Refused:"),
+        *(
+            (label, path, old, "and True" + ("," if old.endswith(",") else ""))
+            for label, path, old in clauses
+        ),
+    ]
 
 
 def literal_assignment(filename, name, symbols):
@@ -82,6 +127,7 @@ def main():
     cases.append(
         ("C1", symbols["CONTEXT"], "not revoked and grant.expires_at > now()", "not revoked")
     )
+    cases += r3_cases(symbols)
     receipts = []
     with tempfile.TemporaryDirectory(prefix="alive-pi02b-r2-mutations-") as directory:
         scratch = Path(directory)

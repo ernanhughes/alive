@@ -1,0 +1,9 @@
+Initial unchanged-source exploratory subset, before the bounded R3 port. Only the three expected timeout-label assertions failed.
+Raw output SHA-256: a08c28e26b59877c5f737c4996e93387c4d6be7b50cd572282365416be9ca11b
+E           AssertionError: stage TimeoutError lost its bounded category
+E           AssertionError: stage TimeoutError lost its bounded category
+E           AssertionError: stage TimeoutError lost its bounded category
+FAILED tests/test_workflow_h.py::test_real_stage_timeout_keeps_category_effects_and_settlement[sqlite-deterministic]
+FAILED tests/test_workflow_h.py::test_real_stage_timeout_keeps_category_effects_and_settlement[sqlite-before_dispatch]
+FAILED tests/test_workflow_h.py::test_real_stage_timeout_keeps_category_effects_and_settlement[sqlite-after_dispatch]
+3 failed, 9 passed, 12 skipped, 12 warnings in 64.02s (0:01:04)

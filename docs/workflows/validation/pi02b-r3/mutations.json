@@ -1,0 +1,348 @@
+{
+  "summary": {
+    "status": "PASS",
+    "cases": 34,
+    "killed": 33,
+    "redundant": 1
+  },
+  "probes": [
+    {
+      "mutation": "A1",
+      "target": "tests/test_workflow_r2_invariants.py::test_completed_stage_cannot_be_claimed_again_even_by_current_run_owner",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "WorkflowStageRun.id == row.id,\n                    WorkflowStageRun.state == states.PENDING,",
+      "replacement": "WorkflowStageRun.id == row.id,",
+      "assertion_sha256": "c09ae29ea6f0f47e6d909332aea21fa4213ffed99e7ca9c30defcee156a8d535",
+      "assertion_excerpt": "E   AssertionError: {'id': '3ad7c59c-09dd-483a-8451-74edd9340831', 'workflow': {'name': 'source-comparison', 'version': 1, 'definition_id'....}, 'goal_id': 'e97abbd7-9ffc-406a-8f8d-fb0645520457', 'investigation_id': '6cde1afa-87bb-45a3-b622-8d52d0357c93', ...}\nE   assert 'FAILED' == 'COMPLETED'\nE     \nE     - COMPLETED\nE     + FAILED\nFAILED tests/test_workflow_r2_invariants.py::test_completed_stage_cannot_be_claimed_again_even_by_current_run_owner - AssertionError: {'id': '3ad7c59c-09dd-483a-8451-74edd9340831', 'workflow': {'name': 'source-comparison', 'version': 1, 'definition_id'....}, 'goal_id': 'e97abbd7-9ffc-406a-8f8d-fb0645520457', 'investigation_id': '6cde1afa-87bb-45a3-b622-8d52d0357c93', ...}\nassert 'FAILED' == 'COMPLETED'"
+    },
+    {
+      "mutation": "A2",
+      "target": "tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[revoke]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "require(not revoked and grant.expires_at > now(), \"authorization_expired_or_revoked\")",
+      "replacement": "require(grant.expires_at > now(), \"authorization_expired_or_revoked\")",
+      "assertion_sha256": "ede7106135e32d11f27abc197dbd00bcf98613d4dfb2fd6bd116eaa90c977345",
+      "assertion_excerpt": "E   AssertionError: revoke crossed actual dispatch fence\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x000001B1431C81A0>.calls\nFAILED tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[revoke] - AssertionError: revoke crossed actual dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "A3",
+      "target": "tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[withdraw]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "require(not withdrawn, \"context_withdrawn\")",
+      "replacement": "require(True, \"context_withdrawn\")",
+      "assertion_sha256": "93d5d36274c9d2e658cef1c668263bbd2840b8143ff57713c2a09444a0293585",
+      "assertion_excerpt": "E   AssertionError: withdraw crossed actual dispatch fence\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x000001490713C1A0>.calls\nFAILED tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[withdraw] - AssertionError: withdraw crossed actual dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "A4",
+      "target": "tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[configuration]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "control is not None and digest(control.configuration) == grant.configuration_sha256,",
+      "replacement": "control is not None,",
+      "assertion_sha256": "2f43ce0e779ca892debccc489afaf2a663c9f010a527b74668d33c4e3b7917fa",
+      "assertion_excerpt": "E   AssertionError: configuration crossed actual dispatch fence\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x000002789AD881A0>.calls\nFAILED tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[configuration] - AssertionError: configuration crossed actual dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "A5",
+      "target": "tests/test_workflow_authority.py::test_restart_reconciles_ambiguous_stage_without_dispatch",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "if possible:",
+      "replacement": "if False:",
+      "assertion_sha256": "d09cf8d2febca8176eb22dc13a4e85adaf39a41d3e3537362b46ae46204e0e0b",
+      "assertion_excerpt": "E   AssertionError: assert 'CANCELLED' == 'UNKNOWN'\nE     \nE     - UNKNOWN\nE     + CANCELLED\nFAILED tests/test_workflow_authority.py::test_restart_reconciles_ambiguous_stage_without_dispatch - AssertionError: assert 'CANCELLED' == 'UNKNOWN'"
+    },
+    {
+      "mutation": "A6",
+      "target": "tests/test_workflow_cancellation.py::test_explicit_cancel_of_pending_run_closes_its_reservation",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "execution.cancel_requested = True",
+      "replacement": "execution.cancel_requested = False",
+      "assertion_sha256": "a41d5c413461eda0e3e8a262212fb8f833842b30c374e88949392df03c6c9315",
+      "assertion_excerpt": "E   AssertionError: assert 'COMPLETED' == 'CANCELLED'\nE     \nE     - CANCELLED\nE     + COMPLETED\nFAILED tests/test_workflow_cancellation.py::test_explicit_cancel_of_pending_run_closes_its_reservation - AssertionError: assert 'COMPLETED' == 'CANCELLED'"
+    },
+    {
+      "mutation": "A7",
+      "target": "tests/test_workflow_r2_history.py::test_historical_artifact_hash_chain_is_enforced[rebuilt_hash]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and digest(event.payload[\"output\"]) == stage.output_sha256,",
+      "replacement": "and True,",
+      "assertion_sha256": "5af02b9689f03bb480c191ad373b5a045b9416062b234d4743c9000ca55563bd",
+      "assertion_excerpt": "E   AssertionError: assert 200 == 404\nE    +  where 200 = <Response [200 OK]>.status_code\nE    +    where <Response [200 OK]> = get('/api/v1/workflow-runs/090b7cb7-6d34-467c-9a08-241d06c3cbad/artifacts/record')\nE    +      where get = <starlette.testclient.TestClient object at 0x0000022ACCD2FB60>.get\nFAILED tests/test_workflow_r2_history.py::test_historical_artifact_hash_chain_is_enforced[rebuilt_hash] - AssertionError: assert 200 == 404"
+    },
+    {
+      "mutation": "A8",
+      "target": "tests/test_workflow_r2_history.py::test_historical_artifact_hash_chain_is_enforced[artifact]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and digest(artifact.content) == output[\"sha256\"]",
+      "replacement": "",
+      "assertion_sha256": "f0a7d607ce69eefdd2a911790772295e23122831048446911250612854afbd61",
+      "assertion_excerpt": "E   AssertionError: assert 200 == 404\nE    +  where 200 = <Response [200 OK]>.status_code\nE    +    where <Response [200 OK]> = get('/api/v1/workflow-runs/7220a5ad-f564-4d0e-a710-71d44adcb3ec/artifacts/record')\nE    +      where get = <starlette.testclient.TestClient object at 0x000002EB1BF1FB60>.get\nFAILED tests/test_workflow_r2_history.py::test_historical_artifact_hash_chain_is_enforced[artifact] - AssertionError: assert 200 == 404"
+    },
+    {
+      "mutation": "A9",
+      "target": "tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[missing_guard]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "allowed = False\n                if self.workflow_guard is not None:",
+      "replacement": "allowed = True\n                if self.workflow_guard is not None:",
+      "assertion_sha256": "b385c025ea123f85632abc99bb234325fac58741d94120be18c8e0e00e88f362",
+      "assertion_excerpt": "E   AssertionError: missing_guard crossed actual dispatch fence\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x000001D56F2F41A0>.calls\nFAILED tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[missing_guard] - AssertionError: missing_guard crossed actual dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "A10",
+      "target": "tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[model]",
+      "baseline": "PASS",
+      "result": "REDUNDANT_WITH_B1",
+      "modified_guard": "and grant.models.get(role) == model",
+      "replacement": ""
+    },
+    {
+      "mutation": "A11",
+      "target": "tests/test_workflow_authority.py::test_process_exit_or_incomplete_receipt_cannot_complete_stage[output]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and requests[0].response_sha256 == pi.result_json.get(\"text_sha256\")",
+      "replacement": "",
+      "assertion_sha256": "1824cb1adfa2949d9e8389b6b8e6dd969858a8fdd73817f5a510a077588c441d",
+      "assertion_excerpt": "E   AssertionError: incomplete Pi receipt was accepted\nE   assert False\nFAILED tests/test_workflow_authority.py::test_process_exit_or_incomplete_receipt_cannot_complete_stage[output] - AssertionError: incomplete Pi receipt was accepted\nassert False"
+    },
+    {
+      "mutation": "A12",
+      "target": "tests/test_workflow_r2_invariants.py::test_control_dependency_blocks_stage_even_without_an_output_reference",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "all(by_id[name].state == states.COMPLETED for name in stage.depends_on),",
+      "replacement": "True,",
+      "assertion_sha256": "3e32b7944cea057d354211535610261eded6dc4e02febcc73458e69524b05edb",
+      "assertion_excerpt": "E   AssertionError: control-dependent stage started without its prerequisite\nE   assert datetime.datetime(2026, 10, 31, 0, 4, 2, 796444) is None\nE    +  where datetime.datetime(2026, 10, 31, 0, 4, 2, 796444) = <alive.workflows.models.WorkflowStageRun object at 0x000001EA8AAD6F10>.started_at\nFAILED tests/test_workflow_r2_invariants.py::test_control_dependency_blocks_stage_even_without_an_output_reference - AssertionError: control-dependent stage started without its prerequisite\nassert datetime.datetime(2026, 10, 31, 0, 4, 2, 796444) is None"
+    },
+    {
+      "mutation": "A13",
+      "target": "tests/test_workflow_r2_invariants.py::test_existing_inquiry_work_cannot_be_transferred_to_workflow[snapshot]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "not inquiry.snapshot\n                    and inquiry.usage.get(\"calls\", 0) == 0\n                    and (self.cognition.worker is None or self.cognition.worker.done()),",
+      "replacement": "True,",
+      "assertion_sha256": "089ca115ca65194ec4cc2cf53600a0302a54b73e33a2580c0bb8445de4d1e6f4",
+      "assertion_excerpt": "E   AssertionError: existing inquiry work was transferred\nE   assert False\nFAILED tests/test_workflow_r2_invariants.py::test_existing_inquiry_work_cannot_be_transferred_to_workflow[snapshot] - AssertionError: existing inquiry work was transferred\nassert False"
+    },
+    {
+      "mutation": "A14",
+      "target": "tests/test_workflow_r2_history.py::test_success_releases_slot_for_another_admitted_inquiry",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "run.finished_at, run.terminal_reason = now(), \"required_stages_completed\"\n            execution.slot = None",
+      "replacement": "run.finished_at, run.terminal_reason = now(), \"required_stages_completed\"",
+      "assertion_sha256": "b68fd4279e1b32af18ec5de41e94146b1d03ff00d767e65840e72e5fa738db86",
+      "assertion_excerpt": "E   AssertionError: assert '09d0a22c-c579-4d02-81cb-2fbf68f86b88' is None\nE    +  where '09d0a22c-c579-4d02-81cb-2fbf68f86b88' = <alive.workflows.models.WorkflowExecution object at 0x000001CC4DB1A8A0>.slot\nFAILED tests/test_workflow_r2_history.py::test_success_releases_slot_for_another_admitted_inquiry - AssertionError: assert '09d0a22c-c579-4d02-81cb-2fbf68f86b88' is None"
+    },
+    {
+      "mutation": "A15",
+      "target": "tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[deadline]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and aware(execution.deadline) > now()\n            and run.status == states.RUNNING,",
+      "replacement": "and run.status == states.RUNNING,",
+      "assertion_sha256": "5aa08239322f1047068ed5830a9639fdecac4ff96725f34623748af211d985cc",
+      "assertion_excerpt": "E   AssertionError: deadline crossed actual dispatch fence\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x000001F8DCA001A0>.calls\nFAILED tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[deadline] - AssertionError: deadline crossed actual dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "B1",
+      "target": "tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[model]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and grant.models.get(call.role) == call.model\n                and call.input_json[\"context\"] == approved,",
+      "replacement": "and call.input_json[\"context\"] == approved,",
+      "assertion_sha256": "cdf1fc5d9d6198b0050e472076ccd071d46e102e478a02df4f7c072f9add3889",
+      "assertion_excerpt": "E   AssertionError: model crossed actual dispatch fence\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x0000024C1777C1A0>.calls\nFAILED tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[model] - AssertionError: model crossed actual dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "B2",
+      "target": "tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[context]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and grant.models.get(call.role) == call.model\n                and call.input_json[\"context\"] == approved,",
+      "replacement": "and grant.models.get(call.role) == call.model,",
+      "assertion_sha256": "97aa14bf71cac6bb4ae7de97eaba7fe33fc21dd3543d69e8f8cc581dfca7bfde",
+      "assertion_excerpt": "E   AssertionError: context crossed actual dispatch fence\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x000001752B4C81A0>.calls\nFAILED tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[context] - AssertionError: context crossed actual dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "B3",
+      "target": "tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[status]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and call.status == \"reserved\"\n                and call.investigation_id == run.investigation_id\n                and grant.models",
+      "replacement": "and call.investigation_id == run.investigation_id\n                and grant.models",
+      "assertion_sha256": "e77076e14e100a9de0227d01b987c709cedbc470931f7467ef78c0ee1d065f3a",
+      "assertion_excerpt": "E   AssertionError: status crossed actual dispatch fence\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x0000026CC13381A0>.calls\nFAILED tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[status] - AssertionError: status crossed actual dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "B4",
+      "target": "tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[stage_state]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and stage.state == states.RUNNING\n                and stage.model_invocation_id == call.id",
+      "replacement": "and stage.model_invocation_id == call.id",
+      "assertion_sha256": "309cf8b6d810932c8ac15e5b9279ddf46142da57a0efae687abe486f6800840e",
+      "assertion_excerpt": "E   AssertionError: stage_state crossed actual dispatch fence\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x00000160609B41A0>.calls\nFAILED tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[stage_state] - AssertionError: stage_state crossed actual dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "B5",
+      "target": "tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[stage_link]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and stage.model_invocation_id == call.id\n                and call.status == \"reserved\"",
+      "replacement": "and call.status == \"reserved\"",
+      "assertion_sha256": "cb68094a229dee04491c56c458937f631163fbec5f2bfa7bcea1328b1a9d9156",
+      "assertion_excerpt": "E   AssertionError: stage_link crossed actual dispatch fence\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x000001C470A281A0>.calls\nFAILED tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[stage_link] - AssertionError: stage_link crossed actual dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "C1",
+      "target": "tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[expiry]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "not revoked and grant.expires_at > now()",
+      "replacement": "not revoked",
+      "assertion_sha256": "966eadf49df25115eecea6b7f9b56a6e8f5a96ae72a09daa03f2d766156c0dd3",
+      "assertion_excerpt": "E   AssertionError: expiry crossed actual dispatch fence\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x0000018A4F2981A0>.calls\nFAILED tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[expiry] - AssertionError: expiry crossed actual dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "R3_timeout",
+      "target": "tests/test_workflow_r3_guards.py::test_real_stage_timeout_keeps_category_effects_and_settlement",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "except (Refused, TimeoutError):",
+      "replacement": "except Refused:",
+      "assertion_sha256": "f0f050bfe5ac5c845bfe72b84741a63effbb11777d39669224410a036862984d",
+      "assertion_excerpt": "E   AssertionError: stage TimeoutError lost its bounded category\nE   assert 'adapter_execution_failure' == 'timeout'\nE     \nE     - timeout\nE     + adapter_execution_failure\nE   AssertionError: stage TimeoutError lost its bounded category\nE   assert 'adapter_execution_failure' == 'timeout'\nE     \nE     - timeout\nE     + adapter_execution_failure\nE   AssertionError: stage TimeoutError lost its bounded category\nE   assert 'adapter_execution_failure' == 'timeout'\nE     \nE     - timeout\nE     + adapter_execution_failure\nFAILED tests/test_workflow_r3_guards.py::test_real_stage_timeout_keeps_category_effects_and_settlement[deterministic] - AssertionError: stage TimeoutError lost its bounded category\nassert 'adapter_execution_failure' == 'timeout'\nFAILED tests/test_workflow_r3_guards.py::test_real_stage_timeout_keeps_category_effects_and_settlement[before_dispatch] - AssertionError: stage TimeoutError lost its bounded category\nassert 'adapter_execution_failure' == 'timeout'\nFAILED tests/test_workflow_r3_guards.py::test_real_stage_timeout_keeps_category_effects_and_settlement[after_dispatch] - AssertionError: stage TimeoutError lost its bounded category\nassert 'adapter_execution_failure' == 'timeout'"
+    },
+    {
+      "mutation": "R3_goal",
+      "target": "tests/test_workflow_r3_guards.py::test_goal_cancellation_route_prevents_new_dispatch_and_preserves_possible_effects",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and goal.status in (\"active\", \"accepted\")",
+      "replacement": "and True",
+      "assertion_sha256": "cac85c89a32151b1691dce97295f2b2208e9cb4f1dcb68b097e9df38a2eca91d",
+      "assertion_excerpt": "E   AssertionError: dispatch crossed acknowledged goal cancellation\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x0000017A686701A0>.calls\nE   AssertionError: dispatch crossed acknowledged goal cancellation\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x0000017A68AC8B90>.calls\nE   AssertionError: assert 'COMPLETED' == 'UNKNOWN'\nE     \nE     - UNKNOWN\nE     + COMPLETED\nFAILED tests/test_workflow_r3_guards.py::test_goal_cancellation_route_prevents_new_dispatch_and_preserves_possible_effects[before_reservation] - AssertionError: dispatch crossed acknowledged goal cancellation\nassert 1 == 0\nFAILED tests/test_workflow_r3_guards.py::test_goal_cancellation_route_prevents_new_dispatch_and_preserves_possible_effects[after_reservation] - AssertionError: dispatch crossed acknowledged goal cancellation\nassert 1 == 0\nFAILED tests/test_workflow_r3_guards.py::test_goal_cancellation_route_prevents_new_dispatch_and_preserves_possible_effects[during_dispatch] - AssertionError: assert 'COMPLETED' == 'UNKNOWN'"
+    },
+    {
+      "mutation": "R3_invocation",
+      "target": "tests/test_workflow_r3_guards.py::test_stage_cannot_reserve_a_second_real_model_invocation",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and stage.model_invocation_id is None,",
+      "replacement": "and True,",
+      "assertion_sha256": "2f4bfb4b75550749c935e7cd96c8960af8b142bae50500a937c7c8b7d1c2430a",
+      "assertion_excerpt": "E   AssertionError: one authorized stage dispatched twice\nE   assert 2 == 1\nE    +  where 2 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x00000141EB2A41A0>.calls\nFAILED tests/test_workflow_r3_guards.py::test_stage_cannot_reserve_a_second_real_model_invocation - AssertionError: one authorized stage dispatched twice\nassert 2 == 1"
+    },
+    {
+      "mutation": "R3_sources",
+      "target": "tests/test_workflow_r3_guards.py::test_context_contract_is_enforced[source_ids]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and context[\"source_event_ids\"] == [source.id]",
+      "replacement": "and True",
+      "assertion_sha256": "27097b3f31c7e1cded73c0b6374416e68212e5feb78f16cb56a75aaccbaedce9",
+      "assertion_excerpt": "E   AssertionError: admitted\nE   assert ('admitted' == 'admitted'\nE     \nE       admitted) == ('source_ids' == 'ok'\nE     \nE     - ok\nE     + source_ids)\nFAILED tests/test_workflow_r3_guards.py::test_context_contract_is_enforced[source_ids] - AssertionError: admitted\nassert ('admitted' == 'admitted'"
+    },
+    {
+      "mutation": "R3_action",
+      "target": "tests/test_workflow_r3_guards.py::test_context_contract_is_enforced[action_kind]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and context[\"requested_action_kind\"] == \"record_analysis\",",
+      "replacement": "and True,",
+      "assertion_sha256": "015df9db46b2f39818773014171cc536ce4050103df2e75742ab59d98413dd38",
+      "assertion_excerpt": "E   AssertionError: admitted\nE   assert ('admitted' == 'admitted'\nE     \nE       admitted) == ('action_kind' == 'ok'\nE     \nE     - ok\nE     + action_kind)\nFAILED tests/test_workflow_r3_guards.py::test_context_contract_is_enforced[action_kind] - AssertionError: admitted\nassert ('admitted' == 'admitted'"
+    },
+    {
+      "mutation": "R3_stage_run",
+      "target": "tests/test_workflow_r3_guards.py::test_inconsistent_associations_cannot_cross_actual_dispatch[other_run]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and stage.run_id == run.id",
+      "replacement": "and True",
+      "assertion_sha256": "1784f6dacda365598d94c388a307ca6d354494609dc795aabcf321f5268ffc67",
+      "assertion_excerpt": "E   AssertionError: other_run association crossed dispatch fence\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x000002288D8F82F0>.calls\nFAILED tests/test_workflow_r3_guards.py::test_inconsistent_associations_cannot_cross_actual_dispatch[other_run] - AssertionError: other_run association crossed dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "R3_inquiry",
+      "target": "tests/test_workflow_r3_guards.py::test_inconsistent_associations_cannot_cross_actual_dispatch[other_inquiry]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and call.investigation_id == run.investigation_id",
+      "replacement": "and True",
+      "assertion_sha256": "d2a0692310fbaf6f6983eabe4b0150f7c198748238dd407b03a4e6cd55796d10",
+      "assertion_excerpt": "E   AssertionError: other_inquiry association crossed dispatch fence\nE   assert 1 == 0\nE    +  where 1 = len([{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}])\nE    +    where [{'headers': {'host': 'api.meta.ai', 'accept': '*/*', 'accept-encoding': 'gzip, deflate', 'connection': 'keep-alive', ...], \"requested_action_kind\": \"record_analysis\"}'}], 'max_completion_tokens': 1536, 'reasoning_effort': 'minimal', ...}}] = <tests.test_pi_gateway.Upstream object at 0x000001B7929D82F0>.calls\nFAILED tests/test_workflow_r3_guards.py::test_inconsistent_associations_cannot_cross_actual_dispatch[other_inquiry] - AssertionError: other_inquiry association crossed dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "R3_definition_sha256",
+      "target": "tests/test_workflow_r3_guards.py::test_run_identity_corruption_is_rejected_at_the_fence[definition_sha256]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and run.definition_sha256 == grant.definition_sha256",
+      "replacement": "and True",
+      "assertion_sha256": "00f2116d523e0466241442f2fedfbaf3ff62660279a4504d623b1fbdcfa023a1",
+      "assertion_excerpt": "E   AssertionError: definition_sha256 corruption crossed the dispatch fence\nE   assert 1 == 0\nFAILED tests/test_workflow_r3_guards.py::test_run_identity_corruption_is_rejected_at_the_fence[definition_sha256] - AssertionError: definition_sha256 corruption crossed the dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "R3_workflow_name",
+      "target": "tests/test_workflow_r3_guards.py::test_run_identity_corruption_is_rejected_at_the_fence[workflow_name]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and run.workflow_name == spec.name",
+      "replacement": "and True",
+      "assertion_sha256": "3d8513990d8d278025e98b777ad0c64e0acc89e82fadbddbbc2e7b2336e7de1a",
+      "assertion_excerpt": "E   AssertionError: workflow_name corruption crossed the dispatch fence\nE   assert 1 == 0\nFAILED tests/test_workflow_r3_guards.py::test_run_identity_corruption_is_rejected_at_the_fence[workflow_name] - AssertionError: workflow_name corruption crossed the dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "R3_workflow_version",
+      "target": "tests/test_workflow_r3_guards.py::test_run_identity_corruption_is_rejected_at_the_fence[workflow_version]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and run.workflow_version == spec.version",
+      "replacement": "and True",
+      "assertion_sha256": "9d66b1bbf9a716e5ce23e960e8de42c53e67b04fd27c168b729e6e169636a611",
+      "assertion_excerpt": "E   AssertionError: workflow_version corruption crossed the dispatch fence\nE   assert 1 == 0\nFAILED tests/test_workflow_r3_guards.py::test_run_identity_corruption_is_rejected_at_the_fence[workflow_version] - AssertionError: workflow_version corruption crossed the dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "R3_goal_id",
+      "target": "tests/test_workflow_r3_guards.py::test_run_identity_corruption_is_rejected_at_the_fence[goal_id]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and run.goal_id == grant.goal_id",
+      "replacement": "and True",
+      "assertion_sha256": "693238b2e539d278c334e7266190e915926993b0a13348408b882aea5e7f9444",
+      "assertion_excerpt": "E   AssertionError: goal_id corruption crossed the dispatch fence\nE   assert 1 == 0\nFAILED tests/test_workflow_r3_guards.py::test_run_identity_corruption_is_rejected_at_the_fence[goal_id] - AssertionError: goal_id corruption crossed the dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "R3_authorization_ref",
+      "target": "tests/test_workflow_r3_guards.py::test_run_identity_corruption_is_rejected_at_the_fence[authorization_ref]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and run.authorization_ref == execution.authorization_id",
+      "replacement": "and True",
+      "assertion_sha256": "b4026ffab3933c48362c271becb7c14724e28e6a9f02e34b5709dc85316046da",
+      "assertion_excerpt": "E   AssertionError: authorization_ref corruption crossed the dispatch fence\nE   assert 1 == 0\nFAILED tests/test_workflow_r3_guards.py::test_run_identity_corruption_is_rejected_at_the_fence[authorization_ref] - AssertionError: authorization_ref corruption crossed the dispatch fence\nassert 1 == 0"
+    },
+    {
+      "mutation": "R3_input_sha256",
+      "target": "tests/test_workflow_r3_guards.py::test_run_identity_corruption_is_rejected_at_the_fence[input_sha256]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guard": "and run.input_sha256 == digest(grant.inputs),",
+      "replacement": "and True,",
+      "assertion_sha256": "4062dc3dfabf68d2aa843acc3128bdd1e7171d5dcf8c93bd944e09f8d24b365f",
+      "assertion_excerpt": "E   AssertionError: input_sha256 corruption crossed the dispatch fence\nE   assert 1 == 0\nFAILED tests/test_workflow_r3_guards.py::test_run_identity_corruption_is_rejected_at_the_fence[input_sha256] - AssertionError: input_sha256 corruption crossed the dispatch fence\nassert 1 == 0"
+    }
+  ]
+}
