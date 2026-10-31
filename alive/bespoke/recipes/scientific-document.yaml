@@ -1,0 +1,35 @@
+schema_version: 1
+id: scientific-document
+version: 1.0.0
+name: Scientific Document
+description: 'Future requirement: source ingestion is not installed. This template
+  cannot execute.'
+context_types:
+- browser_document
+intents:
+- assess_claims
+workflow:
+  name: scientific-document
+  version: 1
+  definition_sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+capabilities:
+- stage_id: extract
+  id: document.extract
+  version: 1.0.0
+  manifest_sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+limits:
+  max_model_calls: 0
+  max_wall_seconds: 120
+  max_output_tokens: 0
+  outbound_allowed: false
+  permissions:
+  - evidence.read
+required_evidence: approved_capture
+output_artifact: workflow_result
+validation: none
+status: future
+presentation:
+  category: future
+  icon: layers
+  tags:
+  - unavailable

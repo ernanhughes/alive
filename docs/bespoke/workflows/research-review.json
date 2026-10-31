@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "name": "research-review",
+  "version": 2,
+  "title": "Bounded evidence review",
+  "limits": {
+    "max_wall_seconds": 120,
+    "max_model_calls": 1,
+    "max_total_output_tokens": 1536
+  },
+  "stages": [
+    {
+      "id": "prepare",
+      "title": "Prepare",
+      "type": "deterministic",
+      "operation": "context.prepare",
+      "depends_on": [],
+      "inputs": {},
+      "output_schema": {
+        "properties": {
+          "context": {
+            "type": "object"
+          },
+          "claims": {
+            "type": "array"
+          },
+          "sources": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "context",
+          "claims",
+          "sources"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 45
+      }
+    },
+    {
+      "id": "analyze",
+      "title": "Analyze",
+      "type": "pi_agent",
+      "operation": "cognition.role",
+      "depends_on": [
+        "prepare"
+      ],
+      "inputs": {
+        "role": "observer",
+        "context": "$stage.prepare.context"
+      },
+      "output_schema": {
+        "properties": {
+          "analysis": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "analysis"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 45,
+        "max_output_tokens": 1536
+      }
+    },
+    {
+      "id": "validate",
+      "title": "Validate",
+      "type": "validation",
+      "operation": "evidence.validate_references",
+      "depends_on": [
+        "prepare",
+        "analyze"
+      ],
+      "inputs": {
+        "analysis": "$stage.analyze.analysis",
+        "context": "$stage.prepare.context"
+      },
+      "output_schema": {
+        "properties": {
+          "result": {
+            "type": "object"
+          },
+          "assessment": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "result",
+          "assessment"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 45
+      }
+    },
+    {
+      "id": "record",
+      "title": "Record",
+      "type": "deterministic",
+      "operation": "result.record",
+      "depends_on": [
+        "validate"
+      ],
+      "inputs": {
+        "result": "$stage.validate.result",
+        "assessment": "$stage.validate.assessment"
+      },
+      "output_schema": {
+        "properties": {
+          "artifact_id": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "sha256"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 45
+      }
+    }
+  ]
+}

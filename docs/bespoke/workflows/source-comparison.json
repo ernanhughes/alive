@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "name": "source-comparison",
+  "version": 1,
+  "title": "Source comparison",
+  "limits": {
+    "max_wall_seconds": 120,
+    "max_model_calls": 0,
+    "max_total_output_tokens": 0
+  },
+  "stages": [
+    {
+      "id": "prepare",
+      "title": "Prepare",
+      "type": "deterministic",
+      "operation": "context.prepare",
+      "depends_on": [],
+      "inputs": {},
+      "output_schema": {
+        "properties": {
+          "context": {
+            "type": "object"
+          },
+          "claims": {
+            "type": "array"
+          },
+          "sources": {
+            "type": "array"
+          }
+        },
+        "required": [
+          "context",
+          "claims",
+          "sources"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 45
+      }
+    },
+    {
+      "id": "compare",
+      "title": "Compare",
+      "type": "validation",
+      "operation": "evidence.evaluate",
+      "depends_on": [
+        "prepare"
+      ],
+      "inputs": {
+        "claims": "$stage.prepare.claims",
+        "sources": "$stage.prepare.sources"
+      },
+      "output_schema": {
+        "properties": {
+          "result": {
+            "type": "object"
+          },
+          "assessment": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "result",
+          "assessment"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 45
+      }
+    },
+    {
+      "id": "record",
+      "title": "Record",
+      "type": "deterministic",
+      "operation": "result.record",
+      "depends_on": [
+        "compare"
+      ],
+      "inputs": {
+        "result": "$stage.compare.result",
+        "assessment": "$stage.compare.assessment"
+      },
+      "output_schema": {
+        "properties": {
+          "artifact_id": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "sha256"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 45
+      }
+    }
+  ]
+}
