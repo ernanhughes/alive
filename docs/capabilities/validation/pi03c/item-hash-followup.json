@@ -1,0 +1,23 @@
+[
+  {
+    "id": "item-hash",
+    "baseline": "7d94e4f2c4bed7a2a2c2292247651820950b5e02",
+    "test": "tests/test_validation_capabilities.py::test_capture_item_hash_and_bounded_observation_are_not_silently_truncated",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_validation_capabilities.py::test_capture_item_hash_and_bounded_observation_are_not_silently_truncated"
+    ],
+    "failure": [
+      "FAILED tests/test_validation_capabilities.py::test_capture_item_hash_and_bounded_observation_are_not_silently_truncated"
+    ],
+    "log": "item-hash-followup-logs/item-hash.txt.gz"
+  }
+]

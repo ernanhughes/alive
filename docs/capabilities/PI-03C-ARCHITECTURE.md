@@ -21,7 +21,7 @@ Only deterministic PI-03C is authorized for this milestone. No L2 implementation
 | Pi / ModelGateway / Governor / owner admission | Existing bounded analyst and exact owner/source reviews | Security acceptance and generalized research role | No new model client or invocation in this branch | Model-backed research qualification blocked on PR #83 review |
 | Intelligence | Independent feedback and retained execution receipts | Live outcome evaluation | No changes | Completion/citation validity never becomes task success |
 
-## Planned deterministic contracts
+## Implemented deterministic contracts
 
 Upgrade the existing `evidence.validate_references` identifier to a separately pinned 1.1.0;
 the programme's hyphenated spelling is descriptive, not a duplicate operation. Add

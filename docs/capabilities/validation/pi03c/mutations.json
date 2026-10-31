@@ -1,0 +1,191 @@
+[
+  {
+    "id": "source-scope",
+    "baseline": "0a0ca3ceb8cc1d0a357c2abcf7977d5052aac47e",
+    "test": "tests/test_validation_capabilities.py::test_source_substitution_is_refused_after_successful_control[scoped_sha256]",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_validation_capabilities.py::test_source_substitution_is_refused_after_successful_control[scoped_sha256]"
+    ],
+    "failure": [
+      "FAILED tests/test_validation_capabilities.py::test_source_substitution_is_refused_after_successful_control[scoped_sha256]"
+    ],
+    "log": "mutations-logs/source-scope.txt.gz"
+  },
+  {
+    "id": "item-hash",
+    "baseline": "0a0ca3ceb8cc1d0a357c2abcf7977d5052aac47e",
+    "test": "tests/test_validation_capabilities.py::test_capture_item_hash_and_bounded_observation_are_not_silently_truncated",
+    "status": "invalid",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_validation_capabilities.py::test_capture_item_hash_and_bounded_observation_are_not_silently_truncated"
+    ],
+    "failure": [
+      "FAILED tests/test_validation_capabilities.py::test_capture_item_hash_and_bounded_observation_are_not_silently_truncated"
+    ],
+    "log": "mutations-logs/item-hash.txt.gz"
+  },
+  {
+    "id": "reference-id",
+    "baseline": "0a0ca3ceb8cc1d0a357c2abcf7977d5052aac47e",
+    "test": "tests/test_validation_capabilities.py::test_each_reference_failure_is_classified",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_validation_capabilities.py::test_each_reference_failure_is_classified"
+    ],
+    "failure": [
+      "FAILED tests/test_validation_capabilities.py::test_each_reference_failure_is_classified[id-fabricated-unknown_reference]"
+    ],
+    "log": "mutations-logs/reference-id.txt.gz"
+  },
+  {
+    "id": "locator-range",
+    "baseline": "0a0ca3ceb8cc1d0a357c2abcf7977d5052aac47e",
+    "test": "tests/test_validation_capabilities.py::test_locator_bounds_newlines_exact_quotes_and_unsupported_pages",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_validation_capabilities.py::test_locator_bounds_newlines_exact_quotes_and_unsupported_pages"
+    ],
+    "failure": [
+      "FAILED tests/test_validation_capabilities.py::test_locator_bounds_newlines_exact_quotes_and_unsupported_pages[file_lines-1-99--invalid_locator]"
+    ],
+    "log": "mutations-logs/locator-range.txt.gz"
+  },
+  {
+    "id": "quote",
+    "baseline": "0a0ca3ceb8cc1d0a357c2abcf7977d5052aac47e",
+    "test": "tests/test_validation_capabilities.py::test_locator_bounds_newlines_exact_quotes_and_unsupported_pages",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_validation_capabilities.py::test_locator_bounds_newlines_exact_quotes_and_unsupported_pages"
+    ],
+    "failure": [
+      "FAILED tests/test_validation_capabilities.py::test_locator_bounds_newlines_exact_quotes_and_unsupported_pages[file_lines-1-2-alpha beta-quote_mismatch]"
+    ],
+    "log": "mutations-logs/quote.txt.gz"
+  },
+  {
+    "id": "semantics",
+    "baseline": "0a0ca3ceb8cc1d0a357c2abcf7977d5052aac47e",
+    "test": "tests/test_validation_capabilities.py::test_a_false_claim_with_a_valid_citation_remains_unverified",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_validation_capabilities.py::test_a_false_claim_with_a_valid_citation_remains_unverified"
+    ],
+    "failure": [
+      "FAILED tests/test_validation_capabilities.py::test_a_false_claim_with_a_valid_citation_remains_unverified"
+    ],
+    "log": "mutations-logs/semantics.txt.gz"
+  },
+  {
+    "id": "trusted-dependency",
+    "baseline": "0a0ca3ceb8cc1d0a357c2abcf7977d5052aac47e",
+    "test": "tests/test_validation_capabilities.py::test_composer_and_comparison_refuse_self_certification_with_live_controls",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_validation_capabilities.py::test_composer_and_comparison_refuse_self_certification_with_live_controls"
+    ],
+    "failure": [
+      "FAILED tests/test_validation_capabilities.py::test_composer_and_comparison_refuse_self_certification_with_live_controls"
+    ],
+    "log": "mutations-logs/trusted-dependency.txt.gz"
+  },
+  {
+    "id": "byte-limit",
+    "baseline": "0a0ca3ceb8cc1d0a357c2abcf7977d5052aac47e",
+    "test": "tests/test_validation_capabilities.py::test_contract_and_source_byte_limits_cannot_be_widened",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_validation_capabilities.py::test_contract_and_source_byte_limits_cannot_be_widened"
+    ],
+    "failure": [
+      "FAILED tests/test_validation_capabilities.py::test_contract_and_source_byte_limits_cannot_be_widened"
+    ],
+    "log": "mutations-logs/byte-limit.txt.gz"
+  },
+  {
+    "id": "implicit-compatibility",
+    "baseline": "0a0ca3ceb8cc1d0a357c2abcf7977d5052aac47e",
+    "test": "tests/test_validation_workflows.py::test_old_implicit_reference_definition_keeps_its_original_implementation",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_validation_workflows.py::test_old_implicit_reference_definition_keeps_its_original_implementation"
+    ],
+    "failure": [
+      "FAILED tests/test_validation_workflows.py::test_old_implicit_reference_definition_keeps_its_original_implementation"
+    ],
+    "log": "mutations-logs/implicit-compatibility.txt.gz"
+  }
+]
