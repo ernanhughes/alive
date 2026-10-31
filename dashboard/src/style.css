@@ -1053,3 +1053,7 @@ button.link { border: 0; background: none; padding: 0 6px; text-decoration: unde
 @media (max-width: 640px) {
   .tour-step { grid-template-columns: 1fr; }
 }
+
+/* Authentication recovery stays available even when the backend or narrow header is offline. */
+.connection .auth-change-token {display:inline-flex;font-size:11px;white-space:normal;}
+@media(max-width:700px){main > header {height:auto;min-height:58px;gap:8px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px;}.connection {flex-wrap:wrap;gap:4px;}.connection .auth-change-token{margin-left:0;}}

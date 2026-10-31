@@ -34,6 +34,7 @@ import type { BrowserObservation } from "./BrowserProvenance";
 import { LivingPane } from "./Living";
 import { DemoTourPane } from "./DemoTour";
 import { WorkflowsPane } from "./workflows/WorkflowsPane";
+import { useDashboardAuth } from "./useDashboardAuth";
 
 const tabs = [
   "Overview",
@@ -97,10 +98,15 @@ export function EventList({ events }: { events: AliveEvent[] }) {
 }
 export function App() {
   const [tab, setTab] = useState<Tab>(() => window.location.hash.startsWith("#workflows?") ? "Workflows" : "Overview");
-  const [token, setToken] = useState(
-    () => sessionStorage.getItem("alive-token") || "",
-  );
-  const [draftToken, setDraftToken] = useState(token);
+  const auth = useDashboardAuth();
+  const {
+    token,
+    draft: draftToken,
+    isCurrent,
+    report,
+    connected,
+    retry,
+  } = auth;
   const [state, setState] = useState<State | null>(null),
     [caps, setCaps] = useState<Capabilities | null>(null);
   const [events, setEvents] = useState<AliveEvent[]>([]),
@@ -119,62 +125,108 @@ export function App() {
     [objective, setObjective] = useState(""),
     [runner, setRunner] = useState("mock");
   const [url, setUrl] = useState(
-    base ? base + "/demo" : "http://127.0.0.1:8000/demo",
-  ),
+      base ? base + "/demo" : "http://127.0.0.1:8000/demo",
+    ),
     [sessionId, setSessionId] = useState(""),
     [selector, setSelector] = useState("#change"),
     [value, setValue] = useState("A green light appeared in the habitat."),
     [page, setPage] = useState<BrowserObservation | null>(null);
   const [goalTitle, setGoalTitle] = useState("");
   const cursor = useRef(0);
-  const refresh = useCallback(async () => {
-    if (!token) return;
-    const c = await request<Capabilities>("/capabilities", token);
-    setCaps(c);
-    const [s, m, g, a, b] = await Promise.all([
-      request<State>("/alive", token),
-      request<Memory[]>("/memories", token),
-      request<Goal[]>("/goals", token),
-      request<{ runs: Run[] }>("/agents", token),
-      request<Session[]>("/browser/sessions", token),
-    ]);
-    setState(s);
-    setMemories(m);
-    setGoals(g);
-    setRuns(a.runs);
-    setSessions(b);
-    setOnline(true);
+  useEffect(() => {
+    setState(null);
+    setCaps(null);
+    setEvents([]);
+    setMemories([]);
+    setGoals([]);
+    setRuns([]);
+    setSessions([]);
+    setSearchResults([]);
+    setPage(null);
+    setSessionId("");
+    setError("");
+    setOnline(false);
+    setLive(false);
+    setBusy(false);
+    cursor.current = 0;
   }, [token]);
+  const refresh = useCallback(
+    async (signal?: AbortSignal) => {
+      if (!isCurrent(token)) return;
+      const [c, s, m, g, a, b] = await Promise.all([
+        request<Capabilities>("/capabilities", token, undefined, "GET", signal),
+        request<State>("/alive", token, undefined, "GET", signal),
+        request<Memory[]>("/memories", token, undefined, "GET", signal),
+        request<Goal[]>("/goals", token, undefined, "GET", signal),
+        request<{ runs: Run[] }>("/agents", token, undefined, "GET", signal),
+        request<Session[]>(
+          "/browser/sessions",
+          token,
+          undefined,
+          "GET",
+          signal,
+        ),
+      ]);
+      if (!isCurrent(token) || signal?.aborted) return;
+      setCaps(c);
+      setState(s);
+      setMemories(m);
+      setGoals(g);
+      setRuns(a.runs);
+      setSessions(b);
+      setOnline(true);
+      connected(token);
+    },
+    [token, isCurrent, connected],
+  );
   useEffect(() => {
     if (!token) return;
-    refresh().catch((e) => {
-      setError(e.message);
-      setOnline(false);
-    });
-    const timer = setInterval(
-      () => refresh().catch(() => setOnline(false)),
-      5000,
-    );
-    return () => clearInterval(timer);
-  }, [token, refresh]);
+    const controller = new AbortController();
+    const load = () =>
+      refresh(controller.signal).catch((error) => {
+        if (controller.signal.aborted || !isCurrent(token)) return;
+        setOnline(false);
+        report(error, token);
+      });
+    void load();
+    const timer = setInterval(load, 5000);
+    return () => {
+      controller.abort();
+      clearInterval(timer);
+    };
+  }, [token, refresh, isCurrent, report]);
   useEffect(() => {
     if (!token) return;
     let socket: WebSocket | undefined,
-      timer: ReturnType<typeof setTimeout>,
+      timer: ReturnType<typeof setTimeout> | undefined,
       disposed = false;
+    function active() {
+      return !disposed && isCurrent(token);
+    }
     function connect() {
+      if (!active()) return;
       socket = new WebSocket(wsBase());
-      socket.onopen = () =>
-        socket?.send(JSON.stringify({ token, after: cursor.current }));
+      socket.onopen = () => {
+        if (active())
+          socket?.send(JSON.stringify({ token, after: cursor.current }));
+      };
       socket.onmessage = (e) => {
-        const event = JSON.parse(e.data) as AliveEvent;
-        cursor.current = Math.max(cursor.current, event.sequence_number);
-        setEvents((old) => mergeEvents(old, [event]));
-        setLive(true);
+        if (!active()) return;
+        try {
+          const event = JSON.parse(e.data) as AliveEvent;
+          cursor.current = Math.max(cursor.current, event.sequence_number);
+          setEvents((old) => mergeEvents(old, [event]));
+          setLive(true);
+        } catch {
+          socket?.close();
+        }
       };
       socket.onclose = () => {
+        if (!active()) return;
         setLive(false);
-        if (!disposed) timer = setTimeout(connect, 2000);
+        // A close code can also mean origin/readiness failure. Confirm via HTTP status.
+        void retry();
+        timer = setTimeout(connect, 2000);
       };
       socket.onerror = () => socket?.close();
     }
@@ -184,29 +236,34 @@ export function App() {
       clearTimeout(timer);
       socket?.close();
     };
-  }, [token]);
+  }, [token, isCurrent, retry]);
   async function act(fn: () => Promise<unknown>) {
+    if (!isCurrent(token)) return;
     setBusy(true);
     setError("");
     try {
       await fn();
-      await refresh();
+      if (isCurrent(token)) await refresh();
     } catch (e) {
-      setError(e instanceof Error ? e.message : String(e));
+      if (isCurrent(token))
+        setError(e instanceof Error ? e.message : String(e));
     } finally {
-      setBusy(false);
+      if (isCurrent(token)) setBusy(false);
     }
   }
   const running = state?.identity.lifecycle_state === "running";
   async function browserAction(operation: string) {
     if (!sessionId) throw new Error("Open or select a managed session first");
-    setPage(
-      await request("/browser/sessions/" + sessionId + "/actions", token, {
+    const result = await request<BrowserObservation>(
+      "/browser/sessions/" + sessionId + "/actions",
+      token,
+      {
         operation,
         selector,
         value,
-      }),
+      },
     );
+    if (isCurrent(token)) setPage(result);
   }
   return (
     <div className="shell">
@@ -261,20 +318,22 @@ export function App() {
           </div>
           <div className="connection">
             <span className={"dot " + (!online ? "off" : "")} />
-            {online ? "Backend connected" : "Backend disconnected"}
+            {online && auth.status !== "unavailable"
+              ? "Backend connected"
+              : "Backend disconnected"}
             <button
-              className="keycap"
-              onClick={() => {
-                sessionStorage.removeItem("alive-token");
-                setToken("");
-                setState(null);
-                setOnline(false);
-                setEvents([]);
-                cursor.current = 0;
-              }}
+              className="keycap auth-change-token"
+              onClick={auth.change}
               title="Change local connection token"
             >
-              <Command size={12} /> local
+              <Command size={12} /> Change token
+            </button>
+            <button
+              className="keycap auth-change-token"
+              onClick={() => void retry()}
+              disabled={auth.status === "checking"}
+            >
+              Retry authentication
             </button>
           </div>
         </header>
@@ -289,26 +348,34 @@ export function App() {
               <h1>
                 {tab === "Workflows" ? "Execution, made inspectable." : tab === "Overview"
                   ? "Something is becoming."
-                  : tab === "Demonstration" ? "Evidence, remembered and withdrawn." : tab === "Living" ? "The living experience." : tab === "Live events"
-                    ? "The stream of experience."
-                    : tab === "Memory"
-                      ? "Experience, remembered."
-                      : tab === "Agents"
-                        ? "Thought into action."
-                        : tab === "Browser"
-                          ? "A window to the world."
-                          : tab === "Cognition"
-                            ? "Evidence becomes intention."
-                            : "A persistent presence."}
+                  : tab === "Demonstration"
+                    ? "Evidence, remembered and withdrawn."
+                    : tab === "Living"
+                      ? "The living experience."
+                      : tab === "Live events"
+                        ? "The stream of experience."
+                        : tab === "Memory"
+                          ? "Experience, remembered."
+                          : tab === "Agents"
+                            ? "Thought into action."
+                            : tab === "Browser"
+                              ? "A window to the world."
+                              : tab === "Cognition"
+                                ? "Evidence becomes intention."
+                                : "A persistent presence."}
               </h1>
               <p>
-                {tab === "Demonstration" ? "A guided, offline walk through ALIVE's evidence lifecycle." : tab === "Living" ? "Observe a consequence. See what experience changes." : tab === "Overview"
-                  ? "Observe the runtime. Follow its attention. See what stays."
-                  : "Inspect the real state of your local ALIVE runtime."}
+                {tab === "Demonstration"
+                  ? "A guided, offline walk through ALIVE's evidence lifecycle."
+                  : tab === "Living"
+                    ? "Observe a consequence. See what experience changes."
+                    : tab === "Overview"
+                      ? "Observe the runtime. Follow its attention. See what stays."
+                      : "Inspect the real state of your local ALIVE runtime."}
               </p>
             </div>
             {tab !== "Workflows" && <button
-              disabled={busy || !state}
+              disabled={busy || !state || !token}
               className="primary"
               onClick={() =>
                 act(() =>
@@ -325,9 +392,7 @@ export function App() {
               className="panel connect-form"
               onSubmit={(e) => {
                 e.preventDefault();
-                sessionStorage.setItem("alive-token", draftToken);
-                setToken(draftToken);
-                setError("");
+                void auth.validate(draftToken);
               }}
             >
               <h2>Connect to your habitat</h2>
@@ -340,14 +405,20 @@ export function App() {
                 <input
                   type="password"
                   value={draftToken}
-                  onChange={(e) => setDraftToken(e.target.value)}
+                  onChange={(e) => auth.edit(e.target.value)}
                   required
                 />
               </label>
-              <button className="primary">
-                Connect <ArrowUpRight size={15} />
+              <button className="primary" disabled={auth.status === "checking"}>
+                {auth.status === "checking" ? "Checking token…" : "Connect"}{" "}
+                <ArrowUpRight size={15} />
               </button>
             </form>
+          )}
+          {auth.message && (
+            <p className="error" role="alert">
+              {auth.message}
+            </p>
           )}
           {error && (
             <div className="error" role="alert">
@@ -357,7 +428,7 @@ export function App() {
               </button>
             </div>
           )}
-          {(tab === "Overview" || tab === "Runtime") && (
+          {token && (tab === "Overview" || tab === "Runtime") && (
             <>
               <div className="metrics">
                 <div className="metric">
@@ -518,7 +589,7 @@ export function App() {
               </div>
             </>
           )}
-          {tab === "Live events" && (
+          {token && tab === "Live events" && (
             <section className="panel">
               <div className="panel-top">
                 <h2>Persisted event timeline</h2>
@@ -527,7 +598,7 @@ export function App() {
               <EventList events={events} />
             </section>
           )}
-          {tab === "Memory" && (
+          {token && tab === "Memory" && (
             <section className="panel">
               <div className="panel-top">
                 <h2>Memory explorer</h2>
@@ -549,6 +620,7 @@ export function App() {
                       query,
                       mode: retrievalMode,
                     });
+                    if (!isCurrent(token)) return;
                     setSearchResults(data.results);
                     setSearchMode(data.mode);
                   });
@@ -591,7 +663,7 @@ export function App() {
               )}
             </section>
           )}
-          {tab === "Agents" && (
+          {token && tab === "Agents" && (
             <div className="two-columns">
               <section className="panel">
                 <div className="panel-top">
@@ -679,7 +751,7 @@ export function App() {
               </section>
             </div>
           )}
-          {tab === "Browser" && (
+          {token && tab === "Browser" && (
             <div className="two-columns">
               <section className="panel">
                 <div className="panel-top">
@@ -696,7 +768,7 @@ export function App() {
                         token,
                         {},
                       );
-                      setSessionId(s.id);
+                      if (isCurrent(token)) setSessionId(s.id);
                     })
                   }
                 >
@@ -725,15 +797,14 @@ export function App() {
                 <button
                   disabled={busy || !sessionId}
                   onClick={() =>
-                    act(async () =>
-                      setPage(
-                        await request(
-                          "/browser/sessions/" + sessionId + "/navigate",
-                          token,
-                          { url },
-                        ),
-                      ),
-                    )
+                    act(async () => {
+                      const result = await request<BrowserObservation>(
+                        "/browser/sessions/" + sessionId + "/navigate",
+                        token,
+                        { url },
+                      );
+                      if (isCurrent(token)) setPage(result);
+                    })
                   }
                 >
                   Navigate
@@ -774,6 +845,7 @@ export function App() {
                         undefined,
                         "DELETE",
                       );
+                      if (!isCurrent(token)) return;
                       setSessionId("");
                       setPage(null);
                     })
@@ -816,7 +888,7 @@ export function App() {
               </section>
             </div>
           )}
-          {tab === "Runtime" && (
+          {token && tab === "Runtime" && (
             <section className="panel">
               <div className="panel-top">
                 <h2>Goals & commitments</h2>
@@ -828,7 +900,7 @@ export function App() {
                   e.preventDefault();
                   act(async () => {
                     await request("/goals", token, { title: goalTitle });
-                    setGoalTitle("");
+                    if (isCurrent(token)) setGoalTitle("");
                   });
                 }}
               >
@@ -891,8 +963,10 @@ export function App() {
     </div>
   );
 }
-createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-);
+const root = document.getElementById("root");
+if (root)
+  createRoot(root).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>,
+  );
