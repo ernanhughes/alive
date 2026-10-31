@@ -1,5 +1,15 @@
 # L1-02 — Independent review handoff
 
+Stage A follow-up: review the endpoint hardening and remaining qualification gaps in
+[L1-QUALIFICATION.md](L1-QUALIFICATION.md). The earlier limitations below describe the original
+L1-02 delivery; the qualification report and security-decisions document contain current evidence.
+
+Attack `ALIVE_META_URL` overriding the base URL; same-host port/path changes before approval,
+start, reservation and dispatch; changes immediately after the fence; redirect responses; and
+URLs containing credentials. Check the gateway configuration snapshot and confirm historical
+reviews cannot start without fresh exact endpoint consent. Test response/source confidentiality
+in retained events independently. No independent approval is claimed by this implementation.
+
 A green CI run is not a security review. These are the questions to attack, where each answer lives,
 and the tests that already attack it. Please add tests of your own; the ones here were written by
 the implementer.

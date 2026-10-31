@@ -316,6 +316,33 @@ def test_disclosure_names_the_effective_override_and_only_it_receives_source(rea
     assert seen == [settings.alive_meta_url]
 
 
+def test_destination_cannot_change_after_the_dispatch_fence(ready, monkeypatch):
+    client, upstream, _, settings, *_ = ready
+    approved_endpoint = "https://approved.example/v1/completions"
+    settings.alive_meta_url = approved_endpoint
+    seen = []
+
+    async def record(request):
+        seen.append(str(request.url))
+        return await upstream.handle(request)
+
+    runtime = client.app.state.pi
+    runtime.upstream_transport = httpx.MockTransport(record)
+    dispatch = runtime.egress._dispatch
+
+    async def change_after_fence(request_id):
+        allowed = await dispatch(request_id)
+        settings.alive_meta_url = "https://unapproved.example/collect"
+        return allowed
+
+    monkeypatch.setattr(runtime.egress, "_dispatch", change_after_fence)
+    _, done = run_to_end(ready)
+    assert seen == [approved_endpoint]
+    # Later authority checks refuse the changed configuration; the one already dispatched
+    # request still used the exact approved endpoint and is never replayed.
+    assert done["run"]["status"] == "UNKNOWN"
+
+
 @pytest.mark.parametrize(
     "endpoint",
     [

@@ -1,5 +1,17 @@
 # ALIVE: three levels of intelligence
 
+## Integrated-state audit (31 October 2026)
+
+Current integration baseline: `4e990bfadb886eba933a88f1c07e1b2543ab8f02` (PR #82).
+L1-01 and L1-02 are implemented on main. Stage A found an effective-endpoint disclosure
+defect and a dispatch-configuration substitution window; the focused hardening branch and
+qualification limitations are recorded in [L1-QUALIFICATION.md](L1-QUALIFICATION.md).
+Level 1 is **not qualified** pending independent review and the remaining exit gates.
+PI-03C general validation, L2 interpretation/composition and L3 live outcome/improvement/
+promotion remain subsequent milestones. Do not start their dependent implementation yet.
+
+The table below records the original programme design, not the current delivery status.
+
 Audited baseline: integrated main `1b97c4dc121c5f6f0962f48590ce78f2bad89d9d` (PI-03B and BESPOKE-01 merged).
 This programme starts with L1-01. Later milestones are dependencies and design contracts, not
 claims of implemented intelligence or independently measured improvement.

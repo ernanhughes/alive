@@ -245,6 +245,13 @@ MUTANTS = [
         '    require(True, "analysis_requires_safe_https_endpoint")',
         "review: safe HTTPS endpoint",
     ),
+    (
+        "M29",
+        "alive/model_gateway.py",
+        "        self.settings = deepcopy(settings)",
+        "        self.settings = settings",
+        "dispatch: immutable provider configuration",
+    ),
 ]
 # Compound mutants remove EVERY layer that enforces one invariant, so a kill proves the tests
 # notice when the invariant as a whole is gone (not just one of several redundant guards).
@@ -375,6 +382,7 @@ TARGETS = {
     "M26": [ANALYSIS + "test_disclosure_names_the_effective_override_and_only_it_receives_source"],
     "M27": ["tests/test_provider_destination.py"],
     "M28": [ANALYSIS + "test_unsafe_endpoint_is_refused_before_review"],
+    "M29": [ANALYSIS + "test_destination_cannot_change_after_the_dispatch_fence"],
     "C01": [ANALYSIS + "test_a_model_stage_without_outbound_approval_never_reaches_the_provider"],
     **{
         i: [ANALYSIS + "test_the_reservation_alone_refuses_a_late_model_or_contract_change"]

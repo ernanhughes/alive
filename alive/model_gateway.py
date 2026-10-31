@@ -10,6 +10,7 @@ by `ALIVE_MODEL_TRANSPORT=pi` (default `direct`); every other
 `tests/test_model_gateway.py` and must not gain new siblings.
 """
 
+from copy import deepcopy
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -35,7 +36,9 @@ class DirectMetaGateway:
     """Production gateway: unchanged MetaProvider dispatch."""
 
     def __init__(self, settings, operation: str, transport=None):
-        self.settings = settings
+        # Pin dispatch configuration before Pi starts. A settings mutation after the final
+        # authority check must never substitute the destination of an already approved call.
+        self.settings = deepcopy(settings)
         self.operation = operation
         # Test seam only: an httpx transport for the upstream call. None in
         # production, where the real Meta endpoint is used.

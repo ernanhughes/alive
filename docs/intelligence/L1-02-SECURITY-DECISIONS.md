@@ -7,12 +7,17 @@ today, the realistic options and a recommendation. Status of all three: **open**
 ## 1. Remote-model egress
 
 **Today.** Source code leaves the host only after: a source approval naming the operation
-`repository.analyze`, a review that shows the destination host, model, files and byte count, the
+`repository.analyze`, a review that shows the effective HTTPS endpoint, model, files and byte count, the
 owner's local confirmation of that exact review, and re-checks at start, reservation and dispatch.
 There is exactly one destination (the configured Meta endpoint through Pi's loopback egress). The
 egress builds the upstream request from the approved request, so Pi cannot change model, schema or
-limits. There is no local-inference path, no allowlist of hosts beyond the configured URL, and no
-redirect policy beyond the HTTP client's defaults.
+limits. Stage A binds the effective override URL (including port/path) into the review and
+snapshots gateway configuration before Pi starts. Redirects are explicitly refused. Admission
+rejects HTTP, URL credentials, query strings, fragments and invalid host/port syntax. Existing
+reviews without the endpoint field require fresh review and owner approval before starting;
+historical completed runs remain readable. There is no local-inference path, network host/IP
+allowlist, DNS pinning, proxy isolation or provider-side identity attestation. This is application
+destination binding, not a general network sandbox.
 
 **Options.**
 * A. Keep per-review disclosure approval (implemented). Accept the single configured endpoint.
@@ -21,13 +26,16 @@ redirect policy beyond the HTTP client's defaults.
 * C. Require local inference for sources classified above `owner_internal` (needs a local provider
   that does not exist yet).
 
-**Recommendation.** B before any real source is sent; C when a local provider exists.
+**Implementation for review.** Stage A implements the destination-binding part of B under the
+programme's hardening authorization. This does not choose the owner's sensitive-data policy or
+authorize live inference. C still needs a local provider. See `L1-QUALIFICATION.md`.
 
 ## 2. Clear-text retention
 
 **Today.** The prompt (including the files), the response, each stage output and the retained
 report are stored unencrypted in the local database. The generic event feed withholds stage results.
-Pi's own retained run events were not audited with a real Pi for echoed text.
+A Stage A canary probe against the real pinned Pi found no source or response text in retained
+`pi.rpc.event` payloads. This bounded probe is not a proof about every future Pi event shape.
 
 **Options.** A. Accept for a single-owner development machine and document it. B. Encrypt the
 source blob and model records at rest with a key held outside the database. C. Retain digests and
