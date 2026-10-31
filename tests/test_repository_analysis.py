@@ -886,7 +886,7 @@ def test_a_changed_destination_host_makes_the_review_stale(ready):
 
 
 def test_a_model_stage_without_outbound_approval_never_reaches_the_provider(case):
-    """Outbound approval is enforced for every model stage; a control run proves the path is live."""
+    """Outbound approval gates every model stage; the control run proves the path is live."""
     from tests.test_pi_gateway import Upstream
     from tests.workflow_execution_helpers import lifecycle, observation
 
