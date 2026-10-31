@@ -13,7 +13,14 @@ from alive.workflows import adapters, context, store
 from alive.workflows.examples import definition, fixture_authorization
 from alive.workflows.models import WorkflowExecution, WorkflowRun, WorkflowStageRun
 from alive.workflows.store import register_definition
-from tests.workflow_execution_helpers import call, lifecycle, observation, prepare, reserved
+from tests.workflow_execution_helpers import (
+    call,
+    lifecycle,
+    observation,
+    prepare,
+    replace_adapters,
+    reserved,
+)
 from tests.workflow_r2_helpers import gated_run, pi_environment
 
 
@@ -30,15 +37,13 @@ async def settled(kernel):
 
 def test_stage_cannot_reserve_a_second_real_model_invocation(client, settings, monkeypatch):
     upstream = pi_environment(client, settings, monkeypatch)
-    original = adapters.ADAPTERS["cognition.role"]
+    original = adapters.role
 
     async def twice(ctx):
         await original(ctx)
         return await original(ctx)
 
-    monkeypatch.setattr(
-        "alive.workflows.runner.ADAPTERS", dict(adapters.ADAPTERS) | {"cognition.role": twice}
-    )
+    replace_adapters(monkeypatch, {"cognition.role": twice})
 
     async def probe(k):
         run, _ = await lifecycle(
@@ -195,9 +200,7 @@ def test_real_stage_timeout_keeps_category_effects_and_settlement(
         async def slow(_):
             await asyncio.Event().wait()
 
-        monkeypatch.setattr(
-            "alive.workflows.runner.ADAPTERS", dict(adapters.ADAPTERS) | {"context.prepare": slow}
-        )
+        replace_adapters(monkeypatch, {"context.prepare": slow})
     elif phase == "after_dispatch":
         upstream.block = asyncio.Event()
     else:

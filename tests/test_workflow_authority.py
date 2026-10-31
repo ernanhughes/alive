@@ -15,7 +15,15 @@ from alive.workflows.examples import fixture_authorization
 from alive.workflows.models import WorkflowExecution, WorkflowRun, WorkflowStageRun
 from alive.workflows.runner import pi_facts
 from tests.test_intelligence_receipts import graph
-from tests.workflow_execution_helpers import call, counts, lifecycle, observation, prepare, reserved
+from tests.workflow_execution_helpers import (
+    call,
+    counts,
+    lifecycle,
+    observation,
+    prepare,
+    replace_adapters,
+    reserved,
+)
 
 
 @pytest.mark.parametrize("mode", ["unknown", "lifecycle", "output"])
@@ -48,9 +56,7 @@ def test_declared_output_is_enforced_before_success(client, monkeypatch, mode):
     async def malformed(_):
         return adapters.StageResult(data)
 
-    monkeypatch.setattr(
-        "alive.workflows.runner.ADAPTERS", dict(adapters.ADAPTERS) | {"context.prepare": malformed}
-    )
+    replace_adapters(monkeypatch, {"context.prepare": malformed})
     run, _ = call(
         client, lambda k: lifecycle(k, client.app.state.cognition, client.app.state.workflows)
     )
@@ -219,7 +225,12 @@ def test_record_requires_actual_validation_dependency():
     context = SimpleNamespace(
         inputs={"result": {"opinion": "true"}, "assessment": {"valid": True}},
         dependencies={
-            "model": {"operation": "cognition.role", "validation_status": "passed", "output": {}}
+            "model": {
+                "operation": "cognition.role",
+                "implementation": "cognition-role-v1",  # what the runner records from the snapshot
+                "validation_status": "passed",
+                "output": {},
+            }
         },
     )
     with pytest.raises(Refused, match="independent_validation_dependency_required"):

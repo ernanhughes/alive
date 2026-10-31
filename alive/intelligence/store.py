@@ -106,7 +106,8 @@ async def workflow(session, instance, stage_id, goal_id):
     run = await owned(session, WorkflowRun, stage.run_id, instance)
     definition = await session.get(WorkflowDefinition, run.definition_id)
     require(definition is not None, "Workflow definition unavailable")
-    spec = parse_definition(definition.definition_json)
+    # A retained definition (hash-verified below): linkage must not depend on today's catalogue.
+    spec = parse_definition(definition.definition_json, operations=None)
     matching = [s for s in spec.stages if s.id == stage.stage_id]
     require(
         run.goal_id == goal_id

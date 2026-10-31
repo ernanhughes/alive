@@ -21,6 +21,20 @@ from alive.models import (
 from alive.schemas import EventEnvelope
 
 
+def public_payload(event_type, payload):
+    """What the generic feed (REST, WebSocket, live publish) may carry.
+
+    Run history keeps each stage's output in the database: dependencies, hashing and replay need it.
+    The feed carries only the stage's identity, so approved source content that a capability
+    returned (for example repository files) is not broadcast to every authenticated reader.
+    """
+    if event_type == "workflow.stage.result" and isinstance(payload, dict):
+        return {k: payload[k] for k in ("run_id", "stage_id") if k in payload} | {
+            "output_withheld": True
+        }
+    return payload
+
+
 def envelope(row):
     return EventEnvelope(
         event_id=row.id,
@@ -34,7 +48,7 @@ def envelope(row):
             if row.occurred_at.tzinfo is None
             else row.occurred_at
         ),
-        payload=row.payload,
+        payload=public_payload(row.event_type, row.payload),
     ).model_dump(mode="json") | {"sequence_number": row.sequence_number}
 
 

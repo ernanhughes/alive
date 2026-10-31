@@ -38,6 +38,35 @@ def stage(stage_id, operation="context.prepare", **over):
     return base | over
 
 
+def contract_stages():
+    """Two stages that satisfy the capability manifests. The bare `stage()` placeholder output
+    (`snapshot`) predates capability contracts and is refused when a definition is registered."""
+    return (
+        stage(
+            "prepare",
+            output_schema={
+                "properties": {
+                    "context": {"type": "object"},
+                    "claims": {"type": "array"},
+                    "sources": {"type": "array"},
+                },
+                "required": ["context", "claims", "sources"],
+            },
+        ),
+        stage(
+            "check",
+            operation="evidence.evaluate",
+            type="validation",
+            depends_on=["prepare"],
+            inputs={"claims": "$stage.prepare.claims", "sources": "$stage.prepare.sources"},
+            output_schema={
+                "properties": {"result": {"type": "object"}, "assessment": {"type": "object"}},
+                "required": ["result", "assessment"],
+            },
+        ),
+    )
+
+
 def workflow(*stages, **over):
     base = {
         "schema_version": 1,

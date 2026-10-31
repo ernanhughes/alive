@@ -78,6 +78,14 @@ export interface StageRun {
   attempt: number;
   type: string;
   operation: string;
+  // Retained at execution time; absent for pre-PI-03 runs, which are never attributed.
+  capability?: {
+    id: string;
+    version: string;
+    manifest_sha256: string;
+    implementation_id: string;
+    implementation_sha256: string | null;
+  };
   state: string;
   terminal: boolean;
   uncertainty: string;

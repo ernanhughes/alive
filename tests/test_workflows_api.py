@@ -7,7 +7,7 @@ from fastapi.testclient import TestClient
 
 from alive.workflows import states, store
 from tests.conftest import TOKEN
-from tests.test_workflows_spec import stage, workflow
+from tests.test_workflows_spec import contract_stages, workflow
 
 REAL_KEY = "sk-real-meta-credential-that-must-never-appear"
 
@@ -24,13 +24,7 @@ def call(client, fn, *args, **kwargs):
 
 def demo(version=1):
     return workflow(
-        stage("prepare"),
-        stage(
-            "check",
-            operation="evidence.validate_references",
-            type="validation",
-            depends_on=["prepare"],
-        ),
+        *contract_stages(),
         name="demo-flow",
         version=version,
     )

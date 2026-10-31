@@ -1,9 +1,8 @@
 """Literal server-owned adapters. Registry binding strings are never executable authority."""
 
 from dataclasses import dataclass, field
-from types import MappingProxyType
 
-from alive.capabilities.registry import default_registry
+from alive.capabilities.trusted import traits_of
 from alive.cognitive_schema import RoleOutput
 from alive.models import now
 from alive.society import evaluate, validate_references
@@ -114,7 +113,7 @@ async def record(ctx):
     require(set(ctx.inputs) == {"result", "assessment"}, "record_contract")
     require(
         any(
-            item["operation"] in {"evidence.validate_references", "evidence.evaluate"}
+            "validation.independent" in traits_of(item["implementation"])
             and item["validation_status"] == "passed"
             and item["output"] == ctx.inputs
             for item in ctx.dependencies.values()
@@ -145,14 +144,3 @@ async def record(ctx):
         "passed",
         artifact,
     )
-
-
-# Compatibility/fault-injection seam, derived from the same catalogue. New
-# manifests are resolved through the runtime registry; this is not an authority map.
-ADAPTERS = MappingProxyType(
-    {
-        name: default_registry().adapter(name)
-        for name in default_registry().operations
-        if default_registry().get(name).executable
-    }
-)

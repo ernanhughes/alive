@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -6,6 +8,7 @@ from alive.config import Settings
 from alive.models import Base
 
 TOKEN = "test-token-for-alive-tests-123456789"
+MANIFESTS_DIR = Path(__file__).resolve().parents[1] / "alive/capabilities/manifests"
 
 
 @pytest.fixture

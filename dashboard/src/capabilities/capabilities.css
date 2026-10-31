@@ -1,0 +1,86 @@
+.cap-layout {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(0, 2fr);
+  gap: 20px;
+  align-items: start;
+}
+.cap-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+.cap-item {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  border: 1px solid #d6dfcc;
+  border-radius: 10px;
+  background: #fffef8;
+  overflow-wrap: anywhere;
+}
+.cap-item.selected {
+  background: #eef3e3;
+  border-color: #486c38;
+}
+.cap-summary,
+.cap-description {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.cap-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+/* Neutral palette on purpose: no green "safe" state exists for a capability. */
+.cap-badge {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid #8a9484;
+  background: #f1f1ea;
+  color: #2f3a2c;
+}
+.cap-status-unavailable,
+.cap-status-disabled {
+  border-style: dashed;
+  color: #6b6f66;
+}
+.cap-status-incompatible,
+.cap-status-deprecated,
+.cap-effect-writes {
+  border-color: #a8741a;
+  background: #fbf1da;
+}
+.cap-effect-model {
+  border-color: #3d5f8a;
+  background: #e7eef8;
+}
+.cap-schema {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.cap-schema th,
+.cap-schema td {
+  text-align: left;
+  padding: 6px 8px;
+  border-bottom: 1px solid #e0e6d8;
+  overflow-wrap: anywhere;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+@media (max-width: 800px) {
+  .cap-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

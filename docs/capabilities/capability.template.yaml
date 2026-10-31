@@ -1,0 +1,53 @@
+# Copy to <id>@<version>.yaml (e.g. context.review@1.0.0.yaml) in the configured capability
+# directory. This file reuses an installed trusted implementation, so it needs no Python.
+# YAML describes the contract; it never grants authority and never names code to import.
+schema_version: 1
+id: context.review                 # lowercase dotted id, unique with the version
+version: 1.0.0                     # semantic version; any contract change is a new hash
+name: Context Review
+description: One or two sentences a reviewer can read without opening the code.
+implementation:
+  provider: builtin                # the only provider; resolved by a server-owned allowlist
+  id: context-prepare-v1           # an installed trusted implementation id, not a module path
+execution:                         # kind, side_effects and permissions must equal the
+  kind: deterministic              # implementation's reviewed ceiling exactly
+  side_effects: read
+  timeout_seconds: 60
+  max_input_bytes: 65536
+  max_output_bytes: 65536
+  max_input_items: 32
+  max_invocations: 1
+  retry_policy: none
+  max_model_calls: 0
+  max_output_tokens: 0
+permissions:
+  filesystem: {mode: none, roots: []}
+  network: {mode: none}
+  process: {mode: none}
+  evidence: approved_context
+  persistence: none
+inputs:
+  type: object
+  additionalProperties: false      # root contracts are always closed objects
+  properties: {}
+  required: []
+outputs:
+  type: object
+  additionalProperties: false
+  properties:
+    context: {type: object, additionalProperties: true, properties: {}, required: []}
+    claims:
+      type: array
+      maxItems: 256
+      items: {type: object, additionalProperties: true, properties: {}, required: []}
+    sources:
+      type: array
+      maxItems: 256
+      items: {type: object, additionalProperties: true, properties: {}, required: []}
+  required: [context, claims, sources]
+presentation:
+  category: development
+  icon: layers
+  tags: [workflow]
+supported_source_types: []
+examples: []

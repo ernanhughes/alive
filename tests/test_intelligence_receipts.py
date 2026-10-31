@@ -15,6 +15,7 @@ from alive.pi.runner import sha256_text
 from alive.workflows.models import WorkflowStageRun
 from alive.workflows.store import open_run, register_definition
 from tests.test_intelligence_durable import call
+from tests.workflow_execution_helpers import insert_historical
 
 
 async def graph(kernel, mode):
@@ -147,6 +148,8 @@ async def graph(kernel, mode):
             }
         ],
     }
+    # Explicitly synthetic: seeded as a pre-existing definition, as history would be.
+    await insert_historical(kernel, definition)
     await register_definition(kernel, definition, status="active")
     run, _ = await open_run(
         kernel, "synthetic-receipt", 1, goal_id=goal_id, investigation_id=inquiry_id

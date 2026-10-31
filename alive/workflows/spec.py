@@ -226,6 +226,8 @@ def parse_definition(raw, *, operations=OPERATIONS):
 
 
 def check_structure(spec, operations=OPERATIONS):
+    """`operations=None` reads a retained definition: its graph, references and limits are still
+    checked, but no catalogue is consulted, so history never depends on today's capabilities."""
     problems = []
     ids = [stage.id for stage in spec.stages]
     for dup in sorted({i for i in ids if ids.count(i) > 1}):
@@ -234,8 +236,10 @@ def check_structure(spec, operations=OPERATIONS):
 
     for stage in spec.stages:
         where = f"stage {stage.id!r}"
-        operation = operations.get(stage.operation)
-        if operation is None:
+        operation = operations.get(stage.operation) if operations is not None else None
+        if operations is None:
+            pass
+        elif operation is None:
             problems.append(f"{where}: unknown operation {stage.operation!r}")
         else:
             if operation.kind != stage.type:
@@ -347,9 +351,14 @@ def _check_ref(spec, by_id, ancestors, stage, name, value):
 
 def check_activatable(spec, operations=OPERATIONS):
     """A definition may only become `active` if every operation it names can actually run."""
-    unavailable = sorted(
-        {s.operation for s in spec.stages if not operations[s.operation].executable}
-    )
+
+    def runnable(stage):
+        operation = operations[stage.operation]
+        if stage.capability_version:  # a pinned stage is judged by the version it pins
+            return dict(operation.executable_versions).get(stage.capability_version, False)
+        return operation.executable
+
+    unavailable = sorted({s.operation for s in spec.stages if not runnable(s)})
     if unavailable:
         raise DefinitionError(
             [
@@ -401,7 +410,7 @@ def graph_of(spec_dict, operations=OPERATIONS):
     """Nodes and edges for a viewer: plain data. The viewer escapes text; nothing is rendered."""
     nodes = []
     for stage in spec_dict["stages"]:
-        operation = operations.get(stage["operation"])
+        operation = operations.get(stage["operation"]) if operations is not None else None
         nodes.append(
             {
                 "id": stage["id"],

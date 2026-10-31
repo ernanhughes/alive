@@ -20,7 +20,7 @@ from alive.workflows.models import (
 )
 from alive.workflows.spec import DefinitionError
 from tests.conftest import TOKEN
-from tests.test_workflows_spec import SEED_TEXT, seed, stage, workflow
+from tests.test_workflows_spec import SEED_TEXT, contract_stages, seed, stage, workflow
 
 
 def kernel(client):
@@ -33,13 +33,7 @@ def call(client, fn, *args, **kwargs):
 
 def active_workflow(name="demo-flow", version=1, **over):
     return workflow(
-        stage("prepare"),
-        stage(
-            "check",
-            operation="evidence.validate_references",
-            type="validation",
-            depends_on=["prepare"],
-        ),
+        *contract_stages(),
         name=name,
         version=version,
         **over,

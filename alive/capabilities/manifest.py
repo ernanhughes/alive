@@ -2,6 +2,7 @@
 
 import hashlib
 import re
+import unicodedata
 from typing import Literal
 
 import yaml
@@ -151,7 +152,8 @@ def _bounded(value, depth=0):
         if (
             len(value) > 4096
             or any(s in value for s in ("${", "{{", "{%"))
-            or any(ord(c) < 32 and c not in "\n\t" for c in value)
+            # Every control character (C0, DEL and C1), except newline and tab.
+            or any(unicodedata.category(c) == "Cc" and c not in "\n\t" for c in value)
         ):
             raise ManifestError("manifest text or interpolation refused")
     elif type(value) not in (int, bool, type(None)):

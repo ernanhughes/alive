@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import {
   Activity,
   ArrowUpRight,
+  Blocks,
   BrainCircuit,
   ChevronRight,
   Command,
@@ -34,6 +35,7 @@ import type { BrowserObservation } from "./BrowserProvenance";
 import { LivingPane } from "./Living";
 import { DemoTourPane } from "./DemoTour";
 import { WorkflowsPane } from "./workflows/WorkflowsPane";
+import { CapabilitiesPane } from "./capabilities/CapabilitiesPane";
 import { useDashboardAuth } from "./useDashboardAuth";
 
 const tabs = [
@@ -47,6 +49,7 @@ const tabs = [
   "Runtime",
   "Cognition",
   "Workflows",
+  "Capabilities",
 ] as const;
 type Tab = (typeof tabs)[number];
 const icons = [
@@ -60,6 +63,7 @@ const icons = [
   Waypoints,
   BrainCircuit,
   Waypoints,
+  Blocks,
 ];
 const time = (s: string | null | undefined) =>
   s ? new Date(s).toLocaleTimeString("en-GB") : "Awaiting heartbeat";
@@ -97,7 +101,21 @@ export function EventList({ events }: { events: AliveEvent[] }) {
   );
 }
 export function App() {
-  const [tab, setTab] = useState<Tab>(() => window.location.hash.startsWith("#workflows?") ? "Workflows" : "Overview");
+  const [tab, setTab] = useState<Tab>(() =>
+    window.location.hash.startsWith("#workflows?")
+      ? "Workflows"
+      : window.location.hash.startsWith("#capabilities?")
+        ? "Capabilities"
+        : "Overview",
+  );
+  useEffect(() => {
+    // Observatory links to a retained capability identity switch to the catalogue pane.
+    const onHash = () => {
+      if (window.location.hash.startsWith("#capabilities?")) setTab("Capabilities");
+    };
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
   const auth = useDashboardAuth();
   const {
     token,
@@ -950,6 +968,7 @@ export function App() {
           )}
           {tab === "Cognition" && token && <CognitionPane token={token} />}
           {tab === "Workflows" && token && <WorkflowsPane token={token} />}
+          {tab === "Capabilities" && token && <CapabilitiesPane token={token} />}
           {tab === "Demonstration" && token && <DemoTourPane token={token} />}
           {tab === "Living" && token && <LivingPane token={token} />}
           <footer>

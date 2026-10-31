@@ -24,6 +24,9 @@ class Operation:
     unavailable_reason: str | None = None
     executable: bool = False
     workflow_unavailable_reason: str | None = None
+    # (version, executable) for every installed version, so a definition that pins a version is
+    # judged by that version and not by whichever is newest.
+    executable_versions: tuple[tuple[str, bool], ...] = ()
 
     @property
     def available(self):
@@ -115,7 +118,12 @@ class CapabilityRegistry:
         self._entries = MappingProxyType(entries)
         known = {ident for ident, _ in entries} | {f"{i}@{v}" for i, v in entries}
         if disabled - known:
-            raise ManifestError("unknown disabled capability")
+            # Fail closed: ignoring an unknown id would let a typo leave a capability enabled.
+            raise ManifestError(
+                "ALIVE_DISABLED_CAPABILITIES names no installed capability: "
+                + ", ".join(sorted(disabled - known))
+                + " (remove the entry, or restore the manifest, before restarting)"
+            )
         self._implementations = MappingProxyType(dict(implementations))
         self._snapshots = MappingProxyType({s.reference: s for s in snapshots})
         if len(self._snapshots) != len(tuple(snapshots)):
@@ -141,6 +149,7 @@ class CapabilityRegistry:
                 legacy_reason,
                 cap.executable,
                 cap.reason,
+                tuple(sorted((v.manifest["version"], v.executable) for v in versions)),
             )
         self.operations = MappingProxyType(operations)
         policies = {}
@@ -154,7 +163,11 @@ class CapabilityRegistry:
                 raise ManifestError("unknown capability policy")
             for cap in choices:
                 policy_key = (cap.identity["id"], cap.identity["version"])
-                effective = json.loads(policies[policy_key]) if policy_key in policies else dict(cap.manifest["execution"])
+                effective = (
+                    json.loads(policies[policy_key])
+                    if policy_key in policies
+                    else dict(cap.manifest["execution"])
+                )
                 for field, value in overrides.items():
                     if (
                         field
@@ -206,6 +219,11 @@ class CapabilityRegistry:
             raise ValueError("capability unavailable")
         return self._implementations[cap.identity["implementation_id"]].resolve()
 
+    def adapter_for(self, identity):
+        """The only runtime resolver: the exact retained identity, re-verified, never "latest"."""
+        self.recheck(identity)
+        return self.adapter(identity["id"], identity["version"])
+
     def recheck(self, identity):
         try:
             cap = self.get(identity["id"], identity["version"])
@@ -221,6 +239,16 @@ class CapabilityRegistry:
         ):
             raise ValueError("trusted implementation changed since startup")
         return cap
+
+    def implementation_state(self, cap):
+        """Descriptive only: installed code is not authorization to run it."""
+        impl = self._implementations.get(cap.manifest["implementation"]["id"])
+        if impl is None or not impl.installed:
+            return "missing"
+        declared = cap.manifest["implementation"].get("sha256")
+        return (
+            "fingerprint_mismatch" if declared and declared != impl.fingerprint() else "installed"
+        )
 
     def limits_for(self, cap):
         key = (cap.identity["id"], cap.identity["version"])

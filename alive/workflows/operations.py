@@ -19,6 +19,5 @@ def public_view(operation):
         "available": operation.available,
         "executable": operation.executable,
         "workflow_unavailable_reason": operation.workflow_unavailable_reason,
-        "binding": operation.binding,
         "unavailable_reason": operation.unavailable_reason,
     }

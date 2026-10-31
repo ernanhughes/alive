@@ -10,7 +10,14 @@ from alive.workflows.context import Refused
 from alive.workflows.examples import definition, fixture_authorization
 from alive.workflows.models import WorkflowStageRun
 from alive.workflows.store import register_definition
-from tests.workflow_execution_helpers import call, lifecycle, observation, prepare, reserved
+from tests.workflow_execution_helpers import (
+    call,
+    lifecycle,
+    observation,
+    prepare,
+    replace_adapters,
+    reserved,
+)
 
 
 @pytest.mark.parametrize("claimed", ["snapshot", "calls", "worker"])
@@ -132,17 +139,13 @@ def test_bounded_failure_categories_do_not_disclose_internal_exception_text(
         async def fail(_):
             raise RuntimeError("C:/secret password raw SQL prompt")
 
-        monkeypatch.setattr(
-            "alive.workflows.runner.ADAPTERS", dict(adapters.ADAPTERS) | {"context.prepare": fail}
-        )
+        replace_adapters(monkeypatch, {"context.prepare": fail})
     elif fault == "output":
 
         async def bad(_):
             return adapters.StageResult({"extra": "secret"})
 
-        monkeypatch.setattr(
-            "alive.workflows.runner.ADAPTERS", dict(adapters.ADAPTERS) | {"context.prepare": bad}
-        )
+        replace_adapters(monkeypatch, {"context.prepare": bad})
     else:
 
         async def fail(*_):
