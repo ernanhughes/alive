@@ -301,7 +301,7 @@ async def model_claim(session, kernel, claim, role, context, model, output_limit
     if analysis is not None:
         from alive.admission.models import Admission
         from alive.capabilities.bindings import digest as admission_digest
-        from alive.providers import ApprovedModelDestination
+        from alive.model_contracts import ApprovedModelDestination
 
         admission = await session.get(Admission, grant.admission_ref)
         require(

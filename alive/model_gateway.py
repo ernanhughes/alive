@@ -14,7 +14,8 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import Protocol
 
-from alive.providers import ApprovedModelDestination, Generation, MetaProvider
+from alive.model_contracts import ApprovedModelDestination
+from alive.providers import Generation, MetaProvider
 
 
 @dataclass(frozen=True)

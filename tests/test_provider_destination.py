@@ -5,8 +5,8 @@ import asyncio
 import httpx
 import pytest
 
+from alive.model_contracts import ApprovedModelDestination
 from alive.providers import (
-    ApprovedModelDestination,
     MetaProvider,
     ProviderError,
     meta_endpoint_host,

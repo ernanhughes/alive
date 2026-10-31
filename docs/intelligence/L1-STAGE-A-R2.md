@@ -4,6 +4,32 @@ Decision requested: **independent re-review; do not merge automatically.** Level
 unqualified pending that review, final-head CI and the outstanding owner retention decisions.
 No PI-03C, L2 or L3 implementation is included.
 
+## CI architecture correction after `c98ef068`
+
+The full Ubuntu backend run on `c98ef068` found a governance dependency violation:
+`tests/test_workflows_store.py::test_the_workflow_package_never_imports_pi_execution_or_a_provider_client`
+rejected `from alive.providers import ApprovedModelDestination` in workflow context. It was
+reproduced locally before editing. The architecture test is unchanged.
+
+The frozen destination identity now lives in the provider-neutral `alive/model_contracts.py`,
+whose only dependency is Python's `dataclasses`. Workflow context, ModelGateway and the provider
+import that same data contract. Governance still reads and verifies the immutable admission
+identity; it does not resolve a provider endpoint or construct a provider client. Effective URL
+resolution and the final constructed-request checks remain in the existing model transport.
+Fields, serialization, owner authorization, Pi preparation/fence checks, `trust_env=False`,
+redirect refusal and TLS verification are unchanged. No production guard or architectural
+assertion was weakened.
+
+Correction verification covers the whole workflow-store, independent-review, destination,
+environment/TLS, reservation and gateway test files, plus four real-Pi scripted scenarios:
+approved execution, poisoned snapshot refusal, retained-event confidentiality and the Chrome
+admission/report journey. The real-Pi scenarios passed. Full backend and Windows/Linux
+qualification run in CI on the corrected head; the exact SHA, results and open independent
+re-review request are maintained on PR #83 without extra status-only pushes. The focused file
+selection passed **109 tests**, and the four real-Pi scenarios also passed. The preceding
+R2 mutation receipts remain historical evidence; the relocation changes no guard behavior and
+is not represented as a new mutation campaign.
+
 ## Baselines and preservation
 
 Reviewed PR #83 head: `e3a28b1fb0bb3c15e0cb38b4f9d8c222443e36c5`.

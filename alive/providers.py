@@ -7,21 +7,14 @@ from urllib.parse import urlsplit
 
 import httpx
 
+from alive.model_contracts import ApprovedModelDestination
+
 
 @dataclass
 class Generation:
     text: str
     usage: dict = field(default_factory=dict)
     latency_ms: float = 0
-
-
-@dataclass(frozen=True)
-class ApprovedModelDestination:
-    """Owner-admission identity carried by trusted execution, never model output."""
-
-    admission_id: str
-    review_sha256: str
-    endpoint: str
 
 
 class ModelProvider(Protocol):
