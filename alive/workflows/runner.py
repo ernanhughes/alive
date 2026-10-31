@@ -451,7 +451,7 @@ class WorkflowRunner:
         try:
             async with asyncio.timeout(stage.limits.timeout_seconds):
                 result = await ADAPTERS[stage.operation](context)
-        except Refused:
+        except (Refused, TimeoutError):
             raise
         except Exception:
             raise Refused("adapter_execution_failure") from None

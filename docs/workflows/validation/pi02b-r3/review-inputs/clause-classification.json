@@ -1,0 +1,7 @@
+{"head":"ab066db51d3992905980aa5a1122c6e540bd1335","mutants":46,"caught":10,"survived":36,
+ "load_bearing_missing_test":["context.py:151","context.py:245","context.py:211","context.py:212","runner.py:159","runner.py:163","runner.py:296","runner.py:297","runner.py:298","runner.py:300","runner.py:301","runner.py:308"],
+ "redundant":["context.py:127","context.py:152","context.py:237","context.py:238","context.py:240","context.py:241","context.py:242","context.py:243","context.py:254","context.py:256","context.py:257","context.py:258","context.py:259","runner.py:284","runner.py:285","runner.py:287"],
+ "unreachable_supported":["context.py:154","context.py:244","runner.py:283","runner.py:299","runner.py:396","runner.py:397"],
+ "unresolved":["context.py:155","context.py:255"],
+ "caught":["context.py:126","context.py:171","context.py:172","context.py:236","runner.py:160","runner.py:161","runner.py:162","runner.py:164","runner.py:165","runner.py:286"],
+ "production_defects":["stage deadline reported as adapter_execution_failure (label only)"]}
