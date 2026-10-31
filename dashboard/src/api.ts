@@ -75,6 +75,29 @@ export function wsBase(): string {
     );
   return "ws://127.0.0.1:8000/api/v1/events/stream";
 }
+export class ApiError extends Error {
+  constructor(
+    public readonly status: number | null,
+    message: string,
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+export function isAuthenticationError(error: unknown): error is ApiError {
+  return (
+    error instanceof ApiError && (error.status === 401 || error.status === 403)
+  );
+}
+const authenticationListeners = new Set<(token: string) => void>();
+export function subscribeAuthenticationRejection(
+  listener: (token: string) => void,
+) {
+  authenticationListeners.add(listener);
+  return () => {
+    authenticationListeners.delete(listener);
+  };
+}
 export async function request<T>(
   path: string,
   token: string,
@@ -82,20 +105,42 @@ export async function request<T>(
   method?: string,
   signal?: AbortSignal,
 ): Promise<T> {
-  const response = await fetch(base + "/api/v1" + path, {
-    signal,
-    method: method || (body === undefined ? "GET" : "POST"),
-    headers: {
-      Authorization: "Bearer " + token,
-      "Content-Type": "application/json",
-    },
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
-  const data = await response.json();
-  if (!response.ok)
-    throw new Error(
-      data.error?.message || data.detail || `HTTP ${response.status}`,
-    );
+  let response: Response;
+  try {
+    response = await fetch(base + "/api/v1" + path, {
+      signal,
+      method: method || (body === undefined ? "GET" : "POST"),
+      headers: {
+        Authorization: "Bearer " + token,
+        "Content-Type": "application/json",
+      },
+      body: body === undefined ? undefined : JSON.stringify(body),
+    });
+  } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") throw error;
+    throw new ApiError(null, "Unable to connect to ALIVE.");
+  }
+  const status = response.status ?? null;
+  // Authentication status wins even if an intermediary supplied HTML or invalid JSON.
+  if (status === 401 || status === 403) {
+    authenticationListeners.forEach((listener) => listener(token));
+    throw new ApiError(status, "Invalid token — try again.");
+  }
+  let data;
+  try {
+    data = await response.json();
+  } catch {
+    throw new ApiError(status, "ALIVE returned an unreadable response.");
+  }
+  if (!response.ok) {
+    const detail = data?.error?.message || data?.detail;
+    const message =
+      typeof detail === "string" ? detail : `HTTP ${status ?? "error"}`;
+    const safeMessage = token
+      ? message.replaceAll(token, "[redacted]")
+      : message;
+    throw new ApiError(status, safeMessage.slice(0, 512));
+  }
   return data;
 }
 export function mergeEvents(
