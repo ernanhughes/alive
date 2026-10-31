@@ -1,0 +1,146 @@
+schema_version: 1
+id: evidence.validate_references
+version: 1.1.0
+name: evidence.validate_references
+description: Bounded captured-evidence validation. Identity, locator and controlled
+  equality are separate from semantic support, independent verification and task success.
+implementation:
+  provider: builtin
+  id: captured-references-v1
+execution:
+  kind: validation
+  side_effects: read
+  timeout_seconds: 30
+  max_input_bytes: 65536
+  max_output_bytes: 65536
+  max_input_items: 8
+  max_invocations: 1
+  retry_policy: none
+  max_source_bytes: 65536
+  max_files: 64
+  max_model_calls: 0
+  max_output_tokens: 0
+permissions:
+  filesystem:
+    mode: none
+    roots: []
+  network:
+    mode: none
+  process:
+    mode: none
+  evidence: none
+  persistence: none
+  sources: approved_capture
+inputs:
+  additionalProperties: false
+  properties:
+    source_ref:
+      maxLength: 36
+      minLength: 1
+      type: string
+    source_sha256:
+      maxLength: 64
+      minLength: 64
+      type: string
+    scoped_sha256:
+      maxLength: 64
+      minLength: 64
+      type: string
+    findings:
+      items:
+        additionalProperties: false
+        properties:
+          id:
+            maxLength: 80
+            minLength: 1
+            type: string
+          claim:
+            maxLength: 512
+            type: string
+          evidence:
+            items:
+              additionalProperties: false
+              properties:
+                id:
+                  maxLength: 256
+                  type: string
+                item:
+                  maxLength: 256
+                  minLength: 1
+                  type: string
+                sha256:
+                  maxLength: 64
+                  minLength: 64
+                  type: string
+                locator:
+                  additionalProperties: false
+                  properties:
+                    kind:
+                      enum:
+                      - none
+                      - file_lines
+                      - section
+                      - text_span
+                      - page
+                      type: string
+                      maxLength: 64
+                    start:
+                      maximum: 1000000
+                      minimum: 0
+                      type: integer
+                    end:
+                      maximum: 1000000
+                      minimum: 0
+                      type: integer
+                    quote:
+                      maxLength: 512
+                      type: string
+                  required:
+                  - kind
+                  - start
+                  - end
+                  - quote
+                  type: object
+              required:
+              - id
+              - item
+              - sha256
+              - locator
+              type: object
+            maxItems: 4
+            type: array
+        required:
+        - id
+        - claim
+        - evidence
+        type: object
+      maxItems: 8
+      type: array
+  required:
+  - source_ref
+  - source_sha256
+  - scoped_sha256
+  - findings
+  type: object
+outputs:
+  type: object
+  additionalProperties: false
+  properties:
+    records:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+  required:
+  - records
+supported_source_types:
+- repository
+- document
+- browser
+- collection
+presentation:
+  category: validation
+  icon: shield-check
+  tags:
+  - validation
+  - evidence

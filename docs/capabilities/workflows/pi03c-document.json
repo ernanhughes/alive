@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "name": "pi03c-document",
+  "version": 1,
+  "title": "Captured evidence: document",
+  "inputs": {
+    "source_ref": {
+      "type": "string"
+    },
+    "source_sha256": {
+      "type": "string"
+    },
+    "scoped_sha256": {
+      "type": "string"
+    },
+    "findings": {
+      "type": "array"
+    }
+  },
+  "stages": [
+    {
+      "id": "extract",
+      "title": "extract",
+      "type": "deterministic",
+      "operation": "document.extract",
+      "capability_version": "1.0.0",
+      "capability_sha256": "fc922fbbd9cf60881e3a155980c1f9539ee44460d5183c021fde05d0faafce97",
+      "inputs": {
+        "source_ref": "$input.source_ref",
+        "start": 0,
+        "count": 1,
+        "max_chars": 512
+      },
+      "depends_on": [],
+      "output_schema": {
+        "properties": {
+          "complete": {
+            "type": "boolean"
+          },
+          "format": {
+            "type": "string"
+          },
+          "next_start": {
+            "type": "integer"
+          },
+          "parser": {
+            "type": "object"
+          },
+          "provenance": {
+            "type": "object"
+          },
+          "scoped_sha256": {
+            "type": "string"
+          },
+          "sections": {
+            "type": "array"
+          },
+          "semantic_status": {
+            "type": "string"
+          },
+          "source_ref": {
+            "type": "string"
+          },
+          "source_sha256": {
+            "type": "string"
+          },
+          "total_sections": {
+            "type": "integer"
+          },
+          "truncated_at_capture": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "complete",
+          "format",
+          "parser",
+          "provenance",
+          "scoped_sha256",
+          "sections",
+          "semantic_status",
+          "source_ref",
+          "source_sha256",
+          "total_sections",
+          "truncated_at_capture"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      }
+    },
+    {
+      "id": "locators",
+      "title": "locators",
+      "type": "validation",
+      "operation": "evidence.verify-locators",
+      "capability_version": "1.0.0",
+      "capability_sha256": "9b4188d2c65312feb3b724ef41cb1a8a7808eb95e0ab5be35cb1dcf4cf676cfb",
+      "inputs": {
+        "source_ref": "$input.source_ref",
+        "source_sha256": "$input.source_sha256",
+        "scoped_sha256": "$input.scoped_sha256",
+        "findings": "$input.findings"
+      },
+      "depends_on": [
+        "extract"
+      ],
+      "output_schema": {
+        "properties": {
+          "records": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "records"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      }
+    },
+    {
+      "id": "compose",
+      "title": "compose",
+      "type": "validation",
+      "operation": "report.compose",
+      "capability_version": "1.0.0",
+      "capability_sha256": "625e3b9548c1d276b15695e05380c4a1f0df82280228a6b47a127e2ac51a6757",
+      "inputs": {
+        "records": "$stage.locators.records"
+      },
+      "depends_on": [
+        "locators"
+      ],
+      "output_schema": {
+        "properties": {
+          "assessment": {
+            "type": "object"
+          },
+          "result": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "assessment",
+          "result"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      }
+    },
+    {
+      "id": "record",
+      "title": "record",
+      "type": "deterministic",
+      "operation": "result.record",
+      "capability_version": "1.0.0",
+      "capability_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+      "inputs": {
+        "result": "$stage.compose.result",
+        "assessment": "$stage.compose.assessment"
+      },
+      "depends_on": [
+        "compose"
+      ],
+      "output_schema": {
+        "properties": {
+          "artifact_id": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "sha256"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      }
+    }
+  ],
+  "limits": {
+    "max_wall_seconds": 120,
+    "max_model_calls": 0,
+    "max_total_output_tokens": 0
+  }
+}

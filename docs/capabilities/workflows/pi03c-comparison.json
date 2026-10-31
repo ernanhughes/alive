@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "name": "pi03c-comparison",
+  "version": 1,
+  "title": "Captured evidence: comparison",
+  "inputs": {
+    "left_source_ref": {
+      "type": "string"
+    },
+    "left_source_sha256": {
+      "type": "string"
+    },
+    "left_scoped_sha256": {
+      "type": "string"
+    },
+    "left_findings": {
+      "type": "array"
+    },
+    "right_source_ref": {
+      "type": "string"
+    },
+    "right_source_sha256": {
+      "type": "string"
+    },
+    "right_scoped_sha256": {
+      "type": "string"
+    },
+    "right_findings": {
+      "type": "array"
+    },
+    "left_id": {
+      "type": "string"
+    },
+    "right_id": {
+      "type": "string"
+    },
+    "fields": {
+      "type": "array"
+    }
+  },
+  "stages": [
+    {
+      "id": "left",
+      "title": "left",
+      "type": "validation",
+      "operation": "evidence.validate_references",
+      "capability_version": "1.1.0",
+      "capability_sha256": "7c8e509f0741e90118bb58491a98f0a57d10a1698994bf25f2737346ff432c19",
+      "inputs": {
+        "source_ref": "$input.left_source_ref",
+        "source_sha256": "$input.left_source_sha256",
+        "scoped_sha256": "$input.left_scoped_sha256",
+        "findings": "$input.left_findings"
+      },
+      "depends_on": [],
+      "output_schema": {
+        "properties": {
+          "records": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "records"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      }
+    },
+    {
+      "id": "right",
+      "title": "right",
+      "type": "validation",
+      "operation": "evidence.validate_references",
+      "capability_version": "1.1.0",
+      "capability_sha256": "7c8e509f0741e90118bb58491a98f0a57d10a1698994bf25f2737346ff432c19",
+      "inputs": {
+        "source_ref": "$input.right_source_ref",
+        "source_sha256": "$input.right_source_sha256",
+        "scoped_sha256": "$input.right_scoped_sha256",
+        "findings": "$input.right_findings"
+      },
+      "depends_on": [],
+      "output_schema": {
+        "properties": {
+          "records": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "records"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      }
+    },
+    {
+      "id": "compare",
+      "title": "compare",
+      "type": "validation",
+      "operation": "evidence.compare-claims",
+      "capability_version": "1.0.0",
+      "capability_sha256": "3a97dbf3c3cbb6776a2a80e05d00163d8d5230ab8e2fb2ec48f961d90764d64e",
+      "inputs": {
+        "left": "$stage.left.records",
+        "right": "$stage.right.records",
+        "left_id": "$input.left_id",
+        "right_id": "$input.right_id",
+        "mode": "changed",
+        "fields": "$input.fields"
+      },
+      "depends_on": [
+        "left",
+        "right"
+      ],
+      "output_schema": {
+        "properties": {
+          "records": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "records"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      }
+    },
+    {
+      "id": "compose",
+      "title": "compose",
+      "type": "validation",
+      "operation": "report.compose",
+      "capability_version": "1.0.0",
+      "capability_sha256": "625e3b9548c1d276b15695e05380c4a1f0df82280228a6b47a127e2ac51a6757",
+      "inputs": {
+        "records": "$stage.compare.records"
+      },
+      "depends_on": [
+        "compare"
+      ],
+      "output_schema": {
+        "properties": {
+          "assessment": {
+            "type": "object"
+          },
+          "result": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "assessment",
+          "result"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      }
+    },
+    {
+      "id": "record",
+      "title": "record",
+      "type": "deterministic",
+      "operation": "result.record",
+      "capability_version": "1.0.0",
+      "capability_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+      "inputs": {
+        "result": "$stage.compose.result",
+        "assessment": "$stage.compose.assessment"
+      },
+      "depends_on": [
+        "compose"
+      ],
+      "output_schema": {
+        "properties": {
+          "artifact_id": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "sha256"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      }
+    }
+  ],
+  "limits": {
+    "max_wall_seconds": 120,
+    "max_model_calls": 0,
+    "max_total_output_tokens": 0
+  }
+}

@@ -1,0 +1,68 @@
+schema_version: 1
+id: report.compose
+version: 1.0.0
+name: report.compose
+description: Bounded captured-evidence validation. Identity, locator and controlled
+  equality are separate from semantic support, independent verification and task success.
+implementation:
+  provider: builtin
+  id: captured-report-v1
+execution:
+  kind: validation
+  side_effects: none
+  timeout_seconds: 30
+  max_input_bytes: 65536
+  max_output_bytes: 65536
+  max_input_items: 8
+  max_invocations: 1
+  retry_policy: none
+  max_source_bytes: 0
+  max_files: 0
+  max_model_calls: 0
+  max_output_tokens: 0
+permissions:
+  filesystem:
+    mode: none
+    roots: []
+  network:
+    mode: none
+  process:
+    mode: none
+  evidence: none
+  persistence: none
+  sources: none
+inputs:
+  type: object
+  additionalProperties: false
+  properties:
+    records:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+  required:
+  - records
+outputs:
+  type: object
+  additionalProperties: false
+  properties:
+    result:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+    assessment:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+  required:
+  - result
+  - assessment
+supported_source_types: []
+presentation:
+  category: validation
+  icon: shield-check
+  tags:
+  - validation
+  - evidence

@@ -1,0 +1,23 @@
+[
+  {
+    "id": "implicit-compatibility",
+    "baseline": "e0992b39a9429a2eb8dbbc27eb132b3c7bfee23d",
+    "test": "tests/test_validation_workflows.py::test_old_implicit_reference_definition_keeps_its_original_implementation",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_validation_workflows.py::test_old_implicit_reference_definition_keeps_its_original_implementation"
+    ],
+    "failure": [
+      "FAILED tests/test_validation_workflows.py::test_old_implicit_reference_definition_keeps_its_original_implementation"
+    ],
+    "log": "compatibility-followup-logs/implicit-compatibility.txt.gz"
+  }
+]
