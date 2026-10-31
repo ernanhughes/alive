@@ -177,7 +177,8 @@ def _bounded(value, depth=0):
         raise ManifestError("unsupported manifest value")
 
 
-def parse(raw):
+def load_declaration(raw):
+    """Shared restricted YAML reader for code-owned declarative catalogues."""
     try:
         data = raw.encode("utf-8") if isinstance(raw, str) else bytes(raw)
         if len(data) > MAX_BYTES:
@@ -200,7 +201,16 @@ def parse(raw):
                 depth -= 1
         value = yaml.load(text, Loader=Loader)
         _bounded(value)
-        manifest = Manifest.model_validate(value)
+        return value
+    except ManifestError:
+        raise
+    except (ValueError, TypeError, yaml.YAMLError, RecursionError, UnicodeError):
+        raise ManifestError("invalid declaration") from None
+
+
+def parse(raw):
+    try:
+        manifest = Manifest.model_validate(load_declaration(raw))
         if manifest.permissions.filesystem.roots != (
             ["authorized_repository"] if manifest.permissions.filesystem.mode == "read_only" else []
         ):

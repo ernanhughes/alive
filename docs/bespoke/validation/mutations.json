@@ -1,0 +1,235 @@
+{
+  "mutants": [
+    {
+      "id": "B12",
+      "mutation": "model workflow needs configured provider",
+      "files": [
+        "alive/bespoke/selector.py"
+      ],
+      "target": "tests/test_bespoke.py::test_model_workflow_without_configured_provider_is_ineligible",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "or not await kernel.model_provider_ready()"
+      ],
+      "replacements": [
+        "or False"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n________ test_model_workflow_without_configured_provider_is_ineligible ________\ntests\\test_bespoke.py:442: in test_model_workflow_without_configured_provider_is_ineligible\n    assert result[\"state\"] == \"abstained\"\nE   AssertionError: assert 'recommended' == 'abstained'\nE     \nE     - abstained\nE     + recommended\n============================== warnings summary ===============================\ntests/test_bespoke.py::test_model_workflow_without_configured_provider_is_ineligible\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_bespoke.py::test_model_workflow_without_configured_provider_is_ineligible - AssertionError: assert 'recommended' == 'abstained'\n  \n  - abstained\n  + recommended\n1 failed, 1 warning in 3.09s\n",
+      "returncode": 1,
+      "source_sha256": "084914a9d3d15ccbe84392d764ce7ee13f49c1776964102d677fcc570a7982ed"
+    },
+    {
+      "id": "B1",
+      "mutation": "request cannot substitute a goal",
+      "files": [
+        "alive/bespoke/context.py"
+      ],
+      "target": "tests/test_bespoke.py::test_context_substitution_is_refused[goal_ref]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "grant.goal_id == request.goal_ref"
+      ],
+      "replacements": [
+        "True"
+      ],
+      "assertion": "OK]> = recommend(<starlette.testclient.TestClient object at 0x000001E5C3C76A50>, {'approval_ref': '2bca7ec0-9f43-4ff8-a710-baaf5504c8c3', 'goal_ref': '7383f0e4-8ab0-4eba-b7bf-9f16c2484d0e', 'investigation_ref': 'cb5021b3-d0d1-49d9-af86-205f0b5b9fac', 'source_ref': '412334f7-da39-4623-91b0-c1cb6d1fa429', ...})\n============================== warnings summary ===============================\ntests/test_bespoke.py::test_context_substitution_is_refused[goal_ref]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_bespoke.py::test_context_substitution_is_refused[goal_ref] - AssertionError: assert 200 == 409\n +  where 200 = <Response [200 OK]>.status_code\n +    where <Response [200 OK]> = recommend(<starlette.testclient.TestClient object at 0x000001E5C3C76A50>, {'approval_ref': '2bca7ec0-9f43-4ff8-a710-baaf5504c8c3', 'goal_ref': '7383f0e4-8ab0-4eba-b7bf-9f16c2484d0e', 'investigation_ref': 'cb5021b3-d0d1-49d9-af86-205f0b5b9fac', 'source_ref': '412334f7-da39-4623-91b0-c1cb6d1fa429', ...})\n1 failed, 1 warning in 1.28s\n",
+      "returncode": 1,
+      "source_sha256": "e951dbecd22683eb1139f58b812f99aa3e7e63a7cdc03242d99a50b47c2f2ea6"
+    },
+    {
+      "id": "B2",
+      "mutation": "permissions gate",
+      "files": [
+        "alive/bespoke/selector.py"
+      ],
+      "target": "tests/test_bespoke.py::test_abstention_has_typed_reasons[permissions-permission_not_grantable]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "if not set(limits.permissions) <= set(ceiling.permissions):"
+      ],
+      "replacements": [
+        "if False:"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n___ test_abstention_has_typed_reasons[permissions-permission_not_grantable] ___\ntests\\test_bespoke.py:144: in test_abstention_has_typed_reasons\n    assert body[\"state\"] == \"abstained\"\nE   AssertionError: assert 'recommended' == 'abstained'\nE     \nE     - abstained\nE     + recommended\n============================== warnings summary ===============================\ntests/test_bespoke.py::test_abstention_has_typed_reasons[permissions-permission_not_grantable]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_bespoke.py::test_abstention_has_typed_reasons[permissions-permission_not_grantable] - AssertionError: assert 'recommended' == 'abstained'\n  \n  - abstained\n  + recommended\n1 failed, 1 warning in 1.17s\n",
+      "returncode": 1,
+      "source_sha256": "cb6fd51edfe9ddaf921b70301247d1713867919f348fd1c7f67201a1fb2284a0"
+    },
+    {
+      "id": "B3",
+      "mutation": "request wall ceiling",
+      "files": [
+        "alive/bespoke/selector.py"
+      ],
+      "target": "tests/test_bespoke.py::test_abstention_has_typed_reasons[budget-resource_limit_exceeded]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "or limits.max_wall_seconds > ceiling.max_wall_seconds"
+      ],
+      "replacements": [
+        "or False"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n______ test_abstention_has_typed_reasons[budget-resource_limit_exceeded] ______\ntests\\test_bespoke.py:144: in test_abstention_has_typed_reasons\n    assert body[\"state\"] == \"abstained\"\nE   AssertionError: assert 'recommended' == 'abstained'\nE     \nE     - abstained\nE     + recommended\n============================== warnings summary ===============================\ntests/test_bespoke.py::test_abstention_has_typed_reasons[budget-resource_limit_exceeded]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_bespoke.py::test_abstention_has_typed_reasons[budget-resource_limit_exceeded] - AssertionError: assert 'recommended' == 'abstained'\n  \n  - abstained\n  + recommended\n1 failed, 1 warning in 1.11s\n",
+      "returncode": 1,
+      "source_sha256": "cb6fd51edfe9ddaf921b70301247d1713867919f348fd1c7f67201a1fb2284a0"
+    },
+    {
+      "id": "B4",
+      "mutation": "exact workflow pin",
+      "files": [
+        "alive/bespoke/selector.py"
+      ],
+      "target": "tests/test_bespoke.py::test_recipe_exact_pins_are_mandatory[workflow]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "reasons.append(\"workflow_identity_changed\")"
+      ],
+      "replacements": [
+        "pass"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_______________ test_recipe_exact_pins_are_mandatory[workflow] ________________\ntests\\test_bespoke.py:391: in test_recipe_exact_pins_are_mandatory\n    assert result[\"state\"] == \"abstained\"\nE   AssertionError: assert 'recommended' == 'abstained'\nE     \nE     - abstained\nE     + recommended\n============================== warnings summary ===============================\ntests/test_bespoke.py::test_recipe_exact_pins_are_mandatory[workflow]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_bespoke.py::test_recipe_exact_pins_are_mandatory[workflow] - AssertionError: assert 'recommended' == 'abstained'\n  \n  - abstained\n  + recommended\n1 failed, 1 warning in 1.31s\n",
+      "returncode": 1,
+      "source_sha256": "cb6fd51edfe9ddaf921b70301247d1713867919f348fd1c7f67201a1fb2284a0"
+    },
+    {
+      "id": "B5",
+      "mutation": "exact capability pins at both checks (compound)",
+      "files": [
+        "alive/bespoke/selector.py",
+        "alive/bespoke/selector.py"
+      ],
+      "target": "tests/test_bespoke.py::test_recipe_exact_pins_are_mandatory[capability]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "reasons.append(\"capability_identity_changed\")\n        except KeyError:",
+        "reasons.append(\"capability_identity_changed\")\n                effective ="
+      ],
+      "replacements": [
+        "pass\n        except KeyError:",
+        "pass\n                effective ="
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n______________ test_recipe_exact_pins_are_mandatory[capability] _______________\ntests\\test_bespoke.py:391: in test_recipe_exact_pins_are_mandatory\n    assert result[\"state\"] == \"abstained\"\nE   AssertionError: assert 'recommended' == 'abstained'\nE     \nE     - abstained\nE     + recommended\n============================== warnings summary ===============================\ntests/test_bespoke.py::test_recipe_exact_pins_are_mandatory[capability]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_bespoke.py::test_recipe_exact_pins_are_mandatory[capability] - AssertionError: assert 'recommended' == 'abstained'\n  \n  - abstained\n  + recommended\n1 failed, 1 warning in 1.17s\n",
+      "returncode": 1,
+      "source_sha256": "cb6fd51edfe9ddaf921b70301247d1713867919f348fd1c7f67201a1fb2284a0"
+    },
+    {
+      "id": "B6",
+      "mutation": "future status remains unavailable",
+      "files": [
+        "alive/bespoke/selector.py"
+      ],
+      "target": "tests/test_bespoke.py::test_future_recipe_with_real_dependencies_still_cannot_be_selected",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "if recipe.status != \"active\":"
+      ],
+      "replacements": [
+        "if False:"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_____ test_future_recipe_with_real_dependencies_still_cannot_be_selected ______\ntests\\test_bespoke.py:374: in test_future_recipe_with_real_dependencies_still_cannot_be_selected\n    assert result[\"state\"] == \"abstained\"\nE   AssertionError: assert 'recommended' == 'abstained'\nE     \nE     - abstained\nE     + recommended\n============================== warnings summary ===============================\ntests/test_bespoke.py::test_future_recipe_with_real_dependencies_still_cannot_be_selected\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_bespoke.py::test_future_recipe_with_real_dependencies_still_cannot_be_selected - AssertionError: assert 'recommended' == 'abstained'\n  \n  - abstained\n  + recommended\n1 failed, 1 warning in 1.17s\n",
+      "returncode": 1,
+      "source_sha256": "cb6fd51edfe9ddaf921b70301247d1713867919f348fd1c7f67201a1fb2284a0"
+    },
+    {
+      "id": "B7",
+      "mutation": "suitability sorting is descending",
+      "files": [
+        "alive/bespoke/selector.py"
+      ],
+      "target": "tests/test_bespoke.py::test_suitability_precedes_lexical_tie_break",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "-c.suitability"
+      ],
+      "replacements": [
+        "c.suitability"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_________________ test_suitability_precedes_lexical_tie_break _________________\ntests\\test_bespoke.py:402: in test_suitability_precedes_lexical_tie_break\n    assert selected(result)[\"recipe\"][\"id\"] == \"controlled-comparison\"\nE   AssertionError: assert 'aaa-weaker' == 'controlled-comparison'\nE     \nE     - controlled-comparison\nE     + aaa-weaker\n============================== warnings summary ===============================\ntests/test_bespoke.py::test_suitability_precedes_lexical_tie_break\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_bespoke.py::test_suitability_precedes_lexical_tie_break - AssertionError: assert 'aaa-weaker' == 'controlled-comparison'\n  \n  - controlled-comparison\n  + aaa-weaker\n1 failed, 1 warning in 1.35s\n",
+      "returncode": 1,
+      "source_sha256": "cb6fd51edfe9ddaf921b70301247d1713867919f348fd1c7f67201a1fb2284a0"
+    },
+    {
+      "id": "B8",
+      "mutation": "retained record digest",
+      "files": [
+        "alive/bespoke/store.py"
+      ],
+      "target": "tests/test_bespoke.py::test_record_tampering_and_orm_mutations_are_refused",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "require(digest(row.selection) == row.selection_sha256, \"recommendation_integrity\")"
+      ],
+      "replacements": [
+        "require(True, \"recommendation_integrity\")"
+      ],
+      "assertion": "ering_and_orm_mutations_are_refused\n    assert client.get(BASE + \"/recommendations/\" + first[\"id\"]).status_code == 409\nE   AssertionError: assert 200 == 409\nE    +  where 200 = <Response [200 OK]>.status_code\nE    +    where <Response [200 OK]> = get((('/api/v1/bespoke' + '/recommendations/') + '2e8c7617-4e61-4823-beb5-833d9ed90a80'))\nE    +      where get = <starlette.testclient.TestClient object at 0x0000024E16B72900>.get\n============================== warnings summary ===============================\ntests/test_bespoke.py::test_record_tampering_and_orm_mutations_are_refused\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_bespoke.py::test_record_tampering_and_orm_mutations_are_refused - AssertionError: assert 200 == 409\n +  where 200 = <Response [200 OK]>.status_code\n +    where <Response [200 OK]> = get((('/api/v1/bespoke' + '/recommendations/') + '2e8c7617-4e61-4823-beb5-833d9ed90a80'))\n +      where get = <starlette.testclient.TestClient object at 0x0000024E16B72900>.get\n1 failed, 1 warning in 1.18s\n",
+      "returncode": 1,
+      "source_sha256": "42be64e25c75886d73f01a8179201196b670ddca022e2522e9813c47ffc7bcbb"
+    },
+    {
+      "id": "B9",
+      "mutation": "removed recipe cannot hand off",
+      "files": [
+        "alive/bespoke/handoff.py"
+      ],
+      "target": "tests/test_bespoke.py::test_changed_selection_cannot_be_handed_off[recipe]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "(r for r in catalogue if recipe_hash(r) == retained.recipe_sha256), None"
+      ],
+      "replacements": [
+        "(r for r in catalogue if recipe_hash(r) == retained.recipe_sha256), retained.recipe"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_____________ test_changed_selection_cannot_be_handed_off[recipe] _____________\ntests\\test_bespoke.py:226: in test_changed_selection_cannot_be_handed_off\n    with pytest.raises(Refused):\n         ^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n============================== warnings summary ===============================\ntests/test_bespoke.py::test_changed_selection_cannot_be_handed_off[recipe]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_bespoke.py::test_changed_selection_cannot_be_handed_off[recipe] - Failed: DID NOT RAISE Refused\n1 failed, 1 warning in 1.14s\n",
+      "returncode": 1,
+      "source_sha256": "4ec23bbb888e4ce988de8d1c6f506e6b382beeefc8b59d7aa800eca62db4f0e4"
+    },
+    {
+      "id": "B10",
+      "mutation": "handoff budget cannot widen",
+      "files": [
+        "alive/bespoke/handoff.py"
+      ],
+      "target": "tests/test_bespoke.py::test_changed_selection_cannot_be_handed_off[budget]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "and grant.wall_seconds <= limits.max_wall_seconds"
+      ],
+      "replacements": [
+        "and True"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_____________ test_changed_selection_cannot_be_handed_off[budget] _____________\ntests\\test_bespoke.py:226: in test_changed_selection_cannot_be_handed_off\n    with pytest.raises(Refused):\n         ^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n============================== warnings summary ===============================\ntests/test_bespoke.py::test_changed_selection_cannot_be_handed_off[budget]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_bespoke.py::test_changed_selection_cannot_be_handed_off[budget] - Failed: DID NOT RAISE Refused\n1 failed, 1 warning in 1.28s\n",
+      "returncode": 1,
+      "source_sha256": "4ec23bbb888e4ce988de8d1c6f506e6b382beeefc8b59d7aa800eca62db4f0e4"
+    },
+    {
+      "id": "B11",
+      "mutation": "policy identity cannot upgrade",
+      "files": [
+        "alive/bespoke/handoff.py"
+      ],
+      "target": "tests/test_bespoke.py::test_changed_selection_policy_is_not_silently_used_for_handoff",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "require(selected.policy_sha256 == digest(POLICY), \"selection_policy_changed\")"
+      ],
+      "replacements": [
+        "require(True, \"selection_policy_changed\")"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_______ test_changed_selection_policy_is_not_silently_used_for_handoff ________\ntests\\test_bespoke.py:414: in test_changed_selection_policy_is_not_silently_used_for_handoff\n    with pytest.raises(Refused, match=\"selection_policy_changed\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n============================== warnings summary ===============================\ntests/test_bespoke.py::test_changed_selection_policy_is_not_silently_used_for_handoff\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_bespoke.py::test_changed_selection_policy_is_not_silently_used_for_handoff - Failed: DID NOT RAISE Refused\n1 failed, 1 warning in 1.23s\n",
+      "returncode": 1,
+      "source_sha256": "4ec23bbb888e4ce988de8d1c6f506e6b382beeefc8b59d7aa800eca62db4f0e4"
+    }
+  ]
+}

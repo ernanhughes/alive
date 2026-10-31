@@ -1,0 +1,52 @@
+schema_version: 1
+id: bounded-evidence-review
+version: 1.0.0
+name: Bounded evidence review
+description: One governed model analysis followed by reference identity checks; semantics
+  remain unverified.
+context_types:
+- controlled_evidence
+- browser_document
+intents:
+- assess_claims
+- explore_arguments
+workflow:
+  name: research-review
+  version: 2
+  definition_sha256: abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8
+capabilities:
+- stage_id: prepare
+  id: context.prepare
+  version: 1.0.0
+  manifest_sha256: f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed
+- stage_id: analyze
+  id: cognition.role
+  version: 1.0.0
+  manifest_sha256: 02346040dfcaaf223dfc355c6bdecb5934069ca5e69ecd671f34f3d14c1c28c5
+- stage_id: validate
+  id: evidence.validate_references
+  version: 1.0.0
+  manifest_sha256: dcc2ca1d88f925f13bd81e8c39235834e94652aecb127aeccdd29bd3c6e9bd3d
+- stage_id: record
+  id: result.record
+  version: 1.0.0
+  manifest_sha256: 9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca
+limits:
+  max_model_calls: 1
+  max_wall_seconds: 120
+  max_output_tokens: 1536
+  outbound_allowed: true
+  permissions:
+  - evidence.read
+  - workflow.write
+  - model.infer
+required_evidence: claims_and_sources
+output_artifact: workflow_result
+validation: reference_identity
+status: active
+presentation:
+  category: bespoke
+  icon: layers
+  tags:
+  - bounded
+  - governed

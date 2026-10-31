@@ -1,0 +1,35 @@
+schema_version: 1
+id: discussion-source
+version: 1.0.0
+name: Discussion Source
+description: 'Future requirement: source ingestion is not installed. This template
+  cannot execute.'
+context_types:
+- browser_document
+intents:
+- explore_arguments
+workflow:
+  name: discussion-source
+  version: 1
+  definition_sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+capabilities:
+- stage_id: extract
+  id: browser.prepare-source
+  version: 1.0.0
+  manifest_sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+limits:
+  max_model_calls: 0
+  max_wall_seconds: 120
+  max_output_tokens: 0
+  outbound_allowed: false
+  permissions:
+  - evidence.read
+required_evidence: approved_capture
+output_artifact: workflow_result
+validation: none
+status: future
+presentation:
+  category: future
+  icon: layers
+  tags:
+  - unavailable
