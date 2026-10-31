@@ -34,7 +34,7 @@ class ModelGateway(Protocol):
 
 
 class DirectMetaGateway:
-    """Production gateway: unchanged MetaProvider dispatch."""
+    """Single upstream dispatch, carrying owner destination authority to the HTTP client."""
 
     def __init__(self, settings, operation: str, transport=None):
         # Pin dispatch configuration before Pi starts. A settings mutation after the final

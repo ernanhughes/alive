@@ -241,6 +241,7 @@ async def model_claim(session, kernel, claim, role, context, model, output_limit
 
     `analysis` is a typed analysis role (L1-02). It changes only which implementation, role contract
     and input binding the owner's grant must name; every other check is shared.
+    Return the reserved stage and its immutable owner-admission destination (if applicable).
     """
     run_id, stage_id, owner = claim
     execution = await session.get(WorkflowExecution, run_id)

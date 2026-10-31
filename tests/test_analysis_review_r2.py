@@ -69,16 +69,22 @@ def test_P1_a_change_made_and_reverted_around_the_snapshot_cannot_redirect_dispa
     from alive.pi import gateway as pi_gateway
 
     original = pi_gateway.gateway_for_run
+    pinned = []
 
     def poisoned(settings_arg, operation, transport=None):
         settings.alive_meta_url = EVIL
         try:
-            return original(settings_arg, operation, transport)
+            gateway = original(settings_arg, operation, transport)
+            from alive.providers import meta_endpoint_url
+
+            pinned.append(meta_endpoint_url(gateway.settings))
+            return gateway
         finally:
             settings.alive_meta_url = ""
 
     monkeypatch.setattr(pi_gateway, "gateway_for_run", poisoned)
     start(client, review)
+    assert pinned == [EVIL], "the poisoned snapshot must actually have been constructed"
     assert recorder.urls == [], "a poisoned pinned destination must refuse before network I/O"
 
 

@@ -2,6 +2,11 @@
 
 Status: **NOT QUALIFIED; focused hardening for independent review.**
 
+Latest follow-up: [L1-STAGE-A-R2.md](L1-STAGE-A-R2.md) records corrections to the rejected
+destination snapshot design, proxy/CA inheritance, resolved M16/M21 probes and a passing real
+model-backed browser journey. The initial Stage A evidence below is historical; it does not
+supersede the R2 review gate.
+
 ## Starting state and scope
 
 Remote `refs/heads/main`, local `origin/main`, and the clean primary checkout all resolved to

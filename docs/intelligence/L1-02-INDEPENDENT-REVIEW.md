@@ -1,5 +1,15 @@
 # L1-02 — Independent review handoff
 
+R2 supersedes the original snapshot-only destination fix. See
+[L1-STAGE-A-R2.md](L1-STAGE-A-R2.md) for root causes, exact code baseline and qualification.
+Please independently attack the corrected network boundary: poison the gateway's settings
+only while it is constructed; restore live settings before the fence; change/drop the typed
+destination; replace the built HTTP request; inject ambient proxies and certificate settings;
+and attempt source-canary leakage or retries. Reproduce the successful approved endpoint too.
+The permanent probes are `tests/test_analysis_review_r2.py`, `test_provider_destination.py`
+and `test_model_transport_environment.py`; add independent probes rather than treating these
+author-integrated tests as acceptance. Keep the PR a draft until the review decision is recorded.
+
 Stage A follow-up: review the endpoint hardening and remaining qualification gaps in
 [L1-QUALIFICATION.md](L1-QUALIFICATION.md). The earlier limitations below describe the original
 L1-02 delivery; the qualification report and security-decisions document contain current evidence.
