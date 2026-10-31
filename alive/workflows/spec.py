@@ -92,6 +92,10 @@ class StageLimits(Strict):
 
 
 class StageSpec(Strict):
+    capability_version: str | None = Field(
+        default=None, pattern=r"^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$", max_length=32
+    )
+    capability_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
     id: str
     title: str
     type: StageType
@@ -185,7 +189,7 @@ def _no_duplicate_keys(pairs):
     return seen
 
 
-def parse_definition(raw):
+def parse_definition(raw, *, operations=OPERATIONS):
     """Parse and structurally validate a definition. Accepts JSON text/bytes or a plain dict."""
     if isinstance(raw, dict):
         data = raw
@@ -214,7 +218,7 @@ def parse_definition(raw):
             f"{'.'.join(str(p) for p in err['loc']) or 'definition'}: {err['msg']}"
             for err in exc.errors()
         ) from None
-    check_structure(spec)
+    check_structure(spec, operations)
     return spec
 
 
@@ -344,12 +348,16 @@ def _check_ref(spec, by_id, ancestors, stage, name, value):
 def check_activatable(spec, operations=OPERATIONS):
     """A definition may only become `active` if every operation it names can actually run."""
     unavailable = sorted(
-        {s.operation for s in spec.stages if not operations[s.operation].available}
+        {s.operation for s in spec.stages if not operations[s.operation].executable}
     )
     if unavailable:
         raise DefinitionError(
             [
-                f"operation {name!r} is unavailable: {operations[name].unavailable_reason}"
+                f"operation {name!r} is unavailable: "
+                + str(
+                    operations[name].workflow_unavailable_reason
+                    or operations[name].unavailable_reason
+                )
                 for name in unavailable
             ]
         )
@@ -362,6 +370,10 @@ def canonical_dict(spec):
     """One spelling per meaning: defaults filled in, set-like lists and keys sorted."""
     data = spec.model_dump(mode="json")
     for stage in data["stages"]:
+        # Optional PI-03 pins must not alter any PI-02 definition's canonical bytes.
+        for key in ("capability_version", "capability_sha256"):
+            if stage[key] is None:
+                del stage[key]
         stage["depends_on"] = sorted(stage["depends_on"])
         stage["output_schema"]["required"] = sorted(stage["output_schema"]["required"])
     return data
@@ -396,7 +408,7 @@ def graph_of(spec_dict, operations=OPERATIONS):
                 "title": stage["title"],
                 "type": stage["type"],
                 "operation": stage["operation"],
-                "available": bool(operation and operation.available),
+                "available": bool(operation and operation.executable),
             }
         )
     edges = [

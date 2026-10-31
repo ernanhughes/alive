@@ -59,7 +59,7 @@ def router(app, ready, pi_receipt):
     @api.get("/workflow-operations")
     async def operations():
         """The closed set of operations a stage may name, and which of them exist today."""
-        return {"operations": store.operation_listing()}
+        return {"operations": store.operation_listing(kernel())}
 
     @api.get("/workflows")
     async def workflows():

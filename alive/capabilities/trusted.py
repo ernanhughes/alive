@@ -241,3 +241,4 @@ _BUILTINS["repository-inspector-v1"] = TrustedImplementation(
     ("alive/capabilities/repository.py", "alive/capabilities/contracts.py"),
 )
 TRUSTED = MappingProxyType(_BUILTINS)
+LEGACY_OPERATIONS = frozenset(item[1] for item in _LEGACY)

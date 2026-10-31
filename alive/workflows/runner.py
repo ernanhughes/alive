@@ -6,6 +6,15 @@ from datetime import timedelta
 from sqlalchemy import select, update
 from sqlalchemy.exc import IntegrityError
 
+from alive.capabilities.bindings import (
+    digest as capability_digest,
+)
+from alive.capabilities.bindings import (
+    execution_snapshot,
+    registry_for,
+    verify_authorization,
+)
+from alive.capabilities.execution import checked_result, invoke
 from alive.cognition import complete_despite_cancel
 from alive.cognitive_models import CognitiveMessage, Investigation, ModelInvocation
 from alive.models import Event, now, uid
@@ -64,11 +73,15 @@ def inputs_for(stage, outputs, supplied):
     return bounded(result)
 
 
-def executable(spec, grant):
-    check_activatable(spec)
+def executable(spec, grant, registry=None):
+    from alive.capabilities.registry import default_registry
+
+    registry = registry or default_registry()
+    check_activatable(spec, registry.operations)
     require(
         all(
-            stage.operation in ADAPTERS and stage.operation in grant.operations
+            registry.get(stage.operation, stage.capability_version).executable
+            and stage.operation in grant.operations
             for stage in spec.stages
         ),
         "operation_not_authorized_or_executable",
@@ -207,7 +220,11 @@ class WorkflowRunner:
                 grant, spec, definition, inquiry, approved, authorization_hash = await authorized(
                     session, self.k, authorization_id
                 )
-                executable(spec, grant)
+                executable(spec, grant, registry_for(self.k))
+                capability_binding = await verify_authorization(
+                    session, self.k, definition, spec, grant
+                )
+                captured_capabilities = execution_snapshot(capability_binding, grant)
                 if any(stage.type == "pi_agent" for stage in spec.stages):
                     require(
                         grant.outbound_approved and self.k.settings.alive_model_transport == "pi",
@@ -248,6 +265,8 @@ class WorkflowRunner:
                         instance_id=self.k.instance_id,
                         slot=self.k.instance_id,
                         deadline=deadline,
+                        capability_snapshot=captured_capabilities,
+                        capability_snapshot_sha256=capability_digest(captured_capabilities),
                     )
                 )
                 ledger["created"] = view["id"]
@@ -290,7 +309,14 @@ class WorkflowRunner:
         grant, spec, definition, inquiry, context, _ = await authorized(
             session, self.k, execution.authorization_id, execution.authorization_sha256
         )
-        executable(spec, grant)
+        executable(spec, grant, registry_for(self.k))
+        capability_binding = await verify_authorization(session, self.k, definition, spec, grant)
+        require(
+            execution.capability_snapshot == execution_snapshot(capability_binding, grant)
+            and execution.capability_snapshot_sha256
+            == capability_digest(execution.capability_snapshot),
+            "execution_capability_identity_changed",
+        )
         require(
             run.definition_id == definition.id
             and run.definition_sha256 == grant.definition_sha256
@@ -384,6 +410,9 @@ class WorkflowRunner:
     async def _stage(self, run_id, owner, stage):
         async with self.k.lock, self.k.db.sessions.begin() as session:
             _, run, grant, spec, approved = await self._authority(session, run_id, owner)
+            execution = await session.get(WorkflowExecution, run_id)
+            binding = execution.capability_snapshot["binding"]["stages"][stage.id]
+            capability_grant = grant.capabilities[stage.id]
             rows = (
                 await session.scalars(
                     select(WorkflowStageRun).where(WorkflowStageRun.run_id == run_id)
@@ -450,13 +479,20 @@ class WorkflowRunner:
             )
         try:
             async with asyncio.timeout(stage.limits.timeout_seconds):
-                result = await ADAPTERS[stage.operation](context)
+                result = await invoke(
+                    registry_for(self.k),
+                    binding,
+                    capability_grant,
+                    context,
+                    adapter=ADAPTERS.get(stage.operation),
+                )
         except (Refused, TimeoutError):
             raise
         except Exception:
             raise Refused("adapter_execution_failure") from None
         try:
             output_valid(stage, result.output)
+            result = checked_result(registry_for(self.k), binding, capability_grant, result)
         except (ValueError, TypeError):
             raise Refused("output_validation_failure") from None
         try:

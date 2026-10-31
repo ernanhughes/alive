@@ -18,6 +18,9 @@ class Settings(BaseSettings):
         validation_alias=AliasChoices("DATABASE_URL", "ALIVE_DSN", "database_url"),
     )
     alive_api_token: str = Field(default="", repr=False)
+    alive_capability_directory: str = Field(default="", repr=False)
+    alive_disabled_capabilities: list[str] = Field(default_factory=list, max_length=128)
+    alive_capability_limits: dict = Field(default_factory=dict, repr=False)
     alive_allowed_origins: list[str] = ["http://127.0.0.1:5173", "http://localhost:5173"]
     alive_browser_origins: list[str] = ["http://127.0.0.1:8000"]
     alive_heartbeat_seconds: float = Field(10, ge=0.1)

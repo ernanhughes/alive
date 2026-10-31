@@ -59,8 +59,15 @@ from alive.workflows.runner import WorkflowRunner
 from alive.workflows.store import seed_builtin
 
 
-def create_app(settings=None, include_experiments=None):
+def create_app(settings=None, include_experiments=None, *, capability_registry=None):
     settings = settings or Settings()
+    from alive.capabilities.registry import load_registry
+
+    capability_registry = capability_registry or load_registry(
+        settings.alive_capability_directory or None,
+        disabled=settings.alive_disabled_capabilities,
+        limits=settings.alive_capability_limits,
+    )
     if include_experiments is None:
         include_experiments = bool(getattr(settings, "alive_experiments_enabled", False))
     # ARCH-01: research harness is opt-in. Importing alive.experiment here keeps
@@ -80,6 +87,7 @@ def create_app(settings=None, include_experiments=None):
         transport = ZmqTransport()
         await transport.start()
         kernel = Kernel(db, transport, settings)
+        kernel.capabilities = capability_registry
         await kernel.initialize()
         transport.task.add_done_callback(kernel.background_completed)
         app.state.kernel = kernel
@@ -132,6 +140,7 @@ def create_app(settings=None, include_experiments=None):
             await transport.close()
 
     app = FastAPI(title="ALIVE", version="0.2.0", lifespan=lifespan)
+    app.state.capabilities = capability_registry
 
     @app.get("/demo-live-01/{name}", include_in_schema=False)
     async def demo_live_mirror(name: str):

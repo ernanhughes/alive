@@ -146,6 +146,21 @@ class WorkflowExecution(Base):
     cancel_requested: Mapped[bool] = mapped_column(default=False)
     deadline: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+    capability_snapshot: Mapped[dict] = mapped_column(J, default=dict, server_default="{}")
+    capability_snapshot_sha256: Mapped[str | None] = mapped_column(String(64))
+
+
+class WorkflowCapabilityBinding(Base):
+    """Immutable registration/adoption facts outside the historical definition hash."""
+
+    __tablename__ = "workflow_capability_bindings"
+    definition_id: Mapped[str] = mapped_column(
+        ForeignKey("workflow_definitions.id", ondelete="RESTRICT"), primary_key=True
+    )
+    snapshot: Mapped[dict] = mapped_column(J)
+    snapshot_sha256: Mapped[str] = mapped_column(String(64))
+    source_ref: Mapped[str] = mapped_column(ForeignKey("events.id"))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
 
 
 # --- historical identity cannot change --------------------------------------------------------
@@ -180,6 +195,8 @@ for model, frozen in (
     (WorkflowDefinition, _DEFINITION_FROZEN),
     (WorkflowRun, _RUN_FROZEN),
     (WorkflowStageRun, _STAGE_FROZEN),
+    (WorkflowExecution, ("capability_snapshot", "capability_snapshot_sha256")),
+    (WorkflowCapabilityBinding, ("definition_id", "snapshot", "snapshot_sha256", "source_ref")),
 ):
     event.listen(model, "before_update", _guard(frozen))
 
@@ -187,3 +204,8 @@ for model, frozen in (
 @event.listens_for(WorkflowDefinition, "before_delete")
 def _no_delete(_mapper, _connection, target):
     raise ImmutableRecord("workflow definitions are retired by status, never deleted")
+
+
+@event.listens_for(WorkflowCapabilityBinding, "before_delete")
+def _no_binding_delete(_mapper, _connection, target):
+    raise ImmutableRecord("capability bindings are historical identities, never deleted")

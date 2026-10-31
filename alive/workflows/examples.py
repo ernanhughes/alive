@@ -97,9 +97,9 @@ def definition(*, model=True):
     }
 
 
-async def fixture_authorization(kernel, inquiry_id, *, model=True, changes=None):
+async def fixture_authorization(kernel, inquiry_id, *, model=True, changes=None, workflow=None, resources=None):
     """Trusted, independent owner approval for the synthetic lab only. No public write route."""
-    raw = definition(model=model)
+    raw = workflow if workflow is not None else definition(model=model)
     await register_definition(kernel, raw, status="active", source="admin")
     async with kernel.lock, kernel.db.sessions.begin() as session:
         inquiry = await session.get(Investigation, inquiry_id)
@@ -136,6 +136,9 @@ async def fixture_authorization(kernel, inquiry_id, *, model=True, changes=None)
             event_id=event_id,
             correlation=inquiry.id,
         )
+        from alive.capabilities.bindings import binding_record, registry_for
+
+        capability_binding = await binding_record(session, kernel, selected)
         grant = Grant(
             principal="independent-fixture-owner",
             goal_id=inquiry.goal_id,
@@ -151,6 +154,8 @@ async def fixture_authorization(kernel, inquiry_id, *, model=True, changes=None)
                 "consent": "exact_content_and_scope",
             },
             operations=tuple(s["operation"] for s in raw["stages"]),
+            capability_binding_sha256=capability_binding.snapshot_sha256,
+            capabilities=registry_for(kernel).grants_for(capability_binding.snapshot["stages"], resources=resources),
             configuration_sha256=digest(control.configuration),
             models={
                 "observer": kernel.settings.alive_role_models.get(

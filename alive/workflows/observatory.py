@@ -69,8 +69,11 @@ async def records(session, kernel, run_id):
         and hash_of_stored(definition.definition_json) == run.definition_sha256
     )
     try:
-        spec = parse_definition(definition.definition_json)
-    except (ValueError, TypeError):
+        from alive.capabilities.bindings import historical_operations
+
+        operations = await historical_operations(session, kernel, run)
+        spec = parse_definition(definition.definition_json, operations=operations)
+    except (ValueError, TypeError, KeyError):
         raise store.UnknownWorkflow("Invalid retained definition") from None
     declared = {s.id: s for s in spec.stages}
     stages = (
@@ -244,6 +247,9 @@ async def stage_receipt(kernel, run_id, attempt_id, render_receipt):
 async def inspected_run(kernel, run_id):
     async with kernel.db.sessions() as session:
         run, definition, stages = await records(session, kernel, run_id)
+        from alive.capabilities.bindings import historical_operations
+
+        operations = await historical_operations(session, kernel, run)
         pi_links = {}
         for stage in stages:
             pi = await attached_pi(session, kernel, run, stage)
@@ -257,6 +263,6 @@ async def inspected_run(kernel, run_id):
                 "name": definition.name,
                 "version": definition.version,
                 "definition_sha256": definition.definition_sha256,
-                **graph_of(definition.definition_json),
+                **graph_of(definition.definition_json, operations=operations),
             },
         }

@@ -3,6 +3,7 @@
 from dataclasses import dataclass, field
 from types import MappingProxyType
 
+from alive.capabilities.registry import default_registry
 from alive.cognitive_schema import RoleOutput
 from alive.models import now
 from alive.society import evaluate, validate_references
@@ -24,6 +25,8 @@ class StageContext:
     definition_hash: str
     input_hash: str
     ledger: dict = field(default_factory=dict)
+    capability: dict | None = None
+    resources: object | None = None
 
 
 @dataclass(frozen=True)
@@ -144,12 +147,12 @@ async def record(ctx):
     )
 
 
+# Compatibility/fault-injection seam, derived from the same catalogue. New
+# manifests are resolved through the runtime registry; this is not an authority map.
 ADAPTERS = MappingProxyType(
     {
-        "context.prepare": prepare,
-        "cognition.role": role,
-        "evidence.validate_references": references,
-        "evidence.evaluate": compare,
-        "result.record": record,
+        name: default_registry().adapter(name)
+        for name in default_registry().operations
+        if default_registry().get(name).executable
     }
 )

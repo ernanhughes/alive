@@ -8,9 +8,9 @@ from functools import lru_cache
 from pathlib import Path
 from types import MappingProxyType
 
-from alive.capabilities.contracts import validate
+from alive.capabilities.contracts import json_bytes, validate
 from alive.capabilities.manifest import ManifestError, canonical_bytes, parse
-from alive.capabilities.trusted import TRUSTED, permission_bits
+from alive.capabilities.trusted import LEGACY_OPERATIONS, TRUSTED, permission_bits
 
 
 @dataclass(frozen=True)
@@ -76,7 +76,9 @@ class CapabilityRegistry:
             raise TypeError("capability registry is immutable; construct a new startup registry")
         object.__setattr__(self, name, value)
 
-    def __init__(self, manifests, *, implementations=TRUSTED, disabled=(), snapshots=()):
+    def __init__(
+        self, manifests, *, implementations=TRUSTED, disabled=(), snapshots=(), limits=None
+    ):
         snapshots = tuple(snapshots)
         entries = {}
         disabled = frozenset(disabled)
@@ -111,6 +113,9 @@ class CapabilityRegistry:
                 blob, hashlib.sha256(blob).hexdigest(), fingerprint, status, reason
             )
         self._entries = MappingProxyType(entries)
+        known = {ident for ident, _ in entries} | {f"{i}@{v}" for i, v in entries}
+        if disabled - known:
+            raise ManifestError("unknown disabled capability")
         self._implementations = MappingProxyType(dict(implementations))
         self._snapshots = MappingProxyType({s.reference: s for s in snapshots})
         if len(self._snapshots) != len(tuple(snapshots)):
@@ -138,6 +143,50 @@ class CapabilityRegistry:
                 cap.reason,
             )
         self.operations = MappingProxyType(operations)
+        policies = {}
+        for key, overrides in (limits or {}).items():
+            choices = [
+                c
+                for c in entries.values()
+                if key in {c.identity["id"], c.identity["id"] + "@" + c.identity["version"]}
+            ]
+            if not choices or type(overrides) is not dict:
+                raise ManifestError("unknown capability policy")
+            for cap in choices:
+                policy_key = (cap.identity["id"], cap.identity["version"])
+                effective = json.loads(policies[policy_key]) if policy_key in policies else dict(cap.manifest["execution"])
+                for field, value in overrides.items():
+                    if (
+                        field
+                        not in {
+                            "timeout_seconds",
+                            "max_input_bytes",
+                            "max_output_bytes",
+                            "max_input_items",
+                            "max_files",
+                            "max_source_bytes",
+                            "max_model_calls",
+                            "max_output_tokens",
+                        }
+                        or type(value) is not int
+                    ):
+                        raise ManifestError("invalid capability configuration")
+                    minimum = (
+                        1
+                        if field
+                        in {
+                            "timeout_seconds",
+                            "max_input_bytes",
+                            "max_output_bytes",
+                            "max_input_items",
+                        }
+                        else 0
+                    )
+                    if not minimum <= value <= effective[field]:
+                        raise ManifestError("configuration cannot widen a manifest limit")
+                    effective[field] = value
+                policies[policy_key] = json_bytes(effective)
+        self._policies = MappingProxyType(policies)
         self._sealed = True
 
     def list(self):
@@ -164,9 +213,97 @@ class CapabilityRegistry:
             raise ValueError("pinned capability unavailable") from None
         if not cap.executable or cap.identity != identity:
             raise ValueError("pinned capability unavailable or changed")
+        impl = self._implementations.get(identity["implementation_id"])
+        if (
+            impl is None
+            or not impl.installed
+            or impl.fingerprint() != identity["implementation_sha256"]
+        ):
+            raise ValueError("trusted implementation changed since startup")
         return cap
 
-    def bind(self, spec):
+    def limits_for(self, cap):
+        key = (cap.identity["id"], cap.identity["version"])
+        return (
+            json.loads(self._policies[key]) if key in self._policies else cap.manifest["execution"]
+        )
+
+    def policy_sha256(self, cap):
+        return hashlib.sha256(
+            json_bytes(
+                {
+                    "policy": "capability-policy/v1",
+                    "identity": cap.identity,
+                    "limits": self.limits_for(cap),
+                }
+            )
+        ).hexdigest()
+
+    def grants_for(self, snapshot, *, resources=None):
+        """Trusted owner convenience only; no HTTP or model can publish the resulting grant."""
+        grants = {}
+        for stage_id, binding in snapshot.items():
+            cap = self.recheck(binding["identity"])
+            limits = {
+                k: v
+                for k, v in self.limits_for(cap).items()
+                if k not in {"kind", "side_effects", "retry_policy"}
+            }
+            limits["timeout_seconds"] = min(
+                limits["timeout_seconds"], binding["stage_limits"]["timeout_seconds"]
+            )
+            limits["max_output_tokens"] = min(
+                limits["max_output_tokens"], binding["stage_limits"]["max_output_tokens"]
+            )
+            grants[stage_id] = {
+                "identity": cap.identity,
+                "permissions": cap.manifest["permissions"],
+                "limits": limits,
+                "policy_sha256": self.policy_sha256(cap),
+                "resources": (resources or {}).get(stage_id, {}),
+            }
+        return grants
+
+    def check_grant(self, binding, grant):
+        cap = self.recheck(binding["identity"])
+        expected = self.grants_for({"stage": binding})["stage"]
+        if type(grant) is not dict or set(grant) != set(expected):
+            raise ManifestError("capability grant contract")
+        if (
+            grant["identity"] != expected["identity"]
+            or grant["policy_sha256"] != expected["policy_sha256"]
+        ):
+            raise ManifestError("capability identity or configuration changed")
+        if grant["permissions"] != expected["permissions"]:
+            raise ManifestError("capability permissions not approved")
+        if type(grant["limits"]) is not dict or set(grant["limits"]) != set(expected["limits"]):
+            raise ManifestError("capability grant limits")
+        for key, ceiling in expected["limits"].items():
+            minimum = (
+                1
+                if key
+                in {
+                    "timeout_seconds",
+                    "max_input_bytes",
+                    "max_output_bytes",
+                    "max_input_items",
+                    "max_invocations",
+                }
+                else 0
+            )
+            value = grant["limits"][key]
+            if type(value) is not int or not minimum <= value <= ceiling:
+                raise ManifestError("owner grant cannot widen capability limits")
+        if type(grant["resources"]) is not dict:
+            raise ManifestError("capability resource contract")
+        if (
+            "repository.read" not in permission_bits(cap.manifest["permissions"])
+            and grant["resources"]
+        ):
+            raise ManifestError("undeclared capability resources")
+        return cap
+
+    def bind(self, spec, *, legacy_compatibility=False):
         result = {}
         for stage in spec.stages:
             cap = self.get(stage.operation, getattr(stage, "capability_version", None))
@@ -179,6 +316,25 @@ class CapabilityRegistry:
                 or stage.limits.timeout_seconds > m["execution"]["timeout_seconds"]
             ):
                 raise ManifestError("stage exceeds capability contract")
+            legacy = (
+                legacy_compatibility
+                and stage.operation in LEGACY_OPERATIONS
+                and not stage.capability_version
+                and not stage.capability_sha256
+            )
+            if legacy:
+                # PI-02 registrations checked the DAG's declared contract, not adapter
+                # schemas. Preserve that boundary; runtime still checks BOTH contracts.
+                result[stage.id] = {
+                    "identity": cap.identity,
+                    "manifest": m,
+                    "legacy_contract": True,
+                    "stage_limits": {
+                        "timeout_seconds": stage.limits.timeout_seconds,
+                        "max_output_tokens": stage.limits.max_output_tokens or 0,
+                    },
+                }
+                continue
             for key, field in stage.output_schema.properties.items():
                 if (
                     key not in m["outputs"]["properties"]
@@ -203,11 +359,18 @@ class CapabilityRegistry:
                         raise ManifestError("workflow dependency reference type mismatch")
                 else:
                     validate(value, expected)
-            result[stage.id] = {"identity": cap.identity, "manifest": m}
+            result[stage.id] = {
+                "identity": cap.identity,
+                "manifest": m,
+                "stage_limits": {
+                    "timeout_seconds": stage.limits.timeout_seconds,
+                    "max_output_tokens": stage.limits.max_output_tokens or 0,
+                },
+            }
         return result
 
 
-def load_registry(directory=None, *, disabled=(), snapshots=()):
+def load_registry(directory=None, *, disabled=(), snapshots=(), limits=None):
     roots = [Path(__file__).parent / "manifests"]
     if directory is not None:
         roots.append(Path(directory))
@@ -231,7 +394,7 @@ def load_registry(directory=None, *, disabled=(), snapshots=()):
             if file.name != f"{m.id}@{m.version}.yaml":
                 raise ManifestError("manifest filename identity mismatch")
             manifests.append(m)
-    return CapabilityRegistry(manifests, disabled=disabled, snapshots=snapshots)
+    return CapabilityRegistry(manifests, disabled=disabled, snapshots=snapshots, limits=limits)
 
 
 @lru_cache(maxsize=1)

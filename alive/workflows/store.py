@@ -12,10 +12,10 @@ from importlib import resources
 from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 
+from alive.capabilities.bindings import bind_definition, registry_for
 from alive.models import now, uid
 from alive.workflows import states
 from alive.workflows.models import WorkflowDefinition, WorkflowRun, WorkflowStageRun
-from alive.workflows.operations import OPERATIONS
 from alive.workflows.spec import (
     SCHEMA_VERSION,
     DefinitionError,
@@ -150,11 +150,11 @@ async def register_definition(kernel, raw, *, status="draft", source="admin"):
     Idempotent for identical content; a different definition under an existing (name, version)
     raises WorkflowConflict. An `active` definition must use only operations that can run.
     """
-    spec = parse_definition(raw)
+    spec = parse_definition(raw, operations=registry_for(kernel).operations)
     if status not in ("draft", "active"):
         raise DefinitionError([f"a definition is registered as draft or active, not {status!r}"])
     if status == "active":
-        check_activatable(spec)
+        check_activatable(spec, registry_for(kernel).operations)
     content = canonical_dict(spec)
     digest = definition_sha256(spec)
     for attempt in (1, 2):
@@ -172,6 +172,7 @@ async def register_definition(kernel, raw, *, status="draft", source="admin"):
                             f"{spec.name} v{spec.version} already exists with different content; "
                             "register a new version instead"
                         )
+                    await bind_definition(session, kernel, existing, spec)
                     return definition_view(existing), False
                 row = WorkflowDefinition(
                     id=uid(),
@@ -201,6 +202,7 @@ async def register_definition(kernel, raw, *, status="draft", source="admin"):
                     source="workflow",
                     correlation=row.id,
                 )
+                await bind_definition(session, kernel, row, spec)
                 return definition_view(row), True
         except IntegrityError:
             # Lost a race for the same (name, version): re-read and decide on the winner's bytes.
@@ -217,7 +219,11 @@ async def set_status(kernel, name, version, new_status):
         if new_status not in states.DEFINITION_TRANSITIONS.get(row.status, ()):
             raise WorkflowConflict(f"{row.status} -> {new_status} is not allowed")
         if new_status == "active":
-            check_activatable(parse_definition(row.definition_json))
+            registry = registry_for(kernel)
+            check_activatable(
+                parse_definition(row.definition_json, operations=registry.operations),
+                registry.operations,
+            )
         row.status, row.status_updated_at = new_status, now()
         kernel.add_event(
             session,
@@ -314,6 +320,12 @@ async def get_stage_runs(kernel, run_id):
         run = await session.get(WorkflowRun, run_id)
         if run is None or run.instance_id != kernel.instance_id:
             raise UnknownWorkflow(run_id)
+        from alive.capabilities.bindings import retained
+
+        try:
+            capabilities = await retained(session, kernel, run)
+        except (ValueError, TypeError, KeyError):
+            raise UnknownWorkflow(run_id) from None
         rows = await session.scalars(
             select(WorkflowStageRun)
             .where(WorkflowStageRun.run_id == run_id)
@@ -326,6 +338,11 @@ async def get_stage_runs(kernel, run_id):
         views = []
         for row in rows.all():
             view = stage_view(row)
+            if capabilities:
+                binding = capabilities.get(row.stage_id)
+                if not binding or binding["identity"]["id"] != row.operation:
+                    raise UnknownWorkflow(run_id)
+                view["capability"] = binding["identity"]
             call = (
                 await session.get(ModelInvocation, row.model_invocation_id)
                 if row.model_invocation_id
@@ -508,11 +525,7 @@ async def advance_stage(kernel, run_id, stage_id, new_state, *, attempt=1, **fie
         return stage_view(stage)
 
 
-def operation_listing():
-    from alive.workflows.adapters import ADAPTERS
+def operation_listing(kernel=None):
     from alive.workflows.operations import public_view
 
-    return [
-        public_view(operation) | {"executable": operation.id in ADAPTERS}
-        for operation in OPERATIONS.values()
-    ]
+    return [public_view(operation) for operation in registry_for(kernel).operations.values()]

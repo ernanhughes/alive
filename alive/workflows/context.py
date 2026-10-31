@@ -83,6 +83,8 @@ class Grant(BaseModel):
     # Legacy grants remain readable for forensics; new execution requires provenance.
     context_provenance: ContextProvenance | None = None
     operations: tuple[str, ...] = Field(min_length=1, max_length=16)
+    capability_binding_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    capabilities: dict = Field(default_factory=dict, max_length=32)
     inputs: dict = Field(default_factory=dict, max_length=16)
     configuration_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     models: dict[str, str] = Field(default_factory=dict, max_length=4)
@@ -157,11 +159,14 @@ async def authorized(session, kernel, authorization_id, expected_hash=None):
     )
     definition = await session.get(WorkflowDefinition, grant.definition_id)
     require(definition is not None and definition.status == "active", "active_definition_required")
-    spec = parse_definition(definition.definition_json)
+    from alive.capabilities.bindings import registry_for, verify_authorization
+
+    spec = parse_definition(definition.definition_json, operations=registry_for(kernel).operations)
     require(
         definition_sha256(spec) == grant.definition_sha256 == definition.definition_sha256,
         "definition_integrity",
     )
+    await verify_authorization(session, kernel, definition, spec, grant)
     source = await session.scalar(
         select(Event).where(Event.id == grant.context_event_id).with_for_update()
     )
@@ -241,7 +246,6 @@ async def model_claim(session, kernel, claim, role, context, model, output_limit
         and stage is not None
         and stage.run_id == run.id
         and stage.state == "RUNNING"
-        and stage.operation == "cognition.role"
         and stage.model_invocation_id is None,
         "model_stage_claim_required",
     )
@@ -249,6 +253,13 @@ async def model_claim(session, kernel, claim, role, context, model, output_limit
         session, kernel, execution.authorization_id, execution.authorization_sha256
     )
     selected = next(item for item in spec.stages if item.id == stage.stage_id)
+    capability = grant.capabilities[selected.id]
+    require(
+        capability["identity"]["id"] == stage.operation
+        and capability["identity"]["implementation_id"] == "cognition-role-v1"
+        and capability["limits"]["max_model_calls"] == 1,
+        "model_stage_capability_required",
+    )
     require(
         grant.outbound_approved
         and grant.models.get(role) == model
@@ -262,7 +273,8 @@ async def model_claim(session, kernel, claim, role, context, model, output_limit
     require(stage.input_sha256 == digest({"role": role, "context": context}), "model_input_changed")
     require(
         output_limit <= selected.limits.max_output_tokens <= grant.max_output_tokens
-        and "cognition.role" in grant.operations,
+        and output_limit <= capability["limits"]["max_output_tokens"]
+        and stage.operation in grant.operations,
         "model_output_ceiling",
     )
     return stage
