@@ -452,7 +452,7 @@ def run(mutant, baseline, logs):
             "returncode": done.returncode,
             "command": command,
             "failure": lines[:1],
-            "log": f"{ident}.txt",
+            "log": f"{logs.name}/{ident}.txt",
             "seconds": round(time.monotonic() - started, 3),
         }
 
@@ -475,7 +475,7 @@ if __name__ == "__main__":
     args.output.parent.mkdir(parents=True, exist_ok=True)
     for mutant in mutants:
         if not args.ids or mutant[0] in args.ids:
-            result = run(mutant, baseline, args.output.parent / "mutation-logs")
+            result = run(mutant, baseline, args.output.parent / (args.output.stem + "-logs"))
             receipts.append(result)
             args.output.write_text(json.dumps(receipts, indent=2) + "\n", encoding="utf-8")
             print(

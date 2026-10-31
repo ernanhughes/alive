@@ -111,11 +111,16 @@ function respondAnalysis(row: unknown, report: unknown = analysisReport) {
 }
 it("shows exactly what leaves the machine and offers no way to start before local approval", async () => {
   window.location.hash = "#admission?id=" + analysisPending.id;
-  mock.mockImplementation(respondAnalysis(analysisPending));
+  const current = structuredClone(analysisPending);
+  Object.assign(current.terms.model_disclosure.destination, {
+    endpoint: "https://approved.example:8443/v2/completions",
+  });
+  mock.mockImplementation(respondAnalysis(current));
   render(<AdmissionPane token="token" />);
   await screen.findByText("Disclosure to the model provider");
   expect(screen.getByText(/model call, at most/)).toBeTruthy();
   expect(screen.getByText("Leaves this machine")).toBeTruthy();
+  expect(screen.getByText(/https:\/\/approved\.example:8443\/v2\/completions/)).toBeTruthy();
   expect(screen.getAllByText(/calc\.py/).length).toBeGreaterThan(0);
   expect(
     (

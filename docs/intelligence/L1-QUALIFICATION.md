@@ -64,11 +64,11 @@ completed history is not rewritten. No live or paid inference was used.
 | Analysis end-to-end/adversarial, units, provider destination and gateway tests | 129 passed before the additional reservation/post-fence probes |
 | New reservation integration probes | 3 passed |
 | Direct reservation guard probes with successful controls | 3 passed |
-| Real pinned Pi, scripted upstream: owner-authorized journey and retained-event confidentiality | 2 passed |
-| Owner admission and Pi egress regressions | 55 passed before gateway snapshot; final gateway/egress recheck recorded in delivery |
+| Real pinned Pi, scripted upstream: owner journey, retained-event confidentiality, override disclosure and post-fence substitution | 4 passed after the gateway snapshot |
+| Owner admission and Pi egress regressions | 55 passed; final gateway/parity/egress/post-fence recheck: 64 passed |
 | Dashboard Admission component tests / production build | 7 passed / built |
 | Docker image / disposable PostgreSQL application | Built with pinned Pi 1.4.0; migrations applied and application started |
-| Docker smoke / existing HTTP journey groups | 8 smoke checks / 6 groups passed before gateway snapshot |
+| Docker smoke / existing HTTP journey groups | Rebuilt after gateway snapshot: 8 smoke checks / 6 groups passed |
 | Full backend, PostgreSQL migration suites, dashboard/extensions on final head | Delegated to CI; do not infer green from previous-head CI |
 | Model-backed Admission browser E2E | Not implemented/run; component tests and HTTP journeys do not close this gap |
 | Independent security review | Pending; author probes are not independent approval |
@@ -94,6 +94,21 @@ The first replay uses `9a27056`; direct authority probes use `c15bff5`; the stro
 probe uses `fb19c27`. Each receipt carries its full immutable baseline and exact test command.
 Final dispatch-snapshot mutation and aggregate results are recorded with the delivery evidence.
 All deliberate edits occur in temporary copies. The primary checkout remains clean.
+
+Receipts and losslessly gzip-compressed test logs live in [validation/l1-stage-a](validation/l1-stage-a/).
+Across 33 unique mutants, using the stronger follow-up probes where available: **30 killed,
+2 invalid, 1 equivalent survivor**. M01/M02/M03 now have direct reservation kills, each with
+a passing control before changing one authority term. M25–M29 cover exact endpoint terms,
+effective URL resolution, redirects, unsafe URL shapes and configuration snapshot respectively.
+The first four superseded logs (M01/M02/M03/M27) were overwritten by follow-ups; their original
+JSON outcomes remain, explicitly marked without available original logs. Follow-up logs are
+retained. The harness now uses a distinct log directory per output receipt to prevent that loss.
+
+Production source and dashboard code were last changed at
+`0c268eea2390faa9b945d3ca3c116896987f9030`; subsequent delivery changes concern documentation,
+receipts and mutation-log output naming. Final delivered SHA and CI are recorded on the draft PR.
+The final smoke image is
+`sha256:ef8d3a5fa7987bbe59bf2f894d0646aae94445aeefe3acedd35e2dd75b0de8f4`.
 
 M10b's survivor is equivalent under immutable source approvals: the preparation layer already
 requires disclosure approval; withdrawal/expiry are also checked by the inspect operation.
