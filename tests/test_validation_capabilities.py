@@ -329,3 +329,16 @@ def test_lowered_repository_file_ceiling_is_enforced_with_a_live_control():
     request.limits["max_files"] = 0
     with pytest.raises(Refused, match="validation_file_limit"):
         asyncio.run(adapters.references(request))
+
+
+@pytest.mark.parametrize("field", ["locator", "verification"])
+def test_dependency_identity_distinguishes_json_booleans_and_numbers(field):
+    records = run(source())
+    assert compose(records).validation_status == "passed"
+    forged = copy.deepcopy(records)
+    if field == "locator":
+        forged["findings"][0]["evidence"][0]["locator"]["start"] = True
+    else:
+        forged["validation"]["independent_verification"] = 0
+    with pytest.raises(Refused, match="trusted_validation_dependency_required"):
+        compose(forged, actual=records)

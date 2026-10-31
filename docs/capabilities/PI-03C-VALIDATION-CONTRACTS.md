@@ -79,7 +79,8 @@ not truth in the world or semantic entailment.
 ## Composition and persistence
 
 `report.compose` accepts only records equal to an actual successful dependency from the reviewed
-validation implementations. It preserves findings, source identities, classifications,
+validation implementations, using canonical JSON bytes so booleans cannot impersonate numeric
+locator fields or vice versa. It preserves findings, source identities, classifications,
 observations, omissions and truncation. Report text is capped at 16,384 UTF-8 bytes; exceeding it
 refuses rather than silently dropping findings. Existing capability output-byte enforcement
 also applies. Existing `result.record` retains the resulting artifact; there is no new store.

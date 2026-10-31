@@ -17,6 +17,13 @@ ADAPTER = "alive/validation/adapters.py"
 UNIT = "tests/test_validation_capabilities.py::"
 MUTANTS = [
     (
+        "typed-dependency",
+        ADAPTER,
+        'json_bytes(entry["output"]) == json_bytes({"records": value})',
+        'entry["output"] == {"records": value}',
+        UNIT + "test_dependency_identity_distinguishes_json_booleans_and_numbers[locator]",
+    ),
+    (
         "file-limit",
         ADAPTER,
         'len(items) <= ctx.limits["max_files"]',

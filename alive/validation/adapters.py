@@ -6,6 +6,7 @@ import math
 
 from alive.analysis.contracts import Evidence
 from alive.analysis.validation import check_evidence
+from alive.capabilities.contracts import json_bytes
 from alive.capabilities.repository import relative_path
 from alive.capabilities.source_adapters import provenance, source_id
 from alive.validation.contracts import Batch
@@ -201,13 +202,14 @@ def trusted_records(ctx, value, implementations=VALIDATORS):
         any(
             entry["implementation"] in implementations
             and entry["validation_status"] == "passed"
-            and entry["output"] == {"records": value}
+            and json_bytes(entry["output"]) == json_bytes({"records": value})
             for entry in ctx.dependencies.values()
         ),
         "trusted_validation_dependency_required",
     )
     require(
-        value.get("schema") == "captured-validation/v1" and value["validation"] == taxonomy(),
+        value.get("schema") == "captured-validation/v1"
+        and json_bytes(value["validation"]) == json_bytes(taxonomy()),
         "validation_status_changed",
     )
 
