@@ -2,8 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import { ApiError, request } from "../api";
 import type { Goal } from "../api";
 import { WorkflowGraph } from "../workflows/WorkflowGraph";
-import { admissionRef, checkedAdmission } from "./contracts";
-import type { Admission, Profile, Source } from "./contracts";
+import { PROFILE_LIMITS, admissionRef, checkedAdmission } from "./contracts";
+import type {
+  Admission,
+  Profile,
+  ProfileName,
+  Report,
+  Source,
+} from "./contracts";
 import "../workflows/workflows.css";
 import "./admission.css";
 
@@ -15,6 +21,10 @@ function OwnerAdmission({ token }: { token: string }) {
   const [sources, setSources] = useState<Source[]>([]);
   const [goals, setGoals] = useState<Goal[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
+  const [profileName, setProfileName] = useState<ProfileName>(
+    "approved-repository-inspection",
+  );
+  const [report, setReport] = useState<Report | null>(null);
   const [profileError, setProfileError] = useState("");
   const [history, setHistory] = useState<Admission[]>([]);
   const [sourceRef, setSourceRef] = useState("");
@@ -91,7 +101,7 @@ function OwnerAdmission({ token }: { token: string }) {
     setProfileError("");
     Promise.allSettled([
       request<{ sources: Source[] }>(
-        "/admissions/sources",
+        "/admissions/sources?profile=" + profileName,
         token,
         undefined,
         "GET",
@@ -99,7 +109,7 @@ function OwnerAdmission({ token }: { token: string }) {
       ),
       request<Goal[]>("/goals", token, undefined, "GET", c.signal),
       request<Profile>(
-        "/admissions/profile",
+        "/admissions/profile?profile=" + profileName,
         token,
         undefined,
         "GET",
@@ -151,7 +161,7 @@ function OwnerAdmission({ token }: { token: string }) {
       c.abort();
       controllers.current.delete(c);
     };
-  }, [token, revision]);
+  }, [token, revision, profileName]);
 
   useEffect(() => {
     const version = ++generation.current;
@@ -218,6 +228,34 @@ function OwnerAdmission({ token }: { token: string }) {
     };
   }, [selectedId, starting, cancelling, selected?.run?.terminal, token]);
 
+  useEffect(() => {
+    setReport(null);
+    if (
+      !selectedId ||
+      selected?.id !== selectedId ||
+      selected.terms.profile !== "approved-repository-analysis" ||
+      selected.run?.status !== "COMPLETED"
+    )
+      return;
+    const c = controller();
+    request<Report>(
+      `/admissions/${encodeURIComponent(selectedId)}/report`,
+      token,
+      undefined,
+      "GET",
+      c.signal,
+    )
+      .then((value) => {
+        if (!c.signal.aborted && value.admission_id === selectedId)
+          setReport(value);
+      })
+      .catch(failed);
+    return () => {
+      c.abort();
+      controllers.current.delete(c);
+    };
+  }, [selectedId, selected?.id, selected?.run?.status, token]);
+
   const source = sources.find((s) => s.approval_ref === sourceRef);
   const allowed =
     source?.inventory.items.filter(
@@ -227,6 +265,7 @@ function OwnerAdmission({ token }: { token: string }) {
     (total, item) => total + (item.bytes || 0),
     0,
   );
+  const limits = PROFILE_LIMITS[profileName];
   const canPrepare =
     !!profile &&
     !!source &&
@@ -234,9 +273,9 @@ function OwnerAdmission({ token }: { token: string }) {
     goals.some((g) => g.id === goalRef) &&
     !!outcome.trim() &&
     paths.length > 0 &&
-    paths.length <= 20 &&
+    paths.length <= limits.files &&
     paths.length === allowed.length &&
-    sourceBytes <= 32768 &&
+    sourceBytes <= limits.bytes &&
     !starting &&
     !cancelling &&
     paths.every((path) => allowed.some((item) => item.item === path)) &&
@@ -246,6 +285,7 @@ function OwnerAdmission({ token }: { token: string }) {
   async function prepare() {
     if (!canPrepare || !profile) return;
     const body = {
+      profile: profileName,
       goal_ref: goalRef,
       approval_ref: sourceRef,
       recipe_sha256: profile.recipe_sha256,
@@ -337,6 +377,7 @@ function OwnerAdmission({ token }: { token: string }) {
     window.location.hash = "#admission?";
   }
   const grant = selected?.terms.proposed_grant_data;
+  const disclosure = selected?.terms.model_disclosure;
   const readPaths = grant?.inputs?.paths || selected?.terms.paths || [];
   const canStart =
     selected?.authorization_state === "approved" &&
@@ -387,6 +428,26 @@ function OwnerAdmission({ token }: { token: string }) {
             </p>
           )}
           <label>
+            Procedure
+            <select
+              value={profileName}
+              onChange={(e) => {
+                draftGeneration.current++;
+                setCreating(false);
+                setSourceRef("");
+                setPaths([]);
+                setProfileName(e.target.value as ProfileName);
+              }}
+            >
+              <option value="approved-repository-inspection">
+                Inspect captured files (no model)
+              </option>
+              <option value="approved-repository-analysis">
+                Analyze with one model call (sends code to the model provider)
+              </option>
+            </select>
+          </label>
+          <label>
             Approved repository capture
             <select
               value={sourceRef}
@@ -413,24 +474,30 @@ function OwnerAdmission({ token }: { token: string }) {
               <p>Source approval expires: {source.expires_at}</p>
               <p>
                 Select every file in this source approval. To inspect fewer
-                files, narrow the approval locally first. Maximum: 20 files and
-                32,768 bytes.
+                files, narrow the approval locally first. Maximum:{" "}
+                {limits.files} files and {limits.bytes.toLocaleString("en-US")}{" "}
+                bytes.
+                {limits.model &&
+                  " This capture must also be approved locally for disclosure to the model (operation repository.analyze)."}
               </p>
-              {sourceBytes > 32768 && (
+              {sourceBytes > limits.bytes && (
                 <p role="alert">
                   This approved capture exceeds the inspection byte ceiling.
                   Prepare a narrower source approval.
                 </p>
               )}
               <fieldset>
-                <legend>Exact files to read ({paths.length}/20)</legend>
+                <legend>
+                  Exact files to read ({paths.length}/{limits.files})
+                </legend>
                 {allowed.map((item) => (
                   <label className="admission-file" key={item.item}>
                     <input
                       type="checkbox"
                       checked={paths.includes(item.item)}
                       disabled={
-                        !paths.includes(item.item) && paths.length >= 20
+                        !paths.includes(item.item) &&
+                        paths.length >= limits.files
                       }
                       onChange={(e) => {
                         draftGeneration.current++;
@@ -483,11 +550,21 @@ function OwnerAdmission({ token }: { token: string }) {
               }}
             />
           </label>
-          <p>
-            This profile reads captured files only. It requests no model
-            inference, no outbound calls, and at most 30 seconds of execution.
-            Review expiry: 5 minutes.
-          </p>
+          {limits.model ? (
+            <p role="note">
+              This procedure makes one model call. The exact files you select
+              are sent, as text, to the model provider shown in the review, and
+              the prompt and response are retained in clear text in the local
+              database. Cost is not estimated. It needs a started Meta
+              cognition. Review expiry: 5 minutes.
+            </p>
+          ) : (
+            <p>
+              This profile reads captured files only. It requests no model
+              inference, no outbound calls, and at most 30 seconds of execution.
+              Review expiry: 5 minutes.
+            </p>
+          )}
           <button onClick={prepare} disabled={!canPrepare}>
             Prepare exact review
           </button>
@@ -610,16 +687,68 @@ function OwnerAdmission({ token }: { token: string }) {
                 <p className="admission-digest">
                   Capability binding: {selected.terms.candidate.binding_sha256}
                 </p>
-                <p>
-                  Model calls: 0. Model output tokens: 0. Outbound calls: none.
-                  Execution ceiling: {grant.wall_seconds} seconds.
-                </p>
-                <p>
-                  Expires: {grant.expires_at}. Expected output: captured files
-                  with source identity and provenance. Capture and reference
-                  identity do not establish semantic truth or implementation
-                  quality.
-                </p>
+                {disclosure ? (
+                  <>
+                    <h4>Disclosure to the model provider</h4>
+                    <dl>
+                      <div>
+                        <dt>Destination</dt>
+                        <dd>
+                          {disclosure.destination.provider} (
+                          {disclosure.destination.host ?? "host unknown"}) ·
+                          model {disclosure.destination.model} · via{" "}
+                          {disclosure.destination.transport}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>Leaves this machine</dt>
+                        <dd>
+                          Yes: {disclosure.files.map((f) => f.path).join(", ")}{" "}
+                          ({disclosure.source_bytes} bytes)
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>Limits</dt>
+                        <dd>
+                          {disclosure.max_model_calls} model call, at most{" "}
+                          {disclosure.max_output_tokens} output tokens, request
+                          reservation {disclosure.reserved_request_bytes}
+                        </dd>
+                      </div>
+                      <div>
+                        <dt>Cost</dt>
+                        <dd>{disclosure.cost}</dd>
+                      </div>
+                      <div>
+                        <dt>Cancellation</dt>
+                        <dd>{disclosure.cancellation}</dd>
+                      </div>
+                      <div>
+                        <dt>Retention</dt>
+                        <dd>{disclosure.retention}</dd>
+                      </div>
+                    </dl>
+                    <p>
+                      Execution ceiling: {grant.wall_seconds} seconds. Expires:{" "}
+                      {grant.expires_at}. Findings are model assessments; cited
+                      lines are checked for existence only, and nothing is
+                      verified.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      Model calls: 0. Model output tokens: 0. Outbound calls:
+                      none. Execution ceiling: {grant.wall_seconds} seconds.
+                    </p>
+                    <p>
+                      Expires: {grant.expires_at}. Expected output: captured
+                      files with source identity and provenance. Capture and
+                      reference identity do not establish semantic truth or
+                      implementation quality.
+                    </p>
+                  </>
+                )}
               </div>
               <h4>Confirm on the owner machine</h4>
               <p>
@@ -666,6 +795,22 @@ function OwnerAdmission({ token }: { token: string }) {
                   </a>
                   . Task quality remains unverified.
                 </p>
+              )}
+              {report && (
+                <section aria-label="Analysis report">
+                  <h4>Analysis report</h4>
+                  <p>
+                    Citations that match the captured files:{" "}
+                    {report.assessment.findings_with_valid_references} of{" "}
+                    {report.assessment.findings_total}. Independent
+                    verification: none. Model {report.usage.model} ·{" "}
+                    {report.usage.model_calls} call · status{" "}
+                    {report.usage.status} · {report.usage.cost}
+                  </p>
+                  <pre className="admission-report">
+                    {report.result.report_markdown}
+                  </pre>
+                </section>
               )}
             </>
           )}

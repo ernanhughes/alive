@@ -65,7 +65,7 @@ def test_authenticated_catalogue_and_no_execution_route(client):
     assert TestClient(client.app).get(BASE + "/recipes").status_code == 401
     body = client.get(BASE + "/recipes").json()
     assert not body["execution_available"]
-    assert len(body["recipes"]) == 6
+    assert len(body["recipes"]) == 7  # L1-02 adds approved-repository-analysis
     assert all(r["status"] == "unavailable" for r in body["recipes"])
     scientific = next(r for r in body["recipes"] if r["recipe"]["id"] == "scientific-document")
     # PI-03B provides document.extract, so the capability is no longer missing. The recipe is still

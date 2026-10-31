@@ -297,6 +297,35 @@ _BUILTINS["browser-source-v1"] = _source_implementation(
 _BUILTINS["collection-retriever-v1"] = _source_implementation(
     "collection-retriever-v1", "retrieve_collection"
 )
+_ANALYSIS_FILES = (
+    "alive/analysis/adapters.py",
+    "alive/analysis/contracts.py",
+    "alive/analysis/context.py",
+)
+# L1-02. The analyst makes the one model call; it holds both the source-disclosure bit and the
+# model bit, so its own custody check names the `repository.analyze` operation.
+_BUILTINS["repository-analyst-v1"] = TrustedImplementation(
+    "repository-analyst-v1",
+    "pi_agent",
+    "none",
+    "alive.analysis.adapters:analyze",
+    "alive.analysis.adapters:analyze",
+    None,
+    frozenset({"model.infer", "source.read"}),
+    _ANALYSIS_FILES,
+    traits=frozenset({"model.role"}),
+)
+_BUILTINS["repository-findings-validator-v1"] = TrustedImplementation(
+    "repository-findings-validator-v1",
+    "validation",
+    "none",
+    "alive.analysis.adapters:validate_findings",
+    "alive.analysis.adapters:validate_findings",
+    None,
+    frozenset(),
+    (*_ANALYSIS_FILES, "alive/analysis/validation.py", "alive/analysis/report.py"),
+    traits=frozenset({"validation.independent"}),
+)
 TRUSTED = MappingProxyType(_BUILTINS)
 
 

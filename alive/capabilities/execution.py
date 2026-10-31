@@ -59,7 +59,7 @@ async def invoke(registry, binding, grant, context):
             "capability_model_ceiling",
         )
     call_context = replace(context, capability=cap.identity, resources=resources)
-    if resources is not None:
+    if resources is not None and manifest["execution"]["kind"] != "pi_agent":
         call_context = ReadCapabilityContext(
             context.run_id,
             context.stage_id,

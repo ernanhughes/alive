@@ -1,9 +1,12 @@
-from fastapi import APIRouter, Depends, HTTPException, Path
+from typing import Literal
+
+from fastapi import APIRouter, Depends, HTTPException, Path, Query
 from sqlalchemy import select
 
 from alive.admission import service
 from alive.admission.contracts import Confirmation, ReviewRequest
 from alive.admission.models import Admission
+from alive.admission.profiles import PROFILES
 from alive.bespoke.recipes import recipe_hash
 from alive.sources import custody
 from alive.sources.models import SourceApproval, SourceCapture
@@ -20,14 +23,22 @@ def router(app, ready):
                 409, "Admission unavailable, unapproved, expired or changed"
             ) from None
 
+    ProfileName = Literal["approved-repository-inspection", "approved-repository-analysis"]
+
     @api.get("/profile")
-    async def profile():
-        recipe = service.recipe_for(app.state.kernel)
-        return {"recipe": recipe.model_dump(mode="json"), "recipe_sha256": recipe_hash(recipe)}
+    async def profile(profile: ProfileName = Query("approved-repository-inspection")):
+        recipe = service.recipe_for(app.state.kernel, profile)
+        return {
+            "profile": profile,
+            "model_call": PROFILES[profile].model,
+            "recipe": recipe.model_dump(mode="json"),
+            "recipe_sha256": recipe_hash(recipe),
+        }
 
     @api.get("/sources")
-    async def sources():
+    async def sources(profile: ProfileName = Query("approved-repository-inspection")):
         kernel = app.state.kernel
+        needed = set(PROFILES[profile].source_operations)
         async with kernel.db.sessions() as session:
             rows = await session.execute(
                 select(SourceApproval, SourceCapture)
@@ -55,7 +66,7 @@ def router(app, ready):
                         "expires_at": a.expires_at.isoformat(),
                     }
                     for a, c in rows
-                    if service.aware(a.expires_at) > service.now()
+                    if service.aware(a.expires_at) > service.now() and needed <= set(a.operations)
                 ]
             }
 
@@ -80,6 +91,10 @@ def router(app, ready):
     @api.get("/{admission_id}")
     async def detail(admission_id: str = Path(max_length=36)):
         return await safe(service.get(app.state.kernel, admission_id))
+
+    @api.get("/{admission_id}/report")
+    async def report(admission_id: str = Path(max_length=36)):
+        return await safe(service.report(app.state.kernel, admission_id))
 
     @api.post("/{admission_id}/start")
     async def start(request: Confirmation, admission_id: str = Path(max_length=36)):

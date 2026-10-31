@@ -29,12 +29,14 @@ SOURCE_CAPABILITIES = {
     "browser.prepare-source@1.0.0",
     "retrieval.approved-collection@1.0.0",
 }
+# L1-02 adds new identities; it changes none of the above.
+ANALYSIS_CAPABILITIES = {"repository.analyze@1.0.0", "repository.validate_findings@1.0.0"}
 
 
 def test_every_earlier_manifest_keeps_its_exact_hash():
     found = {f"{c.identity['id']}@{c.identity['version']}": c for c in default_registry().list()}
     assert {k: found[k].manifest_sha256 for k in PRE_EXISTING} == PRE_EXISTING
-    assert set(found) == set(PRE_EXISTING) | SOURCE_CAPABILITIES
+    assert set(found) == set(PRE_EXISTING) | SOURCE_CAPABILITIES | ANALYSIS_CAPABILITIES
 
 
 def declared(path="context.prepare@1.0.0.yaml", **permissions):

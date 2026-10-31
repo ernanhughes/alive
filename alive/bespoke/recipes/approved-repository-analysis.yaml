@@ -1,0 +1,54 @@
+schema_version: 1
+id: approved-repository-analysis
+version: 1.0.0
+name: Approved repository analysis
+description: Review the exact owner-approved repository capture for the stated objective with
+  one governed model call, then check every citation against the capture. The owner approves the
+  model destination and the disclosure of the source separately. Findings are model assessments,
+  not verified facts.
+context_types:
+- repository
+intents:
+- inspect_implementation
+workflow:
+  name: owner-repository-analysis
+  version: 1
+  definition_sha256: e83c8f892f0d50585ba7b4f6298bc62321587556f6599a98c2911e80a3c95d21
+capabilities:
+- stage_id: read
+  id: repository.inspect
+  version: 1.1.0
+  manifest_sha256: f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d
+- stage_id: analyze
+  id: repository.analyze
+  version: 1.0.0
+  manifest_sha256: 56b6125f0d0bb1e966ded65ad680b3b3e3827823bddd92900c9962d1588ddffe
+- stage_id: validate
+  id: repository.validate_findings
+  version: 1.0.0
+  manifest_sha256: ebb0a26fcfeb35619978d65a546f97ab13d2087fe5a6a54b89b6fe8d0fabae38
+- stage_id: record
+  id: result.record
+  version: 1.0.0
+  manifest_sha256: 9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca
+limits:
+  max_model_calls: 1
+  max_wall_seconds: 180
+  max_output_tokens: 1536
+  outbound_allowed: true
+  permissions:
+  - evidence.read
+  - model.infer
+  - source.read
+  - workflow.write
+required_evidence: approved_capture
+output_artifact: workflow_result
+validation: reference_identity
+status: active
+presentation:
+  category: bespoke
+  icon: search-code
+  tags:
+  - source
+  - model
+  - owner-review

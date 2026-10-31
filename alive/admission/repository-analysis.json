@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "name": "owner-repository-analysis",
+  "version": 1,
+  "title": "Approved repository analysis",
+  "description": "Read the exact owner-approved captured files, make one governed model call to review them for the owner's objective, check every citation against the capture, and retain the report.",
+  "inputs": {
+    "source_ref": {
+      "type": "string"
+    },
+    "paths": {
+      "type": "array"
+    },
+    "objective": {
+      "type": "string"
+    }
+  },
+  "limits": {
+    "max_wall_seconds": 180,
+    "max_model_calls": 1,
+    "max_total_output_tokens": 1536
+  },
+  "stages": [
+    {
+      "id": "read",
+      "title": "Read approved captured files",
+      "type": "deterministic",
+      "operation": "repository.inspect",
+      "capability_version": "1.1.0",
+      "capability_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d",
+      "inputs": {
+        "source_ref": "$input.source_ref",
+        "paths": "$input.paths",
+        "mode": "read"
+      },
+      "output_schema": {
+        "properties": {
+          "entries": {
+            "type": "array"
+          },
+          "files": {
+            "type": "array"
+          },
+          "limits_applied": {
+            "type": "object"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "omitted": {
+            "type": "array"
+          },
+          "provenance": {
+            "type": "object"
+          },
+          "scoped_sha256": {
+            "type": "string"
+          },
+          "semantic_status": {
+            "type": "string"
+          },
+          "source_ref": {
+            "type": "string"
+          },
+          "source_sha256": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "entries",
+          "files",
+          "limits_applied",
+          "mode",
+          "omitted",
+          "provenance",
+          "scoped_sha256",
+          "semantic_status",
+          "source_ref",
+          "source_sha256"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      }
+    },
+    {
+      "id": "analyze",
+      "title": "Model review of approved files",
+      "type": "pi_agent",
+      "operation": "repository.analyze",
+      "capability_version": "1.0.0",
+      "capability_sha256": "56b6125f0d0bb1e966ded65ad680b3b3e3827823bddd92900c9962d1588ddffe",
+      "inputs": {
+        "source_ref": "$stage.read.source_ref",
+        "source_sha256": "$stage.read.source_sha256",
+        "scoped_sha256": "$stage.read.scoped_sha256",
+        "objective": "$input.objective",
+        "files": "$stage.read.files",
+        "omitted": "$stage.read.omitted"
+      },
+      "output_schema": {
+        "properties": {
+          "analysis": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "analysis"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 120,
+        "max_output_tokens": 1536
+      },
+      "depends_on": [
+        "read"
+      ]
+    },
+    {
+      "id": "validate",
+      "title": "Check citations against the capture",
+      "type": "validation",
+      "operation": "repository.validate_findings",
+      "capability_version": "1.0.0",
+      "capability_sha256": "ebb0a26fcfeb35619978d65a546f97ab13d2087fe5a6a54b89b6fe8d0fabae38",
+      "inputs": {
+        "source_ref": "$stage.read.source_ref",
+        "source_sha256": "$stage.read.source_sha256",
+        "scoped_sha256": "$stage.read.scoped_sha256",
+        "objective": "$input.objective",
+        "files": "$stage.read.files",
+        "omitted": "$stage.read.omitted",
+        "analysis": "$stage.analyze.analysis"
+      },
+      "output_schema": {
+        "properties": {
+          "result": {
+            "type": "object"
+          },
+          "assessment": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "result",
+          "assessment"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      },
+      "depends_on": [
+        "analyze"
+      ]
+    },
+    {
+      "id": "record",
+      "title": "Retain the validated report",
+      "type": "deterministic",
+      "operation": "result.record",
+      "capability_version": "1.0.0",
+      "capability_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+      "inputs": {
+        "result": "$stage.validate.result",
+        "assessment": "$stage.validate.assessment"
+      },
+      "output_schema": {
+        "properties": {
+          "artifact_id": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "sha256"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      },
+      "depends_on": [
+        "validate"
+      ]
+    }
+  ]
+}
