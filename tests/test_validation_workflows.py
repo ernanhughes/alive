@@ -233,3 +233,15 @@ def test_validation_source_cannot_cross_instances(client):
             await custody.resolve(foreign, approval["resources"], "evidence.verify-locators")
 
     call(client, scenario)
+
+
+def test_disabling_the_new_contract_does_not_change_an_old_implicit_binding():
+    from alive.capabilities.registry import load_registry
+    from alive.workflows.examples import definition as old
+    from alive.workflows.spec import parse_definition
+
+    registry = load_registry(disabled=("evidence.validate_references@1.1.0",))
+    assert not registry.get("evidence.validate_references", "1.1.0").executable
+    assert registry.get("evidence.validate_references", "1.0.0").executable
+    spec = parse_definition(old(model=True), operations=registry.operations)
+    assert registry.bind(spec)["validate"]["identity"]["version"] == "1.0.0"

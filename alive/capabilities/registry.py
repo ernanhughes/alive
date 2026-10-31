@@ -141,6 +141,15 @@ class CapabilityRegistry:
             if len({v.manifest["execution"]["kind"] for v in versions}) != 1:
                 raise ManifestError("an operation id cannot change kind across versions")
             cap = max(versions, key=lambda v: tuple(map(int, v.manifest["version"].split("."))))
+            original = entries.get((ident, "1.0.0"))
+            if (
+                original is not None
+                and original.identity["implementation_id"]
+                in LEGACY_IMPLEMENTATION_BY_OPERATION.values()
+            ):
+                # The PI-02 compatibility projection must describe the same original contract
+                # bind() selects. Disabling only a newer explicit version cannot revoke 1.0.0.
+                cap = original
             m = cap.manifest
             impl = implementations.get(m["implementation"]["id"])
             binding = impl.legacy_binding if impl else None
