@@ -80,8 +80,10 @@ export async function request<T>(
   token: string,
   body?: unknown,
   method?: string,
+  signal?: AbortSignal,
 ): Promise<T> {
   const response = await fetch(base + "/api/v1" + path, {
+    signal,
     method: method || (body === undefined ? "GET" : "POST"),
     headers: {
       Authorization: "Bearer " + token,
