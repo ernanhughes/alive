@@ -32,15 +32,27 @@ DEMO = {
             "title": "Prepare",
             "type": "deterministic",
             "operation": "context.prepare",
-            "output_schema": {"properties": {"snapshot": {"type": "object"}}},
+            # Matches the capability manifest: a new definition must meet the full contract.
+            "output_schema": {
+                "properties": {
+                    "context": {"type": "object"},
+                    "claims": {"type": "array"},
+                    "sources": {"type": "array"},
+                },
+                "required": ["context", "claims", "sources"],
+            },
         },
         {
             "id": "check",
             "title": "Check",
             "type": "validation",
-            "operation": "evidence.validate_references",
+            "operation": "evidence.evaluate",
             "depends_on": ["prepare"],
-            "output_schema": {"properties": {"valid": {"type": "boolean"}}},
+            "inputs": {"claims": "$stage.prepare.claims", "sources": "$stage.prepare.sources"},
+            "output_schema": {
+                "properties": {"result": {"type": "object"}, "assessment": {"type": "object"}},
+                "required": ["result", "assessment"],
+            },
         },
     ],
 }
