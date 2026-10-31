@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "name": "repository-inspection",
+  "version": 1,
+  "title": "Repository inspection",
+  "inputs": {
+    "repository_ref": {
+      "type": "string"
+    },
+    "paths": {
+      "type": "array"
+    }
+  },
+  "limits": {
+    "max_wall_seconds": 120,
+    "max_model_calls": 0,
+    "max_total_output_tokens": 0
+  },
+  "stages": [
+    {
+      "id": "inspect",
+      "title": "Inspect",
+      "type": "deterministic",
+      "operation": "repository.inspect",
+      "depends_on": [],
+      "inputs": {
+        "repository_ref": "$input.repository_ref",
+        "paths": "$input.paths"
+      },
+      "output_schema": {
+        "properties": {
+          "repository_ref": {
+            "type": "string"
+          },
+          "snapshot_sha256": {
+            "type": "string"
+          },
+          "captured_at": {
+            "type": "string"
+          },
+          "files": {
+            "type": "array"
+          },
+          "omitted": {
+            "type": "array"
+          },
+          "provenance": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "repository_ref",
+          "snapshot_sha256",
+          "captured_at",
+          "files",
+          "omitted",
+          "provenance"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      }
+    }
+  ]
+}

@@ -35,6 +35,7 @@ import type { BrowserObservation } from "./BrowserProvenance";
 import { LivingPane } from "./Living";
 import { DemoTourPane } from "./DemoTour";
 import { WorkflowsPane } from "./workflows/WorkflowsPane";
+import { BespokePane } from "./bespoke/BespokePane";
 import { CapabilitiesPane } from "./capabilities/CapabilitiesPane";
 import { useDashboardAuth } from "./useDashboardAuth";
 
@@ -50,6 +51,7 @@ const tabs = [
   "Cognition",
   "Workflows",
   "Capabilities",
+  "Bespoke",
 ] as const;
 type Tab = (typeof tabs)[number];
 const icons = [
@@ -64,6 +66,7 @@ const icons = [
   BrainCircuit,
   Waypoints,
   Blocks,
+  BrainCircuit,
 ];
 const time = (s: string | null | undefined) =>
   s ? new Date(s).toLocaleTimeString("en-GB") : "Awaiting heartbeat";
@@ -106,12 +109,17 @@ export function App() {
       ? "Workflows"
       : window.location.hash.startsWith("#capabilities?")
         ? "Capabilities"
-        : "Overview",
+        : window.location.hash.startsWith("#bespoke?")
+          ? "Bespoke"
+          : "Overview",
   );
   useEffect(() => {
     // Observatory links to a retained capability identity switch to the catalogue pane.
     const onHash = () => {
-      if (window.location.hash.startsWith("#capabilities?")) setTab("Capabilities");
+      if (window.location.hash.startsWith("#capabilities?"))
+        setTab("Capabilities");
+      if (window.location.hash.startsWith("#bespoke?")) setTab("Bespoke");
+      if (window.location.hash.startsWith("#workflows?")) setTab("Workflows");
     };
     window.addEventListener("hashchange", onHash);
     return () => window.removeEventListener("hashchange", onHash);
@@ -359,28 +367,36 @@ export function App() {
           <div className="page-heading">
             <div>
               <div className="eyebrow">
-                {tab === "Workflows" ? "ALIVE-PI-02C / WORKFLOW OBSERVATORY" : tab === "Demonstration" ? "ALIVE / GUIDED DEMONSTRATION" : tab === "Living" ? "ALIVE-04 / CONTINUING EXPERIENCE" : tab === "Cognition"
-                  ? "ALIVE-02 / COGNITIVE SOCIETY"
-                  : "ALIVE-01 / FIRST CONTACT"}
+                {tab === "Workflows"
+                  ? "ALIVE-PI-02C / WORKFLOW OBSERVATORY"
+                  : tab === "Demonstration"
+                    ? "ALIVE / GUIDED DEMONSTRATION"
+                    : tab === "Living"
+                      ? "ALIVE-04 / CONTINUING EXPERIENCE"
+                      : tab === "Cognition"
+                        ? "ALIVE-02 / COGNITIVE SOCIETY"
+                        : "ALIVE-01 / FIRST CONTACT"}
               </div>
               <h1>
-                {tab === "Workflows" ? "Execution, made inspectable." : tab === "Overview"
-                  ? "Something is becoming."
-                  : tab === "Demonstration"
-                    ? "Evidence, remembered and withdrawn."
-                    : tab === "Living"
-                      ? "The living experience."
-                      : tab === "Live events"
-                        ? "The stream of experience."
-                        : tab === "Memory"
-                          ? "Experience, remembered."
-                          : tab === "Agents"
-                            ? "Thought into action."
-                            : tab === "Browser"
-                              ? "A window to the world."
-                              : tab === "Cognition"
-                                ? "Evidence becomes intention."
-                                : "A persistent presence."}
+                {tab === "Workflows"
+                  ? "Execution, made inspectable."
+                  : tab === "Overview"
+                    ? "Something is becoming."
+                    : tab === "Demonstration"
+                      ? "Evidence, remembered and withdrawn."
+                      : tab === "Living"
+                        ? "The living experience."
+                        : tab === "Live events"
+                          ? "The stream of experience."
+                          : tab === "Memory"
+                            ? "Experience, remembered."
+                            : tab === "Agents"
+                              ? "Thought into action."
+                              : tab === "Browser"
+                                ? "A window to the world."
+                                : tab === "Cognition"
+                                  ? "Evidence becomes intention."
+                                  : "A persistent presence."}
               </h1>
               <p>
                 {tab === "Demonstration"
@@ -392,18 +408,24 @@ export function App() {
                       : "Inspect the real state of your local ALIVE runtime."}
               </p>
             </div>
-            {tab !== "Workflows" && <button
-              disabled={busy || !state || !token}
-              className="primary"
-              onClick={() =>
-                act(() =>
-                  request("/alive/" + (running ? "stop" : "start"), token, {}),
-                )
-              }
-            >
-              {running ? <Pause size={15} /> : <Play size={15} />}{" "}
-              {running ? "Suspend runtime" : "Start runtime"}
-            </button>}
+            {tab !== "Workflows" && (
+              <button
+                disabled={busy || !state || !token}
+                className="primary"
+                onClick={() =>
+                  act(() =>
+                    request(
+                      "/alive/" + (running ? "stop" : "start"),
+                      token,
+                      {},
+                    ),
+                  )
+                }
+              >
+                {running ? <Pause size={15} /> : <Play size={15} />}{" "}
+                {running ? "Suspend runtime" : "Start runtime"}
+              </button>
+            )}
           </div>
           {!token && (
             <form
@@ -968,7 +990,10 @@ export function App() {
           )}
           {tab === "Cognition" && token && <CognitionPane token={token} />}
           {tab === "Workflows" && token && <WorkflowsPane token={token} />}
-          {tab === "Capabilities" && token && <CapabilitiesPane token={token} />}
+          {tab === "Capabilities" && token && (
+            <CapabilitiesPane token={token} />
+          )}
+          {tab === "Bespoke" && token && <BespokePane token={token} />}
           {tab === "Demonstration" && token && <DemoTourPane token={token} />}
           {tab === "Living" && token && <LivingPane token={token} />}
           <footer>

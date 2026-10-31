@@ -14,6 +14,8 @@ from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy import func, literal_column, select
 
 from alive.agents import Agents
+from alive.bespoke.api import router as bespoke_router
+from alive.bespoke.recipes import load_catalogue
 from alive.browser import Browsers
 from alive.capabilities.api import router as capability_router
 from alive.cognition import Cognition
@@ -89,6 +91,12 @@ def create_app(settings=None, include_experiments=None, *, capability_registry=N
         await transport.start()
         kernel = Kernel(db, transport, settings)
         kernel.capabilities = capability_registry
+
+        async def model_provider_ready():
+            # Reuse the existing credential-blind capability probe; the selector receives a bool.
+            return (await capabilities())["providers"]["meta"]["configured"]
+
+        kernel.model_provider_ready = model_provider_ready
         await kernel.initialize()
         transport.task.add_done_callback(kernel.background_completed)
         app.state.kernel = kernel
@@ -142,6 +150,7 @@ def create_app(settings=None, include_experiments=None, *, capability_registry=N
 
     app = FastAPI(title="ALIVE", version="0.2.0", lifespan=lifespan)
     app.state.capabilities = capability_registry
+    app.state.bespoke_recipes = load_catalogue()
 
     @app.get("/demo-live-01/{name}", include_in_schema=False)
     async def demo_live_mirror(name: str):
@@ -237,6 +246,7 @@ def create_app(settings=None, include_experiments=None, *, capability_registry=N
     app.include_router(pi_router(app, ready))
     app.include_router(workflow_router(app, ready, pi_receipt))
     app.include_router(capability_router(app, ready))
+    app.include_router(bespoke_router(app, ready))
     app.include_router(intelligence_router(app, ready))
     app.include_router(living_world_router(app))
     app.include_router(public_router(app))

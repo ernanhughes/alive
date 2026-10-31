@@ -1,0 +1,46 @@
+schema_version: 1
+id: controlled-comparison
+version: 1.0.0
+name: Source comparison
+description: Compare claims with controlled sources; does not verify truth in the
+  world.
+context_types:
+- controlled_evidence
+intents:
+- compare_claims
+- assess_claims
+workflow:
+  name: source-comparison
+  version: 1
+  definition_sha256: 4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d
+capabilities:
+- stage_id: prepare
+  id: context.prepare
+  version: 1.0.0
+  manifest_sha256: f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed
+- stage_id: compare
+  id: evidence.evaluate
+  version: 1.0.0
+  manifest_sha256: ae3b17d36c23e592a203d4319cf2296a966e752b1c818d4236b5d48dfada8032
+- stage_id: record
+  id: result.record
+  version: 1.0.0
+  manifest_sha256: 9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca
+limits:
+  max_model_calls: 0
+  max_wall_seconds: 120
+  max_output_tokens: 0
+  outbound_allowed: false
+  permissions:
+  - evidence.read
+  - workflow.write
+required_evidence: claims_and_sources
+output_artifact: workflow_result
+validation: controlled_comparison
+status: active
+presentation:
+  category: bespoke
+  icon: layers
+  tags:
+  - bounded
+  - governed

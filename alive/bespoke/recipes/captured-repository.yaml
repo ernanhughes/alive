@@ -1,0 +1,35 @@
+schema_version: 1
+id: captured-repository
+version: 1.0.0
+name: Repository inspection
+description: Inspect approved captured files only; no code review or semantic verification.
+context_types:
+- repository
+intents:
+- inspect_implementation
+workflow:
+  name: repository-inspection
+  version: 1
+  definition_sha256: 133dceeb47193544a46c205cc366f58af9839016156c683e328776403ab749bf
+capabilities:
+- stage_id: inspect
+  id: repository.inspect
+  version: 1.0.0
+  manifest_sha256: 9c5af82970cf5a9b9b3f77af66c55517f3767f8250042ba89ed30d30ba2844fe
+limits:
+  max_model_calls: 0
+  max_wall_seconds: 120
+  max_output_tokens: 0
+  outbound_allowed: false
+  permissions:
+  - repository.read
+required_evidence: approved_capture
+output_artifact: captured_files
+validation: none
+status: active
+presentation:
+  category: bespoke
+  icon: layers
+  tags:
+  - bounded
+  - governed

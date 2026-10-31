@@ -29,8 +29,13 @@ def test_migration_execution_and_repeat(tmp_path):
             "runtime_state",
         } <= tables
         assert "web_experiences" in tables
-        assert {"pi_runs", "pi_provider_requests", "workflow_capability_bindings"} <= tables
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0011"
+        assert {
+            "pi_runs",
+            "pi_provider_requests",
+            "workflow_capability_bindings",
+            "bespoke_recommendations",
+        } <= tables
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0012"
 
 
 def test_pi_migration_downgrades_cleanly_to_0006(tmp_path):
