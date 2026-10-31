@@ -1,0 +1,24 @@
+[
+  {
+    "id": "M27",
+    "baseline": "fb19c2766f7248601e984aadbc4d4fd9159d789a",
+    "guard": "provider: no redirects",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_provider_destination.py"
+    ],
+    "failure": [
+      "FAILED tests/test_provider_destination.py::test_redirect_never_discloses_source_to_a_second_destination[301]"
+    ],
+    "log": "mutation-logs/M27.txt.gz",
+    "seconds": 5.579
+  }
+]

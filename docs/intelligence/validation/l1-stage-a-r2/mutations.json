@@ -1,0 +1,218 @@
+[
+  {
+    "id": "M10b",
+    "baseline": "aa6c328cdc2e5f72ac515c68aabba5916d495206",
+    "guard": "current_terms: disclosure operation approved (expected equivalent)",
+    "status": "survived",
+    "returncode": 0,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_a_source_approved_only_for_local_inspection_cannot_be_disclosed"
+    ],
+    "failure": [],
+    "log": "mutations-logs/M10b.txt.gz",
+    "seconds": 6.697
+  },
+  {
+    "id": "M16",
+    "baseline": "aa6c328cdc2e5f72ac515c68aabba5916d495206",
+    "guard": "cognition: typed role only inside a stage",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_analysis_review_r2.py::test_T16_a_typed_role_without_a_workflow_claim_is_refused_even_with_a_live_inquiry"
+    ],
+    "failure": [
+      "FAILED tests/test_analysis_review_r2.py::test_T16_a_typed_role_without_a_workflow_claim_is_refused_even_with_a_live_inquiry"
+    ],
+    "log": "mutations-logs/M16.txt.gz",
+    "seconds": 7.127
+  },
+  {
+    "id": "M21",
+    "baseline": "aa6c328cdc2e5f72ac515c68aabba5916d495206",
+    "guard": "validation: file exists",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_analysis_review_r2.py::test_T21_fabricated_file_receives_a_refusal_classification_not_validity"
+    ],
+    "failure": [
+      "FAILED tests/test_analysis_review_r2.py::test_T21_fabricated_file_receives_a_refusal_classification_not_validity"
+    ],
+    "log": "mutations-logs/M21.txt.gz",
+    "seconds": 5.552
+  },
+  {
+    "id": "M29",
+    "baseline": "aa6c328cdc2e5f72ac515c68aabba5916d495206",
+    "guard": "dispatch: immutable provider configuration",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_destination_cannot_change_after_the_dispatch_fence"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_destination_cannot_change_after_the_dispatch_fence"
+    ],
+    "log": "mutations-logs/M29.txt.gz",
+    "seconds": 8.751
+  },
+  {
+    "id": "M30",
+    "baseline": "aa6c328cdc2e5f72ac515c68aabba5916d495206",
+    "guard": "dispatch: pinned endpoint equals owner-approved endpoint",
+    "status": "survived",
+    "returncode": 0,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_provider_destination.py::test_authority_binds_the_actual_http_request[pinned_endpoint]"
+    ],
+    "failure": [],
+    "log": "mutations-logs/M30.txt.gz",
+    "seconds": 5.111
+  },
+  {
+    "id": "M31",
+    "baseline": "aa6c328cdc2e5f72ac515c68aabba5916d495206",
+    "guard": "dispatch: built request equals owner-approved endpoint",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_provider_destination.py::test_authority_binds_the_actual_http_request[built_request]"
+    ],
+    "failure": [
+      "FAILED tests/test_provider_destination.py::test_authority_binds_the_actual_http_request[built_request]"
+    ],
+    "log": "mutations-logs/M31.txt.gz",
+    "seconds": 5.606
+  },
+  {
+    "id": "M32",
+    "baseline": "aa6c328cdc2e5f72ac515c68aabba5916d495206",
+    "guard": "transport: ignore environment routing and CA settings",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_model_transport_environment.py::test_environment_proxy_cannot_intercept_model_request[HTTPS_PROXY]"
+    ],
+    "failure": [
+      "FAILED tests/test_model_transport_environment.py::test_environment_proxy_cannot_intercept_model_request[HTTPS_PROXY]"
+    ],
+    "log": "mutations-logs/M32.txt.gz",
+    "seconds": 8.209
+  },
+  {
+    "id": "M33",
+    "baseline": "aa6c328cdc2e5f72ac515c68aabba5916d495206",
+    "guard": "Pi preparation: destination matches invocation receipt",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_analysis_review_r2.py::test_invocation_destination_cannot_be_replaced_after_reservation[remove]"
+    ],
+    "failure": [
+      "FAILED tests/test_analysis_review_r2.py::test_invocation_destination_cannot_be_replaced_after_reservation[remove]"
+    ],
+    "log": "mutations-logs/M33.txt.gz",
+    "seconds": 11.273
+  },
+  {
+    "id": "M34",
+    "baseline": "aa6c328cdc2e5f72ac515c68aabba5916d495206",
+    "guard": "dispatch fence: destination matches immutable review",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_analysis_review_r2.py::test_dispatch_fence_binds_destination_to_the_immutable_review"
+    ],
+    "failure": [
+      "FAILED tests/test_analysis_review_r2.py::test_dispatch_fence_binds_destination_to_the_immutable_review"
+    ],
+    "log": "mutations-logs/M34.txt.gz",
+    "seconds": 9.979
+  },
+  {
+    "id": "C04",
+    "baseline": "aa6c328cdc2e5f72ac515c68aabba5916d495206",
+    "guard": "destination: pinned configuration and built HTTP request checks removed together",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_provider_destination.py::test_authority_binds_the_actual_http_request[pinned_endpoint]"
+    ],
+    "failure": [
+      "FAILED tests/test_provider_destination.py::test_authority_binds_the_actual_http_request[pinned_endpoint]"
+    ],
+    "log": "mutations-logs/C04.txt.gz",
+    "seconds": 4.978
+  }
+]

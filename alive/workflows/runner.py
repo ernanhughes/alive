@@ -200,6 +200,20 @@ class WorkflowRunner:
                 ),
                 "dispatch_stage_binding",
             )
+            if call.role == ANALYSIS_ROLE:
+                from alive.admission.models import Admission
+
+                admission = await session.get(Admission, grant.admission_ref)
+                require(
+                    admission is not None
+                    and call.input_json.get("model_destination")
+                    == {
+                        "admission_id": admission.id,
+                        "review_sha256": admission.review_sha256,
+                        "endpoint": admission.terms["model_disclosure"]["destination"]["endpoint"],
+                    },
+                    "dispatch_destination_binding",
+                )
             return True
         except (asyncio.CancelledError, ValueError, KeyError, AttributeError):
             return False

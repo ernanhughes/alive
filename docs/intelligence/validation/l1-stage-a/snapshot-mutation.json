@@ -1,0 +1,24 @@
+[
+  {
+    "id": "M29",
+    "baseline": "0c268eea2390faa9b945d3ca3c116896987f9030",
+    "guard": "dispatch: immutable provider configuration",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_destination_cannot_change_after_the_dispatch_fence"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_destination_cannot_change_after_the_dispatch_fence"
+    ],
+    "log": "mutation-logs/M29.txt.gz",
+    "seconds": 8.784
+  }
+]
