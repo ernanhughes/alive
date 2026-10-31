@@ -1,0 +1,732 @@
+[
+  {
+    "id": "M01",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "reservation: outbound approval (shared with runner.start)",
+    "status": "invalid",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_reservation_enforces_each_authority_term_without_upstream_layers[outbound]",
+      "tests/test_workflow_authority.py",
+      "tests/test_workflow_r2_fence.py",
+      "tests/test_workflow_transactions.py",
+      "tests/test_workflow_r2_invariants.py"
+    ],
+    "failure": [
+      "FAILED tests/test_workflow_r2_fence.py::test_dispatch_fence_individual_invariants[configuration]"
+    ],
+    "log": null,
+    "seconds": 65.795,
+    "log_note": "Initial log overwritten by a follow-up run; original outcome retained here, stronger final probe has its own receipt."
+  },
+  {
+    "id": "M02",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "reservation: approved model identity",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_reservation_enforces_each_authority_term_without_upstream_layers[model]",
+      "tests/test_workflow_authority.py",
+      "tests/test_workflow_r2_fence.py",
+      "tests/test_workflow_transactions.py",
+      "tests/test_workflow_r2_invariants.py"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_reservation_enforces_each_authority_term_without_upstream_layers[model]"
+    ],
+    "log": null,
+    "seconds": 9.504,
+    "log_note": "Initial log overwritten by a follow-up run; original outcome retained here, stronger final probe has its own receipt."
+  },
+  {
+    "id": "M03",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "reservation: role contract",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_reservation_enforces_each_authority_term_without_upstream_layers[role_contract]"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_reservation_enforces_each_authority_term_without_upstream_layers[role_contract]"
+    ],
+    "log": null,
+    "seconds": 9.481,
+    "log_note": "Initial log overwritten by a follow-up run; original outcome retained here, stronger final probe has its own receipt."
+  },
+  {
+    "id": "M04",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "reservation: exact context",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_the_reservation_alone_binds_the_model_input_to_the_stage[context]"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_the_reservation_alone_binds_the_model_input_to_the_stage[context]"
+    ],
+    "log": "mutation-logs/M04.txt.gz",
+    "seconds": 9.395
+  },
+  {
+    "id": "M05",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "reservation: implementation identity",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_the_reservation_alone_binds_the_model_input_to_the_stage[implementation]",
+      "tests/test_workflow_authority.py",
+      "tests/test_workflow_r2_fence.py",
+      "tests/test_workflow_transactions.py",
+      "tests/test_workflow_r2_invariants.py"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_the_reservation_alone_binds_the_model_input_to_the_stage[implementation]"
+    ],
+    "log": "mutation-logs/M05.txt.gz",
+    "seconds": 9.374
+  },
+  {
+    "id": "M06",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "reservation: stage input hash",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_the_reservation_alone_binds_the_model_input_to_the_stage[inputs]",
+      "tests/test_workflow_authority.py",
+      "tests/test_workflow_r2_fence.py",
+      "tests/test_workflow_transactions.py",
+      "tests/test_workflow_r2_invariants.py"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_the_reservation_alone_binds_the_model_input_to_the_stage[inputs]"
+    ],
+    "log": "mutation-logs/M06.txt.gz",
+    "seconds": 9.615
+  },
+  {
+    "id": "M07",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "fence: instructions",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_the_dispatch_fence_refuses_a_call_that_no_longer_matches_the_approval"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_the_dispatch_fence_refuses_a_call_that_no_longer_matches_the_approval[instructions]"
+    ],
+    "log": "mutation-logs/M07.txt.gz",
+    "seconds": 12.313
+  },
+  {
+    "id": "M08",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "fence: context digest",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_the_dispatch_fence_refuses_a_call_that_no_longer_matches_the_approval"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_the_dispatch_fence_refuses_a_call_that_no_longer_matches_the_approval[context_digest_removed]"
+    ],
+    "log": "mutation-logs/M08.txt.gz",
+    "seconds": 16.529
+  },
+  {
+    "id": "M09",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "fence: source digest",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_the_dispatch_fence_refuses_a_call_that_no_longer_matches_the_approval"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_the_dispatch_fence_refuses_a_call_that_no_longer_matches_the_approval[context_file]"
+    ],
+    "log": "mutation-logs/M09.txt.gz",
+    "seconds": 9.385
+  },
+  {
+    "id": "M10",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "prepare: disclosure operation approved",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_a_source_approved_only_for_local_inspection_cannot_be_disclosed"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_a_source_approved_only_for_local_inspection_cannot_be_disclosed"
+    ],
+    "log": "mutation-logs/M10.txt.gz",
+    "seconds": 7.25
+  },
+  {
+    "id": "M10b",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "current_terms: disclosure operation approved (expected equivalent)",
+    "status": "survived",
+    "returncode": 0,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_a_source_approved_only_for_local_inspection_cannot_be_disclosed"
+    ],
+    "failure": [],
+    "log": "mutation-logs/M10b.txt.gz",
+    "seconds": 7.205
+  },
+  {
+    "id": "M11",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "review: disclosure terms equal",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_changed_model_terms_or_source_refuse_before_any_dispatch"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_changed_model_terms_or_source_refuse_before_any_dispatch[endpoint_override]"
+    ],
+    "log": "mutation-logs/M11.txt.gz",
+    "seconds": 18.48
+  },
+  {
+    "id": "M12",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "review: Governor request ceiling",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_context_beyond_the_profile_or_governor_ceiling_is_refused_at_review"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_context_beyond_the_profile_or_governor_ceiling_is_refused_at_review"
+    ],
+    "log": "mutation-logs/M12.txt.gz",
+    "seconds": 7.066
+  },
+  {
+    "id": "M13",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "picker: only disclosure-approved sources",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_a_source_approved_only_for_local_inspection_cannot_be_disclosed"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_a_source_approved_only_for_local_inspection_cannot_be_disclosed"
+    ],
+    "log": "mutation-logs/M13.txt.gz",
+    "seconds": 6.794
+  },
+  {
+    "id": "M14",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "analyze: bytes equal the approved capture",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_stage_output_cannot_smuggle_text_the_owner_never_approved"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_stage_output_cannot_smuggle_text_the_owner_never_approved"
+    ],
+    "log": "mutation-logs/M14.txt.gz",
+    "seconds": 9.017
+  },
+  {
+    "id": "M15",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "analyze: source digest",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_the_analyzer_alone_refuses_a_different_source_identity"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_the_analyzer_alone_refuses_a_different_source_identity[source_sha256]"
+    ],
+    "log": "mutation-logs/M15.txt.gz",
+    "seconds": 9.838
+  },
+  {
+    "id": "M16",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "cognition: typed role only inside a stage",
+    "status": "invalid",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_a_typed_role_cannot_run_outside_an_authorized_workflow_stage"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_a_typed_role_cannot_run_outside_an_authorized_workflow_stage"
+    ],
+    "log": "mutation-logs/M16.txt.gz",
+    "seconds": 6.754
+  },
+  {
+    "id": "M17",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "admission: meta provider",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_a_model_admission_needs_the_meta_provider_the_owner_started"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_a_model_admission_needs_the_meta_provider_the_owner_started"
+    ],
+    "log": "mutation-logs/M17.txt.gz",
+    "seconds": 8.473
+  },
+  {
+    "id": "M18",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "admission: Cognition started",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_the_governor_must_be_explicitly_started_for_a_model_admission"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_the_governor_must_be_explicitly_started_for_a_model_admission"
+    ],
+    "log": "mutation-logs/M18.txt.gz",
+    "seconds": 8.328
+  },
+  {
+    "id": "M19",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "validation: quotation match",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis_units.py::test_each_citation_outcome_has_its_own_bounded_category"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis_units.py::test_each_citation_outcome_has_its_own_bounded_category[args1-quote_mismatch]"
+    ],
+    "log": "mutation-logs/M19.txt.gz",
+    "seconds": 5.612
+  },
+  {
+    "id": "M20",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "validation: line locator",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis_units.py::test_each_citation_outcome_has_its_own_bounded_category"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis_units.py::test_each_citation_outcome_has_its_own_bounded_category[args4-invalid_locator]"
+    ],
+    "log": "mutation-logs/M20.txt.gz",
+    "seconds": 5.48
+  },
+  {
+    "id": "M21",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "validation: file exists",
+    "status": "invalid",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis_units.py::test_each_citation_outcome_has_its_own_bounded_category"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis_units.py::test_each_citation_outcome_has_its_own_bounded_category[args7-unknown_file]"
+    ],
+    "log": "mutation-logs/M21.txt.gz",
+    "seconds": 5.295
+  },
+  {
+    "id": "M22",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "validation: captured digest",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis_units.py::test_a_changed_file_digest_is_refused_before_any_finding_is_trusted"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis_units.py::test_a_changed_file_digest_is_refused_before_any_finding_is_trusted"
+    ],
+    "log": "mutation-logs/M22.txt.gz",
+    "seconds": 4.926
+  },
+  {
+    "id": "M23",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "context: byte ceiling",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis_units.py::test_oversized_or_malformed_context_is_refused_not_truncated"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis_units.py::test_oversized_or_malformed_context_is_refused_not_truncated[too_many_bytes]"
+    ],
+    "log": "mutation-logs/M23.txt.gz",
+    "seconds": 5.077
+  },
+  {
+    "id": "M24",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "reservation: one model call per stage",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_a_second_model_call_in_one_stage_is_refused",
+      "tests/test_workflow_authority.py",
+      "tests/test_workflow_r2_fence.py",
+      "tests/test_workflow_transactions.py",
+      "tests/test_workflow_r2_invariants.py"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_a_second_model_call_in_one_stage_is_refused"
+    ],
+    "log": "mutation-logs/M24.txt.gz",
+    "seconds": 10.162
+  },
+  {
+    "id": "M25",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "review: exact endpoint",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_changed_model_terms_or_source_refuse_before_any_dispatch[endpoint_path]"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_changed_model_terms_or_source_refuse_before_any_dispatch[endpoint_path]"
+    ],
+    "log": "mutation-logs/M25.txt.gz",
+    "seconds": 9.417
+  },
+  {
+    "id": "M26",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "provider: effective override destination",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_disclosure_names_the_effective_override_and_only_it_receives_source"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_disclosure_names_the_effective_override_and_only_it_receives_source"
+    ],
+    "log": "mutation-logs/M26.txt.gz",
+    "seconds": 9.499
+  },
+  {
+    "id": "M27",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "provider: no redirects",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_provider_destination.py"
+    ],
+    "failure": [
+      "FAILED tests/test_provider_destination.py::test_redirect_never_discloses_source_to_a_second_destination[301]"
+    ],
+    "log": null,
+    "seconds": 5.223,
+    "log_note": "Initial log overwritten by a follow-up run; original outcome retained here, stronger final probe has its own receipt."
+  },
+  {
+    "id": "M28",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "review: safe HTTPS endpoint",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_unsafe_endpoint_is_refused_before_review"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_unsafe_endpoint_is_refused_before_review[http://provider.example/completions]"
+    ],
+    "log": "mutation-logs/M28.txt.gz",
+    "seconds": 6.526
+  },
+  {
+    "id": "C01",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "outbound approval: reservation + runner.start",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_a_model_stage_without_outbound_approval_never_reaches_the_provider",
+      "tests/test_workflow_authority.py",
+      "tests/test_workflow_r2_fence.py",
+      "tests/test_workflow_transactions.py",
+      "tests/test_workflow_r2_invariants.py"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_a_model_stage_without_outbound_approval_never_reaches_the_provider"
+    ],
+    "log": "mutation-logs/C01.txt.gz",
+    "seconds": 8.46
+  },
+  {
+    "id": "C02",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "model identity: reservation + current_terms",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_the_reservation_alone_refuses_a_late_model_or_contract_change"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_the_reservation_alone_refuses_a_late_model_or_contract_change[model]"
+    ],
+    "log": "mutation-logs/C02.txt.gz",
+    "seconds": 9.494
+  },
+  {
+    "id": "C03",
+    "baseline": "9a27056239086919c2ef1824758b70088ab9ac4a",
+    "guard": "role contract: reservation + current_terms",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository_analysis.py::test_the_reservation_alone_refuses_a_late_model_or_contract_change"
+    ],
+    "failure": [
+      "FAILED tests/test_repository_analysis.py::test_the_reservation_alone_refuses_a_late_model_or_contract_change[role_contract]"
+    ],
+    "log": "mutation-logs/C03.txt.gz",
+    "seconds": 11.557
+  }
+]

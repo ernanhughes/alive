@@ -882,10 +882,11 @@ class Cognition:
                 )
             model = k.settings.alive_role_models.get(role, k.settings.alive_meta_model)
             workflow_stage = None
+            destination = None
             if workflow_claim is not None:
                 from alive.workflows.context import model_claim
 
-                workflow_stage = await model_claim(
+                workflow_stage, destination = await model_claim(
                     session, k, workflow_claim, role, context, model, output_limit, analysis=spec
                 )
                 if control.provider != "meta":
@@ -906,9 +907,14 @@ class Cognition:
             session.add(call)
             if workflow_stage is not None:
                 if spec is not None:
+                    from dataclasses import asdict
+
                     from alive.workflows.context import digest
 
-                    call.input_json = call.input_json | {"context_sha256": digest(context)}
+                    call.input_json = call.input_json | {
+                        "context_sha256": digest(context),
+                        "model_destination": asdict(destination),
+                    }
                 workflow_stage.model_invocation_id = call.id
                 call.input_json = call.input_json | {
                     "workflow_run_id": workflow_claim[0],
@@ -947,6 +953,7 @@ class Cognition:
                     model=model,
                     max_output=output_limit,
                     correlation=call_id,
+                    destination=destination,
                 )
             )
             usage = ledger["usage"] = generated.usage

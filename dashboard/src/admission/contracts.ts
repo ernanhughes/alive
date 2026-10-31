@@ -33,6 +33,7 @@ export interface Disclosure {
     provider: string;
     transport: string;
     host: string | null;
+    endpoint?: string;
     model: string;
   };
   files: { path: string; bytes: number }[];

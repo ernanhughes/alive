@@ -10,9 +10,11 @@ by `ALIVE_MODEL_TRANSPORT=pi` (default `direct`); every other
 `tests/test_model_gateway.py` and must not gain new siblings.
 """
 
+from copy import deepcopy
 from dataclasses import dataclass
 from typing import Protocol
 
+from alive.model_contracts import ApprovedModelDestination
 from alive.providers import Generation, MetaProvider
 
 
@@ -25,6 +27,7 @@ class StructuredRequest:
     model: str
     max_output: int
     correlation: str | None = None
+    destination: ApprovedModelDestination | None = None
 
 
 class ModelGateway(Protocol):
@@ -32,10 +35,12 @@ class ModelGateway(Protocol):
 
 
 class DirectMetaGateway:
-    """Production gateway: unchanged MetaProvider dispatch."""
+    """Single upstream dispatch, carrying owner destination authority to the HTTP client."""
 
     def __init__(self, settings, operation: str, transport=None):
-        self.settings = settings
+        # Pin dispatch configuration before Pi starts. A settings mutation after the final
+        # authority check must never substitute the destination of an already approved call.
+        self.settings = deepcopy(settings)
         self.operation = operation
         # Test seam only: an httpx transport for the upstream call. None in
         # production, where the real Meta endpoint is used.
@@ -47,6 +52,7 @@ class DirectMetaGateway:
                 f"Operation mismatch: gateway serves {self.operation!r}, "
                 f"request claims {req.operation!r}; refusing dispatch"
             )
+        destination_args = {"destination": req.destination} if req.destination is not None else {}
         return await MetaProvider(self.settings).structured(
             req.instructions,
             req.data,
@@ -55,6 +61,7 @@ class DirectMetaGateway:
             max_output=req.max_output,
             correlation=req.correlation,
             transport=self.transport,
+            **destination_args,
         )
 
 

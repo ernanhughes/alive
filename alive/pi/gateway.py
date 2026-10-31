@@ -19,6 +19,7 @@ import hashlib
 import json
 import secrets
 import time
+from dataclasses import asdict
 
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
@@ -178,6 +179,10 @@ class PiGateway:
                 reservation = await session.get(ModelInvocation, req.correlation)
                 if reservation is None or reservation.status != "reserved":
                     raise ProviderError("pi_no_reservation")
+                destination = reservation.input_json.get("model_destination")
+                if destination is not None or req.destination is not None:
+                    if req.destination is None or asdict(req.destination) != destination:
+                        raise ProviderError("destination_mismatch")
                 session.add(
                     PiRun(
                         id=flight.run_id,

@@ -52,8 +52,11 @@ def render_prompt(req):
 
 
 def approved_request_sha256(req):
+    identity = asdict(req)
+    if req.destination is None:
+        identity.pop("destination")  # preserve existing non-admission and historical identities
     return hashlib.sha256(
-        json.dumps(asdict(req), sort_keys=True, ensure_ascii=False).encode("utf-8")
+        json.dumps(identity, sort_keys=True, ensure_ascii=False).encode("utf-8")
     ).hexdigest()
 
 
