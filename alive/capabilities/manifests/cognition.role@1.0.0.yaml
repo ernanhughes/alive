@@ -1,0 +1,66 @@
+schema_version: 1
+id: cognition.role
+version: 1.0.0
+name: Cognition Role
+description: One structured model call through the audited ModelGateway seam (PI-02B
+  routes it through the approved Pi transport).
+implementation:
+  provider: builtin
+  id: cognition-role-v1
+execution:
+  kind: pi_agent
+  side_effects: none
+  timeout_seconds: 3600
+  max_input_bytes: 65536
+  max_output_bytes: 65536
+  max_input_items: 32
+  max_invocations: 1
+  retry_policy: none
+  max_model_calls: 1
+  max_output_tokens: 16384
+permissions:
+  filesystem:
+    mode: none
+    roots: []
+  network:
+    mode: governed_pi
+  process:
+    mode: none
+  evidence: approved_context
+  persistence: none
+inputs:
+  type: object
+  additionalProperties: false
+  properties:
+    role:
+      type: string
+      maxLength: 16
+      enum:
+      - observer
+      - proposer
+      - critic
+      - evaluator
+    context:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+  required:
+  - role
+  - context
+outputs:
+  type: object
+  additionalProperties: false
+  properties:
+    analysis:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+  required:
+  - analysis
+presentation:
+  category: legacy
+  icon: layers
+  tags:
+  - workflow

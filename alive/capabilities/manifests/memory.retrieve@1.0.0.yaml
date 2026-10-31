@@ -1,0 +1,44 @@
+schema_version: 1
+id: memory.retrieve
+version: 1.0.0
+name: Memory Retrieve
+description: Retrieve stored memories matching a query.
+implementation:
+  provider: builtin
+  id: memory-retrieve-v1
+execution:
+  kind: deterministic
+  side_effects: read
+  timeout_seconds: 3600
+  max_input_bytes: 65536
+  max_output_bytes: 65536
+  max_input_items: 32
+  max_invocations: 1
+  retry_policy: none
+  max_model_calls: 0
+  max_output_tokens: 0
+permissions:
+  filesystem:
+    mode: none
+    roots: []
+  network:
+    mode: none
+  process:
+    mode: none
+  evidence: approved_context
+  persistence: none
+inputs:
+  type: object
+  additionalProperties: false
+  properties: {}
+  required: []
+outputs:
+  type: object
+  additionalProperties: false
+  properties: {}
+  required: []
+presentation:
+  category: legacy
+  icon: layers
+  tags:
+  - workflow

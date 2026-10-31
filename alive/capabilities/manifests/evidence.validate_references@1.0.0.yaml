@@ -1,0 +1,69 @@
+schema_version: 1
+id: evidence.validate_references
+version: 1.0.0
+name: Evidence Validate References
+description: Check that every claim in a role output cites evidence that was actually
+  supplied.
+implementation:
+  provider: builtin
+  id: validate-references-v1
+execution:
+  kind: validation
+  side_effects: none
+  timeout_seconds: 3600
+  max_input_bytes: 65536
+  max_output_bytes: 65536
+  max_input_items: 32
+  max_invocations: 1
+  retry_policy: none
+  max_model_calls: 0
+  max_output_tokens: 0
+permissions:
+  filesystem:
+    mode: none
+    roots: []
+  network:
+    mode: none
+  process:
+    mode: none
+  evidence: approved_context
+  persistence: none
+inputs:
+  type: object
+  additionalProperties: false
+  properties:
+    analysis:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+    context:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+  required:
+  - analysis
+  - context
+outputs:
+  type: object
+  additionalProperties: false
+  properties:
+    result:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+    assessment:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+  required:
+  - result
+  - assessment
+presentation:
+  category: legacy
+  icon: layers
+  tags:
+  - workflow

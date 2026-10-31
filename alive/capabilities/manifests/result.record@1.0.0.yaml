@@ -1,0 +1,65 @@
+schema_version: 1
+id: result.record
+version: 1.0.0
+name: Result Record
+description: Retain a validated workflow result as an owner-internal CognitiveMessage;
+  never independent evidence or learning feedback.
+implementation:
+  provider: builtin
+  id: result-record-v1
+execution:
+  kind: deterministic
+  side_effects: write
+  timeout_seconds: 3600
+  max_input_bytes: 65536
+  max_output_bytes: 65536
+  max_input_items: 32
+  max_invocations: 1
+  retry_policy: none
+  max_model_calls: 0
+  max_output_tokens: 0
+permissions:
+  filesystem:
+    mode: none
+    roots: []
+  network:
+    mode: none
+  process:
+    mode: none
+  evidence: approved_context
+  persistence: workflow_result
+inputs:
+  type: object
+  additionalProperties: false
+  properties:
+    result:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+    assessment:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+  required:
+  - result
+  - assessment
+outputs:
+  type: object
+  additionalProperties: false
+  properties:
+    artifact_id:
+      type: string
+      maxLength: 65536
+    sha256:
+      type: string
+      maxLength: 65536
+  required:
+  - artifact_id
+  - sha256
+presentation:
+  category: legacy
+  icon: layers
+  tags:
+  - workflow
