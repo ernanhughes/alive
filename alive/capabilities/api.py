@@ -21,6 +21,7 @@ MAX_REFERENCES = 50
 
 PERMISSION_LABELS = {
     "repository.read": "Bounded read of an owner-approved repository capture",
+    "source.read": "Read of owner-approved captured source content, checked at each use",
     "evidence.read": "Read of owner-approved evidence context",
     "model.infer": "Model inference through existing Pi admission",
     "workflow.write": "Persistence of a workflow result through the existing writer",
@@ -34,7 +35,7 @@ def effect_class(manifest):
         return "writes"
     if "model.infer" in bits:
         return "model"
-    if "repository.read" in bits or manifest["execution"]["side_effects"] == "read":
+    if {"repository.read", "source.read"} & bits or manifest["execution"]["side_effects"] == "read":
         return "read"
     return "none"
 

@@ -6,7 +6,14 @@ import unicodedata
 from typing import Literal
 
 import yaml
-from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    ValidationError,
+    field_validator,
+    model_serializer,
+)
 from yaml.events import (
     AliasEvent,
     MappingEndEvent,
@@ -56,6 +63,16 @@ class Permissions(Strict):
     process: Process
     evidence: Literal["none", "approved_context"]
     persistence: Literal["none", "workflow_result"]
+    # Read of owner-approved captured source content (alive.sources). Omitted from the canonical
+    # form while "none", so every manifest written before this field existed keeps its hash.
+    sources: Literal["none", "approved_capture"] = "none"
+
+    @model_serializer(mode="wrap")
+    def _canonical(self, handler):
+        data = handler(self)
+        if data.get("sources") == "none":
+            del data["sources"]
+        return data
 
 
 class Execution(Strict):

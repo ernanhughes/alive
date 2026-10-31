@@ -2,8 +2,9 @@
 
 import asyncio
 import json
-from dataclasses import dataclass, replace
+from dataclasses import dataclass, field, replace
 
+import alive.sources.models  # noqa: F401  (registers the custody tables)
 from alive.capabilities.contracts import json_bytes, validate
 from alive.capabilities.trusted import permission_bits
 from alive.workflows.context import require
@@ -16,6 +17,8 @@ class ReadCapabilityContext:
     inquiry_id: str
     owner: str
     resources: object
+    inputs: dict = field(default_factory=dict)
+    limits: dict = field(default_factory=dict)
 
 
 async def invoke(registry, binding, grant, context):
@@ -34,10 +37,21 @@ async def invoke(registry, binding, grant, context):
         "capability_input_limit",
     )
     resources = None
-    if "repository.read" in permission_bits(manifest["permissions"]):
+    bits = permission_bits(manifest["permissions"])
+    if "repository.read" in bits:
         from alive.capabilities.repository import reader_for
 
         resources = reader_for(registry, grant, context.inputs)
+    elif "source.read" in bits:
+        # Custody is re-verified now, not when the grant was minted: a withdrawal, an expiry or a
+        # changed capture takes effect for a grant that already exists.
+        from alive.sources import custody
+
+        resources = await custody.resolve(context.kernel, grant["resources"], cap.identity["id"])
+        require(
+            resources.source_type in manifest["supported_source_types"], "source_type_not_supported"
+        )
+        require(context.inputs.get("source_ref") == resources.source_ref, "source_ref_not_approved")
     if manifest["execution"]["kind"] == "pi_agent":
         require(
             limits["max_model_calls"] == 1
@@ -47,7 +61,13 @@ async def invoke(registry, binding, grant, context):
     call_context = replace(context, capability=cap.identity, resources=resources)
     if resources is not None:
         call_context = ReadCapabilityContext(
-            context.run_id, context.stage_id, context.inquiry_id, context.owner, resources
+            context.run_id,
+            context.stage_id,
+            context.inquiry_id,
+            context.owner,
+            resources,
+            dict(context.inputs) if "source.read" in bits else {},
+            dict(limits) if "source.read" in bits else {},
         )
     # No caller-supplied callback exists: the implementation is the one this identity names.
     callback = registry.adapter_for(cap.identity)

@@ -325,7 +325,7 @@ class CapabilityRegistry:
         if type(grant["resources"]) is not dict:
             raise ManifestError("capability resource contract")
         if (
-            "repository.read" not in permission_bits(cap.manifest["permissions"])
+            not {"repository.read", "source.read"} & permission_bits(cap.manifest["permissions"])
             and grant["resources"]
         ):
             raise ManifestError("undeclared capability resources")

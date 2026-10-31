@@ -22,7 +22,7 @@ from sqlalchemy import select
 
 from alive.capabilities.contracts import json_bytes
 from alive.capabilities.manifest import ID as CAPABILITY_ID
-from alive.models import now, uid
+from alive.models import Memory, now, uid
 from alive.sources.models import (
     CLASSIFICATIONS,
     SOURCE_TYPES,
@@ -359,6 +359,29 @@ class ApprovedSource:
         return json.loads(self.blob)  # a copy; callers cannot mutate the approved view
 
 
+async def materialize_collection(session, kernel, scoped):
+    """A collection holds ids and hashes only. Content is read live and must still match."""
+    ids = [item["memory_id"] for item in scoped["items"]]
+    rows = (
+        await session.scalars(
+            select(Memory).where(Memory.instance_id == kernel.instance_id, Memory.id.in_(ids))
+        )
+    ).all()
+    live = {row.id: row for row in rows}
+    items, omitted = [], []
+    for item in scoped["items"]:
+        row = live.get(item["memory_id"])
+        if row is None:
+            omitted.append({"memory_id": item["memory_id"], "reason": "unavailable"})
+        elif hashlib.sha256(row.content.encode()).hexdigest() != item["content_sha256"]:
+            omitted.append({"memory_id": item["memory_id"], "reason": "changed_since_approval"})
+        else:
+            items.append(
+                item | {"content": row.content, "created_at": aware(row.created_at).isoformat()}
+            )
+    return {**scoped, "items": items, "omitted": omitted}
+
+
 async def resolve(kernel, resources, operation):
     """Every fact must hold now. The order of checks is also the order of the refusal categories."""
     require(
@@ -388,6 +411,9 @@ async def resolve(kernel, resources, operation):
         )
         require(digest(capture.content) == capture.content_sha256, "source_content_changed")
         scoped = apply_scope(capture.source_type, capture.content, approval.scope)
+        scoped_sha256 = digest(scoped)  # the approved reference, before any live content joins it
+        if capture.source_type == "collection":
+            scoped = await materialize_collection(session, kernel, scoped)
         return ApprovedSource(
             source_ref=capture.id,
             approval_id=approval.id,
@@ -396,7 +422,7 @@ async def resolve(kernel, resources, operation):
             classification=capture.classification,
             content_sha256=capture.content_sha256,
             scope_sha256=approval.scope_sha256,
-            scoped_sha256=digest(scoped),
+            scoped_sha256=scoped_sha256,
             captured_at=aware(capture.captured_at).isoformat(),
             expires_at=aware(approval.expires_at).isoformat(),
             blob=json_bytes(scoped),

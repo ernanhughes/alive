@@ -100,7 +100,9 @@ def test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash():
     raw["stages"][0]["capability_sha256"] = "0" * 64
     with pytest.raises(ManifestError, match="hash mismatch"):
         registry.bind(parse_definition(raw, operations=registry.operations))
-    raw["stages"][0]["capability_sha256"] = registry.get("repository.inspect").manifest_sha256
+    raw["stages"][0]["capability_sha256"] = registry.get(
+        "repository.inspect", "1.0.0"
+    ).manifest_sha256
     assert registry.bind(parse_definition(raw, operations=registry.operations))
 
 
