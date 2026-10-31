@@ -44,9 +44,16 @@ class MockProvider:
         yield (await self.generate(prompt)).text
 
 
+def meta_endpoint_url(settings):
+    """Resolve the exact dispatch endpoint without reading credentials."""
+    return settings.alive_meta_url or (
+        settings.alive_meta_base_url.rstrip("/") + "/chat/completions"
+    )
+
+
 def meta_endpoint_host(settings):
     """The host model requests are sent to, for owner disclosure. No credential is read."""
-    return urlsplit(settings.alive_meta_base_url).hostname
+    return urlsplit(meta_endpoint_url(settings)).hostname
 
 
 class MetaProvider:
@@ -120,12 +127,12 @@ class MetaProvider:
         if not self.capabilities()["configured"]:
             raise ProviderError("credentials_not_configured")
         started = time.monotonic()
-        url = self.settings.alive_meta_url or (
-            self.settings.alive_meta_base_url.rstrip("/") + "/chat/completions"
-        )
+        url = meta_endpoint_url(self.settings)
         try:
             async with httpx.AsyncClient(
-                timeout=self.settings.alive_meta_timeout, transport=transport
+                timeout=self.settings.alive_meta_timeout,
+                transport=transport,
+                follow_redirects=False,
             ) as client:
                 response = await client.post(
                     url,
@@ -135,6 +142,10 @@ class MetaProvider:
                     },
                     json=body,
                 )
+                if response.is_redirect:
+                    raise ProviderError(
+                        "redirect_refused", response.status_code, response_received=True
+                    )
                 if response.is_error:
                     status = response.status_code
                     body = response.text.lower()
@@ -213,6 +224,7 @@ FATAL_PROVIDER_CATEGORIES = frozenset(
         "ambiguous_settlement",
         "cancelled",
         "unknown",
+        "redirect_refused",
     }
 )
 CELL_PROVIDER_CATEGORIES = frozenset({"invalid_structured_output", "output_truncated"})

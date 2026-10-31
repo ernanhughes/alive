@@ -8,6 +8,7 @@ disclosure of the approved source to the configured model destination.
 
 import json
 from dataclasses import dataclass
+from urllib.parse import urlsplit
 
 from alive.analysis.context import context_package, request_bytes
 from alive.analysis.contracts import (
@@ -17,7 +18,7 @@ from alive.analysis.contracts import (
     ROLE,
     role_contract,
 )
-from alive.providers import meta_endpoint_host
+from alive.providers import meta_endpoint_host, meta_endpoint_url
 from alive.workflows.context import require
 
 INSPECTION = "approved-repository-inspection"
@@ -95,6 +96,21 @@ def disclosure(kernel, control, source, paths, objective):
 
     config = CognitiveConfiguration.model_validate(control.configuration)
     settings = kernel.settings
+    endpoint = meta_endpoint_url(settings)
+    try:
+        parsed = urlsplit(endpoint)
+        valid_endpoint = (
+            parsed.scheme == "https"
+            and bool(parsed.hostname)
+            and parsed.username is None
+            and parsed.password is None
+            and not parsed.query
+            and not parsed.fragment
+            and parsed.port != 0
+        )
+    except ValueError:
+        valid_endpoint = False
+    require(valid_endpoint, "analysis_requires_safe_https_endpoint")
     inputs = analysis_inputs(source, paths, objective)
     context_package(inputs)  # raises on any size or shape violation
     output_limit = min(config.output_tokens, PROFILES[ANALYSIS].max_output_tokens)
@@ -110,6 +126,7 @@ def disclosure(kernel, control, source, paths, objective):
             "provider": "meta",
             "transport": "pi",
             "host": meta_endpoint_host(settings),
+            "endpoint": endpoint,
             "model": settings.alive_role_models.get(ROLE, settings.alive_meta_model),
         },
         "role": ROLE,
