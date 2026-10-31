@@ -1,6 +1,7 @@
 """repository.inspect through the real WorkflowRunner: no mock executor, no model call."""
 
 import contextlib
+import json
 import os
 from pathlib import Path
 
@@ -295,3 +296,122 @@ def test_configuration_loosened_after_the_grant_is_not_silently_accepted(setting
                 assert final["status"] == states.FAILED
 
         call(client, probe)
+
+
+# --- F9: what is retained, and who can read it ------------------------------------------------
+
+
+def completed_run(client, snapshot):
+    prepare(client)
+    observation(client)
+
+    async def run(k):
+        async with authorized(client, snapshot) as grant:
+            started = await client.app.state.workflows.start(grant)
+            return await client.app.state.workflows.execute(started["id"])
+
+    final = call(client, run)
+    assert final["status"] == "COMPLETED", final
+    return final
+
+
+CONTENT = "# Fixture"  # a line from the approved README.md that must not leave run history
+
+
+def test_stage_output_stays_in_run_history_but_not_in_the_generic_feed(client, snapshot):
+    """`persistence: none` forbids a capability-created artifact; it never meant no run history.
+
+    The runner always keeps a stage's output so dependencies, hashing and replay work. The
+    generic feed carries only the stage's identity.
+    """
+    final = completed_run(client, snapshot)
+
+    async def stored(k):
+        async with k.db.sessions() as session:
+            rows = (
+                await session.scalars(
+                    select(Event).where(Event.event_type == "workflow.stage.result")
+                )
+            ).all()
+            return [r.payload for r in rows if r.payload.get("run_id") == final["id"]]
+
+    (payload,) = call(client, stored)
+    assert CONTENT in payload["output"]["files"][0]["content"]  # history is intact
+
+    feed = client.get("/api/v1/events?limit=500")
+    assert feed.status_code == 200 and CONTENT not in feed.text
+    (event,) = [
+        e
+        for e in feed.json()
+        if e["event_type"] == "workflow.stage.result" and e["payload"].get("run_id") == final["id"]
+    ]
+    assert event["payload"] == {
+        "run_id": final["id"],
+        "stage_id": event["payload"]["stage_id"],
+        "output_withheld": True,
+    }
+    # The artifact channel stays closed for a capability without the writer permission.
+    (stage_run,) = call(client, store.get_stage_runs, final["id"])
+    assert stage_run["capability"]["id"] == "repository.inspect"
+
+
+def test_the_websocket_feed_withholds_the_same_content(client, snapshot):
+    final = completed_run(client, snapshot)
+    feed = client.get("/api/v1/events?limit=500").json()
+    (event,) = [
+        e
+        for e in feed
+        if e["event_type"] == "workflow.stage.result" and e["payload"].get("run_id") == final["id"]
+    ]
+    frames = []
+    with client.websocket_connect("/api/v1/events/stream") as socket:
+        socket.send_json({"token": TOKEN, "after": event["sequence_number"] - 1})
+        for _ in range(3):
+            frames.append(socket.receive_json())
+    assert any(f.get("sequence_number") == event["sequence_number"] for f in frames)
+    assert CONTENT not in json.dumps(frames)
+
+
+def test_the_generic_feed_is_scoped_to_this_instance(client, snapshot):
+    from alive.models import Instance, now, uid
+
+    completed_run(client, snapshot)
+    other = uid()
+
+    async def foreign(k):
+        async with k.db.sessions.begin() as session:
+            session.add(Instance(id=other, name="another-instance"))
+            await session.flush()
+            leaked = Event(
+                id=uid(),
+                instance_id=other,
+                event_type="foreign.event",
+                source="test",
+                correlation_id=uid(),
+                payload={"marker": "other-instance-data"},
+                occurred_at=now(),
+            )
+            session.add(leaked)
+            await session.flush()
+            sequence = leaked.sequence_number
+            session.add(  # a later event that does belong to this instance
+                Event(
+                    id=uid(),
+                    instance_id=k.instance_id,
+                    event_type="own.event",
+                    source="test",
+                    correlation_id=uid(),
+                    payload={},
+                    occurred_at=now(),
+                )
+            )
+            return sequence
+
+    sequence = call(client, foreign)
+    feed = client.get(f"/api/v1/events?after={sequence - 1}&limit=50")
+    assert "other-instance-data" not in feed.text
+    assert [e["event_type"] for e in feed.json()][:1] == ["own.event"]
+    with client.websocket_connect("/api/v1/events/stream") as socket:
+        socket.send_json({"token": TOKEN, "after": sequence - 1})
+        first = socket.receive_json()
+    assert first["event_type"] == "own.event"  # the foreign event was skipped, not delivered

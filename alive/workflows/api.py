@@ -10,6 +10,7 @@ from typing import Literal
 from fastapi import APIRouter, Depends, HTTPException, Path, Query
 from pydantic import BaseModel, ConfigDict, Field
 
+from alive.capabilities.bindings import registry_for
 from alive.workflows import store
 from alive.workflows.spec import NAME_RE, graph_of
 
@@ -94,7 +95,7 @@ def router(app, ready, pi_receipt):
             "name": name,
             "version": version,
             "definition_sha256": view["definition_sha256"],
-            **graph_of(view["definition"]),
+            **graph_of(view["definition"], operations=registry_for(kernel()).operations),
         }
 
     @api.get("/workflow-runs")

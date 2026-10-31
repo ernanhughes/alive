@@ -164,6 +164,7 @@ export function StageInspector({
               id: stage.capability.id,
               version: stage.capability.version,
               sha: stage.capability.manifest_sha256,
+              impl: stage.capability.implementation_sha256 ?? undefined,
             })}
           >
             Open catalogue entry

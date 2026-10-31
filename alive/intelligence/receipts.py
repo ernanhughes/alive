@@ -2,6 +2,8 @@
 
 from sqlalchemy import select
 
+from alive.capabilities.bindings import stage_traits
+from alive.capabilities.trusted import MODEL_OPERATION
 from alive.cognitive_models import Investigation, ModelInvocation
 from alive.cognitive_schema import RoleOutput
 from alive.model_gateway import StructuredRequest
@@ -67,7 +69,8 @@ async def resolve(kernel, stage_id, *, goal_id, approved_request_hash):
             inquiry.goal_id == goal_id
             and run.investigation_id == inquiry.id
             and pi.reservation_ref == call.id
-            and pi.operation == stage.operation == "cognition.role"
+            and pi.operation == MODEL_OPERATION
+            and "model.role" in await stage_traits(session, kernel, run, stage)
             and pi.approved_request_sha256 == approved_request_hash
             and pi.state == "SETTLED"
             and call.status == "validated"

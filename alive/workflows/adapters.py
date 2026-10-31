@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass, field
 
+from alive.capabilities.trusted import traits_of
 from alive.cognitive_schema import RoleOutput
 from alive.models import now
 from alive.society import evaluate, validate_references
@@ -112,7 +113,7 @@ async def record(ctx):
     require(set(ctx.inputs) == {"result", "assessment"}, "record_contract")
     require(
         any(
-            item["operation"] in {"evidence.validate_references", "evidence.evaluate"}
+            "validation.independent" in traits_of(item["implementation"])
             and item["validation_status"] == "passed"
             and item["output"] == ctx.inputs
             for item in ctx.dependencies.values()

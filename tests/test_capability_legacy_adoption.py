@@ -6,18 +6,22 @@ import pytest
 from sqlalchemy import func, select
 
 from alive.capabilities.trusted import LEGACY_DEFINITION_SHA256
-from alive.models import now
 from alive.workflows.examples import definition, fixture_authorization, stage
 from alive.workflows.models import WorkflowCapabilityBinding, WorkflowDefinition
 from alive.workflows.runner import output_valid
 from alive.workflows.spec import (
     DefinitionError,
-    canonical_dict,
     definition_sha256,
     parse_definition,
 )
 from alive.workflows.store import builtin_definitions, register_definition
-from tests.workflow_execution_helpers import call, observation, prepare, replace_adapters
+from tests.workflow_execution_helpers import (
+    call,
+    insert_historical,
+    observation,
+    prepare,
+    replace_adapters,
+)
 
 BAD = {"context": {}, "claims": [], "sources": [], "extra": "x"}
 
@@ -31,27 +35,6 @@ def contrived(name="legacy-shape", version=1, pin=None):
     if pin:
         first["capability_version"] = pin
     return raw
-
-
-async def insert_historical(kernel, raw):
-    """A definition row as PI-02 left it: present, hashed, and with no capability binding."""
-    spec = parse_definition(raw, operations=kernel.capabilities.operations)
-    async with kernel.lock, kernel.db.sessions.begin() as session:
-        session.add(
-            WorkflowDefinition(
-                name=spec.name,
-                version=spec.version,
-                schema_version=spec.schema_version,
-                title=spec.title,
-                description=spec.description,
-                definition_json=canonical_dict(spec),
-                definition_sha256=definition_sha256(spec),
-                status="active",
-                source="admin",
-                created_at=now(),
-                status_updated_at=now(),
-            )
-        )
 
 
 async def bindings(kernel, name):
@@ -129,11 +112,15 @@ def test_adoption_is_limited_to_legacy_operations_even_for_a_historical_row(clie
         call(client, register_definition, raw, status="active")
 
 
-def test_the_shipped_builtin_is_adopted_only_because_its_exact_hash_is_allowlisted(client):
+def test_shipped_definitions_are_adopted_only_because_their_exact_hash_is_allowlisted(client):
+    from alive.intelligence.fixture import DEFINITION
+
     shipped = dict(builtin_definitions())["research-review.v1.json"]
-    digest = definition_sha256(parse_definition(shipped))
-    assert digest in LEGACY_DEFINITION_SHA256  # editing the shipped file must be a reviewed act
+    for raw in (shipped, DEFINITION):
+        digest = definition_sha256(parse_definition(raw))
+        assert digest in LEGACY_DEFINITION_SHA256  # editing a shipped file must be a reviewed act
     assert call(client, bindings, "research-review")["prepare"]["legacy_contract"] is True
+    assert len(LEGACY_DEFINITION_SHA256) == 2  # a new entry must come with a new test line here
 
 
 def test_runtime_still_enforces_the_capability_contract_on_an_adopted_definition(

@@ -5,9 +5,11 @@ from sqlalchemy import func, select
 
 from alive.cognitive_models import CognitiveControl, CognitiveMessage, ModelInvocation
 from alive.intelligence.models import IntelligenceLearningUpdate
-from alive.models import Event
+from alive.models import Event, now
 from alive.pi.models import PiRun
 from alive.workflows.examples import fixture_authorization
+from alive.workflows.models import WorkflowDefinition
+from alive.workflows.spec import canonical_dict, definition_sha256, parse_definition
 from tests.test_cognition import observe
 
 
@@ -85,3 +87,24 @@ def replace_adapters(monkeypatch, replacements):
         return original(self, capability_id, version)
 
     monkeypatch.setattr(CapabilityRegistry, "adapter", adapter)
+
+
+async def insert_historical(kernel, raw):
+    """A definition row as PI-02 left it: present, hashed, and with no capability binding."""
+    spec = parse_definition(raw, operations=kernel.capabilities.operations)
+    async with kernel.lock, kernel.db.sessions.begin() as session:
+        session.add(
+            WorkflowDefinition(
+                name=spec.name,
+                version=spec.version,
+                schema_version=spec.schema_version,
+                title=spec.title,
+                description=spec.description,
+                definition_json=canonical_dict(spec),
+                definition_sha256=definition_sha256(spec),
+                status="active",
+                source="admin",
+                created_at=now(),
+                status_updated_at=now(),
+            )
+        )

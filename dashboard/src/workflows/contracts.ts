@@ -84,6 +84,7 @@ export interface StageRun {
     version: string;
     manifest_sha256: string;
     implementation_id: string;
+    implementation_sha256: string | null;
   };
   state: string;
   terminal: boolean;

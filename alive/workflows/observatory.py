@@ -93,6 +93,9 @@ async def records(session, kernel, run_id):
 
 
 async def attached_pi(session, kernel, run, stage):
+    from alive.capabilities.bindings import stage_traits
+    from alive.capabilities.trusted import MODEL_OPERATION
+
     if not stage.pi_run_id and not stage.model_invocation_id:
         return None
     require(stage.model_invocation_id is not None)
@@ -120,7 +123,10 @@ async def attached_pi(session, kernel, run, stage):
         and call.input_json.get("workflow_stage_id") == stage.id
         and pi.instance_id == kernel.instance_id
         and pi.reservation_ref == call.id
-        and pi.operation == stage.operation
+        # The gateway's operation name, not the capability id: any capability whose retained
+        # implementation is the model-role implementation may own a Pi run.
+        and pi.operation == MODEL_OPERATION
+        and "model.role" in await stage_traits(session, kernel, run, stage)
     )
     return pi
 

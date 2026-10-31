@@ -318,7 +318,7 @@ def create_app(settings=None, include_experiments=None, *, capability_registry=N
             rows = (
                 await session.scalars(
                     select(Event)
-                    .where(Event.sequence_number > after)
+                    .where(Event.instance_id == kernel.instance_id, Event.sequence_number > after)
                     .order_by(Event.sequence_number)
                     .limit(limit)
                 )
@@ -554,7 +554,10 @@ def create_app(settings=None, include_experiments=None, *, capability_registry=N
                     rows = (
                         await session.scalars(
                             select(Event)
-                            .where(Event.sequence_number > cursor)
+                            .where(
+                                Event.instance_id == kernel.instance_id,
+                                Event.sequence_number > cursor,
+                            )
                             .order_by(Event.sequence_number)
                             .limit(200)
                         )

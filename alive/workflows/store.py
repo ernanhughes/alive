@@ -13,7 +13,11 @@ from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 
 from alive.capabilities.bindings import bind_definition, registry_for
-from alive.capabilities.trusted import LEGACY_DEFINITION_SHA256
+from alive.capabilities.trusted import (
+    LEGACY_DEFINITION_SHA256,
+    LEGACY_IMPLEMENTATION_BY_OPERATION,
+    traits_of,
+)
 from alive.models import now, uid
 from alive.workflows import states
 from alive.workflows.models import WorkflowDefinition, WorkflowRun, WorkflowStageRun
@@ -92,15 +96,19 @@ def run_view(row):
     }
 
 
-def validation_view(row):
-    """Passed is a contract check, never a truth or workflow-completion claim."""
+def validation_view(row, traits=frozenset()):
+    """Passed is a contract check, never a truth or workflow-completion claim.
+
+    `traits` come from the stage's retained implementation. Without them, nothing beyond the
+    contract check is claimed.
+    """
     checked = row.validation_status == "passed"
     return {
         "contract_status": row.validation_status,
         "structural_status": "passed" if checked else "not_established",
         "reference_identity_status": (
             "passed"
-            if checked and row.operation in {"cognition.role", "evidence.validate_references"}
+            if checked and ({"model.role", "validation.reference-identity"} & set(traits))
             else "not_established"
         ),
         "semantic_status": "unverified",
@@ -109,7 +117,7 @@ def validation_view(row):
     }
 
 
-def stage_view(row):
+def stage_view(row, traits=frozenset()):
     return {
         "id": row.id,
         "run_id": row.run_id,
@@ -127,7 +135,7 @@ def stage_view(row):
         "model_invocation_id": row.model_invocation_id,
         "evidence_refs": row.evidence_refs,
         "validation_status": row.validation_status,
-        "validation": validation_view(row),
+        "validation": validation_view(row, traits),
         "error_category": row.error_category,
         "error_detail": row.error_detail,
         "uncertainty": row.uncertainty,
@@ -266,7 +274,8 @@ async def seed_builtin(kernel):
     for filename, text in builtin_definitions():
         try:
             try:
-                check_activatable(parse_definition(text))
+                operations = registry_for(kernel).operations
+                check_activatable(parse_definition(text, operations=operations), operations)
                 status = "active"  # every operation it names can run
             except DefinitionError:
                 status = (
@@ -342,7 +351,13 @@ async def get_stage_runs(kernel, run_id):
 
         views = []
         for row in rows.all():
-            view = stage_view(row)
+            if capabilities:
+                implementation = (
+                    capabilities.get(row.stage_id, {}).get("identity", {}).get("implementation_id")
+                )
+            else:  # predates migration 0011: the frozen mapping of the ids that existed then
+                implementation = LEGACY_IMPLEMENTATION_BY_OPERATION.get(row.operation)
+            view = stage_view(row, traits_of(implementation))
             if capabilities:
                 binding = capabilities.get(row.stage_id)
                 if not binding or binding["identity"]["id"] != row.operation:

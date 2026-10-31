@@ -207,7 +207,36 @@ describe("capability catalogue", () => {
     });
     serve();
     render(<CapabilitiesPane token="t" />);
-    expect(await screen.findByText(/retained a different manifest hash/)).toBeTruthy();
+    expect(
+      await screen.findByText(/retained a different manifest hash or implementation/),
+    ).toBeTruthy();
+  });
+
+  it("warns when only the implementation fingerprint differs from the run's", async () => {
+    window.location.hash = capabilityLink({
+      id: "repository.inspect",
+      version: "1.0.0",
+      sha: H1, // the manifest still matches the installed one
+      impl: "e".repeat(64), // but the run retained a different implementation fingerprint
+    });
+    serve();
+    render(<CapabilitiesPane token="t" />);
+    expect(
+      await screen.findByText(/retained a different manifest hash or implementation/),
+    ).toBeTruthy();
+  });
+
+  it("does not warn when the retained manifest and implementation both match", async () => {
+    window.location.hash = capabilityLink({
+      id: "repository.inspect",
+      version: "1.0.0",
+      sha: H1,
+      impl: H2, // detail() installs implementation sha H2
+    });
+    serve();
+    render(<CapabilitiesPane token="t" />);
+    await screen.findByText("Declared permissions");
+    expect(screen.queryByText(/retained a different manifest hash/)).toBeNull();
   });
 
   it("flags a catalogue that changed after the list was loaded", async () => {
@@ -268,7 +297,16 @@ describe("capability catalogue", () => {
 describe("capability contracts", () => {
   it("round-trips only well-formed links", () => {
     const link = capabilityLink({ id: "a.b", version: "1.2.3", sha: H1 });
-    expect(parseCapabilityLink(link)).toEqual({ id: "a.b", version: "1.2.3", sha: H1 });
+    expect(parseCapabilityLink(link)).toEqual({
+      id: "a.b",
+      version: "1.2.3",
+      sha: H1,
+      impl: undefined,
+    });
+    const both = capabilityLink({ id: "a.b", version: "1.2.3", sha: H1, impl: H2 });
+    expect(parseCapabilityLink(both)?.impl).toBe(H2);
+    expect(parseCapabilityLink(both + "&impl=" + H1)).toBeNull(); // duplicate keys refused
+    expect(parseCapabilityLink("#capabilities?id=a.b&version=1.2.3&impl=zz")).toBeNull();
     expect(parseCapabilityLink("#capabilities?id=a.b")).toBeNull();
     expect(() => capabilityLink({ id: "A..b", version: "1.0.0" })).toThrow();
   });

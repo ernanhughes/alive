@@ -9,9 +9,9 @@ import hashlib
 from fastapi import APIRouter, Depends, HTTPException, Path
 from sqlalchemy import select
 
+from alive.capabilities.bindings import registry_for
 from alive.capabilities.contracts import json_bytes
 from alive.capabilities.manifest import ID, VERSION
-from alive.capabilities.registry import default_registry
 from alive.capabilities.trusted import permission_bits
 from alive.workflows.models import WorkflowCapabilityBinding, WorkflowDefinition
 
@@ -110,7 +110,7 @@ async def workflow_references(kernel, identity):  # definitions are global, not 
                 for stage_id, item in binding.snapshot.get("stages", {}).items()
                 if all(
                     item["identity"].get(key) == identity[key]
-                    for key in ("id", "version", "manifest_sha256")
+                    for key in ("id", "version", "manifest_sha256", "implementation_sha256")
                 )
             ]
             if stages:
@@ -129,7 +129,8 @@ def router(app, ready):
     api = APIRouter(prefix="/api/v1/capabilities/catalog", dependencies=[Depends(ready)])
 
     def registry():
-        return getattr(app.state, "capabilities", None) or default_registry()
+        # The same resolver the runtime uses: one catalogue answers every question.
+        return registry_for(app.state.kernel)
 
     @api.get("")
     async def catalogue():

@@ -12,6 +12,7 @@ from alive.capabilities.bindings import (
 from alive.capabilities.bindings import (
     execution_snapshot,
     registry_for,
+    stage_traits,
     verify_authorization,
 )
 from alive.capabilities.execution import checked_result, invoke
@@ -438,6 +439,10 @@ class WorkflowRunner:
                     if previous.stage_id in stage.depends_on:
                         dependencies[previous.stage_id] = {
                             "operation": previous.operation,
+                            # What the dependency actually ran, from this execution's own snapshot.
+                            "implementation": execution.capability_snapshot["binding"]["stages"][
+                                previous.stage_id
+                            ]["identity"]["implementation_id"],
                             "output": data,
                             "validation_status": previous.validation_status,
                         }
@@ -708,10 +713,15 @@ async def artifact_view(kernel, run_id, stage_id):
             select(WorkflowStageRun).where(
                 WorkflowStageRun.run_id == run_id,
                 WorkflowStageRun.stage_id == stage_id,
-                WorkflowStageRun.operation == "result.record",
             )
         )
-        require(stage is not None and stage.state == states.COMPLETED, "artifact_unavailable")
+        traits = await stage_traits(session, kernel, run, stage) if stage else frozenset()
+        require(
+            stage is not None
+            and "result.writer" in traits  # the retained implementation, not the operation id
+            and stage.state == states.COMPLETED,
+            "artifact_unavailable",
+        )
         output = await result_event(session, stage)
         artifact = await session.get(CognitiveMessage, output["artifact_id"])
         require(
@@ -776,7 +786,7 @@ async def artifact_view(kernel, run_id, stage_id):
             "run_status": run.status,
             "terminal_reason": run.terminal_reason,
             "stage_state": stage.state,
-            "stage_validation": store.validation_view(stage),
+            "stage_validation": store.validation_view(stage, traits),
             "stage_uncertainty": stage.uncertainty,
             "workflow_completed": run.status == states.COMPLETED,
             "context_provenance": {

@@ -7,6 +7,7 @@ from sqlalchemy import select
 from alive.capabilities.contracts import json_bytes
 from alive.capabilities.manifest import ManifestError, canonical_bytes, parse
 from alive.capabilities.registry import Operation, default_registry
+from alive.capabilities.trusted import LEGACY_IMPLEMENTATION_BY_OPERATION, traits_of
 from alive.models import Event, now
 from alive.workflows.models import WorkflowCapabilityBinding, WorkflowExecution
 
@@ -173,10 +174,34 @@ async def retained(session, kernel, run):
     return captured["binding"]["stages"]
 
 
-async def historical_operations(session, kernel, run):
-    """Retained contracts permit parsing only, never implementation resolution."""
+async def stage_implementations(session, kernel, run):
+    """stage_id -> implementation id from the run's own retained identity, not today's catalogue."""
     stages = await retained(session, kernel, run)
-    operations = dict(registry_for(kernel).operations) if not stages else {}
+    return {name: item["identity"]["implementation_id"] for name, item in stages.items()}
+
+
+def implementation_of(stage, implementations):
+    """The implementation a stage ran. Only a run that retained nothing (it predates migration
+    0011) falls back to the frozen mapping of the operation ids that existed then."""
+    if implementations:
+        return implementations.get(stage.stage_id)
+    return LEGACY_IMPLEMENTATION_BY_OPERATION.get(stage.operation)
+
+
+async def stage_traits(session, kernel, run, stage):
+    return traits_of(implementation_of(stage, await stage_implementations(session, kernel, run)))
+
+
+async def historical_operations(session, kernel, run):
+    """Retained contracts permit parsing only, never implementation resolution.
+
+    A run with no retained snapshot (it predates migration 0011) returns None: the stored,
+    hash-verified definition is then read without consulting any catalogue.
+    """
+    stages = await retained(session, kernel, run)
+    if not stages:
+        return None
+    operations = {}
     for binding in stages.values():
         m = binding["manifest"]
         operations[m["id"]] = Operation(

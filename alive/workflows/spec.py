@@ -226,6 +226,8 @@ def parse_definition(raw, *, operations=OPERATIONS):
 
 
 def check_structure(spec, operations=OPERATIONS):
+    """`operations=None` reads a retained definition: its graph, references and limits are still
+    checked, but no catalogue is consulted, so history never depends on today's capabilities."""
     problems = []
     ids = [stage.id for stage in spec.stages]
     for dup in sorted({i for i in ids if ids.count(i) > 1}):
@@ -234,8 +236,10 @@ def check_structure(spec, operations=OPERATIONS):
 
     for stage in spec.stages:
         where = f"stage {stage.id!r}"
-        operation = operations.get(stage.operation)
-        if operation is None:
+        operation = operations.get(stage.operation) if operations is not None else None
+        if operations is None:
+            pass
+        elif operation is None:
             problems.append(f"{where}: unknown operation {stage.operation!r}")
         else:
             if operation.kind != stage.type:
@@ -401,7 +405,7 @@ def graph_of(spec_dict, operations=OPERATIONS):
     """Nodes and edges for a viewer: plain data. The viewer escapes text; nothing is rendered."""
     nodes = []
     for stage in spec_dict["stages"]:
-        operation = operations.get(stage["operation"])
+        operation = operations.get(stage["operation"]) if operations is not None else None
         nodes.append(
             {
                 "id": stage["id"],

@@ -70,7 +70,8 @@ export interface Detail {
 export interface Selection {
   id: string;
   version: string;
-  sha?: string;
+  sha?: string; // the manifest hash the linking run retained
+  impl?: string; // the implementation fingerprint the linking run retained
 }
 
 const ID = /^[a-z][a-z0-9_-]*(\.[a-z][a-z0-9_-]*)+$/,
@@ -137,20 +138,27 @@ export function parseCapabilityLink(hash: string): Selection | null {
   const p = new URLSearchParams(hash.slice(14));
   const keys = [...p.keys()];
   if (
-    keys.some((k) => !["id", "version", "sha"].includes(k)) ||
+    keys.some((k) => !["id", "version", "sha", "impl"].includes(k)) ||
     keys.some((k) => p.getAll(k).length !== 1)
   )
     return null;
   const id = p.get("id") || "",
     version = p.get("version") || "",
-    sha = p.get("sha") || undefined;
-  if (!ID.test(id) || !VERSION.test(version) || (sha && !SHA.test(sha)))
+    sha = p.get("sha") || undefined,
+    impl = p.get("impl") || undefined;
+  if (
+    !ID.test(id) ||
+    !VERSION.test(version) ||
+    (sha && !SHA.test(sha)) ||
+    (impl && !SHA.test(impl))
+  )
     return null;
-  return { id, version, sha };
+  return { id, version, sha, impl };
 }
 export function capabilityLink(s: Selection): string {
   const p = new URLSearchParams({ id: s.id, version: s.version });
   if (s.sha) p.set("sha", s.sha);
+  if (s.impl) p.set("impl", s.impl);
   const hash = "#capabilities?" + p;
   if (!parseCapabilityLink(hash)) throw new Error("Invalid capability link");
   return hash;

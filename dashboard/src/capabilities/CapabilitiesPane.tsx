@@ -141,7 +141,10 @@ function CapabilityCatalogue({ token }: { token: string }) {
   const stale =
     detail && catalogue && detail.catalog_sha256 !== catalogue.catalog_sha256;
   const mismatch =
-    detail && selected?.sha && selected.sha !== detail.capability.manifest_sha256;
+    detail &&
+    ((selected?.sha && selected.sha !== detail.capability.manifest_sha256) ||
+      (selected?.impl &&
+        selected.impl !== detail.capability.implementation.sha256));
 
   return (
     <div className="workflow-observatory cap-catalogue">
@@ -242,8 +245,9 @@ function CapabilityCatalogue({ token }: { token: string }) {
           )}
           {mismatch && (
             <p role="alert">
-              The run that linked here retained a different manifest hash. The
-              installed version shown is not the capability that run used.
+              The run that linked here retained a different manifest hash or
+              implementation fingerprint. The installed version shown is not the
+              capability that run used.
             </p>
           )}
         </section>
