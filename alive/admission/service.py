@@ -10,6 +10,8 @@ from types import SimpleNamespace
 from sqlalchemy import select
 
 from alive.admission.models import Admission
+from alive.admission.profiles import INSPECTION, PROFILES, disclosure
+from alive.analysis.contracts import ROLE
 from alive.bespoke.recipes import recipe_hash
 from alive.bespoke.selector import evaluate
 from alive.capabilities.bindings import binding_record, digest, registry_for
@@ -28,11 +30,20 @@ PROFILE = "approved-repository-inspection"
 POLICY = "owner-admission/v1"
 
 
-def recipe_for(kernel):
+def recipe_for(kernel, profile=PROFILE):
     from alive.bespoke.recipes import load_catalogue
 
     recipes = getattr(kernel, "bespoke_recipes", None) or load_catalogue()
-    return next(r for r in recipes if r.id == PROFILE and r.version == "1.0.0")
+    return next(r for r in recipes if r.id == profile and r.version == "1.0.0")
+
+
+def profile_of(terms):
+    # Reviews prepared before profiles existed carry no key and are the inspection profile.
+    return PROFILES[terms.get("profile", INSPECTION)]
+
+
+def stage_resources(profile, resources):
+    return {stage: resources for stage in profile.resource_stages}
 
 
 async def row_for(session, kernel, admission_id, *, lock=False):
@@ -71,7 +82,8 @@ async def current_terms(session, kernel, row):
         and owner_digest(control.configuration) == proposed.configuration_sha256,
         "governor_configuration_changed",
     )
-    recipe = recipe_for(kernel)
+    profile = profile_of(terms)
+    recipe = recipe_for(kernel, profile.id)
     require(recipe_hash(recipe) == terms["candidate"]["recipe_sha256"], "recipe_identity_changed")
     definition = await session.get(WorkflowDefinition, proposed.definition_id)
     require(
@@ -84,10 +96,13 @@ async def current_terms(session, kernel, row):
     require(binding.snapshot_sha256 == proposed.capability_binding_sha256, "binding_changed")
     registry = registry_for(kernel)
     expected = registry.grants_for(
-        binding.snapshot["stages"], resources={"read": terms["source"]["resources"]}
+        binding.snapshot["stages"], resources=stage_resources(profile, terms["source"]["resources"])
     )
     require(expected == proposed.capabilities, "deployment_or_capability_changed")
-    source = await custody.resolve(kernel, terms["source"]["resources"], "repository.inspect")
+    # Every operation the profile needs must be approved by the owner for this capture; a source
+    # approved only for local inspection can never be disclosed to a model.
+    for operation in profile.source_operations:
+        source = await custody.resolve(kernel, terms["source"]["resources"], operation)
     approval = await session.get(SourceApproval, source.approval_id)
     require(
         approval.approved_by == row.principal == proposed.principal
@@ -107,6 +122,23 @@ async def current_terms(session, kernel, row):
         candidate.eligible and candidate.model_dump(mode="json") == terms["candidate"],
         "admission_no_longer_eligible",
     )
+    if profile.model:
+        # The destination, model, role contract and size ceilings are part of what was approved.
+        current = disclosure(
+            kernel,
+            control,
+            source,
+            proposed.inputs["paths"],
+            terms["objective"]["requested_outcome"],
+        )
+        require(
+            current == terms["model_disclosure"]
+            and proposed.models == {ROLE: current["destination"]["model"]}
+            and proposed.role_contracts == {ROLE: current["role_contract_sha256"]}
+            and proposed.max_output_tokens == current["max_output_tokens"]
+            and kernel.settings.alive_model_transport == "pi",
+            "model_terms_changed",
+        )
     return proposed
 
 
@@ -117,9 +149,11 @@ def recipe_context_objective(terms):
 
 
 async def prepare(kernel, request):
-    recipe = recipe_for(kernel)
+    profile = PROFILES[request.profile]
+    recipe = recipe_for(kernel, profile.id)
     require(request.recipe_sha256 == recipe_hash(recipe), "recipe_identity_changed")
     require(len(set(request.paths)) == len(request.paths), "duplicate_source_path")
+    require(len(request.paths) <= profile.max_files, "admission_file_count")
     async with kernel.lock, kernel.db.sessions.begin() as session:
         approval = await session.get(SourceApproval, request.approval_ref)
         require(
@@ -127,7 +161,8 @@ async def prepare(kernel, request):
             "owned_source_approval_required",
         )
         resources = custody.resources_for(approval)
-        source = await custody.resolve(kernel, resources, "repository.inspect")
+        for operation in profile.source_operations:
+            source = await custody.resolve(kernel, resources, operation)
         require(
             source.source_type == "repository" and approval.approved_by.startswith("owner-cli:"),
             "local_owner_repository_approval_required",
@@ -138,7 +173,7 @@ async def prepare(kernel, request):
             "admission_requires_exact_approved_file_scope",
         )
         require(
-            sum(f["bytes"] for f in source.content["files"]) <= 32768,
+            sum(f["bytes"] for f in source.content["files"]) <= profile.max_source_bytes,
             "admission_source_byte_ceiling",
         )
         existing = await session.scalar(
@@ -148,7 +183,10 @@ async def prepare(kernel, request):
                 Admission.idempotency_key == request.idempotency_key,
             )
         )
-        request_hash = digest(request.model_dump(mode="json"))
+        # The inspection profile's retry identity predates profiles; keep it byte-identical.
+        request_hash = digest(
+            request.model_dump(mode="json", exclude=None if profile.model else {"profile"})
+        )
         if existing:
             require(existing.request_sha256 == request_hash, "admission_retry_conflict")
             return await view(session, kernel, existing)
@@ -174,8 +212,13 @@ async def prepare(kernel, request):
         require(control is not None, "governor_required")
         admission_id, context_id, inquiry_id = uid(), uid(), uid()
         inputs = {"source_ref": source.source_ref, "paths": paths}
+        if profile.model:
+            inputs["objective"] = request.objective.requested_outcome
         cap = registry_for(kernel).get("repository.inspect", "1.1.0")
-        validate({"mode": "read", **inputs}, cap.manifest["inputs"])
+        validate(
+            {"mode": "read", "source_ref": inputs["source_ref"], "paths": paths},
+            cap.manifest["inputs"],
+        )
         context = {
             "goal_id": goal.id,
             "admission_ref": admission_id,
@@ -188,6 +231,11 @@ async def prepare(kernel, request):
                 "requested_action_kind": "record_analysis",
             },
         }
+        model_terms = (
+            disclosure(kernel, control, source, paths, request.objective.requested_outcome)
+            if profile.model
+            else None
+        )
         expiry = min(now() + timedelta(seconds=request.ttl_seconds), aware(approval.expires_at))
         proposed = Grant(
             principal=approval.approved_by,
@@ -204,20 +252,22 @@ async def prepare(kernel, request):
                 "custody": "approved_capture",
                 "consent": "exact_content_and_scope",
             },
-            operations=("repository.inspect",),
+            operations=profile.operations,
             capability_binding_sha256=binding.snapshot_sha256,
             capabilities=registry_for(kernel).grants_for(
-                binding.snapshot["stages"], resources={"read": resources}
+                binding.snapshot["stages"], resources=stage_resources(profile, resources)
             ),
             inputs=inputs,
             configuration_sha256=owner_digest(control.configuration),
-            models={},
-            role_contracts={},
-            max_model_calls=0,
-            max_output_tokens=0,
-            wall_seconds=30,
+            models={ROLE: model_terms["destination"]["model"]} if profile.model else {},
+            role_contracts={ROLE: model_terms["role_contract_sha256"]} if profile.model else {},
+            max_model_calls=profile.max_model_calls,
+            max_output_tokens=model_terms["max_output_tokens"]
+            if profile.model
+            else profile.max_output_tokens,
+            wall_seconds=profile.wall_seconds,
             expires_at=expiry,
-            outbound_approved=False,
+            outbound_approved=profile.model,
             idempotency_key="admission:" + admission_id,
         )
         selection_context = {
@@ -253,10 +303,14 @@ async def prepare(kernel, request):
             "selection_context": selection_context,
             "proposed_grant_data": proposed.model_dump(mode="json"),
             "context": context,
-            "expected_output": "captured_files",
+            "expected_output": "workflow_result" if profile.model else "captured_files",
             "semantic_status": "unverified",
             "cost_status": "no_inference; currency_cost_not_estimated",
         }
+        if profile.model:
+            terms["profile"] = profile.id
+            terms["model_disclosure"] = model_terms
+            terms["cost_status"] = "one_model_call; cost_unknown_not_estimated"
         require(len(json_bytes(terms)) <= 65536, "admission_review_size")
         row = Admission(
             id=admission_id,
@@ -416,6 +470,7 @@ async def start(app, admission_id, confirm_sha256):
                 grant.goal_id,
                 context_id,
                 row.terms["objective"]["requested_outcome"],
+                model=profile_of(row.terms).model,
             )
             event = kernel.add_event(
                 session,
@@ -449,3 +504,53 @@ async def cancel(app, admission_id):
     require(current["run"] is not None, "admission_not_started")
     await app.state.workflows.cancel(current["run"]["id"])
     return await get(app.state.kernel, admission_id)
+
+
+async def report(kernel, admission_id):
+    """The retained, integrity-checked report of a completed model-backed admission."""
+    from alive.cognitive_models import CognitiveMessage, ModelInvocation
+    from alive.workflows.models import WorkflowStageRun
+    from alive.workflows.runner import result_event
+
+    async with kernel.db.sessions() as session:
+        row = await row_for(session, kernel, admission_id)
+        require(profile_of(row.terms).model and row.run_id, "report_unavailable")
+        run = await session.get(WorkflowRun, row.run_id)
+        require(run is not None and run.status == "COMPLETED", "report_unavailable")
+        stages = {
+            s.stage_id: s
+            for s in (
+                await session.scalars(
+                    select(WorkflowStageRun).where(WorkflowStageRun.run_id == run.id)
+                )
+            ).all()
+        }
+        record = stages["record"]
+        output = await result_event(session, record)
+        message = await session.get(CognitiveMessage, record.id)
+        require(
+            message is not None
+            and message.investigation_id == run.investigation_id
+            and owner_digest(message.content) == output["sha256"],
+            "report_integrity",
+        )
+        call = await session.get(ModelInvocation, stages["analyze"].model_invocation_id)
+        artifact = message.content
+        return {
+            "admission_id": row.id,
+            "run_id": run.id,
+            "artifact_sha256": output["sha256"],
+            "result": artifact["result"],
+            "assessment": artifact["assessment"],
+            "usage": {
+                "status": call.status,
+                "provider": call.provider,
+                "model": call.model,
+                "reserved_tokens": call.reserved_tokens,
+                "usage": call.usage,
+                "latency_ms": call.latency_ms,
+                "model_calls": 1,
+                "cost": "unknown; no price is configured and none is estimated",
+            },
+            "verification": "none; findings are model assessments with checked citations",
+        }

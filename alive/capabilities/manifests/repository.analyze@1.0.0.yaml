@@ -1,0 +1,148 @@
+schema_version: 1
+id: repository.analyze
+version: 1.0.0
+name: Repository Analysis
+description: One bounded model call that reviews owner-approved captured repository files
+  for an explicit objective and returns cited findings. Disclosure of the source to the
+  approved model destination is a separate owner-approved source operation. Output is
+  model assessment, not verified fact.
+implementation:
+  provider: builtin
+  id: repository-analyst-v1
+execution:
+  kind: pi_agent
+  side_effects: none
+  timeout_seconds: 120
+  max_input_bytes: 65536
+  max_output_bytes: 65536
+  max_input_items: 8
+  max_invocations: 1
+  retry_policy: none
+  max_model_calls: 1
+  max_output_tokens: 1536
+permissions:
+  filesystem:
+    mode: none
+    roots: []
+  network:
+    mode: governed_pi
+  process:
+    mode: none
+  evidence: none
+  persistence: none
+  sources: approved_capture
+inputs:
+  type: object
+  additionalProperties: false
+  properties:
+    source_ref:
+      type: string
+      maxLength: 36
+    source_sha256:
+      type: string
+      maxLength: 64
+    scoped_sha256:
+      type: string
+      maxLength: 64
+    objective:
+      type: string
+      maxLength: 1000
+    files:
+      type: array
+      maxItems: 8
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          path:
+            type: string
+            maxLength: 256
+          content:
+            type: string
+            maxLength: 32768
+          sha256:
+            type: string
+            maxLength: 64
+          bytes:
+            type: integer
+            minimum: 0
+            maximum: 32768
+          source_id:
+            type: string
+            maxLength: 200
+          locator:
+            type: object
+            additionalProperties: false
+            properties:
+              kind:
+                type: string
+                maxLength: 8
+                enum:
+                - file
+              path:
+                type: string
+                maxLength: 256
+              sha256:
+                type: string
+                maxLength: 64
+            required:
+            - kind
+            - path
+            - sha256
+        required:
+        - path
+        - content
+        - sha256
+        - bytes
+        - source_id
+        - locator
+    omitted:
+      type: array
+      maxItems: 256
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          path:
+            type: string
+            maxLength: 256
+          reason:
+            type: string
+            maxLength: 100
+        required:
+        - path
+        - reason
+  required:
+  - source_ref
+  - source_sha256
+  - scoped_sha256
+  - objective
+  - files
+  - omitted
+outputs:
+  type: object
+  additionalProperties: false
+  properties:
+    analysis:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+  required:
+  - analysis
+presentation:
+  category: development
+  icon: search-code
+  tags:
+  - analysis
+  - repository
+  - model
+supported_source_types:
+- repository
+examples:
+- source_ref: 00000000-0000-0000-0000-000000000000
+  source_sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+  scoped_sha256: '0000000000000000000000000000000000000000000000000000000000000000'
+  objective: Identify correctness defects.
+  files: []
+  omitted: []

@@ -4,9 +4,9 @@ import argparse
 import asyncio
 import json
 import sys
-from importlib import resources
 
 from alive.admission import service
+from alive.admission.profiles import PROFILES, definition_text
 from alive.capabilities.registry import load_registry
 from alive.config import Settings
 from alive.sources.cli import open_kernel, principal
@@ -17,6 +17,13 @@ from alive.workflows.store import register_definition
 async def run(args):
     settings = Settings()
     kernel = await open_kernel(settings)
+
+    async def model_provider_ready():
+        # This process reads no provider credential. Approval records consent only; the server
+        # re-runs the same feasibility with its real readiness probe before any start.
+        return True
+
+    kernel.model_provider_ready = model_provider_ready
     kernel.capabilities = load_registry(
         settings.alive_capability_directory or None,
         disabled=settings.alive_disabled_capabilities,
@@ -24,8 +31,13 @@ async def run(args):
     )
     try:
         if args.command == "install":
-            raw = (resources.files("alive.admission") / "repository-inspection.json").read_text()
-            result, _ = await register_definition(kernel, raw, status="active", source="admin")
+            profiles = [args.profile] if args.profile else list(PROFILES)
+            result = {}
+            for name in profiles:
+                registered, _ = await register_definition(
+                    kernel, definition_text(PROFILES[name]), status="active", source="admin"
+                )
+                result[name] = registered
         elif args.command == "inspect":
             result = await service.get(kernel, args.admission_id)
         elif args.command == "approve":
@@ -42,7 +54,8 @@ async def run(args):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
-    commands.add_parser("install", help="register only the shipped closed admission profile")
+    install = commands.add_parser("install", help="register only the shipped closed profiles")
+    install.add_argument("--profile", choices=list(PROFILES))
     for name in ("inspect", "approve", "revoke"):
         command = commands.add_parser(name)
         command.add_argument("admission_id")
