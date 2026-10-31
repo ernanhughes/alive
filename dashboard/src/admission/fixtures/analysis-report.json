@@ -1,0 +1,91 @@
+{
+  "admission_id": "062f90d2-dd59-4359-95ef-988d66726d53",
+  "run_id": "0fdfbad7-371e-46e4-ba43-8a3737b7b389",
+  "artifact_sha256": "a89341b907cdc8016a94f5b664aba586a4f6d5ddde2b4d02478d0206b71bf545",
+  "result": {
+    "analysis_sha256": "4eb69de55ee6222cc2f7350c29da33eee073c95409c29acd57b38f3577082a3d",
+    "findings": [
+      {
+        "finding_id": "F1",
+        "model_assessment": {
+          "category": "correctness",
+          "evidence": [
+            {
+              "file": "calc.py",
+              "line_end": 6,
+              "line_start": 6,
+              "quote": "return total / (len(values) + 1)"
+            }
+          ],
+          "explanation": "The divisor is one larger than the number of values.",
+          "severity": "high",
+          "suggested_verification": "Assert mean([2, 4]) == 3.",
+          "title": "Mean divides by the wrong count",
+          "uncertainty": "Assumes values is non-empty."
+        },
+        "reference_check": {
+          "contract": "repository-citation-existence/v1",
+          "evidence": [
+            {
+              "file": "calc.py",
+              "file_sha256": "2eb0459bf7a266de8d3a2afadcc593380340de42f6c357d9b91ad4deb6e61fdd",
+              "line_end": 6,
+              "line_start": 6,
+              "status": "quote_matches"
+            }
+          ],
+          "status": "references_valid"
+        },
+        "verification": "none"
+      }
+    ],
+    "objective": "Find correctness defects in this code.",
+    "report_markdown": "# Repository analysis\n\n## Investigation objective\nFind correctness defects in this code.\n\n## Approved source scope\nSource f383ef92-d756-416c-8643-ff82b9cb11c6 (digest b0cb350eba5826aedff4da8526670b251965ced8a5438705d19f2c67d9ef2310).\nFiles supplied to the model: README.md, calc.py.\nOmitted: none.\nThis analysis covers only those files, not the whole repository.\n\n## Model summary (model assessment, not verified)\nReviewed the supplied files.\n\n## Findings whose citations exist in the captured files\n\n### F1: Mean divides by the wrong count\nModel-assessed severity: high; category: correctness.\nThe divisor is one larger than the number of values.\nEvidence:\n- calc.py:6-6 (quote_matches)\nUncertainty: Assumes values is non-empty.\nSuggested verification: Assert mean([2, 4]) == 3.\n\n## Unsupported hypotheses (a citation did not match the captured files)\nNone.\n\n## Unresolved questions\n- None stated.\n\n## Validation status\nCitation existence: 1 of 1 findings have citations that match the captured files.\nA matching citation shows the cited lines exist. It does not show the model is right.\nIndependent verification: none performed. Semantic status: unverified.",
+    "schema": "repository-analysis-result/v1",
+    "source": {
+      "files": [
+        {
+          "bytes": 34,
+          "path": "README.md",
+          "sha256": "2344e12b158564d058dfaebff1c3b1f03922e91cd8d2f2ad589c27c175e06dcb"
+        },
+        {
+          "bytes": 201,
+          "path": "calc.py",
+          "sha256": "2eb0459bf7a266de8d3a2afadcc593380340de42f6c357d9b91ad4deb6e61fdd"
+        }
+      ],
+      "omitted": [],
+      "scoped_sha256": "b0cb350eba5826aedff4da8526670b251965ced8a5438705d19f2c67d9ef2310",
+      "source_ref": "f383ef92-d756-416c-8643-ff82b9cb11c6",
+      "source_sha256": "b0cb350eba5826aedff4da8526670b251965ced8a5438705d19f2c67d9ef2310"
+    },
+    "summary": "Reviewed the supplied files.",
+    "unresolved_questions": []
+  },
+  "assessment": {
+    "contract": "repository-citation-existence/v1",
+    "findings_total": 1,
+    "findings_with_unsupported_references": 0,
+    "findings_with_valid_references": 1,
+    "independent_verification": false,
+    "reference_identity_status": "all_valid",
+    "semantic_status": "unverified"
+  },
+  "usage": {
+    "status": "validated",
+    "provider": "meta",
+    "model": "muse-spark-1.3",
+    "reserved_tokens": 6620,
+    "usage": {
+      "prompt_tokens": 10,
+      "completion_tokens": 5,
+      "total_tokens": 15,
+      "charged_tokens": 15
+    },
+    "latency_ms": 473.9071000076365,
+    "model_calls": 1,
+    "cost": "unknown; no price is configured and none is estimated"
+  },
+  "verification": "none; findings are model assessments with checked citations"
+}

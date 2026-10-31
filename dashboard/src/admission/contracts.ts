@@ -11,9 +11,90 @@ export interface Source {
   inventory: { items: { item: string; bytes?: number; sha256?: string }[] };
   expires_at: string;
 }
+export type ProfileName =
+  "approved-repository-inspection" | "approved-repository-analysis";
+export const PROFILE_LIMITS: Record<
+  ProfileName,
+  { files: number; bytes: number; model: boolean }
+> = {
+  "approved-repository-inspection": { files: 20, bytes: 32768, model: false },
+  "approved-repository-analysis": { files: 8, bytes: 8192, model: true },
+};
 export interface Profile {
+  profile: ProfileName;
+  model_call: boolean;
   recipe_sha256: string;
   recipe: Recipe;
+}
+export interface Disclosure {
+  operation: string;
+  destination: {
+    kind: string;
+    provider: string;
+    transport: string;
+    host: string | null;
+    model: string;
+  };
+  files: { path: string; bytes: number }[];
+  source_bytes: number;
+  reserved_request_bytes: number;
+  max_model_calls: number;
+  max_output_tokens: number;
+  leaves_host: boolean;
+  cost: string;
+  cancellation: string;
+  retention: string;
+}
+export interface Finding {
+  finding_id: string;
+  model_assessment: {
+    title: string;
+    category: string;
+    severity: string;
+    explanation: string;
+    uncertainty: string;
+    suggested_verification: string;
+  };
+  reference_check: {
+    status: string;
+    evidence: {
+      file: string;
+      status: string;
+      line_start?: number;
+      line_end?: number;
+    }[];
+  };
+  verification: string;
+}
+export interface Report {
+  admission_id: string;
+  run_id: string;
+  artifact_sha256: string;
+  result: {
+    summary: string;
+    findings: Finding[];
+    unresolved_questions: string[];
+    report_markdown: string;
+  };
+  assessment: {
+    reference_identity_status: string;
+    findings_total: number;
+    findings_with_valid_references: number;
+    findings_with_unsupported_references: number;
+    semantic_status: string;
+    independent_verification: boolean;
+  };
+  usage: {
+    status: string;
+    provider: string;
+    model: string;
+    reserved_tokens: number;
+    usage: Record<string, unknown>;
+    latency_ms: number;
+    model_calls: number;
+    cost: string;
+  };
+  verification: string;
 }
 export interface Admission {
   id: string;
@@ -21,6 +102,8 @@ export interface Admission {
   state: string;
   authorization_state: "pending" | "approved" | "revoked" | "expired";
   terms: {
+    profile?: ProfileName;
+    model_disclosure?: Disclosure;
     source: {
       resources: {
         source_ref: string;
@@ -72,17 +155,32 @@ export function checkedAdmission(
   )
     throw new Error("Admission identity or authorization state is invalid.");
   const grant = value.terms?.proposed_grant_data;
+  const disclosure = value.terms?.model_disclosure;
+  const analysis = value.terms?.profile === "approved-repository-analysis";
+  const inspection = value.terms?.profile === undefined;
   if (
     !grant ||
-    grant.max_model_calls !== 0 ||
-    grant.max_output_tokens !== 0 ||
-    grant.outbound_approved !== false ||
-    grant.wall_seconds !== 30 ||
-    value.terms.expected_output !== "captured_files" ||
-    !value.terms.candidate?.graph
+    !value.terms.candidate?.graph ||
+    !(analysis || inspection) ||
+    (inspection &&
+      (grant.max_model_calls !== 0 ||
+        grant.max_output_tokens !== 0 ||
+        grant.outbound_approved !== false ||
+        grant.wall_seconds !== 30 ||
+        disclosure !== undefined ||
+        value.terms.expected_output !== "captured_files")) ||
+    (analysis &&
+      (grant.max_model_calls !== 1 ||
+        grant.max_output_tokens > 1536 ||
+        grant.outbound_approved !== true ||
+        grant.wall_seconds !== 180 ||
+        !disclosure ||
+        disclosure.leaves_host !== true ||
+        disclosure.max_model_calls !== 1 ||
+        value.terms.expected_output !== "workflow_result"))
   )
     throw new Error(
-      "Admission exceeds the supported no-inference inspection profile.",
+      "Admission exceeds the supported inspection and analysis profiles.",
     );
   return value;
 }

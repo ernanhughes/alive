@@ -3,6 +3,7 @@ import uuid
 from collections.abc import AsyncIterator
 from dataclasses import dataclass, field
 from typing import Protocol
+from urllib.parse import urlsplit
 
 import httpx
 
@@ -41,6 +42,11 @@ class MockProvider:
 
     async def stream(self, prompt):
         yield (await self.generate(prompt)).text
+
+
+def meta_endpoint_host(settings):
+    """The host model requests are sent to, for owner disclosure. No credential is read."""
+    return urlsplit(settings.alive_meta_base_url).hostname
 
 
 class MetaProvider:

@@ -170,17 +170,23 @@ PROBE_F paired rows after withdrawal: [('validated', True)] | listing contains w
 ### 5.2 Model output contract (`ClaimComparisonOutput`, `extra="forbid"`)
 
 ```python
-relationship: Literal["supports", "conflicts", "qualifies", "explicit_supersession",
-                      "unrelated", "insufficient_evidence"]
+relationship: Literal[
+    "supports",
+    "conflicts",
+    "qualifies",
+    "explicit_supersession",
+    "unrelated",
+    "insufficient_evidence",
+]
 claim_aspect: Literal["behaviour", "recommendation", "status", "measurement", "other"]
-historical_claim_quote: str | None   # ≤300, exact in historical_excerpt
-current_claim_quote: str | None      # ≤300, exact in current_excerpt
+historical_claim_quote: str | None  # ≤300, exact in historical_excerpt
+current_claim_quote: str | None  # ≤300, exact in current_excerpt
 scope_alignment: Literal["same", "different", "unclear"]
-scope_note: str                      # ≤300, e.g. "same method; 3.11 vs 3.12 docs"
-supersession_basis_quote: str | None # ≤300, exact in CURRENT excerpt
-reason: str                          # ≤600
-limitations: str                     # ≤400
-confidence: float                    # 0..1, displayed nowhere
+scope_note: str  # ≤300, e.g. "same method; 3.11 vs 3.12 docs"
+supersession_basis_quote: str | None  # ≤300, exact in CURRENT excerpt
+reason: str  # ≤600
+limitations: str  # ≤400
+confidence: float  # 0..1, displayed nowhere
 ```
 
 Two changes from the packet:

@@ -1,0 +1,512 @@
+{
+  "id": "062f90d2-dd59-4359-95ef-988d66726d53",
+  "review_sha256": "593877467e68918cfabda25b703cbbfa789630c4b2f3744cc838f507e6d30d47",
+  "terms": {
+    "schema": "owner-admission/v1",
+    "policy": "owner-admission/v1",
+    "instance_id": "b3ae56c4-7385-4054-aa17-c5ae084c341a",
+    "goal": {
+      "id": "1c949a66-7e9d-4999-8155-5d47cb4ea2a3",
+      "title": "Inspect the approved repository"
+    },
+    "objective": {
+      "kind": "inspect_implementation",
+      "requested_outcome": "Find correctness defects in this code."
+    },
+    "source": {
+      "resources": {
+        "source_ref": "f383ef92-d756-416c-8643-ff82b9cb11c6",
+        "approval_id": "b9336360-228a-433a-9168-28aec66938a1",
+        "content_sha256": "b0cb350eba5826aedff4da8526670b251965ced8a5438705d19f2c67d9ef2310",
+        "scope_sha256": "37c44bc336ae8a944dd84ceee213961c624b879c0e6bb3f742e327496db9ee7a"
+      },
+      "label": "Owner repository",
+      "scope": {
+        "items": [
+          "README.md",
+          "calc.py"
+        ]
+      },
+      "inventory": {
+        "items": [
+          {
+            "item": "README.md",
+            "bytes": 34,
+            "sha256": "2344e12b158564d058dfaebff1c3b1f03922e91cd8d2f2ad589c27c175e06dcb"
+          },
+          {
+            "item": "calc.py",
+            "bytes": 201,
+            "sha256": "2eb0459bf7a266de8d3a2afadcc593380340de42f6c357d9b91ad4deb6e61fdd"
+          }
+        ],
+        "omitted": []
+      },
+      "expires_at": "2026-10-31T19:06:22.526981+00:00",
+      "principal": "owner-cli:owner"
+    },
+    "candidate": {
+      "recipe": {
+        "schema_version": 1,
+        "id": "approved-repository-analysis",
+        "version": "1.0.0",
+        "name": "Approved repository analysis",
+        "description": "Review the exact owner-approved repository capture for the stated objective with one governed model call, then check every citation against the capture. The owner approves the model destination and the disclosure of the source separately. Findings are model assessments, not verified facts.",
+        "context_types": [
+          "repository"
+        ],
+        "intents": [
+          "inspect_implementation"
+        ],
+        "workflow": {
+          "name": "owner-repository-analysis",
+          "version": 1,
+          "definition_sha256": "e83c8f892f0d50585ba7b4f6298bc62321587556f6599a98c2911e80a3c95d21"
+        },
+        "capabilities": [
+          {
+            "stage_id": "analyze",
+            "id": "repository.analyze",
+            "version": "1.0.0",
+            "manifest_sha256": "56b6125f0d0bb1e966ded65ad680b3b3e3827823bddd92900c9962d1588ddffe"
+          },
+          {
+            "stage_id": "read",
+            "id": "repository.inspect",
+            "version": "1.1.0",
+            "manifest_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d"
+          },
+          {
+            "stage_id": "record",
+            "id": "result.record",
+            "version": "1.0.0",
+            "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca"
+          },
+          {
+            "stage_id": "validate",
+            "id": "repository.validate_findings",
+            "version": "1.0.0",
+            "manifest_sha256": "ebb0a26fcfeb35619978d65a546f97ab13d2087fe5a6a54b89b6fe8d0fabae38"
+          }
+        ],
+        "limits": {
+          "max_model_calls": 1,
+          "max_wall_seconds": 180,
+          "max_output_tokens": 1536,
+          "outbound_allowed": true,
+          "permissions": [
+            "evidence.read",
+            "model.infer",
+            "source.read",
+            "workflow.write"
+          ]
+        },
+        "required_evidence": "approved_capture",
+        "output_artifact": "workflow_result",
+        "validation": "reference_identity",
+        "status": "active",
+        "presentation": {
+          "category": "bespoke",
+          "icon": "search-code",
+          "tags": [
+            "model",
+            "owner-review",
+            "source"
+          ]
+        }
+      },
+      "recipe_sha256": "a5cbf81b0eddff9828b8b197cab09c5bac9e8a629fc26872df84178bfd863c13",
+      "eligible": true,
+      "reasons": [],
+      "definition_id": "a94655d6-fbb8-492f-9f1f-6cb7c6859f68",
+      "binding_sha256": "e617fe9fb32cacfae0e4c3b49caeb2b3a7136f1bcf1110939b47b1ba1a2311e0",
+      "capability_identities": [
+        {
+          "id": "repository.analyze",
+          "version": "1.0.0",
+          "manifest_sha256": "56b6125f0d0bb1e966ded65ad680b3b3e3827823bddd92900c9962d1588ddffe",
+          "implementation_id": "repository-analyst-v1",
+          "implementation_sha256": "542b31a107c4b36cb4b29a255785eb1a78e94a0c9bcffaec74217427aea57fb5"
+        },
+        {
+          "id": "repository.inspect",
+          "version": "1.1.0",
+          "manifest_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d",
+          "implementation_id": "repository-inspector-v2",
+          "implementation_sha256": "baefb977d2947e12cea935fca26574642df53a53783c24eb967128fcfff078a4"
+        },
+        {
+          "id": "result.record",
+          "version": "1.0.0",
+          "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+          "implementation_id": "result-record-v1",
+          "implementation_sha256": "8d5d9318069b2e44995c363fac467ae7e3826055b282550017086ed2fa600217"
+        },
+        {
+          "id": "repository.validate_findings",
+          "version": "1.0.0",
+          "manifest_sha256": "ebb0a26fcfeb35619978d65a546f97ab13d2087fe5a6a54b89b6fe8d0fabae38",
+          "implementation_id": "repository-findings-validator-v1",
+          "implementation_sha256": "bcf69256a86a714d1f557c923f8e64da121c22cb2f6a0f54b0774ee30020dddb"
+        }
+      ],
+      "capability_policies": [
+        "9628e78c73bfaa0630c304f06ed4d512b21e58bee8170fc5d1768c2eb86f4639",
+        "e8e4b9b048ae31f1774fb2be319f6a9004a5fc2ce1781f9364e18473c227a0bb",
+        "d3d201ec7d58ff7b7bdc9189f49b82c6ad2671a19ede7583bc6f9ac627c4b850",
+        "758e73b57cab8ed5e277b6c6693a36d3b9e2d9c795790f9aa58567d682facd06"
+      ],
+      "procedure_sha256": "77583b5ed3798fcd3332bcb0daec14a4449a0cd601edb3109b178f0c9f929b38",
+      "graph": {
+        "name": "owner-repository-analysis",
+        "version": 1,
+        "definition_sha256": "e83c8f892f0d50585ba7b4f6298bc62321587556f6599a98c2911e80a3c95d21",
+        "nodes": [
+          {
+            "id": "read",
+            "title": "Read approved captured files",
+            "type": "deterministic",
+            "operation": "repository.inspect",
+            "available": true
+          },
+          {
+            "id": "analyze",
+            "title": "Model review of approved files",
+            "type": "pi_agent",
+            "operation": "repository.analyze",
+            "available": true
+          },
+          {
+            "id": "validate",
+            "title": "Check citations against the capture",
+            "type": "validation",
+            "operation": "repository.validate_findings",
+            "available": true
+          },
+          {
+            "id": "record",
+            "title": "Retain the validated report",
+            "type": "deterministic",
+            "operation": "result.record",
+            "available": true
+          }
+        ],
+        "edges": [
+          {
+            "from": "read",
+            "to": "analyze"
+          },
+          {
+            "from": "analyze",
+            "to": "validate"
+          },
+          {
+            "from": "validate",
+            "to": "record"
+          }
+        ]
+      },
+      "suitability": 92,
+      "factors": {
+        "explicit_goal_alignment": 40,
+        "captured_context_match": 25,
+        "required_evidence_present": 15,
+        "validation_contract": 10,
+        "resource_headroom": 0,
+        "operational_simplicity": 2
+      }
+    },
+    "selection_context": {
+      "surface": "repository",
+      "claims_count": 0,
+      "sources_count": 1,
+      "inputs_sha256": "cd905f6406e8824b04f2e4858366c36eb1a4ba16ea12063ae2a5590d396b4a44"
+    },
+    "proposed_grant_data": {
+      "version": 1,
+      "principal": "owner-cli:owner",
+      "goal_id": "1c949a66-7e9d-4999-8155-5d47cb4ea2a3",
+      "investigation_id": "a3e6f48b-552b-4f0b-aa73-0daa43e95544",
+      "definition_id": "a94655d6-fbb8-492f-9f1f-6cb7c6859f68",
+      "definition_sha256": "e83c8f892f0d50585ba7b4f6298bc62321587556f6599a98c2911e80a3c95d21",
+      "context_event_id": "a1806dc6-d26d-4a40-8596-62088107db72",
+      "context_sha256": "5461b42d7ff49dff767eb826ccb280d9ec3118cf3a0a699a44a422b3a41ed4e0",
+      "context_provenance": {
+        "source": "admission-owner",
+        "event_type": "workflow.owner.context",
+        "custody": "approved_capture",
+        "consent": "exact_content_and_scope"
+      },
+      "admission_ref": "062f90d2-dd59-4359-95ef-988d66726d53",
+      "operations": [
+        "repository.inspect",
+        "repository.analyze",
+        "repository.validate_findings",
+        "result.record"
+      ],
+      "capability_binding_sha256": "e617fe9fb32cacfae0e4c3b49caeb2b3a7136f1bcf1110939b47b1ba1a2311e0",
+      "capabilities": {
+        "read": {
+          "identity": {
+            "id": "repository.inspect",
+            "version": "1.1.0",
+            "manifest_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d",
+            "implementation_id": "repository-inspector-v2",
+            "implementation_sha256": "baefb977d2947e12cea935fca26574642df53a53783c24eb967128fcfff078a4"
+          },
+          "permissions": {
+            "evidence": "none",
+            "filesystem": {
+              "mode": "none",
+              "roots": []
+            },
+            "network": {
+              "mode": "none"
+            },
+            "persistence": "none",
+            "process": {
+              "mode": "none"
+            },
+            "sources": "approved_capture"
+          },
+          "limits": {
+            "max_files": 20,
+            "max_input_bytes": 8192,
+            "max_input_items": 4,
+            "max_invocations": 1,
+            "max_model_calls": 0,
+            "max_output_bytes": 65536,
+            "max_output_tokens": 0,
+            "max_source_bytes": 32768,
+            "timeout_seconds": 30
+          },
+          "policy_sha256": "e8e4b9b048ae31f1774fb2be319f6a9004a5fc2ce1781f9364e18473c227a0bb",
+          "resources": {
+            "source_ref": "f383ef92-d756-416c-8643-ff82b9cb11c6",
+            "approval_id": "b9336360-228a-433a-9168-28aec66938a1",
+            "content_sha256": "b0cb350eba5826aedff4da8526670b251965ced8a5438705d19f2c67d9ef2310",
+            "scope_sha256": "37c44bc336ae8a944dd84ceee213961c624b879c0e6bb3f742e327496db9ee7a"
+          }
+        },
+        "analyze": {
+          "identity": {
+            "id": "repository.analyze",
+            "version": "1.0.0",
+            "manifest_sha256": "56b6125f0d0bb1e966ded65ad680b3b3e3827823bddd92900c9962d1588ddffe",
+            "implementation_id": "repository-analyst-v1",
+            "implementation_sha256": "542b31a107c4b36cb4b29a255785eb1a78e94a0c9bcffaec74217427aea57fb5"
+          },
+          "permissions": {
+            "evidence": "none",
+            "filesystem": {
+              "mode": "none",
+              "roots": []
+            },
+            "network": {
+              "mode": "governed_pi"
+            },
+            "persistence": "none",
+            "process": {
+              "mode": "none"
+            },
+            "sources": "approved_capture"
+          },
+          "limits": {
+            "max_files": 0,
+            "max_input_bytes": 65536,
+            "max_input_items": 8,
+            "max_invocations": 1,
+            "max_model_calls": 1,
+            "max_output_bytes": 65536,
+            "max_output_tokens": 1536,
+            "max_source_bytes": 0,
+            "timeout_seconds": 120
+          },
+          "policy_sha256": "9628e78c73bfaa0630c304f06ed4d512b21e58bee8170fc5d1768c2eb86f4639",
+          "resources": {
+            "source_ref": "f383ef92-d756-416c-8643-ff82b9cb11c6",
+            "approval_id": "b9336360-228a-433a-9168-28aec66938a1",
+            "content_sha256": "b0cb350eba5826aedff4da8526670b251965ced8a5438705d19f2c67d9ef2310",
+            "scope_sha256": "37c44bc336ae8a944dd84ceee213961c624b879c0e6bb3f742e327496db9ee7a"
+          }
+        },
+        "validate": {
+          "identity": {
+            "id": "repository.validate_findings",
+            "version": "1.0.0",
+            "manifest_sha256": "ebb0a26fcfeb35619978d65a546f97ab13d2087fe5a6a54b89b6fe8d0fabae38",
+            "implementation_id": "repository-findings-validator-v1",
+            "implementation_sha256": "bcf69256a86a714d1f557c923f8e64da121c22cb2f6a0f54b0774ee30020dddb"
+          },
+          "permissions": {
+            "evidence": "none",
+            "filesystem": {
+              "mode": "none",
+              "roots": []
+            },
+            "network": {
+              "mode": "none"
+            },
+            "persistence": "none",
+            "process": {
+              "mode": "none"
+            }
+          },
+          "limits": {
+            "max_files": 0,
+            "max_input_bytes": 65536,
+            "max_input_items": 8,
+            "max_invocations": 1,
+            "max_model_calls": 0,
+            "max_output_bytes": 65536,
+            "max_output_tokens": 0,
+            "max_source_bytes": 0,
+            "timeout_seconds": 30
+          },
+          "policy_sha256": "758e73b57cab8ed5e277b6c6693a36d3b9e2d9c795790f9aa58567d682facd06",
+          "resources": {}
+        },
+        "record": {
+          "identity": {
+            "id": "result.record",
+            "version": "1.0.0",
+            "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+            "implementation_id": "result-record-v1",
+            "implementation_sha256": "8d5d9318069b2e44995c363fac467ae7e3826055b282550017086ed2fa600217"
+          },
+          "permissions": {
+            "evidence": "approved_context",
+            "filesystem": {
+              "mode": "none",
+              "roots": []
+            },
+            "network": {
+              "mode": "none"
+            },
+            "persistence": "workflow_result",
+            "process": {
+              "mode": "none"
+            }
+          },
+          "limits": {
+            "max_files": 0,
+            "max_input_bytes": 65536,
+            "max_input_items": 32,
+            "max_invocations": 1,
+            "max_model_calls": 0,
+            "max_output_bytes": 65536,
+            "max_output_tokens": 0,
+            "max_source_bytes": 0,
+            "timeout_seconds": 30
+          },
+          "policy_sha256": "d3d201ec7d58ff7b7bdc9189f49b82c6ad2671a19ede7583bc6f9ac627c4b850",
+          "resources": {}
+        }
+      },
+      "inputs": {
+        "source_ref": "f383ef92-d756-416c-8643-ff82b9cb11c6",
+        "paths": [
+          "README.md",
+          "calc.py"
+        ],
+        "objective": "Find correctness defects in this code."
+      },
+      "configuration_sha256": "1fc515cf726ac7847b08ec787d0e4cf19d1858971bd4edca6ca1384c2a7e4b28",
+      "models": {
+        "repository_analyst": "muse-spark-1.3"
+      },
+      "role_contracts": {
+        "repository_analyst": "4134b4bdb946fecd0c0cffe5d7290b4d929ec52df007715d0095f491fd6498e5"
+      },
+      "max_model_calls": 1,
+      "max_output_tokens": 1536,
+      "wall_seconds": 180,
+      "expires_at": "2026-10-31T18:11:22.627789Z",
+      "outbound_approved": true,
+      "idempotency_key": "admission:062f90d2-dd59-4359-95ef-988d66726d53"
+    },
+    "context": {
+      "goal_id": "1c949a66-7e9d-4999-8155-5d47cb4ea2a3",
+      "admission_ref": "062f90d2-dd59-4359-95ef-988d66726d53",
+      "context": {
+        "observation": "Find correctness defects in this code.",
+        "claims": [],
+        "sources": [
+          {
+            "id": "f383ef92-d756-416c-8643-ff82b9cb11c6",
+            "content_sha256": "b0cb350eba5826aedff4da8526670b251965ced8a5438705d19f2c67d9ef2310"
+          }
+        ],
+        "memories": [],
+        "source_event_ids": [
+          "a1806dc6-d26d-4a40-8596-62088107db72"
+        ],
+        "requested_action_kind": "record_analysis"
+      }
+    },
+    "expected_output": "workflow_result",
+    "semantic_status": "unverified",
+    "cost_status": "one_model_call; cost_unknown_not_estimated",
+    "profile": "approved-repository-analysis",
+    "model_disclosure": {
+      "operation": "repository.analyze",
+      "destination": {
+        "kind": "remote_provider",
+        "provider": "meta",
+        "transport": "pi",
+        "host": "api.meta.ai",
+        "model": "muse-spark-1.3"
+      },
+      "role": "repository_analyst",
+      "role_contract_sha256": "4134b4bdb946fecd0c0cffe5d7290b4d929ec52df007715d0095f491fd6498e5",
+      "context_policy": "repository-analysis-context/v1",
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 34
+        },
+        {
+          "path": "calc.py",
+          "bytes": 201
+        }
+      ],
+      "source_bytes": 235,
+      "reserved_request_bytes": 6620,
+      "max_model_calls": 1,
+      "max_output_tokens": 1536,
+      "leaves_host": true,
+      "cost": "unknown; no price is configured and none is estimated",
+      "cancellation": "A request already sent to the provider cannot be recalled. An ambiguous outcome is never retried; its reservation stays charged.",
+      "retention": "The prompt and response are retained in the local database in clear text."
+    }
+  },
+  "authorization_state": "approved",
+  "state": "completed",
+  "run": {
+    "id": "0fdfbad7-371e-46e4-ba43-8a3737b7b389",
+    "workflow": {
+      "name": "owner-repository-analysis",
+      "version": 1,
+      "definition_id": "a94655d6-fbb8-492f-9f1f-6cb7c6859f68",
+      "definition_sha256": "e83c8f892f0d50585ba7b4f6298bc62321587556f6599a98c2911e80a3c95d21",
+      "schema_version": 1
+    },
+    "goal_id": "1c949a66-7e9d-4999-8155-5d47cb4ea2a3",
+    "investigation_id": "a3e6f48b-552b-4f0b-aa73-0daa43e95544",
+    "trigger": "authorized-execution",
+    "input_ref": "event:a1806dc6-d26d-4a40-8596-62088107db72",
+    "input_sha256": "1e3de6fdfa6e7713db339124c1b7e56f626847c039c4d307eb2cd5262ee8b254",
+    "authorization_ref": "f8c12b2e-3705-437c-960f-7bc730c60ce8",
+    "budget": {
+      "max_model_calls": 1,
+      "max_output_tokens": 1536,
+      "wall_seconds": 180
+    },
+    "status": "COMPLETED",
+    "terminal": true,
+    "terminal_reason": "required_stages_completed",
+    "created_at": "2026-10-31T18:06:23.046692",
+    "started_at": "2026-10-31T18:06:23.068471",
+    "finished_at": "2026-10-31T18:06:25.491303"
+  }
+}
