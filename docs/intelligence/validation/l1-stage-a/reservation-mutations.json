@@ -1,0 +1,76 @@
+[
+  {
+    "id": "M01",
+    "baseline": "c15bff582a63b415d12d562f2934d0287bb0bb65",
+    "guard": "reservation: outbound approval (shared with runner.start)",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_analysis_reservation.py::test_reservation_guard_independently_refuses_changed_authority[outbound]",
+      "tests/test_workflow_authority.py",
+      "tests/test_workflow_r2_fence.py",
+      "tests/test_workflow_transactions.py",
+      "tests/test_workflow_r2_invariants.py"
+    ],
+    "failure": [
+      "FAILED tests/test_analysis_reservation.py::test_reservation_guard_independently_refuses_changed_authority[outbound]"
+    ],
+    "log": "mutation-logs/M01.txt.gz",
+    "seconds": 5.805
+  },
+  {
+    "id": "M02",
+    "baseline": "c15bff582a63b415d12d562f2934d0287bb0bb65",
+    "guard": "reservation: approved model identity",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_analysis_reservation.py::test_reservation_guard_independently_refuses_changed_authority[model]",
+      "tests/test_workflow_authority.py",
+      "tests/test_workflow_r2_fence.py",
+      "tests/test_workflow_transactions.py",
+      "tests/test_workflow_r2_invariants.py"
+    ],
+    "failure": [
+      "FAILED tests/test_analysis_reservation.py::test_reservation_guard_independently_refuses_changed_authority[model]"
+    ],
+    "log": "mutation-logs/M02.txt.gz",
+    "seconds": 5.835
+  },
+  {
+    "id": "M03",
+    "baseline": "c15bff582a63b415d12d562f2934d0287bb0bb65",
+    "guard": "reservation: role contract",
+    "status": "killed",
+    "returncode": 1,
+    "command": [
+      "C:\\Projects\\alive\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "-x",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_analysis_reservation.py::test_reservation_guard_independently_refuses_changed_authority[role_contract]"
+    ],
+    "failure": [
+      "FAILED tests/test_analysis_reservation.py::test_reservation_guard_independently_refuses_changed_authority[role_contract]"
+    ],
+    "log": "mutation-logs/M03.txt.gz",
+    "seconds": 5.647
+  }
+]

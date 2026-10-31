@@ -695,7 +695,8 @@ function OwnerAdmission({ token }: { token: string }) {
                         <dt>Destination</dt>
                         <dd>
                           {disclosure.destination.provider} (
-                          {disclosure.destination.host ?? "host unknown"}) ·
+                          {disclosure.destination.endpoint ??
+                            disclosure.destination.host ?? "host unknown"}) ·
                           model {disclosure.destination.model} · via{" "}
                           {disclosure.destination.transport}
                         </dd>

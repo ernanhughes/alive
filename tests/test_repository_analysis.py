@@ -271,6 +271,101 @@ def test_replay_never_dispatches_a_second_request(ready):
     assert len(upstream.calls) == 1
 
 
+def test_retained_pi_events_withhold_source_and_response_text(ready):
+    from alive.models import Event
+
+    client, upstream, *_ = ready
+    response_canary = "RESPONSE_PRIVATE_CANARY_41ac"
+    upstream.respond = scripted(analysis(summary=response_canary))
+    _, done = run_to_end(ready)
+    assert done["run"]["status"] == "COMPLETED"
+
+    async def retained(kernel):
+        async with kernel.db.sessions() as session:
+            return [
+                row.payload
+                for row in (
+                    await session.scalars(select(Event).where(Event.event_type == "pi.rpc.event"))
+                ).all()
+            ]
+
+    events = call(client, retained)
+    assert events, "exercise actual retained Pi RPC events"
+    serialized = json.dumps(events)
+    assert CANARY not in serialized
+    assert response_canary not in serialized
+    assert CALC not in serialized
+
+
+def test_disclosure_names_the_effective_override_and_only_it_receives_source(ready):
+    client, upstream, _, settings, *_ = ready
+    settings.alive_meta_url = "https://approved.example:8443/v2/completions"
+    seen = []
+
+    async def record(request):
+        seen.append(str(request.url))
+        return await upstream.handle(request)
+
+    client.app.state.pi.upstream_transport = httpx.MockTransport(record)
+    review, done = run_to_end(ready)
+    destination = review["terms"]["model_disclosure"]["destination"]
+    assert destination["host"] == "approved.example"
+    assert destination["endpoint"] == settings.alive_meta_url
+    assert done["run"]["status"] == "COMPLETED"
+    assert len(upstream.calls) == 1
+    assert seen == [settings.alive_meta_url]
+
+
+def test_destination_cannot_change_after_the_dispatch_fence(ready, monkeypatch):
+    client, upstream, _, settings, *_ = ready
+    approved_endpoint = "https://approved.example/v1/completions"
+    settings.alive_meta_url = approved_endpoint
+    seen = []
+
+    async def record(request):
+        seen.append(str(request.url))
+        return await upstream.handle(request)
+
+    runtime = client.app.state.pi
+    runtime.upstream_transport = httpx.MockTransport(record)
+    dispatch = runtime.egress._dispatch
+
+    async def change_after_fence(request_id):
+        allowed = await dispatch(request_id)
+        settings.alive_meta_url = "https://unapproved.example/collect"
+        return allowed
+
+    monkeypatch.setattr(runtime.egress, "_dispatch", change_after_fence)
+    _, done = run_to_end(ready)
+    assert seen == [approved_endpoint]
+    # Later authority checks refuse the changed configuration; the one already dispatched
+    # request still used the exact approved endpoint and is never replayed.
+    assert done["run"]["status"] == "UNKNOWN"
+
+
+@pytest.mark.parametrize(
+    "endpoint",
+    [
+        "http://provider.example/completions",
+        "https://user:secret@provider.example/x",
+        "https://provider.example/x?secret=credential",
+        "https://provider.example/x#fragment",
+        "https://provider.example:invalid/x",
+        "https:///missing-host",
+        " https://provider.example/x",
+        "https://provider.example/with space",
+        "https://provider.example\t.attacker.example/x",
+    ],
+)
+def test_unsafe_endpoint_is_refused_before_review(ready, endpoint):
+    client, upstream, _, settings, paths, _, approval = ready
+    settings.alive_meta_url = endpoint
+    response = client.post(BASE, json=make_request(client, approval, paths))
+    assert response.status_code == 409
+    assert endpoint not in response.text
+    assert not upstream.calls
+
+
 def test_a_clean_repository_is_not_forced_to_produce_findings(ready):
     client, upstream, *_ = ready
     upstream.respond = scripted(analysis(summary="No defect supported by the supplied lines."))
@@ -381,7 +476,18 @@ def test_a_source_approved_only_for_local_inspection_cannot_be_disclosed(case):
 
 @pytest.mark.parametrize(
     "change",
-    ["model", "key_removed", "transport", "role_contract", "withdraw", "expired", "source_digest"],
+    [
+        "model",
+        "key_removed",
+        "transport",
+        "role_contract",
+        "withdraw",
+        "expired",
+        "source_digest",
+        "endpoint_override",
+        "endpoint_path",
+        "endpoint_port",
+    ],
 )
 def test_changed_model_terms_or_source_refuse_before_any_dispatch(ready, change, monkeypatch):
     client, upstream, _, settings, _, captured, approval = ready
@@ -391,6 +497,15 @@ def test_changed_model_terms_or_source_refuse_before_any_dispatch(ready, change,
     async def mutate(kernel):
         if change == "model":
             settings.alive_meta_model = "another-approved-model"
+        elif change == "endpoint_override":
+            settings.alive_meta_url = "https://unapproved.example/chat/completions"
+        elif change == "endpoint_path":
+            settings.alive_meta_url = settings.alive_meta_base_url.rstrip("/") + "/other"
+        elif change == "endpoint_port":
+            from urllib.parse import urlsplit
+
+            host = urlsplit(settings.alive_meta_base_url).hostname
+            settings.alive_meta_url = f"https://{host}:8443/chat/completions"
         elif change == "key_removed":
             settings.alive_meta_api_key = ""
         elif change == "transport":
@@ -776,6 +891,38 @@ def fence_off(client):
         return True
 
     client.app.state.pi.egress.workflow_guard = allow
+
+
+@pytest.mark.parametrize("field", ["outbound", "model", "role_contract"])
+def test_reservation_enforces_each_authority_term_without_upstream_layers(
+    ready, field, monkeypatch
+):
+    """Return tampered terms only to model_claim, after normal admission has already passed."""
+    from alive.workflows import context as authority
+
+    client, upstream, *_ = ready
+    review = prepared(ready)
+    approve_review(client, review)
+    fence_off(client)
+    original = authority.authorized
+
+    async def changed_terms(*args, **kwargs):
+        grant, *rest = await original(*args, **kwargs)
+        grant = grant.model_copy(deep=True)
+        if field == "outbound":
+            grant.outbound_approved = False
+        elif field == "model":
+            grant.models[ROLE] = "unapproved-model"
+        else:
+            grant.role_contracts[ROLE] = "0" * 64
+        return grant, *rest
+
+    monkeypatch.setattr(authority, "authorized", changed_terms)
+    result = start(client, review)
+    assert result.status_code == 200
+    assert result.json()["run"]["status"] in {"FAILED", "CANCELLED"}
+    assert not upstream.calls
+    assert call(client, snapshot)[0]["model_invocations"] == 0
 
 
 @pytest.mark.parametrize("late", ["model", "role_contract"])
