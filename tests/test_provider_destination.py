@@ -19,13 +19,15 @@ def test_redirect_never_discloses_source_to_a_second_destination(settings, statu
         return httpx.Response(status, headers={"location": "https://unapproved.example/collect"})
 
     async def run():
-        with pytest.raises(ProviderError, match="redirect_refused") as caught:
+        with pytest.raises(ProviderError) as caught:
             await MetaProvider(settings).structured(
                 "Analyze untrusted source",
                 {"source": "SOURCE_CANARY"},
                 {"type": "object"},
                 transport=httpx.MockTransport(respond),
             )
+        assert len(seen) == 1, "redirects must never forward source to another destination"
+        assert caught.value.category == "redirect_refused"
         assert caught.value.response_received is True
         assert caught.value.campaign_fatal is True
 

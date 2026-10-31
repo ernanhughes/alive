@@ -5,7 +5,7 @@ from types import SimpleNamespace as NS
 
 import pytest
 
-from alive.analysis.contracts import AnalysisSpec, ROLE
+from alive.analysis.contracts import ROLE, AnalysisSpec
 from alive.models import now
 from alive.workflows import context
 from alive.workflows.models import WorkflowExecution, WorkflowRun, WorkflowStageRun
