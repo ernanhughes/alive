@@ -446,7 +446,9 @@ def test_e_crash_image_mid_provider_call_recovers_unknown_without_redispatch(
 # --- more fault points and the cancel race -------------------------------------------------------------
 
 
-def test_c_fault_inside_the_reservation_transaction_leaves_no_invocation(client, pi_env, monkeypatch):
+def test_c_fault_inside_the_reservation_transaction_leaves_no_invocation(
+    client, pi_env, monkeypatch
+):
     original = client.app.state.kernel.add_event
 
     def fail(session, kind, payload=None, **kwargs):
@@ -518,7 +520,9 @@ def test_g_randomized_cancel_race_keeps_the_invariants(client, settings, monkeyp
         upstream = None
         prepare(client)
     trials = []
-    delays = [0, 0.01, 0.03, 0.06, 0.1, 0.2, 0.4, 0.8] if model else [0, 0.005, 0.01, 0.02, 0.04, 0.08]
+    delays = (
+        [0, 0.01, 0.03, 0.06, 0.1, 0.2, 0.4, 0.8] if model else [0, 0.005, 0.01, 0.02, 0.04, 0.08]
+    )
     for seed, delay in enumerate(delays, start=20):
         run_seeded_observation(client, seed)
 
@@ -545,14 +549,28 @@ def test_g_randomized_cancel_race_keeps_the_invariants(client, settings, monkeyp
             assert all(state == "COMPLETED" for state, _ in observed["stages"].values())
         if upstream is not None:
             assert len(upstream.calls) <= len(trials) + 1
-        trials.append({"delay": delay, **{k: observed[k] for k in ("run", "reason", "invocations", "pi_runs", "pi_requests")}})
-    record(f"g_cancel_race_model_{model}", trials=trials, upstream_calls=len(upstream.calls) if upstream else 0)
+        trials.append(
+            {
+                "delay": delay,
+                **{
+                    k: observed[k]
+                    for k in ("run", "reason", "invocations", "pi_runs", "pi_requests")
+                },
+            }
+        )
+    record(
+        f"g_cancel_race_model_{model}",
+        trials=trials,
+        upstream_calls=len(upstream.calls) if upstream else 0,
+    )
 
 
 # --- F: evidence substitution -------------------------------------------------------------------
 
 
-@pytest.mark.parametrize("tamper", ["event_output", "artifact_content", "artifact_hash_rebuilt", "swap_output_ref"])
+@pytest.mark.parametrize(
+    "tamper", ["event_output", "artifact_content", "artifact_hash_rebuilt", "swap_output_ref"]
+)
 def test_f_evidence_substitution_is_detected_on_read(client, tamper):
     from sqlalchemy import update
 
@@ -570,7 +588,9 @@ def test_f_evidence_substitution_is_detected_on_read(client, tamper):
             await runner.execute(run["id"])
             stages = await store.get_stage_runs(k, run["id"])
             rec = next(s for s in stages if s["operation"] == "result.record")
-            other = next(s for s in stages if s["operation"] != "result.record" and s["state"] == "COMPLETED")
+            other = next(
+                s for s in stages if s["operation"] != "result.record" and s["state"] == "COMPLETED"
+            )
             async with k.db.sessions.begin() as session:
                 row = await session.scalar(
                     select(WorkflowStageRun).where(WorkflowStageRun.id == rec["id"])
@@ -578,7 +598,10 @@ def test_f_evidence_substitution_is_detected_on_read(client, tamper):
                 ev = await session.scalar(select(Event).where(Event.id == row.output_ref[6:]))
                 art = await session.get(CognitiveMessage, ev.payload["output"]["artifact_id"])
                 if tamper == "event_output":
-                    ev.payload = {**ev.payload, "output": {**ev.payload["output"], "sha256": "f" * 64}}
+                    ev.payload = {
+                        **ev.payload,
+                        "output": {**ev.payload["output"], "sha256": "f" * 64},
+                    }
                 elif tamper == "artifact_content":
                     art.content = {**art.content, "result": {"forged": True}}
                 elif tamper == "artifact_hash_rebuilt":
@@ -658,16 +681,20 @@ def test_i_api_disclosure_and_scoping(client, pi_env):
     ).status_code
     out["unknown_run"] = client.get("/api/v1/workflow-runs/nope/artifacts/x").status_code
     out["oversize"] = client.get("/api/v1/workflow-runs/" + "a" * 40 + "/artifacts/x").status_code
-    out["no_auth"] = TestClient(client.app).get(
-        f"/api/v1/workflow-runs/{run_id}/artifacts/{rec['stage_id']}"
-    ).status_code
+    out["no_auth"] = (
+        TestClient(client.app)
+        .get(f"/api/v1/workflow-runs/{run_id}/artifacts/{rec['stage_id']}")
+        .status_code
+    )
     out["write_methods"] = [
         client.request(m, f"/api/v1/workflow-runs/{run_id}/artifacts/{rec['stage_id']}").status_code
         for m in ("POST", "PUT", "DELETE", "PATCH")
     ]
     out["stage_row_keys"] = sorted(stage_rows[0])
     out["artifact_body"] = art.json()
-    out["model_stage_validation"] = [(s["stage_id"], s["validation_status"], s["state"]) for s in stage_rows]
+    out["model_stage_validation"] = [
+        (s["stage_id"], s["validation_status"], s["state"]) for s in stage_rows
+    ]
     record("i_api", **out)
 
 
@@ -728,4 +755,10 @@ def test_k_real_pi_completed_then_database_fault_in_stage_commit(client, pi_env)
 
     run_id, final, replay, observed = call(client, probe)
     runner.k.add_event = original
-    record("k_pi_ok_then_db_fault", returned=final, replay=replay, upstream_calls=len(pi_env.calls), **observed)
+    record(
+        "k_pi_ok_then_db_fault",
+        returned=final,
+        replay=replay,
+        upstream_calls=len(pi_env.calls),
+        **observed,
+    )

@@ -43,11 +43,30 @@ CALC = (
 README = "# Calc\nMean of a list of numbers.\n"
 
 
+def reset_postgres(url):
+    from sqlalchemy import text
+    from sqlalchemy.ext.asyncio import create_async_engine
+
+    async def reset():
+        engine = create_async_engine(url)
+        async with engine.begin() as connection:
+            await connection.execute(text("DROP SCHEMA public CASCADE"))
+            await connection.execute(text("CREATE SCHEMA public"))
+            await connection.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
+        await engine.dispose()
+
+    asyncio.run(reset())
+
+
 @pytest.fixture
 def settings(settings):
     settings.alive_meta_api_key = REAL_KEY
     settings.alive_model_transport = "pi"
     settings.alive_pi_run_deadline = 20
+    url = os.environ.get("ALIVE_TEST_ANALYSIS_POSTGRES_URL")
+    if url:  # optional: run the whole path on a disposable PostgreSQL instead of SQLite
+        reset_postgres(url)
+        settings.database_url = url
     return settings
 
 
