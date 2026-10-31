@@ -37,7 +37,7 @@ In the image: pinned Node, the lockfile-pinned Pi (checked at build time), Pytho
 dependencies (`uv sync --locked`), the built dashboard, `curl` and `postgresql-client`. The database is
 the `pgvector/pgvector:pg16` image.
 
-Not in the image: Chrome or Playwright (managed browser sessions need a host browser), the
+Not in the image: a browser (managed browser sessions need Chrome on the host), the
 embedding model, and any external Pi command.
 
 Compose passes only these to the app: `DATABASE_URL`, `ALIVE_API_TOKEN` (required),
