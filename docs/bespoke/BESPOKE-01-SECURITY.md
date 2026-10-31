@@ -15,7 +15,7 @@ side effects and actual controlled handoff through WorkflowRunner.
 Captured text containing system-message spoofing, fake GitHub identity, capability YAML,
 network/plugin requests, goal/grant instructions and injected code comments remains source data.
 The test's trusted fixture owner explicitly approves each modified content hash; selection still
-preserves the explicit objective and installed procedure. It neither stores the hostile prose
+preserves the explicit objective and abstains when browser procedures are unavailable. It neither stores the hostile prose
 in the rationale nor dispatches a model. Unapproved substitution is tested separately and refused.
 
 The dashboard uses React text rendering and the existing graph component. Unit tests cover

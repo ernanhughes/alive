@@ -17,7 +17,7 @@ campaign.CASES = [
         "B12",
         "model workflow needs configured provider",
         SEL,
-        "or not kernel.settings.alive_meta_api_key",
+        "or not await kernel.model_provider_ready()",
         "or False",
         TEST + "test_model_workflow_without_configured_provider_is_ineligible",
     ),

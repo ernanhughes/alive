@@ -315,10 +315,20 @@ def test_captured_instructions_never_change_objective_or_authority(client, appro
             payload = copy.deepcopy(source.payload)
             payload["context"]["observation"] = attack
             source.payload = payload
+            source.source = "extension"
+            source.event_type = "browser.dom_changed"
             authority = await session.scalar(
                 select(Event).where(Event.id == approved["approval_ref"])
             )
-            authority.payload = authority.payload | {"context_sha256": digest(payload)}
+            authority.payload = authority.payload | {
+                "context_sha256": digest(payload),
+                "context_provenance": {
+                    "source": "extension",
+                    "event_type": "browser.dom_changed",
+                    "custody": "untrusted_browser",
+                    "consent": "exact_content_and_scope",
+                },
+            }
             return digest(payload)
 
     approved["source_sha256"] = call(client, inject)
@@ -326,9 +336,9 @@ def test_captured_instructions_never_change_objective_or_authority(client, appro
     response = recommend(client, approved)
     assert response.status_code == 200, response.text
     result = response.json()
-    assert selected(result)["recipe"]["id"] == "controlled-comparison"
+    assert result["selection"]["state"] == "abstained"
     assert result["selection"]["objective"] == approved["objective"]
-    assert result["selection"]["context"]["surface"] == "controlled_evidence"
+    assert result["selection"]["context"]["surface"] == "browser_document"
     assert attack not in str(result)
     assert call(client, counts) == before
 

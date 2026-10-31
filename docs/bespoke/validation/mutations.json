@@ -10,14 +10,14 @@
       "baseline": "PASS",
       "result": "KILLED",
       "modified_guards": [
-        "or not kernel.settings.alive_meta_api_key"
+        "or not await kernel.model_provider_ready()"
       ],
       "replacements": [
         "or False"
       ],
-      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n________ test_model_workflow_without_configured_provider_is_ineligible ________\ntests\\test_bespoke.py:442: in test_model_workflow_without_configured_provider_is_ineligible\n    assert result[\"state\"] == \"abstained\"\nE   AssertionError: assert 'recommended' == 'abstained'\nE     \nE     - abstained\nE     + recommended\n============================== warnings summary ===============================\ntests/test_bespoke.py::test_model_workflow_without_configured_provider_is_ineligible\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_bespoke.py::test_model_workflow_without_configured_provider_is_ineligible - AssertionError: assert 'recommended' == 'abstained'\n  \n  - abstained\n  + recommended\n1 failed, 1 warning in 1.14s\n",
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n________ test_model_workflow_without_configured_provider_is_ineligible ________\ntests\\test_bespoke.py:442: in test_model_workflow_without_configured_provider_is_ineligible\n    assert result[\"state\"] == \"abstained\"\nE   AssertionError: assert 'recommended' == 'abstained'\nE     \nE     - abstained\nE     + recommended\n============================== warnings summary ===============================\ntests/test_bespoke.py::test_model_workflow_without_configured_provider_is_ineligible\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_bespoke.py::test_model_workflow_without_configured_provider_is_ineligible - AssertionError: assert 'recommended' == 'abstained'\n  \n  - abstained\n  + recommended\n1 failed, 1 warning in 3.09s\n",
       "returncode": 1,
-      "source_sha256": "9c7b753fdebe452316f6cbd0d6f35fd5712e596ae7d73ee70a51eb5115c31823"
+      "source_sha256": "084914a9d3d15ccbe84392d764ce7ee13f49c1776964102d677fcc570a7982ed"
     },
     {
       "id": "B1",

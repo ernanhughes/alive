@@ -1,6 +1,6 @@
 {
   "source_image_parity": {
-    "alive/app.py": "eee26277854f6b9ddf2fd087e1a3ae215248e5aaa4ea10fa3bba19ef535390da",
+    "alive/app.py": "09762c37c74ecdc18292cd98739b252430da553dfece20772cce99b67b382f1e",
     "alive/bespoke/__init__.py": "934ea6d9c75b6a5071c15b818200fc42ec52effbf6703b326a801bee6b036db2",
     "alive/bespoke/api.py": "bbef005cd3d98ab7bcc0cf9a62f33d85c2454c16a12486422a4650ea48e17621",
     "alive/bespoke/context.py": "e951dbecd22683eb1139f58b812f99aa3e7e63a7cdc03242d99a50b47c2f2ea6",
@@ -13,11 +13,11 @@
     "alive/bespoke/recipes/controlled-comparison.yaml": "6ae8f84bc0d8bcc34acd97514caa0c52904cec85efd713ff44acdf742e492349",
     "alive/bespoke/recipes/discussion-source.yaml": "7068bd8f1d17673e89767acd4b6ab691b8c932e826171f9d87f1f801b031521d",
     "alive/bespoke/recipes/scientific-document.yaml": "c976a80b2701f6546cd1d03c01c4ed7a40c14973374dba0a07b5051174d9e567",
-    "alive/bespoke/selector.py": "9c7b753fdebe452316f6cbd0d6f35fd5712e596ae7d73ee70a51eb5115c31823",
+    "alive/bespoke/selector.py": "084914a9d3d15ccbe84392d764ce7ee13f49c1776964102d677fcc570a7982ed",
     "alive/bespoke/store.py": "42be64e25c75886d73f01a8179201196b670ddca022e2522e9813c47ffc7bcbb",
     "alive/capabilities/manifest.py": "823bd4523a3eb07cb45e7fddd94f7949ba2f7269b7c2b57419d2b7f906cd1f42"
   },
-  "docker_image": "sha256:0e4113c5c3d87177b607673505b42b32619a40937408bd607746bf9d67696713",
+  "docker_image": "sha256:cc6fbb07d3470ee6681f6104933b395779e0cca4e832e15f7ddf2898362d2bcf",
   "docker_smoke": "8 passed; Bespoke authenticated catalogue 5 recipes with execution disabled",
   "focused_regressions": 154,
   "dashboard_tests": 105,
@@ -33,16 +33,19 @@
   },
   "performance": {
     "source_comparison": {
-      "selection_seconds": 0.09107579999545123,
+      "selection_seconds": 0.09117299999343231,
       "record_bytes": 11082
     },
     "repository": {
-      "selection_seconds": 0.059135799994692206,
+      "selection_seconds": 0.0552938000037102,
       "record_bytes": 10329
     }
   },
   "independent_review": "pending; these are implementation-authored receipts",
   "full_ci": "final-head links and statuses maintained in the draft PR description",
-  "qualification_base_commit": "bba4b1de7aba86744750950bd88ad21500d4531d",
-  "qualified_correction": "Model-backed procedures require a configured provider; final PR head recorded in PR description."
+  "qualification_base_commit": "a752f3117dd58cf745e332246d30cb6edfa8b3e3",
+  "qualified_correction": "Existing provider capability probe returns a Boolean; selector has no credential access or provider construction. Browser fixture retains untrusted custody.",
+  "credential_architecture_checks": "3 ratchets passed without allow-list changes",
+  "docker_startup_note": "Qualification app exited during disposable PostgreSQL initialization; restarted after actual database readiness. No CI job was manually cancelled or restarted.",
+  "browser_fixture": "untrusted_browser custody; abstained; explicit objective preserved"
 }

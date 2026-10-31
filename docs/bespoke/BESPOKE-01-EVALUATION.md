@@ -49,7 +49,7 @@ the existing independent fixture owner, and the real runner/Observatory:
    It produces captured files with hashes, not a security/correctness review.
 2. Scientific objective: compare already structured controlled claims when compatible; document
    extraction and semantic verification remain unavailable. Repository context abstains for this intent.
-3. Discussion objective: abstain and retain missing `browser.prepare-source` requirements. No URL
+3. Controlled browser discussion, explicitly retaining untrusted browser custody: abstain and retain missing `browser.prepare-source` requirements. No URL
    is fetched or represented as approved discussion evidence.
 
 Every receipt records the actual installed capability catalogue. SQLite and PostgreSQL evidence

@@ -91,6 +91,12 @@ def create_app(settings=None, include_experiments=None, *, capability_registry=N
         await transport.start()
         kernel = Kernel(db, transport, settings)
         kernel.capabilities = capability_registry
+
+        async def model_provider_ready():
+            # Reuse the existing credential-blind capability probe; the selector receives a bool.
+            return (await capabilities())["providers"]["meta"]["configured"]
+
+        kernel.model_provider_ready = model_provider_ready
         await kernel.initialize()
         transport.task.add_done_callback(kernel.background_completed)
         app.state.kernel = kernel
