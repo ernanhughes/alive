@@ -154,7 +154,11 @@ class CapabilityRegistry:
                 raise ManifestError("unknown capability policy")
             for cap in choices:
                 policy_key = (cap.identity["id"], cap.identity["version"])
-                effective = json.loads(policies[policy_key]) if policy_key in policies else dict(cap.manifest["execution"])
+                effective = (
+                    json.loads(policies[policy_key])
+                    if policy_key in policies
+                    else dict(cap.manifest["execution"])
+                )
                 for field, value in overrides.items():
                     if (
                         field

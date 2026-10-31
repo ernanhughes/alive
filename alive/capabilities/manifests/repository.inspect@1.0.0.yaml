@@ -1,0 +1,147 @@
+schema_version: 1
+id: repository.inspect
+version: 1.0.0
+name: Repository Inspection
+description: Inspect an explicit bounded selection from an owner-approved immutable
+  repository content capture. Retrieval is not semantic verification.
+implementation:
+  provider: builtin
+  id: repository-inspector-v1
+execution:
+  kind: deterministic
+  side_effects: read
+  timeout_seconds: 30
+  max_input_bytes: 8192
+  max_output_bytes: 65536
+  max_input_items: 2
+  max_invocations: 1
+  retry_policy: none
+  max_files: 20
+  max_source_bytes: 32768
+permissions:
+  filesystem:
+    mode: read_only
+    roots:
+    - authorized_repository
+  network:
+    mode: none
+  process:
+    mode: none
+  evidence: none
+  persistence: none
+inputs:
+  type: object
+  additionalProperties: false
+  properties:
+    repository_ref:
+      type: string
+      maxLength: 64
+    paths:
+      type: array
+      maxItems: 20
+      items:
+        type: string
+        maxLength: 256
+  required:
+  - repository_ref
+  - paths
+outputs:
+  type: object
+  additionalProperties: false
+  properties:
+    repository_ref:
+      type: string
+      maxLength: 64
+    snapshot_sha256:
+      type: string
+      maxLength: 64
+    captured_at:
+      type: string
+      maxLength: 64
+    files:
+      type: array
+      maxItems: 20
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          path:
+            type: string
+            maxLength: 256
+          content:
+            type: string
+            maxLength: 32768
+          sha256:
+            type: string
+            maxLength: 64
+          bytes:
+            type: integer
+            minimum: 0
+            maximum: 32768
+          source_id:
+            type: string
+            maxLength: 256
+        required:
+        - path
+        - content
+        - sha256
+        - bytes
+        - source_id
+    omitted:
+      type: array
+      maxItems: 20
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          path:
+            type: string
+            maxLength: 256
+          reason:
+            type: string
+            maxLength: 100
+        required:
+        - path
+        - reason
+    provenance:
+      type: object
+      additionalProperties: false
+      properties:
+        kind:
+          type: string
+          maxLength: 40
+          enum:
+          - approved_content_capture/v1
+        atomic_repository_snapshot:
+          type: boolean
+          enum:
+          - false
+        semantic_status:
+          type: string
+          maxLength: 20
+          enum:
+          - unverified
+      required:
+      - kind
+      - atomic_repository_snapshot
+      - semantic_status
+  required:
+  - repository_ref
+  - snapshot_sha256
+  - captured_at
+  - files
+  - omitted
+  - provenance
+presentation:
+  category: development
+  icon: folder-search
+  tags:
+  - repository
+  - inspection
+  - code
+supported_source_types:
+- repository_snapshot
+examples:
+- repository_ref: approved-repository
+  paths:
+  - README.md
