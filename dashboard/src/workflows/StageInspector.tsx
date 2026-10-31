@@ -10,6 +10,7 @@ import type {
 import { artifact, receipt } from "./client";
 import { text, timestamp } from "./model";
 import { StructuredRecord } from "./StructuredRecord";
+import { capabilityLink } from "../capabilities/contracts";
 
 export function Facts({ values }: { values: Record<string, unknown> }) {
   return (
@@ -155,6 +156,20 @@ export function StageInspector({
           "Stage timeout (seconds)": spec.limits.timeout_seconds,
         }}
       />
+      {stage?.capability && (
+        <p>
+          Retained capability: {stage.capability.id} v{stage.capability.version}{" "}
+          <a
+            href={capabilityLink({
+              id: stage.capability.id,
+              version: stage.capability.version,
+              sha: stage.capability.manifest_sha256,
+            })}
+          >
+            Open catalogue entry
+          </a>
+        </p>
+      )}
       {replayState !== undefined ? (
         <p>
           Recorded state at cursor: {replayState}. Later snapshot details are
