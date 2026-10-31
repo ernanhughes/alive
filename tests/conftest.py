@@ -20,8 +20,14 @@ def settings(tmp_path):
     )
 
 
-def _boot(settings):
+def _boot(settings, include_experiments=False):
     import asyncio
+
+    if include_experiments:
+        # Register frozen experiment tables for SQLite create_all. Test-only
+        # import; production schema comes from alembic migrations, and
+        # production code must not import alive.experiment (see ARCH-01).
+        import alive.experiment.service  # noqa: F401
 
     from alive.db import Database
 
@@ -54,7 +60,7 @@ def client(settings):
 @pytest.fixture
 def bare_client(settings):
     """Production-only app: no experiment router, no research runner."""
-    _boot(settings)
+    _boot(settings, include_experiments=False)
     with TestClient(
         create_app(settings, include_experiments=False),
         headers={"Authorization": f"Bearer {TOKEN}"},
