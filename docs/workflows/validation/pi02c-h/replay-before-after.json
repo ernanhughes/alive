@@ -1,0 +1,60 @@
+{
+  "base": "e483d16bad57f7e1957bf73b043bce7e16f10d01",
+  "input_sha256": "626139721f08b39944994aa8496b8600a4e9385f1b442e94373f09ebb5786087",
+  "runs": {
+    "research": {
+      "events": 19,
+      "next_after": 67,
+      "before": {
+        "prepare": "COMPLETED",
+        "analyze": "COMPLETED",
+        "validate": "COMPLETED",
+        "record": "COMPLETED"
+      },
+      "after": {
+        "prepare": "COMPLETED",
+        "analyze": "COMPLETED",
+        "validate": "COMPLETED",
+        "record": "COMPLETED"
+      },
+      "recorded_run_outcome": "completed"
+    },
+    "goal_cancel": {
+      "events": 3,
+      "next_after": 167,
+      "before": {},
+      "after": {},
+      "recorded_run_outcome": "ended FAILED"
+    },
+    "ambiguous": {
+      "events": 13,
+      "next_after": 250,
+      "before": {
+        "prepare": "COMPLETED",
+        "analyze": "RUNNING"
+      },
+      "after": {
+        "prepare": "COMPLETED",
+        "analyze": "UNKNOWN (Pi run)"
+      },
+      "recorded_run_outcome": "ended UNKNOWN"
+    },
+    "partial": {
+      "events": 19,
+      "next_after": 308,
+      "before": {
+        "prepare": "COMPLETED",
+        "analyze": "COMPLETED",
+        "validate": "COMPLETED",
+        "record": "COMPLETED"
+      },
+      "after": {
+        "prepare": "COMPLETED",
+        "analyze": "COMPLETED",
+        "validate": "COMPLETED",
+        "record": "COMPLETED"
+      },
+      "recorded_run_outcome": "ended FAILED"
+    }
+  }
+}

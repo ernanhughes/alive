@@ -9,6 +9,84 @@ const APP = (process.env.ALIVE_BASE_URL || "http://127.0.0.1:8018").replace(
 const TOKEN = process.env.ALIVE_API_TOKEN || "";
 const manifest = FILE ? JSON.parse(readFileSync(FILE, "utf8")) : null;
 
+test("replay to end preserves recorded Pi uncertainty and run outcomes", async ({
+  page,
+}, testInfo) => {
+  test.skip(
+    !manifest || !TOKEN,
+    "Seed the disposable observatory and set manifest/token",
+  );
+  const writes: string[] = [];
+  page.on("request", (r) => {
+    if (r.url().startsWith(APP + "/api/") && r.method() !== "GET")
+      writes.push(r.method() + " " + r.url());
+  });
+  for (const label of ["ambiguous", "partial", "goal_cancel"]) {
+    const run = manifest.runs.find((r: { label: string }) => r.label === label);
+    const hash =
+      "#workflows?" +
+      new URLSearchParams({
+        workflow: run.workflow.name,
+        version: String(run.workflow.version),
+        run: run.id,
+      });
+    await page.goto(APP + "/" + hash);
+    if (label === "ambiguous") {
+      await page.getByLabel("Local API token").fill(TOKEN);
+      await page.getByRole("button", { name: "Connect", exact: true }).click();
+    }
+    await expect(
+      page.getByRole("heading", { name: "Run " + run.id }),
+    ).toBeVisible();
+    await page
+      .getByRole("tab", { name: "Recorded events", exact: true })
+      .click();
+    await page.getByRole("button", { name: "Replay recorded events" }).click();
+    await expect(page.getByText(/Recorded run outcome:/)).toHaveCount(0);
+    const position = page.getByRole("slider", { name: "Event position" });
+    await position.press("End");
+    await expect(
+      page.getByRole("button", { name: "Next event", exact: true }),
+    ).toBeDisabled();
+    await expect(
+      page.getByText("Recorded run outcome: ended " + run.status, {
+        exact: true,
+      }),
+    ).toBeVisible();
+    const stages = page.locator(".wf-stage-list");
+    if (label === "ambiguous") {
+      await expect(
+        stages.getByRole("button", { name: /^Analyze / }),
+      ).toContainText("UNKNOWN (Pi run)");
+      await expect(stages).not.toContainText("RUNNING");
+      await expect(
+        stages.getByRole("button", { name: /^Validate / }),
+      ).toContainText("Not recorded");
+      await expect(
+        stages.getByRole("button", { name: /^Record / }),
+      ).toContainText("Not recorded");
+      await page.screenshot({
+        path: testInfo.outputPath("ambiguous-replay-end.png"),
+        fullPage: true,
+      });
+    } else if (label === "partial") {
+      await expect(stages.getByText("COMPLETED", { exact: true })).toHaveCount(
+        4,
+      );
+    } else {
+      await expect(
+        stages.getByText("Not recorded", { exact: true }),
+      ).toHaveCount(3);
+    }
+    await position.press("Home");
+    await expect(page.getByText(/Recorded run outcome:/)).toHaveCount(0);
+    await expect(stages.getByText("Not recorded", { exact: true })).toHaveCount(
+      label === "goal_cancel" ? 3 : 4,
+    );
+  }
+  expect(writes).toEqual([]);
+});
+
 test("persisted observatory: real Pi, distinct graphs, replay, comparison and uncertainty", async ({
   page,
 }, testInfo) => {

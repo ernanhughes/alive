@@ -1,0 +1,61 @@
+{
+  "base": "e483d16bad57f7e1957bf73b043bce7e16f10d01",
+  "paid_inference": "NOT_RUN",
+  "files": [
+    {
+      "path": "docs/workflows/validation/pi02c-h/ambiguous-replay-end.png",
+      "sha256": "86bf26e8873097ce5ceed3a70202808afb9a1fe7e7a1c46fdf32f36236e16742",
+      "bytes": 263041
+    },
+    {
+      "path": "docs/workflows/validation/pi02c-h/extensions.txt",
+      "sha256": "d989284252b3b4eee193d9a5e69750c5da53b0a163f1418fd047ba0824c0ae50",
+      "bytes": 3499
+    },
+    {
+      "path": "docs/workflows/validation/pi02c-h/focused-backend.txt",
+      "sha256": "84064c6a63e69f40f32fe0ebc69d9f355610f9c741c723017d9a1635366186e9",
+      "bytes": 1482
+    },
+    {
+      "path": "docs/workflows/validation/pi02c-h/mutations.json",
+      "sha256": "eb58a038a329a02b9137e6ea29ff6e249451b1f84eae838b1b17f2ccfaedbacc",
+      "bytes": 28774
+    },
+    {
+      "path": "docs/workflows/validation/pi02c-h/postgresql-after-browser.txt",
+      "sha256": "7bbc9349528ba9de4f6dde52d21a8469e8ba264aee89115c3dced6c4b8124eaa",
+      "bytes": 59
+    },
+    {
+      "path": "docs/workflows/validation/pi02c-h/postgresql-restart.json",
+      "sha256": "2b4d74ddbaa3b0f1049652b30ce75507780b424dc06b04733d99ab2b19c3bef7",
+      "bytes": 2888
+    },
+    {
+      "path": "docs/workflows/validation/pi02c-h/replay-before-after.json",
+      "sha256": "23d9617264db72b4b802d89b29429ba2129a78d6d818270710fa694ad73415fe",
+      "bytes": 1455
+    },
+    {
+      "path": "docs/workflows/validation/pi02c-h/review-inputs/ALIVE-PI-02C-H-CORRECTION-BRIEF.md",
+      "sha256": "c71d09d532293bd88af7bdf73c3edac66a0d286284191a5e18a300d7e9d033db",
+      "bytes": 8834
+    },
+    {
+      "path": "docs/workflows/validation/pi02c-h/review-inputs/ALIVE-PI-02C-R1-INDEPENDENT-REVIEW.md",
+      "sha256": "77166b9559d0feffe4487600f77f32f18de95a13a66ca95f622183fd68541576",
+      "bytes": 22602
+    },
+    {
+      "path": "docs/workflows/validation/pi02c-h/review-inputs/observatory-mutants-final.json",
+      "sha256": "99bc92018a6fd5ed60ad98e889ea5b2e2beb5446c5c990977689bbfe6f217a1e",
+      "bytes": 5868
+    },
+    {
+      "path": "docs/workflows/validation/pi02c-h/sqlite-restart.json",
+      "sha256": "b415238ac2443e617f2b8ec041908263362f848bc0bd589fa5487a9973df17a4",
+      "bytes": 2888
+    }
+  ]
+}

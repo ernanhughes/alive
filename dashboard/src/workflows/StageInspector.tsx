@@ -99,8 +99,11 @@ export function ArtifactPanel({ value }: { value: Artifact }) {
           Artifact: value.artifact_id,
           "SHA-256": value.sha256,
           "Source status": value.source_status,
-          "Independent feedback": "Not recorded",
-          "Intelligence learning": "No linked episode recorded",
+          "Independent feedback": value.independent_feedback
+            ? "Recorded"
+            : "Not recorded",
+          "Intelligence learning":
+            value.intelligence_episode_id ?? "No linked episode recorded",
         }}
       />
       <h4>Result</h4>

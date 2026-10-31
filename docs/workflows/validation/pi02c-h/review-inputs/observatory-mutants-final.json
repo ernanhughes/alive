@@ -1,0 +1,220 @@
+{
+ "head": "58fd3cc21c67aa458ea7e0b723310a83aec0d3d7",
+ "total": 18,
+ "killed": 7,
+ "survived": 11,
+ "invalid": 0,
+ "mutants": [
+  {
+   "id": "O1",
+   "mutant": "O1 Pi run must belong to this instance",
+   "author_tests": "SURVIVED",
+   "killed_by": [],
+   "probe_under_mutant": {
+    "b_pi_other_instance": {
+     "inspection_b": 200,
+     "timeline_b": 200,
+     "receipt_b": 200
+    }
+   },
+   "classification": "load-bearing, unpinned"
+  },
+  {
+   "id": "O2",
+   "mutant": "O2 Pi run reservation must equal the invocation",
+   "author_tests": "SURVIVED",
+   "killed_by": [],
+   "probe_under_mutant": {
+    "b_pi_pointer_from_other_run": {
+     "inspection_b": 200,
+     "timeline_b": 200,
+     "receipt_b": 200
+    },
+    "b_invocation_pointer_from_other_run": {
+     "inspection_b": 404,
+     "timeline_b": 404,
+     "receipt_b": 404
+    }
+   },
+   "classification": "load-bearing, unpinned"
+  },
+  {
+   "id": "O3",
+   "mutant": "O3 invocation must name this run",
+   "author_tests": "SURVIVED",
+   "killed_by": [],
+   "probe_under_mutant": {
+    "b_invocation_wrong_run": {
+     "inspection_b": 200,
+     "timeline_b": 200,
+     "receipt_b": 200
+    }
+   },
+   "classification": "load-bearing, unpinned"
+  },
+  {
+   "id": "O4",
+   "mutant": "O4 invocation must belong to the run's investigation",
+   "author_tests": "SURVIVED",
+   "killed_by": [],
+   "probe_under_mutant": {
+    "b_invocation_wrong_investigation": {
+     "inspection_b": 200,
+     "timeline_b": 200,
+     "receipt_b": 200
+    }
+   },
+   "classification": "load-bearing, unpinned"
+  },
+  {
+   "id": "O5",
+   "mutant": "O5 invocation must name this stage attempt",
+   "author_tests": "KILLED",
+   "killed_by": [
+    "test_actual_pi_receipt_binding_and_deterministic_history"
+   ],
+   "probe_under_mutant": null,
+   "classification": "pinned by committed tests"
+  },
+  {
+   "id": "O6",
+   "mutant": "O6 Pi operation must equal the stage operation",
+   "author_tests": "SURVIVED",
+   "killed_by": [],
+   "probe_under_mutant": {
+    "b_pi_wrong_operation": {
+     "inspection_b": 200,
+     "timeline_b": 200,
+     "receipt_b": 200
+    }
+   },
+   "classification": "load-bearing, unpinned"
+  },
+  {
+   "id": "O7",
+   "mutant": "O7 one Pi run per stage",
+   "author_tests": "SURVIVED",
+   "killed_by": [],
+   "probe_under_mutant": null,
+   "classification": "unprobed"
+  },
+  {
+   "id": "O8",
+   "mutant": "O8 timeline events scoped to the instance",
+   "author_tests": "SURVIVED",
+   "killed_by": [],
+   "probe_under_mutant": null,
+   "classification": "redundant (events also selected by run or Pi id)"
+  },
+  {
+   "id": "O9",
+   "mutant": "O9 Pi events scoped to attached Pi runs",
+   "author_tests": "SURVIVED",
+   "killed_by": [],
+   "probe_under_mutant": {
+    "c_timeline": {
+     "foreign_pi_events": 8,
+     "note": "recorded from the first probe run; not in the second run's JSON"
+    }
+   },
+   "classification": "load-bearing, unpinned (8 foreign Pi events in this run's timeline)"
+  },
+  {
+   "id": "O10",
+   "mutant": "O10 workflow event must name this run",
+   "author_tests": "SURVIVED",
+   "killed_by": [],
+   "probe_under_mutant": null,
+   "classification": "redundant (events also selected by run correlation); not probed"
+  },
+  {
+   "id": "O11",
+   "mutant": "O11 stage result event must match recorded hash",
+   "author_tests": "KILLED",
+   "killed_by": [
+    "test_corrupt_or_foreign_history_refused[result_hash]"
+   ],
+   "probe_under_mutant": null,
+   "classification": "pinned by committed tests"
+  },
+  {
+   "id": "O12",
+   "mutant": "O12 run must belong to this instance",
+   "author_tests": "KILLED",
+   "killed_by": [
+    "test_corrupt_or_foreign_history_refused[owner]"
+   ],
+   "probe_under_mutant": null,
+   "classification": "pinned by committed tests"
+  },
+  {
+   "id": "O13",
+   "mutant": "O13 stored definition hash recomputed",
+   "author_tests": "SURVIVED",
+   "killed_by": [],
+   "probe_under_mutant": {
+    "b_definition_json_altered": {
+     "inspection_b": 200,
+     "timeline_b": 200,
+     "receipt_b": 200,
+     "note": "recorded from the first probe run; not in the second run's JSON"
+    }
+   },
+   "classification": "load-bearing, unpinned (hand-edited definition served 200)"
+  },
+  {
+   "id": "O14",
+   "mutant": "O14 stage must be declared by the definition",
+   "author_tests": "SURVIVED",
+   "killed_by": [],
+   "probe_under_mutant": {
+    "b_stage_not_in_definition": {
+     "inspection_b": 404,
+     "timeline_b": 404,
+     "receipt_b": 404
+    }
+   },
+   "classification": "redundant (still refused with the check removed)"
+  },
+  {
+   "id": "O15",
+   "mutant": "O15 cursor is exclusive (no duplicate)",
+   "author_tests": "KILLED",
+   "killed_by": [
+    "test_timeline_bounded_ordered_payload_redacted_and_no_effect"
+   ],
+   "probe_under_mutant": null,
+   "classification": "pinned by committed tests"
+  },
+  {
+   "id": "O16",
+   "mutant": "O16 page fetches one extra row",
+   "author_tests": "KILLED",
+   "killed_by": [
+    "test_timeline_bounded_ordered_payload_redacted_and_no_effect"
+   ],
+   "probe_under_mutant": null,
+   "classification": "pinned by committed tests"
+  },
+  {
+   "id": "O17",
+   "mutant": "O17 has_more reported",
+   "author_tests": "KILLED",
+   "killed_by": [
+    "test_timeline_bounded_ordered_payload_redacted_and_no_effect"
+   ],
+   "probe_under_mutant": null,
+   "classification": "pinned by committed tests"
+  },
+  {
+   "id": "O18",
+   "mutant": "O18 complete_transition_history honest",
+   "author_tests": "KILLED",
+   "killed_by": [
+    "test_timeline_bounded_ordered_payload_redacted_and_no_effect"
+   ],
+   "probe_under_mutant": null,
+   "classification": "pinned by committed tests"
+  }
+ ]
+}
