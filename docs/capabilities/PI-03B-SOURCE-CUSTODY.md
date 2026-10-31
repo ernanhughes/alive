@@ -1,7 +1,7 @@
 # PI-03B source custody
 
 Source custody answers one question at the moment a stage runs: **may this stage read these exact
-bytes, for this operation, now?** Implementation: `alive/sources/` and migration `0012`.
+bytes, for this operation, now?** Implementation: `alive/sources/` and migration `0013`.
 
 ## Three facts, kept apart
 
@@ -12,7 +12,7 @@ bytes, for this operation, now?** Implementation: `alive/sources/` and migration
 | **Use** | `custody.resolve`, at each stage start | Every condition below holds *right now*. | A grant minted earlier proves nothing about now. |
 
 A capture and an approval are never edited. The only change to an approval is a one-way
-withdrawal. Deletes are refused by the ORM; downgrading migration 0012 discards custody by design
+withdrawal. Deletes are refused by the ORM; downgrading migration 0013 discards custody by design
 (see the security document).
 
 ## Source types and what a capture holds

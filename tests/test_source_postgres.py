@@ -73,7 +73,7 @@ def app_for(tmp_path):
 def test_custody_on_postgresql_including_a_cross_process_style_race(tmp_path):
     assert not sql("SELECT 1 FROM pg_tables WHERE schemaname = 'public'"), "database must be empty"
     alembic("upgrade", "head")
-    assert alembic("heads").split() == ["0012", "(head)"]  # exactly one head
+    assert alembic("heads").split() == ["0013", "(head)"]  # exactly one head
 
     with TestClient(app_for(tmp_path), headers={"Authorization": f"Bearer {TOKEN}"}) as client:
 
@@ -134,12 +134,12 @@ def test_custody_on_postgresql_including_a_cross_process_style_race(tmp_path):
         t: sql(f"SELECT count(*) FROM {t}")[0][0]
         for t in ("events", "alive_instances", "source_captures", "source_approvals")
     }
-    alembic("downgrade", "0011")
+    alembic("downgrade", "0012")
     assert not sql("SELECT 1 FROM pg_tables WHERE tablename LIKE 'source_%'")
     assert sql("SELECT count(*) FROM events")[0][0] == before["events"]  # older data untouched
     alembic("upgrade", "head")
     assert sql("SELECT count(*) FROM source_captures")[0][0] == 0  # downgrade discards custody
-    assert alembic("heads").split() == ["0012", "(head)"]
+    assert alembic("heads").split() == ["0013", "(head)"]
 
 
 async def session_tamper(kernel, capture_id):

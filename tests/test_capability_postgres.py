@@ -76,7 +76,7 @@ def app_for(tmp_path):
 def test_0011_upgrade_downgrade_and_reupgrade_preserve_history(tmp_path):
     assert not sql("SELECT 1 FROM pg_tables WHERE schemaname = 'public'"), "database must be empty"
     alembic("upgrade", "head")
-    assert alembic("heads").split() == ["0012", "(head)"]  # exactly one head
+    assert alembic("heads").split() == ["0013", "(head)"]  # exactly one head
 
     with TestClient(app_for(tmp_path), headers={"Authorization": f"Bearer {TOKEN}"}) as client:
         prepare(client)
@@ -121,4 +121,4 @@ def test_0011_upgrade_downgrade_and_reupgrade_preserve_history(tmp_path):
     assert all(stage["legacy_contract"] for stage in bound[0][0]["stages"].values())
     # Startup also re-seeds the shipped definition, which is adopted the same way.
     assert sql("SELECT count(*) FROM workflow_capability_bindings")[0][0] == 2
-    assert alembic("heads").split() == ["0012", "(head)"]
+    assert alembic("heads").split() == ["0013", "(head)"]

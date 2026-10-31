@@ -67,7 +67,7 @@ All four: deterministic, side effects `read`, `persistence: none`, `network: non
 3. **`registry.check_grant`**: a grant may carry resources for `repository.read` or `source.read`.
 4. **`capture_repository`** accepts larger explicit ceilings (256 files, 400,000 bytes); defaults
    are unchanged for PI-03A callers.
-5. **Migration 0012** (two additive tables). Migration-head assertions moved to `0012`.
+5. **Migration 0013** (two additive tables). Migration-head assertions moved to `0013`.
 
 The runner, the router, the dashboard and `app.py` are unchanged. The new capabilities appear in
 the existing Capabilities pane through the registry.

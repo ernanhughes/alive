@@ -16,7 +16,7 @@ depends on them. Not merged. No paid inference was used.
 ## What is delivered
 
 1. Source custody: durable immutable captures and separately recorded, withdrawable owner approvals
-   (migration `0012`, two additive tables), and `custody.resolve`, which re-checks every fact when a
+   (migration `0013`, two additive tables), and `custody.resolve`, which re-checks every fact when a
    stage starts. See `PI-03B-SOURCE-CUSTODY.md`.
 2. The owner's approval path: `python -m alive.sources` (prepare, inspect, approve, withdraw). Local,
    no network route, no runtime start, no workflow grant.
@@ -45,7 +45,7 @@ All commands are from the repository root of the worktree. Local, on a Windows 1
 | Check | Result |
 | --- | --- |
 | New source tests on Windows (custody 25, CLI 4, capture 28, capabilities 22, seam 3) | 81 passed, 1 skipped (the POSIX-only FIFO test); the FIFO test passes in the Linux run below |
-| PostgreSQL 16, disposable empty database: JSONB, database-side expiry, tamper detection, two-kernel approval race, 0012 downgrade/re-upgrade | pass |
+| PostgreSQL 16, disposable empty database: JSONB, database-side expiry, tamper detection, two-kernel approval race, 0013 downgrade/re-upgrade | pass |
 | Linux container (the reviewer's image), filesystem-sensitive suites including real FIFOs | 90 passed |
 | Broad focused regression (capability, source, workflow, Intelligence, migration, Pi gateway, architecture-boundary suites; pinned Pi installed) | 614 passed, 7 skipped, 1 failed. The failure was a legacy invariant test (`test_the_operation_set_is_closed`) that the new implementations violated; fixed in the next commit, then 95 passed across the four affected files |
 | `ruff check` and `ruff format --check` on changed files | clean |

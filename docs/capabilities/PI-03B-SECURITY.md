@@ -63,7 +63,7 @@ should be designed as its own reviewed surface; this change deliberately does no
     define their behavior, including `custody.py`.
 11. **Platform coverage.** Windows 11 host plus a Linux container for the POSIX behavior. Not run:
     macOS, Windows CI, Docker image build and the Docker smoke test (see the delivery record).
-12. **Downgrading migration 0012 deletes custody records** (approvals and captures). Older tables
+12. **Downgrading migration 0013 deletes custody records** (approvals and captures). Older tables
     are untouched. Do it only knowingly.
 
 ## Decisions that need the owner

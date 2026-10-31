@@ -34,8 +34,10 @@ def test_migration_execution_and_repeat(tmp_path):
             "pi_provider_requests",
             "workflow_capability_bindings",
             "bespoke_recommendations",
+            "source_captures",
+            "source_approvals",
         } <= tables
-        assert connection.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0012"
+        assert connection.execute("SELECT version_num FROM alembic_version").fetchone()[0] == "0013"
 
 
 def test_pi_migration_downgrades_cleanly_to_0006(tmp_path):
