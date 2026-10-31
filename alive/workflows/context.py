@@ -296,7 +296,25 @@ async def model_claim(session, kernel, claim, role, context, model, output_limit
         and stage.operation in grant.operations,
         "model_output_ceiling",
     )
-    return stage
+    destination = None
+    if analysis is not None:
+        from alive.admission.models import Admission
+        from alive.capabilities.bindings import digest as admission_digest
+        from alive.providers import ApprovedModelDestination
+
+        admission = await session.get(Admission, grant.admission_ref)
+        require(
+            admission is not None
+            and admission.instance_id == kernel.instance_id
+            and admission_digest(admission.terms) == admission.review_sha256,
+            "model_destination_admission_required",
+        )
+        destination = ApprovedModelDestination(
+            admission.id,
+            admission.review_sha256,
+            admission.terms["model_disclosure"]["destination"]["endpoint"],
+        )
+    return stage, destination
 
 
 async def revoke(kernel, authorization_id):

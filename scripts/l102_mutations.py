@@ -252,6 +252,43 @@ MUTANTS = [
         "        self.settings = settings",
         "dispatch: immutable provider configuration",
     ),
+    (
+        "M30",
+        "alive/providers.py",
+        "        if destination is not None and url != destination.endpoint:",
+        "        if False:",
+        "dispatch: pinned endpoint equals owner-approved endpoint",
+    ),
+    (
+        "M31",
+        "alive/providers.py",
+        "                if destination is not None and request.url != httpx.URL(destination.endpoint):",
+        "                if False:",
+        "dispatch: built request equals owner-approved endpoint",
+    ),
+    (
+        "M32",
+        "alive/providers.py",
+        "                trust_env=False,",
+        "                trust_env=True,",
+        "transport: ignore environment routing and CA settings",
+    ),
+    (
+        "M33",
+        "alive/pi/gateway.py",
+        "                    if req.destination is None or asdict(req.destination) != destination:",
+        "                    if False:",
+        "Pi preparation: destination matches invocation receipt",
+    ),
+    (
+        "M34",
+        RUN,
+        '                    and call.input_json.get("model_destination")'
+        + NL
+        + "                    == {",
+        "                    and {",
+        "dispatch fence: destination matches immutable review",
+    ),
 ]
 # Compound mutants remove EVERY layer that enforces one invariant, so a kill proves the tests
 # notice when the invariant as a whole is gone (not just one of several redundant guards).
@@ -323,6 +360,25 @@ COMPOUND = [
     ),
 ]
 # Guards shared with the PI-02 role path are also attacked by the existing workflow suites.
+COMPOUND.append(
+    (
+        "C04",
+        [
+            (
+                "alive/providers.py",
+                "        if destination is not None and url != destination.endpoint:",
+                "        if False:",
+            ),
+            (
+                "alive/providers.py",
+                "                if destination is not None and request.url != httpx.URL(destination.endpoint):",
+                "                if False:",
+            ),
+        ],
+        "destination: pinned configuration and built HTTP request checks removed together",
+    )
+)
+
 SHARED = [
     "tests/test_workflow_authority.py",
     "tests/test_workflow_r2_fence.py",
@@ -366,13 +422,18 @@ TARGETS = {
     "M12": [ANALYSIS + "test_context_beyond_the_profile_or_governor_ceiling_is_refused_at_review"],
     "M14": [ANALYSIS + "test_stage_output_cannot_smuggle_text_the_owner_never_approved"],
     "M15": [ANALYSIS + "test_the_analyzer_alone_refuses_a_different_source_identity"],
-    "M16": [ANALYSIS + "test_a_typed_role_cannot_run_outside_an_authorized_workflow_stage"],
+    "M16": [
+        "tests/test_analysis_review_r2.py::test_T16_a_typed_role_without_a_workflow_claim_is_refused_even_with_a_live_inquiry"
+    ],
     "M17": [ANALYSIS + "test_a_model_admission_needs_the_meta_provider_the_owner_started"],
     "M18": [ANALYSIS + "test_the_governor_must_be_explicitly_started_for_a_model_admission"],
     **{
         i: [UNITS + "test_each_citation_outcome_has_its_own_bounded_category"]
-        for i in ("M19", "M20", "M21")
+        for i in ("M19", "M20")
     },
+    "M21": [
+        "tests/test_analysis_review_r2.py::test_T21_fabricated_file_receives_a_refusal_classification_not_validity"
+    ],
     "M22": [UNITS + "test_a_changed_file_digest_is_refused_before_any_finding_is_trusted"],
     "M23": [UNITS + "test_oversized_or_malformed_context_is_refused_not_truncated"],
     "M24": [ANALYSIS + "test_a_second_model_call_in_one_stage_is_refused"],
@@ -383,6 +444,24 @@ TARGETS = {
     "M27": ["tests/test_provider_destination.py"],
     "M28": [ANALYSIS + "test_unsafe_endpoint_is_refused_before_review"],
     "M29": [ANALYSIS + "test_destination_cannot_change_after_the_dispatch_fence"],
+    "M30": [
+        "tests/test_provider_destination.py::test_authority_binds_the_actual_http_request[pinned_endpoint]"
+    ],
+    "M31": [
+        "tests/test_provider_destination.py::test_authority_binds_the_actual_http_request[built_request]"
+    ],
+    "M32": [
+        "tests/test_model_transport_environment.py::test_environment_proxy_cannot_intercept_model_request[HTTPS_PROXY]"
+    ],
+    "M33": [
+        "tests/test_analysis_review_r2.py::test_invocation_destination_cannot_be_replaced_after_reservation[remove]"
+    ],
+    "M34": [
+        "tests/test_analysis_review_r2.py::test_dispatch_fence_binds_destination_to_the_immutable_review"
+    ],
+    "C04": [
+        "tests/test_provider_destination.py::test_authority_binds_the_actual_http_request[pinned_endpoint]"
+    ],
     "C01": [ANALYSIS + "test_a_model_stage_without_outbound_approval_never_reaches_the_provider"],
     **{
         i: [ANALYSIS + "test_the_reservation_alone_refuses_a_late_model_or_contract_change"]

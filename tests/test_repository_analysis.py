@@ -352,6 +352,9 @@ def test_destination_cannot_change_after_the_dispatch_fence(ready, monkeypatch):
         "https://provider.example/x#fragment",
         "https://provider.example:invalid/x",
         "https:///missing-host",
+        " https://provider.example/x",
+        "https://provider.example/with space",
+        "https://provider.example\t.attacker.example/x",
     ],
 )
 def test_unsafe_endpoint_is_refused_before_review(ready, endpoint):

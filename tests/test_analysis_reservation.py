@@ -5,6 +5,7 @@ from types import SimpleNamespace as NS
 
 import pytest
 
+from alive.admission.models import Admission
 from alive.analysis.contracts import ROLE, AnalysisSpec
 from alive.models import now
 from alive.workflows import context
@@ -25,6 +26,15 @@ async def test_reservation_guard_independently_refuses_changed_authority(field, 
         input_sha256=context.digest(analysis.inputs),
     )
     rows = {
+        Admission: NS(
+            id="admission",
+            instance_id="instance",
+            terms={
+                "model_disclosure": {
+                    "destination": {"endpoint": "https://approved.example/completions"}
+                }
+            },
+        ),
         WorkflowExecution: NS(
             owner="owner",
             cancel_requested=False,
@@ -37,12 +47,16 @@ async def test_reservation_guard_independently_refuses_changed_authority(field, 
         ),
         WorkflowStageRun: stage,
     }
+    from alive.capabilities.bindings import digest as admission_digest
+
+    rows[Admission].review_sha256 = admission_digest(rows[Admission].terms)
 
     class Session:
         async def get(self, kind, ident):
             return rows[kind]
 
     grant = NS(
+        admission_ref="admission",
         outbound_approved=True,
         models={ROLE: "approved"},
         role_contracts={ROLE: analysis.contract},
@@ -78,7 +92,9 @@ async def test_reservation_guard_independently_refuses_changed_authority(field, 
             analysis=analysis,
         )
 
-    assert await reserve() is stage
+    claimed, destination = await reserve()
+    assert claimed is stage
+    assert destination.endpoint == "https://approved.example/completions"
     if field == "outbound":
         grant.outbound_approved = False
     elif field == "model":

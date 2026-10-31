@@ -90,17 +90,14 @@ def analysis_inputs(source, paths, objective):
     }
 
 
-def disclosure(kernel, control, source, paths, objective):
-    """What leaves the host, to whom and under what ceilings. Every field is recomputed later."""
-    from alive.cognition import CognitiveConfiguration
-
-    config = CognitiveConfiguration.model_validate(control.configuration)
-    settings = kernel.settings
+def analysis_endpoint(settings):
+    """Refuse URL shapes that can disagree between disclosure and the HTTP client."""
     endpoint = meta_endpoint_url(settings)
     try:
         parsed = urlsplit(endpoint)
         valid_endpoint = (
-            parsed.scheme == "https"
+            not any(ord(character) <= 32 or ord(character) == 127 for character in endpoint)
+            and parsed.scheme == "https"
             and bool(parsed.hostname)
             and parsed.username is None
             and parsed.password is None
@@ -111,6 +108,16 @@ def disclosure(kernel, control, source, paths, objective):
     except ValueError:
         valid_endpoint = False
     require(valid_endpoint, "analysis_requires_safe_https_endpoint")
+    return endpoint
+
+
+def disclosure(kernel, control, source, paths, objective):
+    """What leaves the host, to whom and under what ceilings. Every field is recomputed later."""
+    from alive.cognition import CognitiveConfiguration
+
+    config = CognitiveConfiguration.model_validate(control.configuration)
+    settings = kernel.settings
+    endpoint = analysis_endpoint(settings)
     inputs = analysis_inputs(source, paths, objective)
     context_package(inputs)  # raises on any size or shape violation
     output_limit = min(config.output_tokens, PROFILES[ANALYSIS].max_output_tokens)

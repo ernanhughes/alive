@@ -15,6 +15,15 @@ class Generation:
     latency_ms: float = 0
 
 
+@dataclass(frozen=True)
+class ApprovedModelDestination:
+    """Owner-admission identity carried by trusted execution, never model output."""
+
+    admission_id: str
+    review_sha256: str
+    endpoint: str
+
+
 class ModelProvider(Protocol):
     provider_id: str
     model_id: str
@@ -78,7 +87,9 @@ class MetaProvider:
         if not self.settings.alive_meta_api_key:
             return {"status": "blocked", "reason": "credentials_not_configured", "models": []}
         try:
-            async with httpx.AsyncClient(timeout=self.settings.alive_meta_timeout) as client:
+            async with httpx.AsyncClient(
+                timeout=self.settings.alive_meta_timeout, trust_env=False, follow_redirects=False
+            ) as client:
                 response = await client.get(
                     self.settings.alive_meta_base_url.rstrip("/") + "/models",
                     headers={"Authorization": f"Bearer {self.settings.alive_meta_api_key}"},
@@ -103,6 +114,7 @@ class MetaProvider:
         max_output=None,
         correlation=None,
         transport=None,
+        destination: ApprovedModelDestination | None = None,
     ):
         import json
 
@@ -121,20 +133,24 @@ class MetaProvider:
                 "json_schema": {"name": "alive_structured_output", "schema": schema},
             },
         }
-        return await self._request(body, correlation, transport)
+        return await self._request(body, correlation, transport, destination=destination)
 
-    async def _request(self, body, correlation=None, transport=None):
+    async def _request(self, body, correlation=None, transport=None, *, destination=None):
         if not self.capabilities()["configured"]:
             raise ProviderError("credentials_not_configured")
         started = time.monotonic()
         url = meta_endpoint_url(self.settings)
+        if destination is not None and url != destination.endpoint:
+            raise ProviderError("destination_mismatch")
         try:
             async with httpx.AsyncClient(
                 timeout=self.settings.alive_meta_timeout,
                 transport=transport,
                 follow_redirects=False,
+                trust_env=False,
             ) as client:
-                response = await client.post(
+                request = client.build_request(
+                    "POST",
                     url,
                     headers={
                         "Authorization": f"Bearer {self.settings.alive_meta_api_key}",
@@ -142,6 +158,11 @@ class MetaProvider:
                     },
                     json=body,
                 )
+                # Use this checked request object for the send, without re-reading settings.
+                # HTTPX canonicalizes URLs (e.g. default ports); both sides use that parser.
+                if destination is not None and request.url != httpx.URL(destination.endpoint):
+                    raise ProviderError("destination_mismatch")
+                response = await client.send(request)
                 if response.is_redirect:
                     raise ProviderError(
                         "redirect_refused", response.status_code, response_received=True
@@ -225,6 +246,7 @@ FATAL_PROVIDER_CATEGORIES = frozenset(
         "cancelled",
         "unknown",
         "redirect_refused",
+        "destination_mismatch",
     }
 )
 CELL_PROVIDER_CATEGORIES = frozenset({"invalid_structured_output", "output_truncated"})

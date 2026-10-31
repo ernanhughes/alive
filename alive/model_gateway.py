@@ -14,7 +14,7 @@ from copy import deepcopy
 from dataclasses import dataclass
 from typing import Protocol
 
-from alive.providers import Generation, MetaProvider
+from alive.providers import ApprovedModelDestination, Generation, MetaProvider
 
 
 @dataclass(frozen=True)
@@ -26,6 +26,7 @@ class StructuredRequest:
     model: str
     max_output: int
     correlation: str | None = None
+    destination: ApprovedModelDestination | None = None
 
 
 class ModelGateway(Protocol):
@@ -50,6 +51,7 @@ class DirectMetaGateway:
                 f"Operation mismatch: gateway serves {self.operation!r}, "
                 f"request claims {req.operation!r}; refusing dispatch"
             )
+        destination_args = {"destination": req.destination} if req.destination is not None else {}
         return await MetaProvider(self.settings).structured(
             req.instructions,
             req.data,
@@ -58,6 +60,7 @@ class DirectMetaGateway:
             max_output=req.max_output,
             correlation=req.correlation,
             transport=self.transport,
+            **destination_args,
         )
 
 
