@@ -46,15 +46,16 @@ class ContextProvenance(BaseModel):
     """Custody labels bind authorized use; they do not authenticate page content."""
 
     model_config = ConfigDict(extra="forbid", frozen=True)
-    source: Literal["controlled-laboratory", "extension", "user"]
+    source: Literal["controlled-laboratory", "extension", "user", "admission-owner"]
     event_type: str = Field(min_length=1, max_length=100)
-    custody: Literal["controlled_fixture", "untrusted_browser"]
+    custody: Literal["controlled_fixture", "untrusted_browser", "approved_capture"]
     consent: Literal["exact_content_and_scope"]
 
 
 def provenance_for(source):
     eligible = {
         ("controlled-laboratory", "workflow.fixture.context"): "controlled_fixture",
+        ("admission-owner", "workflow.owner.context"): "approved_capture",
         ("extension", "browser.dom_changed"): "untrusted_browser",
         ("extension", "browser.page_opened"): "untrusted_browser",
         ("user", "browser.dom_changed"): "untrusted_browser",
@@ -82,6 +83,7 @@ class Grant(BaseModel):
     context_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     # Legacy grants remain readable for forensics; new execution requires provenance.
     context_provenance: ContextProvenance | None = None
+    admission_ref: str | None = Field(default=None, max_length=36)
     operations: tuple[str, ...] = Field(min_length=1, max_length=16)
     capability_binding_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
     capabilities: dict = Field(default_factory=dict, max_length=32)
@@ -134,6 +136,12 @@ async def authorized(session, kernel, authorization_id, expected_hash=None):
     )
     grant = Grant.model_validate(bounded(event.payload))
     authorization_hash = digest(event.payload)
+    if grant.admission_ref is not None or (
+        grant.context_provenance and grant.context_provenance.source == "admission-owner"
+    ):
+        from alive.admission.service import verify_grant
+
+        await verify_grant(session, kernel, grant, authorization_id)
     revoked = await session.scalar(
         select(Event.id)
         .where(

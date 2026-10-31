@@ -1,0 +1,36 @@
+schema_version: 1
+id: approved-repository-inspection
+version: 1.0.0
+name: Approved repository inspection
+description: Read the exact owner-approved PI-03B repository capture. No model call,
+  network request or semantic verification.
+context_types:
+- repository
+intents:
+- inspect_implementation
+workflow:
+  name: owner-repository-inspection
+  version: 1
+  definition_sha256: bfe419f3577ce3b9f813da79452f701d8f6ebab9c6af2f6d6dceef15d290b713
+capabilities:
+- stage_id: read
+  id: repository.inspect
+  version: 1.1.0
+  manifest_sha256: f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d
+limits:
+  max_model_calls: 0
+  max_wall_seconds: 30
+  max_output_tokens: 0
+  outbound_allowed: false
+  permissions:
+  - source.read
+required_evidence: approved_capture
+output_artifact: captured_files
+validation: none
+status: active
+presentation:
+  category: bespoke
+  icon: layers
+  tags:
+  - source
+  - owner-review

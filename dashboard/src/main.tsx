@@ -36,6 +36,7 @@ import { LivingPane } from "./Living";
 import { DemoTourPane } from "./DemoTour";
 import { WorkflowsPane } from "./workflows/WorkflowsPane";
 import { BespokePane } from "./bespoke/BespokePane";
+import { AdmissionPane } from "./admission/AdmissionPane";
 import { CapabilitiesPane } from "./capabilities/CapabilitiesPane";
 import { useDashboardAuth } from "./useDashboardAuth";
 
@@ -52,6 +53,7 @@ const tabs = [
   "Workflows",
   "Capabilities",
   "Bespoke",
+  "Admission",
 ] as const;
 type Tab = (typeof tabs)[number];
 const icons = [
@@ -67,6 +69,7 @@ const icons = [
   Waypoints,
   Blocks,
   BrainCircuit,
+  Command,
 ];
 const time = (s: string | null | undefined) =>
   s ? new Date(s).toLocaleTimeString("en-GB") : "Awaiting heartbeat";
@@ -111,7 +114,9 @@ export function App() {
         ? "Capabilities"
         : window.location.hash.startsWith("#bespoke?")
           ? "Bespoke"
-          : "Overview",
+          : window.location.hash.startsWith("#admission?")
+            ? "Admission"
+            : "Overview",
   );
   useEffect(() => {
     // Observatory links to a retained capability identity switch to the catalogue pane.
@@ -119,6 +124,7 @@ export function App() {
       if (window.location.hash.startsWith("#capabilities?"))
         setTab("Capabilities");
       if (window.location.hash.startsWith("#bespoke?")) setTab("Bespoke");
+      if (window.location.hash.startsWith("#admission?")) setTab("Admission");
       if (window.location.hash.startsWith("#workflows?")) setTab("Workflows");
     };
     window.addEventListener("hashchange", onHash);
@@ -994,6 +1000,7 @@ export function App() {
             <CapabilitiesPane token={token} />
           )}
           {tab === "Bespoke" && token && <BespokePane token={token} />}
+          {tab === "Admission" && token && <AdmissionPane token={token} />}
           {tab === "Demonstration" && token && <DemoTourPane token={token} />}
           {tab === "Living" && token && <LivingPane token={token} />}
           <footer>

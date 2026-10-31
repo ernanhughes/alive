@@ -11,7 +11,9 @@ Hash = Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]
 Ref = Annotated[str, Field(min_length=1, max_length=36)]
 Surface = Literal["repository", "controlled_evidence", "browser_document", "insufficient"]
 Intent = Literal["inspect_implementation", "compare_claims", "assess_claims", "explore_arguments"]
-Permission = Literal["repository.read", "evidence.read", "model.infer", "workflow.write"]
+Permission = Literal[
+    "repository.read", "evidence.read", "model.infer", "workflow.write", "source.read"
+]
 
 
 class Constraints(Strict):
@@ -19,7 +21,7 @@ class Constraints(Strict):
     max_wall_seconds: int = Field(default=120, ge=1, le=3600)
     max_output_tokens: int = Field(default=0, ge=0, le=16384)
     outbound_allowed: bool = False
-    permissions: list[Permission] = Field(default_factory=list, max_length=4)
+    permissions: list[Permission] = Field(default_factory=list, max_length=5)
 
 
 class Objective(Strict):

@@ -62,6 +62,24 @@ async def complete_despite_cancel(work):
         raise asyncio.CancelledError()
 
 
+def investigation_reservation(control, config):
+    """The shared Governor ceiling for auction and exact owner admission."""
+    reserve = {
+        "calls": config.investigation_calls,
+        "tokens": config.investigation_tokens,
+        "tools": config.tool_calls,
+    }
+    enough = all(
+        control.spent.get(prefix + unit, 0) + control.reserved.get(unit, 0) + reserve[unit] <= limit
+        for prefix, limits in [
+            ("session_", {"calls": config.session_calls, "tokens": config.session_tokens}),
+            ("experiment_", {"calls": config.experiment_calls, "tokens": config.experiment_tokens}),
+        ]
+        for unit, limit in limits.items()
+    )
+    return reserve, enough
+
+
 class Cognition:
     def __init__(self, kernel, memory):
         self.k, self.memory = kernel, memory
@@ -447,28 +465,7 @@ class Cognition:
                         {"observation_id": observation.id, "reason": "expired"},
                     )
                     continue
-                reserve = {
-                    "calls": config.investigation_calls,
-                    "tokens": config.investigation_tokens,
-                    "tools": config.tool_calls,
-                }
-                enough = all(
-                    control.spent.get(prefix + unit, 0)
-                    + control.reserved.get(unit, 0)
-                    + reserve[unit]
-                    <= limit
-                    for prefix, limits in [
-                        (
-                            "session_",
-                            {"calls": config.session_calls, "tokens": config.session_tokens},
-                        ),
-                        (
-                            "experiment_",
-                            {"calls": config.experiment_calls, "tokens": config.experiment_tokens},
-                        ),
-                    ]
-                    for unit, limit in limits.items()
-                )
+                reserve, enough = investigation_reservation(control, config)
                 if not enough:
                     observation.status = "BUDGET_REJECTED"
                     k.add_event(
@@ -687,6 +684,67 @@ class Cognition:
             row = await session.get(Investigation, run_id)
             row.snapshot = snapshot
         return snapshot
+
+    async def admit_owner_workflow(self, session, inquiry_id, goal_id, context_id, objective):
+        """Admission service holds command_lock, kernel lock and this transaction.
+
+        This reserves an explicit, already owner-approved inquiry without starting autonomy,
+        using the same Governor ceiling as auction(). No lab, model call or inferred goal.
+        """
+        from alive.workflows.context import require
+
+        require(
+            self.mode in ("stopped", "paused") and (self.worker is None or self.worker.done()),
+            "pause_autonomy_before_owner_admission",
+        )
+        require(
+            not await session.scalar(
+                select(Investigation.id).where(~Investigation.state.in_(TERMINAL)).limit(1)
+            ),
+            "governor_inquiry_busy",
+        )
+        control = await session.get(CognitiveControl, self.k.instance_id)
+        config = CognitiveConfiguration.model_validate(control.configuration)
+        require(config.wall_seconds >= 30, "governor_wall_ceiling")
+        reserve, enough = investigation_reservation(control, config)
+        require(enough, "governor_budget_exhausted")
+        observation_id = uid()
+        session.add(
+            CognitiveObservation(
+                id=observation_id,
+                instance_id=self.k.instance_id,
+                source_event_id=context_id,
+                fingerprint="owner-admission:" + inquiry_id,
+                content=objective,
+                provenance={"source": "owner-admission", "commitment_id": goal_id},
+                attention={"policy": "explicit-owner-admission/v1"},
+                status="SELECTED",
+            )
+        )
+        await session.flush()
+        inquiry = Investigation(
+            id=inquiry_id,
+            instance_id=self.k.instance_id,
+            observation_id=observation_id,
+            goal_id=goal_id,
+            state="SCHEDULED",
+            snapshot={},
+            budget=reserve,
+            usage={"calls": 0, "tokens": 0, "tools": 0, "latency_ms": 0},
+            history=[
+                {
+                    "state": "SCHEDULED",
+                    "at": now().isoformat(),
+                    "authority": "exact_local_owner_review",
+                }
+            ],
+        )
+        session.add(inquiry)
+        control.reserved = {
+            unit: control.reserved.get(unit, 0) + value for unit, value in reserve.items()
+        }
+        self._transition(session, inquiry, "INVESTIGATING")
+        await session.flush()
 
     @asynccontextmanager
     async def workflow_inquiry(self):

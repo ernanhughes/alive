@@ -1,0 +1,96 @@
+.owner-admission {
+  width: 100%;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.admission-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.admission-heading h2 {
+  font-size: 28px;
+  margin: 0.3rem 0;
+}
+.admission-layout {
+  display: grid;
+  grid-template-columns: minmax(250px, 320px) minmax(0, 1fr);
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+.admission-layout > * {
+  min-width: 0;
+}
+.admission-form,
+.admission-facts {
+  padding: 1rem;
+  border: 1px solid #d6dfcc;
+  border-radius: 12px;
+}
+.owner-admission label {
+  display: grid;
+  gap: 0.4rem;
+  margin: 1rem 0;
+}
+.owner-admission select,
+.owner-admission textarea {
+  width: 100%;
+  padding: 0.65rem;
+  color: inherit;
+  background: #fffef8;
+  border: 1px solid #b5c5b0;
+  border-radius: 6px;
+}
+.owner-admission textarea {
+  min-height: 6rem;
+  resize: vertical;
+}
+.owner-admission .admission-file {
+  display: flex;
+  align-items: start;
+  gap: 0.5rem;
+  margin: 0.7rem 0;
+}
+.owner-admission fieldset {
+  border: 1px solid #b5c5b0;
+  border-radius: 6px;
+  min-width: 0;
+}
+.owner-admission dl > div {
+  margin: 0.75rem 0;
+}
+.owner-admission dt {
+  font-weight: 600;
+}
+.owner-admission dd {
+  margin: 0.25rem 0;
+}
+.admission-digest {
+  overflow-wrap: anywhere;
+  font: 0.8rem monospace;
+}
+.owner-admission pre {
+  padding: 1rem;
+  border: 1px solid #b5c5b0;
+  border-radius: 6px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.admission-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin: 1rem 0;
+}
+.owner-admission a {
+  color: #426733;
+}
+@media (max-width: 800px) {
+  .admission-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .admission-heading {
+    flex-direction: column;
+  }
+}
