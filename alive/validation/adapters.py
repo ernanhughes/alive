@@ -116,6 +116,8 @@ def assess(ctx, *, locators):
     require(len(source.blob) <= ctx.limits["max_source_bytes"], "validation_source_byte_limit")
     require(len({f.id for f in batch.findings}) == len(batch.findings), "duplicate_finding_id")
     items = index(source)
+    if source.source_type == "repository":
+        require(len(items) <= ctx.limits["max_files"], "validation_file_limit")
     findings, observations = [], {}
     for finding in batch.findings:
         checked, used = [], set()
@@ -281,6 +283,7 @@ async def compare(ctx):
         "procedure": "controlled-comparison/v1",
         "sources": [left["source"], right["source"]],
         "findings": [],
+        "compared_findings": {"left": left["findings"], "right": right["findings"]},
         "observations": [a, b],
         "comparison": {
             "mode": mode,
@@ -317,6 +320,9 @@ async def compose(ctx):
         lines.append(
             "\nControlled comparison: " + json.dumps(records["comparison"], sort_keys=True)
         )
+        for side, findings in records["compared_findings"].items():
+            lines.append(f"\n{side.title()} input findings (original identities):")
+            lines.append(json.dumps(findings, sort_keys=True, ensure_ascii=False))
     for value in records["observations"]:
         if value["truncated"]:
             lines.append("Displayed evidence truncated: " + value["id"])

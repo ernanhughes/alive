@@ -28,7 +28,8 @@ Custody resolves source ownership/instance, capture hash, approval, operation, s
 withdrawal before the adapter receives `ApprovedSource`. The adapter independently compares
 capture and effective-scope identity, checks each captured item hash, and validates repository
 paths. It does not open a path, URL or live document. Stages support at most 65,536 captured-view
-bytes, 65,536 input/output bytes, 30 seconds, one invocation, zero model calls and zero tokens.
+bytes, at most 64 repository files (including lower owner/deployment ceilings), 65,536
+input/output bytes, 30 seconds, one invocation, zero model calls and zero tokens.
 The existing runner enforces grant/deployment intersections, output limits and cancellation.
 
 `source_id` is the existing PI-03B identifier. Capture id, approval id, full and effective scope

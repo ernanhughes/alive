@@ -17,6 +17,13 @@ ADAPTER = "alive/validation/adapters.py"
 UNIT = "tests/test_validation_capabilities.py::"
 MUTANTS = [
     (
+        "file-limit",
+        ADAPTER,
+        'len(items) <= ctx.limits["max_files"]',
+        "True",
+        UNIT + "test_lowered_repository_file_ceiling_is_enforced_with_a_live_control",
+    ),
+    (
         "source-scope",
         ADAPTER,
         "and batch.scoped_sha256 == source.scoped_sha256,",

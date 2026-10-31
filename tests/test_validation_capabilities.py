@@ -75,7 +75,11 @@ def inputs(capture, *, locator="file_lines", start=1, end=2, quote="alpha\nbeta"
 
 
 def ctx(capture, data=None):
-    return NS(resources=capture, inputs=data or inputs(capture), limits={"max_source_bytes": 65536})
+    return NS(
+        resources=capture,
+        inputs=data or inputs(capture),
+        limits={"max_source_bytes": 65536, "max_files": 64},
+    )
 
 
 def run(capture, data=None, *, locate=True):
@@ -220,7 +224,11 @@ def test_contract_and_source_byte_limits_cannot_be_widened():
     with pytest.raises(Refused, match="validation_source_byte_limit"):
         asyncio.run(
             adapters.references(
-                NS(resources=captured, inputs=inputs(captured), limits={"max_source_bytes": 1})
+                NS(
+                    resources=captured,
+                    inputs=inputs(captured),
+                    limits={"max_source_bytes": 1, "max_files": 64},
+                )
             )
         )
 
@@ -278,6 +286,7 @@ def test_controlled_comparison_is_not_semantic_entailment(left, right, mode, fie
     assert result["comparison"]["status"] == status
     assert result["validation"] == adapters.taxonomy()
     assert result["sources"] == [first["source"], second["source"]]
+    assert result["compared_findings"] == {"left": first["findings"], "right": second["findings"]}
 
 
 def test_composer_and_comparison_refuse_self_certification_with_live_controls():
@@ -311,3 +320,12 @@ def test_a_false_claim_with_a_valid_citation_remains_unverified():
     assert report["assessment"]["semantic_support"] == "unverified"
     assert report["assessment"]["independent_verification"] is False
     assert report["assessment"]["task_outcome"] == "unknown"
+
+
+def test_lowered_repository_file_ceiling_is_enforced_with_a_live_control():
+    captured = source()
+    assert run(captured)["findings"]
+    request = ctx(captured)
+    request.limits["max_files"] = 0
+    with pytest.raises(Refused, match="validation_file_limit"):
+        asyncio.run(adapters.references(request))
