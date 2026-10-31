@@ -2,7 +2,8 @@
 
 Baseline: `b0b3e40ab51e2ea4f482a20767f9bad8b4491765`, verified from origin/main
 on 2026-10-31. PR #71 is merged; merge is not independent approval. R3 audit
-qualification remains a merge dependency. No execution-security correction belongs
+qualification was subsequently verified GO in the preserved post-merge audit.
+PI-02C independent review remains a merge dependency. No execution-security correction belongs
 in this branch. The owner authorizes concurrent observatory implementation.
 
 The preparation document was read in `C:/Projects/alive-pi02c-prep`; its old closed
@@ -77,3 +78,18 @@ restart replay compares durable counts before/after. Full backend Windows/Linux 
 is the release gate, not a per-UI-edit loop. Docker/PostgreSQL and existing extension,
 Pi and Intelligence regressions remain required. Final results and limitations are
 recorded separately from this initial contract inventory.
+
+## Final contract reconciliation
+
+The implementation adds inspection, timeline and attempt-bound pi-receipt GETs.
+App wiring passes the existing pure Pi receipt formatter into the workflow router,
+preserving the existing no-Pi-execution-import boundary. During live execution the
+final stage Pi pointer may be absent: inspection exposes a separately validated
+actual reservation attachment. Timeline result events are checked against the
+stored output reference/hash; opened events against exact definition identity.
+The durable history remains explicitly incomplete. No execution producer changes.
+
+The Stephanie example supplied later by the owner informs the run overview,
+selectable graph and focused inspection tabs. ALIVE retains actual dependency
+edges, plain React rendering and safe record projections. No raw report HTML,
+external renderer CDN or executable Mermaid click directive is imported.

@@ -1,0 +1,61 @@
+{
+  "runtime_head": "ca75679ee23b2df5dd8f16f83e3c96e48b998afc",
+  "files": {
+    ".gitattributes": {
+      "bytes": 55,
+      "sha256": "6d038396f32d839c8984972ab0ef37dca40ce5d98658f70fa6a8ee91ba8c6d5f"
+    },
+    "api-receipts.json": {
+      "bytes": 97456,
+      "sha256": "b80d1439bfc31bc068f31b43f8beec3c436121ea962c555b191e9790f258d41d"
+    },
+    "docker-runs.json": {
+      "bytes": 2800,
+      "sha256": "04e945c9febbb7797a214de9c965ab8fb7301522884b68a8204547bd8fe6b77b"
+    },
+    "postgresql-runs.json": {
+      "bytes": 2800,
+      "sha256": "2e35c240683d43111ead336d8a4b0ff7452bc85417e90898a28acf4cfa2fb19f"
+    },
+    "qualification.json": {
+      "bytes": 1087,
+      "sha256": "ba3014540de4271e615c85edadefeb14ee18498713155e1829845ff70f2951a0"
+    },
+    "review-inputs/ALIVE-PI-02B-R3-INDEPENDENT-REVIEW.md": {
+      "bytes": 14477,
+      "sha256": "448e344aa2a391a5639bdfd9fa1792ab969103453ab23af08d17c6964a80f225"
+    },
+    "screenshots/ambiguous.png": {
+      "bytes": 279931,
+      "sha256": "5f9653cf196b303dfd9af0a9e8e93ca8a996f36b0cc5f10e5b5da2a3714f5179"
+    },
+    "screenshots/comparison.png": {
+      "bytes": 336047,
+      "sha256": "c55b24cf8bc48ade0cbe428efdd141777d863af7d95f35e21800605cc4bbf5a3"
+    },
+    "screenshots/deterministic.png": {
+      "bytes": 286530,
+      "sha256": "4bc80d82871b0653f61262ab823c584880cccdbd7e6f375dc183a91f480e6711"
+    },
+    "screenshots/goal_cancel.png": {
+      "bytes": 266952,
+      "sha256": "024733ea41c45c567d0329cf3d777e81fb34cdae5246e84cc48122e196ec32a2"
+    },
+    "screenshots/mobile.png": {
+      "bytes": 170534,
+      "sha256": "890b6c2894add9527d2d4a2f6295aab824a27131bffad66bae8b471807a6b2b3"
+    },
+    "screenshots/partial.png": {
+      "bytes": 356018,
+      "sha256": "d4283b9a8b897525be6d3a901e058f0805795b30e568547ec30a68b9ce2cb360"
+    },
+    "screenshots/research-pi.png": {
+      "bytes": 336479,
+      "sha256": "02e68a2359e707fcf6317a4c600fa2e8f9d3087de8d30ea0d848778a956e9880"
+    },
+    "sqlite-runs.json": {
+      "bytes": 2800,
+      "sha256": "e1531baf8fa8c243629802bd46983af794d480dc188adad5ae250a2e6b7b9178"
+    }
+  }
+}

@@ -1,0 +1,2666 @@
+[
+  {
+    "label": "research",
+    "run": {
+      "id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+      "workflow": {
+        "name": "research-review",
+        "version": 2,
+        "definition_id": "4dcc089a-c65c-4528-b8ca-942f73377470",
+        "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+        "schema_version": 1
+      },
+      "goal_id": "15fdff15-b04a-4551-9a03-f65ded87db43",
+      "investigation_id": "9bc9e134-42f3-4e64-8f49-94abd92424df",
+      "trigger": "authorized-execution",
+      "input_ref": "event:746c2748-0ecf-4178-b7c3-aa59fdc075b5",
+      "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "authorization_ref": "fd0d85a4-b474-4cf1-8430-fdcec97dd4e7",
+      "budget": {
+        "wall_seconds": 120,
+        "max_model_calls": 1,
+        "max_output_tokens": 1536
+      },
+      "status": "COMPLETED",
+      "terminal": true,
+      "terminal_reason": "required_stages_completed",
+      "created_at": "2026-10-31T01:08:37.662561+00:00",
+      "started_at": "2026-10-31T01:08:37.672918+00:00",
+      "finished_at": "2026-10-31T01:08:38.766633+00:00"
+    },
+    "graph": {
+      "name": "research-review",
+      "version": 2,
+      "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+      "nodes": [
+        {
+          "id": "prepare",
+          "title": "Prepare",
+          "type": "deterministic",
+          "operation": "context.prepare",
+          "available": true
+        },
+        {
+          "id": "analyze",
+          "title": "Analyze",
+          "type": "pi_agent",
+          "operation": "cognition.role",
+          "available": true
+        },
+        {
+          "id": "validate",
+          "title": "Validate",
+          "type": "validation",
+          "operation": "evidence.validate_references",
+          "available": true
+        },
+        {
+          "id": "record",
+          "title": "Record",
+          "type": "deterministic",
+          "operation": "result.record",
+          "available": true
+        }
+      ],
+      "edges": [
+        {
+          "from": "prepare",
+          "to": "analyze"
+        },
+        {
+          "from": "analyze",
+          "to": "validate"
+        },
+        {
+          "from": "prepare",
+          "to": "validate"
+        },
+        {
+          "from": "validate",
+          "to": "record"
+        }
+      ]
+    },
+    "stages": [
+      {
+        "id": "a7021a89-d6b7-4cfb-b768-e81ea4643196",
+        "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+        "stage_id": "prepare",
+        "attempt": 1,
+        "type": "deterministic",
+        "operation": "context.prepare",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+        "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "output_ref": "event:a5ca86e2-59c9-4b33-baf6-dd02fbede65a",
+        "output_sha256": "b0d7693af38903cc065e27c435ee1f64f0406bc2a60a7f321183f243d7b3708e",
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [
+          "746c2748-0ecf-4178-b7c3-aa59fdc075b5"
+        ],
+        "validation_status": "not_run",
+        "validation": {
+          "contract_status": "not_run",
+          "structural_status": "not_established",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:37.664737+00:00",
+        "started_at": "2026-10-31T01:08:37.719861+00:00",
+        "finished_at": "2026-10-31T01:08:37.738202+00:00",
+        "duration_seconds": 0.018341,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "28f48c0c-ee57-49c4-9d74-b27681e45d6a",
+        "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+        "stage_id": "analyze",
+        "attempt": 1,
+        "type": "pi_agent",
+        "operation": "cognition.role",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+        "input_sha256": "34370ff3e819e90340405a091db620928e076501b5f7050ed30a86763fe3e8f0",
+        "output_ref": "event:d058c8e9-6ad4-4953-ad15-fb7f306021fb",
+        "output_sha256": "111c0734efe4f2877d1e21b7454c4c140aec204c818c772c4bbe5dd5a9cf65b9",
+        "pi_run_id": "66ac8e1c-ca5d-48ef-87ae-7c17ece3a60e",
+        "model_invocation_id": "cbae3bb4-f69f-44b1-b290-c760d2c3e78b",
+        "evidence_refs": [],
+        "validation_status": "passed",
+        "validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "passed",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:37.664740+00:00",
+        "started_at": "2026-10-31T01:08:37.751264+00:00",
+        "finished_at": "2026-10-31T01:08:38.646201+00:00",
+        "duration_seconds": 0.894937,
+        "model_requested": "muse-spark-1.3",
+        "usage": {
+          "prompt_tokens": 11,
+          "completion_tokens": 7,
+          "total_tokens": 18
+        },
+        "charged_tokens": 18,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "c5f6a89c-7cdb-40ce-bcd8-f727621e1cf5",
+        "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+        "stage_id": "record",
+        "attempt": 1,
+        "type": "deterministic",
+        "operation": "result.record",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+        "input_sha256": "630594cfa0f83fc76399bfba620ae9c22ec89df78bbaf03e553f7c846895ec36",
+        "output_ref": "event:0fed2a3d-8988-41ce-b949-d44995f3a654",
+        "output_sha256": "610d153f0a67fa12d49b18cc010f2eb872fd3fb7aa91e5a373717ef3992ead0f",
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [
+          "746c2748-0ecf-4178-b7c3-aa59fdc075b5"
+        ],
+        "validation_status": "passed",
+        "validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:37.664741+00:00",
+        "started_at": "2026-10-31T01:08:38.699578+00:00",
+        "finished_at": "2026-10-31T01:08:38.727642+00:00",
+        "duration_seconds": 0.028064,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "1b2ad27e-6c06-4762-a0fe-de5f77adcfbe",
+        "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+        "stage_id": "validate",
+        "attempt": 1,
+        "type": "validation",
+        "operation": "evidence.validate_references",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+        "input_sha256": "80d67fceb0ae4746cb31d89cb9cd143b33e2c30442a3500ef93d570ca45320fd",
+        "output_ref": "event:55477d2b-a1b2-44f0-8613-36594a26991e",
+        "output_sha256": "630594cfa0f83fc76399bfba620ae9c22ec89df78bbaf03e553f7c846895ec36",
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [],
+        "validation_status": "passed",
+        "validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "passed",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:37.664741+00:00",
+        "started_at": "2026-10-31T01:08:38.664061+00:00",
+        "finished_at": "2026-10-31T01:08:38.683675+00:00",
+        "duration_seconds": 0.019614,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      }
+    ],
+    "timeline": {
+      "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+      "definition_id": "4dcc089a-c65c-4528-b8ca-942f73377470",
+      "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+      "events": [
+        {
+          "sequence": 18,
+          "event_type": "workflow.run.opened",
+          "occurred_at": "2026-10-31T01:08:37.666201+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 19,
+          "event_type": "workflow.execution.claimed",
+          "occurred_at": "2026-10-31T01:08:37.679548+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 21,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:37.721517+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "prepare",
+          "attempt_id": "a7021a89-d6b7-4cfb-b768-e81ea4643196",
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 22,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:37.738098+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "prepare",
+          "attempt_id": "a7021a89-d6b7-4cfb-b768-e81ea4643196",
+          "pi_run_id": null,
+          "output_ref": "event:a5ca86e2-59c9-4b33-baf6-dd02fbede65a",
+          "status": null
+        },
+        {
+          "sequence": 23,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:37.752310+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "analyze",
+          "attempt_id": "28f48c0c-ee57-49c4-9d74-b27681e45d6a",
+          "pi_run_id": "66ac8e1c-ca5d-48ef-87ae-7c17ece3a60e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 25,
+          "event_type": "pi.run.prepared",
+          "occurred_at": "2026-10-31T01:08:37.790830+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "analyze",
+          "attempt_id": "28f48c0c-ee57-49c4-9d74-b27681e45d6a",
+          "pi_run_id": "66ac8e1c-ca5d-48ef-87ae-7c17ece3a60e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 26,
+          "event_type": "pi.run.admitted",
+          "occurred_at": "2026-10-31T01:08:37.814496+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "analyze",
+          "attempt_id": "28f48c0c-ee57-49c4-9d74-b27681e45d6a",
+          "pi_run_id": "66ac8e1c-ca5d-48ef-87ae-7c17ece3a60e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 28,
+          "event_type": "pi.run.starting",
+          "occurred_at": "2026-10-31T01:08:37.962598+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "analyze",
+          "attempt_id": "28f48c0c-ee57-49c4-9d74-b27681e45d6a",
+          "pi_run_id": "66ac8e1c-ca5d-48ef-87ae-7c17ece3a60e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 29,
+          "event_type": "pi.run.started",
+          "occurred_at": "2026-10-31T01:08:37.983287+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "analyze",
+          "attempt_id": "28f48c0c-ee57-49c4-9d74-b27681e45d6a",
+          "pi_run_id": "66ac8e1c-ca5d-48ef-87ae-7c17ece3a60e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 41,
+          "event_type": "pi.provider_request.admitted",
+          "occurred_at": "2026-10-31T01:08:38.454785+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "analyze",
+          "attempt_id": "28f48c0c-ee57-49c4-9d74-b27681e45d6a",
+          "pi_run_id": "66ac8e1c-ca5d-48ef-87ae-7c17ece3a60e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 42,
+          "event_type": "pi.provider_request.dispatched",
+          "occurred_at": "2026-10-31T01:08:38.468148+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "analyze",
+          "attempt_id": "28f48c0c-ee57-49c4-9d74-b27681e45d6a",
+          "pi_run_id": "66ac8e1c-ca5d-48ef-87ae-7c17ece3a60e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 44,
+          "event_type": "pi.provider_request.settled",
+          "occurred_at": "2026-10-31T01:08:38.495959+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "analyze",
+          "attempt_id": "28f48c0c-ee57-49c4-9d74-b27681e45d6a",
+          "pi_run_id": "66ac8e1c-ca5d-48ef-87ae-7c17ece3a60e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 55,
+          "event_type": "pi.run.settled",
+          "occurred_at": "2026-10-31T01:08:38.581745+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "analyze",
+          "attempt_id": "28f48c0c-ee57-49c4-9d74-b27681e45d6a",
+          "pi_run_id": "66ac8e1c-ca5d-48ef-87ae-7c17ece3a60e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 58,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:38.646101+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "analyze",
+          "attempt_id": "28f48c0c-ee57-49c4-9d74-b27681e45d6a",
+          "pi_run_id": "66ac8e1c-ca5d-48ef-87ae-7c17ece3a60e",
+          "output_ref": "event:d058c8e9-6ad4-4953-ad15-fb7f306021fb",
+          "status": null
+        },
+        {
+          "sequence": 59,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:38.665081+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "validate",
+          "attempt_id": "1b2ad27e-6c06-4762-a0fe-de5f77adcfbe",
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 60,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:38.683579+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "validate",
+          "attempt_id": "1b2ad27e-6c06-4762-a0fe-de5f77adcfbe",
+          "pi_run_id": null,
+          "output_ref": "event:55477d2b-a1b2-44f0-8613-36594a26991e",
+          "status": null
+        },
+        {
+          "sequence": 61,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:38.700362+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "record",
+          "attempt_id": "c5f6a89c-7cdb-40ce-bcd8-f727621e1cf5",
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 63,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:38.727588+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": "record",
+          "attempt_id": "c5f6a89c-7cdb-40ce-bcd8-f727621e1cf5",
+          "pi_run_id": null,
+          "output_ref": "event:0fed2a3d-8988-41ce-b949-d44995f3a654",
+          "status": null
+        },
+        {
+          "sequence": 68,
+          "event_type": "workflow.execution.completed",
+          "occurred_at": "2026-10-31T01:08:38.766682+00:00",
+          "run_id": "d2a0478a-20d2-4be5-87ba-c595d23c49c7",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        }
+      ],
+      "next_after": 68,
+      "has_more": false,
+      "complete_transition_history": false,
+      "history_note": "Recorded events only. Some reservation and interrupted-stage transitions were not retained; current stage snapshots are separate facts."
+    },
+    "receipts": [
+      {
+        "run_id": "66ac8e1c-ca5d-48ef-87ae-7c17ece3a60e",
+        "reservation_ref": "cbae3bb4-f69f-44b1-b290-c760d2c3e78b",
+        "state": "SETTLED",
+        "terminal_reason": "settled",
+        "identity": {
+          "requested_upstream_model": "muse-spark-1.3",
+          "pi_observed": {
+            "provider": "alive-egress",
+            "model": "alive-approved"
+          },
+          "pi_expected_alias": {
+            "provider": "alive-egress",
+            "model": "alive-approved"
+          },
+          "matches_expected_alias": true,
+          "note": "The upstream model is chosen by ALIVE; Pi only ever sees its local alias."
+        },
+        "requests": {
+          "ceiling": 1,
+          "inbound": 1,
+          "admitted": 1,
+          "counts": {
+            "settled": 1,
+            "failed": 0,
+            "ambiguous": 0,
+            "rejected": 0,
+            "dispatched": 0,
+            "admitted": 0
+          },
+          "items": [
+            {
+              "seq": 1,
+              "state": "settled",
+              "body_sha256_in": "b5897135c03d01c424139dadcb7b378f485c1d46d68e3d93f3d644a09910d7b4",
+              "approved_request_sha256": "ba43a0842bfa0b8c2d22fa2b1c37c437388441a47e736ff8d00bc73627a284ca",
+              "model_requested": "muse-spark-1.3",
+              "http_status": 200,
+              "usage": {
+                "total_tokens": 18,
+                "prompt_tokens": 11,
+                "completion_tokens": 7
+              },
+              "cost_usd": null,
+              "latency_ms": 37.745725003333064,
+              "error_category": null,
+              "response_sha256": "a8191f4a269e328beaae0222424e923709b8c5d5b3390afc5e8330a86b749d9c"
+            }
+          ]
+        },
+        "settlement": {
+          "cleanup_confirmed": true,
+          "pi_settled": true,
+          "matches_egress_record": true,
+          "tool_events": 0,
+          "malformed_frames": 0,
+          "duration_s": 0.797,
+          "recovered": false
+        },
+        "cost": {
+          "usd": null,
+          "note": "ALIVE has no price table for this transport. Cost is unknown, not zero; Pi's own cost figure for an unpriced custom model is zero and is deliberately not used."
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "c5f6a89c-7cdb-40ce-bcd8-f727621e1cf5",
+        "sha256": "f64724466403a3fa3b3a8cd5c658df391c69184ca397929e4c2295a42584fce1",
+        "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+        "workflow_completed": true,
+        "run_status": "COMPLETED",
+        "source_status": "unchanged",
+        "independent_feedback": false,
+        "intelligence_episode_id": null,
+        "stage_validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        }
+      }
+    ]
+  },
+  {
+    "label": "research_v3",
+    "run": {
+      "id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+      "workflow": {
+        "name": "research-review",
+        "version": 3,
+        "definition_id": "8b8f6617-f3f4-4fc5-9a04-794bbbff0008",
+        "definition_sha256": "8e6c178e4d6cd6760f7cc7828327a2d6173b1104293220203878319e40ea8703",
+        "schema_version": 1
+      },
+      "goal_id": "d1d80695-725a-4134-b323-c658e8bb1863",
+      "investigation_id": "dcb17fac-e027-4b59-8170-34a6b3afd2a9",
+      "trigger": "authorized-execution",
+      "input_ref": "event:bb24ea7d-e72c-4719-8e14-7a6ea88877ef",
+      "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "authorization_ref": "2d887937-05c0-4788-aec2-1b9efed345a7",
+      "budget": {
+        "wall_seconds": 120,
+        "max_model_calls": 1,
+        "max_output_tokens": 1536
+      },
+      "status": "COMPLETED",
+      "terminal": true,
+      "terminal_reason": "required_stages_completed",
+      "created_at": "2026-10-31T01:08:38.909163+00:00",
+      "started_at": "2026-10-31T01:08:38.914972+00:00",
+      "finished_at": "2026-10-31T01:08:39.707121+00:00"
+    },
+    "graph": {
+      "name": "research-review",
+      "version": 3,
+      "definition_sha256": "8e6c178e4d6cd6760f7cc7828327a2d6173b1104293220203878319e40ea8703",
+      "nodes": [
+        {
+          "id": "prepare",
+          "title": "Prepare",
+          "type": "deterministic",
+          "operation": "context.prepare",
+          "available": true
+        },
+        {
+          "id": "analyze",
+          "title": "Analyze",
+          "type": "pi_agent",
+          "operation": "cognition.role",
+          "available": true
+        },
+        {
+          "id": "validate",
+          "title": "Validate",
+          "type": "validation",
+          "operation": "evidence.validate_references",
+          "available": true
+        },
+        {
+          "id": "record",
+          "title": "Record",
+          "type": "deterministic",
+          "operation": "result.record",
+          "available": true
+        }
+      ],
+      "edges": [
+        {
+          "from": "prepare",
+          "to": "analyze"
+        },
+        {
+          "from": "analyze",
+          "to": "validate"
+        },
+        {
+          "from": "prepare",
+          "to": "validate"
+        },
+        {
+          "from": "prepare",
+          "to": "record"
+        },
+        {
+          "from": "validate",
+          "to": "record"
+        }
+      ]
+    },
+    "stages": [
+      {
+        "id": "9245a5a2-89db-4306-afbc-c62b1e3e7234",
+        "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+        "stage_id": "prepare",
+        "attempt": 1,
+        "type": "deterministic",
+        "operation": "context.prepare",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:5a7e388e-71e3-414c-846c-8d02d7f5149c",
+        "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "output_ref": "event:e7a4b7e1-63e1-40fc-a355-775d7da3ec00",
+        "output_sha256": "e9e33ed0e71f3d58fafd4fc91b4ceb463e21a4fbaefbe20bfdc000eb1fb03c30",
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [
+          "bb24ea7d-e72c-4719-8e14-7a6ea88877ef"
+        ],
+        "validation_status": "not_run",
+        "validation": {
+          "contract_status": "not_run",
+          "structural_status": "not_established",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:38.909956+00:00",
+        "started_at": "2026-10-31T01:08:38.939462+00:00",
+        "finished_at": "2026-10-31T01:08:38.968467+00:00",
+        "duration_seconds": 0.029005,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "a90c9f36-4a20-4103-b928-8f295a5825ce",
+        "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+        "stage_id": "analyze",
+        "attempt": 1,
+        "type": "pi_agent",
+        "operation": "cognition.role",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:5a7e388e-71e3-414c-846c-8d02d7f5149c",
+        "input_sha256": "51ca9fe33247d9f5e45bf81639e2dcdad3a00e23ff48dd3da604047554cd3dc5",
+        "output_ref": "event:073a2410-833c-4b47-80d4-4373befce017",
+        "output_sha256": "d39e2a0437ca6fcd23dee0b06feb388d5bc3b2970832ea684de29b2e01e78b96",
+        "pi_run_id": "29e16d85-da6a-44b6-983f-0b44564dd90e",
+        "model_invocation_id": "abbd81cb-c250-4db6-92d0-87ae212d1045",
+        "evidence_refs": [],
+        "validation_status": "passed",
+        "validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "passed",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:38.909959+00:00",
+        "started_at": "2026-10-31T01:08:38.990402+00:00",
+        "finished_at": "2026-10-31T01:08:39.601595+00:00",
+        "duration_seconds": 0.611193,
+        "model_requested": "muse-spark-1.3",
+        "usage": {
+          "prompt_tokens": 11,
+          "completion_tokens": 7,
+          "total_tokens": 18
+        },
+        "charged_tokens": 18,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "2763921a-e01b-436d-8ab0-17298945d5ef",
+        "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+        "stage_id": "record",
+        "attempt": 1,
+        "type": "deterministic",
+        "operation": "result.record",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:5a7e388e-71e3-414c-846c-8d02d7f5149c",
+        "input_sha256": "a3e452ef8f12a6165ac65876b3952587db356b1e581f61339af5403cdfc15ab6",
+        "output_ref": "event:7622b8d3-2d62-4494-9659-7316f27c27e6",
+        "output_sha256": "da8d9feed73b0345536a0dde23cf8d83f8abf12734cffe23269cc77b213ffe3c",
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [
+          "bb24ea7d-e72c-4719-8e14-7a6ea88877ef"
+        ],
+        "validation_status": "passed",
+        "validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:38.909960+00:00",
+        "started_at": "2026-10-31T01:08:39.658920+00:00",
+        "finished_at": "2026-10-31T01:08:39.687073+00:00",
+        "duration_seconds": 0.028153,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "054f73ec-c4fd-4824-b448-53c445921d54",
+        "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+        "stage_id": "validate",
+        "attempt": 1,
+        "type": "validation",
+        "operation": "evidence.validate_references",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:5a7e388e-71e3-414c-846c-8d02d7f5149c",
+        "input_sha256": "1f7195c2149d7947c2e09ea3910b1a613d27f2f4e0b8ac04bfa35c424d7e142f",
+        "output_ref": "event:54facc1d-7d9f-4818-b78b-7216eba0b2b6",
+        "output_sha256": "a3e452ef8f12a6165ac65876b3952587db356b1e581f61339af5403cdfc15ab6",
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [],
+        "validation_status": "passed",
+        "validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "passed",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:38.909960+00:00",
+        "started_at": "2026-10-31T01:08:39.616680+00:00",
+        "finished_at": "2026-10-31T01:08:39.631648+00:00",
+        "duration_seconds": 0.014968,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      }
+    ],
+    "timeline": {
+      "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+      "definition_id": "8b8f6617-f3f4-4fc5-9a04-794bbbff0008",
+      "definition_sha256": "8e6c178e4d6cd6760f7cc7828327a2d6173b1104293220203878319e40ea8703",
+      "events": [
+        {
+          "sequence": 81,
+          "event_type": "workflow.run.opened",
+          "occurred_at": "2026-10-31T01:08:38.910595+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 82,
+          "event_type": "workflow.execution.claimed",
+          "occurred_at": "2026-10-31T01:08:38.917299+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 83,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:38.940567+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "prepare",
+          "attempt_id": "9245a5a2-89db-4306-afbc-c62b1e3e7234",
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 85,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:38.968311+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "prepare",
+          "attempt_id": "9245a5a2-89db-4306-afbc-c62b1e3e7234",
+          "pi_run_id": null,
+          "output_ref": "event:e7a4b7e1-63e1-40fc-a355-775d7da3ec00",
+          "status": null
+        },
+        {
+          "sequence": 86,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:38.991880+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "analyze",
+          "attempt_id": "a90c9f36-4a20-4103-b928-8f295a5825ce",
+          "pi_run_id": "29e16d85-da6a-44b6-983f-0b44564dd90e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 88,
+          "event_type": "pi.run.prepared",
+          "occurred_at": "2026-10-31T01:08:39.016344+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "analyze",
+          "attempt_id": "a90c9f36-4a20-4103-b928-8f295a5825ce",
+          "pi_run_id": "29e16d85-da6a-44b6-983f-0b44564dd90e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 89,
+          "event_type": "pi.run.admitted",
+          "occurred_at": "2026-10-31T01:08:39.025413+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "analyze",
+          "attempt_id": "a90c9f36-4a20-4103-b928-8f295a5825ce",
+          "pi_run_id": "29e16d85-da6a-44b6-983f-0b44564dd90e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 90,
+          "event_type": "pi.run.starting",
+          "occurred_at": "2026-10-31T01:08:39.031402+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "analyze",
+          "attempt_id": "a90c9f36-4a20-4103-b928-8f295a5825ce",
+          "pi_run_id": "29e16d85-da6a-44b6-983f-0b44564dd90e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 91,
+          "event_type": "pi.run.started",
+          "occurred_at": "2026-10-31T01:08:39.042322+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "analyze",
+          "attempt_id": "a90c9f36-4a20-4103-b928-8f295a5825ce",
+          "pi_run_id": "29e16d85-da6a-44b6-983f-0b44564dd90e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 99,
+          "event_type": "pi.provider_request.admitted",
+          "occurred_at": "2026-10-31T01:08:39.402555+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "analyze",
+          "attempt_id": "a90c9f36-4a20-4103-b928-8f295a5825ce",
+          "pi_run_id": "29e16d85-da6a-44b6-983f-0b44564dd90e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 102,
+          "event_type": "pi.provider_request.dispatched",
+          "occurred_at": "2026-10-31T01:08:39.430957+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "analyze",
+          "attempt_id": "a90c9f36-4a20-4103-b928-8f295a5825ce",
+          "pi_run_id": "29e16d85-da6a-44b6-983f-0b44564dd90e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 104,
+          "event_type": "pi.provider_request.settled",
+          "occurred_at": "2026-10-31T01:08:39.458308+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "analyze",
+          "attempt_id": "a90c9f36-4a20-4103-b928-8f295a5825ce",
+          "pi_run_id": "29e16d85-da6a-44b6-983f-0b44564dd90e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 117,
+          "event_type": "pi.run.settled",
+          "occurred_at": "2026-10-31T01:08:39.563806+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "analyze",
+          "attempt_id": "a90c9f36-4a20-4103-b928-8f295a5825ce",
+          "pi_run_id": "29e16d85-da6a-44b6-983f-0b44564dd90e",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 119,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:39.601495+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "analyze",
+          "attempt_id": "a90c9f36-4a20-4103-b928-8f295a5825ce",
+          "pi_run_id": "29e16d85-da6a-44b6-983f-0b44564dd90e",
+          "output_ref": "event:073a2410-833c-4b47-80d4-4373befce017",
+          "status": null
+        },
+        {
+          "sequence": 120,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:39.617499+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "validate",
+          "attempt_id": "054f73ec-c4fd-4824-b448-53c445921d54",
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 121,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:39.631551+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "validate",
+          "attempt_id": "054f73ec-c4fd-4824-b448-53c445921d54",
+          "pi_run_id": null,
+          "output_ref": "event:54facc1d-7d9f-4818-b78b-7216eba0b2b6",
+          "status": null
+        },
+        {
+          "sequence": 123,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:39.659748+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "record",
+          "attempt_id": "2763921a-e01b-436d-8ab0-17298945d5ef",
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 124,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:39.687001+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": "record",
+          "attempt_id": "2763921a-e01b-436d-8ab0-17298945d5ef",
+          "pi_run_id": null,
+          "output_ref": "event:7622b8d3-2d62-4494-9659-7316f27c27e6",
+          "status": null
+        },
+        {
+          "sequence": 129,
+          "event_type": "workflow.execution.completed",
+          "occurred_at": "2026-10-31T01:08:39.707163+00:00",
+          "run_id": "5a7e388e-71e3-414c-846c-8d02d7f5149c",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        }
+      ],
+      "next_after": 129,
+      "has_more": false,
+      "complete_transition_history": false,
+      "history_note": "Recorded events only. Some reservation and interrupted-stage transitions were not retained; current stage snapshots are separate facts."
+    },
+    "receipts": [
+      {
+        "run_id": "29e16d85-da6a-44b6-983f-0b44564dd90e",
+        "reservation_ref": "abbd81cb-c250-4db6-92d0-87ae212d1045",
+        "state": "SETTLED",
+        "terminal_reason": "settled",
+        "identity": {
+          "requested_upstream_model": "muse-spark-1.3",
+          "pi_observed": {
+            "provider": "alive-egress",
+            "model": "alive-approved"
+          },
+          "pi_expected_alias": {
+            "provider": "alive-egress",
+            "model": "alive-approved"
+          },
+          "matches_expected_alias": true,
+          "note": "The upstream model is chosen by ALIVE; Pi only ever sees its local alias."
+        },
+        "requests": {
+          "ceiling": 1,
+          "inbound": 1,
+          "admitted": 1,
+          "counts": {
+            "settled": 1,
+            "failed": 0,
+            "ambiguous": 0,
+            "rejected": 0,
+            "dispatched": 0,
+            "admitted": 0
+          },
+          "items": [
+            {
+              "seq": 1,
+              "state": "settled",
+              "body_sha256_in": "f7cdf99acbeb9f12efcdbcd856625f2d342a30d98f3c91091d6f768cbb676e63",
+              "approved_request_sha256": "777130bac1863d93e46cf33c43db0f22fd9ca3fa97da2b453b347449c4d6baa7",
+              "model_requested": "muse-spark-1.3",
+              "http_status": 200,
+              "usage": {
+                "total_tokens": 18,
+                "prompt_tokens": 11,
+                "completion_tokens": 7
+              },
+              "cost_usd": null,
+              "latency_ms": 50.69628400087822,
+              "error_category": null,
+              "response_sha256": "74d56aab8785ff83a4492513aa2418d93560cd022ee85587ebd200fe32128cac"
+            }
+          ]
+        },
+        "settlement": {
+          "cleanup_confirmed": true,
+          "pi_settled": true,
+          "matches_egress_record": true,
+          "tool_events": 0,
+          "malformed_frames": 0,
+          "duration_s": 0.549,
+          "recovered": false
+        },
+        "cost": {
+          "usd": null,
+          "note": "ALIVE has no price table for this transport. Cost is unknown, not zero; Pi's own cost figure for an unpriced custom model is zero and is deliberately not used."
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "2763921a-e01b-436d-8ab0-17298945d5ef",
+        "sha256": "cac8ed188fde5b7eb88a827a5e2738beabe8e4626826927cf85ca2066f170734",
+        "definition_sha256": "8e6c178e4d6cd6760f7cc7828327a2d6173b1104293220203878319e40ea8703",
+        "workflow_completed": true,
+        "run_status": "COMPLETED",
+        "source_status": "unchanged",
+        "independent_feedback": false,
+        "intelligence_episode_id": null,
+        "stage_validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        }
+      }
+    ]
+  },
+  {
+    "label": "deterministic",
+    "run": {
+      "id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+      "workflow": {
+        "name": "source-comparison",
+        "version": 1,
+        "definition_id": "e6aa03a8-6336-4c90-aeb6-c5f67bac5f68",
+        "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+        "schema_version": 1
+      },
+      "goal_id": "2fca4a9a-23b8-4d0e-a839-154480737221",
+      "investigation_id": "f05db058-79e7-4df9-af86-4ec29e4b3f94",
+      "trigger": "authorized-execution",
+      "input_ref": "event:834c87db-b779-412b-8f45-f3ccdba377bf",
+      "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "authorization_ref": "70755fd1-1a66-4647-8c5a-04422e229c72",
+      "budget": {
+        "wall_seconds": 120,
+        "max_model_calls": 0,
+        "max_output_tokens": 0
+      },
+      "status": "COMPLETED",
+      "terminal": true,
+      "terminal_reason": "required_stages_completed",
+      "created_at": "2026-10-31T01:08:39.823445+00:00",
+      "started_at": "2026-10-31T01:08:39.829402+00:00",
+      "finished_at": "2026-10-31T01:08:39.946702+00:00"
+    },
+    "graph": {
+      "name": "source-comparison",
+      "version": 1,
+      "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+      "nodes": [
+        {
+          "id": "prepare",
+          "title": "Prepare",
+          "type": "deterministic",
+          "operation": "context.prepare",
+          "available": true
+        },
+        {
+          "id": "compare",
+          "title": "Compare",
+          "type": "validation",
+          "operation": "evidence.evaluate",
+          "available": true
+        },
+        {
+          "id": "record",
+          "title": "Record",
+          "type": "deterministic",
+          "operation": "result.record",
+          "available": true
+        }
+      ],
+      "edges": [
+        {
+          "from": "prepare",
+          "to": "compare"
+        },
+        {
+          "from": "compare",
+          "to": "record"
+        }
+      ]
+    },
+    "stages": [
+      {
+        "id": "b6f51c30-c013-492e-bd83-7b4fff71c9a0",
+        "run_id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+        "stage_id": "prepare",
+        "attempt": 1,
+        "type": "deterministic",
+        "operation": "context.prepare",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:58fe4dc7-363a-48e5-9aad-db427597bdfe",
+        "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "output_ref": "event:04ea2edb-5ee0-4d2a-b314-078f8cd4c637",
+        "output_sha256": "91f9773510bf4e408cf349c77abbd9900927c0180e1ae9f8eb868d4b37fd5909",
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [
+          "834c87db-b779-412b-8f45-f3ccdba377bf"
+        ],
+        "validation_status": "not_run",
+        "validation": {
+          "contract_status": "not_run",
+          "structural_status": "not_established",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:39.824318+00:00",
+        "started_at": "2026-10-31T01:08:39.850124+00:00",
+        "finished_at": "2026-10-31T01:08:39.861573+00:00",
+        "duration_seconds": 0.011449,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "ccc98f1c-d688-4e10-b739-7af35d1e23da",
+        "run_id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+        "stage_id": "compare",
+        "attempt": 1,
+        "type": "validation",
+        "operation": "evidence.evaluate",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:58fe4dc7-363a-48e5-9aad-db427597bdfe",
+        "input_sha256": "24581a1a032a9c8f151ccd66f80c973667740514cd8f2a5d42b20171b1a797bf",
+        "output_ref": "event:cf651dd4-ec90-40a5-a558-b01978d3a8b8",
+        "output_sha256": "09cefd2d7d63983637db9ea2a0ed2ba3113f22eeddf8a8b9b3d098fbdd64514b",
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [
+          "sensor:084e5deb-4cc4-4662-92ad-ef58bf3c7132:1"
+        ],
+        "validation_status": "passed",
+        "validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:39.824321+00:00",
+        "started_at": "2026-10-31T01:08:39.873462+00:00",
+        "finished_at": "2026-10-31T01:08:39.892869+00:00",
+        "duration_seconds": 0.019407,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "10124bea-9dd7-4445-8ceb-a7aefd220e82",
+        "run_id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+        "stage_id": "record",
+        "attempt": 1,
+        "type": "deterministic",
+        "operation": "result.record",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:58fe4dc7-363a-48e5-9aad-db427597bdfe",
+        "input_sha256": "09cefd2d7d63983637db9ea2a0ed2ba3113f22eeddf8a8b9b3d098fbdd64514b",
+        "output_ref": "event:bca82897-ee04-42dc-a77b-016d19c83367",
+        "output_sha256": "1062a1087c0dc3febf33f8ceaebbd50b3cabeb8d23213dfd44f7b8273e826636",
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [
+          "834c87db-b779-412b-8f45-f3ccdba377bf"
+        ],
+        "validation_status": "passed",
+        "validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:39.824322+00:00",
+        "started_at": "2026-10-31T01:08:39.912179+00:00",
+        "finished_at": "2026-10-31T01:08:39.924487+00:00",
+        "duration_seconds": 0.012308,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      }
+    ],
+    "timeline": {
+      "run_id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+      "definition_id": "e6aa03a8-6336-4c90-aeb6-c5f67bac5f68",
+      "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+      "events": [
+        {
+          "sequence": 142,
+          "event_type": "workflow.run.opened",
+          "occurred_at": "2026-10-31T01:08:39.824843+00:00",
+          "run_id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 143,
+          "event_type": "workflow.execution.claimed",
+          "occurred_at": "2026-10-31T01:08:39.831244+00:00",
+          "run_id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 144,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:39.851342+00:00",
+          "run_id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+          "stage_id": "prepare",
+          "attempt_id": "b6f51c30-c013-492e-bd83-7b4fff71c9a0",
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 145,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:39.861483+00:00",
+          "run_id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+          "stage_id": "prepare",
+          "attempt_id": "b6f51c30-c013-492e-bd83-7b4fff71c9a0",
+          "pi_run_id": null,
+          "output_ref": "event:04ea2edb-5ee0-4d2a-b314-078f8cd4c637",
+          "status": null
+        },
+        {
+          "sequence": 146,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:39.874200+00:00",
+          "run_id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+          "stage_id": "compare",
+          "attempt_id": "ccc98f1c-d688-4e10-b739-7af35d1e23da",
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 148,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:39.892773+00:00",
+          "run_id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+          "stage_id": "compare",
+          "attempt_id": "ccc98f1c-d688-4e10-b739-7af35d1e23da",
+          "pi_run_id": null,
+          "output_ref": "event:cf651dd4-ec90-40a5-a558-b01978d3a8b8",
+          "status": null
+        },
+        {
+          "sequence": 149,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:39.912983+00:00",
+          "run_id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+          "stage_id": "record",
+          "attempt_id": "10124bea-9dd7-4445-8ceb-a7aefd220e82",
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 150,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:39.924422+00:00",
+          "run_id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+          "stage_id": "record",
+          "attempt_id": "10124bea-9dd7-4445-8ceb-a7aefd220e82",
+          "pi_run_id": null,
+          "output_ref": "event:bca82897-ee04-42dc-a77b-016d19c83367",
+          "status": null
+        },
+        {
+          "sequence": 155,
+          "event_type": "workflow.execution.completed",
+          "occurred_at": "2026-10-31T01:08:39.946741+00:00",
+          "run_id": "58fe4dc7-363a-48e5-9aad-db427597bdfe",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        }
+      ],
+      "next_after": 155,
+      "has_more": false,
+      "complete_transition_history": false,
+      "history_note": "Recorded events only. Some reservation and interrupted-stage transitions were not retained; current stage snapshots are separate facts."
+    },
+    "receipts": [],
+    "artifacts": [
+      {
+        "artifact_id": "10124bea-9dd7-4445-8ceb-a7aefd220e82",
+        "sha256": "eb6890af97433483ffa6f6b3807d3179dcb46ec95e6df4aca49a5c5efec0daef",
+        "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+        "workflow_completed": true,
+        "run_status": "COMPLETED",
+        "source_status": "unchanged",
+        "independent_feedback": false,
+        "intelligence_episode_id": null,
+        "stage_validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        }
+      }
+    ]
+  },
+  {
+    "label": "goal_cancel",
+    "run": {
+      "id": "945e8924-76d1-4c26-b08c-bb7c71f53e7f",
+      "workflow": {
+        "name": "source-comparison",
+        "version": 1,
+        "definition_id": "e6aa03a8-6336-4c90-aeb6-c5f67bac5f68",
+        "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+        "schema_version": 1
+      },
+      "goal_id": "a6a9decc-f4ee-45c0-8228-0427ed0d1f13",
+      "investigation_id": "0a25d9df-356b-4ce7-bdc8-4c0cbd74effe",
+      "trigger": "authorized-execution",
+      "input_ref": "event:1e8e76d1-64bb-4b55-850e-5368bf0c38f3",
+      "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "authorization_ref": "30d2b051-ba21-4ed8-b9e0-5aab515f7fe5",
+      "budget": {
+        "wall_seconds": 120,
+        "max_model_calls": 0,
+        "max_output_tokens": 0
+      },
+      "status": "FAILED",
+      "terminal": true,
+      "terminal_reason": "authorized_inquiry_required",
+      "created_at": "2026-10-31T01:08:40.056319+00:00",
+      "started_at": "2026-10-31T01:08:40.080079+00:00",
+      "finished_at": "2026-10-31T01:08:40.103765+00:00"
+    },
+    "graph": {
+      "name": "source-comparison",
+      "version": 1,
+      "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+      "nodes": [
+        {
+          "id": "prepare",
+          "title": "Prepare",
+          "type": "deterministic",
+          "operation": "context.prepare",
+          "available": true
+        },
+        {
+          "id": "compare",
+          "title": "Compare",
+          "type": "validation",
+          "operation": "evidence.evaluate",
+          "available": true
+        },
+        {
+          "id": "record",
+          "title": "Record",
+          "type": "deterministic",
+          "operation": "result.record",
+          "available": true
+        }
+      ],
+      "edges": [
+        {
+          "from": "prepare",
+          "to": "compare"
+        },
+        {
+          "from": "compare",
+          "to": "record"
+        }
+      ]
+    },
+    "stages": [
+      {
+        "id": "0f01b33e-596a-44d6-863c-c993f6e0e150",
+        "run_id": "945e8924-76d1-4c26-b08c-bb7c71f53e7f",
+        "stage_id": "prepare",
+        "attempt": 1,
+        "type": "deterministic",
+        "operation": "context.prepare",
+        "state": "CANCELLED",
+        "terminal": true,
+        "input_ref": null,
+        "input_sha256": null,
+        "output_ref": null,
+        "output_sha256": null,
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [],
+        "validation_status": "not_run",
+        "validation": {
+          "contract_status": "not_run",
+          "structural_status": "not_established",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": "authorized_inquiry_required",
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:40.058891+00:00",
+        "started_at": null,
+        "finished_at": "2026-10-31T01:08:40.103738+00:00",
+        "duration_seconds": null,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "ef32ecdc-d414-4244-b2ca-ec1aa37e081f",
+        "run_id": "945e8924-76d1-4c26-b08c-bb7c71f53e7f",
+        "stage_id": "compare",
+        "attempt": 1,
+        "type": "validation",
+        "operation": "evidence.evaluate",
+        "state": "CANCELLED",
+        "terminal": true,
+        "input_ref": null,
+        "input_sha256": null,
+        "output_ref": null,
+        "output_sha256": null,
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [],
+        "validation_status": "not_run",
+        "validation": {
+          "contract_status": "not_run",
+          "structural_status": "not_established",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": "authorized_inquiry_required",
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:40.058895+00:00",
+        "started_at": null,
+        "finished_at": "2026-10-31T01:08:40.103756+00:00",
+        "duration_seconds": null,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "7416e370-093a-47aa-b320-252eae5bf2ce",
+        "run_id": "945e8924-76d1-4c26-b08c-bb7c71f53e7f",
+        "stage_id": "record",
+        "attempt": 1,
+        "type": "deterministic",
+        "operation": "result.record",
+        "state": "CANCELLED",
+        "terminal": true,
+        "input_ref": null,
+        "input_sha256": null,
+        "output_ref": null,
+        "output_sha256": null,
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [],
+        "validation_status": "not_run",
+        "validation": {
+          "contract_status": "not_run",
+          "structural_status": "not_established",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": "authorized_inquiry_required",
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:40.058896+00:00",
+        "started_at": null,
+        "finished_at": "2026-10-31T01:08:40.103759+00:00",
+        "duration_seconds": null,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      }
+    ],
+    "timeline": {
+      "run_id": "945e8924-76d1-4c26-b08c-bb7c71f53e7f",
+      "definition_id": "e6aa03a8-6336-4c90-aeb6-c5f67bac5f68",
+      "definition_sha256": "4e0445d50f2c8bc6d6b390480d4e63834ac6ccb7adaa4b89831e309193182a0d",
+      "events": [
+        {
+          "sequence": 167,
+          "event_type": "workflow.run.opened",
+          "occurred_at": "2026-10-31T01:08:40.059881+00:00",
+          "run_id": "945e8924-76d1-4c26-b08c-bb7c71f53e7f",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 169,
+          "event_type": "workflow.execution.claimed",
+          "occurred_at": "2026-10-31T01:08:40.083918+00:00",
+          "run_id": "945e8924-76d1-4c26-b08c-bb7c71f53e7f",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 171,
+          "event_type": "workflow.execution.ended",
+          "occurred_at": "2026-10-31T01:08:40.103827+00:00",
+          "run_id": "945e8924-76d1-4c26-b08c-bb7c71f53e7f",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": "FAILED"
+        }
+      ],
+      "next_after": 171,
+      "has_more": false,
+      "complete_transition_history": false,
+      "history_note": "Recorded events only. Some reservation and interrupted-stage transitions were not retained; current stage snapshots are separate facts."
+    },
+    "receipts": [],
+    "artifacts": []
+  },
+  {
+    "label": "ambiguous",
+    "run": {
+      "id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+      "workflow": {
+        "name": "research-review",
+        "version": 2,
+        "definition_id": "4dcc089a-c65c-4528-b8ca-942f73377470",
+        "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+        "schema_version": 1
+      },
+      "goal_id": "3ea15808-326c-4cc4-8082-38f125d88cc4",
+      "investigation_id": "dd6387cf-6d16-43ec-8dd3-a0d774254322",
+      "trigger": "authorized-execution",
+      "input_ref": "event:372eeb0a-eadc-4cce-80ac-860b5501c6da",
+      "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "authorization_ref": "d1970680-984e-4807-a6af-705c3075f26e",
+      "budget": {
+        "wall_seconds": 120,
+        "max_model_calls": 1,
+        "max_output_tokens": 1536
+      },
+      "status": "UNKNOWN",
+      "terminal": true,
+      "terminal_reason": "cancelled",
+      "created_at": "2026-10-31T01:08:40.217410+00:00",
+      "started_at": "2026-10-31T01:08:40.225408+00:00",
+      "finished_at": "2026-10-31T01:08:45.779785+00:00"
+    },
+    "graph": {
+      "name": "research-review",
+      "version": 2,
+      "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+      "nodes": [
+        {
+          "id": "prepare",
+          "title": "Prepare",
+          "type": "deterministic",
+          "operation": "context.prepare",
+          "available": true
+        },
+        {
+          "id": "analyze",
+          "title": "Analyze",
+          "type": "pi_agent",
+          "operation": "cognition.role",
+          "available": true
+        },
+        {
+          "id": "validate",
+          "title": "Validate",
+          "type": "validation",
+          "operation": "evidence.validate_references",
+          "available": true
+        },
+        {
+          "id": "record",
+          "title": "Record",
+          "type": "deterministic",
+          "operation": "result.record",
+          "available": true
+        }
+      ],
+      "edges": [
+        {
+          "from": "prepare",
+          "to": "analyze"
+        },
+        {
+          "from": "analyze",
+          "to": "validate"
+        },
+        {
+          "from": "prepare",
+          "to": "validate"
+        },
+        {
+          "from": "validate",
+          "to": "record"
+        }
+      ]
+    },
+    "stages": [
+      {
+        "id": "60b5c70e-4199-43fd-ac2e-40a412059064",
+        "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+        "stage_id": "prepare",
+        "attempt": 1,
+        "type": "deterministic",
+        "operation": "context.prepare",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:7a006671-2a38-4286-9e12-bdb6997f34ef",
+        "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "output_ref": "event:7850c3c7-82c6-45b7-80e7-54dcdedc6909",
+        "output_sha256": "ffc58bb9effe6a5fdbd4ab20d4a879c25204255e8c3926ebd1b093af1f1adacd",
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [
+          "372eeb0a-eadc-4cce-80ac-860b5501c6da"
+        ],
+        "validation_status": "not_run",
+        "validation": {
+          "contract_status": "not_run",
+          "structural_status": "not_established",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:40.218571+00:00",
+        "started_at": "2026-10-31T01:08:40.264621+00:00",
+        "finished_at": "2026-10-31T01:08:40.283034+00:00",
+        "duration_seconds": 0.018413,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "45a8d689-879d-43d0-be37-f40ddfe288ee",
+        "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+        "stage_id": "analyze",
+        "attempt": 1,
+        "type": "pi_agent",
+        "operation": "cognition.role",
+        "state": "UNKNOWN",
+        "terminal": true,
+        "input_ref": "workflow:7a006671-2a38-4286-9e12-bdb6997f34ef",
+        "input_sha256": "feb2a4cdb0bfd80235cad9920fbe275a21e8acab5ed57f9e6b49e77428b935d0",
+        "output_ref": null,
+        "output_sha256": null,
+        "pi_run_id": "5764632d-a81b-40c7-b02e-bd177269ba2c",
+        "model_invocation_id": "c92772e6-a640-46de-9c79-f768bf825406",
+        "evidence_refs": [],
+        "validation_status": "not_run",
+        "validation": {
+          "contract_status": "not_run",
+          "structural_status": "not_established",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": "cancelled",
+        "error_detail": null,
+        "uncertainty": "unknown_outcome",
+        "created_at": "2026-10-31T01:08:40.218573+00:00",
+        "started_at": "2026-10-31T01:08:40.297138+00:00",
+        "finished_at": "2026-10-31T01:08:45.779766+00:00",
+        "duration_seconds": 5.482628,
+        "model_requested": "muse-spark-1.3",
+        "usage": null,
+        "charged_tokens": 5580,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "a50bf2d7-7198-4fc8-b6b7-6dee2d73d1be",
+        "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+        "stage_id": "validate",
+        "attempt": 1,
+        "type": "validation",
+        "operation": "evidence.validate_references",
+        "state": "CANCELLED",
+        "terminal": true,
+        "input_ref": null,
+        "input_sha256": null,
+        "output_ref": null,
+        "output_sha256": null,
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [],
+        "validation_status": "not_run",
+        "validation": {
+          "contract_status": "not_run",
+          "structural_status": "not_established",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": "cancelled",
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:40.218574+00:00",
+        "started_at": null,
+        "finished_at": "2026-10-31T01:08:45.779775+00:00",
+        "duration_seconds": null,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "2c51a178-336c-4d24-8bd2-c09b8e234a4c",
+        "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+        "stage_id": "record",
+        "attempt": 1,
+        "type": "deterministic",
+        "operation": "result.record",
+        "state": "CANCELLED",
+        "terminal": true,
+        "input_ref": null,
+        "input_sha256": null,
+        "output_ref": null,
+        "output_sha256": null,
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [],
+        "validation_status": "not_run",
+        "validation": {
+          "contract_status": "not_run",
+          "structural_status": "not_established",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": "cancelled",
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:40.218575+00:00",
+        "started_at": null,
+        "finished_at": "2026-10-31T01:08:45.779778+00:00",
+        "duration_seconds": null,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      }
+    ],
+    "timeline": {
+      "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+      "definition_id": "4dcc089a-c65c-4528-b8ca-942f73377470",
+      "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+      "events": [
+        {
+          "sequence": 185,
+          "event_type": "workflow.run.opened",
+          "occurred_at": "2026-10-31T01:08:40.219674+00:00",
+          "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 186,
+          "event_type": "workflow.execution.claimed",
+          "occurred_at": "2026-10-31T01:08:40.227602+00:00",
+          "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 187,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:40.265536+00:00",
+          "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+          "stage_id": "prepare",
+          "attempt_id": "60b5c70e-4199-43fd-ac2e-40a412059064",
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 188,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:40.282938+00:00",
+          "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+          "stage_id": "prepare",
+          "attempt_id": "60b5c70e-4199-43fd-ac2e-40a412059064",
+          "pi_run_id": null,
+          "output_ref": "event:7850c3c7-82c6-45b7-80e7-54dcdedc6909",
+          "status": null
+        },
+        {
+          "sequence": 189,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:40.297976+00:00",
+          "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+          "stage_id": "analyze",
+          "attempt_id": "45a8d689-879d-43d0-be37-f40ddfe288ee",
+          "pi_run_id": "5764632d-a81b-40c7-b02e-bd177269ba2c",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 192,
+          "event_type": "pi.run.prepared",
+          "occurred_at": "2026-10-31T01:08:40.328766+00:00",
+          "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+          "stage_id": "analyze",
+          "attempt_id": "45a8d689-879d-43d0-be37-f40ddfe288ee",
+          "pi_run_id": "5764632d-a81b-40c7-b02e-bd177269ba2c",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 193,
+          "event_type": "pi.run.admitted",
+          "occurred_at": "2026-10-31T01:08:40.336501+00:00",
+          "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+          "stage_id": "analyze",
+          "attempt_id": "45a8d689-879d-43d0-be37-f40ddfe288ee",
+          "pi_run_id": "5764632d-a81b-40c7-b02e-bd177269ba2c",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 194,
+          "event_type": "pi.run.starting",
+          "occurred_at": "2026-10-31T01:08:40.344650+00:00",
+          "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+          "stage_id": "analyze",
+          "attempt_id": "45a8d689-879d-43d0-be37-f40ddfe288ee",
+          "pi_run_id": "5764632d-a81b-40c7-b02e-bd177269ba2c",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 195,
+          "event_type": "pi.run.started",
+          "occurred_at": "2026-10-31T01:08:40.364125+00:00",
+          "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+          "stage_id": "analyze",
+          "attempt_id": "45a8d689-879d-43d0-be37-f40ddfe288ee",
+          "pi_run_id": "5764632d-a81b-40c7-b02e-bd177269ba2c",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 204,
+          "event_type": "pi.provider_request.admitted",
+          "occurred_at": "2026-10-31T01:08:40.697194+00:00",
+          "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+          "stage_id": "analyze",
+          "attempt_id": "45a8d689-879d-43d0-be37-f40ddfe288ee",
+          "pi_run_id": "5764632d-a81b-40c7-b02e-bd177269ba2c",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 206,
+          "event_type": "pi.provider_request.dispatched",
+          "occurred_at": "2026-10-31T01:08:40.713977+00:00",
+          "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+          "stage_id": "analyze",
+          "attempt_id": "45a8d689-879d-43d0-be37-f40ddfe288ee",
+          "pi_run_id": "5764632d-a81b-40c7-b02e-bd177269ba2c",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 253,
+          "event_type": "pi.run.unknown",
+          "occurred_at": "2026-10-31T01:08:45.750776+00:00",
+          "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+          "stage_id": "analyze",
+          "attempt_id": "45a8d689-879d-43d0-be37-f40ddfe288ee",
+          "pi_run_id": "5764632d-a81b-40c7-b02e-bd177269ba2c",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 255,
+          "event_type": "workflow.execution.ended",
+          "occurred_at": "2026-10-31T01:08:45.779837+00:00",
+          "run_id": "7a006671-2a38-4286-9e12-bdb6997f34ef",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": "UNKNOWN"
+        }
+      ],
+      "next_after": 255,
+      "has_more": false,
+      "complete_transition_history": false,
+      "history_note": "Recorded events only. Some reservation and interrupted-stage transitions were not retained; current stage snapshots are separate facts."
+    },
+    "receipts": [
+      {
+        "run_id": "5764632d-a81b-40c7-b02e-bd177269ba2c",
+        "reservation_ref": "c92772e6-a640-46de-9c79-f768bf825406",
+        "state": "UNKNOWN",
+        "terminal_reason": "cancelled_after_possible_dispatch",
+        "identity": {
+          "requested_upstream_model": "muse-spark-1.3",
+          "pi_observed": {
+            "provider": null,
+            "model": null
+          },
+          "pi_expected_alias": {
+            "provider": "alive-egress",
+            "model": "alive-approved"
+          },
+          "matches_expected_alias": false,
+          "note": "The upstream model is chosen by ALIVE; Pi only ever sees its local alias."
+        },
+        "requests": {
+          "ceiling": 1,
+          "inbound": 1,
+          "admitted": 1,
+          "counts": {
+            "settled": 0,
+            "failed": 0,
+            "ambiguous": 1,
+            "rejected": 0,
+            "dispatched": 0,
+            "admitted": 0
+          },
+          "items": [
+            {
+              "seq": 1,
+              "state": "ambiguous",
+              "body_sha256_in": "02f4415e10561482df6b88250c7e629767b05c044956f6468bf4d90cb0e526fc",
+              "approved_request_sha256": "8b266239e76d1b90835298ae41828e96fceb55b50f56bb3dcf17b1120f0db9e7",
+              "model_requested": "muse-spark-1.3",
+              "http_status": null,
+              "usage": null,
+              "cost_usd": null,
+              "latency_ms": null,
+              "error_category": "unsettled",
+              "response_sha256": null
+            }
+          ]
+        },
+        "settlement": {
+          "cleanup_confirmed": true,
+          "pi_settled": false,
+          "matches_egress_record": false,
+          "tool_events": 0,
+          "malformed_frames": 0,
+          "duration_s": 5.432,
+          "recovered": false
+        },
+        "cost": {
+          "usd": null,
+          "note": "ALIVE has no price table for this transport. Cost is unknown, not zero; Pi's own cost figure for an unpriced custom model is zero and is deliberately not used."
+        }
+      }
+    ],
+    "artifacts": []
+  },
+  {
+    "label": "partial",
+    "run": {
+      "id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+      "workflow": {
+        "name": "research-review",
+        "version": 2,
+        "definition_id": "4dcc089a-c65c-4528-b8ca-942f73377470",
+        "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+        "schema_version": 1
+      },
+      "goal_id": "21294c81-cc5d-419f-8d10-e8633b760bb0",
+      "investigation_id": "39ac2e8e-7f20-4496-8a2b-bd157d79dec9",
+      "trigger": "authorized-execution",
+      "input_ref": "event:00f1c92b-bf27-4455-99b8-553ba9e39912",
+      "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "authorization_ref": "8ba6d9b8-9859-4b87-b5a2-ddc0879be82e",
+      "budget": {
+        "wall_seconds": 120,
+        "max_model_calls": 1,
+        "max_output_tokens": 1536
+      },
+      "status": "FAILED",
+      "terminal": true,
+      "terminal_reason": "fixture_finalize_interrupted",
+      "created_at": "2026-10-31T01:08:45.891477+00:00",
+      "started_at": "2026-10-31T01:08:45.897317+00:00",
+      "finished_at": "2026-10-31T01:08:46.474537+00:00"
+    },
+    "graph": {
+      "name": "research-review",
+      "version": 2,
+      "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+      "nodes": [
+        {
+          "id": "prepare",
+          "title": "Prepare",
+          "type": "deterministic",
+          "operation": "context.prepare",
+          "available": true
+        },
+        {
+          "id": "analyze",
+          "title": "Analyze",
+          "type": "pi_agent",
+          "operation": "cognition.role",
+          "available": true
+        },
+        {
+          "id": "validate",
+          "title": "Validate",
+          "type": "validation",
+          "operation": "evidence.validate_references",
+          "available": true
+        },
+        {
+          "id": "record",
+          "title": "Record",
+          "type": "deterministic",
+          "operation": "result.record",
+          "available": true
+        }
+      ],
+      "edges": [
+        {
+          "from": "prepare",
+          "to": "analyze"
+        },
+        {
+          "from": "analyze",
+          "to": "validate"
+        },
+        {
+          "from": "prepare",
+          "to": "validate"
+        },
+        {
+          "from": "validate",
+          "to": "record"
+        }
+      ]
+    },
+    "stages": [
+      {
+        "id": "54ebdf94-67b1-4fbb-bd9d-f97973dc4ec0",
+        "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+        "stage_id": "prepare",
+        "attempt": 1,
+        "type": "deterministic",
+        "operation": "context.prepare",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:7d814fc5-801f-4fb1-92c9-789195d1d61b",
+        "input_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "output_ref": "event:3ea2256f-8a97-4dc1-a31b-846fa78cc3e8",
+        "output_sha256": "a041fd79bdd6c883c1949ac5523ab35e2181596a1b1fead06da3aeeeeb7201c8",
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [
+          "00f1c92b-bf27-4455-99b8-553ba9e39912"
+        ],
+        "validation_status": "not_run",
+        "validation": {
+          "contract_status": "not_run",
+          "structural_status": "not_established",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:45.892199+00:00",
+        "started_at": "2026-10-31T01:08:45.921359+00:00",
+        "finished_at": "2026-10-31T01:08:45.933439+00:00",
+        "duration_seconds": 0.01208,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "ceca3b82-1f9f-4670-9aeb-e1321276d5e0",
+        "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+        "stage_id": "analyze",
+        "attempt": 1,
+        "type": "pi_agent",
+        "operation": "cognition.role",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:7d814fc5-801f-4fb1-92c9-789195d1d61b",
+        "input_sha256": "63bd7ed14dcc3d0d68e2a6ed0b8817184020837dc450db77d79bbb46f50e63a2",
+        "output_ref": "event:c79d051a-4928-4123-82d5-006e1d7e05fd",
+        "output_sha256": "c4c76ad4363315085a4e99d8211d8cf7aa684b2ff8627b5774a4802c67a6bf61",
+        "pi_run_id": "bc85d2b3-bd01-420e-977a-b98c3e7ce623",
+        "model_invocation_id": "1c2d02c3-64ff-4e9a-9415-5d95dc92b311",
+        "evidence_refs": [],
+        "validation_status": "passed",
+        "validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "passed",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:45.892201+00:00",
+        "started_at": "2026-10-31T01:08:45.944203+00:00",
+        "finished_at": "2026-10-31T01:08:46.410944+00:00",
+        "duration_seconds": 0.466741,
+        "model_requested": "muse-spark-1.3",
+        "usage": {
+          "prompt_tokens": 11,
+          "completion_tokens": 7,
+          "total_tokens": 18
+        },
+        "charged_tokens": 18,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "0f9d5c45-eb1c-4197-b84f-11c46bf9dee7",
+        "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+        "stage_id": "validate",
+        "attempt": 1,
+        "type": "validation",
+        "operation": "evidence.validate_references",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:7d814fc5-801f-4fb1-92c9-789195d1d61b",
+        "input_sha256": "6fcbb6c4308c207f1cba46f3e2ffb37bccdb9398c982201b198b2f17ccc5ec5b",
+        "output_ref": "event:d5c8b66d-b657-4d08-9578-2580a8da02ad",
+        "output_sha256": "3a325a8ddce6865195a836a295ee768f239933aa6d3571d8884b83a9edfcd899",
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [],
+        "validation_status": "passed",
+        "validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "passed",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:45.892202+00:00",
+        "started_at": "2026-10-31T01:08:46.423656+00:00",
+        "finished_at": "2026-10-31T01:08:46.439300+00:00",
+        "duration_seconds": 0.015644,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      },
+      {
+        "id": "294a4369-8976-419f-a96b-6e28b2974dd3",
+        "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+        "stage_id": "record",
+        "attempt": 1,
+        "type": "deterministic",
+        "operation": "result.record",
+        "state": "COMPLETED",
+        "terminal": true,
+        "input_ref": "workflow:7d814fc5-801f-4fb1-92c9-789195d1d61b",
+        "input_sha256": "3a325a8ddce6865195a836a295ee768f239933aa6d3571d8884b83a9edfcd899",
+        "output_ref": "event:18beb9db-b062-4f6e-b695-8789164dcbd4",
+        "output_sha256": "ad19effb250fda3abf3539b3684dd19fc07d623f01d3d358063f0b3a501a597a",
+        "pi_run_id": null,
+        "model_invocation_id": null,
+        "evidence_refs": [
+          "00f1c92b-bf27-4455-99b8-553ba9e39912"
+        ],
+        "validation_status": "passed",
+        "validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        },
+        "error_category": null,
+        "error_detail": null,
+        "uncertainty": "none",
+        "created_at": "2026-10-31T01:08:45.892203+00:00",
+        "started_at": "2026-10-31T01:08:46.452104+00:00",
+        "finished_at": "2026-10-31T01:08:46.468280+00:00",
+        "duration_seconds": 0.016176,
+        "model_requested": null,
+        "usage": null,
+        "charged_tokens": null,
+        "cost_usd": null,
+        "cost_status": "no_price_table; unknown is not zero"
+      }
+    ],
+    "timeline": {
+      "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+      "definition_id": "4dcc089a-c65c-4528-b8ca-942f73377470",
+      "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+      "events": [
+        {
+          "sequence": 269,
+          "event_type": "workflow.run.opened",
+          "occurred_at": "2026-10-31T01:08:45.892899+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 270,
+          "event_type": "workflow.execution.claimed",
+          "occurred_at": "2026-10-31T01:08:45.899311+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 271,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:45.922194+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "prepare",
+          "attempt_id": "54ebdf94-67b1-4fbb-bd9d-f97973dc4ec0",
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 272,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:45.933335+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "prepare",
+          "attempt_id": "54ebdf94-67b1-4fbb-bd9d-f97973dc4ec0",
+          "pi_run_id": null,
+          "output_ref": "event:3ea2256f-8a97-4dc1-a31b-846fa78cc3e8",
+          "status": null
+        },
+        {
+          "sequence": 273,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:45.944918+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "analyze",
+          "attempt_id": "ceca3b82-1f9f-4670-9aeb-e1321276d5e0",
+          "pi_run_id": "bc85d2b3-bd01-420e-977a-b98c3e7ce623",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 275,
+          "event_type": "pi.run.prepared",
+          "occurred_at": "2026-10-31T01:08:45.964871+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "analyze",
+          "attempt_id": "ceca3b82-1f9f-4670-9aeb-e1321276d5e0",
+          "pi_run_id": "bc85d2b3-bd01-420e-977a-b98c3e7ce623",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 276,
+          "event_type": "pi.run.admitted",
+          "occurred_at": "2026-10-31T01:08:45.969478+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "analyze",
+          "attempt_id": "ceca3b82-1f9f-4670-9aeb-e1321276d5e0",
+          "pi_run_id": "bc85d2b3-bd01-420e-977a-b98c3e7ce623",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 277,
+          "event_type": "pi.run.starting",
+          "occurred_at": "2026-10-31T01:08:45.973695+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "analyze",
+          "attempt_id": "ceca3b82-1f9f-4670-9aeb-e1321276d5e0",
+          "pi_run_id": "bc85d2b3-bd01-420e-977a-b98c3e7ce623",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 278,
+          "event_type": "pi.run.started",
+          "occurred_at": "2026-10-31T01:08:45.980637+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "analyze",
+          "attempt_id": "ceca3b82-1f9f-4670-9aeb-e1321276d5e0",
+          "pi_run_id": "bc85d2b3-bd01-420e-977a-b98c3e7ce623",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 288,
+          "event_type": "pi.provider_request.admitted",
+          "occurred_at": "2026-10-31T01:08:46.292210+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "analyze",
+          "attempt_id": "ceca3b82-1f9f-4670-9aeb-e1321276d5e0",
+          "pi_run_id": "bc85d2b3-bd01-420e-977a-b98c3e7ce623",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 290,
+          "event_type": "pi.provider_request.dispatched",
+          "occurred_at": "2026-10-31T01:08:46.307040+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "analyze",
+          "attempt_id": "ceca3b82-1f9f-4670-9aeb-e1321276d5e0",
+          "pi_run_id": "bc85d2b3-bd01-420e-977a-b98c3e7ce623",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 292,
+          "event_type": "pi.provider_request.settled",
+          "occurred_at": "2026-10-31T01:08:46.324141+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "analyze",
+          "attempt_id": "ceca3b82-1f9f-4670-9aeb-e1321276d5e0",
+          "pi_run_id": "bc85d2b3-bd01-420e-977a-b98c3e7ce623",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 303,
+          "event_type": "pi.run.settled",
+          "occurred_at": "2026-10-31T01:08:46.389320+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "analyze",
+          "attempt_id": "ceca3b82-1f9f-4670-9aeb-e1321276d5e0",
+          "pi_run_id": "bc85d2b3-bd01-420e-977a-b98c3e7ce623",
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 305,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:46.410830+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "analyze",
+          "attempt_id": "ceca3b82-1f9f-4670-9aeb-e1321276d5e0",
+          "pi_run_id": "bc85d2b3-bd01-420e-977a-b98c3e7ce623",
+          "output_ref": "event:c79d051a-4928-4123-82d5-006e1d7e05fd",
+          "status": null
+        },
+        {
+          "sequence": 306,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:46.424433+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "validate",
+          "attempt_id": "0f9d5c45-eb1c-4197-b84f-11c46bf9dee7",
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 308,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:46.439227+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "validate",
+          "attempt_id": "0f9d5c45-eb1c-4197-b84f-11c46bf9dee7",
+          "pi_run_id": null,
+          "output_ref": "event:d5c8b66d-b657-4d08-9578-2580a8da02ad",
+          "status": null
+        },
+        {
+          "sequence": 309,
+          "event_type": "workflow.stage.claimed",
+          "occurred_at": "2026-10-31T01:08:46.452859+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "record",
+          "attempt_id": "294a4369-8976-419f-a96b-6e28b2974dd3",
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": null
+        },
+        {
+          "sequence": 310,
+          "event_type": "workflow.stage.result",
+          "occurred_at": "2026-10-31T01:08:46.468223+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": "record",
+          "attempt_id": "294a4369-8976-419f-a96b-6e28b2974dd3",
+          "pi_run_id": null,
+          "output_ref": "event:18beb9db-b062-4f6e-b695-8789164dcbd4",
+          "status": null
+        },
+        {
+          "sequence": 311,
+          "event_type": "workflow.execution.ended",
+          "occurred_at": "2026-10-31T01:08:46.474575+00:00",
+          "run_id": "7d814fc5-801f-4fb1-92c9-789195d1d61b",
+          "stage_id": null,
+          "attempt_id": null,
+          "pi_run_id": null,
+          "output_ref": null,
+          "status": "FAILED"
+        }
+      ],
+      "next_after": 311,
+      "has_more": false,
+      "complete_transition_history": false,
+      "history_note": "Recorded events only. Some reservation and interrupted-stage transitions were not retained; current stage snapshots are separate facts."
+    },
+    "receipts": [
+      {
+        "run_id": "bc85d2b3-bd01-420e-977a-b98c3e7ce623",
+        "reservation_ref": "1c2d02c3-64ff-4e9a-9415-5d95dc92b311",
+        "state": "SETTLED",
+        "terminal_reason": "settled",
+        "identity": {
+          "requested_upstream_model": "muse-spark-1.3",
+          "pi_observed": {
+            "provider": "alive-egress",
+            "model": "alive-approved"
+          },
+          "pi_expected_alias": {
+            "provider": "alive-egress",
+            "model": "alive-approved"
+          },
+          "matches_expected_alias": true,
+          "note": "The upstream model is chosen by ALIVE; Pi only ever sees its local alias."
+        },
+        "requests": {
+          "ceiling": 1,
+          "inbound": 1,
+          "admitted": 1,
+          "counts": {
+            "settled": 1,
+            "failed": 0,
+            "ambiguous": 0,
+            "rejected": 0,
+            "dispatched": 0,
+            "admitted": 0
+          },
+          "items": [
+            {
+              "seq": 1,
+              "state": "settled",
+              "body_sha256_in": "1ea929350540490283e58f4bd9a3a46b047bf0c1c0f34c699f1ac3c9879f4982",
+              "approved_request_sha256": "c1c2aabe653bfb3b8422025c711b97b38490095ac69999af536955409fe4598e",
+              "model_requested": "muse-spark-1.3",
+              "http_status": 200,
+              "usage": {
+                "total_tokens": 18,
+                "prompt_tokens": 11,
+                "completion_tokens": 7
+              },
+              "cost_usd": null,
+              "latency_ms": 28.060991997335805,
+              "error_category": null,
+              "response_sha256": "49cbd531b25427b6435e4039f27ef03d22b496bdae23480553f03c1512278f52"
+            }
+          ]
+        },
+        "settlement": {
+          "cleanup_confirmed": true,
+          "pi_settled": true,
+          "matches_egress_record": true,
+          "tool_events": 0,
+          "malformed_frames": 0,
+          "duration_s": 0.426,
+          "recovered": false
+        },
+        "cost": {
+          "usd": null,
+          "note": "ALIVE has no price table for this transport. Cost is unknown, not zero; Pi's own cost figure for an unpriced custom model is zero and is deliberately not used."
+        }
+      }
+    ],
+    "artifacts": [
+      {
+        "artifact_id": "294a4369-8976-419f-a96b-6e28b2974dd3",
+        "sha256": "d39f028701876b11446014690e361d9a365248994e81d56637842355db0998d0",
+        "definition_sha256": "abaea85ef3dbe734fc129c4fbe8aa4ededc2e40f0d171589d95d72256bd8a8a8",
+        "workflow_completed": false,
+        "run_status": "FAILED",
+        "source_status": "unchanged",
+        "independent_feedback": false,
+        "intelligence_episode_id": null,
+        "stage_validation": {
+          "contract_status": "passed",
+          "structural_status": "passed",
+          "reference_identity_status": "not_established",
+          "semantic_status": "unverified",
+          "independent_verification": false,
+          "uncited_claims_permitted": true
+        }
+      }
+    ]
+  }
+]

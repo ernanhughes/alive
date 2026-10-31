@@ -1,0 +1,20 @@
+{
+  "base": "b0b3e40ab51e2ea4f482a20767f9bad8b4491765",
+  "runtime_head": "ca75679ee23b2df5dd8f16f83e3c96e48b998afc",
+  "docker_image": "sha256:47116efbbabb9c0eb31d5a546d3b6dec256f179316e9e2863e84836d5be5d378",
+  "schema_head": "0010",
+  "backend_new_tests": "14 passed, 17 Windows ZMQ warnings, 13.19s",
+  "dashboard_unit_tests": "30 passed",
+  "dashboard_build": "PASS; 317.68 kB JS, 96.16 kB gzip",
+  "extension_tests": "38 passed",
+  "browser_sqlite": "PASS against persisted real-runtime records",
+  "browser_docker_before_restart": "1 passed in 3.0s",
+  "browser_docker_after_restart": "1 passed in 3.1s",
+  "feature_non_GET_requests": 0,
+  "docker_smoke": "8 checks passed",
+  "restart_counts": "PASS: 4 invocations / 4 Pi / 4 requests / 6 runs / 4 workflow artifacts / 7 total messages / 0 learning updates, unchanged",
+  "R3_audit": "GO; two nonblocking test-strength gaps retained, PI-02C review still required",
+  "full_backend": "Pending exact-head CI; actual results recorded in PR, not inferred from 1251 collected tests",
+  "paid_inference": "NOT_RUN",
+  "merged": false
+}
