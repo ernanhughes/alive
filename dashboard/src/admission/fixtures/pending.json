@@ -1,0 +1,245 @@
+{
+  "id": "165bdb38-f4cc-454a-a06a-e31a1bb95a08",
+  "review_sha256": "a035c6b58184174f74802d74f89544604c137ec981b599fead677fadcde0d787",
+  "terms": {
+    "schema": "owner-admission/v1",
+    "policy": "owner-admission/v1",
+    "instance_id": "2d9f9d56-82f5-4841-bc0b-169c1118a19f",
+    "goal": {
+      "id": "3ab859a0-3a35-42c3-b632-8100ee3a8064",
+      "title": "Inspect the approved repository"
+    },
+    "objective": {
+      "kind": "inspect_implementation",
+      "requested_outcome": "Inspect captured files"
+    },
+    "source": {
+      "resources": {
+        "source_ref": "4587585d-f2e5-4bc4-91a6-ba4640862052",
+        "approval_id": "a575abee-ddf2-4806-ab2f-2428038436ef",
+        "content_sha256": "cc9ebf3053f6464a2135eeb5fbb7b0323b9de6f75addc874b7ecf5902d4a1b95",
+        "scope_sha256": "d083c4d3a77ae67bdca4e038467f2c265871027249a8498a2f09fa3824ed22f4"
+      },
+      "label": "Owner repository",
+      "scope": {
+        "items": [
+          "README.md"
+        ]
+      },
+      "inventory": {
+        "items": [
+          {
+            "item": "README.md",
+            "bytes": 41,
+            "sha256": "639cee78f43544b63f36b44855196b8f4a6e7def8cdab1c71d267e9b5c67307e"
+          }
+        ],
+        "omitted": []
+      },
+      "expires_at": "2026-10-31T18:06:57.058543+00:00",
+      "principal": "owner-cli:owner"
+    },
+    "candidate": {
+      "recipe": {
+        "schema_version": 1,
+        "id": "approved-repository-inspection",
+        "version": "1.0.0",
+        "name": "Approved repository inspection",
+        "description": "Read the exact owner-approved PI-03B repository capture. No model call, network request or semantic verification.",
+        "context_types": [
+          "repository"
+        ],
+        "intents": [
+          "inspect_implementation"
+        ],
+        "workflow": {
+          "name": "owner-repository-inspection",
+          "version": 1,
+          "definition_sha256": "bfe419f3577ce3b9f813da79452f701d8f6ebab9c6af2f6d6dceef15d290b713"
+        },
+        "capabilities": [
+          {
+            "stage_id": "read",
+            "id": "repository.inspect",
+            "version": "1.1.0",
+            "manifest_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d"
+          }
+        ],
+        "limits": {
+          "max_model_calls": 0,
+          "max_wall_seconds": 30,
+          "max_output_tokens": 0,
+          "outbound_allowed": false,
+          "permissions": [
+            "source.read"
+          ]
+        },
+        "required_evidence": "approved_capture",
+        "output_artifact": "captured_files",
+        "validation": "none",
+        "status": "active",
+        "presentation": {
+          "category": "bespoke",
+          "icon": "layers",
+          "tags": [
+            "owner-review",
+            "source"
+          ]
+        }
+      },
+      "recipe_sha256": "c43b72e195f720c6c51e872a2a5e514c7374b10ad5a22b89f1f0fa82cba82e6d",
+      "eligible": true,
+      "reasons": [],
+      "definition_id": "48338fe7-43ec-4039-b5d9-c8c975e693f5",
+      "binding_sha256": "d964cda1d059222da361e8591c07e846728fee345fc14291575602b80f4bdb8e",
+      "capability_identities": [
+        {
+          "id": "repository.inspect",
+          "version": "1.1.0",
+          "manifest_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d",
+          "implementation_id": "repository-inspector-v2",
+          "implementation_sha256": "baefb977d2947e12cea935fca26574642df53a53783c24eb967128fcfff078a4"
+        }
+      ],
+      "capability_policies": [
+        "e8e4b9b048ae31f1774fb2be319f6a9004a5fc2ce1781f9364e18473c227a0bb"
+      ],
+      "procedure_sha256": "285f7d3db6cba327b5cbec8020535f388558b7f5f22fc842b79e6a2839e0370d",
+      "graph": {
+        "name": "owner-repository-inspection",
+        "version": 1,
+        "definition_sha256": "bfe419f3577ce3b9f813da79452f701d8f6ebab9c6af2f6d6dceef15d290b713",
+        "nodes": [
+          {
+            "id": "read",
+            "title": "Read approved captured files",
+            "type": "deterministic",
+            "operation": "repository.inspect",
+            "available": true
+          }
+        ],
+        "edges": []
+      },
+      "suitability": 90,
+      "factors": {
+        "explicit_goal_alignment": 40,
+        "captured_context_match": 25,
+        "required_evidence_present": 15,
+        "validation_contract": 0,
+        "resource_headroom": 5,
+        "operational_simplicity": 5
+      }
+    },
+    "selection_context": {
+      "surface": "repository",
+      "claims_count": 0,
+      "sources_count": 1,
+      "inputs_sha256": "ee25b8dbf44cd29bd8bfa65d3720c8d3031f6fe86a0d7840ca8de3407627a15d"
+    },
+    "proposed_grant_data": {
+      "version": 1,
+      "principal": "owner-cli:owner",
+      "goal_id": "3ab859a0-3a35-42c3-b632-8100ee3a8064",
+      "investigation_id": "3b8857c5-7b7a-42ce-ba24-5597069d4451",
+      "definition_id": "48338fe7-43ec-4039-b5d9-c8c975e693f5",
+      "definition_sha256": "bfe419f3577ce3b9f813da79452f701d8f6ebab9c6af2f6d6dceef15d290b713",
+      "context_event_id": "f4d78f67-79b1-4003-9e09-7608cc4ff550",
+      "context_sha256": "f7d265dad9b9a598d11ed946c1dfd321a1a1cb5012b29d0f3048e419bf0a5550",
+      "context_provenance": {
+        "source": "admission-owner",
+        "event_type": "workflow.owner.context",
+        "custody": "approved_capture",
+        "consent": "exact_content_and_scope"
+      },
+      "admission_ref": "165bdb38-f4cc-454a-a06a-e31a1bb95a08",
+      "operations": [
+        "repository.inspect"
+      ],
+      "capability_binding_sha256": "d964cda1d059222da361e8591c07e846728fee345fc14291575602b80f4bdb8e",
+      "capabilities": {
+        "read": {
+          "identity": {
+            "id": "repository.inspect",
+            "version": "1.1.0",
+            "manifest_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d",
+            "implementation_id": "repository-inspector-v2",
+            "implementation_sha256": "baefb977d2947e12cea935fca26574642df53a53783c24eb967128fcfff078a4"
+          },
+          "permissions": {
+            "evidence": "none",
+            "filesystem": {
+              "mode": "none",
+              "roots": []
+            },
+            "network": {
+              "mode": "none"
+            },
+            "persistence": "none",
+            "process": {
+              "mode": "none"
+            },
+            "sources": "approved_capture"
+          },
+          "limits": {
+            "max_files": 20,
+            "max_input_bytes": 8192,
+            "max_input_items": 4,
+            "max_invocations": 1,
+            "max_model_calls": 0,
+            "max_output_bytes": 65536,
+            "max_output_tokens": 0,
+            "max_source_bytes": 32768,
+            "timeout_seconds": 30
+          },
+          "policy_sha256": "e8e4b9b048ae31f1774fb2be319f6a9004a5fc2ce1781f9364e18473c227a0bb",
+          "resources": {
+            "source_ref": "4587585d-f2e5-4bc4-91a6-ba4640862052",
+            "approval_id": "a575abee-ddf2-4806-ab2f-2428038436ef",
+            "content_sha256": "cc9ebf3053f6464a2135eeb5fbb7b0323b9de6f75addc874b7ecf5902d4a1b95",
+            "scope_sha256": "d083c4d3a77ae67bdca4e038467f2c265871027249a8498a2f09fa3824ed22f4"
+          }
+        }
+      },
+      "inputs": {
+        "source_ref": "4587585d-f2e5-4bc4-91a6-ba4640862052",
+        "paths": [
+          "README.md"
+        ]
+      },
+      "configuration_sha256": "1fc515cf726ac7847b08ec787d0e4cf19d1858971bd4edca6ca1384c2a7e4b28",
+      "models": {},
+      "role_contracts": {},
+      "max_model_calls": 0,
+      "max_output_tokens": 0,
+      "wall_seconds": 30,
+      "expires_at": "2026-10-31T17:11:57.150378Z",
+      "outbound_approved": false,
+      "idempotency_key": "admission:165bdb38-f4cc-454a-a06a-e31a1bb95a08"
+    },
+    "context": {
+      "goal_id": "3ab859a0-3a35-42c3-b632-8100ee3a8064",
+      "admission_ref": "165bdb38-f4cc-454a-a06a-e31a1bb95a08",
+      "context": {
+        "observation": "Inspect captured files",
+        "claims": [],
+        "sources": [
+          {
+            "id": "4587585d-f2e5-4bc4-91a6-ba4640862052",
+            "content_sha256": "cc9ebf3053f6464a2135eeb5fbb7b0323b9de6f75addc874b7ecf5902d4a1b95"
+          }
+        ],
+        "memories": [],
+        "source_event_ids": [
+          "f4d78f67-79b1-4003-9e09-7608cc4ff550"
+        ],
+        "requested_action_kind": "record_analysis"
+      }
+    },
+    "expected_output": "captured_files",
+    "semantic_status": "unverified",
+    "cost_status": "no_inference; currency_cost_not_estimated"
+  },
+  "authorization_state": "pending",
+  "state": "pending",
+  "run": null
+}

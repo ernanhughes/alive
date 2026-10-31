@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "name": "owner-repository-inspection",
+  "version": 1,
+  "title": "Approved repository inspection",
+  "inputs": {
+    "source_ref": {
+      "type": "string"
+    },
+    "paths": {
+      "type": "array"
+    }
+  },
+  "limits": {
+    "max_wall_seconds": 30,
+    "max_model_calls": 0,
+    "max_total_output_tokens": 0
+  },
+  "stages": [
+    {
+      "id": "read",
+      "title": "Read approved captured files",
+      "type": "deterministic",
+      "operation": "repository.inspect",
+      "capability_version": "1.1.0",
+      "capability_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d",
+      "inputs": {
+        "source_ref": "$input.source_ref",
+        "paths": "$input.paths",
+        "mode": "read"
+      },
+      "output_schema": {
+        "properties": {
+          "entries": {
+            "type": "array"
+          },
+          "files": {
+            "type": "array"
+          },
+          "limits_applied": {
+            "type": "object"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "omitted": {
+            "type": "array"
+          },
+          "provenance": {
+            "type": "object"
+          },
+          "scoped_sha256": {
+            "type": "string"
+          },
+          "semantic_status": {
+            "type": "string"
+          },
+          "source_ref": {
+            "type": "string"
+          },
+          "source_sha256": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "entries",
+          "files",
+          "limits_applied",
+          "mode",
+          "omitted",
+          "provenance",
+          "scoped_sha256",
+          "semantic_status",
+          "source_ref",
+          "source_sha256"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      }
+    }
+  ]
+}
