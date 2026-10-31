@@ -334,14 +334,13 @@ ANALYSIS = "tests/test_repository_analysis.py::"
 UNITS = "tests/test_repository_analysis_units.py::"
 TARGETS = {
     "M01": [
-        ANALYSIS + "test_reservation_enforces_each_authority_term_without_upstream_layers[outbound]"
+        "tests/test_analysis_reservation.py::test_reservation_guard_independently_refuses_changed_authority[outbound]"
     ],
     "M02": [
-        ANALYSIS + "test_reservation_enforces_each_authority_term_without_upstream_layers[model]"
+        "tests/test_analysis_reservation.py::test_reservation_guard_independently_refuses_changed_authority[model]"
     ],
     "M03": [
-        ANALYSIS
-        + "test_reservation_enforces_each_authority_term_without_upstream_layers[role_contract]"
+        "tests/test_analysis_reservation.py::test_reservation_guard_independently_refuses_changed_authority[role_contract]"
     ],
     "M04": [ANALYSIS + "test_the_reservation_alone_binds_the_model_input_to_the_stage[context]"],
     "M05": [
