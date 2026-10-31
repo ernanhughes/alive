@@ -114,3 +114,11 @@ def test_validation_never_imports_implementation_code(tmp_path):
         [sys.executable, "-c", code], capture_output=True, text=True, cwd=ROOT, check=True
     )
     assert result.stdout.strip().endswith("0 []"), result.stdout
+
+
+def test_authoring_template_stays_valid_once_copied_to_its_identity_name(tmp_path, capsys):
+    template = ROOT / "docs/capabilities/capability.template.yaml"
+    copy = tmp_path / "context.review@1.0.0.yaml"
+    shutil.copy(template, copy)
+    code, out, _ = run(capsys, "validate", str(copy), "--json")
+    assert code == 0 and json.loads(out)["usable_in_workflow"]

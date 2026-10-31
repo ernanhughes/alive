@@ -1,0 +1,368 @@
+{
+  "mutants": [
+    {
+      "id": "C1",
+      "mutation": "changed manifest identity refused at recheck, grant check and policy hash (compound)",
+      "files": [
+        "alive/capabilities/registry.py",
+        "alive/capabilities/registry.py"
+      ],
+      "target": "tests/test_capability_repository_execution.py::test_pinned_identity_refuses_a_changed_or_disabled_catalogue_but_history_survives[tampered_manifest]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "if not cap.executable or cap.identity != identity:",
+        "grant[\"identity\"] != expected[\"identity\"]\n            or grant[\"policy_sha256\"] != expected[\"policy_sha256\"]"
+      ],
+      "replacements": [
+        "if not cap.executable:",
+        "False"
+      ],
+      "assertion": "^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\concurrent\\futures\\_base.py:401: in __get_result\n    raise self._exception\nC:\\Projects\\alive\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:265: in _call_func\n    retval = await retval_or_awaitable\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_capability_repository_execution.py:242: in probe\n    assert final[\"status\"] == states.FAILED\nE   AssertionError: assert 'COMPLETED' == 'FAILED'\nE     \nE     - FAILED\nE     + COMPLETED\n============================== warnings summary ===============================\ntests/test_capability_repository_execution.py::test_pinned_identity_refuses_a_changed_or_disabled_catalogue_but_history_survives[tampered_manifest]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository_execution.py::test_pinned_identity_refuses_a_changed_or_disabled_catalogue_but_history_survives[tampered_manifest] - AssertionError: assert 'COMPLETED' == 'FAILED'\n  \n  - FAILED\n  + COMPLETED\n1 failed, 1 warning in 3.24s\n",
+      "returncode": 1,
+      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+    },
+    {
+      "id": "C2",
+      "mutation": "owner grant must carry the current configuration (policy) hash",
+      "files": [
+        "alive/capabilities/registry.py"
+      ],
+      "target": "tests/test_capability_repository_execution.py::test_configuration_loosened_after_the_grant_is_not_silently_accepted",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "or grant[\"policy_sha256\"] != expected[\"policy_sha256\"]"
+      ],
+      "replacements": [
+        ""
+      ],
+      "assertion": "esult\n    return self.__get_result()\n           ^^^^^^^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\concurrent\\futures\\_base.py:401: in __get_result\n    raise self._exception\nC:\\Projects\\alive\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:265: in _call_func\n    retval = await retval_or_awaitable\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_capability_repository_execution.py:295: in probe\n    assert final[\"status\"] == states.FAILED\nE   AssertionError: assert 'COMPLETED' == 'FAILED'\nE     \nE     - FAILED\nE     + COMPLETED\n============================== warnings summary ===============================\ntests/test_capability_repository_execution.py::test_configuration_loosened_after_the_grant_is_not_silently_accepted\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository_execution.py::test_configuration_loosened_after_the_grant_is_not_silently_accepted - AssertionError: assert 'COMPLETED' == 'FAILED'\n  \n  - FAILED\n  + COMPLETED\n1 failed, 1 warning in 1.24s\n",
+      "returncode": 1,
+      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+    },
+    {
+      "id": "C3",
+      "mutation": "owner grant permissions must equal the declaration",
+      "files": [
+        "alive/capabilities/registry.py"
+      ],
+      "target": "tests/test_capability_contract_enforcement.py::test_grant_cannot_change_permissions_or_widen_limits",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "if grant[\"permissions\"] != expected[\"permissions\"]:"
+      ],
+      "replacements": [
+        "if False:"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____________ test_grant_cannot_change_permissions_or_widen_limits _____________\ntests\\test_capability_contract_enforcement.py:115: in test_grant_cannot_change_permissions_or_widen_limits\n    with pytest.raises(ManifestError, match=\"permissions not approved\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_grant_cannot_change_permissions_or_widen_limits - Failed: DID NOT RAISE ManifestError\n1 failed in 0.17s\n",
+      "returncode": 1,
+      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+    },
+    {
+      "id": "C4",
+      "mutation": "owner grant cannot widen a capability limit",
+      "files": [
+        "alive/capabilities/registry.py"
+      ],
+      "target": "tests/test_capability_contract_enforcement.py::test_grant_cannot_change_permissions_or_widen_limits",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "if type(value) is not int or not minimum <= value <= ceiling:"
+      ],
+      "replacements": [
+        "if type(value) is not int:"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____________ test_grant_cannot_change_permissions_or_widen_limits _____________\ntests\\test_capability_contract_enforcement.py:119: in test_grant_cannot_change_permissions_or_widen_limits\n    with pytest.raises(ManifestError, match=\"cannot widen\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_grant_cannot_change_permissions_or_widen_limits - Failed: DID NOT RAISE ManifestError\n1 failed in 0.17s\n",
+      "returncode": 1,
+      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+    },
+    {
+      "id": "C5",
+      "mutation": "manifest permissions cannot exceed the implementation ceiling",
+      "files": [
+        "alive/capabilities/registry.py"
+      ],
+      "target": "tests/test_capability_registry.py",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "not requested <= impl.permission_ceiling"
+      ],
+      "replacements": [
+        "False"
+      ],
+      "assertion": "...F.....                                                                [100%]\n================================== FAILURES ===================================\n_______ test_manifest_cannot_expand_or_hide_implementation_permissions ________\ntests\\test_capability_registry.py:55: in test_manifest_cannot_expand_or_hide_implementation_permissions\n    with pytest.raises(ManifestError, match=\"ceiling\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_registry.py::test_manifest_cannot_expand_or_hide_implementation_permissions - Failed: DID NOT RAISE ManifestError\n1 failed, 8 passed in 0.46s\n",
+      "returncode": 1,
+      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+    },
+    {
+      "id": "C6",
+      "mutation": "deployment configuration cannot widen a manifest limit",
+      "files": [
+        "alive/capabilities/registry.py"
+      ],
+      "target": "tests/test_capability_contract_enforcement.py::test_deployment_configuration_may_narrow_but_never_widen_a_manifest_limit",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "if not minimum <= value <= effective[field]:"
+      ],
+      "replacements": [
+        "if False:"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n__ test_deployment_configuration_may_narrow_but_never_widen_a_manifest_limit __\ntests\\test_capability_contract_enforcement.py:127: in test_deployment_configuration_may_narrow_but_never_widen_a_manifest_limit\n    with pytest.raises(ManifestError, match=\"cannot widen\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_deployment_configuration_may_narrow_but_never_widen_a_manifest_limit - Failed: DID NOT RAISE ManifestError\n1 failed in 0.19s\n",
+      "returncode": 1,
+      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+    },
+    {
+      "id": "C7",
+      "mutation": "unavailable/disabled capability must not resolve an adapter",
+      "files": [
+        "alive/capabilities/registry.py"
+      ],
+      "target": "tests/test_capability_registry.py",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "if not cap.executable:\n            raise ValueError(\"capability unavailable\")"
+      ],
+      "replacements": [
+        "if False:\n            raise ValueError(\"capability unavailable\")"
+      ],
+      "assertion": "..F.F....                                                                [100%]\n================================== FAILURES ===================================\n_______ test_unknown_implementation_is_discoverable_but_not_executable ________\ntests\\test_capability_registry.py:48: in test_unknown_implementation_is_discoverable_but_not_executable\n    registry.adapter(\"context.prepare\")\nalive\\capabilities\\registry.py:211: in adapter\n    return self._implementations[cap.identity[\"implementation_id\"]].resolve()\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   KeyError: 'not-installed-v1'\n_______ test_wrong_fingerprint_is_unavailable_and_does_not_resolve_code _______\ntests\\test_capability_registry.py:68: in test_wrong_fingerprint_is_unavailable_and_does_not_resolve_code\n    with pytest.raises(ValueError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ValueError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_registry.py::test_unknown_implementation_is_discoverable_but_not_executable - KeyError: 'not-installed-v1'\nFAILED tests/test_capability_registry.py::test_wrong_fingerprint_is_unavailable_and_does_not_resolve_code - Failed: DID NOT RAISE ValueError\n2 failed, 7 passed in 0.47s\n",
+      "returncode": 1,
+      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+    },
+    {
+      "id": "C8",
+      "mutation": "stage cannot exceed the capability timeout",
+      "files": [
+        "alive/capabilities/registry.py"
+      ],
+      "target": "tests/test_capability_contract_enforcement.py::test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "or stage.limits.timeout_seconds > m[\"execution\"][\"timeout_seconds\"]"
+      ],
+      "replacements": [
+        "or False"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____ test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash _____\ntests\\test_capability_contract_enforcement.py:94: in test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash\n    with pytest.raises(ManifestError, match=\"exceeds capability contract\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash - Failed: DID NOT RAISE ManifestError\n1 failed in 0.17s\n",
+      "returncode": 1,
+      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+    },
+    {
+      "id": "C9",
+      "mutation": "stage-pinned manifest hash must match",
+      "files": [
+        "alive/capabilities/registry.py"
+      ],
+      "target": "tests/test_capability_contract_enforcement.py::test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "if requested_hash and requested_hash != cap.manifest_sha256:"
+      ],
+      "replacements": [
+        "if False:"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____ test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash _____\ntests\\test_capability_contract_enforcement.py:99: in test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash\n    with pytest.raises(ManifestError, match=\"hash mismatch\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ManifestError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_stage_may_not_exceed_the_capability_timeout_or_pin_another_hash - Failed: DID NOT RAISE ManifestError\n1 failed in 0.18s\n",
+      "returncode": 1,
+      "source_sha256": "6f975be9a19ed7930a6f88c8d03a9e41adb61f56c080f93e92fe38e6cc5a71ba"
+    },
+    {
+      "id": "C10",
+      "mutation": "output must match the exact output contract",
+      "files": [
+        "alive/capabilities/execution.py"
+      ],
+      "target": "tests/test_capability_contract_enforcement.py::test_output_outside_the_declared_contract_is_refused",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "validate(result.output, cap.manifest[\"outputs\"])"
+      ],
+      "replacements": [
+        "pass"
+      ],
+      "assertion": "==============================\n________ test_output_outside_the_declared_contract_is_refused[output0] ________\ntests\\test_capability_contract_enforcement.py:55: in test_output_outside_the_declared_contract_is_refused\n    with pytest.raises(ContractError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ContractError\n________ test_output_outside_the_declared_contract_is_refused[output1] ________\ntests\\test_capability_contract_enforcement.py:55: in test_output_outside_the_declared_contract_is_refused\n    with pytest.raises(ContractError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ContractError\n________ test_output_outside_the_declared_contract_is_refused[output2] ________\ntests\\test_capability_contract_enforcement.py:55: in test_output_outside_the_declared_contract_is_refused\n    with pytest.raises(ContractError):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE ContractError\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_output_outside_the_declared_contract_is_refused[output0] - Failed: DID NOT RAISE ContractError\nFAILED tests/test_capability_contract_enforcement.py::test_output_outside_the_declared_contract_is_refused[output1] - Failed: DID NOT RAISE ContractError\nFAILED tests/test_capability_contract_enforcement.py::test_output_outside_the_declared_contract_is_refused[output2] - Failed: DID NOT RAISE ContractError\n3 failed in 0.18s\n",
+      "returncode": 1,
+      "source_sha256": "cf061f721a90f5f9d2efa2d20edbbff2b709485510cfa3f53d7c7c4b8a0ca5b1"
+    },
+    {
+      "id": "C11",
+      "mutation": "output size ceiling",
+      "files": [
+        "alive/capabilities/execution.py"
+      ],
+      "target": "tests/test_capability_contract_enforcement.py::test_output_size_ceiling_and_result_type_are_enforced",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "require(len(blob) <= grant[\"limits\"][\"max_output_bytes\"], \"capability_output_limit\")"
+      ],
+      "replacements": [
+        "pass"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n____________ test_output_size_ceiling_and_result_type_are_enforced ____________\ntests\\test_capability_contract_enforcement.py:62: in test_output_size_ceiling_and_result_type_are_enforced\n    with pytest.raises(Refused, match=\"capability_output_limit\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_output_size_ceiling_and_result_type_are_enforced - Failed: DID NOT RAISE Refused\n1 failed in 0.18s\n",
+      "returncode": 1,
+      "source_sha256": "cf061f721a90f5f9d2efa2d20edbbff2b709485510cfa3f53d7c7c4b8a0ca5b1"
+    },
+    {
+      "id": "C12",
+      "mutation": "input must match the exact input contract",
+      "files": [
+        "alive/capabilities/execution.py"
+      ],
+      "target": "tests/test_capability_contract_enforcement.py::test_input_outside_the_declared_contract_is_refused_before_invocation",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "validate(context.inputs, manifest[\"inputs\"])"
+      ],
+      "replacements": [
+        "pass"
+      ],
+      "assertion": "the_declared_contract_is_refused_before_invocation ____\ntests\\test_capability_contract_enforcement.py:86: in test_input_outside_the_declared_contract_is_refused_before_invocation\n    asyncio.run(invoke(registry, binding, grant, context, adapter=adapter))\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\asyncio\\runners.py:195: in run\n    return runner.run(main)\n           ^^^^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\asyncio\\runners.py:118: in run\n    return self._loop.run_until_complete(task)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\asyncio\\base_events.py:719: in run_until_complete\n    return future.result()\n           ^^^^^^^^^^^^^^^\nalive\\capabilities\\execution.py:47: in invoke\n    call_context = replace(context, capability=cap.identity, resources=resources)\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\dataclasses.py:1595: in replace\n    raise TypeError(\"replace() should be called on dataclass instances\")\nE   TypeError: replace() should be called on dataclass instances\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_input_outside_the_declared_contract_is_refused_before_invocation - TypeError: replace() should be called on dataclass instances\n1 failed in 0.20s\n",
+      "returncode": 1,
+      "source_sha256": "cf061f721a90f5f9d2efa2d20edbbff2b709485510cfa3f53d7c7c4b8a0ca5b1"
+    },
+    {
+      "id": "C13",
+      "mutation": "writer permission needed for an artifact",
+      "files": [
+        "alive/capabilities/execution.py"
+      ],
+      "target": "tests/test_capability_contract_enforcement.py::test_a_capability_without_the_writer_permission_cannot_return_an_artifact",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "result.artifact is None or grant[\"permissions\"][\"persistence\"] == \"workflow_result\""
+      ],
+      "replacements": [
+        "True"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n__ test_a_capability_without_the_writer_permission_cannot_return_an_artifact __\ntests\\test_capability_contract_enforcement.py:71: in test_a_capability_without_the_writer_permission_cannot_return_an_artifact\n    with pytest.raises(Refused, match=\"capability_writer_not_authorized\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_a_capability_without_the_writer_permission_cannot_return_an_artifact - Failed: DID NOT RAISE Refused\n1 failed in 0.17s\n",
+      "returncode": 1,
+      "source_sha256": "cf061f721a90f5f9d2efa2d20edbbff2b709485510cfa3f53d7c7c4b8a0ca5b1"
+    },
+    {
+      "id": "C14",
+      "mutation": "reader snapshot hash must equal the owner-approved hash",
+      "files": [
+        "alive/capabilities/repository.py"
+      ],
+      "target": "tests/test_capability_repository.py::test_reader_requires_exact_owner_scope[hash]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "and resources[\"snapshot_sha256\"] == snapshot.sha256,"
+      ],
+      "replacements": [
+        ","
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n________________ test_reader_requires_exact_owner_scope[hash] _________________\ntests\\test_capability_repository.py:132: in test_reader_requires_exact_owner_scope\n    with pytest.raises(Refused):\n         ^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository.py::test_reader_requires_exact_owner_scope[hash] - Failed: DID NOT RAISE Refused\n1 failed in 0.16s\n",
+      "returncode": 1,
+      "source_sha256": "6e510f29e8c990effad4c92e0cf42a624ee1b52411b1bda6ff4dded0531ee980"
+    },
+    {
+      "id": "C15",
+      "mutation": "requested paths must equal the owner-approved paths",
+      "files": [
+        "alive/capabilities/repository.py"
+      ],
+      "target": "tests/test_capability_repository.py::test_reader_requires_exact_owner_scope[paths]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "and sorted(names) == resources[\"paths\"],"
+      ],
+      "replacements": [
+        ","
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n________________ test_reader_requires_exact_owner_scope[paths] ________________\ntests\\test_capability_repository.py:132: in test_reader_requires_exact_owner_scope\n    with pytest.raises(Refused):\n         ^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository.py::test_reader_requires_exact_owner_scope[paths] - Failed: DID NOT RAISE Refused\n1 failed in 0.16s\n",
+      "returncode": 1,
+      "source_sha256": "6e510f29e8c990effad4c92e0cf42a624ee1b52411b1bda6ff4dded0531ee980"
+    },
+    {
+      "id": "C16",
+      "mutation": "hardlink aliases are refused",
+      "files": [
+        "alive/capabilities/repository.py"
+      ],
+      "target": "tests/test_capability_repository.py::test_hardlink_cannot_alias_an_unapproved_file",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "require(before.st_nlink == 1, \"repository_hardlink_refused\")"
+      ],
+      "replacements": [
+        "pass"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n________________ test_hardlink_cannot_alias_an_unapproved_file ________________\ntests\\test_capability_repository.py:80: in test_hardlink_cannot_alias_an_unapproved_file\n    assert snapshot.omitted == ((\"readme\", \"repository_hardlink_refused\"),)\nE   AssertionError: assert () == (('readme', '...nk_refused'),)\nE     \nE     Right contains one more item: ('readme', 'repository_hardlink_refused')\nE     \nE     Full diff:\nE     + ()\nE     - (\nE     -     (\nE     -         'readme',\nE     -         'repository_hardlink_refused',\nE     -     ),\nE     - )\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository.py::test_hardlink_cannot_alias_an_unapproved_file - AssertionError: assert () == (('readme', '...nk_refused'),)\n  \n  Right contains one more item: ('readme', 'repository_hardlink_refused')\n  \n  Full diff:\n  + ()\n  - (\n  -     (\n  -         'readme',\n  -         'repository_hardlink_refused',\n  -     ),\n  - )\n1 failed in 0.17s\n",
+      "returncode": 1,
+      "source_sha256": "6e510f29e8c990effad4c92e0cf42a624ee1b52411b1bda6ff4dded0531ee980"
+    },
+    {
+      "id": "C17",
+      "mutation": "secret and ignored paths are never opened",
+      "files": [
+        "alive/capabilities/repository.py"
+      ],
+      "target": "tests/test_capability_repository.py::test_secret_and_ignored_paths_are_never_opened",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "if _ignored(name, patterns):"
+      ],
+      "replacements": [
+        "if False:"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_______________ test_secret_and_ignored_paths_are_never_opened ________________\ntests\\test_capability_repository.py:56: in test_secret_and_ignored_paths_are_never_opened\n    assert opened == [\".gitignore\"]\nE   AssertionError: assert ['.gitignore'...ata.txt', ...] == ['.gitignore']\nE     \nE     Left contains 6 more items, first extra item: '.env.local'\nE     \nE     Full diff:\nE       [\nE           '.gitignore',\nE     +     '.env.local',\nE     +     '.git/config',\nE     +     'credentials.json',\nE     +     'debug.log',\nE     +     'private/data.txt',\nE     +     'server.key',\nE       ]\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository.py::test_secret_and_ignored_paths_are_never_opened - AssertionError: assert ['.gitignore'...ata.txt', ...] == ['.gitignore']\n  \n  Left contains 6 more items, first extra item: '.env.local'\n  \n  Full diff:\n    [\n        '.gitignore',\n  +     '.env.local',\n  +     '.git/config',\n  +     'credentials.json',\n  +     'debug.log',\n  +     'private/data.txt',\n  +     'server.key',\n    ]\n1 failed in 0.16s\n",
+      "returncode": 1,
+      "source_sha256": "6e510f29e8c990effad4c92e0cf42a624ee1b52411b1bda6ff4dded0531ee980"
+    },
+    {
+      "id": "C18",
+      "mutation": "binding hash in the owner grant must equal the retained binding",
+      "files": [
+        "alive/capabilities/bindings.py"
+      ],
+      "target": "tests/test_capability_repository_execution.py::test_execution_is_refused_without_exact_capability_authority[wrong_hash]",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "grant.capability_binding_sha256 == row.snapshot_sha256"
+      ],
+      "replacements": [
+        "True"
+      ],
+      "assertion": "^^^^^^^^^^^^^\n..\\..\\..\\Roaming\\uv\\python\\cpython-3.13.3-windows-x86_64-none\\Lib\\concurrent\\futures\\_base.py:401: in __get_result\n    raise self._exception\nC:\\Projects\\alive\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:265: in _call_func\n    retval = await retval_or_awaitable\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_capability_repository_execution.py:187: in probe\n    assert refused, \"unauthorized capability produced a successful execution\"\nE   AssertionError: unauthorized capability produced a successful execution\nE   assert False\n============================== warnings summary ===============================\ntests/test_capability_repository_execution.py::test_execution_is_refused_without_exact_capability_authority[wrong_hash]\n  C:\\Projects\\alive\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_capability_repository_execution.py::test_execution_is_refused_without_exact_capability_authority[wrong_hash] - AssertionError: unauthorized capability produced a successful execution\nassert False\n1 failed, 1 warning in 1.26s\n",
+      "returncode": 1,
+      "source_sha256": "00d350bffbb98b7802d29c1140097bbc705a425492a3f190916555052836ad15"
+    },
+    {
+      "id": "C19",
+      "mutation": "runner requires an executable capability",
+      "files": [
+        "alive/workflows/runner.py"
+      ],
+      "target": "tests/test_capability_contract_enforcement.py::test_runner_checks_the_pinned_version_not_merely_the_latest",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "registry.get(stage.operation, stage.capability_version).executable"
+      ],
+      "replacements": [
+        "True"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_________ test_runner_checks_the_pinned_version_not_merely_the_latest _________\ntests\\test_capability_contract_enforcement.py:159: in test_runner_checks_the_pinned_version_not_merely_the_latest\n    with pytest.raises(Refused, match=\"operation_not_authorized_or_executable\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n=========================== short test summary info ===========================\nFAILED tests/test_capability_contract_enforcement.py::test_runner_checks_the_pinned_version_not_merely_the_latest - Failed: DID NOT RAISE Refused\n1 failed in 0.19s\n",
+      "returncode": 1,
+      "source_sha256": "2919d80fc5ec10bf4f18ca59bd69189c4dbd5c8378a39186d215985a8156e881"
+    }
+  ]
+}

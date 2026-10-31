@@ -2,6 +2,7 @@
 
 import contextlib
 import os
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -205,3 +206,92 @@ def test_changed_capability_policy_cannot_run_a_pinned_execution(client, snapsho
 
     call(client, probe)
     assert all(value == 0 for value in call(client, reserved).values())
+
+
+def mutated_registry(snapshot, *, description=None, disabled=()):
+    """A restarted process whose catalogue differs from the one the run was pinned to."""
+    from alive.capabilities.manifest import parse
+    from alive.capabilities.registry import CapabilityRegistry
+
+    directory = Path(__file__).resolve().parents[1] / "alive/capabilities/manifests"
+    manifests = []
+    for file in sorted(directory.glob("*.yaml")):
+        text = file.read_text(encoding="utf-8")
+        if description and file.name.startswith("repository.inspect"):
+            text = text.replace("Inspect an explicit", description)
+        manifests.append(parse(text))
+    return CapabilityRegistry(manifests, snapshots=[snapshot], disabled=disabled)
+
+
+@pytest.mark.parametrize("mode", ["tampered_manifest", "disabled"])
+def test_pinned_identity_refuses_a_changed_or_disabled_catalogue_but_history_survives(
+    client, snapshot, mode
+):
+    prepare(client)
+    observation(client)
+
+    async def probe(k):
+        async with authorized(client, snapshot) as grant:
+            started = await client.app.state.workflows.start(grant)
+            k.capabilities = (
+                mutated_registry(snapshot, description="Inspect any")
+                if mode == "tampered_manifest"
+                else mutated_registry(snapshot, disabled=("repository.inspect",))
+            )
+            final = await client.app.state.workflows.execute(started["id"])
+            assert final["status"] == states.FAILED
+            return started["id"]
+
+    run_id = call(client, probe)
+    # Nothing executed, yet the retained identity is still inspectable and unchanged.
+    (stage_run,) = call(client, store.get_stage_runs, run_id)
+    assert stage_run["capability"]["id"] == "repository.inspect"
+    assert stage_run["state"] != "COMPLETED" and stage_run["output_ref"] is None
+    assert all(value == 0 for value in call(client, reserved).values())
+
+
+def test_completed_history_stays_readable_and_read_only_after_the_capability_is_disabled(
+    client, snapshot
+):
+    prepare(client)
+    observation(client)
+
+    async def first(k):
+        async with authorized(client, snapshot) as grant:
+            started = await client.app.state.workflows.start(grant)
+            return await client.app.state.workflows.execute(started["id"])
+
+    final = call(client, first)
+    assert final["status"] == "COMPLETED"
+    (before,) = call(client, store.get_stage_runs, final["id"])
+
+    async def after_restart(k):
+        k.capabilities = mutated_registry(snapshot, disabled=("repository.inspect",))
+
+    call(client, after_restart)
+    counted = call(client, counts)
+    (after,) = call(client, store.get_stage_runs, final["id"])
+    assert after["capability"] == before["capability"]
+    assert after["output_sha256"] == before["output_sha256"]
+    inspection = client.get(f"/api/v1/workflow-runs/{final['id']}/stages").json()
+    assert inspection["stages"][0]["capability"]["version"] == "1.0.0"
+    assert call(client, counts) == counted  # reading history created no executions or events
+
+
+def test_configuration_loosened_after_the_grant_is_not_silently_accepted(settings, snapshot):
+    """Limits stay within the grant, so only the pinned policy hash can notice the change."""
+    narrowed = load_registry(snapshots=[snapshot], limits={"repository.inspect": {"max_files": 10}})
+    app = create_app(settings, include_experiments=True, capability_registry=narrowed)
+    _boot(settings)
+    with TestClient(app, headers={"Authorization": f"Bearer {TOKEN}"}) as client:
+        prepare(client)
+        observation(client)
+
+        async def probe(k):
+            async with authorized(client, snapshot) as grant:
+                started = await client.app.state.workflows.start(grant)
+                k.capabilities = load_registry(snapshots=[snapshot])  # restart, defaults restored
+                final = await client.app.state.workflows.execute(started["id"])
+                assert final["status"] == states.FAILED
+
+        call(client, probe)
