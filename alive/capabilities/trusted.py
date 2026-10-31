@@ -334,6 +334,7 @@ _VALIDATION_FILES = (
     "alive/capabilities/source_adapters.py",
     "alive/capabilities/repository.py",
     "alive/capabilities/contracts.py",
+    "alive/sources/custody.py",
     "alive/workflows/context.py",
 )
 for _identifier, _adapter, _reads in (

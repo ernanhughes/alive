@@ -230,8 +230,11 @@ def test_capture_item_hash_and_bounded_observation_are_not_silently_truncated():
     records = run(captured, inputs(captured, locator="none", quote=""), locate=False)
     assert records["observations"][0]["truncated"] is True
     assert len(records["observations"][0]["text"]) == 512
-    fake = NS(content=captured.content, source_type="repository")
-    fake.content["files"][0]["sha256"] = "0" * 64
+    from dataclasses import replace
+
+    content = captured.content
+    content["files"][0]["sha256"] = "0" * 64
+    fake = replace(captured, blob=json.dumps(content).encode())
     with pytest.raises(Refused, match="captured_item_hash_mismatch"):
         adapters.index(fake)
 
