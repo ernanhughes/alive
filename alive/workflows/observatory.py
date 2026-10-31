@@ -4,7 +4,6 @@ from sqlalchemy import and_, or_, select
 
 from alive.cognitive_models import ModelInvocation
 from alive.models import Event
-from alive.pi.api import receipt
 from alive.pi.models import PiProviderRequest, PiRun
 from alive.workflows import store
 from alive.workflows.models import WorkflowDefinition, WorkflowRun, WorkflowStageRun
@@ -182,7 +181,7 @@ async def timeline(kernel, run_id, *, after=0, limit=200):
         }
 
 
-async def stage_receipt(kernel, run_id, attempt_id):
+async def stage_receipt(kernel, run_id, attempt_id, render_receipt):
     async with kernel.db.sessions() as session:
         run, _, stages = await records(session, kernel, run_id)
         stage = next((s for s in stages if s.id == attempt_id), None)
@@ -194,13 +193,15 @@ async def stage_receipt(kernel, run_id, attempt_id):
                 select(PiProviderRequest)
                 .where(PiProviderRequest.run_id == pi.id)
                 .order_by(PiProviderRequest.seq)
+                .limit(2001)
             )
         ).all()
+        require(len(requests) <= 2000)
         return {
             "run_id": run.id,
             "attempt_id": stage.id,
             "stage_id": stage.stage_id,
-            "receipt": receipt(pi, requests),
+            "receipt": render_receipt(pi, requests),
         }
 
 

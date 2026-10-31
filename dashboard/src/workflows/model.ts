@@ -1,7 +1,7 @@
 import type { Graph, RecordedEvent, Recording, StageRun } from "./contracts";
 
-export const NAME = /^[a-z][a-z0-9_-]{0,63}$/;
-export const STAGE = /^[a-z][a-z0-9_-]{0,31}$/;
+export const NAME = /^[a-z][a-z0-9-]{2,63}$/;
+export const STAGE = /^[a-z][a-z0-9_]{0,31}$/;
 export const UUID =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export interface Selection {

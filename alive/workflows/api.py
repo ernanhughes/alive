@@ -44,7 +44,7 @@ class ArtifactView(BaseModel):
     context_provenance: dict
 
 
-def router(app, ready):
+def router(app, ready, pi_receipt):
     api = APIRouter(prefix="/api/v1", dependencies=[Depends(ready)])
 
     def kernel():
@@ -137,7 +137,7 @@ def router(app, ready):
     ):
         from alive.workflows.observatory import stage_receipt as projection
 
-        return await found(projection(kernel(), run_id, attempt_id))
+        return await found(projection(kernel(), run_id, attempt_id, pi_receipt))
 
     @api.get("/workflow-runs/{run_id}/artifacts/{stage_id}", response_model=ArtifactView)
     async def artifact(run_id: str = Path(max_length=36), stage_id: str = Path(max_length=32)):

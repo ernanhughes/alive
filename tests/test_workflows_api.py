@@ -84,7 +84,10 @@ def test_no_execution_or_model_route_exists_under_the_workflow_prefixes(client):
         for path, methods in client.app.openapi()["paths"].items()
         if "workflow" in path
     }
-    assert len(paths) == 9, paths
+    assert len(paths) == 12, paths
+    assert paths["/api/v1/workflow-runs/{run_id}/inspection"] == ["get"]
+    assert paths["/api/v1/workflow-runs/{run_id}/timeline"] == ["get"]
+    assert paths["/api/v1/workflow-runs/{run_id}/stages/{attempt_id}/pi-receipt"] == ["get"]
     assert paths["/api/v1/workflow-runs/{run_id}/artifacts/{stage_id}"] == ["get"]
     assert all(methods == ["get"] for methods in paths.values())
     forbidden = ("/execute", "/start", "/cancel", "/model", "/rerun", "/register")

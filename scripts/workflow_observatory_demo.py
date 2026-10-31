@@ -53,7 +53,7 @@ def inject(client, seed):
 
 async def counts(kernel):
     async with kernel.db.sessions() as session:
-        return {
+        result = {
             model.__tablename__: await session.scalar(select(func.count()).select_from(model))
             for model in (
                 ModelInvocation,
@@ -64,6 +64,12 @@ async def counts(kernel):
                 IntelligenceLearningUpdate,
             )
         }
+        result["workflow_artifacts"] = await session.scalar(
+            select(func.count())
+            .select_from(CognitiveMessage)
+            .where(CognitiveMessage.content["kind"].as_string() == "workflow_result")
+        )
+        return result
 
 
 def verify(client, manifest):

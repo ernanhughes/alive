@@ -282,12 +282,12 @@ export function App() {
           <div className="page-heading">
             <div>
               <div className="eyebrow">
-                {tab === "Demonstration" ? "ALIVE / GUIDED DEMONSTRATION" : tab === "Living" ? "ALIVE-04 / CONTINUING EXPERIENCE" : tab === "Cognition"
+                {tab === "Workflows" ? "ALIVE-PI-02C / WORKFLOW OBSERVATORY" : tab === "Demonstration" ? "ALIVE / GUIDED DEMONSTRATION" : tab === "Living" ? "ALIVE-04 / CONTINUING EXPERIENCE" : tab === "Cognition"
                   ? "ALIVE-02 / COGNITIVE SOCIETY"
                   : "ALIVE-01 / FIRST CONTACT"}
               </div>
               <h1>
-                {tab === "Overview"
+                {tab === "Workflows" ? "Execution, made inspectable." : tab === "Overview"
                   ? "Something is becoming."
                   : tab === "Demonstration" ? "Evidence, remembered and withdrawn." : tab === "Living" ? "The living experience." : tab === "Live events"
                     ? "The stream of experience."
@@ -307,7 +307,7 @@ export function App() {
                   : "Inspect the real state of your local ALIVE runtime."}
               </p>
             </div>
-            <button
+            {tab !== "Workflows" && <button
               disabled={busy || !state}
               className="primary"
               onClick={() =>
@@ -318,7 +318,7 @@ export function App() {
             >
               {running ? <Pause size={15} /> : <Play size={15} />}{" "}
               {running ? "Suspend runtime" : "Start runtime"}
-            </button>
+            </button>}
           </div>
           {!token && (
             <form
