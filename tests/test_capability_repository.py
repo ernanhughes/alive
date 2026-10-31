@@ -2,7 +2,11 @@
 
 import asyncio
 import hashlib
+import json
 import os
+import subprocess
+import sys
+from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
@@ -145,3 +149,79 @@ def test_reader_observes_cancellation_between_files(tmp_path):
             await task
 
     asyncio.run(check())
+
+
+@pytest.mark.parametrize("path", ["CON", "nul.txt", "src/COM1", "aux.md", "Lpt9.log", "con.d/a"])
+def test_windows_device_names_are_refused_on_every_platform(path):
+    with pytest.raises(Refused, match="repository_path_refused"):
+        relative_path(path)
+
+
+@pytest.mark.parametrize("path", ["console.txt", "src/concat.py", "communal/a.md", "auxiliary"])
+def test_names_that_merely_resemble_devices_are_allowed(path):
+    assert relative_path(path) == path
+
+
+def test_oversize_gitignore_fails_closed_with_a_named_reason(tmp_path):
+    (tmp_path / ".gitignore").write_text("x\n" * 5000, encoding="utf-8")
+    (tmp_path / "a").write_text("a", encoding="utf-8")
+    with pytest.raises(Refused, match="repository_ignore_too_large"):
+        capture_repository("fixture-repo", tmp_path, ["a"])
+
+
+FIFO_PROBE = chr(10).join(
+    [
+        "import json, sys",
+        "from alive.capabilities.repository import capture_repository",
+        "from alive.workflows.context import Refused",
+        "root, names = sys.argv[1], json.loads(sys.argv[2])",
+        "try:",
+        "    snapshot = capture_repository('fixture-repo', root, names)",
+        "    names = [f.path for f in snapshot.files]",
+        "    print(json.dumps({'omitted': dict(snapshot.omitted), 'files': names}))",
+        "except Refused as error:",
+        "    print(json.dumps({'refused': str(error)}))",
+    ]
+)
+
+
+def probe_capture(root, names):
+    """Run capture in a child process; a hang is a test failure, never a successful refusal."""
+    try:
+        done = subprocess.run(
+            [sys.executable, "-c", FIFO_PROBE, str(root), json.dumps(names)],
+            capture_output=True,
+            text=True,
+            timeout=20,
+            cwd=Path(__file__).resolve().parents[1],
+        )
+    except subprocess.TimeoutExpired:
+        pytest.fail("capture blocked on a non-regular file (timed out)")
+    assert done.returncode == 0, done.stderr
+    return json.loads(done.stdout)
+
+
+posix_only = pytest.mark.skipif(not hasattr(os, "mkfifo"), reason="needs POSIX FIFOs")
+
+
+@posix_only
+def test_a_fifo_is_omitted_without_blocking_capture(tmp_path):
+    os.mkfifo(tmp_path / "pipe")
+    (tmp_path / "ok.txt").write_text("fine", encoding="utf-8")
+    result = probe_capture(tmp_path, ["ok.txt", "pipe"])
+    assert result["files"] == ["ok.txt"]
+    assert result["omitted"] == {"pipe": "repository_regular_file_required"}
+
+
+@posix_only
+def test_a_fifo_named_gitignore_fails_closed_without_blocking(tmp_path):
+    os.mkfifo(tmp_path / ".gitignore")
+    (tmp_path / "ok.txt").write_text("fine", encoding="utf-8")
+    assert probe_capture(tmp_path, ["ok.txt"]) == {"refused": "repository_ignore_unreadable"}
+
+
+@posix_only
+def test_a_fifo_as_a_directory_component_is_refused_without_blocking(tmp_path):
+    os.mkfifo(tmp_path / "dir")
+    result = probe_capture(tmp_path, ["dir/inner.txt"])
+    assert result["files"] == [] and "dir/inner.txt" in result["omitted"]

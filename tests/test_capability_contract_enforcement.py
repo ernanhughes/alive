@@ -18,6 +18,7 @@ from alive.workflows.examples import stage
 from alive.workflows.runner import executable
 from alive.workflows.spec import parse_definition
 from tests.test_capability_repository_execution import workflow
+from tests.workflow_execution_helpers import replace_adapters
 
 MANIFESTS = Path(__file__).resolve().parents[1] / "alive/capabilities/manifests"
 GOOD = {"context": {}, "claims": [], "sources": []}
@@ -74,16 +75,17 @@ def test_a_capability_without_the_writer_permission_cannot_return_an_artifact():
         )
 
 
-def test_input_outside_the_declared_contract_is_refused_before_invocation():
+def test_input_outside_the_declared_contract_is_refused_before_invocation(monkeypatch):
     registry, binding, grant = pinned()
     called = []
 
     async def adapter(context):
         called.append(context)
 
+    replace_adapters(monkeypatch, {"context.prepare": adapter})
     context = SimpleNamespace(inputs={"unexpected": 1}, approved={})
     with pytest.raises(ContractError):
-        asyncio.run(invoke(registry, binding, grant, context, adapter=adapter))
+        asyncio.run(invoke(registry, binding, grant, context))
     assert not called
 
 

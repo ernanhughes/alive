@@ -1,6 +1,7 @@
 """Reviewed implementation allowlist. YAML IDs never become imports or commands."""
 
 import hashlib
+import importlib
 from dataclasses import dataclass
 from pathlib import Path
 from types import MappingProxyType
@@ -176,7 +177,9 @@ class TrustedImplementation:
     id: str
     kind: str
     side_effects: str
-    adapter_name: str | None
+    # "module:function" selected by this reviewed table, never by a manifest. It is part of the
+    # fingerprint, so re-pointing an implementation at different code changes its identity.
+    adapter: str | None
     legacy_binding: str | None
     legacy_reason: str | None
     permission_ceiling: frozenset[str]
@@ -185,17 +188,25 @@ class TrustedImplementation:
 
     @property
     def installed(self):
-        return self.adapter_name is not None and all(
-            (ROOT / p).is_file() for p in self.source_files
-        )
+        return self.adapter is not None and all((ROOT / p).is_file() for p in self.source_files)
 
     def fingerprint(self):
+        """Identify what actually runs: the selection metadata and the reviewed source bytes.
+
+        Not transitive: helpers imported by these files are covered only if listed. The listed
+        files are the review boundary (see docs/capabilities/PI-03A-SECURITY.md).
+        """
         hasher = hashlib.sha256(
             json_bytes(
                 {
                     "id": self.id,
                     "interface": self.interface,
+                    "kind": self.kind,
+                    "side_effects": self.side_effects,
+                    "adapter": self.adapter,
+                    "legacy_binding": self.legacy_binding,
                     "permissions": sorted(self.permission_ceiling),
+                    "source_files": list(self.source_files),
                 }
             )
         )
@@ -207,14 +218,9 @@ class TrustedImplementation:
     def resolve(self):
         if not self.installed:
             raise ValueError("trusted implementation unavailable")
-        if self.id == "repository-inspector-v1":
-            from alive.capabilities.repository import inspect_repository
-
-            return inspect_repository
-        # Both this module and these attribute names are server-owned reviewed code.
-        from alive.workflows import adapters
-
-        return getattr(adapters, self.adapter_name)
+        # The reference is a constant in this reviewed module; no manifest value reaches it.
+        module, _, function = self.adapter.partition(":")
+        return getattr(importlib.import_module(module), function)
 
 
 _BUILTINS = {
@@ -222,11 +228,16 @@ _BUILTINS = {
         item[0],
         item[2],
         item[3],
-        item[4],
+        f"alive.workflows.adapters:{item[4]}" if item[4] else None,
         item[5],
         item[6],
         permission_bits(item[7]),
-        ("alive/workflows/adapters.py", "alive/society.py", "alive/cognitive_schema.py"),
+        (
+            "alive/workflows/adapters.py",
+            "alive/workflows/context.py",
+            "alive/society.py",
+            "alive/cognitive_schema.py",
+        ),
     )
     for item in _LEGACY
 }
@@ -234,7 +245,7 @@ _BUILTINS["repository-inspector-v1"] = TrustedImplementation(
     "repository-inspector-v1",
     "deterministic",
     "read",
-    "inspect_repository",
+    "alive.capabilities.repository:inspect_repository",
     "alive.capabilities.repository:inspect_repository",
     None,
     frozenset({"repository.read"}),
@@ -242,3 +253,11 @@ _BUILTINS["repository-inspector-v1"] = TrustedImplementation(
 )
 TRUSTED = MappingProxyType(_BUILTINS)
 LEGACY_OPERATIONS = frozenset(item[1] for item in _LEGACY)
+# Definitions shipped before PI-03 whose declared stage contracts predate the manifests. Adoption
+# under the DAG-only contract is allowed ONLY for these exact definition hashes and for
+# pre-existing database rows that have no binding yet. Everything else registers under the full
+# capability contract. Retirement: remove an entry once that definition is re-issued as a new
+# version that passes the modern contract; delete the branch when the set is empty.
+LEGACY_DEFINITION_SHA256 = frozenset(
+    {"84d396acf1deec85d507c9e0f5ff6c54c9f4e3cb89ae4569ed0a74537d651377"}  # research-review v1
+)

@@ -13,6 +13,7 @@ from sqlalchemy import func, select
 from sqlalchemy.exc import IntegrityError
 
 from alive.capabilities.bindings import bind_definition, registry_for
+from alive.capabilities.trusted import LEGACY_DEFINITION_SHA256
 from alive.models import now, uid
 from alive.workflows import states
 from alive.workflows.models import WorkflowDefinition, WorkflowRun, WorkflowStageRun
@@ -172,7 +173,9 @@ async def register_definition(kernel, raw, *, status="draft", source="admin"):
                             f"{spec.name} v{spec.version} already exists with different content; "
                             "register a new version instead"
                         )
-                    await bind_definition(session, kernel, existing, spec)
+                    # A row that exists without a binding predates migration 0011: genuinely
+                    # historical, so it may be adopted under its original DAG-only contract.
+                    await bind_definition(session, kernel, existing, spec, adopt_legacy=True)
                     return definition_view(existing), False
                 row = WorkflowDefinition(
                     id=uid(),
@@ -202,7 +205,9 @@ async def register_definition(kernel, raw, *, status="draft", source="admin"):
                     source="workflow",
                     correlation=row.id,
                 )
-                await bind_definition(session, kernel, row, spec)
+                await bind_definition(
+                    session, kernel, row, spec, adopt_legacy=digest in LEGACY_DEFINITION_SHA256
+                )
                 return definition_view(row), True
         except IntegrityError:
             # Lost a race for the same (name, version): re-read and decide on the winner's bytes.

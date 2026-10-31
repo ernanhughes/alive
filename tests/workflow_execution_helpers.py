@@ -68,3 +68,20 @@ async def reserved(kernel):
     async with kernel.db.sessions() as session:
         control = await session.get(CognitiveControl, kernel.instance_id)
         return control.reserved
+
+
+def replace_adapters(monkeypatch, replacements):
+    """Fault injection for tests only: swap what the registry resolves for given operation ids.
+
+    Production has no override parameter; this patches the registry class for one test.
+    """
+    from alive.capabilities.registry import CapabilityRegistry
+
+    original = CapabilityRegistry.adapter
+
+    def adapter(self, capability_id, version=None):
+        if capability_id in replacements:
+            return replacements[capability_id]
+        return original(self, capability_id, version)
+
+    monkeypatch.setattr(CapabilityRegistry, "adapter", adapter)

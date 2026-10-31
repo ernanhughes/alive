@@ -18,7 +18,7 @@ class ReadCapabilityContext:
     resources: object
 
 
-async def invoke(registry, binding, grant, context, *, adapter=None):
+async def invoke(registry, binding, grant, context):
     cap = registry.check_grant(binding, grant)
     manifest = cap.manifest
     limits = grant["limits"]
@@ -49,7 +49,8 @@ async def invoke(registry, binding, grant, context, *, adapter=None):
         call_context = ReadCapabilityContext(
             context.run_id, context.stage_id, context.inquiry_id, context.owner, resources
         )
-    callback = adapter or registry.adapter(cap.identity["id"], cap.identity["version"])
+    # No caller-supplied callback exists: the implementation is the one this identity names.
+    callback = registry.adapter_for(cap.identity)
     async with asyncio.timeout(limits["timeout_seconds"]):
         return await callback(call_context)
 

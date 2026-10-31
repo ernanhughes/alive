@@ -20,7 +20,7 @@ from alive.cognitive_models import CognitiveMessage, Investigation, ModelInvocat
 from alive.models import Event, now, uid
 from alive.pi.models import PiProviderRequest, PiRun
 from alive.workflows import states, store
-from alive.workflows.adapters import ADAPTERS, StageContext
+from alive.workflows.adapters import StageContext
 from alive.workflows.context import Refused, authorized, aware, bounded, digest, require
 from alive.workflows.models import WorkflowExecution, WorkflowRun, WorkflowStageRun
 from alive.workflows.spec import check_activatable
@@ -479,13 +479,7 @@ class WorkflowRunner:
             )
         try:
             async with asyncio.timeout(stage.limits.timeout_seconds):
-                result = await invoke(
-                    registry_for(self.k),
-                    binding,
-                    capability_grant,
-                    context,
-                    adapter=ADAPTERS.get(stage.operation),
-                )
+                result = await invoke(registry_for(self.k), binding, capability_grant, context)
         except (Refused, TimeoutError):
             raise
         except Exception:

@@ -18,7 +18,15 @@ from alive.workflows.models import (
     WorkflowStageRun,
 )
 from alive.workflows.runner import WorkflowRunner, artifact_view
-from tests.workflow_execution_helpers import call, counts, lifecycle, observation, prepare, reserved
+from tests.workflow_execution_helpers import (
+    call,
+    counts,
+    lifecycle,
+    observation,
+    prepare,
+    replace_adapters,
+    reserved,
+)
 
 
 def test_deterministic_procedure_records_real_artifact_and_zero_learning(client):
@@ -152,17 +160,14 @@ def test_independent_run_claims_execute_once(client, monkeypatch):
     prepare(client)
     observation(client)
     calls = []
-    original = adapters.ADAPTERS["context.prepare"]
+    original = adapters.prepare
 
     async def counted(ctx):
         calls.append(ctx.run_id)
         await asyncio.sleep(0.05)
         return await original(ctx)
 
-    monkeypatch.setattr(
-        adapters, "ADAPTERS", dict(adapters.ADAPTERS) | {"context.prepare": counted}
-    )
-    monkeypatch.setattr("alive.workflows.runner.ADAPTERS", adapters.ADAPTERS)
+    replace_adapters(monkeypatch, {"context.prepare": counted})
 
     async def probe(k):
         async with client.app.state.cognition.workflow_inquiry() as inquiry:
@@ -213,9 +218,7 @@ def test_cancellation_or_persistence_failure_has_no_false_success(client, monkey
         async def cancel(_):
             raise asyncio.CancelledError()
 
-        monkeypatch.setattr(
-            "alive.workflows.runner.ADAPTERS", dict(adapters.ADAPTERS) | {operation: cancel}
-        )
+        replace_adapters(monkeypatch, {operation: cancel})
     run, _ = call(
         client, lambda k: lifecycle(k, client.app.state.cognition, client.app.state.workflows)
     )

@@ -7,10 +7,17 @@ from sqlalchemy import select
 
 from alive.cognitive_models import ModelInvocation
 from alive.pi.models import PiProviderRequest, PiRun
-from alive.workflows import adapters, store
+from alive.workflows import store
 from alive.workflows.examples import fixture_authorization
 from tests.test_pi_gateway import REAL_KEY, Upstream
-from tests.workflow_execution_helpers import call, counts, observation, prepare, reserved
+from tests.workflow_execution_helpers import (
+    call,
+    counts,
+    observation,
+    prepare,
+    replace_adapters,
+    reserved,
+)
 
 
 def test_explicit_cancel_of_pending_run_closes_its_reservation(client):
@@ -68,10 +75,7 @@ def test_cancel_at_lifecycle_boundaries_is_settled(client, settings, monkeypatch
                         entered.set()
                         await asyncio.Event().wait()
 
-                    monkeypatch.setattr(
-                        "alive.workflows.runner.ADAPTERS",
-                        dict(adapters.ADAPTERS) | {"context.prepare": stalled},
-                    )
+                    replace_adapters(monkeypatch, {"context.prepare": stalled})
                     task = asyncio.create_task(runner.execute(run["id"]))
                     await asyncio.wait_for(entered.wait(), 5)
                     task.cancel()

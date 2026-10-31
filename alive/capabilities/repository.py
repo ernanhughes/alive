@@ -18,6 +18,9 @@ from alive.models import now
 from alive.workflows.context import Refused, require
 
 REFERENCE = re.compile(r"^[a-z][a-z0-9-]{2,63}$")
+DEVICE_NAMES = {"con", "prn", "aux", "nul", "conin$", "conout$"} | {
+    f"{kind}{n}" for kind in ("com", "lpt") for n in range(1, 10)
+}
 SECRET_PARTS = {".git", ".ssh", ".aws", ".azure", ".gnupg", "node_modules", "__pycache__"}
 SECRET_NAMES = (
     ".env*",
@@ -49,7 +52,11 @@ def relative_path(value):
     require(
         not path.is_absolute()
         and str(path) == value
-        and all(part not in {".", "..", ""} for part in path.parts),
+        and all(part not in {".", "..", ""} for part in path.parts)
+        # Windows resolves these names to devices (CON, NUL, COM1...) whatever the directory.
+        and not any(
+            part.split(".")[0].rstrip(" ").casefold() in DEVICE_NAMES for part in path.parts
+        ),
         "repository_path_refused",
     )
     return value
@@ -96,7 +103,14 @@ def _read(root, name, ceiling):
                     part, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW, dir_fd=directory
                 )
                 descriptors.append(directory)
-            fd = os.open(parts[-1], os.O_RDONLY | os.O_NOFOLLOW, dir_fd=directory)
+            # O_NONBLOCK: opening a FIFO read-only would otherwise wait for a writer forever,
+            # before the regular-file check below could refuse it. It has no effect on regular
+            # files. O_NOCTTY keeps a terminal device from becoming the controlling terminal.
+            fd = os.open(
+                parts[-1],
+                os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK | getattr(os, "O_NOCTTY", 0),
+                dir_fd=directory,
+            )
         else:
             target = root
             for part in parts:
@@ -203,6 +217,13 @@ def capture_repository(reference, root, paths, *, max_files=64, max_source_bytes
         ignore_bytes = _read(root, ".gitignore", 8192)
     except FileNotFoundError:
         ignore_bytes = b""
+    except Refused as error:
+        # Ignoring a rule file could expose files it hides, so capture fails closed, but with a
+        # reason that names the real problem instead of a generic size or type error.
+        too_large = str(error) == "repository_file_size_limit"
+        raise Refused(
+            "repository_ignore_too_large" if too_large else "repository_ignore_unreadable"
+        ) from None
     try:
         patterns += [
             line.strip()

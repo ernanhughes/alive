@@ -210,6 +210,11 @@ class CapabilityRegistry:
             raise ValueError("capability unavailable")
         return self._implementations[cap.identity["implementation_id"]].resolve()
 
+    def adapter_for(self, identity):
+        """The only runtime resolver: the exact retained identity, re-verified, never "latest"."""
+        self.recheck(identity)
+        return self.adapter(identity["id"], identity["version"])
+
     def recheck(self, identity):
         try:
             cap = self.get(identity["id"], identity["version"])

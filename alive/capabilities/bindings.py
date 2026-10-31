@@ -5,7 +5,7 @@ import hashlib
 from sqlalchemy import select
 
 from alive.capabilities.contracts import json_bytes
-from alive.capabilities.manifest import canonical_bytes, parse
+from alive.capabilities.manifest import ManifestError, canonical_bytes, parse
 from alive.capabilities.registry import Operation, default_registry
 from alive.models import Event, now
 from alive.workflows.models import WorkflowCapabilityBinding, WorkflowExecution
@@ -70,14 +70,19 @@ async def binding_record(session, kernel, definition):
     return row
 
 
-async def bind_definition(session, kernel, definition, spec):
+async def bind_definition(session, kernel, definition, spec, *, adopt_legacy=False):
+    """Create the retained binding once. `adopt_legacy` is a provenance decision made by the
+    caller from the registration path, never inferred from operation ids or missing pins."""
     existing = await session.get(WorkflowCapabilityBinding, definition.id)
     if existing is not None:
         return await binding_record(session, kernel, definition)
-    snapshot = {
-        "definition_sha256": definition.definition_sha256,
-        "stages": registry_for(kernel).bind(spec, legacy_compatibility=True),
-    }
+    from alive.workflows.spec import DefinitionError
+
+    try:
+        stages = registry_for(kernel).bind(spec, legacy_compatibility=adopt_legacy)
+    except ManifestError as error:
+        raise DefinitionError([f"capability contract: {error}"]) from None
+    snapshot = {"definition_sha256": definition.definition_sha256, "stages": stages}
     validate_snapshot(snapshot, definition.definition_sha256)
     sha = digest(snapshot)
     payload = {
