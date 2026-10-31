@@ -8,7 +8,7 @@ changed policy identity; historical reads continue to use their retained schema 
 
 For every bounded candidate, verify active recipe status; captured source compatibility;
 explicit objective; required evidence; requested ceilings; requested permissions; deployment
-transport; exact installed capability versions and manifest hashes; active registered workflow
+transport and configured provider availability; exact installed capability versions and manifest hashes; active registered workflow
 and canonical hash; retained registration receipt; complete per-stage pins; current binding
 contracts, implementation fingerprints and deployment limits; input presence/types; actual
 permission requirements; and workflow/stage resource ceilings. Unknown or changed dependencies

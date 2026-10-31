@@ -16,7 +16,7 @@
       "explanation_consistent": true,
       "provenance_correct": true,
       "budget_compliant": true,
-      "seconds": 0.04536770000413526,
+      "seconds": 0.08974149999266956,
       "model_calls": 0
     },
     {
@@ -34,7 +34,7 @@
       "explanation_consistent": true,
       "provenance_correct": true,
       "budget_compliant": true,
-      "seconds": 0.08609859998978209,
+      "seconds": 0.09025589999509975,
       "model_calls": 0
     },
     {
@@ -52,7 +52,7 @@
       "explanation_consistent": true,
       "provenance_correct": true,
       "budget_compliant": true,
-      "seconds": 0.06130110000958666,
+      "seconds": 0.08662170000025071,
       "model_calls": 0
     },
     {
@@ -70,7 +70,7 @@
       "explanation_consistent": true,
       "provenance_correct": true,
       "budget_compliant": true,
-      "seconds": 0.0838344999938272,
+      "seconds": 0.08900429999630433,
       "model_calls": 0
     },
     {
@@ -88,7 +88,7 @@
       "explanation_consistent": true,
       "provenance_correct": true,
       "budget_compliant": true,
-      "seconds": 0.08355419999861624,
+      "seconds": 0.0763260999956401,
       "model_calls": 0
     },
     {
@@ -106,7 +106,7 @@
       "explanation_consistent": true,
       "provenance_correct": true,
       "budget_compliant": true,
-      "seconds": 0.0897086000040872,
+      "seconds": 0.07369940000353381,
       "model_calls": 0
     },
     {
@@ -124,7 +124,7 @@
       "explanation_consistent": true,
       "provenance_correct": true,
       "budget_compliant": true,
-      "seconds": 0.08954819999053143,
+      "seconds": 0.08935999999812339,
       "model_calls": 0
     },
     {
@@ -142,7 +142,7 @@
       "explanation_consistent": true,
       "provenance_correct": true,
       "budget_compliant": true,
-      "seconds": 0.04874659999040887,
+      "seconds": 0.04122519999509677,
       "model_calls": 0
     },
     {
@@ -160,7 +160,7 @@
       "explanation_consistent": true,
       "provenance_correct": true,
       "budget_compliant": true,
-      "seconds": 0.05194610000762623,
+      "seconds": 0.050420600004144944,
       "model_calls": 0
     },
     {
@@ -178,7 +178,7 @@
       "explanation_consistent": true,
       "provenance_correct": true,
       "budget_compliant": true,
-      "seconds": 0.003896499998518266,
+      "seconds": 0.0035521999961929396,
       "model_calls": 0
     },
     {
@@ -196,7 +196,7 @@
       "explanation_consistent": true,
       "provenance_correct": true,
       "budget_compliant": true,
-      "seconds": 0.08948310000414494,
+      "seconds": 0.08392810000805184,
       "model_calls": 0
     },
     {
@@ -214,7 +214,7 @@
       "explanation_consistent": true,
       "provenance_correct": true,
       "budget_compliant": true,
-      "seconds": 0.04883200000040233,
+      "seconds": 0.06320119999872986,
       "model_calls": 0
     },
     {
@@ -232,7 +232,7 @@
       "explanation_consistent": true,
       "provenance_correct": true,
       "budget_compliant": true,
-      "seconds": 0.08238780000829138,
+      "seconds": 0.06307970000489149,
       "model_calls": 0
     },
     {
@@ -250,7 +250,7 @@
       "explanation_consistent": true,
       "provenance_correct": true,
       "budget_compliant": true,
-      "seconds": 0.048686299996916205,
+      "seconds": 0.05991090000316035,
       "model_calls": 0
     }
   ],

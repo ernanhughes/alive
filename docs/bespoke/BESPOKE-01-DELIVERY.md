@@ -44,7 +44,7 @@ The detailed JSON/PNG receipts are in `validation/`. Checks performed during dev
   Docker smoke passed all eight checks against an isolated qualification container/database.
 - Fixture evaluation: 14/14 deterministic cases, 13/14 gated fixed-default cases, zero unauthorized
   selections; exact replay, provenance, explanation and resource-ceiling assertions passed.
-- Eleven behavioral mutants killed, zero survived, zero invalid; independent mutations still due
+- Twelve behavioral mutants killed, zero survived, zero invalid; independent mutations still due
   from the external reviewer.
 
 Wall time and record sizes are actual measurements in demonstration/evaluation JSON, not promises

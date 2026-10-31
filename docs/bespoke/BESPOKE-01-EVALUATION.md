@@ -60,9 +60,9 @@ includes real completed runs. No model is used and no workflow completion is wri
 `bespoke_mutations.py` reuses the existing PI-03A isolated temporary-copy runner. It first requires
 the target behavioral baseline to pass, applies only the named guard mutation, and counts a kill
 only for a relevant pytest failure. Syntax, setup and collection failures do not count. The checked
-campaign has 11 killed, zero survived and zero invalid mutants: goal binding, permission gate,
+campaign has 12 killed, zero survived and zero invalid mutants: goal binding, permission gate,
 wall ceiling, workflow pins, both capability pin checks, future availability, score ordering,
-record digest, stale recipe handoff, handoff wall budget and policy identity.
+record digest, stale recipe handoff, handoff wall budget policy identity and configured model-provider readiness.
 
 An initial B9 campaign definition had a nonmatching formatted-code pattern; it stopped before
 running the mutant and was corrected. B9–B11 were then run with merged receipts. That harness

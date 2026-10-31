@@ -1,5 +1,4 @@
 {
-  "production_code_head": "d499a1026363c8f9eabe80ee7d790f49646ee248",
   "source_image_parity": {
     "alive/app.py": "eee26277854f6b9ddf2fd087e1a3ae215248e5aaa4ea10fa3bba19ef535390da",
     "alive/bespoke/__init__.py": "934ea6d9c75b6a5071c15b818200fc42ec52effbf6703b326a801bee6b036db2",
@@ -14,11 +13,11 @@
     "alive/bespoke/recipes/controlled-comparison.yaml": "6ae8f84bc0d8bcc34acd97514caa0c52904cec85efd713ff44acdf742e492349",
     "alive/bespoke/recipes/discussion-source.yaml": "7068bd8f1d17673e89767acd4b6ab691b8c932e826171f9d87f1f801b031521d",
     "alive/bespoke/recipes/scientific-document.yaml": "c976a80b2701f6546cd1d03c01c4ed7a40c14973374dba0a07b5051174d9e567",
-    "alive/bespoke/selector.py": "cb6fd51edfe9ddaf921b70301247d1713867919f348fd1c7f67201a1fb2284a0",
+    "alive/bespoke/selector.py": "9c7b753fdebe452316f6cbd0d6f35fd5712e596ae7d73ee70a51eb5115c31823",
     "alive/bespoke/store.py": "42be64e25c75886d73f01a8179201196b670ddca022e2522e9813c47ffc7bcbb",
     "alive/capabilities/manifest.py": "823bd4523a3eb07cb45e7fddd94f7949ba2f7269b7c2b57419d2b7f906cd1f42"
   },
-  "docker_image": "sha256:e31fd1b287bcaff41befc3ec0bda7aeb91731a29cec3c2521892a55081d9b53f",
+  "docker_image": "sha256:0e4113c5c3d87177b607673505b42b32619a40937408bd607746bf9d67696713",
   "docker_smoke": "8 passed; Bespoke authenticated catalogue 5 recipes with execution disabled",
   "focused_regressions": 154,
   "dashboard_tests": 105,
@@ -28,20 +27,22 @@
     "historical_writes": 0
   },
   "mutations": {
-    "KILLED": 11,
+    "KILLED": 12,
     "SURVIVED": 0,
     "INVALID": 0
   },
   "performance": {
     "source_comparison": {
-      "selection_seconds": 0.06765379999706056,
+      "selection_seconds": 0.09107579999545123,
       "record_bytes": 11082
     },
     "repository": {
-      "selection_seconds": 0.033762999999453314,
+      "selection_seconds": 0.059135799994692206,
       "record_bytes": 10329
     }
   },
   "independent_review": "pending; these are implementation-authored receipts",
-  "full_ci": "final-head links and statuses maintained in the draft PR description"
+  "full_ci": "final-head links and statuses maintained in the draft PR description",
+  "qualification_base_commit": "bba4b1de7aba86744750950bd88ad21500d4531d",
+  "qualified_correction": "Model-backed procedures require a configured provider; final PR head recorded in PR description."
 }

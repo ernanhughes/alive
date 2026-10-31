@@ -14,6 +14,14 @@ TEST = "tests/test_bespoke.py::"
 
 campaign.CASES = [
     (
+        "B12",
+        "model workflow needs configured provider",
+        SEL,
+        "or not kernel.settings.alive_meta_api_key",
+        "or False",
+        TEST + "test_model_workflow_without_configured_provider_is_ineligible",
+    ),
+    (
         "B1",
         "request cannot substitute a goal",
         CTX,

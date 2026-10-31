@@ -419,3 +419,25 @@ def test_changed_selection_policy_is_not_silently_used_for_handoff(client, appro
             first["id"],
             approved["approval_ref"],
         )
+
+
+def test_model_workflow_without_configured_provider_is_ineligible(client, approved):
+    from alive.workflows import store as workflow_store
+    from alive.workflows.examples import definition
+
+    kernel = client.app.state.kernel
+    kernel.settings.alive_model_transport = "pi"
+    kernel.settings.alive_meta_api_key = ""
+    call(client, workflow_store.register_definition, definition(model=True), status="active")
+    recipe = next(r for r in load_catalogue() if r.id == "bounded-evidence-review")
+    client.app.state.bespoke_recipes = (recipe,)
+    approved["objective"]["kind"] = "assess_claims"
+    approved["constraints"] = {
+        "permissions": ["evidence.read", "workflow.write", "model.infer"],
+        "max_model_calls": 1,
+        "max_output_tokens": 1536,
+        "outbound_allowed": True,
+    }
+    result = recommend(client, approved).json()["selection"]
+    assert result["state"] == "abstained"
+    assert result["candidates"][0]["reasons"] == ["deployment_policy_conflict"]

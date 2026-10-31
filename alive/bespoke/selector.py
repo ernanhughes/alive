@@ -57,7 +57,9 @@ async def evaluate(session, kernel, recipe, request, grant, context):
         reasons.append("resource_limit_exceeded")
     if not set(limits.permissions) <= set(ceiling.permissions):
         reasons.append("permission_not_grantable")
-    if limits.max_model_calls and kernel.settings.alive_model_transport != "pi":
+    if limits.max_model_calls and (
+        kernel.settings.alive_model_transport != "pi" or not kernel.settings.alive_meta_api_key
+    ):
         reasons.append("deployment_policy_conflict")
     for pin in recipe.capabilities:
         try:
