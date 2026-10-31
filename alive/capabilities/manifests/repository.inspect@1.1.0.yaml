@@ -1,0 +1,246 @@
+schema_version: 1
+id: repository.inspect
+version: 1.1.0
+name: Repository Inspection
+description: List and read an explicit bounded selection from an owner-approved captured repository. Custody
+  is re-verified at every use. Retrieval is not semantic verification.
+implementation:
+  provider: builtin
+  id: repository-inspector-v2
+execution:
+  kind: deterministic
+  side_effects: read
+  timeout_seconds: 30
+  max_input_bytes: 8192
+  max_output_bytes: 65536
+  max_input_items: 4
+  max_invocations: 1
+  retry_policy: none
+  max_files: 20
+  max_source_bytes: 32768
+permissions:
+  filesystem:
+    mode: none
+    roots: []
+  network:
+    mode: none
+  process:
+    mode: none
+  evidence: none
+  persistence: none
+  sources: approved_capture
+inputs:
+  type: object
+  additionalProperties: false
+  properties:
+    source_ref:
+      type: string
+      maxLength: 36
+    mode:
+      type: string
+      maxLength: 8
+      enum:
+      - list
+      - read
+    paths:
+      type: array
+      maxItems: 20
+      items:
+        type: string
+        maxLength: 256
+  required:
+  - source_ref
+  - mode
+  - paths
+outputs:
+  type: object
+  additionalProperties: false
+  properties:
+    source_ref:
+      type: string
+      maxLength: 36
+    source_sha256:
+      type: string
+      maxLength: 64
+    scoped_sha256:
+      type: string
+      maxLength: 64
+    mode:
+      type: string
+      maxLength: 8
+      enum:
+      - list
+      - read
+    entries:
+      type: array
+      maxItems: 128
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          path:
+            type: string
+            maxLength: 256
+          bytes:
+            type: integer
+            minimum: 0
+            maximum: 400000
+          sha256:
+            type: string
+            maxLength: 64
+        required:
+        - path
+        - bytes
+        - sha256
+    files:
+      type: array
+      maxItems: 20
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          path:
+            type: string
+            maxLength: 256
+          content:
+            type: string
+            maxLength: 32768
+          sha256:
+            type: string
+            maxLength: 64
+          bytes:
+            type: integer
+            minimum: 0
+            maximum: 32768
+          source_id:
+            type: string
+            maxLength: 200
+          locator:
+            type: object
+            additionalProperties: false
+            properties:
+              kind:
+                type: string
+                maxLength: 8
+                enum:
+                - file
+              path:
+                type: string
+                maxLength: 256
+              sha256:
+                type: string
+                maxLength: 64
+            required:
+            - kind
+            - path
+            - sha256
+        required:
+        - path
+        - content
+        - sha256
+        - bytes
+        - source_id
+        - locator
+    omitted:
+      type: array
+      maxItems: 256
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          path:
+            type: string
+            maxLength: 256
+          reason:
+            type: string
+            maxLength: 100
+        required:
+        - path
+        - reason
+    limits_applied:
+      type: object
+      additionalProperties: false
+      properties:
+        entries_total:
+          type: integer
+          minimum: 0
+          maximum: 100000
+        entries_returned:
+          type: integer
+          minimum: 0
+          maximum: 128
+        entries_truncated:
+          type: boolean
+        max_files:
+          type: integer
+          minimum: 0
+          maximum: 64
+        max_source_bytes:
+          type: integer
+          minimum: 0
+          maximum: 65536
+      required:
+      - entries_total
+      - entries_returned
+      - entries_truncated
+      - max_files
+      - max_source_bytes
+    provenance:
+      type: object
+      additionalProperties: false
+      properties:
+        kind:
+          type: string
+          maxLength: 24
+          enum:
+          - approved_capture/v1
+        source_type:
+          type: string
+          maxLength: 16
+        classification:
+          type: string
+          maxLength: 24
+        captured_at:
+          type: string
+          maxLength: 40
+        approval_expires_at:
+          type: string
+          maxLength: 40
+        atomic_repository_snapshot:
+          type: boolean
+      required:
+      - kind
+      - source_type
+      - classification
+      - captured_at
+      - approval_expires_at
+      - atomic_repository_snapshot
+    semantic_status:
+      type: string
+      maxLength: 12
+      enum:
+      - unverified
+  required:
+  - source_ref
+  - source_sha256
+  - scoped_sha256
+  - mode
+  - entries
+  - files
+  - omitted
+  - limits_applied
+  - provenance
+  - semantic_status
+presentation:
+  category: development
+  icon: folder-search
+  tags:
+  - inspection
+  - repository
+  - source
+supported_source_types:
+- repository
+examples:
+- source_ref: 00000000-0000-0000-0000-000000000000
+  mode: list
+  paths: []

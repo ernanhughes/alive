@@ -68,7 +68,11 @@ def test_authenticated_catalogue_and_no_execution_route(client):
     assert len(body["recipes"]) == 5
     assert all(r["status"] == "unavailable" for r in body["recipes"])
     scientific = next(r for r in body["recipes"] if r["recipe"]["id"] == "scientific-document")
-    assert "missing_capability" in scientific["reasons"]
+    # PI-03B provides document.extract, so the capability is no longer missing. The recipe is still
+    # a placeholder (status future, all-zero pins), so it stays unavailable and says why: its pin
+    # does not match the real manifest. Connecting a real recipe is the integration milestone.
+    assert "missing_capability" not in scientific["reasons"]
+    assert {"recipe_unavailable", "capability_identity_changed"} <= set(scientific["reasons"])
     for action in ("execute", "authorize", "install", "recipes"):
         assert client.post(BASE + "/" + action, json={}).status_code in (404, 405)
 

@@ -18,6 +18,9 @@ from alive.models import now
 from alive.workflows.context import Refused, require
 
 REFERENCE = re.compile(r"^[a-z][a-z0-9-]{2,63}$")
+# Ceilings for a custody capture. The defaults (64 files, 64 KiB) are unchanged for PI-03A callers.
+CAPTURE_MAX_FILES = 256
+CAPTURE_MAX_BYTES = 400000
 DEVICE_NAMES = {"con", "prn", "aux", "nul", "conin$", "conout$"} | {
     f"{kind}{n}" for kind in ("com", "lpt") for n in range(1, 10)
 }
@@ -200,9 +203,9 @@ def capture_repository(reference, root, paths, *, max_files=64, max_source_bytes
     )
     require(
         type(max_files) is int
-        and 1 <= max_files <= 64
+        and 1 <= max_files <= CAPTURE_MAX_FILES
         and type(max_source_bytes) is int
-        and 1 <= max_source_bytes <= 65536,
+        and 1 <= max_source_bytes <= CAPTURE_MAX_BYTES,
         "repository_capture_limits",
     )
     root = Path(root)

@@ -1,0 +1,444 @@
+{
+  "mutants": [
+    {
+      "id": "S1",
+      "mutation": "approval no longer requires the owner to restate the exact digest",
+      "files": [
+        "alive/sources/custody.py"
+      ],
+      "target": "tests/test_source_custody.py::test_nothing_is_usable_until_the_owner_approves_the_exact_digest",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "require(confirm_sha256 == capture.content_sha256, \"source_digest_mismatch\")"
+      ],
+      "replacements": [
+        "pass"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n______ test_nothing_is_usable_until_the_owner_approves_the_exact_digest _______\ntests\\test_source_custody.py:117: in test_nothing_is_usable_until_the_owner_approves_the_exact_digest\n    with refused(\"source_digest_mismatch\"):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   Failed: DID NOT RAISE Refused\n============================== warnings summary ===============================\ntests/test_source_custody.py::test_nothing_is_usable_until_the_owner_approves_the_exact_digest\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_custody.py::test_nothing_is_usable_until_the_owner_approves_the_exact_digest - Failed: DID NOT RAISE Refused\n1 failed, 1 warning in 1.07s\n",
+      "returncode": 1,
+      "source_sha256": "1e2139fc663b090b282441ef60f5f1d2baa06b377b93419f7557b6d9f7edabfb"
+    },
+    {
+      "id": "S2",
+      "mutation": "use no longer compares the grant's digest with the capture and approval",
+      "files": [
+        "alive/sources/custody.py"
+      ],
+      "target": "tests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "approval.content_sha256 == capture.content_sha256 == resources[\"content_sha256\"],"
+      ],
+      "replacements": [
+        "True,"
+      ],
+      "assertion": "checked_at_the_moment_of_use[expired-source_approval_expired]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_digest-source_digest_mismatch]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_scope-source_scope_mismatch]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_capture-source_approval_missing]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[extra_key-source_resources_required]\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_digest-source_digest_mismatch] - AssertionError: assert None == 'source_digest_mismatch'\n +  where None = call(<starlette.testclient.TestClient object at 0x0000022249BBE2C0>, <function test_every_custody_fact_is_rechecked_at_the_moment_of_use.<locals>.go at 0x000002224A1CBB00>)\n1 failed, 6 passed, 7 warnings in 11.75s\n",
+      "returncode": 1,
+      "source_sha256": "1e2139fc663b090b282441ef60f5f1d2baa06b377b93419f7557b6d9f7edabfb"
+    },
+    {
+      "id": "S3",
+      "mutation": "a withdrawn approval can still be used",
+      "files": [
+        "alive/sources/custody.py"
+      ],
+      "target": "tests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "require(approval.withdrawn_at is None, \"source_withdrawn\")"
+      ],
+      "replacements": [
+        "pass"
+      ],
+      "assertion": "tody_fact_is_rechecked_at_the_moment_of_use[expired-source_approval_expired]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_digest-source_digest_mismatch]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_scope-source_scope_mismatch]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_capture-source_approval_missing]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[extra_key-source_resources_required]\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[withdrawn-source_withdrawn] - AssertionError: assert None == 'source_withdrawn'\n +  where None = call(<starlette.testclient.TestClient object at 0x000001F126CB42D0>, <function test_every_custody_fact_is_rechecked_at_the_moment_of_use.<locals>.go at 0x000001F126CB20C0>)\n1 failed, 6 passed, 7 warnings in 11.39s\n",
+      "returncode": 1,
+      "source_sha256": "1e2139fc663b090b282441ef60f5f1d2baa06b377b93419f7557b6d9f7edabfb"
+    },
+    {
+      "id": "S4",
+      "mutation": "an expired approval can still be used",
+      "files": [
+        "alive/sources/custody.py"
+      ],
+      "target": "tests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "require(aware(approval.expires_at) > now(), \"source_approval_expired\")"
+      ],
+      "replacements": [
+        "pass"
+      ],
+      "assertion": "_rechecked_at_the_moment_of_use[expired-source_approval_expired]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_digest-source_digest_mismatch]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_scope-source_scope_mismatch]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_capture-source_approval_missing]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[extra_key-source_resources_required]\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[expired-source_approval_expired] - AssertionError: assert None == 'source_approval_expired'\n +  where None = call(<starlette.testclient.TestClient object at 0x0000021BB03D4B90>, <function test_every_custody_fact_is_rechecked_at_the_moment_of_use.<locals>.go at 0x0000021BB040C860>)\n1 failed, 6 passed, 7 warnings in 11.49s\n",
+      "returncode": 1,
+      "source_sha256": "1e2139fc663b090b282441ef60f5f1d2baa06b377b93419f7557b6d9f7edabfb"
+    },
+    {
+      "id": "S5",
+      "mutation": "an operation the owner did not approve can run",
+      "files": [
+        "alive/sources/custody.py"
+      ],
+      "target": "tests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "require(operation in list(approval.operations), \"source_operation_not_approved\")"
+      ],
+      "replacements": [
+        "pass"
+      ],
+      "assertion": "ment_of_use[expired-source_approval_expired]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_digest-source_digest_mismatch]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_scope-source_scope_mismatch]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_capture-source_approval_missing]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[extra_key-source_resources_required]\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[other_operation-source_operation_not_approved] - AssertionError: assert None == 'source_operation_not_approved'\n +  where None = call(<starlette.testclient.TestClient object at 0x000001930F4FE510>, <function test_every_custody_fact_is_rechecked_at_the_moment_of_use.<locals>.go at 0x000001930F805260>)\n1 failed, 6 passed, 7 warnings in 10.70s\n",
+      "returncode": 1,
+      "source_sha256": "1e2139fc663b090b282441ef60f5f1d2baa06b377b93419f7557b6d9f7edabfb"
+    },
+    {
+      "id": "S6",
+      "mutation": "an approval from another instance can be used",
+      "files": [
+        "alive/sources/custody.py"
+      ],
+      "target": "tests/test_source_custody.py::test_custody_is_instance_scoped",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "approval.instance_id == capture.instance_id == kernel.instance_id,"
+      ],
+      "replacements": [
+        "True,"
+      ],
+      "assertion": "______________________\ntests\\test_source_custody.py:363: in test_custody_is_instance_scoped\n    assert call(client, go) == (\nE   AssertionError: assert ('source_appr..._found', None) == ('source_appr...nce_mismatch')\nE     \nE     At index 2 diff: None != 'source_instance_mismatch'\nE     \nE     Full diff:\nE       (\nE           'source_approval_missing',\nE           'source_not_found',\nE     -     'source_instance_mismatch',\nE     +     None,\nE       )\n============================== warnings summary ===============================\ntests/test_source_custody.py::test_custody_is_instance_scoped\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_custody.py::test_custody_is_instance_scoped - AssertionError: assert ('source_appr..._found', None) == ('source_appr...nce_mismatch')\n  \n  At index 2 diff: None != 'source_instance_mismatch'\n  \n  Full diff:\n    (\n        'source_approval_missing',\n        'source_not_found',\n  -     'source_instance_mismatch',\n  +     None,\n    )\n1 failed, 1 warning in 1.04s\n",
+      "returncode": 1,
+      "source_sha256": "1e2139fc663b090b282441ef60f5f1d2baa06b377b93419f7557b6d9f7edabfb"
+    },
+    {
+      "id": "S7",
+      "mutation": "use no longer compares the grant's scope hash",
+      "files": [
+        "alive/sources/custody.py"
+      ],
+      "target": "tests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "approval.scope_sha256 == resources[\"scope_sha256\"] == digest(approval.scope),"
+      ],
+      "replacements": [
+        "True,"
+      ],
+      "assertion": "s_rechecked_at_the_moment_of_use[expired-source_approval_expired]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_digest-source_digest_mismatch]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_scope-source_scope_mismatch]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_capture-source_approval_missing]\ntests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[extra_key-source_resources_required]\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_custody.py::test_every_custody_fact_is_rechecked_at_the_moment_of_use[wrong_scope-source_scope_mismatch] - AssertionError: assert None == 'source_scope_mismatch'\n +  where None = call(<starlette.testclient.TestClient object at 0x0000025A57406060>, <function test_every_custody_fact_is_rechecked_at_the_moment_of_use.<locals>.go at 0x0000025A57BEFA60>)\n1 failed, 6 passed, 7 warnings in 5.37s\n",
+      "returncode": 1,
+      "source_sha256": "1e2139fc663b090b282441ef60f5f1d2baa06b377b93419f7557b6d9f7edabfb"
+    },
+    {
+      "id": "S8",
+      "mutation": "content altered under the application is not detected at use",
+      "files": [
+        "alive/sources/custody.py"
+      ],
+      "target": "tests/test_source_custody.py::test_content_changed_underneath_the_application_is_detected",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "require(digest(capture.content) == capture.content_sha256, \"source_content_changed\")\n        scoped = apply_scope("
+      ],
+      "replacements": [
+        "scoped = apply_scope("
+      ],
+      "assertion": "content_changed_underneath_the_application_is_detected\n    assert call(client, go) == (\"source_content_changed\", \"source_content_changed\")\nE   AssertionError: assert (None, 'sourc...tent_changed') == ('source_cont...tent_changed')\nE     \nE     At index 0 diff: None != 'source_content_changed'\nE     \nE     Full diff:\nE       (\nE     -     'source_content_changed',\nE     +     None,\nE           'source_content_changed',\nE       )\n============================== warnings summary ===============================\ntests/test_source_custody.py::test_content_changed_underneath_the_application_is_detected\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_custody.py::test_content_changed_underneath_the_application_is_detected - AssertionError: assert (None, 'sourc...tent_changed') == ('source_cont...tent_changed')\n  \n  At index 0 diff: None != 'source_content_changed'\n  \n  Full diff:\n    (\n  -     'source_content_changed',\n  +     None,\n        'source_content_changed',\n    )\n1 failed, 1 warning in 1.05s\n",
+      "returncode": 1,
+      "source_sha256": "1e2139fc663b090b282441ef60f5f1d2baa06b377b93419f7557b6d9f7edabfb"
+    },
+    {
+      "id": "S9",
+      "mutation": "the approved scope is ignored: everything captured is returned",
+      "files": [
+        "alive/sources/custody.py"
+      ],
+      "target": "tests/test_source_custody.py::test_approval_resolves_to_exactly_the_approved_scope",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "kept = {**content, listing: [i for i in content[listing] if str(i[key]) in allowed]}"
+      ],
+      "replacements": [
+        "kept = dict(content)"
+      ],
+      "assertion": "al_resolves_to_exactly_the_approved_scope\n    assert [f[\"path\"] for f in content[\"files\"]] == [\"README.md\"]  # others are absent, not hidden\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   AssertionError: assert ['README.md',... 'src/app.py'] == ['README.md']\nE     \nE     Left contains 2 more items, first extra item: 'docs/a.md'\nE     \nE     Full diff:\nE       [\nE           'README.md',\nE     +     'docs/a.md',\nE     +     'src/app.py',\nE       ]\n============================== warnings summary ===============================\ntests/test_source_custody.py::test_approval_resolves_to_exactly_the_approved_scope\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_custody.py::test_approval_resolves_to_exactly_the_approved_scope - AssertionError: assert ['README.md',... 'src/app.py'] == ['README.md']\n  \n  Left contains 2 more items, first extra item: 'docs/a.md'\n  \n  Full diff:\n    [\n        'README.md',\n  +     'docs/a.md',\n  +     'src/app.py',\n    ]\n1 failed, 1 warning in 1.03s\n",
+      "returncode": 1,
+      "source_sha256": "1e2139fc663b090b282441ef60f5f1d2baa06b377b93419f7557b6d9f7edabfb"
+    },
+    {
+      "id": "S10",
+      "mutation": "approval no longer re-verifies the stored content's own digest",
+      "files": [
+        "alive/sources/custody.py"
+      ],
+      "target": "tests/test_source_custody.py::test_content_changed_underneath_the_application_is_detected",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "require(digest(capture.content) == capture.content_sha256, \"source_content_changed\")\n        scope = checked_scope("
+      ],
+      "replacements": [
+        "scope = checked_scope("
+      ],
+      "assertion": "content_changed_underneath_the_application_is_detected\n    assert call(client, go) == (\"source_content_changed\", \"source_content_changed\")\nE   AssertionError: assert ('source_cont...hanged', None) == ('source_cont...tent_changed')\nE     \nE     At index 1 diff: None != 'source_content_changed'\nE     \nE     Full diff:\nE       (\nE           'source_content_changed',\nE     -     'source_content_changed',\nE     +     None,\nE       )\n============================== warnings summary ===============================\ntests/test_source_custody.py::test_content_changed_underneath_the_application_is_detected\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_custody.py::test_content_changed_underneath_the_application_is_detected - AssertionError: assert ('source_cont...hanged', None) == ('source_cont...tent_changed')\n  \n  At index 1 diff: None != 'source_content_changed'\n  \n  Full diff:\n    (\n        'source_content_changed',\n  -     'source_content_changed',\n  +     None,\n    )\n1 failed, 1 warning in 1.03s\n",
+      "returncode": 1,
+      "source_sha256": "1e2139fc663b090b282441ef60f5f1d2baa06b377b93419f7557b6d9f7edabfb"
+    },
+    {
+      "id": "S11",
+      "mutation": "a reused request id with other scope is not a conflict",
+      "files": [
+        "alive/sources/custody.py"
+      ],
+      "target": "tests/test_source_custody.py::test_approval_is_idempotent_by_request_and_a_reused_id_with_other_terms_conflicts",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "and existing.scope_sha256 == digest(scope),"
+      ],
+      "replacements": [
+        "and True,"
+      ],
+      "assertion": "th_other_terms_conflicts\n    assert call(client, go) == \"source_request_id_conflict\"\nE   AssertionError: assert None == 'source_request_id_conflict'\nE    +  where None = call(<starlette.testclient.TestClient object at 0x000001D6CF9823C0>, <function test_approval_is_idempotent_by_request_and_a_reused_id_with_other_terms_conflicts.<locals>.go at 0x000001D6CF9B8540>)\n============================== warnings summary ===============================\ntests/test_source_custody.py::test_approval_is_idempotent_by_request_and_a_reused_id_with_other_terms_conflicts\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_custody.py::test_approval_is_idempotent_by_request_and_a_reused_id_with_other_terms_conflicts - AssertionError: assert None == 'source_request_id_conflict'\n +  where None = call(<starlette.testclient.TestClient object at 0x000001D6CF9823C0>, <function test_approval_is_idempotent_by_request_and_a_reused_id_with_other_terms_conflicts.<locals>.go at 0x000001D6CF9B8540>)\n1 failed, 1 warning in 1.04s\n",
+      "returncode": 1,
+      "source_sha256": "1e2139fc663b090b282441ef60f5f1d2baa06b377b93419f7557b6d9f7edabfb"
+    },
+    {
+      "id": "S12",
+      "mutation": "an approval scope may name items that were never captured",
+      "files": [
+        "alive/sources/custody.py"
+      ],
+      "target": "tests/test_source_custody.py::test_approval_terms_are_bounded_and_validated",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "and set(items) <= set(names),"
+      ],
+      "replacements": [
+        "and True,"
+      ],
+      "assertion": "================== warnings summary ===============================\ntests/test_source_custody.py::test_approval_terms_are_bounded_and_validated[terms0]\ntests/test_source_custody.py::test_approval_terms_are_bounded_and_validated[terms1]\ntests/test_source_custody.py::test_approval_terms_are_bounded_and_validated[terms2]\ntests/test_source_custody.py::test_approval_terms_are_bounded_and_validated[terms3]\ntests/test_source_custody.py::test_approval_terms_are_bounded_and_validated[terms4]\ntests/test_source_custody.py::test_approval_terms_are_bounded_and_validated[terms5]\ntests/test_source_custody.py::test_approval_terms_are_bounded_and_validated[terms6]\ntests/test_source_custody.py::test_approval_terms_are_bounded_and_validated[terms7]\ntests/test_source_custody.py::test_approval_terms_are_bounded_and_validated[terms8]\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_custody.py::test_approval_terms_are_bounded_and_validated[terms3] - assert (None is not None)\n1 failed, 8 passed, 9 warnings in 6.79s\n",
+      "returncode": 1,
+      "source_sha256": "1e2139fc663b090b282441ef60f5f1d2baa06b377b93419f7557b6d9f7edabfb"
+    },
+    {
+      "id": "S13",
+      "mutation": "a memory changed since approval is returned instead of omitted",
+      "files": [
+        "alive/sources/custody.py"
+      ],
+      "target": "tests/test_source_capabilities.py::test_collection_retrieval_uses_live_memories_and_omits_changed_ones",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "elif hashlib.sha256(row.content.encode()).hexdigest() != item[\"content_sha256\"]:"
+      ],
+      "replacements": [
+        "elif False:"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_____ test_collection_retrieval_uses_live_memories_and_omits_changed_ones _____\ntests\\test_source_capabilities.py:464: in test_collection_retrieval_uses_live_memories_and_omits_changed_ones\n    assert after[\"omitted\"][0][\"reason\"] == \"changed_since_approval\"  # content is never substituted\n           ^^^^^^^^^^^^^^^^^^^\nE   IndexError: list index out of range\n============================== warnings summary ===============================\ntests/test_source_capabilities.py::test_collection_retrieval_uses_live_memories_and_omits_changed_ones\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_capabilities.py::test_collection_retrieval_uses_live_memories_and_omits_changed_ones - IndexError: list index out of range\n1 failed, 1 warning in 1.82s\n",
+      "returncode": 1,
+      "source_sha256": "1e2139fc663b090b282441ef60f5f1d2baa06b377b93419f7557b6d9f7edabfb"
+    },
+    {
+      "id": "S15",
+      "mutation": "a capability can read a source of a type it does not support (runner AND adapter)",
+      "files": [
+        "alive/capabilities/execution.py",
+        "alive/capabilities/source_adapters.py"
+      ],
+      "target": "tests/test_source_capabilities.py::test_a_source_type_mismatch_is_refused",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "resources.source_type in manifest[\"supported_source_types\"], \"source_type_not_supported\"",
+        "require(source.source_type == \"repository\", \"source_type_not_supported\")"
+      ],
+      "replacements": [
+        "True, \"source_type_not_supported\"",
+        "pass"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n___________________ test_a_source_type_mismatch_is_refused ____________________\ntests\\test_source_capabilities.py:249: in test_a_source_type_mismatch_is_refused\n    assert stage[\"error_category\"] == \"source_type_not_supported\"\nE   AssertionError: assert 'adapter_execution_failure' == 'source_type_not_supported'\nE     \nE     - source_type_not_supported\nE     + adapter_execution_failure\n============================== warnings summary ===============================\ntests/test_source_capabilities.py::test_a_source_type_mismatch_is_refused\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_capabilities.py::test_a_source_type_mismatch_is_refused - AssertionError: assert 'adapter_execution_failure' == 'source_type_not_supported'\n  \n  - source_type_not_supported\n  + adapter_execution_failure\n1 failed, 1 warning in 1.44s\n",
+      "returncode": 1,
+      "source_sha256": "4ba3c50495b826e8d5ff8424de6d3f61e94b49bcaa76c37f4d09206d02256e83"
+    },
+    {
+      "id": "S16",
+      "mutation": "a stage can read a source other than the one the grant names",
+      "files": [
+        "alive/capabilities/execution.py"
+      ],
+      "target": "tests/test_source_capabilities.py::test_a_stage_cannot_name_a_different_source_than_the_one_approved",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "context.inputs.get(\"source_ref\") == resources.source_ref, \"source_ref_not_approved\""
+      ],
+      "replacements": [
+        "True, \"source_ref_not_approved\""
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n______ test_a_stage_cannot_name_a_different_source_than_the_one_approved ______\ntests\\test_source_capabilities.py:232: in test_a_stage_cannot_name_a_different_source_than_the_one_approved\n    assert final[\"status\"] == states.FAILED and stage[\"error_category\"] == \"source_ref_not_approved\"\nE   AssertionError: assert ('COMPLETED' == 'FAILED'\nE     \nE     - FAILED\nE     + COMPLETED)\n============================== warnings summary ===============================\ntests/test_source_capabilities.py::test_a_stage_cannot_name_a_different_source_than_the_one_approved\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_capabilities.py::test_a_stage_cannot_name_a_different_source_than_the_one_approved - AssertionError: assert ('COMPLETED' == 'FAILED'\n  \n  - FAILED\n  + COMPLETED)\n1 failed, 1 warning in 2.65s\n",
+      "returncode": 1,
+      "source_sha256": "4ba3c50495b826e8d5ff8424de6d3f61e94b49bcaa76c37f4d09206d02256e83"
+    },
+    {
+      "id": "S17",
+      "mutation": "a path outside the approved scope is skipped instead of refused",
+      "files": [
+        "alive/capabilities/source_adapters.py"
+      ],
+      "target": "tests/test_source_capabilities.py::test_repository_refuses_every_out_of_scope_read",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "require(set(names) <= set(files) | omitted_paths, \"source_path_not_approved\")"
+      ],
+      "replacements": [
+        "pass"
+      ],
+      "assertion": "sitory_refuses_every_out_of_scope_read[paths1]\ntests/test_source_capabilities.py::test_repository_refuses_every_out_of_scope_read[paths2]\ntests/test_source_capabilities.py::test_repository_refuses_every_out_of_scope_read[paths3]\ntests/test_source_capabilities.py::test_repository_refuses_every_out_of_scope_read[paths4]\ntests/test_source_capabilities.py::test_repository_refuses_every_out_of_scope_read[paths5]\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_capabilities.py::test_repository_refuses_every_out_of_scope_read[paths0] - AssertionError: assert ('COMPLETED' == 'FAILED'\n  \n  - FAILED\n  + COMPLETED)\nFAILED tests/test_source_capabilities.py::test_repository_refuses_every_out_of_scope_read[paths1] - AssertionError: assert ('COMPLETED' == 'FAILED'\n  \n  - FAILED\n  + COMPLETED)\nFAILED tests/test_source_capabilities.py::test_repository_refuses_every_out_of_scope_read[paths3] - AssertionError: assert ('COMPLETED' == 'FAILED'\n  \n  - FAILED\n  + COMPLETED)\n3 failed, 3 passed, 6 warnings in 13.86s\n",
+      "returncode": 1,
+      "source_sha256": "8263fe56c61352a26a697da83beb0d076bda77a93d66867200747b884264fec7"
+    },
+    {
+      "id": "S18",
+      "mutation": "the owner-approved per-call byte limit is ignored",
+      "files": [
+        "alive/capabilities/source_adapters.py"
+      ],
+      "target": "tests/test_source_capabilities.py::test_a_read_over_the_owner_approved_byte_limit_is_refused_not_truncated",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "require(sum(f[\"bytes\"] for f in chosen) <= limits[\"max_source_bytes\"], \"source_byte_limit\")"
+      ],
+      "replacements": [
+        "pass"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n___ test_a_read_over_the_owner_approved_byte_limit_is_refused_not_truncated ___\ntests\\test_source_capabilities.py:565: in test_a_read_over_the_owner_approved_byte_limit_is_refused_not_truncated\n    assert both[\"status\"] == states.FAILED and stage[\"error_category\"] == \"source_byte_limit\"\nE   AssertionError: assert ('COMPLETED' == 'FAILED'\nE     \nE     - FAILED\nE     + COMPLETED)\n============================== warnings summary ===============================\ntests/test_source_capabilities.py::test_a_read_over_the_owner_approved_byte_limit_is_refused_not_truncated\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_capabilities.py::test_a_read_over_the_owner_approved_byte_limit_is_refused_not_truncated - AssertionError: assert ('COMPLETED' == 'FAILED'\n  \n  - FAILED\n  + COMPLETED)\n1 failed, 1 warning in 3.18s\n",
+      "returncode": 1,
+      "source_sha256": "8263fe56c61352a26a697da83beb0d076bda77a93d66867200747b884264fec7"
+    },
+    {
+      "id": "S19",
+      "mutation": "a different parser build is accepted for an approved extraction",
+      "files": [
+        "alive/capabilities/source_adapters.py"
+      ],
+      "target": "tests/test_source_capabilities.py::test_a_changed_parser_build_requires_recapture",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "require(content[\"parser\"] == parser_identity(), \"parser_fingerprint_mismatch\")"
+      ],
+      "replacements": [
+        "pass"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_______________ test_a_changed_parser_build_requires_recapture ________________\ntests\\test_source_capabilities.py:355: in test_a_changed_parser_build_requires_recapture\n    assert (\nE   AssertionError: assert ('COMPLETED' == 'FAILED'\nE     \nE     - FAILED\nE     + COMPLETED)\n============================== warnings summary ===============================\ntests/test_source_capabilities.py::test_a_changed_parser_build_requires_recapture\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_capabilities.py::test_a_changed_parser_build_requires_recapture - AssertionError: assert ('COMPLETED' == 'FAILED'\n  \n  - FAILED\n  + COMPLETED)\n1 failed, 1 warning in 2.66s\n",
+      "returncode": 1,
+      "source_sha256": "8263fe56c61352a26a697da83beb0d076bda77a93d66867200747b884264fec7"
+    },
+    {
+      "id": "S20",
+      "mutation": "browser content claims it is an instruction",
+      "files": [
+        "alive/capabilities/source_adapters.py"
+      ],
+      "target": "tests/test_source_capabilities.py::test_browser_text_is_returned_as_inert_untrusted_data",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "\"content_is_instructions\": False,"
+      ],
+      "replacements": [
+        "\"content_is_instructions\": True,"
+      ],
+      "assertion": "exception\nC:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\anyio\\from_thread.py:265: in _call_func\n    retval = await retval_or_awaitable\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_source_capabilities.py:397: in go\n    return event_id, final, stage, await stage_output(k, stage)\n                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ntests\\test_source_capabilities.py:98: in stage_output\n    event = await session.scalar(select(Event).where(Event.id == stage[\"output_ref\"][6:]))\n                                                                 ^^^^^^^^^^^^^^^^^^^^^^^\nE   TypeError: 'NoneType' object is not subscriptable\n============================== warnings summary ===============================\ntests/test_source_capabilities.py::test_browser_text_is_returned_as_inert_untrusted_data\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_capabilities.py::test_browser_text_is_returned_as_inert_untrusted_data - TypeError: 'NoneType' object is not subscriptable\n1 failed, 1 warning in 1.49s\n",
+      "returncode": 1,
+      "source_sha256": "8263fe56c61352a26a697da83beb0d076bda77a93d66867200747b884264fec7"
+    },
+    {
+      "id": "S21",
+      "mutation": "retrieved content is labelled verified",
+      "files": [
+        "alive/capabilities/source_adapters.py"
+      ],
+      "target": "tests/test_source_capabilities.py::test_repository_lists_and_reads_exactly_the_approved_scope",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "\"semantic_status\": \"unverified\","
+      ],
+      "replacements": [
+        "\"semantic_status\": \"verified\","
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_________ test_repository_lists_and_reads_exactly_the_approved_scope __________\ntests\\test_source_capabilities.py:165: in test_repository_lists_and_reads_exactly_the_approved_scope\n    assert listed[\"status\"] == \"COMPLETED\" and read[\"status\"] == \"COMPLETED\"\nE   AssertionError: assert ('FAILED' == 'COMPLETED'\nE     \nE     - COMPLETED\nE     + FAILED)\n============================== warnings summary ===============================\ntests/test_source_capabilities.py::test_repository_lists_and_reads_exactly_the_approved_scope\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_capabilities.py::test_repository_lists_and_reads_exactly_the_approved_scope - AssertionError: assert ('FAILED' == 'COMPLETED'\n  \n  - COMPLETED\n  + FAILED)\n1 failed, 1 warning in 1.74s\n",
+      "returncode": 1,
+      "source_sha256": "8263fe56c61352a26a697da83beb0d076bda77a93d66867200747b884264fec7"
+    },
+    {
+      "id": "S22",
+      "mutation": "a partial extraction reports itself complete",
+      "files": [
+        "alive/capabilities/source_adapters.py"
+      ],
+      "target": "tests/test_source_capabilities.py::test_document_extraction_is_windowed_located_and_honest_about_completeness",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "complete = not remaining and not content[\"truncated\"] and not any(s[\"truncated\"] for s in shown)"
+      ],
+      "replacements": [
+        "complete = True"
+      ],
+      "assertion": "F                                                                        [100%]\n================================== FAILURES ===================================\n_ test_document_extraction_is_windowed_located_and_honest_about_completeness __\ntests\\test_source_capabilities.py:324: in test_document_extraction_is_windowed_located_and_honest_about_completeness\n    assert first[\"complete\"] is False and first[\"next_start\"] == 2 and first[\"total_sections\"] == 3\nE   assert (True is False)\n============================== warnings summary ===============================\ntests/test_source_capabilities.py::test_document_extraction_is_windowed_located_and_honest_about_completeness\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_capabilities.py::test_document_extraction_is_windowed_located_and_honest_about_completeness - assert (True is False)\n1 failed, 1 warning in 2.11s\n",
+      "returncode": 1,
+      "source_sha256": "8263fe56c61352a26a697da83beb0d076bda77a93d66867200747b884264fec7"
+    },
+    {
+      "id": "S23",
+      "mutation": "the sources permission changes every earlier manifest's hash",
+      "files": [
+        "alive/capabilities/manifest.py"
+      ],
+      "target": "tests/test_source_capability_seam.py::test_every_earlier_manifest_keeps_its_exact_hash",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "if data.get(\"sources\") == \"none\":"
+      ],
+      "replacements": [
+        "if False:"
+      ],
+      "assertion": "ea66bf1209141fb1a5cf03b50a21',\n  -     'evidence.validate_references@1.0.0': 'dcc2ca1d88f925f13bd81e8c39235834e94652aecb127aeccdd29bd3c6e9bd3d',\n  -     'memory.retrieve@1.0.0': 'bbc478cfd8f6fafce8619be0b06fbcb711ebc571ea8bfd06933586d80dcdeeb8',\n  -     'repository.inspect@1.0.0': '9c5af82970cf5a9b9b3f77af66c55517f3767f8250042ba89ed30d30ba2844fe',\n  -     'result.record@1.0.0': '9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca',\n  +     'approval.request@1.0.0': '148399a6ed4083d99c060d116724c0db5a8adb7fcac5fdd86a18dbe38ffda142',\n  +     'cognition.role@1.0.0': 'd981285c115209240e5998da209e3f1e8002f91bfc1a50ae776621e6046bba8a',\n  +     'context.prepare@1.0.0': 'cf3b0fd03cf9c0a35181f41221c0b6da35d33a7f0a7778f23b9e24552bd60337',\n  +     'evidence.evaluate@1.0.0': '95496e53c7feccc6a914cb5f993c7cc6bdedc2ca131e6b8bfaae26d0ab8ef122',\n  +     'evidence.qualify@1.0.0': '6b9e3a8c5c79a19a11db65258d3b45d051c6dcb16961ba0e36cf9b9937f946a5',\n  +     'evidence.record@1.0.0': '7ca4013023ad59e6f7cc00cdfc4a1f255c54bc802ae9f2b425905b2fca96bdf9',\n  +     'evidence.validate_references@1.0.0': '60c03dfa47b56d111744f7b16919c000a73f59bfcdf12cf68c2cbe60f5a224c1',\n  +     'memory.retrieve@1.0.0': '4d969be011452971a6687884bebe50f0a4076c17c253547d440d2f7a46891978',\n  +     'repository.inspect@1.0.0': '64706f9ca7a18b817d615f3ace066e2430212152181a241137511c65abdc443f',\n  +     'result.record@1.0.0': '13dc4754d954262d2103c2d02d7da1d169c2e89db214e5c191e9bcf1c452238a',\n    }\n1 failed in 0.16s\n",
+      "returncode": 1,
+      "source_sha256": "f216da4847f206b8488ce722fcaf7a59a6a109aaf3c72460d4f4ff8044d95708"
+    },
+    {
+      "id": "S24",
+      "mutation": "a grant may not carry source resources",
+      "files": [
+        "alive/capabilities/registry.py"
+      ],
+      "target": "tests/test_source_capabilities.py::test_repository_lists_and_reads_exactly_the_approved_scope",
+      "baseline": "PASS",
+      "result": "KILLED",
+      "modified_guards": [
+        "not {\"repository.read\", \"source.read\"} & permission_bits(cap.manifest[\"permissions\"])"
+      ],
+      "replacements": [
+        "not {\"repository.read\"} & permission_bits(cap.manifest[\"permissions\"])"
+      ],
+      "assertion": "iew\"] = await self._start(authorization_id, ledger)\n                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nalive\\workflows\\runner.py:221: in _start\n    grant, spec, definition, inquiry, approved, authorization_hash = await authorized(\nalive\\workflows\\context.py:169: in authorized\n    await verify_authorization(session, kernel, definition, spec, grant)\nalive\\capabilities\\bindings.py:137: in verify_authorization\n    require(False, \"capability_authority_changed\")\nalive\\capabilities\\bindings.py:28: in require\n    raise Refused(category)\nE   alive.workflows.context.Refused: capability_authority_changed\n============================== warnings summary ===============================\ntests/test_source_capabilities.py::test_repository_lists_and_reads_exactly_the_approved_scope\n  C:\\Projects\\alive-pi03b\\.venv\\Lib\\site-packages\\zmq\\_future.py:718: RuntimeWarning: Proactor event loop does not implement add_reader family of methods required for zmq. Registering an additional selector thread for add_reader support via tornado. Use `asyncio.set_event_loop_policy(WindowsSelectorEventLoopPolicy())` to avoid this warning.\n    self._get_loop()\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ===========================\nFAILED tests/test_source_capabilities.py::test_repository_lists_and_reads_exactly_the_approved_scope - alive.workflows.context.Refused: capability_authority_changed\n1 failed, 1 warning in 1.36s\n",
+      "returncode": 1,
+      "source_sha256": "6edd3acb319b1ae7a829b5fd2f67b87571dc3fd86fd8b37b13fd02abdeb4aded"
+    }
+  ]
+}

@@ -1,0 +1,119 @@
+{
+  "base": "495e4fedaeacedbec33e94b77a485c26dd792a34",
+  "capabilities": [
+    {
+      "id": "approval.request",
+      "implementation_id": "approval-request-v1",
+      "implementation_sha256": null,
+      "manifest_sha256": "da7e5d473ad14116b29a6c814d67f25928848846d40d2dc219193a6b673121e0",
+      "status": "unavailable",
+      "version": "1.0.0"
+    },
+    {
+      "id": "browser.prepare-source",
+      "implementation_id": "browser-source-v1",
+      "implementation_sha256": "22b88bd2e1c768a46288311a9516188b59cd3c287c8c7a01b57117d0000f7f1b",
+      "manifest_sha256": "aca8db723c9d053edfad6e56a4539fbc4bac0d28b2f95138e27eb09de1ab719a",
+      "status": "available",
+      "version": "1.0.0"
+    },
+    {
+      "id": "cognition.role",
+      "implementation_id": "cognition-role-v1",
+      "implementation_sha256": "63d5102483f945e483e86454947dd0e039dbbc2dcaf17c683c84eb1fb5c6e783",
+      "manifest_sha256": "02346040dfcaaf223dfc355c6bdecb5934069ca5e69ecd671f34f3d14c1c28c5",
+      "status": "available",
+      "version": "1.0.0"
+    },
+    {
+      "id": "context.prepare",
+      "implementation_id": "context-prepare-v1",
+      "implementation_sha256": "a68c6d16c30b274ed11812a750a29c6f2b5cfa5ff69e6ea1fff57d62e3ac4fc3",
+      "manifest_sha256": "f512a8c3e783be751cef5755c27c5980f3ee595fe2032aeecc2cc1a291d64bed",
+      "status": "available",
+      "version": "1.0.0"
+    },
+    {
+      "id": "document.extract",
+      "implementation_id": "document-extractor-v1",
+      "implementation_sha256": "58f4b9ab796be23fdee3adf6dca4efcd17ef6af0884f64711032a4132393d0df",
+      "manifest_sha256": "fc922fbbd9cf60881e3a155980c1f9539ee44460d5183c021fde05d0faafce97",
+      "status": "available",
+      "version": "1.0.0"
+    },
+    {
+      "id": "evidence.evaluate",
+      "implementation_id": "evidence-evaluate-v1",
+      "implementation_sha256": "9ea23d2b3879f056c0e4b9c07e21809f6834bc64220735b7ed77d3628214b002",
+      "manifest_sha256": "ae3b17d36c23e592a203d4319cf2296a966e752b1c818d4236b5d48dfada8032",
+      "status": "available",
+      "version": "1.0.0"
+    },
+    {
+      "id": "evidence.qualify",
+      "implementation_id": "evidence-qualify-v1",
+      "implementation_sha256": null,
+      "manifest_sha256": "a818afe1b79cc04628ec71de5f7b7d3106e836647d12e9d0d76d3f9b05cdb781",
+      "status": "unavailable",
+      "version": "1.0.0"
+    },
+    {
+      "id": "evidence.record",
+      "implementation_id": "evidence-record-v1",
+      "implementation_sha256": null,
+      "manifest_sha256": "70cb4dde2e073272aa4c4a1de2d05e6500d0ea66bf1209141fb1a5cf03b50a21",
+      "status": "unavailable",
+      "version": "1.0.0"
+    },
+    {
+      "id": "evidence.validate_references",
+      "implementation_id": "validate-references-v1",
+      "implementation_sha256": "d27b0ab9a707eb4b4fea7577b209dc5484ece275bb160c90123dc52964c44722",
+      "manifest_sha256": "dcc2ca1d88f925f13bd81e8c39235834e94652aecb127aeccdd29bd3c6e9bd3d",
+      "status": "available",
+      "version": "1.0.0"
+    },
+    {
+      "id": "memory.retrieve",
+      "implementation_id": "memory-retrieve-v1",
+      "implementation_sha256": null,
+      "manifest_sha256": "bbc478cfd8f6fafce8619be0b06fbcb711ebc571ea8bfd06933586d80dcdeeb8",
+      "status": "unavailable",
+      "version": "1.0.0"
+    },
+    {
+      "id": "repository.inspect",
+      "implementation_id": "repository-inspector-v1",
+      "implementation_sha256": "bdeb6276774695d95007c0bf514c7bb765def9f6d6156455d5458fd5b84d5591",
+      "manifest_sha256": "9c5af82970cf5a9b9b3f77af66c55517f3767f8250042ba89ed30d30ba2844fe",
+      "status": "available",
+      "version": "1.0.0"
+    },
+    {
+      "id": "repository.inspect",
+      "implementation_id": "repository-inspector-v2",
+      "implementation_sha256": "baefb977d2947e12cea935fca26574642df53a53783c24eb967128fcfff078a4",
+      "manifest_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d",
+      "status": "available",
+      "version": "1.1.0"
+    },
+    {
+      "id": "result.record",
+      "implementation_id": "result-record-v1",
+      "implementation_sha256": "fad9de4fb695d3a3b8566dc7cdce8ddc86947c52a356a82e9e0a09e3f677cb6f",
+      "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+      "status": "available",
+      "version": "1.0.0"
+    },
+    {
+      "id": "retrieval.approved-collection",
+      "implementation_id": "collection-retriever-v1",
+      "implementation_sha256": "f668099366145486a3e7e6fe01510af3d8fb995c400d1da262da2e233ba70ab5",
+      "manifest_sha256": "6f81636cb8df0d08372d1c00868c0f71169d1ccccf6575979d8491c3ae997c54",
+      "status": "available",
+      "version": "1.0.0"
+    }
+  ],
+  "generated_at_commit": "a938daf23390287cc7657f90cc37ba3680113eaa",
+  "note": "Fingerprints cover fingerprinted source files; regenerate after any change to them."
+}

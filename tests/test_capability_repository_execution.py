@@ -40,6 +40,7 @@ def workflow():
         inputs={"repository_ref": "$input.repository_ref", "paths": "$input.paths"},
     )
     inspect["limits"]["timeout_seconds"] = 30  # the manifest ceiling; a stage may not exceed it
+    inspect["capability_version"] = "1.0.0"  # repository.inspect 1.1.0 exists; this is the old one
     return {
         "schema_version": 1,
         "name": "repository-inspection",

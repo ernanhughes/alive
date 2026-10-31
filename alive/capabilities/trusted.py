@@ -165,6 +165,8 @@ def permission_bits(permissions):
         result.add("repository.read")
     if permissions["network"]["mode"] == "governed_pi":
         result.add("model.infer")
+    if permissions.get("sources", "none") == "approved_capture":
+        result.add("source.read")
     if permissions["evidence"] == "approved_context":
         result.add("evidence.read")
     if permissions["persistence"] == "workflow_result":
@@ -266,6 +268,34 @@ _BUILTINS["repository-inspector-v1"] = TrustedImplementation(
     None,
     frozenset({"repository.read"}),
     ("alive/capabilities/repository.py", "alive/capabilities/contracts.py"),
+)
+
+
+def _source_implementation(identifier, adapter, *files):
+    """Implementations that read owner-approved captured sources (alive.sources)."""
+    return TrustedImplementation(
+        identifier,
+        "deterministic",
+        "read",
+        f"alive.capabilities.source_adapters:{adapter}",
+        f"alive.capabilities.source_adapters:{adapter}",  # the legacy "a method exists" binding
+        None,
+        frozenset({"source.read"}),
+        ("alive/capabilities/source_adapters.py", "alive/sources/custody.py", *files),
+    )
+
+
+_BUILTINS["repository-inspector-v2"] = _source_implementation(
+    "repository-inspector-v2", "inspect_repository_v2", "alive/capabilities/repository.py"
+)
+_BUILTINS["document-extractor-v1"] = _source_implementation(
+    "document-extractor-v1", "extract_document", "alive/sources/documents.py"
+)
+_BUILTINS["browser-source-v1"] = _source_implementation(
+    "browser-source-v1", "prepare_browser_source", "alive/sources/documents.py"
+)
+_BUILTINS["collection-retriever-v1"] = _source_implementation(
+    "collection-retriever-v1", "retrieve_collection"
 )
 TRUSTED = MappingProxyType(_BUILTINS)
 

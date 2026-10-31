@@ -1,0 +1,208 @@
+schema_version: 1
+id: retrieval.approved-collection
+version: 1.0.0
+name: Approved Collection Retrieval
+description: Retrieve bounded items from an owner-approved set of existing memories, matching by term
+  overlap. Content is read live and omitted if it changed since approval. A match count is not a relevance
+  or truth score.
+implementation:
+  provider: builtin
+  id: collection-retriever-v1
+execution:
+  kind: deterministic
+  side_effects: read
+  timeout_seconds: 30
+  max_input_bytes: 4096
+  max_output_bytes: 65536
+  max_input_items: 4
+  max_invocations: 1
+  retry_policy: none
+permissions:
+  filesystem:
+    mode: none
+    roots: []
+  network:
+    mode: none
+  process:
+    mode: none
+  evidence: none
+  persistence: none
+  sources: approved_capture
+inputs:
+  type: object
+  additionalProperties: false
+  properties:
+    source_ref:
+      type: string
+      maxLength: 36
+    query:
+      type: string
+      maxLength: 256
+    max_items:
+      type: integer
+      minimum: 1
+      maximum: 20
+    max_chars_per_item:
+      type: integer
+      minimum: 64
+      maximum: 2048
+  required:
+  - source_ref
+  - query
+  - max_items
+  - max_chars_per_item
+outputs:
+  type: object
+  additionalProperties: false
+  properties:
+    source_ref:
+      type: string
+      maxLength: 36
+    source_sha256:
+      type: string
+      maxLength: 64
+    scoped_sha256:
+      type: string
+      maxLength: 64
+    query:
+      type: string
+      maxLength: 256
+    ordering:
+      type: string
+      maxLength: 64
+      enum:
+      - term_matches_desc_then_memory_id
+    score_meaning:
+      type: string
+      maxLength: 100
+      enum:
+      - term_overlap_count_not_a_truth_or_relevance_probability
+    items:
+      type: array
+      maxItems: 20
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          memory_id:
+            type: string
+            maxLength: 36
+          content:
+            type: string
+            maxLength: 2048
+          truncated:
+            type: boolean
+          sha256:
+            type: string
+            maxLength: 64
+          memory_type:
+            type: string
+            maxLength: 40
+          created_at:
+            type: string
+            maxLength: 40
+          term_matches:
+            type: integer
+            minimum: 0
+            maximum: 1000000
+          source_id:
+            type: string
+            maxLength: 200
+        required:
+        - memory_id
+        - content
+        - truncated
+        - sha256
+        - memory_type
+        - created_at
+        - term_matches
+        - source_id
+    omitted:
+      type: array
+      maxItems: 256
+      items:
+        type: object
+        additionalProperties: false
+        properties:
+          memory_id:
+            type: string
+            maxLength: 36
+          reason:
+            type: string
+            maxLength: 40
+        required:
+        - memory_id
+        - reason
+    matched_total:
+      type: integer
+      minimum: 0
+      maximum: 256
+    returned:
+      type: integer
+      minimum: 0
+      maximum: 20
+    truncated:
+      type: boolean
+    provenance:
+      type: object
+      additionalProperties: false
+      properties:
+        kind:
+          type: string
+          maxLength: 24
+          enum:
+          - approved_capture/v1
+        source_type:
+          type: string
+          maxLength: 16
+        classification:
+          type: string
+          maxLength: 24
+        captured_at:
+          type: string
+          maxLength: 40
+        approval_expires_at:
+          type: string
+          maxLength: 40
+        atomic_repository_snapshot:
+          type: boolean
+      required:
+      - kind
+      - source_type
+      - classification
+      - captured_at
+      - approval_expires_at
+      - atomic_repository_snapshot
+    semantic_status:
+      type: string
+      maxLength: 12
+      enum:
+      - unverified
+  required:
+  - source_ref
+  - source_sha256
+  - scoped_sha256
+  - query
+  - ordering
+  - score_meaning
+  - items
+  - omitted
+  - matched_total
+  - returned
+  - truncated
+  - provenance
+  - semantic_status
+presentation:
+  category: memory
+  icon: library
+  tags:
+  - collection
+  - memory
+  - retrieval
+supported_source_types:
+- collection
+examples:
+- source_ref: 00000000-0000-0000-0000-000000000000
+  query: launch plan
+  max_items: 5
+  max_chars_per_item: 500
