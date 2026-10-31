@@ -1,5 +1,12 @@
 # PI-03B plan: source and retrieval capabilities
 
+> **Status: implemented as a draft for independent review.** See `PI-03B-ARCHITECTURE.md`,
+> `PI-03B-SOURCE-CUSTODY.md`, `PI-03B-SECURITY.md` and `PI-03B-DELIVERY.md`. Where this original plan
+> and those documents differ, those documents describe what was built. Deviations: the prerequisite
+> "host snapshot custody" was built as a local owner CLI plus durable capture and approval records;
+> `document.extract` supports text, Markdown and HTML only (PDF is unavailable); the live
+> workflow-admission path is deliberately not included and remains an open, separately reviewed gate.
+
 Not started. Requires PI-03A review authorization. Each item is a manifest plus one reviewed
 trusted implementation; no runner, router or dashboard edits.
 

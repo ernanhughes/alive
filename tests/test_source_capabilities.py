@@ -540,3 +540,26 @@ def test_history_stays_inspectable_after_the_source_is_withdrawn(client, reposit
     # ...but nothing can use the source again, even with the same earlier grant resources.
     again, again_stage, _ = execute(client, "repository.inspect", "1.1.0", approval, inputs)
     assert again["status"] == states.FAILED and again_stage["error_category"] == "source_withdrawn"
+
+
+def test_a_read_over_the_owner_approved_byte_limit_is_refused_not_truncated(client):
+    prepare(client)
+    big = "x" * 20000
+    content = {
+        "kind": "repository",
+        "files": [
+            {"path": p, "content": big, "sha256": hashlib_sha(big), "bytes": len(big)}
+            for p in ("a.txt", "b.txt")
+        ],
+        "omitted": [],
+    }
+    row, approval = call(client, lambda k: approve(k, content, "repository", "repository.inspect"))
+    base = {"source_ref": row["id"], "mode": "read"}
+    one, _, output = execute(
+        client, "repository.inspect", "1.1.0", approval, base | {"paths": ["a.txt"]}
+    )
+    assert one["status"] == "COMPLETED" and len(output["files"][0]["content"]) == 20000
+    both, stage, _ = execute(
+        client, "repository.inspect", "1.1.0", approval, base | {"paths": ["a.txt", "b.txt"]}
+    )
+    assert both["status"] == states.FAILED and stage["error_category"] == "source_byte_limit"

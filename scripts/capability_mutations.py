@@ -304,6 +304,101 @@ CASES += [
 ]  # fmt: skip
 
 
+CUSTODY = "alive/sources/custody.py"
+ADAPTERS = "alive/capabilities/source_adapters.py"
+CT = "tests/test_source_custody.py::"
+SC = "tests/test_source_capabilities.py::"
+RECHECK = CT + "test_every_custody_fact_is_rechecked_at_the_moment_of_use"
+SAME_DIGEST = (
+    'require(digest(capture.content) == capture.content_sha256, "source_content_changed")\n'
+)
+
+# S-series: the load-bearing PI-03B guards (source custody, scope, provenance, hash stability).
+CASES += [
+    ("S1", "approval no longer requires the owner to restate the exact digest", CUSTODY,
+     'require(confirm_sha256 == capture.content_sha256, "source_digest_mismatch")', "pass",
+     CT + "test_nothing_is_usable_until_the_owner_approves_the_exact_digest"),
+    ("S2", "use no longer compares the grant's digest with the capture and approval", CUSTODY,
+     'approval.content_sha256 == capture.content_sha256 == resources["content_sha256"],', "True,",
+     RECHECK),
+    ("S3", "a withdrawn approval can still be used", CUSTODY,
+     'require(approval.withdrawn_at is None, "source_withdrawn")', "pass", RECHECK),
+    ("S4", "an expired approval can still be used", CUSTODY,
+     'require(aware(approval.expires_at) > now(), "source_approval_expired")', "pass", RECHECK),
+    ("S5", "an operation the owner did not approve can run", CUSTODY,
+     'require(operation in list(approval.operations), "source_operation_not_approved")', "pass",
+     RECHECK),
+    ("S6", "an approval from another instance can be used", CUSTODY,
+     "approval.instance_id == capture.instance_id == kernel.instance_id,", "True,",
+     CT + "test_custody_is_instance_scoped"),
+    ("S7", "use no longer compares the grant's scope hash", CUSTODY,
+     'approval.scope_sha256 == resources["scope_sha256"] == digest(approval.scope),', "True,",
+     RECHECK),
+    ("S8", "content altered under the application is not detected at use", CUSTODY,
+     "        " + SAME_DIGEST + "        scoped = apply_scope(",
+     "        scoped = apply_scope(",
+     CT + "test_content_changed_underneath_the_application_is_detected"),
+    ("S9", "the approved scope is ignored: everything captured is returned", CUSTODY,
+     "kept = {**content, listing: [i for i in content[listing] if str(i[key]) in allowed]}",
+     "kept = dict(content)",
+     CT + "test_approval_resolves_to_exactly_the_approved_scope"),
+    ("S10", "approval no longer re-verifies the stored content's own digest", CUSTODY,
+     "        " + SAME_DIGEST + "        scope = checked_scope(",
+     "        scope = checked_scope(",
+     CT + "test_content_changed_underneath_the_application_is_detected"),
+    ("S11", "a reused request id with other scope is not a conflict", CUSTODY,
+     "                and existing.scope_sha256 == digest(scope),\n", "                and True,\n",
+     CT + "test_approval_is_idempotent_by_request_and_a_reused_id_with_other_terms_conflicts"),
+    ("S12", "an approval scope may name items that were never captured", CUSTODY,
+     "        and set(items) <= set(names),\n", "        and True,\n",
+     CT + "test_approval_terms_are_bounded_and_validated"),
+    ("S13", "a memory changed since approval is returned instead of omitted", CUSTODY,
+     'elif hashlib.sha256(row.content.encode()).hexdigest() != item["content_sha256"]:',
+     "elif False:",
+     SC + "test_collection_retrieval_uses_live_memories_and_omits_changed_ones"),
+    # The type is checked twice with the same category: by the runner seam and by the adapter. Either
+    # alone is an equivalent mutant (defence in depth), so both are removed together.
+    ("S15", "a capability can read a source of a type it does not support (runner AND adapter)",
+     [EXE, ADAPTERS],
+     ['resources.source_type in manifest["supported_source_types"], "source_type_not_supported"',
+      'require(source.source_type == "repository", "source_type_not_supported")'],
+     ['True, "source_type_not_supported"', "pass"],
+     SC + "test_a_source_type_mismatch_is_refused"),
+    ("S16", "a stage can read a source other than the one the grant names", EXE,
+     'context.inputs.get("source_ref") == resources.source_ref, "source_ref_not_approved"',
+     'True, "source_ref_not_approved"',
+     SC + "test_a_stage_cannot_name_a_different_source_than_the_one_approved"),
+    ("S17", "a path outside the approved scope is skipped instead of refused", ADAPTERS,
+     'require(set(names) <= set(files) | omitted_paths, "source_path_not_approved")', "pass",
+     SC + "test_repository_refuses_every_out_of_scope_read"),
+    ("S18", "the owner-approved per-call byte limit is ignored", ADAPTERS,
+     'require(sum(f["bytes"] for f in chosen) <= limits["max_source_bytes"], "source_byte_limit")',
+     "pass",
+     SC + "test_a_read_over_the_owner_approved_byte_limit_is_refused_not_truncated"),
+    ("S19", "a different parser build is accepted for an approved extraction", ADAPTERS,
+     'require(content["parser"] == parser_identity(), "parser_fingerprint_mismatch")', "pass",
+     SC + "test_a_changed_parser_build_requires_recapture"),
+    ("S20", "browser content claims it is an instruction", ADAPTERS,
+     '"content_is_instructions": False,', '"content_is_instructions": True,',
+     SC + "test_browser_text_is_returned_as_inert_untrusted_data"),
+    ("S21", "retrieved content is labelled verified", ADAPTERS,
+     '"semantic_status": "unverified",', '"semantic_status": "verified",',
+     SC + "test_repository_lists_and_reads_exactly_the_approved_scope"),
+    ("S22", "a partial extraction reports itself complete", ADAPTERS,
+     'complete = not remaining and not content["truncated"] and not any(s["truncated"] for s in shown)',
+     "complete = True",
+     SC + "test_document_extraction_is_windowed_located_and_honest_about_completeness"),
+    ("S23", "the sources permission changes every earlier manifest's hash",
+     "alive/capabilities/manifest.py",
+     'if data.get("sources") == "none":', "if False:",
+     "tests/test_source_capability_seam.py::test_every_earlier_manifest_keeps_its_exact_hash"),
+    ("S24", "a grant may not carry source resources", REG,
+     'not {"repository.read", "source.read"} & permission_bits(cap.manifest["permissions"])',
+     'not {"repository.read"} & permission_bits(cap.manifest["permissions"])',
+     SC + "test_repository_lists_and_reads_exactly_the_approved_scope"),
+]  # fmt: skip
+
+
 def run(command, scratch, env):
     return subprocess.run(command, cwd=scratch, env=env, capture_output=True, text=True)
 
