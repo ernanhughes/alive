@@ -226,6 +226,16 @@ class CapabilityRegistry:
             raise ValueError("trusted implementation changed since startup")
         return cap
 
+    def implementation_state(self, cap):
+        """Descriptive only: installed code is not authorization to run it."""
+        impl = self._implementations.get(cap.manifest["implementation"]["id"])
+        if impl is None or not impl.installed:
+            return "missing"
+        declared = cap.manifest["implementation"].get("sha256")
+        return (
+            "fingerprint_mismatch" if declared and declared != impl.fingerprint() else "installed"
+        )
+
     def limits_for(self, cap):
         key = (cap.identity["id"], cap.identity["version"])
         return (
