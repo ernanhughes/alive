@@ -219,6 +219,75 @@ MUTANTS = [
         "reservation: one model call per stage",
     ),
 ]
+# Compound mutants remove EVERY layer that enforces one invariant, so a kill proves the tests
+# notice when the invariant as a whole is gone (not just one of several redundant guards).
+COMPOUND = [
+    (
+        "C01",
+        [
+            (
+                CTX,
+                "        grant.outbound_approved"
+                + NL
+                + "        and grant.models.get(role) == model"
+                + NL,
+                "        True" + NL + "        and grant.models.get(role) == model" + NL,
+            ),
+            (
+                RUN,
+                '                        grant.outbound_approved and self.k.settings.alive_model_transport == "pi",'
+                + NL,
+                '                        self.k.settings.alive_model_transport == "pi",' + NL,
+            ),
+        ],
+        "outbound approval: reservation + runner.start",
+    ),
+    (
+        "C02",
+        [
+            (
+                CTX,
+                "        and grant.models.get(role) == model"
+                + NL
+                + "        and grant.role_contracts",
+                "        and grant.role_contracts",
+            ),
+            (
+                SVC,
+                '            current == terms["model_disclosure"]'
+                + NL
+                + '            and proposed.models == {ROLE: current["destination"]["model"]}'
+                + NL,
+                "            True" + NL,
+            ),
+        ],
+        "model identity: reservation + current_terms",
+    ),
+    (
+        "C03",
+        [
+            (
+                CTX,
+                "        == (role_contract(role) if analysis is None else analysis.contract)" + NL,
+                "        == grant.role_contracts.get(role)" + NL,
+            ),
+            (
+                SVC,
+                '            current == terms["model_disclosure"]'
+                + NL
+                + '            and proposed.models == {ROLE: current["destination"]["model"]}'
+                + NL
+                + '            and proposed.role_contracts == {ROLE: current["role_contract_sha256"]}'
+                + NL,
+                "            True"
+                + NL
+                + '            and proposed.models == {ROLE: current["destination"]["model"]}'
+                + NL,
+            ),
+        ],
+        "role contract: reservation + current_terms",
+    ),
+]
 # Guards shared with the PI-02 role path are also attacked by the existing workflow suites.
 SHARED = [
     "tests/test_workflow_authority.py",
@@ -226,7 +295,7 @@ SHARED = [
     "tests/test_workflow_transactions.py",
     "tests/test_workflow_r2_invariants.py",
 ]
-EXTRA = {"M01": SHARED, "M02": SHARED, "M05": SHARED, "M06": SHARED, "M24": SHARED}
+EXTRA = {"C01": SHARED, "M01": SHARED, "M02": SHARED, "M05": SHARED, "M06": SHARED, "M24": SHARED}
 TESTS = [
     "tests/test_repository_analysis.py",
     "tests/test_repository_analysis_units.py",
@@ -235,13 +304,19 @@ TESTS = [
 
 
 def run(mutant):
-    ident, rel, old, new, guard = mutant
-    path = ROOT / rel
-    source = path.read_text(encoding="utf-8")
-    if source.count(old) != 1:
-        return ident, "invalid", f"pattern matched {source.count(old)} times", guard
-    path.write_text(source.replace(old, new, 1), encoding="utf-8", newline="")
+    ident, edits, guard = mutant
+    originals = {}
+    for rel, old, new in edits:
+        path = ROOT / rel
+        text = originals.setdefault(rel, path.read_text(encoding="utf-8"))
+        if text.count(old) != 1:
+            return ident, "invalid", f"pattern matched {text.count(old)} times", guard
     try:
+        for rel, old, new in edits:
+            path = ROOT / rel
+            path.write_text(
+                path.read_text(encoding="utf-8").replace(old, new, 1), encoding="utf-8", newline=""
+            )
         done = subprocess.run(
             [
                 sys.executable,
@@ -265,11 +340,15 @@ def run(mutant):
             return ident, "invalid", " | ".join(lines[:1]), guard
         return ident, "killed", lines[0].split(" - ")[0][:110] if lines else "", guard
     finally:
-        path.write_text(source, encoding="utf-8", newline="")
+        for rel, text in originals.items():
+            (ROOT / rel).write_text(text, encoding="utf-8", newline="")
 
 
 if __name__ == "__main__":
     wanted = set(sys.argv[1:])
-    for mutant in MUTANTS:
+    for ident, rel, old, new, guard in MUTANTS:
+        if not wanted or ident in wanted:
+            print(*run((ident, [(rel, old, new)], guard)), sep=" | ", flush=True)
+    for mutant in COMPOUND:
         if not wanted or mutant[0] in wanted:
             print(*run(mutant), sep=" | ", flush=True)

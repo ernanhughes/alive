@@ -18,8 +18,7 @@ the implementer.
 
 ## Known limitations to weigh
 
-* **Dependency.** L1-01 (PR #80) is not merged or independently reviewed. Do not treat the admission
-  mechanism as qualified production foundation until it is.
+* **Open owner decisions.** Remote egress policy, clear-text retention and deletion are undecided; see `L1-02-SECURITY-DECISIONS.md`. L1-02 is not a qualified production foundation until they are.
 * **Clear-text retention.** Prompt, response and stage outputs are stored unencrypted in the local
   database (`ModelInvocation.input_json`, stage result events, the retained artifact). Withdrawal
   stops new use; it does not delete history. There is no deletion policy.
@@ -34,5 +33,4 @@ the implementer.
   is caught by the reservation's re-check, and again at the dispatch fence for the digest.
 * **Scale.** At most 8 files and 8,192 bytes, bounded by the Governor's per-request ceiling. Larger
   repositories need an explicitly approved selection, which this milestone does not provide.
-* **Not run.** Live model, real pinned Pi for this workflow, browser E2E, Docker, Linux container,
-  full backend suite (CI).
+* **Not run.** Live model, a browser E2E that drives the model-backed flow, Linux container and the full backend suite (left to CI). The mutation campaign is complete; three guards are redundant by design and are attacked jointly (see `L1-02-DELIVERY.md`).

@@ -883,3 +883,32 @@ def test_a_changed_destination_host_makes_the_review_stale(ready):
     settings.alive_meta_base_url = "https://other-provider.example/v1"
     assert start(client, review).status_code == 409
     assert not upstream.calls
+
+
+def test_a_model_stage_without_outbound_approval_never_reaches_the_provider(case):
+    """Outbound approval is enforced for every model stage; a control run proves the path is live."""
+    from tests.test_pi_gateway import Upstream
+    from tests.workflow_execution_helpers import lifecycle, observation
+
+    client, upstream, *_ = case
+    upstream.respond = Upstream.role_output
+
+    async def attempt(kernel, changes):
+        try:
+            final, _ = await lifecycle(
+                kernel,
+                client.app.state.cognition,
+                client.app.state.workflows,
+                model=True,
+                changes=changes,
+            )
+            return final["status"]
+        except Exception as error:  # noqa: BLE001 - the refusal category is the assertion
+            return type(error).__name__
+
+    observation(client)
+    refused = call(client, attempt, {"outbound_approved": False})
+    assert not upstream.calls, f"dispatched without outbound approval ({refused})"
+    observation(client)
+    control = call(client, attempt, None)
+    assert len(upstream.calls) == 1 and control == "COMPLETED", control
