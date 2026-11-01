@@ -34,7 +34,7 @@ const consent = {
 const exchange = {
   id: admission.id,
   goal: "Review my repository",
-  status: "LIVE MODEL",
+  status: "MODEL RESPONSE",
   availability: "available",
   model_calls: 2,
   admission,
@@ -51,6 +51,7 @@ const exchange = {
       endpoint: "https://provider.example/v1",
       usage: { total_tokens: 42 },
       provider_receipts: [],
+      inference_provenance: "unverified",
     },
   ],
 };
@@ -93,7 +94,8 @@ it("asks successive goals with one POST each and shows factual model usage and r
     "/admissions/live/ask",
     "/admissions/live/ask",
   ]);
-  expect(screen.getByText("LIVE MODEL")).toBeTruthy();
+  expect(screen.getByText("MODEL RESPONSE")).toBeTruthy();
+  expect(screen.queryByText("LIVE MODEL")).toBeNull();
   expect(screen.getByText(/42 actual tokens/)).toBeTruthy();
   expect(screen.getByText(/Mean divides by the wrong count/).textContent).toBe(
     report.result.report_markdown,
@@ -144,6 +146,65 @@ it("failed inference is never presented as a model answer", async () => {
   render(<LivePane token="token" />);
   await screen.findByRole("alert");
   expect(screen.queryByText("LIVE MODEL")).toBeNull();
+});
+
+it("keeps partial reasoning and receipts visible when follow-up authorization is refused", async () => {
+  mock.mockImplementation(
+    backend({
+      consents: [consent],
+      exchanges: [
+        {
+          ...exchange,
+          availability: "AI unavailable",
+          report: null,
+          result_admission: null,
+          followup: {
+            status: "analysis_not_authorized",
+            reason: "budget_exhausted",
+            profile: "approved-repository-analysis",
+          },
+        },
+      ],
+    }),
+  );
+  render(<LivePane token="token" />);
+  expect((await screen.findByRole("alert")).textContent).toContain(
+    "Follow-up not authorized (budget_exhausted)",
+  );
+  expect(
+    screen.getByText(
+      recommendation.record.interpretation.value.primary_objective,
+    ),
+  ).toBeTruthy();
+  expect(screen.getByText(/42 actual tokens/)).toBeTruthy();
+  expect(screen.queryByText(/No automatic result:/)).toBeNull();
+  expect(mock.mock.calls.every((c) => c[3] === "GET")).toBe(true);
+});
+
+it("clearly labels injected upstream responses and separates requested from observed identity", async () => {
+  mock.mockImplementation(
+    backend({
+      consents: [consent],
+      exchanges: [
+        {
+          ...exchange,
+          status: "TEST MODEL RESPONSE",
+          calls: exchange.calls.map((c) => ({
+            ...c,
+            inference_provenance: "injected_transport",
+          })),
+        },
+      ],
+    }),
+  );
+  render(<LivePane token="token" />);
+  await screen.findByText("TEST MODEL RESPONSE");
+  expect(screen.queryByText("LIVE MODEL")).toBeNull();
+  fireEvent.click(screen.getByText(/42 actual tokens/));
+  expect(screen.getByText(/Requested model: live-model/)).toBeTruthy();
+  expect(
+    screen.getByText(/Inference evidence: injected_transport/),
+  ).toBeTruthy();
 });
 
 it("shows captured-file evidence when the model selects read-only inspection", async () => {

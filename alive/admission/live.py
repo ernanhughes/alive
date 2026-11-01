@@ -17,13 +17,50 @@ from alive.cognitive_models import ModelInvocation
 from alive.intent import service as intent
 from alive.models import Event, now
 from alive.pi.models import PiProviderRequest, PiRun
-from alive.workflows.context import digest, require
+from alive.workflows.context import Refused, digest, require
 from alive.workflows.models import WorkflowStageRun
 from alive.workflows.runner import result_event
 
 PREPARED = "admission.standing.prepared"
 APPROVED = "admission.standing.approved"
 REVOKED = "admission.standing.revoked"
+FOLLOWUP_BLOCKED = "admission.live.followup.blocked"
+
+
+async def followup_outcome(session, kernel, admission_id):
+    return await session.scalar(
+        select(Event)
+        .where(
+            Event.instance_id == kernel.instance_id,
+            Event.source == "admission",
+            Event.event_type == FOLLOWUP_BLOCKED,
+            Event.correlation_id == admission_id,
+        )
+        .order_by(Event.sequence_number)
+        .limit(1)
+    )
+
+
+async def retain_blocked_followup(kernel, admission_id, profile, error):
+    # A refusal is a retained partial result, not permission to retry a model call later.
+    reason = {
+        "standing_budget_exhausted": "budget_exhausted",
+        "governor_budget_exhausted": "budget_exhausted",
+        "standing_consent_required_expired_or_revoked": "consent_required",
+    }.get(str(error), "authorization_unavailable")
+    async with kernel.lock, kernel.db.sessions.begin() as session:
+        if await followup_outcome(session, kernel, admission_id) is None:
+            kernel.add_event(
+                session,
+                FOLLOWUP_BLOCKED,
+                {
+                    "status": "analysis_not_authorized",
+                    "reason": reason,
+                    "profile": profile,
+                },
+                source="admission",
+                correlation=admission_id,
+            )
 
 
 def scope(terms):
@@ -252,7 +289,24 @@ async def authorize(kernel, ref, review):
 async def ask(app, request):
     kernel = app.state.kernel
     async with kernel.db.sessions() as session:
-        current = await consent(session, kernel, request.consent_ref)
+        current = await consent(session, kernel, request.consent_ref, active=False)
+        existing = await session.scalar(
+            select(Admission).where(
+                Admission.instance_id == kernel.instance_id,
+                Admission.principal == current["terms"]["principal"],
+                Admission.idempotency_key == f"live:{request.idempotency_key}:intent",
+            )
+        )
+        if existing and await followup_outcome(session, kernel, existing.id):
+            approval = await session.scalar(select(Event).where(Event.id == existing.approval_ref))
+            require(
+                existing.terms["objective"]["requested_outcome"] == request.goal
+                and approval is not None
+                and approval.payload.get("standing_ref") == request.consent_ref,
+                "live_retry_conflict",
+            )
+            return await exchange(kernel, existing.id)
+        require(current["state"] == "approved", "standing_consent_required_expired_or_revoked")
     terms = current["terms"]
 
     async def run(profile, suffix):
@@ -283,7 +337,10 @@ async def ask(app, request):
         and chosen["recipe_id"] in (ANALYSIS, INSPECTION)
         and not recommendation["uncertainty"]["needs_clarification"]
     ):
-        await run(chosen["recipe_id"], "result")
+        try:
+            await run(chosen["recipe_id"], "result")
+        except Refused as error:
+            await retain_blocked_followup(kernel, interpreted["id"], chosen["recipe_id"], error)
     return await exchange(kernel, interpreted["id"])
 
 
@@ -303,6 +360,7 @@ async def exchange(kernel, admission_id):
             )
         )
         recommendation = await intent.stored(session, kernel, row.id)
+        blocked = await followup_outcome(session, kernel, row.id)
         inquiries = [r.terms["proposed_grant_data"]["investigation_id"] for r in (row, result) if r]
         calls = (
             await session.scalars(
@@ -344,16 +402,45 @@ async def exchange(kernel, admission_id):
             receipt["provider_receipts"] = [
                 {
                     "pi_run_id": run.id,
+                    "pi_state": run.state,
+                    "transport": run.requested_json.get("upstream_transport", "unknown"),
                     "request_id": request.id,
                     "state": request.state,
                     "http_status": request.http_status,
                     "usage": request.usage_json,
                     "response_sha256": request.response_sha256,
                     "model_observed": request.model_observed,
+                    "model_requested": request.model_requested,
                     "latency_ms": request.latency_ms,
                 }
                 for run, request in upstream
             ]
+            completed = [
+                r
+                for r in receipt["provider_receipts"]
+                if r["pi_state"] == "SETTLED"
+                and r["state"] == "settled"
+                and r["http_status"] == 200
+                and r["response_sha256"]
+                and r["model_requested"] == receipt["model"]
+            ]
+            receipt["inference_provenance"] = (
+                "production_pi"
+                if any(r["transport"] == "network" for r in completed)
+                else "injected_transport"
+                if any(r["transport"] == "injected" for r in completed)
+                else "unverified"
+            )
+        validated = [r for r in receipts if r["status"] == "validated"]
+        status = (
+            "LIVE MODEL"
+            if any(r["inference_provenance"] == "production_pi" for r in validated)
+            else "TEST MODEL RESPONSE"
+            if any(r["inference_provenance"] == "injected_transport" for r in validated)
+            else "MODEL RESPONSE"
+            if validated
+            else "NO MODEL CALL"
+        )
         value = {
             "id": row.id,
             "goal": row.terms["objective"]["requested_outcome"],
@@ -369,9 +456,8 @@ async def exchange(kernel, admission_id):
                 if request["http_status"] is not None
                 or request["state"] in ("dispatched", "ambiguous")
             ),
-            "status": "LIVE MODEL"
-            if any(c.status == "validated" for c in calls)
-            else "NO MODEL CALL",
+            "status": status,
+            "followup": blocked.payload if blocked else None,
             "report": None,
             "inspection": None,
         }
@@ -389,7 +475,7 @@ async def exchange(kernel, admission_id):
                 value["inspection"] = await result_event(session, stage)
         value["availability"] = (
             "AI unavailable"
-            if any(c.status in ("failed", "cancelled", "interrupted") for c in calls)
+            if blocked or any(c.status in ("failed", "cancelled", "interrupted") for c in calls)
             else "available"
             if calls
             else "not_called"
