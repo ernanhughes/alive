@@ -703,7 +703,13 @@ def test_paired_feedback_rejects_nonstateless_baseline_and_tampered_identity(sel
     wrong_arm = call(sel.client, measure, other_applied["result_admission"]["id"], passed=True)
     proper = call(sel.client, measure, baseline["result_admission"]["id"], passed=True)
     with pytest.raises(Refused, match="baseline_must_be_stateless"):
-        call(sel.client, selection.record_application, applied_id, primary, baseline_measurement_ref=wrong_arm)
+        call(
+            sel.client,
+            selection.record_application,
+            applied_id,
+            primary,
+            baseline_measurement_ref=wrong_arm,
+        )
 
     # The oracle source label alone cannot make a fabricated score eligible for learning.
     for changes in (
