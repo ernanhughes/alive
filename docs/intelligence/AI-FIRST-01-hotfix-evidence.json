@@ -1,0 +1,735 @@
+{
+  "date": "2026-11-01",
+  "qualification": "Live functional/provenance regression, not AI-quality acceptance",
+  "status": "LIVE_PARTIAL_RESULT_AND_PROVENANCE_VERIFIED",
+  "code_sha": "d7f2205694908cf58f5a1721cb7f4abd760ab190",
+  "working_tree_dirty": false,
+  "source": {
+    "README.md": "# Public toy arithmetic repository\nmean should return the arithmetic mean.\n",
+    "mean.py": "def mean(values):\n    return sum(values) / (len(values) + 1)\n"
+  },
+  "limits": {
+    "max_calls": 3,
+    "max_tokens": 200000
+  },
+  "consent_ref": "f574be08-c947-42f6-bbe0-484116e124f6",
+  "restart": {
+    "provider_requests_before": 3,
+    "provider_requests_after": 3,
+    "retained_exchanges": 2,
+    "no_redispatch": true
+  },
+  "exchanges": [
+    {
+      "id": "02e4c7c0-1505-41d3-af9c-93ed80a0480a",
+      "goal": "Use approved-repository-analysis to review the supplied implementation for correctness bugs preventing shipping, with cited evidence.",
+      "status": "LIVE MODEL",
+      "availability": "available",
+      "followup": null,
+      "source": {
+        "resources": {
+          "source_ref": "c2e669ae-e5b4-4b53-8038-3819038d6121",
+          "approval_id": "6bbf08e0-3f7c-4ebb-a8fb-388ec0eb1937",
+          "content_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+          "scope_sha256": "968d5a5b34f1026f3f370759075456563ca2bd510a8fb7616ab554cdbc4ae7a7"
+        },
+        "label": "Public arithmetic demo",
+        "scope": {
+          "items": [
+            "README.md",
+            "mean.py"
+          ]
+        },
+        "inventory": {
+          "items": [
+            {
+              "item": "README.md",
+              "bytes": 77,
+              "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+            },
+            {
+              "item": "mean.py",
+              "bytes": 63,
+              "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+            }
+          ],
+          "omitted": []
+        },
+        "expires_at": "2026-11-01T16:58:31.035065+00:00",
+        "principal": "owner-cli:ernan"
+      },
+      "model_calls": 2,
+      "calls": [
+        {
+          "id": "7f8e3831-9684-4e75-9d0a-2986d401eaa3",
+          "status": "validated",
+          "provider": "meta",
+          "model": "muse-spark-1.3-contributor",
+          "usage": {
+            "completion_tokens": 611,
+            "prompt_tokens": 1712,
+            "total_tokens": 2323,
+            "completion_tokens_details": {
+              "reasoning_tokens": 209
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "charged_tokens": 2323
+          },
+          "latency_ms": 8098.881600002642,
+          "endpoint": "https://api.meta.ai/v1/chat/completions",
+          "provider_receipts": [
+            {
+              "pi_run_id": "1632564e-379c-4f58-8e8b-cee7d7a2db47",
+              "pi_state": "SETTLED",
+              "transport": "network",
+              "request_id": "d37b1597-1516-4374-9936-f845b4b731b9",
+              "state": "settled",
+              "http_status": 200,
+              "usage": {
+                "completion_tokens": 611,
+                "prompt_tokens": 1712,
+                "total_tokens": 2323,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 209
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "response_sha256": "6720560383b4470bb2c6b188430386d3f372d06fd834728853c5425e85b944aa",
+              "model_observed": null,
+              "model_requested": "muse-spark-1.3-contributor",
+              "latency_ms": 7501.174900000478
+            }
+          ],
+          "inference_provenance": "production_pi"
+        },
+        {
+          "id": "353e262c-31ab-4239-8f0b-7228d393b231",
+          "status": "validated",
+          "provider": "meta",
+          "model": "muse-spark-1.3-contributor",
+          "usage": {
+            "completion_tokens": 326,
+            "prompt_tokens": 990,
+            "total_tokens": 1316,
+            "completion_tokens_details": {
+              "reasoning_tokens": 28
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "charged_tokens": 1316
+          },
+          "latency_ms": 4322.771400002239,
+          "endpoint": "https://api.meta.ai/v1/chat/completions",
+          "provider_receipts": [
+            {
+              "pi_run_id": "41155c61-0f7b-4cc5-9bcb-6ef7618e8bd3",
+              "pi_state": "SETTLED",
+              "transport": "network",
+              "request_id": "7e9cbf65-73db-47c4-9441-76931b6ce324",
+              "state": "settled",
+              "http_status": 200,
+              "usage": {
+                "completion_tokens": 326,
+                "prompt_tokens": 990,
+                "total_tokens": 1316,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 28
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "response_sha256": "2e0ad843d428ecb809df06b1ba1f388927283b4220c58267b0689cebc260d7f0",
+              "model_observed": null,
+              "model_requested": "muse-spark-1.3-contributor",
+              "latency_ms": 3874.997999999323
+            }
+          ],
+          "inference_provenance": "production_pi"
+        }
+      ],
+      "recommendation": {
+        "id": "cd1f502f-d3f6-40f5-8f8d-bf4335012f09",
+        "admission_id": "02e4c7c0-1505-41d3-af9c-93ed80a0480a",
+        "created_at": "2026-11-01T15:59:08.771721+00:00",
+        "record_sha256": "8cba22dddb663764a1b216f185f654fb5b0a5f747844eddcac67ac62ba065c45",
+        "record": {
+          "schema": "alive-intent-recommendation/v1",
+          "status": "recommended",
+          "original_goal": "Use approved-repository-analysis to review the supplied implementation for correctness bugs preventing shipping, with cited evidence.",
+          "goal_preservation": {
+            "preserved": true,
+            "model_goal": "Use approved-repository-analysis to review the supplied implementation for correctness bugs preventing shipping, with cited evidence."
+          },
+          "source": {
+            "source_ref": "c2e669ae-e5b4-4b53-8038-3819038d6121",
+            "content_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+            "files_listed": 2,
+            "content_sent": false
+          },
+          "catalogue_sha256": "274506fd22226db88095e9f40978f5fa1e8580ce38cb7369dfff0239453efe74",
+          "interpreter": {
+            "role": "intent_interpreter",
+            "role_contract_sha256": "16d3c4ca8716b336d5450314c76302c13a780422c95693ead8c1e034dddd5514",
+            "model": "muse-spark-1.3-contributor",
+            "provider": "meta",
+            "endpoint": "https://api.meta.ai/v1/chat/completions",
+            "admission_id": "02e4c7c0-1505-41d3-af9c-93ed80a0480a",
+            "review_sha256": "59d878c7817e3cc8ba8dd2992cf6b5654463df6a48a0297ce71fdc94c8dc5eb8",
+            "run_id": "34b55662-e594-4b29-87e8-b00e59ab8d32",
+            "model_invocation_id": "7f8e3831-9684-4e75-9d0a-2986d401eaa3",
+            "model_calls": 1,
+            "usage": {
+              "completion_tokens": 611,
+              "prompt_tokens": 1712,
+              "total_tokens": 2323,
+              "completion_tokens_details": {
+                "reasoning_tokens": 209
+              },
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "charged_tokens": 2323
+            },
+            "reserved_tokens": 10501,
+            "latency_ms": 8098.881600002642
+          },
+          "interpretation": {
+            "origin": "model_inference",
+            "value": {
+              "alternative_interpretations": [],
+              "ambiguities": [
+                "Scope of 'preventing shipping' - whether means blocking correctness bugs only or includes quality concerns",
+                "Whether reviewed implementation is mean.py alone or both files",
+                "What 'correctness' standard applies - no tests or spec provided"
+              ],
+              "assumptions": [
+                "Owner wants review of supplied repository capture only, not external code",
+                "Cited evidence means citations checked against capture",
+                "approved-repository-analysis refers to catalogue entry 1.0.0"
+              ],
+              "candidates": [
+                {
+                  "addresses": "fully",
+                  "recipe_id": "approved-repository-analysis",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Exact procedure requested; designed for governed model review of owner-approved repository capture with citation checks."
+                }
+              ],
+              "clarification_question": "",
+              "evidence_requirements": [
+                {
+                  "importance": "required",
+                  "requirement": "Owner-approved repository capture for Public arithmetic demo",
+                  "status": "unknown"
+                },
+                {
+                  "importance": "required",
+                  "requirement": "Cited file references verifiable against capture",
+                  "status": "unknown"
+                },
+                {
+                  "importance": "recommended",
+                  "requirement": "Definition of shipping-blocking correctness criteria",
+                  "status": "not_observed"
+                }
+              ],
+              "explicit_goal": "Use approved-repository-analysis to review the supplied implementation for correctness bugs preventing shipping, with cited evidence.",
+              "intent_kind": "inspect_implementation",
+              "limits_of_available_procedures": [
+                "Findings are model assessments, not verified facts",
+                "Validation is reference identity only, semantics remain unverified",
+                "No execution, testing, or external verification"
+              ],
+              "missing_information": [
+                "File contents not included, only names and sizes",
+                "No specification of correct behavior for mean.py",
+                "No shipping criteria or severity threshold"
+              ],
+              "needs_clarification": false,
+              "primary_objective": "Determine whether the supplied implementation contains correctness bugs that would block shipping, with evidence-backed findings.",
+              "subordinate_objectives": [
+                {
+                  "objective": "Obtain approved capture of repository files",
+                  "rationale": "Required evidence base for any review with citations"
+                },
+                {
+                  "objective": "Review implementation for correctness bugs",
+                  "rationale": "Core of owner's shipping decision"
+                },
+                {
+                  "objective": "Provide cited evidence for findings",
+                  "rationale": "Owner explicitly requested cited evidence"
+                }
+              ]
+            }
+          },
+          "resolution": {
+            "origin": "trusted_system",
+            "intent_kind_used": "inspect_implementation",
+            "proposals": [
+              {
+                "recipe_id": "approved-repository-analysis",
+                "recipe_version": "1.0.0",
+                "addresses": "fully",
+                "relevance": "Exact procedure requested; designed for governed model review of owner-approved repository capture with citation checks.",
+                "order": 0,
+                "resolution": "eligible",
+                "reasons": [],
+                "suitability": 92,
+                "factors": {
+                  "explicit_goal_alignment": 40,
+                  "captured_context_match": 25,
+                  "required_evidence_present": 15,
+                  "validation_contract": 10,
+                  "resource_headroom": 0,
+                  "operational_simplicity": 2
+                },
+                "recipe_sha256": "a5cbf81b0eddff9828b8b197cab09c5bac9e8a629fc26872df84178bfd863c13",
+                "needs_model": true,
+                "sends_data_to_model_provider": true
+              }
+            ]
+          },
+          "recommendation": {
+            "recipe_id": "approved-repository-analysis",
+            "recipe_version": "1.0.0",
+            "suitability": 92,
+            "chosen_by": "eligible, best model-judged fit; deterministic suitability breaks ties",
+            "needs_model": true,
+            "sends_data_to_model_provider": true
+          },
+          "alternatives": [],
+          "unavailable": [],
+          "also_eligible_not_proposed": [
+            {
+              "recipe_id": "approved-repository-inspection",
+              "recipe_version": "1.0.0",
+              "suitability": 90,
+              "needs_model": false
+            }
+          ],
+          "uncertainty": {
+            "ambiguities": [
+              "Scope of 'preventing shipping' - whether means blocking correctness bugs only or includes quality concerns",
+              "Whether reviewed implementation is mean.py alone or both files",
+              "What 'correctness' standard applies - no tests or spec provided"
+            ],
+            "missing_information": [
+              "File contents not included, only names and sizes",
+              "No specification of correct behavior for mean.py",
+              "No shipping criteria or severity threshold"
+            ],
+            "assumptions": [
+              "Owner wants review of supplied repository capture only, not external code",
+              "Cited evidence means citations checked against capture",
+              "approved-repository-analysis refers to catalogue entry 1.0.0"
+            ],
+            "alternative_interpretations": [],
+            "limits_of_available_procedures": [
+              "Findings are model assessments, not verified facts",
+              "Validation is reference identity only, semantics remain unverified",
+              "No execution, testing, or external verification"
+            ],
+            "needs_clarification": false,
+            "clarification_question": ""
+          },
+          "authorization": {
+            "execution": "not_authorized",
+            "this_recommendation_grants": "nothing",
+            "next_step": "a separate owner admission review and local approval",
+            "admission_profile": "approved-repository-analysis",
+            "needs_model_authorization": true
+          }
+        }
+      },
+      "report": {
+        "admission_id": "35740c48-c150-4087-9480-0738d979217b",
+        "run_id": "4702cfe6-f05d-4078-ab7f-2ce87b3e0944",
+        "artifact_sha256": "63a04773f0f3975072311554928be5c4efad4bb126bd1b3ced599a0cc6c1d909",
+        "result": {
+          "analysis_sha256": "2e0ad843d428ecb809df06b1ba1f388927283b4220c58267b0689cebc260d7f0",
+          "findings": [
+            {
+              "finding_id": "F1-off-by-one-denomin",
+              "model_assessment": {
+                "category": "correctness",
+                "evidence": [
+                  {
+                    "file": "mean.py",
+                    "line_end": 2,
+                    "line_start": 1,
+                    "quote": "def mean(values):"
+                  },
+                  {
+                    "file": "mean.py",
+                    "line_end": 2,
+                    "line_start": 2,
+                    "quote": "return sum(values) / (len(values) + 1)"
+                  },
+                  {
+                    "file": "README.md",
+                    "line_end": 2,
+                    "line_start": 2,
+                    "quote": "mean should return the arithmetic mean."
+                  }
+                ],
+                "explanation": "mean divides by len(values)+1 instead of len(values), so it never returns the arithmetic mean. E.g. mean([2,4]) returns 2.0 instead of 3.0. This blocks shipping.",
+                "severity": "high",
+                "suggested_verification": "Run mean([2,4]) and check equals 3; inspect edge cases.",
+                "title": "Off-by-one denominator in mean prevents correct average",
+                "uncertainty": "None on formula mismatch; empty-list behavior not shown in supplied files."
+              },
+              "reference_check": {
+                "contract": "repository-citation-existence/v1",
+                "evidence": [
+                  {
+                    "file": "mean.py",
+                    "file_sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e",
+                    "line_end": 2,
+                    "line_start": 1,
+                    "status": "quote_matches"
+                  },
+                  {
+                    "file": "mean.py",
+                    "file_sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e",
+                    "line_end": 2,
+                    "line_start": 2,
+                    "status": "quote_matches"
+                  },
+                  {
+                    "file": "README.md",
+                    "file_sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894",
+                    "line_end": 2,
+                    "line_start": 2,
+                    "status": "quote_matches"
+                  }
+                ],
+                "status": "references_valid"
+              },
+              "verification": "none"
+            }
+          ],
+          "objective": "Use approved-repository-analysis to review the supplied implementation for correctness bugs preventing shipping, with cited evidence.",
+          "report_markdown": "# Repository analysis\n\n## Investigation objective\nUse approved-repository-analysis to review the supplied implementation for correctness bugs preventing shipping, with cited evidence.\n\n## Approved source scope\nSource c2e669ae-e5b4-4b53-8038-3819038d6121 (digest 46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b).\nFiles supplied to the model: README.md, mean.py.\nOmitted: none.\nThis analysis covers only those files, not the whole repository.\n\n## Model summary (model assessment, not verified)\nmean.py has a shipping-blocking correctness bug: denominator is len+1 instead of len, contradicting README spec.\n\n## Findings whose citations exist in the captured files\n\n### F1-off-by-one-denomin: Off-by-one denominator in mean prevents correct average\nModel-assessed severity: high; category: correctness.\nmean divides by len(values)+1 instead of len(values), so it never returns the arithmetic mean. E.g. mean([2,4]) returns 2.0 instead of 3.0. This blocks shipping.\nEvidence:\n- mean.py:1-2 (quote_matches)\n- mean.py:2-2 (quote_matches)\n- README.md:2-2 (quote_matches)\nUncertainty: None on formula mismatch; empty-list behavior not shown in supplied files.\nSuggested verification: Run mean([2,4]) and check equals 3; inspect edge cases.\n\n## Unsupported hypotheses (a citation did not match the captured files)\nNone.\n\n## Unresolved questions\n- Expected behavior for empty input is not defined in supplied files.\n\n## Validation status\nCitation existence: 1 of 1 findings have citations that match the captured files.\nA matching citation shows the cited lines exist. It does not show the model is right.\nIndependent verification: none performed. Semantic status: unverified.",
+          "schema": "repository-analysis-result/v1",
+          "source": {
+            "files": [
+              {
+                "bytes": 77,
+                "path": "README.md",
+                "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+              },
+              {
+                "bytes": 63,
+                "path": "mean.py",
+                "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+              }
+            ],
+            "omitted": [],
+            "scoped_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+            "source_ref": "c2e669ae-e5b4-4b53-8038-3819038d6121",
+            "source_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b"
+          },
+          "summary": "mean.py has a shipping-blocking correctness bug: denominator is len+1 instead of len, contradicting README spec.",
+          "unresolved_questions": [
+            "Expected behavior for empty input is not defined in supplied files."
+          ]
+        },
+        "assessment": {
+          "contract": "repository-citation-existence/v1",
+          "findings_total": 1,
+          "findings_with_unsupported_references": 0,
+          "findings_with_valid_references": 1,
+          "independent_verification": false,
+          "reference_identity_status": "all_valid",
+          "semantic_status": "unverified"
+        },
+        "usage": {
+          "status": "validated",
+          "provider": "meta",
+          "model": "muse-spark-1.3-contributor",
+          "reserved_tokens": 6603,
+          "usage": {
+            "completion_tokens": 326,
+            "prompt_tokens": 990,
+            "total_tokens": 1316,
+            "completion_tokens_details": {
+              "reasoning_tokens": 28
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "charged_tokens": 1316
+          },
+          "latency_ms": 4322.771400002239,
+          "model_calls": 1,
+          "cost": "unknown; no price is configured and none is estimated"
+        },
+        "verification": "none; findings are model assessments with checked citations"
+      }
+    },
+    {
+      "id": "8e34f79b-90a0-4be9-8835-9b0a7436d271",
+      "goal": "Use approved-repository-analysis to review mean.py for arithmetic correctness defects, with cited evidence.",
+      "status": "LIVE MODEL",
+      "availability": "AI unavailable",
+      "followup": {
+        "status": "analysis_not_authorized",
+        "reason": "budget_exhausted",
+        "profile": "approved-repository-analysis"
+      },
+      "source": {
+        "resources": {
+          "source_ref": "c2e669ae-e5b4-4b53-8038-3819038d6121",
+          "approval_id": "6bbf08e0-3f7c-4ebb-a8fb-388ec0eb1937",
+          "content_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+          "scope_sha256": "968d5a5b34f1026f3f370759075456563ca2bd510a8fb7616ab554cdbc4ae7a7"
+        },
+        "label": "Public arithmetic demo",
+        "scope": {
+          "items": [
+            "README.md",
+            "mean.py"
+          ]
+        },
+        "inventory": {
+          "items": [
+            {
+              "item": "README.md",
+              "bytes": 77,
+              "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+            },
+            {
+              "item": "mean.py",
+              "bytes": 63,
+              "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+            }
+          ],
+          "omitted": []
+        },
+        "expires_at": "2026-11-01T16:58:31.035065+00:00",
+        "principal": "owner-cli:ernan"
+      },
+      "model_calls": 1,
+      "calls": [
+        {
+          "id": "d119c5ca-353c-48e8-b35a-f05d9d4b9e57",
+          "status": "validated",
+          "provider": "meta",
+          "model": "muse-spark-1.3-contributor",
+          "usage": {
+            "completion_tokens": 424,
+            "prompt_tokens": 1710,
+            "total_tokens": 2134,
+            "completion_tokens_details": {
+              "reasoning_tokens": 158
+            },
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "charged_tokens": 2134
+          },
+          "latency_ms": 5165.876999999455,
+          "endpoint": "https://api.meta.ai/v1/chat/completions",
+          "provider_receipts": [
+            {
+              "pi_run_id": "f6aea214-a3dd-4ab9-8488-d55747eb3c3f",
+              "pi_state": "SETTLED",
+              "transport": "network",
+              "request_id": "243e662c-ae5d-47c8-a88f-04f63b951a9f",
+              "state": "settled",
+              "http_status": 200,
+              "usage": {
+                "completion_tokens": 424,
+                "prompt_tokens": 1710,
+                "total_tokens": 2134,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 158
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                }
+              },
+              "response_sha256": "76e4d6fa394c6c58febc22eed87627e637b18948692f3c3b03f15a89f39a5edb",
+              "model_observed": null,
+              "model_requested": "muse-spark-1.3-contributor",
+              "latency_ms": 4714.329499998712
+            }
+          ],
+          "inference_provenance": "production_pi"
+        }
+      ],
+      "recommendation": {
+        "id": "65dbc0ce-a288-4012-aa55-9a519f493716",
+        "admission_id": "8e34f79b-90a0-4be9-8835-9b0a7436d271",
+        "created_at": "2026-11-01T15:59:21.522607+00:00",
+        "record_sha256": "468699dccc5931aad9df1746248fc2223e5364e1b10018eb13227631de9d1020",
+        "record": {
+          "schema": "alive-intent-recommendation/v1",
+          "status": "recommended",
+          "original_goal": "Use approved-repository-analysis to review mean.py for arithmetic correctness defects, with cited evidence.",
+          "goal_preservation": {
+            "preserved": true,
+            "model_goal": "Use approved-repository-analysis to review mean.py for arithmetic correctness defects, with cited evidence."
+          },
+          "source": {
+            "source_ref": "c2e669ae-e5b4-4b53-8038-3819038d6121",
+            "content_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+            "files_listed": 2,
+            "content_sent": false
+          },
+          "catalogue_sha256": "274506fd22226db88095e9f40978f5fa1e8580ce38cb7369dfff0239453efe74",
+          "interpreter": {
+            "role": "intent_interpreter",
+            "role_contract_sha256": "16d3c4ca8716b336d5450314c76302c13a780422c95693ead8c1e034dddd5514",
+            "model": "muse-spark-1.3-contributor",
+            "provider": "meta",
+            "endpoint": "https://api.meta.ai/v1/chat/completions",
+            "admission_id": "8e34f79b-90a0-4be9-8835-9b0a7436d271",
+            "review_sha256": "a9913ed5a8e0e120bf8b2057414362372e29cad6eaa43c1be96bcc73495a214a",
+            "run_id": "1f028084-8c27-4b78-a61f-ba641934c732",
+            "model_invocation_id": "d119c5ca-353c-48e8-b35a-f05d9d4b9e57",
+            "model_calls": 1,
+            "usage": {
+              "completion_tokens": 424,
+              "prompt_tokens": 1710,
+              "total_tokens": 2134,
+              "completion_tokens_details": {
+                "reasoning_tokens": 158
+              },
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "charged_tokens": 2134
+            },
+            "reserved_tokens": 10475,
+            "latency_ms": 5165.876999999455
+          },
+          "interpretation": {
+            "origin": "model_inference",
+            "value": {
+              "alternative_interpretations": [],
+              "ambiguities": [],
+              "assumptions": [
+                "Owner has separately approved the model destination and disclosure for approved-repository-analysis"
+              ],
+              "candidates": [
+                {
+                  "addresses": "fully",
+                  "recipe_id": "approved-repository-analysis",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Exactly matches requested procedure and objective to review owner-approved repository capture for arithmetic defects with citation checks"
+                }
+              ],
+              "clarification_question": "",
+              "evidence_requirements": [
+                {
+                  "importance": "required",
+                  "requirement": "approved_capture of repository including mean.py",
+                  "status": "unknown"
+                }
+              ],
+              "explicit_goal": "Use approved-repository-analysis to review mean.py for arithmetic correctness defects, with cited evidence.",
+              "intent_kind": "inspect_implementation",
+              "limits_of_available_procedures": [
+                "Findings are model assessments with reference-identity checks only, not verified facts about arithmetic correctness in the world"
+              ],
+              "missing_information": [
+                "Approved capture content of mean.py not yet observed"
+              ],
+              "needs_clarification": false,
+              "primary_objective": "Assess mean.py for arithmetic correctness defects with cited evidence",
+              "subordinate_objectives": [
+                {
+                  "objective": "Obtain exact owner-approved repository capture",
+                  "rationale": "Required evidence base for governed analysis and citation validation"
+                }
+              ]
+            }
+          },
+          "resolution": {
+            "origin": "trusted_system",
+            "intent_kind_used": "inspect_implementation",
+            "proposals": [
+              {
+                "recipe_id": "approved-repository-analysis",
+                "recipe_version": "1.0.0",
+                "addresses": "fully",
+                "relevance": "Exactly matches requested procedure and objective to review owner-approved repository capture for arithmetic defects with citation checks",
+                "order": 0,
+                "resolution": "eligible",
+                "reasons": [],
+                "suitability": 92,
+                "factors": {
+                  "explicit_goal_alignment": 40,
+                  "captured_context_match": 25,
+                  "required_evidence_present": 15,
+                  "validation_contract": 10,
+                  "resource_headroom": 0,
+                  "operational_simplicity": 2
+                },
+                "recipe_sha256": "a5cbf81b0eddff9828b8b197cab09c5bac9e8a629fc26872df84178bfd863c13",
+                "needs_model": true,
+                "sends_data_to_model_provider": true
+              }
+            ]
+          },
+          "recommendation": {
+            "recipe_id": "approved-repository-analysis",
+            "recipe_version": "1.0.0",
+            "suitability": 92,
+            "chosen_by": "eligible, best model-judged fit; deterministic suitability breaks ties",
+            "needs_model": true,
+            "sends_data_to_model_provider": true
+          },
+          "alternatives": [],
+          "unavailable": [],
+          "also_eligible_not_proposed": [
+            {
+              "recipe_id": "approved-repository-inspection",
+              "recipe_version": "1.0.0",
+              "suitability": 90,
+              "needs_model": false
+            }
+          ],
+          "uncertainty": {
+            "ambiguities": [],
+            "missing_information": [
+              "Approved capture content of mean.py not yet observed"
+            ],
+            "assumptions": [
+              "Owner has separately approved the model destination and disclosure for approved-repository-analysis"
+            ],
+            "alternative_interpretations": [],
+            "limits_of_available_procedures": [
+              "Findings are model assessments with reference-identity checks only, not verified facts about arithmetic correctness in the world"
+            ],
+            "needs_clarification": false,
+            "clarification_question": ""
+          },
+          "authorization": {
+            "execution": "not_authorized",
+            "this_recommendation_grants": "nothing",
+            "next_step": "a separate owner admission review and local approval",
+            "admission_profile": "approved-repository-analysis",
+            "needs_model_authorization": true
+          }
+        }
+      },
+      "report": null
+    }
+  ],
+  "semantic_quality": "Not requalified. Model outputs remain assessments; source citations do not establish truth.",
+  "notes": [
+    "First goal consumed two production Pi calls. Second goal consumed one interpretation call, then follow-up authorization was refused by the three-call envelope.",
+    "HTTP 200 returned the retained partial exchange with budget_exhausted. Identical retry and a new backend instance preserved it without dispatch.",
+    "Production Pi requested model and endpoint are recorded; provider-side observed identity remains nullable.",
+    "No inference transports or providers were mocked in this run. No currency-cost estimate."
+  ]
+}

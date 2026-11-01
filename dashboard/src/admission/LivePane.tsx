@@ -438,7 +438,7 @@ function LiveAI({ token }: { token: string }) {
                   " ",
                 )}
               </p>
-              {!exchange.result_admission && (
+              {!exchange.result_admission && !exchange.followup && (
                 <p>
                   No automatic result: the model requested clarification, or its
                   selected procedure is outside this session's approved analysis

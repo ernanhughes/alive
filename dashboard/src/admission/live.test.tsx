@@ -157,6 +157,7 @@ it("keeps partial reasoning and receipts visible when follow-up authorization is
           ...exchange,
           availability: "AI unavailable",
           report: null,
+          result_admission: null,
           followup: {
             status: "analysis_not_authorized",
             reason: "budget_exhausted",
@@ -176,6 +177,7 @@ it("keeps partial reasoning and receipts visible when follow-up authorization is
     ),
   ).toBeTruthy();
   expect(screen.getByText(/42 actual tokens/)).toBeTruthy();
+  expect(screen.queryByText(/No automatic result:/)).toBeNull();
   expect(mock.mock.calls.every((c) => c[3] === "GET")).toBe(true);
 });
 
