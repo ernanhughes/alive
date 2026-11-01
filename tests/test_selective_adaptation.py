@@ -7,7 +7,7 @@ from types import SimpleNamespace
 import httpx
 import pytest
 
-from alive.adaptation import selection, service
+from alive.adaptation import oracle_v2, selection, service
 from alive.admission import live
 from alive.continuity import adapters
 from alive.models import uid
@@ -38,6 +38,8 @@ def selective(ready):
         mechanisms=[],
         strategies=lambda items: [],
         historical=lambda items: [],
+        predictions=[],
+        issue=None,
         requests=[],
     )
 
@@ -60,6 +62,8 @@ def selective(ready):
             "uncertainty": [],
             "lesson_ids_used": script.strategies(items),
             "historical_ids_used": script.historical(items),
+            "predictions": script.predictions,
+            "issue_present": script.issue,
         }
         return httpx.Response(
             200,
@@ -339,9 +343,9 @@ def test_empirical_demotion_is_durable_separate_from_withdrawal_and_never_delete
     assert reread["selection"]["independent_outcome"]["passed"] is False
 
 
-async def rows_of(kernel, kind):
+async def rows_of(kernel, kind, source=service.SOURCE):
     async with kernel.db.sessions() as session:
-        return [service.value(r) for r in await service.rows(session, kernel, kind)]
+        return [service.value(r) for r in await service.rows(session, kernel, kind, source)]
 
 
 def test_owner_withdrawal_prevents_future_selection_without_scientific_claim(selective):
@@ -518,3 +522,100 @@ def test_review_obligation_is_reported_structurally_not_as_wrong_reasoning():
     )
     assert adapters.contract_compliance(partial, cases)["missing_cases"] == ["c2"]
     assert adapters.contract_compliance(answer(), None) == {"required": False, "complete": True}
+
+
+def test_oracle_v2_measures_exact_multifile_capture_and_a_refused_run(selective, tmp_path):
+    from alive.sources import capture, custody
+
+    sel = selective
+    corpus = json.loads(oracle_v2.CORPUS.read_text("utf-8"))
+    lock = {"corpus_sha256": digest(corpus), "oracle_sha256": "test"}
+    task = next(t for t in corpus["tasks"] if t["id"] == "par-09")
+    files = oracle_v2.source_files(task)
+    assert set(files) == {"README.md", "implementation.py", "text.py"}
+    for name, text in files.items():
+        (tmp_path / name).write_bytes(text.encode("utf-8"))
+
+    async def approve(kernel):
+        candidate = await custody.create_capture(
+            kernel,
+            source_type="repository",
+            label="Frozen fixture",
+            locator="public-fixture",
+            classification="owner_internal",
+            capture_method="owner_cli_repository",
+            content=capture.repository_content(tmp_path, list(files)),
+        )
+        return await custody.approve(
+            kernel,
+            candidate["id"],
+            confirm_sha256=candidate["content_sha256"],
+            operations=[
+                "repository.inspect",
+                "repository.analyze",
+                "intent.interpret",
+                "context.reason",
+                "context.validate",
+            ],
+            scope={"items": list(files)},
+            ttl_seconds=3600,
+            principal=principal(),
+            request_id=uid(),
+        )
+
+    approval = call(sel.client, approve)
+    body = sel.ready[3] | {"adaptive": True, "paths": list(files), "approval_ref": approval["id"]}
+    setup = sel.client.post(BASE + "/setup", json=body).json()
+    call(
+        sel.client, live.approve, setup["id"], confirm_sha256=setup["sha256"], principal=principal()
+    )
+    sel.setup = setup
+    sel.script.predictions = [
+        {"case_id": "c1", "observed": "true", "required": "true"},
+        {"case_id": "c2", "observed": "false", "required": "false"},
+        {"case_id": "c3", "observed": "false", "required": "ERROR:ValueError"},
+        {"case_id": "c4", "observed": "false", "required": "ERROR:ValueError"},
+        {"case_id": "c5", "observed": "true", "required": "true"},
+    ]
+    sel.script.issue = True
+    result = ask(sel, "Review the parser")
+    assert result["answer"]["contract_compliance"]["complete"] is True
+    reference = call(
+        sel.client,
+        oracle_v2.measure,
+        result["result_admission"]["id"],
+        "par-09",
+        corpus=(corpus, lock),
+    )
+    stored = call(sel.client, rows_of, service.MEASURED, service.ORACLE)[0]
+    assert stored["verifier"] == "frozen-executable-fixture/v2" and stored["end_to_end"] is True
+    assert stored["dimensions"]["semantic"] == "correct" and reference
+    with pytest.raises(Refused, match="oracle_fixture_source_mismatch"):
+        call(
+            sel.client,
+            oracle_v2.measure,
+            result["result_admission"]["id"],
+            "par-08",
+            corpus=(corpus, lock),
+        )
+    # A turn refused for a fabricated reference is measured as a non-success, never as a pass.
+    sel.script.strategies = lambda items: [uid()]
+    refused = ask(sel, "Review the parser")
+    assert refused["answer"] is None
+    failed = call(
+        sel.client,
+        oracle_v2.measure_failed_run,
+        refused["result_admission"]["id"],
+        "par-09",
+        "lesson_not_supplied",
+        answer={"answer": "x", "predictions": sel.script.predictions, "issue_present": True},
+        corpus=(corpus, lock),
+    )
+    row = next(
+        r
+        for r in call(sel.client, rows_of, service.MEASURED, service.ORACLE)
+        if r["admission_id"] == refused["result_admission"]["id"]
+    )
+    assert failed and row["end_to_end"] is False and row["no_validated_artifact"] is True
+    assert row["dimensions"]["semantic"] == "correct"
+    assert row["dimensions"]["reference_integrity"] == "invalid"

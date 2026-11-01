@@ -1,0 +1,3510 @@
+{
+ "schema": "selective-corpus/v2",
+ "tasks": [
+  {
+   "id": "num-01",
+   "family": "numeric",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "numeric.signed_values"
+   ],
+   "contract": "Return the whole-dollar amount of an integer number of cents, rounding toward negative infinity, so -150 cents is -2 dollars.",
+   "code": "def solve(p):\n    return int(p / 100)\n",
+   "reference": "def solve(p):\n    return p // 100\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": 250,
+     "expected": {
+      "value": 2
+     }
+    },
+    {
+     "id": "c2",
+     "input": 100,
+     "expected": {
+      "value": 1
+     }
+    },
+    {
+     "id": "c3",
+     "input": -150,
+     "expected": {
+      "value": -2
+     }
+    },
+    {
+     "id": "c4",
+     "input": -100,
+     "expected": {
+      "value": -1
+     }
+    },
+    {
+     "id": "c5",
+     "input": 0,
+     "expected": {
+      "value": 0
+     }
+    }
+   ]
+  },
+  {
+   "id": "num-02",
+   "family": "numeric",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "numeric.empty_or_zero"
+   ],
+   "contract": "Return the arithmetic mean of a list of numbers. An empty list returns 0.",
+   "code": "def solve(p):\n    return sum(p) / len(p)\n",
+   "reference": "def solve(p):\n    return sum(p) / len(p) if p else 0\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      2,
+      4
+     ],
+     "expected": {
+      "value": 3
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      5
+     ],
+     "expected": {
+      "value": 5
+     }
+    },
+    {
+     "id": "c3",
+     "input": [],
+     "expected": {
+      "value": 0
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      -1,
+      1
+     ],
+     "expected": {
+      "value": 0
+     }
+    }
+   ]
+  },
+  {
+   "id": "num-03",
+   "family": "numeric",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "numeric.boundary"
+   ],
+   "contract": "Return true when the number lies between 0 and 100, both ends included.",
+   "code": "def solve(p):\n    return 0 < p < 100\n",
+   "reference": "def solve(p):\n    return 0 <= p <= 100\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": 0,
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c2",
+     "input": 50,
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c3",
+     "input": 100,
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c4",
+     "input": 101,
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c5",
+     "input": -1,
+     "expected": {
+      "value": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "num-04",
+   "family": "numeric",
+   "split": "dev",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "numeric.rounding"
+   ],
+   "contract": "Round a non-negative price to two decimals, rounding exact halves up when the decimal text shows a 5, so 2.675 becomes 2.68.",
+   "code": "def solve(p):\n    return round(p, 2)\n",
+   "reference": "from decimal import ROUND_HALF_UP, Decimal\n\ndef solve(p):\n    return float(Decimal(str(p)).quantize(Decimal(\"0.01\"), rounding=ROUND_HALF_UP))\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": 2.675,
+     "expected": {
+      "value": 2.68
+     }
+    },
+    {
+     "id": "c2",
+     "input": 1.005,
+     "expected": {
+      "value": 1.01
+     }
+    },
+    {
+     "id": "c3",
+     "input": 0.125,
+     "expected": {
+      "value": 0.13
+     }
+    },
+    {
+     "id": "c4",
+     "input": 3.14159,
+     "expected": {
+      "value": 3.14
+     }
+    },
+    {
+     "id": "c5",
+     "input": 10,
+     "expected": {
+      "value": 10.0
+     }
+    }
+   ]
+  },
+  {
+   "id": "num-05",
+   "family": "numeric",
+   "split": "dev",
+   "tier": "standard",
+   "label": "correct",
+   "mechanisms": [
+    "numeric.counting",
+    "numeric.boundary"
+   ],
+   "contract": "Return how many integers lie in the inclusive range [a, b] given as the pair [a, b]. If b is smaller than a the answer is 0.",
+   "code": "def solve(p):\n    return max(0, p[1] - p[0] + 1)\n",
+   "reference": "def solve(p):\n    return max(0, p[1] - p[0] + 1)\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      1,
+      5
+     ],
+     "expected": {
+      "value": 5
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      3,
+      3
+     ],
+     "expected": {
+      "value": 1
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      5,
+      1
+     ],
+     "expected": {
+      "value": 0
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      -2,
+      2
+     ],
+     "expected": {
+      "value": 5
+     }
+    }
+   ]
+  },
+  {
+   "id": "num-06",
+   "family": "numeric",
+   "split": "heldout",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "numeric.signed_values"
+   ],
+   "contract": "Return the remainder of dividing a by b for the pair [a, b], with b positive. The remainder is never negative.",
+   "code": "import math\n\ndef solve(p):\n    return math.fmod(p[0], p[1])\n",
+   "reference": "def solve(p):\n    return p[0] % p[1]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      7,
+      3
+     ],
+     "expected": {
+      "value": 1
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      -7,
+      3
+     ],
+     "expected": {
+      "value": 2
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      0,
+      5
+     ],
+     "expected": {
+      "value": 0
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      -1,
+      5
+     ],
+     "expected": {
+      "value": 4
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      10,
+      5
+     ],
+     "expected": {
+      "value": 0
+     }
+    }
+   ]
+  },
+  {
+   "id": "num-07",
+   "family": "numeric",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "numeric.signed_values"
+   ],
+   "contract": "Split a whole number of seconds into [minutes, seconds] using floor semantics, so -90 seconds is [-2, 30]. Seconds are always from 0 to 59.",
+   "code": "def solve(p):\n    return [int(p / 60), p % 60]\n",
+   "reference": "def solve(p):\n    return [p // 60, p % 60]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": 125,
+     "expected": {
+      "value": [
+       2,
+       5
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": 60,
+     "expected": {
+      "value": [
+       1,
+       0
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": -90,
+     "expected": {
+      "value": [
+       -2,
+       30
+      ]
+     }
+    },
+    {
+     "id": "c4",
+     "input": -60,
+     "expected": {
+      "value": [
+       -1,
+       0
+      ]
+     }
+    },
+    {
+     "id": "c5",
+     "input": 0,
+     "expected": {
+      "value": [
+       0,
+       0
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "num-08",
+   "family": "numeric",
+   "split": "heldout",
+   "tier": "standard",
+   "label": "correct",
+   "mechanisms": [
+    "numeric.signed_values"
+   ],
+   "contract": "Return the integer part of a number by dropping its fraction, so -2.7 gives -2.",
+   "code": "def solve(p):\n    return int(p)\n",
+   "reference": "def solve(p):\n    return int(p)\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": 2.7,
+     "expected": {
+      "value": 2
+     }
+    },
+    {
+     "id": "c2",
+     "input": -2.7,
+     "expected": {
+      "value": -2
+     }
+    },
+    {
+     "id": "c3",
+     "input": 0.5,
+     "expected": {
+      "value": 0
+     }
+    },
+    {
+     "id": "c4",
+     "input": -0.5,
+     "expected": {
+      "value": 0
+     }
+    },
+    {
+     "id": "c5",
+     "input": 5,
+     "expected": {
+      "value": 5
+     }
+    }
+   ]
+  },
+  {
+   "id": "num-09",
+   "family": "numeric",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "numeric.counting"
+   ],
+   "contract": "Return the mean of the values after clamping each into [lo, hi]. Input is [values, lo, hi]. An empty list returns null.",
+   "code": "def clamp(x, lo, hi):\n    return max(lo, min(x, hi))\n\ndef solve(p):\n    values, lo, hi = p\n    if not values:\n        return None\n    total = 0\n    count = 0\n    for v in values:\n        total += clamp(v, lo, hi)\n        if lo <= v <= hi:\n            count += 1\n    return total / count\n",
+   "reference": "def clamp(x, lo, hi):\n    return max(lo, min(x, hi))\n\ndef solve(p):\n    values, lo, hi = p\n    if not values:\n        return None\n    return sum(clamp(v, lo, hi) for v in values) / len(values)\n",
+   "input_state": "unchanged",
+   "tolerance": 1e-09,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      [
+       1,
+       5,
+       9
+      ],
+      2,
+      6
+     ],
+     "expected": {
+      "value": 4.333333333333333
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      [
+       3,
+       4
+      ],
+      0,
+      10
+     ],
+     "expected": {
+      "value": 3.5
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      [],
+      0,
+      1
+     ],
+     "expected": {
+      "value": null
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      [
+       -5,
+       20
+      ],
+      0,
+      10
+     ],
+     "expected": {
+      "value": 5.0
+     }
+    }
+   ]
+  },
+  {
+   "id": "par-01",
+   "family": "parsing",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "parsing.delimiter_position"
+   ],
+   "contract": "Split 'key=value' text at the FIRST equals sign into [key, value]. The value may itself contain equals signs.",
+   "code": "def solve(p):\n    return p.split(\"=\")[:2]\n",
+   "reference": "def solve(p):\n    return p.split(\"=\", 1)\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "a=1",
+     "expected": {
+      "value": [
+       "a",
+       "1"
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": "url=x=y",
+     "expected": {
+      "value": [
+       "url",
+       "x=y"
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": "k=",
+     "expected": {
+      "value": [
+       "k",
+       ""
+      ]
+     }
+    },
+    {
+     "id": "c4",
+     "input": "a=b=c=d",
+     "expected": {
+      "value": [
+       "a",
+       "b=c=d"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "par-02",
+   "family": "parsing",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "parsing.delimiter_position"
+   ],
+   "contract": "Return the extension of a file name in lower case without the dot. A name with no dot has the empty extension.",
+   "code": "def solve(p):\n    return p.split(\".\")[-1].lower()\n",
+   "reference": "def solve(p):\n    return p.rsplit(\".\", 1)[1].lower() if \".\" in p else \"\"\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "a.TXT",
+     "expected": {
+      "value": "txt"
+     }
+    },
+    {
+     "id": "c2",
+     "input": "archive.tar.gz",
+     "expected": {
+      "value": "gz"
+     }
+    },
+    {
+     "id": "c3",
+     "input": "README",
+     "expected": {
+      "value": ""
+     }
+    },
+    {
+     "id": "c4",
+     "input": "x.",
+     "expected": {
+      "value": ""
+     }
+    }
+   ]
+  },
+  {
+   "id": "par-03",
+   "family": "parsing",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "parsing.empty_fields"
+   ],
+   "contract": "Split a comma-separated line into its fields, keeping empty fields. The empty line has no fields at all.",
+   "code": "def solve(p):\n    return p.split(\",\")\n",
+   "reference": "def solve(p):\n    return p.split(\",\") if p else []\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "a,b",
+     "expected": {
+      "value": [
+       "a",
+       "b"
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": "a,,b",
+     "expected": {
+      "value": [
+       "a",
+       "",
+       "b"
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": "",
+     "expected": {
+      "value": []
+     }
+    },
+    {
+     "id": "c4",
+     "input": ",",
+     "expected": {
+      "value": [
+       "",
+       ""
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "par-04",
+   "family": "parsing",
+   "split": "dev",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "parsing.trim_and_case"
+   ],
+   "contract": "Remove the prefix '0x' from text when it starts with that prefix. Any other text is returned unchanged.",
+   "code": "def solve(p):\n    return p.lstrip(\"0x\")\n",
+   "reference": "def solve(p):\n    return p[2:] if p.startswith(\"0x\") else p\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "0xff",
+     "expected": {
+      "value": "ff"
+     }
+    },
+    {
+     "id": "c2",
+     "input": "0x0f",
+     "expected": {
+      "value": "0f"
+     }
+    },
+    {
+     "id": "c3",
+     "input": "abc",
+     "expected": {
+      "value": "abc"
+     }
+    },
+    {
+     "id": "c4",
+     "input": "0x",
+     "expected": {
+      "value": ""
+     }
+    },
+    {
+     "id": "c5",
+     "input": "00ab",
+     "expected": {
+      "value": "00ab"
+     }
+    },
+    {
+     "id": "c6",
+     "input": "xyz",
+     "expected": {
+      "value": "xyz"
+     }
+    }
+   ]
+  },
+  {
+   "id": "par-05",
+   "family": "parsing",
+   "split": "dev",
+   "tier": "standard",
+   "label": "correct",
+   "mechanisms": [
+    "parsing.delimiter_position"
+   ],
+   "contract": "Split a path into [directory, name] at the LAST slash. A path with no slash has the empty directory.",
+   "code": "def solve(p):\n    head, _, tail = p.rpartition(\"/\")\n    return [head, tail]\n",
+   "reference": "def solve(p):\n    head, _, tail = p.rpartition(\"/\")\n    return [head, tail]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "a/b/c",
+     "expected": {
+      "value": [
+       "a/b",
+       "c"
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": "c",
+     "expected": {
+      "value": [
+       "",
+       "c"
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": "/x",
+     "expected": {
+      "value": [
+       "",
+       "x"
+      ]
+     }
+    },
+    {
+     "id": "c4",
+     "input": "a/",
+     "expected": {
+      "value": [
+       "a",
+       ""
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "par-06",
+   "family": "parsing",
+   "split": "heldout",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "parsing.type_coercion",
+    "parsing.empty_fields"
+   ],
+   "contract": "Parse a string of digits into an integer. The empty string parses to 0.",
+   "code": "def solve(p):\n    return int(p)\n",
+   "reference": "def solve(p):\n    return int(p) if p else 0\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "42",
+     "expected": {
+      "value": 42
+     }
+    },
+    {
+     "id": "c2",
+     "input": "007",
+     "expected": {
+      "value": 7
+     }
+    },
+    {
+     "id": "c3",
+     "input": "",
+     "expected": {
+      "value": 0
+     }
+    },
+    {
+     "id": "c4",
+     "input": "0",
+     "expected": {
+      "value": 0
+     }
+    }
+   ]
+  },
+  {
+   "id": "par-07",
+   "family": "parsing",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "parsing.delimiter_position"
+   ],
+   "contract": "Return the host part of 'user@host': everything after the LAST at-sign. Text with no at-sign is returned whole.",
+   "code": "def solve(p):\n    return p.split(\"@\")[1] if \"@\" in p else p\n",
+   "reference": "def solve(p):\n    return p.rsplit(\"@\", 1)[1] if \"@\" in p else p\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "u@h",
+     "expected": {
+      "value": "h"
+     }
+    },
+    {
+     "id": "c2",
+     "input": "a@b@c.com",
+     "expected": {
+      "value": "c.com"
+     }
+    },
+    {
+     "id": "c3",
+     "input": "host",
+     "expected": {
+      "value": "host"
+     }
+    },
+    {
+     "id": "c4",
+     "input": "x@",
+     "expected": {
+      "value": ""
+     }
+    },
+    {
+     "id": "c5",
+     "input": "@y",
+     "expected": {
+      "value": "y"
+     }
+    }
+   ]
+  },
+  {
+   "id": "par-08",
+   "family": "parsing",
+   "split": "heldout",
+   "tier": "standard",
+   "label": "correct",
+   "mechanisms": [
+    "parsing.trim_and_case"
+   ],
+   "contract": "Normalize a tag by trimming surrounding whitespace and lower-casing it. Spaces inside the tag are kept.",
+   "code": "def solve(p):\n    return p.strip().lower()\n",
+   "reference": "def solve(p):\n    return p.strip().lower()\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": " Hello World ",
+     "expected": {
+      "value": "hello world"
+     }
+    },
+    {
+     "id": "c2",
+     "input": "ABC",
+     "expected": {
+      "value": "abc"
+     }
+    },
+    {
+     "id": "c3",
+     "input": "   ",
+     "expected": {
+      "value": ""
+     }
+    },
+    {
+     "id": "c4",
+     "input": "a  b",
+     "expected": {
+      "value": "a  b"
+     }
+    }
+   ]
+  },
+  {
+   "id": "par-09",
+   "family": "parsing",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "parsing.type_coercion"
+   ],
+   "contract": "Read the text 'true' or 'false' in any letter case as a boolean. Any other text is an error of type ValueError.",
+   "code": "from text import normalize\n\ndef solve(p):\n    return normalize(p) == \"true\"\n",
+   "reference": "from text import normalize\n\ndef solve(p):\n    word = normalize(p)\n    if word not in (\"true\", \"false\"):\n        raise ValueError(p)\n    return word == \"true\"\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "True",
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c2",
+     "input": "FALSE",
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c3",
+     "input": "maybe",
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c4",
+     "input": "",
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c5",
+     "input": "true",
+     "expected": {
+      "value": true
+     }
+    }
+   ],
+   "files": {
+    "text.py": "def normalize(text):\n    return text.strip().lower()\n"
+   }
+  },
+  {
+   "id": "sta-01",
+   "family": "state",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "state.ordering"
+   ],
+   "contract": "Return the strings sorted by length, shortest first. Strings of equal length keep their original relative order.",
+   "code": "def solve(p):\n    return sorted(p, key=lambda s: (len(s), s))\n",
+   "reference": "def solve(p):\n    return sorted(p, key=len)\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      "cc",
+      "bb",
+      "a"
+     ],
+     "expected": {
+      "value": [
+       "a",
+       "cc",
+       "bb"
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      "b",
+      "a"
+     ],
+     "expected": {
+      "value": [
+       "b",
+       "a"
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": [],
+     "expected": {
+      "value": []
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      "xyz",
+      "ab",
+      "c"
+     ],
+     "expected": {
+      "value": [
+       "c",
+       "ab",
+       "xyz"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "sta-02",
+   "family": "state",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "state.transition_guard"
+   ],
+   "contract": "A closed ticket can never be reopened. Input is [state, action] with state 'open' or 'closed'. 'close' always returns 'closed'. 'reopen' returns 'open' for an open ticket and raises ValueError for a closed one. Any other action raises ValueError.",
+   "code": "def solve(p):\n    state, action = p\n    if action == \"close\":\n        return \"closed\"\n    if action == \"reopen\":\n        return \"open\"\n    raise ValueError(action)\n",
+   "reference": "def solve(p):\n    state, action = p\n    if action == \"close\":\n        return \"closed\"\n    if action == \"reopen\":\n        if state == \"closed\":\n            raise ValueError(action)\n        return \"open\"\n    raise ValueError(action)\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      "open",
+      "close"
+     ],
+     "expected": {
+      "value": "closed"
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      "closed",
+      "reopen"
+     ],
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      "open",
+      "reopen"
+     ],
+     "expected": {
+      "value": "open"
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      "closed",
+      "close"
+     ],
+     "expected": {
+      "value": "closed"
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      "open",
+      "pause"
+     ],
+     "expected": {
+      "error": "ValueError"
+     }
+    }
+   ]
+  },
+  {
+   "id": "sta-03",
+   "family": "state",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "state.input_mutation"
+   ],
+   "contract": "Return the list with its first element moved to the end. The argument must not be modified, and an empty list stays empty.",
+   "code": "def solve(p):\n    p.append(p.pop(0))\n    return p\n",
+   "reference": "def solve(p):\n    return p[1:] + p[:1]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      1,
+      2,
+      3
+     ],
+     "expected": {
+      "value": [
+       2,
+       3,
+       1
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      7
+     ],
+     "expected": {
+      "value": [
+       7
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": [],
+     "expected": {
+      "value": []
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      "a",
+      "b"
+     ],
+     "expected": {
+      "value": [
+       "b",
+       "a"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "sta-04",
+   "family": "state",
+   "split": "dev",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "state.repeat_application",
+    "state.ordering"
+   ],
+   "contract": "Collapse each run of identical neighbouring items into one item, keeping the order. The same item may appear again later.",
+   "code": "def solve(p):\n    return list(dict.fromkeys(p))\n",
+   "reference": "def solve(p):\n    out = []\n    for item in p:\n        if not out or out[-1] != item:\n            out.append(item)\n    return out\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      1,
+      1,
+      2,
+      2,
+      1
+     ],
+     "expected": {
+      "value": [
+       1,
+       2,
+       1
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      3,
+      3,
+      3
+     ],
+     "expected": {
+      "value": [
+       3
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      1,
+      2,
+      1
+     ],
+     "expected": {
+      "value": [
+       1,
+       2,
+       1
+      ]
+     }
+    },
+    {
+     "id": "c4",
+     "input": [],
+     "expected": {
+      "value": []
+     }
+    }
+   ]
+  },
+  {
+   "id": "sta-05",
+   "family": "state",
+   "split": "dev",
+   "tier": "standard",
+   "label": "correct",
+   "mechanisms": [
+    "state.input_mutation"
+   ],
+   "contract": "Return the items in ascending order without modifying the argument.",
+   "code": "def solve(p):\n    q = list(p)\n    q.sort()\n    return q\n",
+   "reference": "def solve(p):\n    q = list(p)\n    q.sort()\n    return q\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      3,
+      1,
+      2
+     ],
+     "expected": {
+      "value": [
+       1,
+       2,
+       3
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": [],
+     "expected": {
+      "value": []
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      2,
+      2,
+      1
+     ],
+     "expected": {
+      "value": [
+       1,
+       2,
+       2
+      ]
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      "b",
+      "a"
+     ],
+     "expected": {
+      "value": [
+       "a",
+       "b"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "sta-06",
+   "family": "state",
+   "split": "heldout",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "state.input_mutation"
+   ],
+   "contract": "Return the squares of the numbers in order. The argument must not be modified.",
+   "code": "def solve(p):\n    for i in range(len(p)):\n        p[i] = p[i] * p[i]\n    return p\n",
+   "reference": "def solve(p):\n    return [x * x for x in p]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      1,
+      2,
+      3
+     ],
+     "expected": {
+      "value": [
+       1,
+       4,
+       9
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      -2
+     ],
+     "expected": {
+      "value": [
+       4
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": [],
+     "expected": {
+      "value": []
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      0,
+      5
+     ],
+     "expected": {
+      "value": [
+       0,
+       25
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "sta-07",
+   "family": "state",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "state.transition_guard",
+    "errors.wrong_type"
+   ],
+   "contract": "An order moves pending to paid to shipped, and shipped stays shipped. Input is the current status; return the next status. A cancelled order cannot advance and any unknown status raises ValueError.",
+   "code": "NEXT = {\"pending\": \"paid\", \"paid\": \"shipped\", \"shipped\": \"shipped\"}\n\ndef solve(p):\n    return NEXT[p]\n",
+   "reference": "NEXT = {\"pending\": \"paid\", \"paid\": \"shipped\", \"shipped\": \"shipped\"}\n\ndef solve(p):\n    if p not in NEXT:\n        raise ValueError(p)\n    return NEXT[p]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "pending",
+     "expected": {
+      "value": "paid"
+     }
+    },
+    {
+     "id": "c2",
+     "input": "paid",
+     "expected": {
+      "value": "shipped"
+     }
+    },
+    {
+     "id": "c3",
+     "input": "shipped",
+     "expected": {
+      "value": "shipped"
+     }
+    },
+    {
+     "id": "c4",
+     "input": "cancelled",
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c5",
+     "input": "lost",
+     "expected": {
+      "error": "ValueError"
+     }
+    }
+   ]
+  },
+  {
+   "id": "sta-08",
+   "family": "state",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "correct",
+   "mechanisms": [
+    "state.transition_guard"
+   ],
+   "contract": "Connection events: from 'idle' only 'connect' is allowed (result 'connected'); from 'connected' 'send' keeps 'connected' and 'close' gives 'closed'; a 'closed' connection accepts nothing. Input is [state, event]. A disallowed event raises ValueError.",
+   "code": "ALLOWED = {\"idle\": {\"connect\"}, \"connected\": {\"send\", \"close\"}, \"closed\": set()}\nRESULT = {\"connect\": \"connected\", \"send\": \"connected\", \"close\": \"closed\"}\n\ndef solve(p):\n    state, event = p\n    if event not in ALLOWED[state]:\n        raise ValueError(event)\n    return RESULT[event]\n",
+   "reference": "ALLOWED = {\"idle\": {\"connect\"}, \"connected\": {\"send\", \"close\"}, \"closed\": set()}\nRESULT = {\"connect\": \"connected\", \"send\": \"connected\", \"close\": \"closed\"}\n\ndef solve(p):\n    state, event = p\n    if event not in ALLOWED[state]:\n        raise ValueError(event)\n    return RESULT[event]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      "idle",
+      "connect"
+     ],
+     "expected": {
+      "value": "connected"
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      "connected",
+      "send"
+     ],
+     "expected": {
+      "value": "connected"
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      "closed",
+      "connect"
+     ],
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      "idle",
+      "send"
+     ],
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      "connected",
+      "close"
+     ],
+     "expected": {
+      "value": "closed"
+     }
+    }
+   ]
+  },
+  {
+   "id": "sta-09",
+   "family": "state",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "state.ordering"
+   ],
+   "contract": "Return the two most frequent words, most frequent first. Words with the same count are ordered by which appeared first in the input.",
+   "code": "from collections import Counter\n\ndef solve(p):\n    counts = Counter(p)\n    return sorted(counts, key=lambda w: (-counts[w], w))[:2]\n",
+   "reference": "from collections import Counter\n\ndef solve(p):\n    return [word for word, _ in Counter(p).most_common(2)]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      "b",
+      "a",
+      "a",
+      "b",
+      "c"
+     ],
+     "expected": {
+      "value": [
+       "b",
+       "a"
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      "x",
+      "y",
+      "x"
+     ],
+     "expected": {
+      "value": [
+       "x",
+       "y"
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      "q"
+     ],
+     "expected": {
+      "value": [
+       "q"
+      ]
+     }
+    },
+    {
+     "id": "c4",
+     "input": [],
+     "expected": {
+      "value": []
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      "b",
+      "a",
+      "c",
+      "a"
+     ],
+     "expected": {
+      "value": [
+       "a",
+       "b"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "aut-01",
+   "family": "authorization",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "authz.default_deny"
+   ],
+   "contract": "Decide whether a role may perform an action. Input is [policy, role, action] where the policy maps each action to the list of roles allowed. An action absent from the policy is denied for everyone.",
+   "code": "def solve(p):\n    policy, role, action = p\n    return role in policy.get(action, [role])\n",
+   "reference": "def solve(p):\n    policy, role, action = p\n    return role in policy.get(action, [])\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      {
+       "read": [
+        "a",
+        "b"
+       ]
+      },
+      "a",
+      "read"
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      {
+       "read": [
+        "a"
+       ]
+      },
+      "b",
+      "read"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      {
+       "read": [
+        "a"
+       ]
+      },
+      "a",
+      "delete"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      {},
+      "a",
+      "read"
+     ],
+     "expected": {
+      "value": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "aut-02",
+   "family": "authorization",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "authz.substring_match"
+   ],
+   "contract": "Return true when the role is exactly one of the allowed roles. Input is [role, allowed_roles].",
+   "code": "def solve(p):\n    return p[0] in \" \".join(p[1])\n",
+   "reference": "def solve(p):\n    return p[0] in p[1]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      "admin",
+      [
+       "admin",
+       "editor"
+      ]
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      "edit",
+      [
+       "editor"
+      ]
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      "admin",
+      [
+       "superadmin"
+      ]
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      "guest",
+      [
+       "admin",
+       "editor"
+      ]
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      "editor",
+      [
+       "admin",
+       "editor"
+      ]
+     ],
+     "expected": {
+      "value": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "aut-03",
+   "family": "authorization",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "authz.precedence"
+   ],
+   "contract": "Allow access when the user is active AND (is an administrator OR owns the resource). Input is [active, is_admin, owns].",
+   "code": "def solve(p):\n    return p[0] and p[1] or p[2]\n",
+   "reference": "def solve(p):\n    return p[0] and (p[1] or p[2])\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      true,
+      true,
+      false
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      false,
+      false,
+      true
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      true,
+      false,
+      true
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      true,
+      false,
+      false
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      false,
+      true,
+      true
+     ],
+     "expected": {
+      "value": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "aut-04",
+   "family": "authorization",
+   "split": "dev",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "authz.scope_boundary",
+    "authz.substring_match"
+   ],
+   "contract": "A user may open a document only when the document's tenant id equals the user's tenant id exactly. Input is [user_tenant, document_tenant].",
+   "code": "def solve(p):\n    return p[1].startswith(p[0])\n",
+   "reference": "def solve(p):\n    return p[0] == p[1]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      "acme",
+      "acme"
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      "acme",
+      "acme2"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      "acme",
+      "acm"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      "",
+      "x"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      "a-1",
+      "a-1"
+     ],
+     "expected": {
+      "value": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "aut-05",
+   "family": "authorization",
+   "split": "dev",
+   "tier": "standard",
+   "label": "correct",
+   "mechanisms": [
+    "authz.default_deny"
+   ],
+   "contract": "Return true only for an action name that appears in the allowed list, compared exactly. Input is [allowed_actions, action].",
+   "code": "def solve(p):\n    try:\n        return p[0].index(p[1]) >= 0\n    except ValueError:\n        return False\n",
+   "reference": "def solve(p):\n    try:\n        return p[0].index(p[1]) >= 0\n    except ValueError:\n        return False\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      [
+       "read",
+       "write"
+      ],
+      "read"
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      [],
+      "read"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      [
+       "read"
+      ],
+      "write"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      [
+       "Read"
+      ],
+      "read"
+     ],
+     "expected": {
+      "value": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "aut-06",
+   "family": "authorization",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "authz.default_deny"
+   ],
+   "contract": "Look up the permissions of a role. Input is [role_table, role]. A role that is missing from the table, including null, has no permissions: return an empty list.",
+   "code": "def solve(p):\n    table, role = p\n    return table.get(role, table[\"guest\"])\n",
+   "reference": "def solve(p):\n    table, role = p\n    return table.get(role, [])\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      {
+       "admin": [
+        "rw"
+       ],
+       "guest": [
+        "r"
+       ]
+      },
+      "admin"
+     ],
+     "expected": {
+      "value": [
+       "rw"
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      {
+       "admin": [
+        "rw"
+       ],
+       "guest": [
+        "r"
+       ]
+      },
+      "ghost"
+     ],
+     "expected": {
+      "value": []
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      {
+       "admin": [
+        "rw"
+       ],
+       "guest": [
+        "r"
+       ]
+      },
+      null
+     ],
+     "expected": {
+      "value": []
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      {
+       "admin": [
+        "rw"
+       ],
+       "guest": [
+        "r"
+       ]
+      },
+      "guest"
+     ],
+     "expected": {
+      "value": [
+       "r"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "aut-07",
+   "family": "authorization",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "authz.precedence"
+   ],
+   "contract": "A suspended user is always denied, even an administrator. Otherwise allow administrators and users holding the permission. Input is [suspended, is_admin, has_permission].",
+   "code": "def solve(p):\n    if p[1]:\n        return True\n    return (not p[0]) and p[2]\n",
+   "reference": "def solve(p):\n    if p[0]:\n        return False\n    return p[1] or p[2]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      false,
+      true,
+      false
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      true,
+      true,
+      false
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      true,
+      false,
+      true
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      false,
+      false,
+      true
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      false,
+      false,
+      false
+     ],
+     "expected": {
+      "value": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "aut-08",
+   "family": "authorization",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "authz.substring_match",
+    "authz.scope_boundary"
+   ],
+   "contract": "A path is inside a directory when the directory is a path prefix ending on a '/' boundary: '/data' contains '/data' and '/data/x' but not '/database'. Input is [directory, path].",
+   "code": "def solve(p):\n    return p[1].startswith(p[0])\n",
+   "reference": "def solve(p):\n    return p[1] == p[0] or p[1].startswith(p[0] + \"/\")\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      "/data",
+      "/data/x"
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      "/data",
+      "/database"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      "/data",
+      "/data"
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      "/data",
+      "/dat"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      "/a/b",
+      "/a/b/c/d"
+     ],
+     "expected": {
+      "value": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "aut-09",
+   "family": "authorization",
+   "split": "heldout",
+   "tier": "standard",
+   "label": "correct",
+   "mechanisms": [
+    "authz.scope_boundary"
+   ],
+   "contract": "A path is inside a directory when the directory is a path prefix ending on a '/' boundary; a trailing slash on the directory is ignored and '/' contains every absolute path. Input is [directory, path].",
+   "code": "def solve(p):\n    return p[1] == p[0] or p[1].startswith(p[0].rstrip(\"/\") + \"/\")\n",
+   "reference": "def solve(p):\n    return p[1] == p[0] or p[1].startswith(p[0].rstrip(\"/\") + \"/\")\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      "/data",
+      "/data/x"
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      "/data/",
+      "/data/x"
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      "/data",
+      "/database"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      "/",
+      "/etc"
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      "/data",
+      "/da"
+     ],
+     "expected": {
+      "value": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "def-01",
+   "family": "defaults",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "defaults.override_precedence"
+   ],
+   "contract": "Build the effective settings from [defaults, user, env] (three dicts). Start from the defaults, apply the user's values, then the environment's values; a later source overrides an earlier one.",
+   "code": "def solve(p):\n    return {**p[2], **p[1], **p[0]}\n",
+   "reference": "def solve(p):\n    return {**p[0], **p[1], **p[2]}\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      {
+       "a": 1
+      },
+      {},
+      {}
+     ],
+     "expected": {
+      "value": {
+       "a": 1
+      }
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      {
+       "a": 1
+      },
+      {
+       "a": 2
+      },
+      {}
+     ],
+     "expected": {
+      "value": {
+       "a": 2
+      }
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      {
+       "a": 1
+      },
+      {
+       "a": 2
+      },
+      {
+       "a": 3
+      }
+     ],
+     "expected": {
+      "value": {
+       "a": 3
+      }
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      {},
+      {
+       "b": 1
+      },
+      {
+       "c": 2
+      }
+     ],
+     "expected": {
+      "value": {
+       "b": 1,
+       "c": 2
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "def-02",
+   "family": "defaults",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "defaults.falsy_vs_missing"
+   ],
+   "contract": "Return the display name: the 'nickname' value when the key is present, whatever that value is (an empty string and null included), otherwise the 'name' value.",
+   "code": "def solve(p):\n    return p.get(\"nickname\") or p[\"name\"]\n",
+   "reference": "def solve(p):\n    return p[\"nickname\"] if \"nickname\" in p else p[\"name\"]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": {
+      "name": "Ann"
+     },
+     "expected": {
+      "value": "Ann"
+     }
+    },
+    {
+     "id": "c2",
+     "input": {
+      "name": "Ann",
+      "nickname": "A"
+     },
+     "expected": {
+      "value": "A"
+     }
+    },
+    {
+     "id": "c3",
+     "input": {
+      "name": "Ann",
+      "nickname": ""
+     },
+     "expected": {
+      "value": ""
+     }
+    },
+    {
+     "id": "c4",
+     "input": {
+      "name": "Bo",
+      "nickname": null
+     },
+     "expected": {
+      "value": null
+     }
+    }
+   ]
+  },
+  {
+   "id": "def-03",
+   "family": "defaults",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "defaults.merge_depth"
+   ],
+   "contract": "Merge the configurations [base, override]. Where both sides hold a dict, merge those dicts the same way recursively; otherwise the override's value replaces the base's.",
+   "code": "def solve(p):\n    return {**p[0], **p[1]}\n",
+   "reference": "def merge(a, b):\n    out = dict(a)\n    for k, val in b.items():\n        if isinstance(val, dict) and isinstance(out.get(k), dict):\n            out[k] = merge(out[k], val)\n        else:\n            out[k] = val\n    return out\n\ndef solve(p):\n    return merge(p[0], p[1])\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      {
+       "a": {
+        "x": 1
+       }
+      },
+      {
+       "a": {
+        "y": 2
+       }
+      }
+     ],
+     "expected": {
+      "value": {
+       "a": {
+        "x": 1,
+        "y": 2
+       }
+      }
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      {
+       "a": 1
+      },
+      {
+       "b": 2
+      }
+     ],
+     "expected": {
+      "value": {
+       "a": 1,
+       "b": 2
+      }
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      {
+       "a": {
+        "x": 1
+       }
+      },
+      {
+       "a": 5
+      }
+     ],
+     "expected": {
+      "value": {
+       "a": 5
+      }
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      {},
+      {}
+     ],
+     "expected": {
+      "value": {}
+     }
+    }
+   ]
+  },
+  {
+   "id": "def-04",
+   "family": "defaults",
+   "split": "dev",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "defaults.falsy_vs_missing"
+   ],
+   "contract": "Return the page size: 20 when 'size' is missing or null, otherwise the given value. An explicit 0 is kept.",
+   "code": "def solve(p):\n    return p[\"size\"] if p.get(\"size\") else 20\n",
+   "reference": "def solve(p):\n    return 20 if p.get(\"size\") is None else p[\"size\"]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": {},
+     "expected": {
+      "value": 20
+     }
+    },
+    {
+     "id": "c2",
+     "input": {
+      "size": null
+     },
+     "expected": {
+      "value": 20
+     }
+    },
+    {
+     "id": "c3",
+     "input": {
+      "size": 0
+     },
+     "expected": {
+      "value": 0
+     }
+    },
+    {
+     "id": "c4",
+     "input": {
+      "size": 50
+     },
+     "expected": {
+      "value": 50
+     }
+    }
+   ]
+  },
+  {
+   "id": "def-05",
+   "family": "defaults",
+   "split": "dev",
+   "tier": "standard",
+   "label": "correct",
+   "mechanisms": [
+    "defaults.falsy_vs_missing"
+   ],
+   "contract": "Return the first value in the list that is not null, or the text 'none' when every value is null or the list is empty.",
+   "code": "def solve(p):\n    for item in p:\n        if item is not None:\n            return item\n    return \"none\"\n",
+   "reference": "def solve(p):\n    for item in p:\n        if item is not None:\n            return item\n    return \"none\"\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      null,
+      0,
+      5
+     ],
+     "expected": {
+      "value": 0
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      null,
+      null,
+      null
+     ],
+     "expected": {
+      "value": "none"
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      "",
+      null,
+      1
+     ],
+     "expected": {
+      "value": ""
+     }
+    },
+    {
+     "id": "c4",
+     "input": [],
+     "expected": {
+      "value": "none"
+     }
+    }
+   ]
+  },
+  {
+   "id": "def-06",
+   "family": "defaults",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "defaults.merge_depth",
+    "state.input_mutation"
+   ],
+   "contract": "Fill gaps in a record from a template. Input is [template, record]. Keys missing from the record are copied from the template, recursively for nested dicts; the record's own values always win. Return the filled record and do not modify either argument.",
+   "code": "from fill import fill\n\ndef solve(p):\n    return fill(p[0], p[1])\n",
+   "reference": "def fill(template, record):\n    out = dict(record)\n    for key, value in template.items():\n        if key not in out:\n            out[key] = value\n        elif isinstance(value, dict) and isinstance(out[key], dict):\n            out[key] = fill(value, out[key])\n    return out\n\ndef solve(p):\n    return fill(p[0], p[1])\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      {
+       "a": 1,
+       "n": {
+        "x": 1,
+        "y": 2
+       }
+      },
+      {
+       "n": {
+        "x": 9
+       }
+      }
+     ],
+     "expected": {
+      "value": {
+       "a": 1,
+       "n": {
+        "x": 9,
+        "y": 2
+       }
+      }
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      {
+       "a": 1
+      },
+      {}
+     ],
+     "expected": {
+      "value": {
+       "a": 1
+      }
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      {
+       "a": 1
+      },
+      {
+       "a": 0
+      }
+     ],
+     "expected": {
+      "value": {
+       "a": 0
+      }
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      {},
+      {
+       "z": 1
+      }
+     ],
+     "expected": {
+      "value": {
+       "z": 1
+      }
+     }
+    }
+   ],
+   "files": {
+    "fill.py": "def fill(template, record):\n    for key, value in template.items():\n        if key not in record:\n            record[key] = value\n    return record\n"
+   }
+  },
+  {
+   "id": "def-07",
+   "family": "defaults",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "correct",
+   "mechanisms": [
+    "defaults.falsy_vs_missing"
+   ],
+   "contract": "Return the retry count. Use 'retries' when that key is present, whatever its value, otherwise use 'max_retries' when present, otherwise 3.",
+   "code": "def solve(p):\n    return p.get(\"retries\", p.get(\"max_retries\", 3))\n",
+   "reference": "def solve(p):\n    return p.get(\"retries\", p.get(\"max_retries\", 3))\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": {},
+     "expected": {
+      "value": 3
+     }
+    },
+    {
+     "id": "c2",
+     "input": {
+      "retries": 0
+     },
+     "expected": {
+      "value": 0
+     }
+    },
+    {
+     "id": "c3",
+     "input": {
+      "max_retries": 7
+     },
+     "expected": {
+      "value": 7
+     }
+    },
+    {
+     "id": "c4",
+     "input": {
+      "retries": 2,
+      "max_retries": 7
+     },
+     "expected": {
+      "value": 2
+     }
+    },
+    {
+     "id": "c5",
+     "input": {
+      "retries": null
+     },
+     "expected": {
+      "value": null
+     }
+    }
+   ]
+  },
+  {
+   "id": "def-08",
+   "family": "defaults",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "defaults.override_precedence",
+    "defaults.falsy_vs_missing"
+   ],
+   "contract": "Resolve a setting from [cli, env, file]. Use the command-line value when it is not null, else the environment value when it is not null, else the file value when it is not null, else 10. A value of 0 is a real value.",
+   "code": "def solve(p):\n    return p[0] or p[1] or p[2] or 10\n",
+   "reference": "def solve(p):\n    for value in p:\n        if value is not None:\n            return value\n    return 10\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      null,
+      null,
+      null
+     ],
+     "expected": {
+      "value": 10
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      5,
+      null,
+      null
+     ],
+     "expected": {
+      "value": 5
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      null,
+      7,
+      3
+     ],
+     "expected": {
+      "value": 7
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      0,
+      7,
+      3
+     ],
+     "expected": {
+      "value": 0
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      null,
+      0,
+      3
+     ],
+     "expected": {
+      "value": 0
+     }
+    },
+    {
+     "id": "c6",
+     "input": [
+      null,
+      null,
+      0
+     ],
+     "expected": {
+      "value": 0
+     }
+    }
+   ]
+  },
+  {
+   "id": "def-09",
+   "family": "defaults",
+   "split": "heldout",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "defaults.merge_depth"
+   ],
+   "contract": "Combine two dicts of lists [base, extra]. For a key in both, the result is the base list followed by the extra list; keys in only one dict are kept as they are.",
+   "code": "def solve(p):\n    return {**p[0], **p[1]}\n",
+   "reference": "def solve(p):\n    out = {k: list(items) for k, items in p[0].items()}\n    for k, items in p[1].items():\n        out[k] = out.get(k, []) + items\n    return out\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      {
+       "a": [
+        1
+       ]
+      },
+      {
+       "a": [
+        2
+       ],
+       "b": [
+        3
+       ]
+      }
+     ],
+     "expected": {
+      "value": {
+       "a": [
+        1,
+        2
+       ],
+       "b": [
+        3
+       ]
+      }
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      {},
+      {}
+     ],
+     "expected": {
+      "value": {}
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      {
+       "a": [
+        1
+       ]
+      },
+      {}
+     ],
+     "expected": {
+      "value": {
+       "a": [
+        1
+       ]
+      }
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      {
+       "a": []
+      },
+      {
+       "a": [
+        9
+       ]
+      }
+     ],
+     "expected": {
+      "value": {
+       "a": [
+        9
+       ]
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "err-01",
+   "family": "errors",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "errors.swallowed"
+   ],
+   "contract": "Parse an integer from text. Text that is not an integer must raise ValueError and never produce a default value.",
+   "code": "def solve(p):\n    try:\n        return int(p)\n    except ValueError:\n        return 0\n",
+   "reference": "def solve(p):\n    return int(p)\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "12",
+     "expected": {
+      "value": 12
+     }
+    },
+    {
+     "id": "c2",
+     "input": "x",
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c3",
+     "input": "",
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c4",
+     "input": "-3",
+     "expected": {
+      "value": -3
+     }
+    }
+   ]
+  },
+  {
+   "id": "err-02",
+   "family": "errors",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "errors.wrong_type"
+   ],
+   "contract": "Return the value stored under a key in a dict. Input is [dict, key]. A missing key must raise KeyError.",
+   "code": "def solve(p):\n    d, k = p\n    if k not in d:\n        raise ValueError(k)\n    return d[k]\n",
+   "reference": "def solve(p):\n    return p[0][p[1]]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      {
+       "a": 1
+      },
+      "a"
+     ],
+     "expected": {
+      "value": 1
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      {
+       "a": 1
+      },
+      "b"
+     ],
+     "expected": {
+      "error": "KeyError"
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      {},
+      "a"
+     ],
+     "expected": {
+      "error": "KeyError"
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      {
+       "a": null
+      },
+      "a"
+     ],
+     "expected": {
+      "value": null
+     }
+    }
+   ]
+  },
+  {
+   "id": "err-03",
+   "family": "errors",
+   "split": "train",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "errors.partial_state",
+    "state.input_mutation"
+   ],
+   "contract": "Move money between accounts. Input is [balances, source, target, amount] where balances maps names to numbers. If the source holds less than the amount raise ValueError and change nothing. Otherwise return the new balances without modifying the argument.",
+   "code": "def solve(p):\n    balances, source, target, amount = p\n    balances[source] -= amount\n    balances[target] += amount\n    if balances[source] < 0:\n        raise ValueError(\"insufficient\")\n    return balances\n",
+   "reference": "def solve(p):\n    balances, source, target, amount = p\n    if balances[source] < amount:\n        raise ValueError(\"insufficient\")\n    out = dict(balances)\n    out[source] -= amount\n    out[target] += amount\n    return out\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      {
+       "a": 10,
+       "b": 0
+      },
+      "a",
+      "b",
+      4
+     ],
+     "expected": {
+      "value": {
+       "a": 6,
+       "b": 4
+      }
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      {
+       "a": 3,
+       "b": 0
+      },
+      "a",
+      "b",
+      5
+     ],
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      {
+       "a": 5,
+       "b": 5
+      },
+      "b",
+      "a",
+      5
+     ],
+     "expected": {
+      "value": {
+       "a": 10,
+       "b": 0
+      }
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      {
+       "a": 5,
+       "b": 1
+      },
+      "a",
+      "b",
+      0
+     ],
+     "expected": {
+      "value": {
+       "a": 5,
+       "b": 1
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "err-04",
+   "family": "errors",
+   "split": "dev",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "errors.swallowed"
+   ],
+   "contract": "Add up a list of numeric strings. Any entry that is not an integer must raise ValueError instead of being skipped.",
+   "code": "def solve(p):\n    total = 0\n    for item in p:\n        try:\n            total += int(item)\n        except ValueError:\n            pass\n    return total\n",
+   "reference": "def solve(p):\n    return sum(int(item) for item in p)\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      "1",
+      "2"
+     ],
+     "expected": {
+      "value": 3
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      "1",
+      "x"
+     ],
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c3",
+     "input": [],
+     "expected": {
+      "value": 0
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      "",
+      "2"
+     ],
+     "expected": {
+      "error": "ValueError"
+     }
+    }
+   ]
+  },
+  {
+   "id": "err-05",
+   "family": "errors",
+   "split": "dev",
+   "tier": "standard",
+   "label": "correct",
+   "mechanisms": [
+    "errors.wrong_type"
+   ],
+   "contract": "Divide a by b for the pair [a, b]. Division by zero must raise ZeroDivisionError.",
+   "code": "def solve(p):\n    return p[0] / p[1]\n",
+   "reference": "def solve(p):\n    return p[0] / p[1]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      6,
+      3
+     ],
+     "expected": {
+      "value": 2
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      1,
+      0
+     ],
+     "expected": {
+      "error": "ZeroDivisionError"
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      0,
+      5
+     ],
+     "expected": {
+      "value": 0
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      -4,
+      2
+     ],
+     "expected": {
+      "value": -2
+     }
+    }
+   ]
+  },
+  {
+   "id": "err-06",
+   "family": "errors",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "errors.swallowed"
+   ],
+   "contract": "Read a value from nested dicts by a dotted path. Input is [dict, path] such as 'a.b'. A missing key raises KeyError, and stepping into a value that is not a dict raises TypeError.",
+   "code": "def solve(p):\n    d, path = p\n    for part in path.split(\".\"):\n        try:\n            d = d[part]\n        except (KeyError, TypeError):\n            return None\n    return d\n",
+   "reference": "def solve(p):\n    d, path = p\n    for part in path.split(\".\"):\n        d = d[part]\n    return d\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      {
+       "a": {
+        "b": 1
+       }
+      },
+      "a.b"
+     ],
+     "expected": {
+      "value": 1
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      {
+       "a": {
+        "b": 1
+       }
+      },
+      "a.c"
+     ],
+     "expected": {
+      "error": "KeyError"
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      {
+       "a": 1
+      },
+      "a.b"
+     ],
+     "expected": {
+      "error": "TypeError"
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      {},
+      "x"
+     ],
+     "expected": {
+      "error": "KeyError"
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      {
+       "a": null
+      },
+      "a"
+     ],
+     "expected": {
+      "value": null
+     }
+    }
+   ]
+  },
+  {
+   "id": "err-07",
+   "family": "errors",
+   "split": "heldout",
+   "tier": "hard",
+   "label": "defective",
+   "mechanisms": [
+    "errors.partial_state"
+   ],
+   "contract": "Append every item of the second list onto the first list, in place, and return the first list. Input is [target, items]. If any item is negative raise ValueError before the first list is changed at all.",
+   "code": "from check import reject_negative\n\ndef solve(p):\n    target, items = p\n    for item in items:\n        target.append(item)\n        reject_negative(item)\n    return target\n",
+   "reference": "from check import reject_negative\n\ndef solve(p):\n    target, items = p\n    for item in items:\n        reject_negative(item)\n    target.extend(items)\n    return target\n",
+   "input_state": "per_case",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      [
+       1
+      ],
+      [
+       2,
+       3
+      ]
+     ],
+     "expected": {
+      "value": [
+       1,
+       2,
+       3
+      ],
+      "input_after": [
+       [
+        1,
+        2,
+        3
+       ],
+       [
+        2,
+        3
+       ]
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      [
+       1
+      ],
+      [
+       2,
+       -1,
+       3
+      ]
+     ],
+     "expected": {
+      "error": "ValueError",
+      "input_after": [
+       [
+        1
+       ],
+       [
+        2,
+        -1,
+        3
+       ]
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      [],
+      []
+     ],
+     "expected": {
+      "value": [],
+      "input_after": [
+       [],
+       []
+      ]
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      [
+       5
+      ],
+      [
+       -1
+      ]
+     ],
+     "expected": {
+      "error": "ValueError",
+      "input_after": [
+       [
+        5
+       ],
+       [
+        -1
+       ]
+      ]
+     }
+    }
+   ],
+   "files": {
+    "check.py": "def reject_negative(item):\n    if item < 0:\n        raise ValueError(item)\n"
+   }
+  },
+  {
+   "id": "err-08",
+   "family": "errors",
+   "split": "heldout",
+   "tier": "standard",
+   "label": "defective",
+   "mechanisms": [
+    "errors.wrong_type"
+   ],
+   "contract": "Convert text to a positive integer. Text that is not a number, zero and negative numbers must all raise ValueError.",
+   "code": "def solve(p):\n    n = int(p)\n    assert n > 0\n    return n\n",
+   "reference": "def solve(p):\n    n = int(p)\n    if n <= 0:\n        raise ValueError(p)\n    return n\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "5",
+     "expected": {
+      "value": 5
+     }
+    },
+    {
+     "id": "c2",
+     "input": "0",
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c3",
+     "input": "-2",
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c4",
+     "input": "x",
+     "expected": {
+      "error": "ValueError"
+     }
+    }
+   ]
+  },
+  {
+   "id": "err-09",
+   "family": "errors",
+   "split": "heldout",
+   "tier": "standard",
+   "label": "correct",
+   "mechanisms": [
+    "errors.swallowed"
+   ],
+   "contract": "Return the integer value of the text, or null when the text is not an integer. This function never raises.",
+   "code": "def solve(p):\n    try:\n        return int(p)\n    except ValueError:\n        return None\n",
+   "reference": "def solve(p):\n    try:\n        return int(p)\n    except ValueError:\n        return None\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "12",
+     "expected": {
+      "value": 12
+     }
+    },
+    {
+     "id": "c2",
+     "input": "x",
+     "expected": {
+      "value": null
+     }
+    },
+    {
+     "id": "c3",
+     "input": "",
+     "expected": {
+      "value": null
+     }
+    },
+    {
+     "id": "c4",
+     "input": "1.5",
+     "expected": {
+      "value": null
+     }
+    },
+    {
+     "id": "c5",
+     "input": " 7 ",
+     "expected": {
+      "value": 7
+     }
+    }
+   ]
+  }
+ ]
+}

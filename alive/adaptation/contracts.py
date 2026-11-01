@@ -16,7 +16,7 @@ Mechanism = Literal[
     "numeric.boundary",
     "numeric.counting",
     "parsing.delimiter_position",
-    "parsing.whitespace_case",
+    "parsing.trim_and_case",
     "parsing.empty_fields",
     "parsing.type_coercion",
     "state.transition_guard",

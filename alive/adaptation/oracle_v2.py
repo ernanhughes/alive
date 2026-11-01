@@ -75,6 +75,14 @@ def frozen_corpus():
         digest(Path(__file__).read_text(encoding="utf-8")) == lock["oracle_sha256"],
         "oracle_implementation_changed",
     )
+    from alive.continuity.contracts import role_contract as contextual
+    from alive.intent.contracts import role_contract as intent
+
+    require(
+        lock["contextual_role_contract_sha256"] == contextual()
+        and lock["intent_role_contract_sha256"] == intent(),
+        "response_contract_changed",
+    )
     return data, lock
 
 
@@ -261,6 +269,9 @@ def grade(task, answer, *, run_failure=None, reference_valid=True, check_referen
         c["observed_prediction"] == "correct" and c["required_prediction"] == "correct"
         for c in cases
     )
+    checks = (answer or {}).get("citation_checks") or []
+    integrity = ((answer or {}).get("reference_integrity") or {}).get("status", "valid")
+    reference_valid = reference_valid and integrity != "invalid"
     end_to_end = bool(structure["ok"] and semantic == "correct" and reference_valid)
     text = (answer or {}).get("answer")
     return {
@@ -277,6 +288,11 @@ def grade(task, answer, *, run_failure=None, reference_valid=True, check_referen
             },
             "contract_compliance": structure,
             "reference_integrity": "valid" if reference_valid else "invalid",
+            "reference_normalized": integrity == "normalized",
+            "grounding": {
+                "citations": len(checks),
+                "matching": sum(c.get("status") == "quote_matches" for c in checks),
+            },
             "task_completion": bool(
                 isinstance(text, str)
                 and text.strip()
@@ -327,4 +343,29 @@ async def measure(kernel, admission_id, task_id, *, corpus=None):
             "corpus_sha256": lock["corpus_sha256"],
             "oracle_sha256": lock["oracle_sha256"],
         }
+        return await put(session, kernel, MEASURED, admission_id, body, source=ORACLE)
+
+
+async def measure_failed_run(kernel, admission_id, task_id, reason, *, answer=None, corpus=None):
+    """Record the outcome of a turn that produced no validated artifact (refusal, truncation).
+
+    ``answer`` may carry the raw model output retained on the failed run, so a structural or
+    reference failure is not mistaken for a reasoning failure. The turn never counts as success.
+    """
+    corpus, lock = corpus or frozen_corpus()
+    task = next(t for t in corpus["tasks"] if t["id"] == task_id)
+    async with kernel.lock, kernel.db.sessions.begin() as session:
+        admission = await row_for(session, kernel, admission_id)
+        body = grade(task, answer, run_failure=reason, reference_valid=False) | {
+            "admission_id": admission_id,
+            "artifact_sha256": None,
+            "no_validated_artifact": True,
+            "source_sha256": digest(admission.terms["source"]),
+            "task_id": task_id,
+            "family": task["family"],
+            "split": task["split"],
+            "corpus_sha256": lock["corpus_sha256"],
+            "oracle_sha256": lock["oracle_sha256"],
+        }
+        body["end_to_end"] = body["passed"] = False
         return await put(session, kernel, MEASURED, admission_id, body, source=ORACLE)

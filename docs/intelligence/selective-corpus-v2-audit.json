@@ -1,0 +1,1318 @@
+{
+ "schema": "selective-corpus-audit/v1",
+ "assessment": "Programmatic audit by the implementation agent. NOT independent human adjudication of contracts, labels or hand-written expectations.",
+ "tasks": 54,
+ "splits": {
+  "train": 18,
+  "dev": 12,
+  "heldout": 24
+ },
+ "labels": {
+  "defective": 42,
+  "correct": 12
+ },
+ "tiers": {
+  "train": {
+   "standard": 18,
+   "hard": 0
+  },
+  "dev": {
+   "standard": 6,
+   "hard": 6
+  },
+  "heldout": {
+   "standard": 9,
+   "hard": 15
+  }
+ },
+ "heldout_with_relevant_lesson_possible": 20,
+ "heldout_with_no_relevant_training_mechanism": [
+  "num-09",
+  "par-08",
+  "par-09",
+  "aut-09"
+ ],
+ "problems": [],
+ "tasks_audited": [
+  {
+   "id": "num-01",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c3"
+   ],
+   "distinct_expected_outputs": 5,
+   "source_bytes": 358,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "num-02",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c3"
+   ],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 287,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "num-03",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c1",
+    "c3"
+   ],
+   "distinct_expected_outputs": 2,
+   "source_bytes": 299,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "num-04",
+   "split": "dev",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c1",
+    "c2",
+    "c3"
+   ],
+   "distinct_expected_outputs": 5,
+   "source_bytes": 365,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "num-05",
+   "split": "dev",
+   "label": "correct",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 353,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "num-06",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c2",
+    "c4"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 383,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "num-07",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c3"
+   ],
+   "distinct_expected_outputs": 5,
+   "source_bytes": 378,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "num-08",
+   "split": "heldout",
+   "label": "correct",
+   "tier": "standard",
+   "cases": 5,
+   "discriminating_cases": [],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 306,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "num-09",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c1",
+    "c4"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 620,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "par-01",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c2",
+    "c4"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 333,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "par-02",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c3"
+   ],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 350,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "par-03",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c3"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 313,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "par-04",
+   "split": "dev",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 6,
+   "discriminating_cases": [
+    "c2",
+    "c5",
+    "c6"
+   ],
+   "distinct_expected_outputs": 6,
+   "source_bytes": 380,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "par-05",
+   "split": "dev",
+   "label": "correct",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 349,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "par-06",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c3"
+   ],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 272,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "par-07",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c2"
+   ],
+   "distinct_expected_outputs": 5,
+   "source_bytes": 381,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "par-08",
+   "split": "heldout",
+   "label": "correct",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 332,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "par-09",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c3",
+    "c4"
+   ],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 448,
+   "files": [
+    "README.md",
+    "implementation.py",
+    "text.py"
+   ]
+  },
+  {
+   "id": "sta-01",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c1",
+    "c2"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 376,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "sta-02",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c2"
+   ],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 681,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "sta-03",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c1",
+    "c3",
+    "c4"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 351,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "sta-04",
+   "split": "dev",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c1",
+    "c3"
+   ],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 359,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "sta-05",
+   "split": "dev",
+   "label": "correct",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 308,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "sta-06",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c1",
+    "c2",
+    "c4"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 336,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "sta-07",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c4",
+    "c5"
+   ],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 520,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "sta-08",
+   "split": "heldout",
+   "label": "correct",
+   "tier": "hard",
+   "cases": 5,
+   "discriminating_cases": [],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 813,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "sta-09",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c1"
+   ],
+   "distinct_expected_outputs": 5,
+   "source_bytes": 511,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "aut-01",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c3",
+    "c4"
+   ],
+   "distinct_expected_outputs": 2,
+   "source_bytes": 555,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "aut-02",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c2",
+    "c3"
+   ],
+   "distinct_expected_outputs": 2,
+   "source_bytes": 458,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "aut-03",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c2",
+    "c5"
+   ],
+   "distinct_expected_outputs": 2,
+   "source_bytes": 443,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "aut-04",
+   "split": "dev",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c2",
+    "c4"
+   ],
+   "distinct_expected_outputs": 2,
+   "source_bytes": 437,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "aut-05",
+   "split": "dev",
+   "label": "correct",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [],
+   "distinct_expected_outputs": 2,
+   "source_bytes": 458,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "aut-06",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c2",
+    "c3"
+   ],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 565,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "aut-07",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c2"
+   ],
+   "distinct_expected_outputs": 2,
+   "source_bytes": 527,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "aut-08",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c2"
+   ],
+   "distinct_expected_outputs": 2,
+   "source_bytes": 502,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "aut-09",
+   "split": "heldout",
+   "label": "correct",
+   "tier": "standard",
+   "cases": 5,
+   "discriminating_cases": [],
+   "distinct_expected_outputs": 2,
+   "source_bytes": 554,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "def-01",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c2",
+    "c3"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 493,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "def-02",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c3",
+    "c4"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 479,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "def-03",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c1"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 454,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "def-04",
+   "split": "dev",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c3"
+   ],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 360,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "def-05",
+   "split": "dev",
+   "label": "correct",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 422,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "def-06",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c1",
+    "c2"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 718,
+   "files": [
+    "README.md",
+    "fill.py",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "def-07",
+   "split": "heldout",
+   "label": "correct",
+   "tier": "hard",
+   "cases": 5,
+   "discriminating_cases": [],
+   "distinct_expected_outputs": 5,
+   "source_bytes": 468,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "def-08",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 6,
+   "discriminating_cases": [
+    "c4",
+    "c5",
+    "c6"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 554,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "def-09",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c1"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 438,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "err-01",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c2",
+    "c3"
+   ],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 365,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "err-02",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c2",
+    "c3"
+   ],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 405,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "err-03",
+   "split": "train",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c1",
+    "c2",
+    "c3"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 741,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "err-04",
+   "split": "dev",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c2",
+    "c4"
+   ],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 452,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "err-05",
+   "split": "dev",
+   "label": "correct",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 298,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "err-06",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 5,
+   "discriminating_cases": [
+    "c2",
+    "c3",
+    "c4"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 626,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "err-07",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "hard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c2",
+    "c4"
+   ],
+   "distinct_expected_outputs": 4,
+   "source_bytes": 651,
+   "files": [
+    "README.md",
+    "check.py",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "err-08",
+   "split": "heldout",
+   "label": "defective",
+   "tier": "standard",
+   "cases": 4,
+   "discriminating_cases": [
+    "c2",
+    "c3"
+   ],
+   "distinct_expected_outputs": 2,
+   "source_bytes": 342,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  },
+  {
+   "id": "err-09",
+   "split": "heldout",
+   "label": "correct",
+   "tier": "standard",
+   "cases": 5,
+   "discriminating_cases": [],
+   "distinct_expected_outputs": 3,
+   "source_bytes": 393,
+   "files": [
+    "README.md",
+    "implementation.py"
+   ]
+  }
+ ],
+ "coverage": {
+  "num-04": {
+   "split": "dev",
+   "label": "defective",
+   "mechanisms": [
+    "numeric.rounding"
+   ],
+   "training_tasks_sharing_a_mechanism": [],
+   "relevant_lesson_possible": false
+  },
+  "num-05": {
+   "split": "dev",
+   "label": "correct",
+   "mechanisms": [
+    "numeric.counting",
+    "numeric.boundary"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "num-03"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "num-06": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "numeric.signed_values"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "num-01"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "num-07": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "numeric.signed_values"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "num-01"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "num-08": {
+   "split": "heldout",
+   "label": "correct",
+   "mechanisms": [
+    "numeric.signed_values"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "num-01"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "num-09": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "numeric.counting"
+   ],
+   "training_tasks_sharing_a_mechanism": [],
+   "relevant_lesson_possible": false
+  },
+  "par-04": {
+   "split": "dev",
+   "label": "defective",
+   "mechanisms": [
+    "parsing.trim_and_case"
+   ],
+   "training_tasks_sharing_a_mechanism": [],
+   "relevant_lesson_possible": false
+  },
+  "par-05": {
+   "split": "dev",
+   "label": "correct",
+   "mechanisms": [
+    "parsing.delimiter_position"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "par-01",
+    "par-02"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "par-06": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "parsing.type_coercion",
+    "parsing.empty_fields"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "par-03"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "par-07": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "parsing.delimiter_position"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "par-01",
+    "par-02"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "par-08": {
+   "split": "heldout",
+   "label": "correct",
+   "mechanisms": [
+    "parsing.trim_and_case"
+   ],
+   "training_tasks_sharing_a_mechanism": [],
+   "relevant_lesson_possible": false
+  },
+  "par-09": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "parsing.type_coercion"
+   ],
+   "training_tasks_sharing_a_mechanism": [],
+   "relevant_lesson_possible": false
+  },
+  "sta-04": {
+   "split": "dev",
+   "label": "defective",
+   "mechanisms": [
+    "state.repeat_application",
+    "state.ordering"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "sta-01"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "sta-05": {
+   "split": "dev",
+   "label": "correct",
+   "mechanisms": [
+    "state.input_mutation"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "err-03",
+    "sta-03"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "sta-06": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "state.input_mutation"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "err-03",
+    "sta-03"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "sta-07": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "state.transition_guard",
+    "errors.wrong_type"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "err-02",
+    "sta-02"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "sta-08": {
+   "split": "heldout",
+   "label": "correct",
+   "mechanisms": [
+    "state.transition_guard"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "sta-02"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "sta-09": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "state.ordering"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "sta-01"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "aut-04": {
+   "split": "dev",
+   "label": "defective",
+   "mechanisms": [
+    "authz.scope_boundary",
+    "authz.substring_match"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "aut-02"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "aut-05": {
+   "split": "dev",
+   "label": "correct",
+   "mechanisms": [
+    "authz.default_deny"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "aut-01"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "aut-06": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "authz.default_deny"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "aut-01"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "aut-07": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "authz.precedence"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "aut-03"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "aut-08": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "authz.substring_match",
+    "authz.scope_boundary"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "aut-02"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "aut-09": {
+   "split": "heldout",
+   "label": "correct",
+   "mechanisms": [
+    "authz.scope_boundary"
+   ],
+   "training_tasks_sharing_a_mechanism": [],
+   "relevant_lesson_possible": false
+  },
+  "def-04": {
+   "split": "dev",
+   "label": "defective",
+   "mechanisms": [
+    "defaults.falsy_vs_missing"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "def-02"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "def-05": {
+   "split": "dev",
+   "label": "correct",
+   "mechanisms": [
+    "defaults.falsy_vs_missing"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "def-02"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "def-06": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "defaults.merge_depth",
+    "state.input_mutation"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "def-03",
+    "err-03",
+    "sta-03"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "def-07": {
+   "split": "heldout",
+   "label": "correct",
+   "mechanisms": [
+    "defaults.falsy_vs_missing"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "def-02"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "def-08": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "defaults.override_precedence",
+    "defaults.falsy_vs_missing"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "def-01",
+    "def-02"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "def-09": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "defaults.merge_depth"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "def-03"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "err-04": {
+   "split": "dev",
+   "label": "defective",
+   "mechanisms": [
+    "errors.swallowed"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "err-01"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "err-05": {
+   "split": "dev",
+   "label": "correct",
+   "mechanisms": [
+    "errors.wrong_type"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "err-02"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "err-06": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "errors.swallowed"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "err-01"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "err-07": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "errors.partial_state"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "err-03"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "err-08": {
+   "split": "heldout",
+   "label": "defective",
+   "mechanisms": [
+    "errors.wrong_type"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "err-02"
+   ],
+   "relevant_lesson_possible": true
+  },
+  "err-09": {
+   "split": "heldout",
+   "label": "correct",
+   "mechanisms": [
+    "errors.swallowed"
+   ],
+   "training_tasks_sharing_a_mechanism": [
+    "err-01"
+   ],
+   "relevant_lesson_possible": true
+  }
+ }
+}
