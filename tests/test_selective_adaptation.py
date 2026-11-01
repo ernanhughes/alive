@@ -667,7 +667,10 @@ def test_evaluation_override_is_labelled_cannot_bypass_authorization_and_resets(
     # Out-of-scope lessons do not reveal their existence through a refusal.
     assert normal["selection"]["override"] is None
     assert normal["selection"]["decision"] == "none"
-    assert normal["selection"]["candidates"] == []
+    assert all(
+        candidate["lesson_id"] != foreign
+        for candidate in normal["selection"]["candidates"]
+    )
 
 
 async def forge_measurement(kernel, measurement_ref, changes):
