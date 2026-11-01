@@ -108,11 +108,11 @@ def compact(value):
     } | {"result_admission_id": (value.get("result_admission") or {}).get("id")}
 
 
-def run(folder, approve_live, previous_ledger=None):
+def run(folder, approve_live, previous_ledger=None, resume=False):
     if not approve_live:
         raise ValueError("Explicit --approve-live required; otherwise live qualification NOT_RUN")
     folder = folder.resolve()
-    folder.mkdir(parents=True, exist_ok=False)
+    folder.mkdir(parents=True, exist_ok=resume)
     settings = settings_for(folder)
     if not settings.alive_meta_api_key:
         raise ValueError("Meta credential absent; live qualification NOT_RUN")
@@ -146,6 +146,27 @@ def run(folder, approve_live, previous_ledger=None):
         "provider_requests": prior_requests,
         "conservative_units_upper_bound": prior_requests * 30000,
     }
+    if resume:
+        ledger = json.loads(path.read_text(encoding="utf-8"))
+        assert ledger["corpus_lock"] == lock and ledger["plan"] == plan(corpus)
+        subprocess.run(
+            ["git", "diff", "--exit-code", ledger["implementation_sha"], "--", "alive"], check=True
+        )
+        for row in ledger["evaluation"]:
+            task = next(t for t in corpus["tasks"] if t["id"] == row["task_id"])
+            assert row["review"]["request"]["goal"] == goal_for(task)
+        prior_requests = ledger["earlier_attempt"]["provider_requests"]
+        ledger.setdefault("resumptions", []).append(
+            {
+                "harness_sha": subprocess.check_output(
+                    ["git", "rev-parse", "HEAD"], text=True
+                ).strip(),
+                "prior_failure": ledger.pop("failure", None),
+                "completed_evaluations": len(ledger["evaluation"]),
+                "policy_sha256": ledger["frozen_policy_sha256"],
+                "note": "Continue unattempted turns only; prior failed responses keep score zero.",
+            }
+        )
 
     def save():
         path.write_text(json.dumps(ledger, indent=2), encoding="utf-8")
@@ -180,10 +201,13 @@ def run(folder, approve_live, previous_ledger=None):
                     await register_definition(kernel, definition_text(profile), status="active")
 
             call(client, register)
-            goal = response(
-                client, "/goals", {"title": "Public frozen measured adaptation experiment"}
-            )
-            response(client, f"/goals/{goal['id']}/transition", {"status": "accepted"})
+            if resume:
+                goal = {"id": next(iter(ledger["sources"].values()))["terms"]["goal_ref"]}
+            else:
+                goal = response(
+                    client, "/goals", {"title": "Public frozen measured adaptation experiment"}
+                )
+                response(client, f"/goals/{goal['id']}/transition", {"status": "accepted"})
 
             def setup(task):
                 if task["id"] in ledger["sources"]:
@@ -248,6 +272,19 @@ def run(folder, approve_live, previous_ledger=None):
                 return approved
 
             def ask(task, arm, phase, *, conversation=None, goal_text=None):
+                goals = client.get("/api/v1/goals").json()
+                current_goal = next(g for g in goals if g["id"] == goal["id"])
+                if current_goal["status"] == "proposed":
+                    response(client, f"/goals/{goal['id']}/transition", {"status": "accepted"})
+                    ledger.setdefault("disposable_goal_recoveries", []).append(
+                        {
+                            "before_task": task["id"],
+                            "arm": arm,
+                            "phase": phase,
+                            "reason": "Previous failed explicit run demoted the experiment goal; no inference retry.",
+                        }
+                    )
+                    save()
                 consent = setup(task)
                 if not conversation:
                     conversation = response(
@@ -275,6 +312,8 @@ def run(folder, approve_live, previous_ledger=None):
                 return compact(value) | {"request": request, "wall_seconds": elapsed}
 
             for task in (t for t in corpus["tasks"] if t["split"] == "train"):
+                if any(t["task_id"] == task["id"] for t in ledger["training"]):
+                    continue
                 value = ask(task, "A", "train")
                 record = {
                     "task_id": task["id"],
@@ -342,11 +381,19 @@ def run(folder, approve_live, previous_ledger=None):
                 )
 
             policy = call(client, adaptation.listing)
-            ledger["frozen_policy"] = policy
-            ledger["frozen_policy_sha256"] = digest(policy)
+            if resume:
+                assert digest(policy) == ledger["frozen_policy_sha256"]
+            else:
+                ledger["frozen_policy"] = policy
+                ledger["frozen_policy_sha256"] = digest(policy)
             save()
             by_id = {t["id"]: t for t in corpus["tasks"]}
             for planned in ledger["plan"]:
+                if any(
+                    all(row[k] == planned[k] for k in ("phase", "task_id", "arm"))
+                    for row in ledger["evaluation"]
+                ):
+                    continue
                 task = by_id[planned["task_id"]]
                 assert digest(call(client, adaptation.listing)) == ledger["frozen_policy_sha256"]
                 value = ask(task, planned["arm"], planned["phase"])
@@ -423,8 +470,9 @@ if __name__ == "__main__":
     parser.add_argument("directory", type=Path)
     parser.add_argument("--approve-live", action="store_true")
     parser.add_argument("--replay-only", action="store_true")
+    parser.add_argument("--resume", action="store_true")
     parser.add_argument("--previous-ledger", type=Path)
     args = parser.parse_args()
     replay(args.directory) if args.replay_only else run(
-        args.directory, args.approve_live, args.previous_ledger
+        args.directory, args.approve_live, args.previous_ledger, args.resume
     )
