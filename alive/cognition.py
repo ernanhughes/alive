@@ -1378,7 +1378,11 @@ class Cognition:
             }
         goal = await session.get(Goal, run.goal_id)
         if goal and target in ("FAILED", "CANCELLED", "ABSTAINED"):
-            goal.status = "proposed"
+            observation = await session.get(CognitiveObservation, run.observation_id)
+            # A failed explicit procedure ends that run, not the owner's accepted commitment.
+            # Preserve owner cancellations and charge failures normally; never redispatch a run.
+            if not observation or observation.provenance.get("source") != "owner-admission":
+                goal.status = "proposed"
         action = await session.scalar(
             select(ActionProposal).where(ActionProposal.investigation_id == run_id)
         )
