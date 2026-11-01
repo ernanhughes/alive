@@ -10,7 +10,15 @@ from types import SimpleNamespace
 from sqlalchemy import select
 
 from alive.admission.models import Admission
-from alive.admission.profiles import ANALYSIS, CONTEXTUAL, INSPECTION, INTENT, PROFILES, disclose
+from alive.admission.profiles import (
+    ANALYSIS,
+    CONTEXT_PROFILES,
+    CONTEXTUAL,
+    INSPECTION,
+    INTENT,
+    PROFILES,
+    disclose,
+)
 from alive.bespoke.recipes import recipe_hash
 from alive.bespoke.selector import evaluate
 from alive.capabilities.bindings import binding_record, digest, registry_for
@@ -33,6 +41,21 @@ def recipe_for(kernel, profile=PROFILE):
     from alive.bespoke.recipes import load_catalogue
 
     recipes = getattr(kernel, "bespoke_recipes", None) or load_catalogue()
+    from alive.admission.profiles import CODE_REPAIR, CODE_REVIEW, definition_text
+
+    if profile in (CODE_REVIEW, CODE_REPAIR):
+        from alive.workflows.spec import definition_sha256, parse_definition
+
+        base = next(r for r in recipes if r.id == CONTEXTUAL and r.version == "1.0.0")
+        pin = base.workflow.model_copy(
+            update={
+                "name": "owner-" + profile,
+                "definition_sha256": definition_sha256(
+                    parse_definition(definition_text(PROFILES[profile]))
+                ),
+            }
+        )
+        return base.model_copy(update={"id": profile, "workflow": pin})
     return next(r for r in recipes if r.id == profile and r.version == "1.0.0")
 
 
@@ -125,7 +148,7 @@ async def current_terms(session, kernel, row):
     )
     if profile.model:
         snapshot = None
-        if profile.id == CONTEXTUAL:
+        if profile.id in CONTEXT_PROFILES:
             from alive.continuity.service import frozen
 
             snapshot = await frozen(
@@ -239,7 +262,7 @@ async def prepare(kernel, request):
         if profile.model:
             inputs["objective"] = request.objective.requested_outcome
         snapshot = None
-        if profile.id == CONTEXTUAL:
+        if profile.id in CONTEXT_PROFILES:
             from alive.continuity.service import frozen
 
             inputs["context_ref"] = request.context_ref or ""
@@ -280,7 +303,7 @@ async def prepare(kernel, request):
         )
         if profile.id == INTENT:
             inputs["catalogue_sha256"] = model_terms["catalogue_sha256"]
-        if profile.id == CONTEXTUAL:
+        if profile.id in CONTEXT_PROFILES:
             inputs["model_input_sha256"] = model_terms["model_input_sha256"]
         expiry = min(now() + timedelta(seconds=request.ttl_seconds), aware(approval.expires_at))
         proposed = Grant(

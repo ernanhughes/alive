@@ -397,6 +397,10 @@ for _identifier, _kind, _adapter, _traits in (
         frozenset({"model.infer", "source.read"} if _kind == "pi_agent" else {"source.read"}),
         (
             "alive/continuity/adapters.py",
+            "alive/task_review/contracts.py",
+            "alive/task_review/service.py",
+            "alive/task_review/validation.py",
+            "alive/task_review/adapters.py",
             "alive/continuity/contracts.py",
             "alive/continuity/context.py",
             "alive/continuity/service.py",

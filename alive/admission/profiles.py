@@ -7,7 +7,7 @@ disclosure of the approved source to the configured model destination.
 """
 
 import json
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from urllib.parse import urlsplit
 
 from alive.analysis.context import context_package, request_bytes
@@ -29,6 +29,9 @@ INSPECTION = "approved-repository-inspection"
 ANALYSIS = "approved-repository-analysis"
 INTENT = "intent-interpretation"
 CONTEXTUAL = "contextual-reasoning"
+CODE_REVIEW = "code-review-v1"
+CODE_REPAIR = "code-review-repair-v1"
+CONTEXT_PROFILES = (CONTEXTUAL, CODE_REVIEW, CODE_REPAIR)
 
 
 @dataclass(frozen=True)
@@ -112,6 +115,9 @@ PROFILES = {
         False,
     ),
 }
+
+for _id, _role in ((CODE_REVIEW, "code_reviewer"), (CODE_REPAIR, "code_review_repairer")):
+    PROFILES[_id] = replace(PROFILES[CONTEXTUAL], id=_id, role=_role)
 
 
 def analysis_inputs(source, paths, objective):
@@ -243,13 +249,17 @@ def intent_disclosure(kernel, control, source, paths, objective):
 
 
 def disclose(profile, kernel, control, source, paths, objective, snapshot=None):
-    if profile.id == CONTEXTUAL:
-        return contextual_disclosure(kernel, control, source, paths, objective, snapshot)
+    if profile.id in CONTEXT_PROFILES:
+        return contextual_disclosure(
+            kernel, control, source, paths, objective, snapshot, profile=profile.id
+        )
     work = intent_disclosure if profile.id == INTENT else disclosure
     return work(kernel, control, source, paths, objective)
 
 
-def contextual_disclosure(kernel, control, source, paths, objective, snapshot):
+def contextual_disclosure(
+    kernel, control, source, paths, objective, snapshot, *, profile=CONTEXTUAL
+):
     from alive.cognition import CognitiveConfiguration
     from alive.continuity.context import empty_snapshot, package, request_bytes
     from alive.continuity.contracts import POLICY, ROLE, role_contract
@@ -257,9 +267,30 @@ def contextual_disclosure(kernel, control, source, paths, objective, snapshot):
 
     config = CognitiveConfiguration.model_validate(control.configuration)
     snapshot = snapshot if snapshot is not None else empty_snapshot()
+    if profile != CONTEXTUAL:
+        from alive.task_review import contracts as task
+        from alive.task_review.service import package
+
+        ROLE = PROFILES[profile].role
+
+        def role_contract():
+            return task.role_contract(profile == CODE_REPAIR)
+
     data = package(source, paths, objective, snapshot)
-    limit = min(config.output_tokens, PROFILES[CONTEXTUAL].max_output_tokens)
-    request = request_bytes(data, limit)
+    limit = min(config.output_tokens, PROFILES[profile].max_output_tokens)
+    if profile == CONTEXTUAL:
+        request = request_bytes(data, limit)
+    else:
+        spec = task.Spec({}, lambda _: data, repair=profile == CODE_REPAIR)
+        request = (
+            len(
+                json.dumps(
+                    {"instructions": spec.instructions, "data": data, "schema": spec.schema}
+                ).encode()
+            )
+            + 1024
+            + limit
+        )
     require(
         request <= config.request_tokens and request <= config.investigation_tokens,
         "context_exceeds_governor_request_ceiling",
@@ -297,7 +328,15 @@ def contextual_disclosure(kernel, control, source, paths, objective, snapshot):
 def definition_text(profile):
     from importlib import resources
 
-    return (resources.files("alive.admission") / profile.definition_file).read_text()
+    text = (resources.files("alive.admission") / profile.definition_file).read_text()
+    if profile.id in (CODE_REVIEW, CODE_REPAIR):
+        data = json.loads(text)
+        data["name"] = "owner-" + profile.id
+        data["title"] = (
+            "Code review completion" if profile.id == CODE_REVIEW else "Code review repair"
+        )
+        text = json.dumps(data)
+    return text
 
 
 def check_definition_file(profile):

@@ -12,7 +12,15 @@ from sqlalchemy import select
 from alive.admission import service
 from alive.admission.contracts import ReviewRequest
 from alive.admission.models import Admission
-from alive.admission.profiles import ANALYSIS, CONTEXTUAL, INSPECTION, INTENT
+from alive.admission.profiles import (
+    ANALYSIS,
+    CODE_REPAIR,
+    CODE_REVIEW,
+    CONTEXT_PROFILES,
+    CONTEXTUAL,
+    INSPECTION,
+    INTENT,
+)
 from alive.bespoke.recipes import recipe_hash
 from alive.cognitive_models import ModelInvocation
 from alive.intent import service as intent
@@ -182,9 +190,16 @@ async def prepare(kernel, request):
     reviews = {}
     profiles = (
         (INTENT, ANALYSIS, INSPECTION, CONTEXTUAL)
-        if request.contextual or request.adaptive
+        if request.contextual or request.adaptive or request.code_review
         else (INTENT, ANALYSIS, INSPECTION)
     )
+    require(
+        not request.completion_repair or request.code_review, "task_profile_required_for_repair"
+    )
+    if request.code_review:
+        profiles += (CODE_REVIEW,)
+    if request.completion_repair:
+        profiles += (CODE_REPAIR,)
     for profile in profiles:
         reviews[profile] = await service.prepare(
             kernel,
@@ -221,6 +236,22 @@ async def prepare(kernel, request):
             "host. Local prompts/results persist. Read-only inspection/analysis is automatic. "
             "Reservations stay charged after failures; currency cost is unknown.",
         }
+        if request.code_review:
+            terms["code_review"] = True
+            terms["completion_repair"] = request.completion_repair
+            terms["disclosure"] += (
+                " Opt-in code-review task contracts retain incomplete candidates."
+            )
+        if request.completion_repair:
+            require(
+                reviews[CODE_REVIEW]["terms"]["model_disclosure"]["destination"]
+                == reviews[CODE_REPAIR]["terms"]["model_disclosure"]["destination"],
+                "repair_requires_same_model_destination",
+            )
+            terms["disclosure"] += (
+                " One requested repair may send the original candidate and omissions to the same "
+                "model, charged as a separate call."
+            )
         if request.adaptive:
             terms["adaptive"] = True
             terms["disclosure"] += (
@@ -228,7 +259,7 @@ async def prepare(kernel, request):
                 "lesson exports from other conversations at this same provider/model. Raw prior "
                 "source is not exported. Lessons remain fallible data, not execution authority."
             )
-        if request.contextual:
+        if request.contextual or request.code_review:
             terms["disclosure"] += (
                 " In a linked conversation, bounded prior owner statements, model findings and "
                 "revisions from this exact source may also be disclosed to the same destination."
@@ -289,7 +320,7 @@ async def validate_receipt(session, kernel, row, receipt):
         and scope(row.terms) == terms["profiles"].get(service.profile_of(row.terms).id),
         "standing_scope_changed",
     )
-    if service.profile_of(row.terms).id == CONTEXTUAL:
+    if service.profile_of(row.terms).id in CONTEXT_PROFILES:
         from alive.continuity.service import frozen
 
         grant = row.terms["proposed_grant_data"]
@@ -359,6 +390,9 @@ async def ask(app, request):
         else request.idempotency_key
     )
     async with kernel.db.sessions() as session:
+        from alive.task_review.service import validate_request_retry
+
+        await validate_request_retry(session, kernel, request)
         current = await consent(session, kernel, request.consent_ref, active=False)
         existing = await session.scalar(
             select(Admission).where(
@@ -378,6 +412,19 @@ async def ask(app, request):
             return await exchange(kernel, existing.id)
         require(current["state"] == "approved", "standing_consent_required_expired_or_revoked")
     terms = current["terms"]
+    task_review = request.task_mode == "code_review"
+    if task_review:
+        require(
+            terms.get("code_review") and request.conversation_ref, "code_review_session_required"
+        )
+        require(
+            not request.repair_incomplete or terms.get("completion_repair"), "repair_not_authorized"
+        )
+    else:
+        require(
+            request.task_case_ids is None and not request.repair_incomplete,
+            "explicit_code_review_required",
+        )
     context_ref, continuation = None, False
     if request.conversation_ref:
         from alive.continuity.service import prepare_turn
@@ -395,7 +442,7 @@ async def ask(app, request):
                 objective={"kind": "inspect_implementation", "requested_outcome": request.goal},
                 paths=terms["paths"],
                 idempotency_key=f"live:{request_key}:{suffix}",
-                context_ref=context_ref if profile == CONTEXTUAL else None,
+                context_ref=context_ref if profile in CONTEXT_PROFILES else None,
             ),
         )
         if request.conversation_ref:
@@ -407,6 +454,35 @@ async def ask(app, request):
             await authorize(kernel, request.consent_ref, review)
         return await service.start(app, review["id"], review["review_sha256"])
 
+    async def finish_task(original, root_id):
+        nonlocal context_ref
+        if request.repair_incomplete and original["run"]["status"] == "COMPLETED":
+            from alive.continuity.service import artifact
+            from alive.task_review.service import freeze
+
+            async with kernel.db.sessions() as session:
+                stored = await artifact(
+                    session, kernel, await service.row_for(session, kernel, original["id"])
+                )
+            if stored and not stored["result"]["completion"]["task_complete"]:
+                try:
+                    context_ref = await freeze(
+                        kernel, request, current, context_ref, original_id=original["id"]
+                    )
+                    await run(CODE_REPAIR, "repair")
+                except Refused as error:
+                    if str(error) in AUTHORIZATION_REFUSALS:
+                        await retain_blocked_followup(kernel, root_id, CODE_REPAIR, error)
+                    else:
+                        await retain_failed_followup(kernel, root_id, CODE_REPAIR, error)
+        return await exchange(kernel, root_id)
+
+    if continuation and task_review:
+        from alive.task_review.service import freeze
+
+        context_ref = await freeze(kernel, request, current, context_ref)
+        interpreted = await run(CODE_REVIEW, "intent")
+        return await finish_task(interpreted, interpreted["id"])
     interpreted = await run(CONTEXTUAL if continuation else INTENT, "intent")
     if continuation:
         from alive.adaptation.service import capture_proposal
@@ -417,19 +493,26 @@ async def ask(app, request):
     if interpreted["run"]["status"] != "COMPLETED":
         return await exchange(kernel, interpreted["id"])
     recommendation = (await intent.compose(kernel, interpreted["id"]))["record"]
-    if terms.get("adaptive") and request.conversation_ref:
+    if (terms.get("adaptive") or task_review) and request.conversation_ref:
         from alive.continuity.service import adaptive_snapshot
 
         interpretation = recommendation["interpretation"]["value"]
-        context_ref = await adaptive_snapshot(
-            kernel,
-            request,
-            current,
-            interpretation.get("problem_families", []),
-            interpretation.get("task_mechanisms", []),
-        )
+        if terms.get("adaptive"):
+            context_ref = await adaptive_snapshot(
+                kernel,
+                request,
+                current,
+                interpretation.get("problem_families", []),
+                interpretation.get("task_mechanisms", []),
+            )
+        if task_review:
+            from alive.task_review.service import freeze
+
+            context_ref = await freeze(kernel, request, current, context_ref)
         try:
-            await run(CONTEXTUAL, "result")
+            result = await run(CODE_REVIEW if task_review else CONTEXTUAL, "result")
+            if task_review:
+                return await finish_task(result, interpreted["id"])
         except Refused as error:
             if str(error) in AUTHORIZATION_REFUSALS:
                 await retain_blocked_followup(kernel, interpreted["id"], CONTEXTUAL, error)
@@ -467,6 +550,13 @@ async def exchange(kernel, admission_id):
                 Admission.idempotency_key == row.idempotency_key[:-6] + "result",
             )
         )
+        repair = await session.scalar(
+            select(Admission).where(
+                Admission.instance_id == kernel.instance_id,
+                Admission.principal == row.principal,
+                Admission.idempotency_key == row.idempotency_key[:-6] + "repair",
+            )
+        )
         recommendation = await intent.stored(session, kernel, row.id)
         from alive.continuity import service as continuity
 
@@ -479,7 +569,9 @@ async def exchange(kernel, admission_id):
             )
         )
         blocked = await followup_outcome(session, kernel, row.id)
-        inquiries = [r.terms["proposed_grant_data"]["investigation_id"] for r in (row, result) if r]
+        inquiries = [
+            r.terms["proposed_grant_data"]["investigation_id"] for r in (row, result, repair) if r
+        ]
         calls = (
             await session.scalars(
                 select(ModelInvocation)
@@ -499,7 +591,7 @@ async def exchange(kernel, admission_id):
                 "latency_ms": c.latency_ms,
                 "endpoint": next(
                     r.terms["model_disclosure"]["destination"]["endpoint"]
-                    for r in (row, result)
+                    for r in (row, result, repair)
                     if r
                     and r.terms["proposed_grant_data"]["investigation_id"] == c.investigation_id
                 ),
@@ -584,7 +676,8 @@ async def exchange(kernel, admission_id):
             "selection": None,
         }
         contextual = next(
-            (r for r in (result, row) if r and service.profile_of(r.terms).id == CONTEXTUAL), None
+            (r for r in (result, row) if r and service.profile_of(r.terms).id in CONTEXT_PROFILES),
+            None,
         )
         if contextual:
             context_ref = contextual.terms["proposed_grant_data"]["inputs"]["context_ref"]
@@ -598,6 +691,69 @@ async def exchange(kernel, admission_id):
             retained = await continuity.artifact(session, kernel, contextual)
             if retained:
                 value["answer"] = retained["result"] | {"artifact_sha256": retained["sha256"]}
+            if contextual.terms.get("profile") == CODE_REVIEW and retained:
+                repaired = await continuity.artifact(session, kernel, repair) if repair else None
+                repair_calls = [
+                    c
+                    for c in receipts
+                    if repair
+                    and c["id"]
+                    in {
+                        call.id
+                        for call in calls
+                        if call.investigation_id
+                        == repair.terms["proposed_grant_data"]["investigation_id"]
+                    }
+                ]
+                request_ids = [p["request_id"] for c in receipts for p in c["provider_receipts"]]
+                dispatched = set(
+                    await session.scalars(
+                        select(Event.payload["request_id"].as_string()).where(
+                            Event.instance_id == kernel.instance_id,
+                            Event.source == "pi",
+                            Event.event_type == "pi.provider_request.dispatched",
+                            Event.payload["request_id"].as_string().in_(request_ids),
+                        )
+                    )
+                )
+                value["model_calls"] = len(dispatched)
+                adopted = repaired is not None and not repaired["result"]["repair_rejection"]
+                effective = repaired["result"] if adopted else retained["result"]
+                if adopted:
+                    value["answer"] = effective | {"artifact_sha256": repaired["sha256"]}
+                    value["context"] = await continuity.frozen(
+                        session,
+                        kernel,
+                        repair.terms["proposed_grant_data"]["inputs"]["context_ref"],
+                        repair.terms["source"]["resources"],
+                        repair.principal,
+                    )
+                value["task_review"] = {
+                    "original": retained["result"],
+                    "effective": effective,
+                    "repair": repaired["result"] if repaired else None,
+                    "repair_admission": await service.view(session, kernel, repair)
+                    if repair
+                    else None,
+                    "repair_requested": value["context"]
+                    .get("task_request", {})
+                    .get("repair_requested", False),
+                    "repair_attempted": repair is not None and repair.run_id is not None,
+                    "repair_blocked": blocked.payload
+                    if blocked and blocked.payload.get("profile") == CODE_REPAIR
+                    else None,
+                    "repair_successful": bool(
+                        repaired
+                        and not effective["repair_rejection"]
+                        and effective["task_complete"]
+                    ),
+                    "additional_model_calls": sum(
+                        p["request_id"] in dispatched
+                        for c in repair_calls
+                        for p in c["provider_receipts"]
+                    ),
+                    "repair_calls": repair_calls,
+                }
             from alive.adaptation.selection import view
 
             value["selection"] = await view(
@@ -616,7 +772,9 @@ async def exchange(kernel, admission_id):
                 )
                 value["inspection"] = await result_event(session, stage)
         value["availability"] = (
-            "AI unavailable"
+            "available"
+            if value.get("task_review")
+            else "AI unavailable"
             if any(c.status in ("failed", "cancelled", "interrupted") for c in calls)
             else "available"
             if calls

@@ -116,14 +116,19 @@ async def items_for(session, kernel, row):
     stored = await artifact(session, kernel, row)
     if stored:
         result = stored["result"]
-        if row.terms.get("profile") == PROFILE:
+        if row.terms.get("profile") in (PROFILE, "code-review-v1", "code-review-repair-v1"):
+            content = {
+                k: result[k]
+                for k in ("answer", "revision", "citations", "recalled_item_ids", "uncertainty")
+            }
+            if row.terms.get("profile") != PROFILE:
+                content.update(
+                    {k: result[k] for k in ("candidate_id", "parent_candidate_id", "task_complete")}
+                )
             add(
                 "answer",
                 "model_answer",
-                {
-                    k: result[k]
-                    for k in ("answer", "revision", "citations", "recalled_item_ids", "uncertainty")
-                },
+                content,
                 stored["sha256"],
             )
         elif "findings" in result:
@@ -192,6 +197,9 @@ async def frozen(
         )
         candidates = await items_for(session, kernel, parent)
         require(item in candidates, "context_item_changed")
+    from alive.task_review.service import validate_repair_source
+
+    await validate_repair_source(session, kernel, payload["snapshot"], resources, principal)
     return payload["snapshot"]
 
 
@@ -267,6 +275,9 @@ async def prepare_turn(kernel, request, approved):
     """Select once per request. Recency is a candidate window; the model resolves relevance."""
     async with kernel.lock, kernel.db.sessions.begin() as session:
         opened = await conversation(session, kernel, request.conversation_ref, approved)
+        from alive.task_review.service import validate_request_retry
+
+        await validate_request_retry(session, kernel, request)
         previous = await session.scalar(
             select(Event).where(
                 Event.instance_id == kernel.instance_id,
@@ -355,7 +366,18 @@ async def prepare_turn(kernel, request, approved):
                 "snapshot": snapshot,
                 "sha256": digest(snapshot),
                 "continuation": bool(history),
-            },
+            }
+            | (
+                {
+                    "task_request": {
+                        "mode": request.task_mode,
+                        "case_ids": request.task_case_ids,
+                        "repair_requested": request.repair_incomplete,
+                    }
+                }
+                if request.task_mode == "code_review"
+                else {}
+            ),
             source=SOURCE,
             correlation=opened.id,
         )
