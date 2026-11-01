@@ -65,6 +65,76 @@ def compact(value):
     }
 
 
+def verify_history(folder):
+    """Reopen an existing disposable ledger and replay only its completed requests."""
+    folder = folder.resolve()
+    path = folder / "contextual-ledger.json"
+    ledger = json.loads(path.read_text(encoding="utf-8"))
+    settings = Settings(
+        database_url=f"sqlite+aiosqlite:///{folder / 'demo.db'}",
+        alive_workspace=folder / "workspace",
+        alive_api_token=TOKEN,
+        alive_model_transport="pi",
+        alive_meta_model="muse-spark-1.3-contributor",
+        alive_role_models={},
+        alive_embedding_enabled=False,
+    )
+    from alive.models import Event
+
+    values = ledger.get("browser") or ledger["main"]
+    with TestClient(create_app(settings), headers={"Authorization": f"Bearer {TOKEN}"}) as client:
+
+        async def count(kernel):
+            async with kernel.db.sessions() as session:
+                return await session.scalar(select(func.count()).select_from(PiProviderRequest))
+
+        before = call(client, count)
+        for previous in values:
+            retained = client.get("/api/v1/admissions/live/" + previous["id"])
+            retained.raise_for_status()
+            if "admission" in previous:
+                assert retained.json() == previous
+            else:
+                assert compact(retained.json()) == {
+                    k: v for k, v in previous.items() if k != "request"
+                }
+
+            async def request_key(kernel):
+                async with kernel.db.sessions() as session:
+                    row = await session.scalar(
+                        select(Event).where(
+                            Event.event_type == continuity.SNAPSHOT,
+                            Event.source == continuity.SOURCE,
+                            Event.instance_id == kernel.instance_id,
+                            Event.correlation_id == ledger["conversation"]["id"],
+                            Event.payload["goal"].as_string() == previous["goal"],
+                        )
+                    )
+                    return row.payload["request_key"]
+
+            replay = response(
+                client,
+                "/admissions/live/ask",
+                {
+                    "consent_ref": ledger["consent"]["id"],
+                    "conversation_ref": ledger["conversation"]["id"],
+                    "goal": previous["goal"],
+                    "idempotency_key": call(client, request_key),
+                },
+            )
+            assert replay == retained.json()
+        after = call(client, count)
+        assert before == after
+    ledger["final_history_check"] = {
+        "requests_before": before,
+        "requests_after_replay": after,
+        "retained_exchanges": len(values),
+        "no_redispatch": True,
+    }
+    path.write_text(json.dumps(ledger, indent=2), encoding="utf-8")
+    print(json.dumps(ledger["final_history_check"], indent=2))
+
+
 def run(folder, *, approve_live=False, setup_only=False):
     if not approve_live:
         raise ValueError("Review SOURCE, GOALS and frozen cases; explicitly pass --approve-live")
@@ -335,5 +405,13 @@ if __name__ == "__main__":
         help="approve disclosed toy scope and 24-call/200000-token ceiling",
     )
     parser.add_argument("--setup-only", action="store_true")
+    parser.add_argument(
+        "--verify-history",
+        action="store_true",
+        help="reopen existing ledger; replay completed requests",
+    )
     args = parser.parse_args()
-    run(args.output, approve_live=args.approve_live, setup_only=args.setup_only)
+    if args.verify_history:
+        verify_history(args.output)
+    else:
+        run(args.output, approve_live=args.approve_live, setup_only=args.setup_only)
