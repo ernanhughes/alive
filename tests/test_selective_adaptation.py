@@ -798,3 +798,43 @@ def test_historical_selection_view_redacts_foreign_candidate_metadata(selective)
     assert view["no_lesson_reason"] == "no_lessons_available"
     assert "private-task" not in json.dumps(view)
     assert row
+
+
+def test_paired_feedback_rejects_changed_model_identity(selective):
+    from sqlalchemy import select
+
+    from alive.admission.models import Admission
+    from alive.cognitive_models import ModelInvocation
+
+    sel = selective
+    call(sel.client, seed, sel, ["numeric.signed_values"])
+    sel.script.mechanisms = ["numeric.signed_values"]
+    applied = ask(sel, "Review this arithmetic code")
+    baseline = ask(sel, "Review this arithmetic code", mode="stateless")
+    applied_id = applied["result_admission"]["id"]
+    baseline_id = baseline["result_admission"]["id"]
+    primary = call(sel.client, measure, applied_id, passed=False)
+    baseline_ref = call(sel.client, measure, baseline_id, passed=True)
+
+    async def change_model(kernel):
+        async with kernel.lock, kernel.db.sessions.begin() as session:
+            admission = await session.get(Admission, baseline_id)
+            invocation = await session.scalar(
+                select(ModelInvocation).where(
+                    ModelInvocation.investigation_id
+                    == admission.terms["proposed_grant_data"]["investigation_id"]
+                )
+            )
+            assert invocation is not None
+            invocation.model = "tampered-model-id"
+
+    call(sel.client, change_model)
+    with pytest.raises(Refused, match="baseline_identity_mismatch"):
+        call(
+            sel.client,
+            selection.record_application,
+            applied_id,
+            primary,
+            baseline_measurement_ref=baseline_ref,
+        )
+    assert call(sel.client, rows_of, selection.APPLICATION) == []
