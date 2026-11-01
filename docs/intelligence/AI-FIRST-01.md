@@ -95,3 +95,31 @@ default. No workflow/CI configuration changed and no full backend suite was run.
 Live results and code identity are recorded separately in the evidence ledger. A three-goal
 toy demonstration establishes the live path; it is not broad AI-quality or ALIVE-release
 qualification. Keep the PR draft for independent review.
+
+## Recorded demonstration — 1 November 2026
+
+Final implementation `5f69b7baab4d09c52f1a7a49433051b7dcb39533` was qualified from a clean
+checkout in Chrome through the built dashboard and production Pi, using
+`muse-spark-1.3-contributor` at `https://api.meta.ai/v1/chat/completions`.
+
+- Three successive goals, one standing consent, three Ask clicks, zero further CLI approvals.
+- Five actual provider requests; 9,640 measured tokens; summed invocation latency 28,349 ms.
+- Two completed analysis reports identified the wrong divisor (2 instead of 3 for `[2,4]`).
+  The unrelated poetry request received a model-backed explanation that no procedure fits.
+- Restart retained all three exchanges and reports. Provider requests stayed **5 → 5**.
+- Final three-goal comparison: live hybrid 3 correct / 0 false choices / 1 abstention;
+  raw-goal deterministic selector 1 / 0 / 3; fixed analysis 2 / 1 / 0. Correct abstentions
+  count as correct. The tiny label set was frozen before inference and reused for qualification.
+- An earlier contributor browser run made one false choice (inspection for the arithmetic
+  question). It is preserved alongside the successful final run, not discarded. Initial API
+  qualification used `muse-spark-1.3`; both contributor runs used the requested cheaper model.
+- Across all three retained runs: 14 calls, 27,528 measured tokens. No cost estimate.
+
+The committed [evidence ledger](AI-FIRST-01-evidence.json) contains exact goal/source/invocation/
+Pi-request receipts, response hashes, measured usage and model output, including the false
+choice. [Desktop](validation/ai-first-01-1440.png) and
+[mobile](validation/ai-first-01-390.png) screenshots show the real final run.
+
+Offline checks: 15 standing-consent scenarios, 30 existing admission checks, five dashboard
+tests, targeted Ruff/format checks and the production build passed. Only the single live
+browser scenario ran; no full backend suite, other E2E specs, Docker or heavyweight CI changes.
