@@ -179,6 +179,8 @@ async def measure(kernel, admission_id, *, split="dev", passed=True, task="task-
             "score": 1 if passed else 0,
             "passed": passed,
             "verifier": "injected-offline-fixture",
+            "corpus_sha256": digest("offline-test-corpus"),
+            "oracle_sha256": digest("offline-test-oracle"),
             "dimensions": {"semantic": "correct" if passed else "incorrect"},
         }
         return await service.put(
@@ -421,13 +423,12 @@ def test_authorization_scope_owner_destination_and_lesson_text_is_inert(selectiv
         destination=sel.destination | {"model": "another-model"},
     )
     refused = ask(sel, "Review this arithmetic code")
-    assert refused["selection"]["decision"] == "refused"
-    assert refused["selection"]["no_lesson_reason"] == "authorization_scope"
-    assert sorted(r for c in refused["selection"]["candidates"] for r in c["reasons"]) == [
-        "destination_changed",
-        "owner_changed",
-    ]
+    assert refused["selection"]["decision"] == "none"
+    assert refused["selection"]["no_lesson_reason"] == "no_lessons_available"
+    assert refused["selection"]["candidates"] == []
     assert lesson_items(sel.script.requests[-1][0]) == []
+    # Metadata is absent from persistence as well as model input.
+    assert call(sel.client, rows_of, selection.SELECTION)[-1]["candidates"] == []
     # Hostile lesson text is carried as data inside the conversation, never as an instruction.
     call(sel.client, seed, sel, ["numeric.signed_values"], strategy=INJECTION)
     hostile = ask(sel, "Review this arithmetic code")
@@ -663,5 +664,128 @@ def test_evaluation_override_is_labelled_cannot_bypass_authorization_and_resets(
     assert items == [] and record["override"] == "ablation:irrelevant"
     assert selection._override == {"lessons": None, "reason": None}
     normal = ask(sel, "Review this rounding code")
-    # An otherwise applicable lesson owned by someone else is refused, not silently ignored.
-    assert normal["selection"]["override"] is None and normal["selection"]["decision"] == "refused"
+    # Out-of-scope lessons do not reveal their existence through a refusal.
+    assert normal["selection"]["override"] is None
+    assert normal["selection"]["decision"] == "none"
+    assert normal["selection"]["candidates"] == []
+
+
+async def forge_measurement(kernel, measurement_ref, changes):
+    """Test-only tampered trusted-source event, never a production oracle operation."""
+    from sqlalchemy import select
+
+    from alive.models import Event
+
+    async with kernel.lock, kernel.db.sessions.begin() as session:
+        original = await session.scalar(select(Event).where(Event.id == measurement_ref))
+        return await service.put(
+            session,
+            kernel,
+            service.MEASURED,
+            uid(),
+            service.value(original) | changes,
+            source=service.ORACLE,
+        )
+
+
+def test_paired_feedback_rejects_nonstateless_baseline_and_tampered_identity(selective):
+    sel = selective
+    call(sel.client, seed, sel, ["numeric.signed_values"])
+    sel.script.mechanisms = ["numeric.signed_values"]
+    applied = ask(sel, "Review this arithmetic code")
+    other_applied = ask(sel, "Review this arithmetic code")
+    baseline = ask(sel, "Review this arithmetic code", mode="stateless")
+    applied_id = applied["result_admission"]["id"]
+    primary = call(sel.client, measure, applied_id, passed=False)
+    wrong_arm = call(sel.client, measure, other_applied["result_admission"]["id"], passed=True)
+    proper = call(sel.client, measure, baseline["result_admission"]["id"], passed=True)
+    with pytest.raises(Refused, match="baseline_must_be_stateless"):
+        call(sel.client, selection.record_application, applied_id, primary, baseline_measurement_ref=wrong_arm)
+
+    # The oracle source label alone cannot make a fabricated score eligible for learning.
+    for changes in (
+        {"artifact_sha256": "0" * 64},
+        {"source_sha256": "0" * 64},
+        {"verifier": "different-verifier"},
+        {"corpus_sha256": digest("different-corpus")},
+        {"oracle_sha256": digest("different-oracle")},
+        {"family": "different-family"},
+    ):
+        forged = call(sel.client, forge_measurement, proper, changes)
+        with pytest.raises(Refused):
+            call(
+                sel.client,
+                selection.record_application,
+                applied_id,
+                primary,
+                baseline_measurement_ref=forged,
+            )
+    assert call(sel.client, rows_of, selection.APPLICATION) == []
+    assert call(sel.client, rows_of, selection.DEMOTION) == []
+
+
+def test_primary_measurement_must_match_source_and_artifact(selective):
+    sel = selective
+    call(sel.client, seed, sel, ["numeric.signed_values"])
+    sel.script.mechanisms = ["numeric.signed_values"]
+    applied = ask(sel, "Review this arithmetic code")
+    admission_id = applied["result_admission"]["id"]
+    measurement = call(sel.client, measure, admission_id, passed=False)
+    for changes in ({"source_sha256": "0" * 64}, {"artifact_sha256": "0" * 64}):
+        forged = call(sel.client, forge_measurement, measurement, changes)
+        with pytest.raises(Refused, match="measurement_binding_changed"):
+            call(sel.client, selection.record_application, admission_id, forged)
+    assert call(sel.client, rows_of, selection.APPLICATION) == []
+
+
+def test_historical_selection_view_redacts_foreign_candidate_metadata(selective):
+    sel = selective
+    foreign, row = call(sel.client, seed, sel, ["numeric.signed_values"], principal="someone-else")
+    current = ask(sel, "Review this arithmetic code")
+    admission_id = current["result_admission"]["id"]
+
+    async def old_record(kernel):
+        async with kernel.lock, kernel.db.sessions.begin() as session:
+            return await service.put(
+                session,
+                kernel,
+                selection.SELECTION,
+                uid(),
+                {
+                    "policy": selection.POLICY,
+                    "decision": "refused",
+                    "no_lesson_reason": "authorization_scope",
+                    "task_mechanisms": ["numeric.signed_values"],
+                    "override": None,
+                    "selected": [],
+                    "candidates": [{
+                        "lesson_id": foreign,
+                        "status": "excluded",
+                        "reasons": ["owner_changed"],
+                        "overlap": ["numeric.signed_values"],
+                        "tier": "unproven",
+                        "supporting_outcomes": [{"task_id": "private-task"}],
+                    }],
+                    "context_bytes": 2,
+                    "items_sha256": digest([]),
+                },
+            )
+
+    old = call(sel.client, old_record)
+    async def projected(kernel):
+        async with kernel.db.sessions() as session:
+            return await selection.view(
+                session,
+                kernel,
+                {"selection_ref": old, "items": []},
+                {},
+                admission_id,
+            )
+
+    view = call(sel.client, projected)
+    assert view["candidates"] == []
+    assert view["selected"] == []
+    assert view["decision"] == "none"
+    assert view["no_lesson_reason"] == "no_lessons_available"
+    assert "private-task" not in json.dumps(view)
+    assert row
