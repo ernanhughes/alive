@@ -86,10 +86,11 @@ def goal_for(task):
 def extraction_goal(task, experience):
     return (
         f"Extract a reusable {task['family']} strategy from verified training feedback "
-        f"{experience}. Cite that experience ID in supporting_experience_ids. State when it "
-        "applies and when it must not be applied, name the mechanisms it addresses and the "
-        "excluded mechanisms from the closed vocabulary, and give uncertainty. Do not copy "
-        "answers, function names or source text."
+        f"{experience}. This is a lesson-extraction request, not a review: return it in the "
+        "lesson_proposal field with family, strategy, applies_when, not_when, "
+        "supporting_experience_ids (cite that experience ID), mechanisms (the closed-vocabulary "
+        "failure mechanisms it addresses), excluded_mechanisms (mechanisms it must not be applied "
+        "to) and uncertainty. Do not copy answers, function names or source text."
     )
 
 
@@ -442,6 +443,16 @@ def run(folder, approve_live, *, through="ablate", open_heldout=False, limit_tra
                 )
                 return entry
 
+            def find_lesson(extracted):
+                return next(
+                    (
+                        x
+                        for x in call(client, adaptation.listing)["lessons"]
+                        if x["lesson_id"] == extracted["id"]
+                    ),
+                    None,
+                )
+
             # ------------------------------------------------------------ training
             trained = 0
             for task in (t for t in corpus["tasks"] if t["split"] == "train"):
@@ -470,17 +481,24 @@ def run(folder, approve_live, *, through="ablate", open_heldout=False, limit_tra
                     goal_text=extraction_goal(task, feedback),
                 )
                 entry["extraction"] = extracted
-                state = call(client, adaptation.listing)
-                proposed = next(
-                    (x for x in state["lessons"] if x["lesson_id"] == extracted["id"]), None
-                )
+                proposed = find_lesson(extracted)
+                if proposed is None:
+                    # Training-state preparation, not an evaluated arm: one declared, counted retry.
+                    entry["extraction_retry"] = ask(
+                        task,
+                        "A",
+                        "extract2:" + task["id"],
+                        conversation=record["conversation_ref"],
+                        goal_text=extraction_goal(task, feedback),
+                    )
+                    proposed = find_lesson(entry["extraction_retry"])
                 if proposed:
                     entry["approved_public_export"] = adaptation.export_text(proposed)
                     for target in ("qualified", "active"):
                         current = next(
                             x
                             for x in call(client, adaptation.listing)["lessons"]
-                            if x["lesson_id"] == extracted["id"]
+                            if x["lesson_id"] == proposed["lesson_id"]
                         )
                         call(
                             client,
@@ -727,9 +745,9 @@ def replay(folder):
     ) as client:
         before = call(client, counts)
         policy_before = digest(call(client, adaptation.listing))
-        values = [e["review"] for e in ledger["training"]] + [
-            e["extraction"] for e in ledger["training"] if "extraction" in e
-        ]
+        values = [e["review"] for e in ledger["training"]]
+        for key in ("extraction", "extraction_retry"):
+            values += [e[key] for e in ledger["training"] if key in e]
         values += [e["review"] for e in ledger["evaluation"] + ledger["ablation"]]
         values += [e["review"] for e in ledger.get("positive_ablation", [])]
         checked = 0

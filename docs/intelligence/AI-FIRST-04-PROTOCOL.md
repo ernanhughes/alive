@@ -1,8 +1,9 @@
 # AI-FIRST-04 predeclared protocol
 
 Written and committed **before any development or held-out inference**. A two-task training pilot
-may precede this commit to prove the plumbing; it is retained, not discarded, and noted in the
-results report. Anything not listed here as planned is reported as exploratory. This protocol is not
+preceded this protocol to prove the plumbing. It produced zero lessons (one provider
+`output_truncated`, one extraction answered without `lesson_proposal`), which led to a clearer
+extraction instruction and the counted-retry rule above. The pilot ledger is retained as evidence. Anything not listed here as planned is reported as exploratory. This protocol is not
 edited after the development phase starts; a deviation is recorded in the results report, not here.
 
 ## Question and hypothesis
@@ -48,7 +49,9 @@ measured outcomes, so D's call count equals C's. Arm order per task is shuffled 
 ## Phases and sizes
 
 1. **Training** (18 tasks, arm A, then one lesson-extraction turn each): independently measured
-   experiences and owner-approved public lessons. 54 calls.
+   experiences and owner-approved public lessons. 54 calls. If an extraction turn yields no valid
+   lesson proposal (truncation, omitted field), one counted extraction retry is allowed per task:
+   this prepares learned state and is not an evaluated arm (≤18 extra calls, always reported).
 2. **Development** (12 tasks, arms A and D, paired): calibrates baseline difficulty and gives each
    supplied lesson paired outcomes (gain/loss against A) that may demote or support it. 48 calls.
    Dev arms B and C are not run (budget). **The policy is then frozen**; its digest is asserted

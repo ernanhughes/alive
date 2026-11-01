@@ -2,7 +2,7 @@
   "corpus_sha256": "a7868ac91c6597d208f89d38da1c3db72403c9b9ac72e7fba2314f94c730d8fc",
   "oracle_sha256": "19938e47effba05fd672a43319a1b224b340bbb22398ef15ec979b2d162fe3ad",
   "audit_sha256": "3d719412a13f51df5a712f781884cc62f3fc7690462f62b69cbae4343f70b60f",
-  "contextual_role_contract_sha256": "81d567943b9223e3f113753ab7d44ef8c672ebee88e5d6968af580ba9607dc28",
+  "contextual_role_contract_sha256": "26abfc77d3f5e32a533ef4a07c5d8ad5790733bcec9e3846fdab403205b3579a",
   "intent_role_contract_sha256": "cfa3851a44a792f6aff71126d2982a84aa2e0278f44936baeb0ecdceb6d1cf96",
   "seed": 4401,
   "purpose": "AI-FIRST-04 fresh corpus; train/dev/heldout split immutable once locked. Programmatically audited, not independently human-adjudicated."
