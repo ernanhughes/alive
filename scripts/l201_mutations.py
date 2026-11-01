@@ -305,6 +305,35 @@ MUTANTS = [
         ],
         "compose: goal is the approved goal",
     ),
+    (
+        "C01",
+        [
+            (
+                ADP,
+                "    require("
+                + NL
+                + '        catalogue_sha256(package["catalogue"]) == inputs["catalogue_sha256"],'
+                + NL
+                + '        "intent_catalogue_changed",'
+                + NL
+                + "    )"
+                + NL,
+                "",
+            ),
+            (
+                ADM,
+                '                or proposed.inputs.get("catalogue_sha256") == current["catalogue_sha256"]'
+                + NL,
+                "                or True" + NL,
+            ),
+            (
+                ADM,
+                '            current == terms["model_disclosure"]' + NL,
+                "            True" + NL,
+            ),
+        ],
+        "catalogue binding: adapter + Grant input + disclosure equality (compound)",
+    ),
 ]
 TESTS = [
     "tests/test_intent_interpretation.py",
