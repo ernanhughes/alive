@@ -91,6 +91,96 @@ def ask(ready, goal="Review these files for shipping blockers", key=None):
     )
 
 
+def test_followup_budget_refusal_returns_retained_partial_exchange_without_retry(ready):
+    client, upstream, _, body, *_ = ready
+    setup = client.post(BASE + "/setup", json=body | {"max_calls": 3}).json()
+    limited = (*ready[:2], setup, *ready[3:])
+    trust(limited)
+    assert ask(limited, "First goal").json()["report"]
+    key = uid()
+    response = ask(limited, "Second goal", key)
+    assert response.status_code == 200, response.text
+    value = response.json()
+    assert value["followup"] == {
+        "status": "analysis_not_authorized",
+        "reason": "budget_exhausted",
+        "profile": "approved-repository-analysis",
+    }
+    assert value["recommendation"] and value["calls"][0]["status"] == "validated"
+    assert value["report"] is None and value["availability"] == "AI unavailable"
+    assert client.get(BASE + "/" + value["id"]).json() == value
+    assert ask(limited, "Second goal", key).json() == value
+    assert ask(limited, "Different goal", key).status_code == 409
+    assert len(upstream.calls) == 3
+
+
+def test_followup_revocation_returns_partial_and_replay_never_dispatches(ready, monkeypatch):
+    client, upstream, setup, *_ = ready
+    trust(ready)
+    compose = live.intent.compose
+
+    async def revoke_after_intent(kernel, admission_id):
+        value = await compose(kernel, admission_id)
+        await live.revoke(kernel, setup["id"], principal=principal())
+        return value
+
+    monkeypatch.setattr(live.intent, "compose", revoke_after_intent)
+    key = uid()
+    response = ask(ready, key=key)
+    assert response.status_code == 200, response.text
+    value = response.json()
+    assert value["followup"]["reason"] == "consent_required"
+    assert value["recommendation"] and value["model_calls"] == 1
+    assert value["report"] is None
+    assert ask(ready, key=key).json() == value  # revoked consent cannot hide the retained result
+    assert client.get(BASE + "/" + value["id"]).json() == value
+    assert len(upstream.calls) == 1
+
+
+@pytest.mark.parametrize(
+    "receipt_change", ["missing", "legacy", "unsettled", "no_hash", "wrong_model"]
+)
+def test_validated_response_alone_cannot_claim_live_inference(ready, receipt_change):
+    client, upstream, *_ = ready
+    trust(ready)
+    upstream.respond = respond_with(lambda goal: interpretation(goal, candidates=[]))
+    response = ask(ready).json()
+    assert response["status"] == "TEST MODEL RESPONSE"
+
+    async def change_receipt(kernel):
+        from alive.pi.models import PiProviderRequest, PiRun
+
+        async with kernel.db.sessions.begin() as session:
+            run = await session.scalar(
+                select(PiRun).where(
+                    PiRun.reservation_ref == response["calls"][0]["id"],
+                )
+            )
+            receipt = await session.scalar(
+                select(PiProviderRequest).where(
+                    PiProviderRequest.run_id == run.id,
+                )
+            )
+            if receipt_change == "missing":
+                await session.delete(receipt)
+            elif receipt_change == "legacy":
+                run.requested_json = {
+                    k: v for k, v in run.requested_json.items() if k != "upstream_transport"
+                }
+            elif receipt_change == "unsettled":
+                receipt.state = "ambiguous"
+            elif receipt_change == "wrong_model":
+                receipt.model_requested = "different-requested-model"
+            else:
+                receipt.response_sha256 = None
+
+    call(client, change_receipt)
+    retained = client.get(BASE + "/" + response["id"]).json()
+    assert retained["status"] == "MODEL RESPONSE"
+    assert retained["calls"][0]["inference_provenance"] == "unverified"
+    assert len(upstream.calls) == 1
+
+
 def test_three_goals_one_consent_real_dispatch_path_and_retained_results(ready):
     client, upstream, setup, *_ = ready
     assert ask(ready).status_code == 409 and not upstream.calls
@@ -101,7 +191,7 @@ def test_three_goals_one_consent_real_dispatch_path_and_retained_results(ready):
         response = ask(ready, goal, key)
         assert response.status_code == 200, response.text
         value = response.json()
-        assert value["status"] == "LIVE MODEL"
+        assert value["status"] == "TEST MODEL RESPONSE"
         assert value["goal"] == goal
         assert value["model_calls"] == 2
         assert value["report"]["result"]["findings"]
@@ -109,6 +199,7 @@ def test_three_goals_one_consent_real_dispatch_path_and_retained_results(ready):
             c["status"] == "validated"
             and c["usage"]["total_tokens"] == USAGE["total_tokens"]
             and c["provider_receipts"][0]["http_status"] == 200
+            and c["inference_provenance"] == "injected_transport"
             for c in value["calls"]
         )
         # Retry is retained history, not another inference.

@@ -104,6 +104,9 @@ class PiGateway:
     async def _lifecycle(self, runtime, req, flight):
         k = runtime.kernel
         try:
+            flight.upstream_transport = (
+                "network" if runtime.upstream_transport is None else "injected"
+            )
             await self._prepare(k, req, flight)
             try:
                 install = runtime.runner.install()
@@ -202,6 +205,7 @@ class PiGateway:
                             "upstream_model": req.model,
                             "max_output": req.max_output,
                             "deadline_s": self.settings.alive_pi_run_deadline,
+                            "upstream_transport": flight.upstream_transport,
                         },
                         token_sha256=flight.token_sha,
                         max_provider_requests=MAX_PROVIDER_REQUESTS,

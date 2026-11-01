@@ -29,6 +29,7 @@ interface Exchange {
   goal: string;
   status: string;
   availability: string;
+  followup?: { status: string; reason: string; profile: string } | null;
   model_calls: number;
   admission: Admission;
   result_admission: Admission | null;
@@ -47,6 +48,7 @@ interface Exchange {
     usage: Record<string, unknown>;
     latency_ms: number;
     provider_receipts: unknown[];
+    inference_provenance?: string;
   }[];
 }
 interface History {
@@ -367,8 +369,9 @@ function LiveAI({ token }: { token: string }) {
           </p>
           {exchange.availability === "AI unavailable" && (
             <p role="alert">
-              AI unavailable. The request failed or was cancelled; retained
-              results are shown below.
+              {exchange.followup
+                ? `Follow-up not authorized (${exchange.followup.reason}). Your interpretation and model receipt are retained below; no automatic retry will run.`
+                : "AI unavailable. The request failed or was cancelled; retained results are shown below."}
             </p>
           )}
           {[exchange.admission, exchange.result_admission].map(
@@ -391,7 +394,13 @@ function LiveAI({ token }: { token: string }) {
                 actual tokens
               </summary>
               <p>
-                Invocation {c.id} · {c.endpoint}
+                Requested model: {c.model}. Invocation {c.id} · {c.endpoint}
+              </p>
+              <p>
+                Inference evidence: {c.inference_provenance || "unverified"}.
+                Provider-observed model is recorded separately in the receipt
+                and may be unknown. Network receipts establish transport
+                completion, not independent provider identity or semantic truth.
               </p>
               <pre>
                 {JSON.stringify(
