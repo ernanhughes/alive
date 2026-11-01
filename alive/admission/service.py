@@ -353,15 +353,25 @@ async def prepare(kernel, request):
         return await view(session, kernel, row)
 
 
-async def approval_receipt(session, row):
+async def approval_receipt(session, row, kernel=None):
     event = await session.scalar(select(Event).where(Event.id == row.approval_ref))
+    expected = {
+        "admission_id": row.id,
+        "review_sha256": row.review_sha256,
+        "principal": row.principal,
+    }
+    if event is not None and "standing_ref" in event.payload:
+        from alive.admission.live import validate_receipt
+
+        require(kernel is not None, "standing_kernel_required")
+        await validate_receipt(session, kernel, row, event.payload)
+        expected |= {k: event.payload[k] for k in ("standing_ref", "reserved_tokens")}
     require(
         event is not None
         and event.instance_id == row.instance_id
         and event.source == OWNER_SOURCE
         and event.event_type == "admission.owner.approved"
-        and event.payload
-        == {"admission_id": row.id, "review_sha256": row.review_sha256, "principal": row.principal},
+        and event.payload == expected,
         "local_owner_approval_required",
     )
 
@@ -375,7 +385,7 @@ async def approve(kernel, admission_id, *, confirm_sha256, principal):
         )
         await current_terms(session, kernel, row)
         if row.approval_ref:
-            await approval_receipt(session, row)
+            await approval_receipt(session, row, kernel)
         else:
             event = kernel.add_event(
                 session,
@@ -418,7 +428,7 @@ async def revoke(kernel, admission_id, *, principal):
 
 async def verify_grant(session, kernel, grant, authorization_id):
     row = await row_for(session, kernel, grant.admission_ref)
-    await approval_receipt(session, row)
+    await approval_receipt(session, row, kernel)
     require(
         row.authorization_ref == authorization_id
         and grant.model_dump(mode="json") == row.terms["proposed_grant_data"],
@@ -462,7 +472,7 @@ async def start(app, admission_id, confirm_sha256):
             require(row.review_sha256 == confirm_sha256, "admission_confirmation_changed")
             if row.run_id:
                 return await view(session, kernel, row)  # history, never redispatch
-            await approval_receipt(session, row)
+            await approval_receipt(session, row, kernel)
             grant = await current_terms(session, kernel, row)
             if row.authorization_ref:
                 execution = await session.scalar(

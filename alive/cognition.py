@@ -137,7 +137,9 @@ class Cognition:
     async def command(self, data):
         async with self.command_lock:
             k = self.k
-            if data.command == "start" and data.provider == "meta":
+            if data.command == "enable_model" and data.provider != "meta":
+                raise ValueError("Owner inference requires the live Meta provider")
+            if data.command in ("start", "enable_model") and data.provider == "meta":
                 provider = MetaProvider(k.settings)
                 catalog = await provider.discover()
                 required = {k.settings.alive_meta_model, *k.settings.alive_role_models.values()}
@@ -148,7 +150,7 @@ class Cognition:
                         "Meta model access is not confirmed; probe provider configuration"
                     )
             if data.command != "start":
-                self.mode = "paused" if data.command == "pause" else "stopped"
+                self.mode = "paused" if data.command in ("pause", "enable_model") else "stopped"
                 k.cognition_enabled = False
                 if self.worker and not self.worker.done():
                     self.worker.cancel()
@@ -169,6 +171,8 @@ class Cognition:
                     control.cursor = (
                         await session.scalar(select(func.max(Event.sequence_number))) or 0
                     )
+                elif data.command == "enable_model":
+                    control.provider = "meta"
                 control.mode = self.mode
                 control.updated_at = now()
                 if self.mode != "running":
@@ -696,10 +700,10 @@ class Cognition:
         from alive.workflows.context import require
 
         if model:
-            # A model call needs the same explicitly started Meta cognition as every PI-02
-            # workflow; the owner's start is the only thing that selects the provider.
+            # Explicit owner inference also runs with autonomy paused. The configured provider,
+            # exact workflow grant and dispatch fence still govern every model request.
             require(
-                self.mode == "running" and (self.worker is None or self.worker.done()),
+                self.mode in ("running", "paused") and (self.worker is None or self.worker.done()),
                 "start_cognition_before_model_admission",
             )
         else:
@@ -870,7 +874,8 @@ class Cognition:
                     raise BudgetExhausted("Invalid stage output ceiling")
                 output_limit = min(output_limit, output_ceiling)
             reserve += output_limit
-            if self.mode != "running" or row.state in TERMINAL:
+            owner_inference = workflow_claim is not None and self.mode == "paused"
+            if (self.mode != "running" and not owner_inference) or row.state in TERMINAL:
                 raise asyncio.CancelledError()
             if (
                 reserve > cfg.request_tokens

@@ -3,8 +3,8 @@ from typing import Literal
 from fastapi import APIRouter, Depends, HTTPException, Path, Query
 from sqlalchemy import select
 
-from alive.admission import service
-from alive.admission.contracts import Confirmation, ReviewRequest
+from alive.admission import live, service
+from alive.admission.contracts import Confirmation, LiveGoal, LiveSetup, ReviewRequest
 from alive.admission.models import Admission
 from alive.admission.profiles import PROFILES
 from alive.bespoke.recipes import recipe_hash
@@ -92,6 +92,22 @@ def router(app, ready):
     @api.post("")
     async def prepare(request: ReviewRequest):
         return await safe(service.prepare(app.state.kernel, request))
+
+    @api.get("/live")
+    async def live_history():
+        return await safe(live.listing(app.state.kernel))
+
+    @api.post("/live/setup")
+    async def live_setup(request: LiveSetup):
+        return await safe(live.prepare(app.state.kernel, request))
+
+    @api.post("/live/ask")
+    async def live_ask(request: LiveGoal):
+        return await safe(live.ask(app, request))
+
+    @api.get("/live/{admission_id}")
+    async def live_exchange(admission_id: str = Path(max_length=36)):
+        return await safe(live.exchange(app.state.kernel, admission_id))
 
     @api.get("/{admission_id}")
     async def detail(admission_id: str = Path(max_length=36)):

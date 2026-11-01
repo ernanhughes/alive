@@ -37,6 +37,7 @@ import { DemoTourPane } from "./DemoTour";
 import { WorkflowsPane } from "./workflows/WorkflowsPane";
 import { BespokePane } from "./bespoke/BespokePane";
 import { AdmissionPane } from "./admission/AdmissionPane";
+import { LivePane } from "./admission/LivePane";
 import { CapabilitiesPane } from "./capabilities/CapabilitiesPane";
 import { useDashboardAuth } from "./useDashboardAuth";
 
@@ -116,7 +117,7 @@ export function App() {
           ? "Bespoke"
           : window.location.hash.startsWith("#admission?")
             ? "Admission"
-            : "Overview",
+            : "Bespoke",
   );
   useEffect(() => {
     // Observatory links to a retained capability identity switch to the catalogue pane.
@@ -999,7 +1000,15 @@ export function App() {
           {tab === "Capabilities" && token && (
             <CapabilitiesPane token={token} />
           )}
-          {tab === "Bespoke" && token && <BespokePane token={token} />}
+          {tab === "Bespoke" && token && (
+            <>
+              <LivePane token={token} />
+              <details>
+                <summary>Procedure catalogue</summary>
+                <BespokePane token={token} />
+              </details>
+            </>
+          )}
           {tab === "Admission" && token && <AdmissionPane token={token} />}
           {tab === "Demonstration" && token && <DemoTourPane token={token} />}
           {tab === "Living" && token && <LivingPane token={token} />}
