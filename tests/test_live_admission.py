@@ -107,7 +107,7 @@ def test_followup_budget_refusal_returns_retained_partial_exchange_without_retry
         "profile": "approved-repository-analysis",
     }
     assert value["recommendation"] and value["calls"][0]["status"] == "validated"
-    assert value["report"] is None and value["availability"] == "AI unavailable"
+    assert value["report"] is None and value["availability"] == "available"
     assert client.get(BASE + "/" + value["id"]).json() == value
     assert ask(limited, "Second goal", key).json() == value
     assert ask(limited, "Different goal", key).status_code == 409
@@ -134,6 +134,61 @@ def test_followup_revocation_returns_partial_and_replay_never_dispatches(ready, 
     assert value["report"] is None
     assert ask(ready, key=key).json() == value  # revoked consent cannot hide the retained result
     assert client.get(BASE + "/" + value["id"]).json() == value
+    assert len(upstream.calls) == 1
+
+
+@pytest.mark.parametrize(
+    "category",
+    [
+        "workflow_identity_changed",
+        "admission_integrity",
+        "governor_configuration_changed",
+        "binding_changed",
+    ],
+)
+def test_internal_followup_refusal_retains_actual_failure_without_authorization_label(
+    ready,
+    monkeypatch,
+    category,
+):
+    from alive.workflows.context import Refused
+
+    client, upstream, *_ = ready
+    trust(ready)
+    prepare = service.prepare
+
+    async def fail_followup(kernel, request):
+        if request.profile == "approved-repository-analysis":
+            raise Refused(category)
+        return await prepare(kernel, request)
+
+    monkeypatch.setattr(service, "prepare", fail_followup)
+    key = uid()
+    response = ask(ready, key=key)
+    assert response.status_code == 200, response.text
+    value = response.json()
+    assert value["followup"] == {
+        "status": "followup_failed",
+        "reason": category,
+        "profile": "approved-repository-analysis",
+    }
+    assert value["recommendation"] and value["availability"] == "available"
+    assert value["model_calls"] == 1
+    assert ask(ready, key=key).json() == value
+    assert client.get(BASE + "/" + value["id"]).json() == value
+
+    async def events(kernel):
+        async with kernel.db.sessions() as session:
+            return (
+                await session.scalars(
+                    select(Event.event_type).where(
+                        Event.correlation_id == value["id"],
+                        Event.event_type.in_((live.FOLLOWUP_FAILED, live.FOLLOWUP_BLOCKED)),
+                    )
+                )
+            ).all()
+
+    assert call(client, events) == [live.FOLLOWUP_FAILED]
     assert len(upstream.calls) == 1
 
 

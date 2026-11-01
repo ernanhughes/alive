@@ -155,7 +155,7 @@ it("keeps partial reasoning and receipts visible when follow-up authorization is
       exchanges: [
         {
           ...exchange,
-          availability: "AI unavailable",
+          availability: "available",
           report: null,
           result_admission: null,
           followup: {
@@ -205,6 +205,39 @@ it("clearly labels injected upstream responses and separates requested from obse
   expect(
     screen.getByText(/Inference evidence: injected_transport/),
   ).toBeTruthy();
+});
+
+it("reports internal follow-up failure without calling it an authorization refusal", async () => {
+  mock.mockImplementation(
+    backend({
+      consents: [consent],
+      exchanges: [
+        {
+          ...exchange,
+          availability: "available",
+          report: null,
+          result_admission: null,
+          followup: {
+            status: "followup_failed",
+            reason: "admission_integrity",
+            profile: "approved-repository-analysis",
+          },
+        },
+      ],
+    }),
+  );
+  render(<LivePane token="token" />);
+  expect((await screen.findByRole("alert")).textContent).toContain(
+    "Follow-up failed (admission_integrity)",
+  );
+  expect(screen.queryByText(/Follow-up not authorized/)).toBeNull();
+  expect(screen.queryByText(/AI unavailable\./)).toBeNull();
+  expect(
+    screen.getByText(
+      recommendation.record.interpretation.value.primary_objective,
+    ),
+  ).toBeTruthy();
+  expect(mock.mock.calls.every((c) => c[3] === "GET")).toBe(true);
 });
 
 it("shows captured-file evidence when the model selects read-only inspection", async () => {
