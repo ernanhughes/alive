@@ -11,13 +11,15 @@ from sqlalchemy import select
 from alive.admission import service
 from alive.admission.contracts import ReviewRequest
 from alive.admission.models import Admission
-from alive.admission.profiles import ANALYSIS, INTENT
+from alive.admission.profiles import ANALYSIS, INSPECTION, INTENT
 from alive.bespoke.recipes import recipe_hash
 from alive.cognitive_models import ModelInvocation
 from alive.intent import service as intent
 from alive.models import Event, now
 from alive.pi.models import PiProviderRequest, PiRun
 from alive.workflows.context import digest, require
+from alive.workflows.models import WorkflowStageRun
+from alive.workflows.runner import result_event
 
 PREPARED = "admission.standing.prepared"
 APPROVED = "admission.standing.approved"
@@ -27,9 +29,9 @@ REVOKED = "admission.standing.revoked"
 def scope(terms):
     """Pin authority and disclosure, allowing only the owner's words to vary."""
     grant = terms["proposed_grant_data"]
-    disclosure = terms["model_disclosure"]
+    disclosure = terms.get("model_disclosure", {})
     return {
-        "profile": terms["profile"],
+        "profile": service.profile_of(terms).id,
         "source": terms["source"],
         "grant": {
             k: v
@@ -108,7 +110,7 @@ async def consent(session, kernel, ref, *, active=True):
 
 async def prepare(kernel, request):
     reviews = {}
-    for profile in (INTENT, ANALYSIS):
+    for profile in (INTENT, ANALYSIS, INSPECTION):
         reviews[profile] = await service.prepare(
             kernel,
             ReviewRequest(
@@ -141,7 +143,7 @@ async def prepare(kernel, request):
                 datetime.fromisoformat(rows[0].terms["source"]["expires_at"]),
             ).isoformat(),
             "disclosure": "Future goal text, file names and approved file content may leave this "
-            "host. Local prompts/results persist. Only read-only analysis is automatic. "
+            "host. Local prompts/results persist. Read-only inspection/analysis is automatic. "
             "Reservations stay charged after failures; currency cost is unknown.",
         }
         event = kernel.add_event(
@@ -197,7 +199,7 @@ async def validate_receipt(session, kernel, row, receipt):
     require(
         row.principal == terms["principal"]
         and row.terms["goal"]["id"] == terms["goal_ref"]
-        and scope(row.terms) == terms["profiles"].get(row.terms["profile"]),
+        and scope(row.terms) == terms["profiles"].get(service.profile_of(row.terms).id),
         "standing_scope_changed",
     )
 
@@ -227,9 +229,10 @@ async def authorize(kernel, ref, review):
             )
         ).all()
         used = [e for e in previous if e.payload.get("standing_ref") == ref]
-        reservation = row.terms["model_disclosure"]["reserved_request_bytes"]
+        reservation = row.terms.get("model_disclosure", {}).get("reserved_request_bytes", 0)
         require(
-            len(used) < current["terms"]["max_calls"]
+            sum(e.payload["reserved_tokens"] > 0 for e in used) + (reservation > 0)
+            <= current["terms"]["max_calls"]
             and sum(e.payload["reserved_tokens"] for e in used) + reservation
             <= current["terms"]["max_tokens"],
             "standing_budget_exhausted",
@@ -277,10 +280,10 @@ async def ask(app, request):
     chosen = recommendation["recommendation"]
     if (
         chosen
-        and chosen["recipe_id"] == ANALYSIS
+        and chosen["recipe_id"] in (ANALYSIS, INSPECTION)
         and not recommendation["uncertainty"]["needs_clarification"]
     ):
-        await run(ANALYSIS, "result")
+        await run(chosen["recipe_id"], "result")
     return await exchange(kernel, interpreted["id"])
 
 
@@ -370,7 +373,20 @@ async def exchange(kernel, admission_id):
             if any(c.status == "validated" for c in calls)
             else "NO MODEL CALL",
             "report": None,
+            "inspection": None,
         }
+        if result and service.profile_of(result.terms).id == INSPECTION:
+            from alive.workflows.models import WorkflowRun
+
+            run = await session.get(WorkflowRun, result.run_id) if result.run_id else None
+            if run and run.status == "COMPLETED":
+                stage = await session.scalar(
+                    select(WorkflowStageRun).where(
+                        WorkflowStageRun.run_id == run.id,
+                        WorkflowStageRun.stage_id == "read",
+                    )
+                )
+                value["inspection"] = await result_event(session, stage)
         value["availability"] = (
             "AI unavailable"
             if any(c.status in ("failed", "cancelled", "interrupted") for c in calls)
@@ -382,6 +398,7 @@ async def exchange(kernel, admission_id):
             value["status"] = "MODEL CALL FAILED"
     if (
         value["result_admission"]
+        and service.profile_of(value["result_admission"]["terms"]).id == ANALYSIS
         and value["result_admission"]["run"]
         and value["result_admission"]["run"]["status"] == "COMPLETED"
     ):

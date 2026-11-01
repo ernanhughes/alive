@@ -145,3 +145,32 @@ it("failed inference is never presented as a model answer", async () => {
   await screen.findByRole("alert");
   expect(screen.queryByText("LIVE MODEL")).toBeNull();
 });
+
+it("shows captured-file evidence when the model selects read-only inspection", async () => {
+  mock.mockImplementation(
+    backend({
+      consents: [consent],
+      exchanges: [
+        {
+          ...exchange,
+          report: null,
+          inspection: {
+            source_ref: "capture",
+            files: [
+              {
+                path: "mean.py",
+                content: "def mean(values): pass",
+                sha256: "abc",
+              },
+            ],
+          },
+        },
+      ],
+    }),
+  );
+  render(<LivePane token="token" />);
+  await screen.findByRole("region", { name: "Captured file evidence" });
+  fireEvent.click(screen.getByText("mean.py"));
+  expect(screen.getByText("def mean(values): pass")).toBeTruthy();
+  expect(mock.mock.calls.every((c) => c[3] === "GET")).toBe(true);
+});

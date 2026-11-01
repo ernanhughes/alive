@@ -222,6 +222,30 @@ def test_no_useful_procedure_returns_interpretation_without_extra_call(ready):
     assert len(upstream.calls) == 1
 
 
+def test_selected_inspection_returns_captured_evidence_without_another_model_call(ready):
+    _, upstream, *_ = ready
+    trust(ready)
+    upstream.respond = respond_with(
+        lambda goal: interpretation(
+            goal,
+            candidates=[
+                {
+                    "recipe_id": "approved-repository-inspection",
+                    "recipe_version": "1.0.0",
+                    "addresses": "fully",
+                    "relevance": "Read the captured implementation",
+                }
+            ],
+        )
+    )
+    response = ask(ready, "Show the implementation")
+    assert response.status_code == 200, response.text
+    value = response.json()
+    assert value["result_admission"]["run"]["status"] == "COMPLETED"
+    assert value["inspection"]["files"] and value["report"] is None
+    assert value["model_calls"] == 1 and len(upstream.calls) == 1
+
+
 def test_cancellation_does_not_redispatch(ready):
     client, upstream, setup, *_ = ready
     trust(ready)

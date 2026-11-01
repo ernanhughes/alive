@@ -7,6 +7,10 @@ The interpreter selects a shipped procedure; approved repository analysis runs a
 and returns its citation-bearing report. Other procedures and consequential actions receive
 no additional authority.
 
+If the model chooses shipped file inspection, ALIVE returns the exact captured file evidence
+locally, without a second model call. A poor procedure choice is still reported as such in
+evaluation; executing inspection does not turn it into semantic verification.
+
 Previously, each interpretation needed prepare, CLI approval, refresh, start and compose,
 followed by another prepare/CLI approval/start for analysis. Three analyzed goals needed six
 CLI approvals. Now one standing consent covers six calls (normally three interpretation and
@@ -33,6 +37,9 @@ responses, baseline choices, false choices and abstentions. Monetary cost is unk
 For a live dashboard run, add `--setup-only`, serve that disposable database/workspace with
 `ALIVE_MODEL_TRANSPORT=pi` and the same model, then run only:
 
+Include the disposable server's exact browser origin in `ALIVE_ALLOWED_ORIGINS`; otherwise
+the existing origin check correctly rejects browser POSTs before any model dispatch.
+
 ```powershell
 # ALIVE_BASE_URL and ALIVE_API_TOKEN identify that disposable runtime.
 $env:ALIVE_LIVE_LEDGER = 'C:/Temp/alive-live-demo-new/evidence-ledger.json'
@@ -43,6 +50,12 @@ npx playwright test e2e/live-ai.spec.ts
 That scenario submits the three real goals through the dashboard, checks receipts, reloads
 history without another POST and captures desktop/mobile screenshots. Never point it at an
 unapproved or normal working runtime.
+
+Stop that disposable server, then verify restart without inference:
+
+```powershell
+uv run python -m scripts.live_bespoke_demo --output C:/Temp/alive-live-demo-new --history-only
+```
 
 ## Authorization and retained evidence
 

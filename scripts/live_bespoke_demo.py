@@ -55,6 +55,96 @@ def response(client, path, body):
     return value.json()
 
 
+def verify_history(folder):
+    """Restart-only verification, including a ledger produced by the browser scenario."""
+    folder = folder.resolve()
+    path = folder / "evidence-ledger.json"
+    ledger = json.loads(path.read_text(encoding="utf-8"))
+    settings = Settings(
+        database_url=f"sqlite+aiosqlite:///{folder / 'demo.db'}",
+        alive_workspace=folder / "workspace",
+        alive_api_token=TOKEN,
+        alive_model_transport="pi",
+        alive_embeddings_enabled=False,
+    )
+    with TestClient(create_app(settings), headers={"Authorization": f"Bearer {TOKEN}"}) as client:
+
+        async def count(kernel):
+            async with kernel.db.sessions() as session:
+                return await session.scalar(select(func.count()).select_from(PiProviderRequest))
+
+        before = call(client, count)
+        history = client.get("/api/v1/admissions/live")
+        history.raise_for_status()
+        for exchange in ledger["exchanges"]:
+            retained = client.get("/api/v1/admissions/live/" + exchange["id"])
+            retained.raise_for_status()
+            assert retained.json()["calls"] == exchange["calls"]
+            assert retained.json()["report"] == exchange["report"]
+            assert retained.json().get("inspection") == exchange.get("inspection")
+
+            async def baseline(kernel):
+                async with kernel.db.sessions() as session:
+                    options = await eligibility(
+                        session,
+                        kernel,
+                        load_catalogue(),
+                        exchange["goal"],
+                        "unclear",
+                        exchange["source"]["resources"]["source_ref"],
+                        sorted(SOURCE),
+                    )
+                    eligible = [c for c in options.values() if c.eligible]
+                    return (
+                        max(eligible, key=lambda c: c.suitability).recipe.id if eligible else None
+                    )
+
+            exchange["deterministic_choice"] = call(client, baseline)
+        after = call(client, count)
+        assert before == after and len(history.json()["exchanges"]) == 3
+        ledger["restart"] = {
+            "provider_requests_before": before,
+            "provider_requests_after": after,
+            "no_redispatch": before == after,
+            "retained_exchanges": 3,
+        }
+    for exchange, case in zip(ledger["exchanges"], CASES, strict=True):
+        record = exchange["recommendation"]["record"] if exchange["recommendation"] else None
+        chosen = (
+            record["recommendation"]["recipe_id"] if record and record["recommendation"] else None
+        )
+        exchange["independent_label"] = case["expected"]
+        exchange["live_choice"] = chosen
+        exchange["correct_choice"] = chosen == case["expected"]
+        exchange["fixed_choice"] = ANALYSIS
+    ledger["comparison"] = {}
+    for name, field in (
+        ("live_hybrid", "live_choice"),
+        ("deterministic", "deterministic_choice"),
+        ("fixed_analysis", "fixed_choice"),
+    ):
+        ledger["comparison"][name] = {
+            "correct": sum(e[field] == e["independent_label"] for e in ledger["exchanges"]),
+            "false_choices": sum(
+                e[field] is not None and e[field] != e["independent_label"]
+                for e in ledger["exchanges"]
+            ),
+            "abstentions": sum(e[field] is None for e in ledger["exchanges"]),
+        }
+    ledger["status"] = "LIVE_DEMONSTRATED; history retained after restart without redispatch"
+    path.write_text(json.dumps(ledger, indent=2), encoding="utf-8")
+    print(
+        json.dumps(
+            {
+                "status": ledger["status"],
+                "restart": ledger["restart"],
+                "comparison": ledger["comparison"],
+            },
+            indent=2,
+        )
+    )
+
+
 def demo(
     folder, *, approve_live=False, max_calls=6, max_tokens=200000, model=None, setup_only=False
 ):
@@ -268,11 +358,17 @@ def main():
     parser.add_argument("--max-tokens", type=int, default=200000)
     parser.add_argument("--model", help="approved model id; accepts the meta/ prefix")
     parser.add_argument(
+        "--history-only", action="store_true", help="restart/read existing ledger; no inference"
+    )
+    parser.add_argument(
         "--setup-only",
         action="store_true",
         help="prepare disposable consent for the live dashboard browser scenario",
     )
     args = parser.parse_args()
+    if args.history_only:
+        verify_history(args.output)
+        return
     demo(
         args.output,
         approve_live=args.approve_live,

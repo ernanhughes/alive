@@ -18,7 +18,7 @@ interface Consent {
       string,
       {
         disclosure: {
-          destination: { provider: string; model: string; endpoint: string };
+          destination?: { provider: string; model: string; endpoint: string };
         };
       }
     >;
@@ -34,6 +34,10 @@ interface Exchange {
   result_admission: Admission | null;
   recommendation: Recommendation | null;
   report: Report | null;
+  inspection?: {
+    files: { path: string; content: string; sha256: string }[];
+    source_ref: string;
+  } | null;
   calls: {
     id: string;
     status: string;
@@ -323,9 +327,16 @@ function LiveAI({ token }: { token: string }) {
             <p>{selected.terms.disclosure}</p>
             {Object.entries(selected.terms.profiles).map(([name, p]) => (
               <p key={name}>
-                {name}: {p.disclosure.destination.model} ·{" "}
-                {p.disclosure.destination.provider} ·{" "}
-                {p.disclosure.destination.endpoint}
+                {name}:{" "}
+                {p.disclosure.destination ? (
+                  <>
+                    {p.disclosure.destination.model} ·{" "}
+                    {p.disclosure.destination.provider} ·{" "}
+                    {p.disclosure.destination.endpoint}
+                  </>
+                ) : (
+                  "Local captured-file read; no model call"
+                )}
               </p>
             ))}
             <p>
@@ -439,6 +450,23 @@ function LiveAI({ token }: { token: string }) {
                 and release readiness remain unverified.
               </p>
             </>
+          )}
+          {exchange.inspection && (
+            <section aria-label="Captured file evidence">
+              <p>
+                Read-only evidence from approved capture{" "}
+                {exchange.inspection.source_ref}. File contents are shown as
+                data. This procedure does not establish whether the code is
+                correct.
+              </p>
+              {exchange.inspection.files.map((file) => (
+                <details key={file.path}>
+                  <summary>{file.path}</summary>
+                  <pre className="admission-report">{file.content}</pre>
+                  <p>SHA-256 {file.sha256}</p>
+                </details>
+              ))}
+            </section>
           )}
           <details>
             <summary>Goal, source and result receipts</summary>
