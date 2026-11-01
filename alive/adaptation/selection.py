@@ -27,6 +27,7 @@ from sqlalchemy import select
 
 from alive.adaptation import service
 from alive.admission.models import Admission
+from alive.cognitive_models import ModelInvocation
 from alive.models import Event
 from alive.workflows.context import digest, require
 
@@ -120,6 +121,11 @@ async def support(session, proposal):
     return found
 
 
+def authorized(body, principal, destination):
+    """Do not expose another owner's or destination's lesson metadata."""
+    return body["principal"] == principal and body["destination"] == destination
+
+
 def rationale(body, task_mechanisms, tier, principal, destination):
     """(overlap, reasons) for one lesson. Empty reasons means selectable."""
     proposal = body["proposal"]
@@ -171,10 +177,15 @@ def pick(ready):
 
 async def choose(session, kernel, principal, destination, families, task_mechanisms):
     """Return (items, record). ``items`` is empty when no lesson is applicable."""
-    states = await standing(session, kernel)
-    candidates, rows = [], {}
+    eligible = []
     for row in (await service.latest(session, kernel)).values():
         body = service.value(row)
+        if authorized(body, principal, destination):
+            eligible.append((row, body))
+    # Out-of-scope lessons must never enter the candidate record or support projection.
+    states = await standing(session, kernel)
+    candidates, rows = [], {}
+    for row, body in eligible:
         lesson_id = body["lesson_id"]
         record, refs = states.get(lesson_id, (utility([], False), []))
         overlap, reasons = rationale(body, task_mechanisms, record["state"], principal, destination)
@@ -220,17 +231,12 @@ async def choose(session, kernel, principal, destination, families, task_mechani
     for c in candidates:
         c["status"] = "selected" if c["lesson_id"] in picked else "excluded"
         c["tier"] = "demonstrated" if c["utility"]["state"] == "useful" else "unproven"
-    # "Refused" means an otherwise applicable active lesson sits outside owner/destination scope.
-    scope = {"owner_changed", "destination_changed"}
-    blocked = any(c["reasons"] and set(c["reasons"]) <= scope for c in candidates)
     if chosen:
         decision, why = "selected", None
     elif not task_mechanisms and not families:
         decision, why = "abstained", "task_mechanisms_unavailable"
     elif not candidates:
         decision, why = "none", "no_lessons_available"
-    elif blocked:
-        decision, why = "refused", "authorization_scope"
     else:
         decision, why = "none", "no_applicable_lesson"
     record = {
@@ -292,6 +298,58 @@ async def record_selection(session, kernel, key, record):
     return await service.put(session, kernel, SELECTION, key, record)
 
 
+async def _validated_measurement(session, kernel, admission_id, measurement_ref):
+    """Bind a measurement to a completed admission, its source, model and frozen context."""
+    from alive.continuity import service as continuity
+
+    admission = await session.get(Admission, admission_id)
+    require(
+        admission is not None and admission.instance_id == kernel.instance_id,
+        "application_admission_scope_changed",
+    )
+    measured = await session.scalar(select(Event).where(Event.id == measurement_ref))
+    require(
+        measured is not None
+        and measured.instance_id == kernel.instance_id
+        and measured.source == service.ORACLE
+        and measured.event_type == service.MEASURED,
+        "independent_measurement_required",
+    )
+    outcome = service.value(measured)
+    artifact = await continuity.artifact(session, kernel, admission)
+    require(
+        artifact is not None
+        and outcome.get("admission_id") == admission_id
+        and outcome.get("artifact_sha256") == artifact["sha256"]
+        and outcome.get("source_sha256") == digest(admission.terms["source"])
+        and not outcome.get("no_validated_artifact"),
+        "measurement_binding_changed",
+    )
+    grant = admission.terms["proposed_grant_data"]
+    snapshot_row = await continuity.event(
+        session, kernel, grant["inputs"]["context_ref"], continuity.SNAPSHOT
+    )
+    snapshot = snapshot_row.payload["snapshot"]
+    require(
+        snapshot_row.payload["sha256"] == digest(snapshot)
+        and grant["inputs"]["context_sha256"] == digest(snapshot),
+        "application_context_binding_changed",
+    )
+    calls = (
+        await session.scalars(
+            select(ModelInvocation).where(
+                ModelInvocation.investigation_id == grant["investigation_id"]
+            )
+        )
+    ).all()
+    models = {(c.provider, c.model, c.role) for c in calls}
+    require(
+        bool(calls) and len(models) == 1 and all(c.status == "validated" for c in calls),
+        "measurement_model_identity_unavailable",
+    )
+    return admission, outcome, snapshot, models
+
+
 async def record_application(
     kernel, admission_id, measurement_ref, *, baseline_measurement_ref=None, key=None
 ):
@@ -301,45 +359,76 @@ async def record_application(
     Duplicate application is idempotent; a conflicting duplicate fails closed.
     """
     async with kernel.lock, kernel.db.sessions.begin() as session:
-        admission = await session.get(Admission, admission_id)
-        measured = await session.scalar(select(Event).where(Event.id == measurement_ref))
-        require(
-            measured is not None
-            and measured.instance_id == kernel.instance_id
-            and measured.source == service.ORACLE
-            and measured.event_type == service.MEASURED,
-            "independent_measurement_required",
+        admission, outcome, snapshot, models = await _validated_measurement(
+            session, kernel, admission_id, measurement_ref
         )
-        outcome = service.value(measured)
-        require(outcome["admission_id"] == admission_id, "measurement_binding_changed")
         require(outcome["split"] in COUNTED_SPLITS, "evaluation_outcome_cannot_update_lessons")
         baseline = None
         if baseline_measurement_ref:
+            other_admission_id = None
             other = await session.scalar(select(Event).where(Event.id == baseline_measurement_ref))
             require(
                 other is not None
+                and other.instance_id == kernel.instance_id
                 and other.source == service.ORACLE
                 and other.event_type == service.MEASURED,
                 "independent_measurement_required",
             )
-            baseline = service.value(other)
+            other_admission_id = service.value(other).get("admission_id")
             require(
-                baseline["task_id"] == outcome["task_id"]
-                and baseline["split"] == outcome["split"]
-                and baseline["admission_id"] != admission_id,
+                other_admission_id and other_admission_id != admission_id,
                 "baseline_must_be_same_task_other_run",
             )
-        ref = admission.terms["proposed_grant_data"]["inputs"]["context_ref"]
-        snapshot = await session.scalar(select(Event).where(Event.id == ref))
+            other_admission, baseline, baseline_snapshot, baseline_models = (
+                await _validated_measurement(
+                    session, kernel, other_admission_id, baseline_measurement_ref
+                )
+            )
+            require(
+                all(
+                    outcome.get(name) is not None
+                    and outcome[name] == baseline.get(name)
+                    for name in (
+                        "task_id", "split", "family", "verifier",
+                        "corpus_sha256", "oracle_sha256",
+                    )
+                )
+                and admission.principal == other_admission.principal
+                and admission.terms["source"] == other_admission.terms["source"]
+                and admission.terms.get("profile") == other_admission.terms.get("profile")
+                and admission.terms["model_disclosure"] == other_admission.terms["model_disclosure"]
+                and models == baseline_models,
+                "baseline_identity_mismatch",
+            )
+            require(
+                baseline_snapshot.get("strategy_mode") == "stateless"
+                and baseline_snapshot.get("selection") == "no-experience-control/v1"
+                and baseline_snapshot.get("decision") == "none"
+                and baseline_snapshot.get("items") == [],
+                "baseline_must_be_stateless",
+            )
         supplied = [
-            i
-            for i in snapshot.payload["snapshot"]["items"]
-            if i["source_type"] == "learned_strategy"
+            i for i in snapshot["items"] if i["source_type"] == "learned_strategy"
         ]
         written = []
         for item in supplied:
             row = await session.scalar(select(Event).where(Event.id == item["id"]))
+            require(
+                row is not None
+                and row.instance_id == kernel.instance_id
+                and row.source == service.SOURCE
+                and row.event_type == service.LESSON,
+                "lesson_application_identity_changed",
+            )
             lesson = service.value(row)
+            require(
+                authorized(
+                    lesson,
+                    admission.principal,
+                    admission.terms["model_disclosure"]["destination"],
+                ),
+                "lesson_application_scope_changed",
+            )
             body = {
                 "lesson_id": lesson["lesson_id"],
                 "lesson_row": row.id,
@@ -390,6 +479,25 @@ async def view(session, kernel, snapshot, answer, admission_id):
     if row is None or row.source != service.SOURCE:
         return None
     body = service.value(row)
+    admission = await session.get(Admission, admission_id)
+    require(
+        admission is not None and admission.instance_id == kernel.instance_id,
+        "selection_view_admission_unavailable",
+    )
+    destination = admission.terms["model_disclosure"]["destination"]
+    visible = {
+        service.value(lesson)["lesson_id"]
+        for lesson in (await service.latest(session, kernel)).values()
+        if authorized(service.value(lesson), admission.principal, destination)
+    }
+    # Reproject historical selection records as well: old records may contain foreign candidates.
+    candidates = [c for c in body["candidates"] if c["lesson_id"] in visible]
+    selected = [c for c in body["selected"] if c["lesson_id"] in visible]
+    legacy_foreign_only = (
+        body["decision"] == "refused"
+        and body["no_lesson_reason"] == "authorization_scope"
+        and not candidates
+    )
     supplied = [i["id"] for i in snapshot["items"] if i["source_type"] == "learned_strategy"]
     measured = None
     for event in await service.rows(session, kernel, service.MEASURED, source=service.ORACLE):
@@ -405,13 +513,15 @@ async def view(session, kernel, snapshot, answer, admission_id):
     return {
         "ref": ref,
         "policy": body["policy"],
-        "decision": body["decision"],
-        "no_lesson_reason": body["no_lesson_reason"],
+        "decision": "none" if legacy_foreign_only else body["decision"],
+        "no_lesson_reason": (
+            "no_lessons_available" if legacy_foreign_only else body["no_lesson_reason"]
+        ),
         "task_mechanisms": body["task_mechanisms"],
         "override": body["override"],
         "received": supplied,
         "reported_used": [i for i in (answer or {}).get("lesson_ids_used", []) if i in supplied],
-        "selected": body["selected"],
+        "selected": selected,
         "candidates": [
             {
                 k: c[k]
@@ -424,7 +534,7 @@ async def view(session, kernel, snapshot, answer, admission_id):
                     "supporting_outcomes",
                 )
             }
-            for c in body["candidates"]
+            for c in candidates
         ],
         "context_bytes": body["context_bytes"],
         "items_sha256": body["items_sha256"],
