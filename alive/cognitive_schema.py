@@ -56,7 +56,7 @@ class CognitiveConfiguration(Strict):
 
 
 class AutonomyCommand(Strict):
-    command: Literal["start", "pause", "stop", "new_session"]
+    command: Literal["start", "pause", "stop", "new_session", "enable_model"]
     provider: Literal["mock", "meta"] = "mock"
 
 

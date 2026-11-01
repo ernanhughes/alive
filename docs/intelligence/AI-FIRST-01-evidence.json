@@ -1,0 +1,2224 @@
+{
+  "date": "2026-11-01",
+  "scope": "Public two-file toy repository. Repeated qualification of the same frozen three-goal label set; not a blind or representative AI-quality benchmark.",
+  "limitations": [
+    "One contributor run selected inspection instead of analysis for the arithmetic question; retained here as a false choice.",
+    "Deterministic baseline receives the same raw goal without an externally supplied intent label; it abstains via intent_unclear. Fixed baseline always chooses analysis.",
+    "Provider receipts identify requested model and endpoint. model_observed remains null where upstream did not report it.",
+    "No monetary cost is configured or estimated.",
+    "Initial browser attempt failed with HTTP 403 because the disposable origin was not allowed; zero inference calls. Environment corrected, without relaxing production authorization."
+  ],
+  "runs": [
+    {
+      "name": "initial-api",
+      "code_sha": "66c9e8d8b34ee3533759c1a86fad32ccec0888d6",
+      "working_tree_dirty": true,
+      "status": "LIVE_PATH_DEMONSTRATED; inspect choices and findings independently",
+      "source": {
+        "README.md": "# Public toy arithmetic repository\nmean should return the arithmetic mean.\n",
+        "mean.py": "def mean(values):\n    return sum(values) / (len(values) + 1)\n"
+      },
+      "cases": [
+        {
+          "goal": "Review the supplied repository for bugs that prevent shipping.",
+          "expected": "approved-repository-analysis"
+        },
+        {
+          "goal": "Check whether mean([2, 4]) returns the correct arithmetic mean.",
+          "expected": "approved-repository-analysis"
+        },
+        {
+          "goal": "Write a sonnet about autumn; do not review the repository.",
+          "expected": null
+        }
+      ],
+      "limits": {
+        "max_calls": 6,
+        "max_tokens": 200000
+      },
+      "consent_ref": "dab1e877-72dd-4b75-8367-13bb0b148fee",
+      "comparison": {
+        "live_hybrid": {
+          "correct": 3,
+          "false_choices": 0,
+          "abstentions": 1
+        },
+        "deterministic": {
+          "correct": 1,
+          "false_choices": 0,
+          "abstentions": 3
+        },
+        "fixed_analysis": {
+          "correct": 2,
+          "false_choices": 1,
+          "abstentions": 0
+        }
+      },
+      "restart": {
+        "provider_requests_before": 5,
+        "provider_requests_after": 5,
+        "retained_exchanges": 3,
+        "no_redispatch": true
+      },
+      "exchanges": [
+        {
+          "id": "e63a1303-51ee-4044-808a-1fa24fba4867",
+          "goal": "Review the supplied repository for bugs that prevent shipping.",
+          "status": "LIVE MODEL",
+          "source": {
+            "resources": {
+              "source_ref": "e6e6f1dd-c1d7-44e5-b3c7-7882ea510769",
+              "approval_id": "2ad2d737-5127-408c-a04c-f3aabe457cee",
+              "content_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+              "scope_sha256": "968d5a5b34f1026f3f370759075456563ca2bd510a8fb7616ab554cdbc4ae7a7"
+            },
+            "label": "Public arithmetic demo",
+            "scope": {
+              "items": [
+                "README.md",
+                "mean.py"
+              ]
+            },
+            "inventory": {
+              "items": [
+                {
+                  "item": "README.md",
+                  "bytes": 77,
+                  "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+                },
+                {
+                  "item": "mean.py",
+                  "bytes": 63,
+                  "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+                }
+              ],
+              "omitted": []
+            },
+            "expires_at": "2026-11-01T12:33:16.949474+00:00",
+            "principal": "owner-cli:ernan"
+          },
+          "live_choice": "approved-repository-analysis",
+          "independent_label": "approved-repository-analysis",
+          "correct_choice": true,
+          "interpretation": {
+            "origin": "model_inference",
+            "value": {
+              "alternative_interpretations": [
+                "Owner wants pre-shipping bug triage identifying blockers in this small demo repo.",
+                "Owner wants general code-quality review rather than strict shipping blockers."
+              ],
+              "ambiguities": [
+                "Definition of 'prevent shipping' - crashes vs style vs security is not specified.",
+                "Whether repository content approval and model disclosure have been granted is not stated."
+              ],
+              "assumptions": [
+                "Repository label 'Public arithmetic demo' is untrusted and does not change the goal.",
+                "Review is limited to the two listed files without running code.",
+                "Owner approval for capture and any model use will be obtained separately."
+              ],
+              "candidates": [
+                {
+                  "addresses": "fully",
+                  "recipe_id": "approved-repository-analysis",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Only procedure that performs governed semantic review of approved repo capture for stated objective with citation checks."
+                }
+              ],
+              "clarification_question": "",
+              "evidence_requirements": [
+                {
+                  "importance": "required",
+                  "requirement": "Owner-approved repository capture for README.md and mean.py",
+                  "status": "not_observed"
+                },
+                {
+                  "importance": "recommended",
+                  "requirement": "Shipping criteria or definition of blocker bug",
+                  "status": "not_observed"
+                },
+                {
+                  "importance": "optional",
+                  "requirement": "Approval to send capture to model provider if analysis uses model",
+                  "status": "unknown"
+                }
+              ],
+              "explicit_goal": "Review the supplied repository for bugs that prevent shipping.",
+              "intent_kind": "inspect_implementation",
+              "limits_of_available_procedures": [
+                "No execution, testing, or installation; cannot dynamically verify bugs.",
+                "Findings from approved-repository-analysis are model assessments with reference-identity checks only, not verified facts.",
+                "Review limited to approved capture; content not yet observed."
+              ],
+              "missing_information": [
+                "Actual file contents of README.md and mean.py",
+                "Evidence of approved capture availability",
+                "Shipping blocker definition"
+              ],
+              "needs_clarification": false,
+              "primary_objective": "Determine whether the repository contains bugs that would block shipping",
+              "subordinate_objectives": [
+                {
+                  "objective": "Inspect implementation in mean.py and README.md",
+                  "rationale": "Small arithmetic demo likely contains logic to review for correctness"
+                },
+                {
+                  "objective": "Distinguish shipping blockers from minor issues",
+                  "rationale": "Goal specifically asks for bugs that prevent shipping"
+                }
+              ]
+            }
+          },
+          "calls": [
+            {
+              "id": "d7213457-7224-471f-b50e-6b96462247eb",
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3",
+              "usage": {
+                "completion_tokens": 687,
+                "prompt_tokens": 1703,
+                "total_tokens": 2390,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 204
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "charged_tokens": 2390
+              },
+              "latency_ms": 4156.196300000374,
+              "endpoint": "https://api.meta.ai/v1/chat/completions",
+              "provider_receipts": [
+                {
+                  "pi_run_id": "9d94d0c1-4c1c-4840-baad-327bae0a5984",
+                  "request_id": "05b3d602-9c41-4952-9405-0aa484330787",
+                  "state": "settled",
+                  "http_status": 200,
+                  "usage": {
+                    "completion_tokens": 687,
+                    "prompt_tokens": 1703,
+                    "total_tokens": 2390,
+                    "completion_tokens_details": {
+                      "reasoning_tokens": 204
+                    },
+                    "prompt_tokens_details": {
+                      "cached_tokens": 0
+                    }
+                  },
+                  "response_sha256": "5ab55d94f80d9dbe89d38e0b3bdc3f63630c164945426ac8f4b94aaeb7b03b17",
+                  "model_observed": null,
+                  "latency_ms": 3578.758900000139
+                }
+              ]
+            },
+            {
+              "id": "329cbaaf-6913-49e5-8dd4-48769dd41858",
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3",
+              "usage": {
+                "completion_tokens": 364,
+                "prompt_tokens": 981,
+                "total_tokens": 1345,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 68
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "charged_tokens": 1345
+              },
+              "latency_ms": 2795.360299999629,
+              "endpoint": "https://api.meta.ai/v1/chat/completions",
+              "provider_receipts": [
+                {
+                  "pi_run_id": "eed91402-63e2-4f6e-b52b-e623755c95be",
+                  "request_id": "6506e0ef-9dbe-4c3c-8936-1dff7eefd5ad",
+                  "state": "settled",
+                  "http_status": 200,
+                  "usage": {
+                    "completion_tokens": 364,
+                    "prompt_tokens": 981,
+                    "total_tokens": 1345,
+                    "completion_tokens_details": {
+                      "reasoning_tokens": 68
+                    },
+                    "prompt_tokens_details": {
+                      "cached_tokens": 0
+                    }
+                  },
+                  "response_sha256": "24f7b2ddeac2b874dc111d4d4fa789e2e8710316f7dfdb195b13a676e1c7d42f",
+                  "model_observed": null,
+                  "latency_ms": 2351.3818999999785
+                }
+              ]
+            }
+          ],
+          "report": {
+            "admission_id": "aee2c513-beab-4397-8a1a-e5c1570d2b41",
+            "run_id": "3ea768aa-c542-40ac-a87e-a20c89d143bb",
+            "artifact_sha256": "d40f5ba069c32df5d47afc2dbf54a13fa3dd6d61379d62d35ff48b7f1146047e",
+            "result": {
+              "analysis_sha256": "24f7b2ddeac2b874dc111d4d4fa789e2e8710316f7dfdb195b13a676e1c7d42f",
+              "findings": [
+                {
+                  "finding_id": "mean-off-by-one-divisor",
+                  "model_assessment": {
+                    "category": "correctness",
+                    "evidence": [
+                      {
+                        "file": "mean.py",
+                        "line_end": 2,
+                        "line_start": 1,
+                        "quote": "return sum(values) / (len(values) + 1)"
+                      },
+                      {
+                        "file": "README.md",
+                        "line_end": 2,
+                        "line_start": 2,
+                        "quote": "mean should return the arithmetic mean."
+                      }
+                    ],
+                    "explanation": "mean() divides by len(values)+1 instead of len(values), so it never returns the arithmetic mean. It also raises ZeroDivisionError only for empty? Actually empty gives 0/1=0 instead of error, and all non-empty results are systematically too small.",
+                    "severity": "high",
+                    "suggested_verification": "Call mean([2,4]) and check for 3.0; also check mean([]) behavior expected by owner.",
+                    "title": "Off-by-one divisor prevents correct mean",
+                    "uncertainty": "Expected empty-input behavior is not stated in supplied files; whether empty should raise or return something is unknown."
+                  },
+                  "reference_check": {
+                    "contract": "repository-citation-existence/v1",
+                    "evidence": [
+                      {
+                        "file": "mean.py",
+                        "file_sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e",
+                        "line_end": 2,
+                        "line_start": 1,
+                        "status": "quote_matches"
+                      },
+                      {
+                        "file": "README.md",
+                        "file_sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894",
+                        "line_end": 2,
+                        "line_start": 2,
+                        "status": "quote_matches"
+                      }
+                    ],
+                    "status": "references_valid"
+                  },
+                  "verification": "none"
+                }
+              ],
+              "objective": "Review the supplied repository for bugs that prevent shipping.",
+              "report_markdown": "# Repository analysis\n\n## Investigation objective\nReview the supplied repository for bugs that prevent shipping.\n\n## Approved source scope\nSource e6e6f1dd-c1d7-44e5-b3c7-7882ea510769 (digest 46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b).\nFiles supplied to the model: README.md, mean.py.\nOmitted: none.\nThis analysis covers only those files, not the whole repository.\n\n## Model summary (model assessment, not verified)\nSupplied files contain a shipping-blocking correctness bug: mean.py does not compute arithmetic mean as required by README.md.\n\n## Findings whose citations exist in the captured files\n\n### mean-off-by-one-divisor: Off-by-one divisor prevents correct mean\nModel-assessed severity: high; category: correctness.\nmean() divides by len(values)+1 instead of len(values), so it never returns the arithmetic mean. It also raises ZeroDivisionError only for empty? Actually empty gives 0/1=0 instead of error, and all non-empty results are systematically too small.\nEvidence:\n- mean.py:1-2 (quote_matches)\n- README.md:2-2 (quote_matches)\nUncertainty: Expected empty-input behavior is not stated in supplied files; whether empty should raise or return something is unknown.\nSuggested verification: Call mean([2,4]) and check for 3.0; also check mean([]) behavior expected by owner.\n\n## Unsupported hypotheses (a citation did not match the captured files)\nNone.\n\n## Unresolved questions\n- What should mean([]) do: raise ValueError/ZeroDivisionError or return a default?\n\n## Validation status\nCitation existence: 1 of 1 findings have citations that match the captured files.\nA matching citation shows the cited lines exist. It does not show the model is right.\nIndependent verification: none performed. Semantic status: unverified.",
+              "schema": "repository-analysis-result/v1",
+              "source": {
+                "files": [
+                  {
+                    "bytes": 77,
+                    "path": "README.md",
+                    "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+                  },
+                  {
+                    "bytes": 63,
+                    "path": "mean.py",
+                    "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+                  }
+                ],
+                "omitted": [],
+                "scoped_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+                "source_ref": "e6e6f1dd-c1d7-44e5-b3c7-7882ea510769",
+                "source_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b"
+              },
+              "summary": "Supplied files contain a shipping-blocking correctness bug: mean.py does not compute arithmetic mean as required by README.md.",
+              "unresolved_questions": [
+                "What should mean([]) do: raise ValueError/ZeroDivisionError or return a default?"
+              ]
+            },
+            "assessment": {
+              "contract": "repository-citation-existence/v1",
+              "findings_total": 1,
+              "findings_with_unsupported_references": 0,
+              "findings_with_valid_references": 1,
+              "independent_verification": false,
+              "reference_identity_status": "all_valid",
+              "semantic_status": "unverified"
+            },
+            "usage": {
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3",
+              "reserved_tokens": 6532,
+              "usage": {
+                "completion_tokens": 364,
+                "prompt_tokens": 981,
+                "total_tokens": 1345,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 68
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "charged_tokens": 1345
+              },
+              "latency_ms": 2795.360299999629,
+              "model_calls": 1,
+              "cost": "unknown; no price is configured and none is estimated"
+            },
+            "verification": "none; findings are model assessments with checked citations"
+          },
+          "inspection": null
+        },
+        {
+          "id": "608f6476-80e2-4b61-9d57-0fb81eae1730",
+          "goal": "Check whether mean([2, 4]) returns the correct arithmetic mean.",
+          "status": "LIVE MODEL",
+          "source": {
+            "resources": {
+              "source_ref": "e6e6f1dd-c1d7-44e5-b3c7-7882ea510769",
+              "approval_id": "2ad2d737-5127-408c-a04c-f3aabe457cee",
+              "content_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+              "scope_sha256": "968d5a5b34f1026f3f370759075456563ca2bd510a8fb7616ab554cdbc4ae7a7"
+            },
+            "label": "Public arithmetic demo",
+            "scope": {
+              "items": [
+                "README.md",
+                "mean.py"
+              ]
+            },
+            "inventory": {
+              "items": [
+                {
+                  "item": "README.md",
+                  "bytes": 77,
+                  "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+                },
+                {
+                  "item": "mean.py",
+                  "bytes": 63,
+                  "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+                }
+              ],
+              "omitted": []
+            },
+            "expires_at": "2026-11-01T12:33:16.949474+00:00",
+            "principal": "owner-cli:ernan"
+          },
+          "live_choice": "approved-repository-analysis",
+          "independent_label": "approved-repository-analysis",
+          "correct_choice": true,
+          "interpretation": {
+            "origin": "model_inference",
+            "value": {
+              "alternative_interpretations": [
+                "The owner wants a code inspection of the mean implementation to judge if it should compute (2+4)/2=3.",
+                "The owner wants verification by actually executing mean([2,4]) and comparing to 3."
+              ],
+              "ambiguities": [
+                "Whether 'correct' means exactly 3, 3.0, or any value equal to 3 within tolerance.",
+                "Whether inspection of captured files alone is sufficient or execution is expected."
+              ],
+              "assumptions": [
+                "Arithmetic mean is understood as sum divided by count, so mean([2,4]) should be 3.",
+                "mean.py is assumed to contain the mean function to be checked."
+              ],
+              "candidates": [
+                {
+                  "addresses": "partly",
+                  "recipe_id": "approved-repository-inspection",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Reads the approved capture of mean.py and README.md without model inference to obtain the implementation for inspection."
+                },
+                {
+                  "addresses": "partly",
+                  "recipe_id": "captured-repository",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Inspects approved captured files only to retrieve the mean implementation for read-only review."
+                },
+                {
+                  "addresses": "partly",
+                  "recipe_id": "approved-repository-analysis",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Provides one governed model assessment of the captured repository against the objective, with citation checks but no verified execution."
+                }
+              ],
+              "clarification_question": "",
+              "evidence_requirements": [
+                {
+                  "importance": "required",
+                  "requirement": "Approved capture containing mean.py implementation",
+                  "status": "unknown"
+                },
+                {
+                  "importance": "required",
+                  "requirement": "Definition of correct arithmetic mean for [2,4] as 3",
+                  "status": "observed"
+                },
+                {
+                  "importance": "recommended",
+                  "requirement": "Observed return value or logic showing sum/count handling",
+                  "status": "unknown"
+                }
+              ],
+              "explicit_goal": "Check whether mean([2, 4]) returns the correct arithmetic mean.",
+              "intent_kind": "inspect_implementation",
+              "limits_of_available_procedures": [
+                "No catalogue procedure executes code or verifies runtime semantics; correctness cannot be established by execution.",
+                "Findings from model analysis remain assessments, not verified facts, and inspection procedures provide captured files only."
+              ],
+              "missing_information": [
+                "Actual contents of mean.py and README.md",
+                "Approved capture availability for the repository"
+              ],
+              "needs_clarification": false,
+              "primary_objective": "Determine if the mean([2,4]) implementation correctly computes the arithmetic mean.",
+              "subordinate_objectives": [
+                {
+                  "objective": "Retrieve mean.py implementation from approved capture",
+                  "rationale": "Needed to see how mean is defined before judging correctness."
+                },
+                {
+                  "objective": "Assess logic against expected value 3",
+                  "rationale": "Comparison establishes whether implementation should return correct mean."
+                }
+              ]
+            }
+          },
+          "calls": [
+            {
+              "id": "a295c483-fd73-436e-bf6b-bf7362a3d2e4",
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3",
+              "usage": {
+                "completion_tokens": 904,
+                "prompt_tokens": 1708,
+                "total_tokens": 2612,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 307
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "charged_tokens": 2612
+              },
+              "latency_ms": 4897.762899999179,
+              "endpoint": "https://api.meta.ai/v1/chat/completions",
+              "provider_receipts": [
+                {
+                  "pi_run_id": "2edcf69b-4ffb-4c9c-8bfb-2b7996513f77",
+                  "request_id": "cdd669bc-152b-4c3a-964a-9c52cdfe501b",
+                  "state": "settled",
+                  "http_status": 200,
+                  "usage": {
+                    "completion_tokens": 904,
+                    "prompt_tokens": 1708,
+                    "total_tokens": 2612,
+                    "completion_tokens_details": {
+                      "reasoning_tokens": 307
+                    },
+                    "prompt_tokens_details": {
+                      "cached_tokens": 0
+                    }
+                  },
+                  "response_sha256": "7b8e6127420c97153206e947d3cc44f5733ac4239d3d48c6184ec0f0f38c23bf",
+                  "model_observed": null,
+                  "latency_ms": 4434.610399999656
+                }
+              ]
+            },
+            {
+              "id": "1f7cc582-d2d8-4601-a6fa-1a95398a18fc",
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3",
+              "usage": {
+                "completion_tokens": 301,
+                "prompt_tokens": 986,
+                "total_tokens": 1287,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 99
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "charged_tokens": 1287
+              },
+              "latency_ms": 2172.2696999995605,
+              "endpoint": "https://api.meta.ai/v1/chat/completions",
+              "provider_receipts": [
+                {
+                  "pi_run_id": "490800c1-6d5f-41a6-a109-cd338dea0456",
+                  "request_id": "f21c60da-15e6-4e63-b39c-8a70dfe82483",
+                  "state": "settled",
+                  "http_status": 200,
+                  "usage": {
+                    "completion_tokens": 301,
+                    "prompt_tokens": 986,
+                    "total_tokens": 1287,
+                    "completion_tokens_details": {
+                      "reasoning_tokens": 99
+                    },
+                    "prompt_tokens_details": {
+                      "cached_tokens": 0
+                    }
+                  },
+                  "response_sha256": "0aa3d4fb03554b9fbfb8c6cfb3d2622fcdfa46cc3f3c7b4002cc4f92beec3ec3",
+                  "model_observed": null,
+                  "latency_ms": 1746.7111999994813
+                }
+              ]
+            }
+          ],
+          "report": {
+            "admission_id": "8b73c0c0-1965-4f93-bfc2-7ec6075535da",
+            "run_id": "abf4b17e-2131-4aa3-aafd-e4dfd03f35ec",
+            "artifact_sha256": "86845cc5aa3495e16119c479cfb4be1c51f2b2c23a8826ad92a363073d24a98e",
+            "result": {
+              "analysis_sha256": "0aa3d4fb03554b9fbfb8c6cfb3d2622fcdfa46cc3f3c7b4002cc4f92beec3ec3",
+              "findings": [
+                {
+                  "finding_id": "F1-wrong-divisor",
+                  "model_assessment": {
+                    "category": "correctness",
+                    "evidence": [
+                      {
+                        "file": "mean.py",
+                        "line_end": 2,
+                        "line_start": 1,
+                        "quote": "def mean(values):"
+                      }
+                    ],
+                    "explanation": "mean() divides by len(values)+1 instead of len(values), so mean([2,4]) returns 6/3=2 instead of the correct arithmetic mean 3.",
+                    "severity": "high",
+                    "suggested_verification": "Run mean([2,4]) and assert result equals 3.",
+                    "title": "Mean divides by len+1, wrong result",
+                    "uncertainty": "None; calculation is deterministic from supplied lines."
+                  },
+                  "reference_check": {
+                    "contract": "repository-citation-existence/v1",
+                    "evidence": [
+                      {
+                        "file": "mean.py",
+                        "file_sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e",
+                        "line_end": 2,
+                        "line_start": 1,
+                        "status": "quote_matches"
+                      }
+                    ],
+                    "status": "references_valid"
+                  },
+                  "verification": "none"
+                }
+              ],
+              "objective": "Check whether mean([2, 4]) returns the correct arithmetic mean.",
+              "report_markdown": "# Repository analysis\n\n## Investigation objective\nCheck whether mean([2, 4]) returns the correct arithmetic mean.\n\n## Approved source scope\nSource e6e6f1dd-c1d7-44e5-b3c7-7882ea510769 (digest 46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b).\nFiles supplied to the model: README.md, mean.py.\nOmitted: none.\nThis analysis covers only those files, not the whole repository.\n\n## Model summary (model assessment, not verified)\nmean([2,4]) does not return the correct arithmetic mean. Implementation returns 2 instead of 3 due to off-by-one divisor.\n\n## Findings whose citations exist in the captured files\n\n### F1-wrong-divisor: Mean divides by len+1, wrong result\nModel-assessed severity: high; category: correctness.\nmean() divides by len(values)+1 instead of len(values), so mean([2,4]) returns 6/3=2 instead of the correct arithmetic mean 3.\nEvidence:\n- mean.py:1-2 (quote_matches)\nUncertainty: None; calculation is deterministic from supplied lines.\nSuggested verification: Run mean([2,4]) and assert result equals 3.\n\n## Unsupported hypotheses (a citation did not match the captured files)\nNone.\n\n## Unresolved questions\n- None stated.\n\n## Validation status\nCitation existence: 1 of 1 findings have citations that match the captured files.\nA matching citation shows the cited lines exist. It does not show the model is right.\nIndependent verification: none performed. Semantic status: unverified.",
+              "schema": "repository-analysis-result/v1",
+              "source": {
+                "files": [
+                  {
+                    "bytes": 77,
+                    "path": "README.md",
+                    "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+                  },
+                  {
+                    "bytes": 63,
+                    "path": "mean.py",
+                    "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+                  }
+                ],
+                "omitted": [],
+                "scoped_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+                "source_ref": "e6e6f1dd-c1d7-44e5-b3c7-7882ea510769",
+                "source_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b"
+              },
+              "summary": "mean([2,4]) does not return the correct arithmetic mean. Implementation returns 2 instead of 3 due to off-by-one divisor.",
+              "unresolved_questions": []
+            },
+            "assessment": {
+              "contract": "repository-citation-existence/v1",
+              "findings_total": 1,
+              "findings_with_unsupported_references": 0,
+              "findings_with_valid_references": 1,
+              "independent_verification": false,
+              "reference_identity_status": "all_valid",
+              "semantic_status": "unverified"
+            },
+            "usage": {
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3",
+              "reserved_tokens": 6533,
+              "usage": {
+                "completion_tokens": 301,
+                "prompt_tokens": 986,
+                "total_tokens": 1287,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 99
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "charged_tokens": 1287
+              },
+              "latency_ms": 2172.2696999995605,
+              "model_calls": 1,
+              "cost": "unknown; no price is configured and none is estimated"
+            },
+            "verification": "none; findings are model assessments with checked citations"
+          },
+          "inspection": null
+        },
+        {
+          "id": "b847de5d-67af-434c-b73d-aa0191ebc24e",
+          "goal": "Write a sonnet about autumn; do not review the repository.",
+          "status": "LIVE MODEL",
+          "source": {
+            "resources": {
+              "source_ref": "e6e6f1dd-c1d7-44e5-b3c7-7882ea510769",
+              "approval_id": "2ad2d737-5127-408c-a04c-f3aabe457cee",
+              "content_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+              "scope_sha256": "968d5a5b34f1026f3f370759075456563ca2bd510a8fb7616ab554cdbc4ae7a7"
+            },
+            "label": "Public arithmetic demo",
+            "scope": {
+              "items": [
+                "README.md",
+                "mean.py"
+              ]
+            },
+            "inventory": {
+              "items": [
+                {
+                  "item": "README.md",
+                  "bytes": 77,
+                  "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+                },
+                {
+                  "item": "mean.py",
+                  "bytes": 63,
+                  "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+                }
+              ],
+              "omitted": []
+            },
+            "expires_at": "2026-11-01T12:33:16.949474+00:00",
+            "principal": "owner-cli:ernan"
+          },
+          "live_choice": null,
+          "independent_label": null,
+          "correct_choice": true,
+          "interpretation": {
+            "origin": "model_inference",
+            "value": {
+              "alternative_interpretations": [],
+              "ambiguities": [],
+              "assumptions": [
+                "Owner explicitly forbids repository review, so no investigation is authorized.",
+                "Sonnet request is creative writing, not an inspection or claims assessment task."
+              ],
+              "candidates": [],
+              "clarification_question": "",
+              "evidence_requirements": [
+                {
+                  "importance": "optional",
+                  "requirement": "No external evidence needed for creative sonnet",
+                  "status": "unknown"
+                }
+              ],
+              "explicit_goal": "Write a sonnet about autumn; do not review the repository.",
+              "intent_kind": "unclear",
+              "limits_of_available_procedures": [
+                "Catalogue contains only repository inspection and evidence review procedures, none produce creative poetry.",
+                "All catalogue procedures would require reviewing repository or evidence, which owner forbade."
+              ],
+              "missing_information": [],
+              "needs_clarification": false,
+              "primary_objective": "Obtain an original sonnet about autumn without any repository investigation",
+              "subordinate_objectives": [
+                {
+                  "objective": "Compose 14-line sonnet on autumn theme",
+                  "rationale": "Directly satisfies creative request"
+                }
+              ]
+            }
+          },
+          "calls": [
+            {
+              "id": "6d87ef63-ba1b-4afb-aacb-a99b3c25bb08",
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3",
+              "usage": {
+                "completion_tokens": 368,
+                "prompt_tokens": 1706,
+                "total_tokens": 2074,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 139
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "charged_tokens": 2074
+              },
+              "latency_ms": 2635.2661999999327,
+              "endpoint": "https://api.meta.ai/v1/chat/completions",
+              "provider_receipts": [
+                {
+                  "pi_run_id": "5993fab3-b622-4868-9f87-b60317ee3cd7",
+                  "request_id": "b08291bf-68d7-460b-85af-6470f25c2818",
+                  "state": "settled",
+                  "http_status": 200,
+                  "usage": {
+                    "completion_tokens": 368,
+                    "prompt_tokens": 1706,
+                    "total_tokens": 2074,
+                    "completion_tokens_details": {
+                      "reasoning_tokens": 139
+                    },
+                    "prompt_tokens_details": {
+                      "cached_tokens": 0
+                    }
+                  },
+                  "response_sha256": "2ec9ceafb607c2d8b93ab37296db8ebfe7716faeb3217eb9e763dbd7d216c3bf",
+                  "model_observed": null,
+                  "latency_ms": 2187.943100000666
+                }
+              ]
+            }
+          ],
+          "report": null,
+          "inspection": null
+        }
+      ]
+    },
+    {
+      "name": "contributor-browser-before-inspection-result",
+      "code_sha": "d6782219a1b1d915c6d8d954be39107c74cc95b3",
+      "working_tree_dirty": false,
+      "status": "LIVE_DEMONSTRATED; history retained after restart without redispatch",
+      "source": {
+        "README.md": "# Public toy arithmetic repository\nmean should return the arithmetic mean.\n",
+        "mean.py": "def mean(values):\n    return sum(values) / (len(values) + 1)\n"
+      },
+      "cases": [
+        {
+          "goal": "Review the supplied repository for bugs that prevent shipping.",
+          "expected": "approved-repository-analysis"
+        },
+        {
+          "goal": "Check whether mean([2, 4]) returns the correct arithmetic mean.",
+          "expected": "approved-repository-analysis"
+        },
+        {
+          "goal": "Write a sonnet about autumn; do not review the repository.",
+          "expected": null
+        }
+      ],
+      "limits": {
+        "max_calls": 6,
+        "max_tokens": 200000
+      },
+      "consent_ref": "9821e626-cd60-4745-8dd9-770d95a14c37",
+      "comparison": {
+        "live_hybrid": {
+          "correct": 2,
+          "false_choices": 1,
+          "abstentions": 1
+        },
+        "deterministic": {
+          "correct": 1,
+          "false_choices": 0,
+          "abstentions": 3
+        },
+        "fixed_analysis": {
+          "correct": 2,
+          "false_choices": 1,
+          "abstentions": 0
+        }
+      },
+      "restart": {
+        "provider_requests_before": 4,
+        "provider_requests_after": 4,
+        "no_redispatch": true,
+        "retained_exchanges": 3
+      },
+      "exchanges": [
+        {
+          "id": "2efd9a8a-e679-4151-a1bf-affe0427046c",
+          "goal": "Review the supplied repository for bugs that prevent shipping.",
+          "status": "LIVE MODEL",
+          "source": {
+            "resources": {
+              "source_ref": "b3a7315e-8598-4716-a790-d8007799ef1d",
+              "approval_id": "ae9cc78c-5fb9-4a04-bb37-7c5fe6f51f80",
+              "content_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+              "scope_sha256": "968d5a5b34f1026f3f370759075456563ca2bd510a8fb7616ab554cdbc4ae7a7"
+            },
+            "label": "Public arithmetic demo",
+            "scope": {
+              "items": [
+                "README.md",
+                "mean.py"
+              ]
+            },
+            "inventory": {
+              "items": [
+                {
+                  "item": "README.md",
+                  "bytes": 77,
+                  "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+                },
+                {
+                  "item": "mean.py",
+                  "bytes": 63,
+                  "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+                }
+              ],
+              "omitted": []
+            },
+            "expires_at": "2026-11-01T12:37:42.716754+00:00",
+            "principal": "owner-cli:ernan"
+          },
+          "live_choice": "approved-repository-analysis",
+          "independent_label": "approved-repository-analysis",
+          "correct_choice": true,
+          "interpretation": {
+            "origin": "model_inference",
+            "value": {
+              "alternative_interpretations": [],
+              "ambiguities": [
+                "Scope of shipping-blocking is undefined - crash vs correctness vs style not specified",
+                "Whether README.md claims are in scope for bug review or only mean.py logic",
+                "What approval or capture of the repository is considered authoritative for review"
+              ],
+              "assumptions": [
+                "Review is read-only assessment and does not fix, run, or ship code",
+                "Findings would be model assessments against the capture, not verified facts",
+                "Owner will separately approve capture and any model disclosure before analysis"
+              ],
+              "candidates": [
+                {
+                  "addresses": "fully",
+                  "recipe_id": "approved-repository-analysis",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Only procedure that performs governed model review of the approved repository capture for the stated objective with citation checks."
+                },
+                {
+                  "addresses": "partly",
+                  "recipe_id": "approved-repository-inspection",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Reads the approved capture without model analysis; useful prerequisite to establish what files are available before assessment."
+                }
+              ],
+              "clarification_question": "",
+              "evidence_requirements": [
+                {
+                  "importance": "required",
+                  "requirement": "Owner-approved repository capture containing README.md and mean.py",
+                  "status": "not_observed"
+                },
+                {
+                  "importance": "required",
+                  "requirement": "Disclosure approval for sending capture to model provider if model analysis used",
+                  "status": "unknown"
+                },
+                {
+                  "importance": "recommended",
+                  "requirement": "Definition of shipping-blocking severity for this demo",
+                  "status": "not_observed"
+                }
+              ],
+              "explicit_goal": "Review the supplied repository for bugs that prevent shipping.",
+              "intent_kind": "inspect_implementation",
+              "limits_of_available_procedures": [
+                "No procedure verifies runtime truth or correctness; semantics remain unverified",
+                "No procedure executes code, runs tests, or grants install/run permissions",
+                "Citation/reference checks do not establish absence of bugs"
+              ],
+              "missing_information": [
+                "Actual file contents - only names and sizes provided, content_included false",
+                "Owner-approved capture for analysis",
+                "Shipping criteria and severity threshold"
+              ],
+              "needs_clarification": false,
+              "primary_objective": "Identify implementation bugs in the supplied repository that would block shipping",
+              "subordinate_objectives": [
+                {
+                  "objective": "Establish authoritative file set to review",
+                  "rationale": "Must know exact capture for README.md and mean.py before any bug assessment"
+                },
+                {
+                  "objective": "Assess mean.py logic for correctness and edge cases",
+                  "rationale": "Directly addresses bugs that prevent shipping"
+                },
+                {
+                  "objective": "Check README claims against implementation if in scope",
+                  "rationale": "Mismatch between docs and behavior can block shipping"
+                }
+              ]
+            }
+          },
+          "calls": [
+            {
+              "id": "3a35fa4a-2098-4961-b162-a73c62168176",
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3-contributor",
+              "usage": {
+                "completion_tokens": 833,
+                "prompt_tokens": 1703,
+                "total_tokens": 2536,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 355
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "charged_tokens": 2536
+              },
+              "latency_ms": 10327.301299999817,
+              "endpoint": "https://api.meta.ai/v1/chat/completions",
+              "provider_receipts": [
+                {
+                  "pi_run_id": "d539da67-afc4-436a-9f1c-97cafb991210",
+                  "request_id": "81ee23a8-00be-4c7a-b423-b091b542708c",
+                  "state": "settled",
+                  "http_status": 200,
+                  "usage": {
+                    "completion_tokens": 833,
+                    "prompt_tokens": 1703,
+                    "total_tokens": 2536,
+                    "completion_tokens_details": {
+                      "reasoning_tokens": 355
+                    },
+                    "prompt_tokens_details": {
+                      "cached_tokens": 0
+                    }
+                  },
+                  "response_sha256": "bed57c34932d6c15a86a0fb6a6eeced232829bffb01ac03e26a55186eb8dd8a7",
+                  "model_observed": null,
+                  "latency_ms": 9807.88930000017
+                }
+              ]
+            },
+            {
+              "id": "f982ab65-1d4e-41bc-b29f-dde2922d8418",
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3-contributor",
+              "usage": {
+                "completion_tokens": 324,
+                "prompt_tokens": 981,
+                "total_tokens": 1305,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 47
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "charged_tokens": 1305
+              },
+              "latency_ms": 4416.25330000079,
+              "endpoint": "https://api.meta.ai/v1/chat/completions",
+              "provider_receipts": [
+                {
+                  "pi_run_id": "06af9149-6a1d-4b73-9f67-ab97db3ed949",
+                  "request_id": "b7118bea-88e6-49c1-b316-e19f48f16b38",
+                  "state": "settled",
+                  "http_status": 200,
+                  "usage": {
+                    "completion_tokens": 324,
+                    "prompt_tokens": 981,
+                    "total_tokens": 1305,
+                    "completion_tokens_details": {
+                      "reasoning_tokens": 47
+                    },
+                    "prompt_tokens_details": {
+                      "cached_tokens": 0
+                    }
+                  },
+                  "response_sha256": "b8bd565bc64d0dacf63fe8495a9de071661d9107a4d9d31fd4b655bfd56d903e",
+                  "model_observed": null,
+                  "latency_ms": 3967.4802999998064
+                }
+              ]
+            }
+          ],
+          "report": {
+            "admission_id": "f602cdb5-4427-4336-9edb-420f0708f823",
+            "run_id": "4ff596b0-6b5c-4bdd-86b8-89355de9af9d",
+            "artifact_sha256": "81c2d659753319c06c6b79175b6093118c3050ddfb0e56345b39cef8663ef6ca",
+            "result": {
+              "analysis_sha256": "b8bd565bc64d0dacf63fe8495a9de071661d9107a4d9d31fd4b655bfd56d903e",
+              "findings": [
+                {
+                  "finding_id": "F1-wrong-denominator",
+                  "model_assessment": {
+                    "category": "correctness",
+                    "evidence": [
+                      {
+                        "file": "mean.py",
+                        "line_end": 2,
+                        "line_start": 1,
+                        "quote": "def mean(values):"
+                      },
+                      {
+                        "file": "mean.py",
+                        "line_end": 2,
+                        "line_start": 2,
+                        "quote": "return sum(values) / (len(values) + 1)"
+                      }
+                    ],
+                    "explanation": "mean() divides by len(values)+1 instead of len(values), contradicting README requirement to return arithmetic mean. Returns wrong result for all non-empty inputs and masks empty-input error.",
+                    "severity": "high",
+                    "suggested_verification": "Run mean([1,2,3]) and check equals 2.0; run mean([5]) equals 5.0.",
+                    "title": "Off-by-one denominator breaks arithmetic mean",
+                    "uncertainty": "No uncertainty about formula; edge-case intended behavior for empty list not specified in supplied files."
+                  },
+                  "reference_check": {
+                    "contract": "repository-citation-existence/v1",
+                    "evidence": [
+                      {
+                        "file": "mean.py",
+                        "file_sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e",
+                        "line_end": 2,
+                        "line_start": 1,
+                        "status": "quote_matches"
+                      },
+                      {
+                        "file": "mean.py",
+                        "file_sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e",
+                        "line_end": 2,
+                        "line_start": 2,
+                        "status": "quote_matches"
+                      }
+                    ],
+                    "status": "references_valid"
+                  },
+                  "verification": "none"
+                }
+              ],
+              "objective": "Review the supplied repository for bugs that prevent shipping.",
+              "report_markdown": "# Repository analysis\n\n## Investigation objective\nReview the supplied repository for bugs that prevent shipping.\n\n## Approved source scope\nSource b3a7315e-8598-4716-a790-d8007799ef1d (digest 46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b).\nFiles supplied to the model: README.md, mean.py.\nOmitted: none.\nThis analysis covers only those files, not the whole repository.\n\n## Model summary (model assessment, not verified)\nSupplied files contain a shipping-blocking correctness bug: mean.py does not compute arithmetic mean due to +1 in denominator.\n\n## Findings whose citations exist in the captured files\n\n### F1-wrong-denominator: Off-by-one denominator breaks arithmetic mean\nModel-assessed severity: high; category: correctness.\nmean() divides by len(values)+1 instead of len(values), contradicting README requirement to return arithmetic mean. Returns wrong result for all non-empty inputs and masks empty-input error.\nEvidence:\n- mean.py:1-2 (quote_matches)\n- mean.py:2-2 (quote_matches)\nUncertainty: No uncertainty about formula; edge-case intended behavior for empty list not specified in supplied files.\nSuggested verification: Run mean([1,2,3]) and check equals 2.0; run mean([5]) equals 5.0.\n\n## Unsupported hypotheses (a citation did not match the captured files)\nNone.\n\n## Unresolved questions\n- What should mean([]) do? Not specified; currently raises ZeroDivisionError only if denominator fixed.\n\n## Validation status\nCitation existence: 1 of 1 findings have citations that match the captured files.\nA matching citation shows the cited lines exist. It does not show the model is right.\nIndependent verification: none performed. Semantic status: unverified.",
+              "schema": "repository-analysis-result/v1",
+              "source": {
+                "files": [
+                  {
+                    "bytes": 77,
+                    "path": "README.md",
+                    "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+                  },
+                  {
+                    "bytes": 63,
+                    "path": "mean.py",
+                    "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+                  }
+                ],
+                "omitted": [],
+                "scoped_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+                "source_ref": "b3a7315e-8598-4716-a790-d8007799ef1d",
+                "source_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b"
+              },
+              "summary": "Supplied files contain a shipping-blocking correctness bug: mean.py does not compute arithmetic mean due to +1 in denominator.",
+              "unresolved_questions": [
+                "What should mean([]) do? Not specified; currently raises ZeroDivisionError only if denominator fixed."
+              ]
+            },
+            "assessment": {
+              "contract": "repository-citation-existence/v1",
+              "findings_total": 1,
+              "findings_with_unsupported_references": 0,
+              "findings_with_valid_references": 1,
+              "independent_verification": false,
+              "reference_identity_status": "all_valid",
+              "semantic_status": "unverified"
+            },
+            "usage": {
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3-contributor",
+              "reserved_tokens": 6532,
+              "usage": {
+                "completion_tokens": 324,
+                "prompt_tokens": 981,
+                "total_tokens": 1305,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 47
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "charged_tokens": 1305
+              },
+              "latency_ms": 4416.25330000079,
+              "model_calls": 1,
+              "cost": "unknown; no price is configured and none is estimated"
+            },
+            "verification": "none; findings are model assessments with checked citations"
+          },
+          "inspection": null
+        },
+        {
+          "id": "70b28537-932d-45c5-a719-1b3a8723a08a",
+          "goal": "Check whether mean([2, 4]) returns the correct arithmetic mean.",
+          "status": "LIVE MODEL",
+          "source": {
+            "resources": {
+              "source_ref": "b3a7315e-8598-4716-a790-d8007799ef1d",
+              "approval_id": "ae9cc78c-5fb9-4a04-bb37-7c5fe6f51f80",
+              "content_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+              "scope_sha256": "968d5a5b34f1026f3f370759075456563ca2bd510a8fb7616ab554cdbc4ae7a7"
+            },
+            "label": "Public arithmetic demo",
+            "scope": {
+              "items": [
+                "README.md",
+                "mean.py"
+              ]
+            },
+            "inventory": {
+              "items": [
+                {
+                  "item": "README.md",
+                  "bytes": 77,
+                  "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+                },
+                {
+                  "item": "mean.py",
+                  "bytes": 63,
+                  "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+                }
+              ],
+              "omitted": []
+            },
+            "expires_at": "2026-11-01T12:37:42.716754+00:00",
+            "principal": "owner-cli:ernan"
+          },
+          "live_choice": "approved-repository-inspection",
+          "independent_label": "approved-repository-analysis",
+          "correct_choice": false,
+          "interpretation": {
+            "origin": "model_inference",
+            "value": {
+              "alternative_interpretations": [
+                "Owner wants semantic verification that mean([2,4]) equals 3 by inspecting and reasoning about mean.py implementation."
+              ],
+              "ambiguities": [
+                "Whether 'correct' means exactly 3 / 3.0 versus approximate or type-specific expectation."
+              ],
+              "assumptions": [
+                "mean refers to implementation in mean.py in the stated repository."
+              ],
+              "candidates": [
+                {
+                  "addresses": "fully",
+                  "recipe_id": "approved-repository-inspection",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Reads the approved capture of mean.py and README to establish implementation without model inference."
+                },
+                {
+                  "addresses": "partly",
+                  "recipe_id": "approved-repository-analysis",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Governed model review of approved capture to assess whether implementation returns arithmetic mean; findings are model assessments not verified execution."
+                },
+                {
+                  "addresses": "partly",
+                  "recipe_id": "captured-repository",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Inspects approved captured files only if that capture channel is approved; no semantic verification."
+                }
+              ],
+              "clarification_question": "",
+              "evidence_requirements": [
+                {
+                  "importance": "required",
+                  "requirement": "Approved capture containing mean.py implementation",
+                  "status": "not_observed"
+                },
+                {
+                  "importance": "required",
+                  "requirement": "Expected arithmetic mean of [2,4] equals 3",
+                  "status": "unknown"
+                }
+              ],
+              "explicit_goal": "Check whether mean([2, 4]) returns the correct arithmetic mean.",
+              "intent_kind": "inspect_implementation",
+              "limits_of_available_procedures": [
+                "No catalogue procedure executes code or verifies runtime output; only inspects captures and offers model assessment."
+              ],
+              "missing_information": [
+                "Actual contents of mean.py and README.md",
+                "Whether approved capture exists and is owner-approved"
+              ],
+              "needs_clarification": false,
+              "primary_objective": "Determine if mean([2,4]) implementation correctly returns 3",
+              "subordinate_objectives": [
+                {
+                  "objective": "Retrieve mean.py implementation",
+                  "rationale": "Needed to see how mean is computed"
+                },
+                {
+                  "objective": "Compare logic to arithmetic mean definition",
+                  "rationale": "Needed to judge correctness for [2,4]"
+                }
+              ]
+            }
+          },
+          "calls": [
+            {
+              "id": "28c3b663-ea33-4cbb-b2c7-2deb0abe34c6",
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3-contributor",
+              "usage": {
+                "completion_tokens": 595,
+                "prompt_tokens": 1708,
+                "total_tokens": 2303,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 118
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "charged_tokens": 2303
+              },
+              "latency_ms": 6166.60519999914,
+              "endpoint": "https://api.meta.ai/v1/chat/completions",
+              "provider_receipts": [
+                {
+                  "pi_run_id": "c0d6c414-291f-4c62-8d70-e279dd9a3b7c",
+                  "request_id": "3b270aff-fe25-40b5-9687-e4ebd7f4d400",
+                  "state": "settled",
+                  "http_status": 200,
+                  "usage": {
+                    "completion_tokens": 595,
+                    "prompt_tokens": 1708,
+                    "total_tokens": 2303,
+                    "completion_tokens_details": {
+                      "reasoning_tokens": 118
+                    },
+                    "prompt_tokens_details": {
+                      "cached_tokens": 0
+                    }
+                  },
+                  "response_sha256": "cafa92857b43fd28ca553f2c3eec37451f4066b5b1d6ab5f5217f4be797ab2c4",
+                  "model_observed": null,
+                  "latency_ms": 5691.28929999988
+                }
+              ]
+            }
+          ],
+          "report": null,
+          "inspection": null
+        },
+        {
+          "id": "1e10a80c-2486-4737-890a-b92b4b02cde6",
+          "goal": "Write a sonnet about autumn; do not review the repository.",
+          "status": "LIVE MODEL",
+          "source": {
+            "resources": {
+              "source_ref": "b3a7315e-8598-4716-a790-d8007799ef1d",
+              "approval_id": "ae9cc78c-5fb9-4a04-bb37-7c5fe6f51f80",
+              "content_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+              "scope_sha256": "968d5a5b34f1026f3f370759075456563ca2bd510a8fb7616ab554cdbc4ae7a7"
+            },
+            "label": "Public arithmetic demo",
+            "scope": {
+              "items": [
+                "README.md",
+                "mean.py"
+              ]
+            },
+            "inventory": {
+              "items": [
+                {
+                  "item": "README.md",
+                  "bytes": 77,
+                  "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+                },
+                {
+                  "item": "mean.py",
+                  "bytes": 63,
+                  "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+                }
+              ],
+              "omitted": []
+            },
+            "expires_at": "2026-11-01T12:37:42.716754+00:00",
+            "principal": "owner-cli:ernan"
+          },
+          "live_choice": null,
+          "independent_label": null,
+          "correct_choice": true,
+          "interpretation": {
+            "origin": "model_inference",
+            "value": {
+              "alternative_interpretations": [],
+              "ambiguities": [],
+              "assumptions": [
+                "Owner wants creative text generation, not repository investigation",
+                "Instruction not to review repository is to be respected and means no repository procedures should run",
+                "No procedures in catalogue produce creative writing"
+              ],
+              "candidates": [],
+              "clarification_question": "",
+              "evidence_requirements": [],
+              "explicit_goal": "Write a sonnet about autumn; do not review the repository.",
+              "intent_kind": "unclear",
+              "limits_of_available_procedures": [
+                "No catalogue procedure writes sonnets or performs creative generation",
+                "All catalogue procedures require repository or controlled evidence review, which owner explicitly declined",
+                "No available procedure can establish correctness of a sonnet"
+              ],
+              "missing_information": [],
+              "needs_clarification": false,
+              "primary_objective": "Create a sonnet about autumn without accessing the repository",
+              "subordinate_objectives": [
+                {
+                  "objective": "Produce 14-line poetic form about autumn",
+                  "rationale": "Directly satisfies creative request"
+                }
+              ]
+            }
+          },
+          "calls": [
+            {
+              "id": "fb1ea351-9fe5-4443-aa6f-fac73191c44a",
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3-contributor",
+              "usage": {
+                "completion_tokens": 330,
+                "prompt_tokens": 1706,
+                "total_tokens": 2036,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 147
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 881
+                },
+                "charged_tokens": 2036
+              },
+              "latency_ms": 4759.139200000391,
+              "endpoint": "https://api.meta.ai/v1/chat/completions",
+              "provider_receipts": [
+                {
+                  "pi_run_id": "24a46821-0298-410a-8847-696cd92ad943",
+                  "request_id": "3df73646-5545-4186-ae0c-88a1823cb486",
+                  "state": "settled",
+                  "http_status": 200,
+                  "usage": {
+                    "completion_tokens": 330,
+                    "prompt_tokens": 1706,
+                    "total_tokens": 2036,
+                    "completion_tokens_details": {
+                      "reasoning_tokens": 147
+                    },
+                    "prompt_tokens_details": {
+                      "cached_tokens": 881
+                    }
+                  },
+                  "response_sha256": "b2b38a70414dcee939842a1f3cdaf7f7b0f90d34fbed64e8a95c232c6c6b7484",
+                  "model_observed": null,
+                  "latency_ms": 4323.012500000004
+                }
+              ]
+            }
+          ],
+          "report": null,
+          "inspection": null
+        }
+      ]
+    },
+    {
+      "name": "final-contributor-browser",
+      "code_sha": "5f69b7baab4d09c52f1a7a49433051b7dcb39533",
+      "working_tree_dirty": false,
+      "status": "LIVE_DEMONSTRATED; history retained after restart without redispatch",
+      "source": {
+        "README.md": "# Public toy arithmetic repository\nmean should return the arithmetic mean.\n",
+        "mean.py": "def mean(values):\n    return sum(values) / (len(values) + 1)\n"
+      },
+      "cases": [
+        {
+          "goal": "Review the supplied repository for bugs that prevent shipping.",
+          "expected": "approved-repository-analysis"
+        },
+        {
+          "goal": "Check whether mean([2, 4]) returns the correct arithmetic mean.",
+          "expected": "approved-repository-analysis"
+        },
+        {
+          "goal": "Write a sonnet about autumn; do not review the repository.",
+          "expected": null
+        }
+      ],
+      "limits": {
+        "max_calls": 6,
+        "max_tokens": 200000
+      },
+      "consent_ref": "9cbf7cd0-28da-46ea-b211-4c7319b7c592",
+      "comparison": {
+        "live_hybrid": {
+          "correct": 3,
+          "false_choices": 0,
+          "abstentions": 1
+        },
+        "deterministic": {
+          "correct": 1,
+          "false_choices": 0,
+          "abstentions": 3
+        },
+        "fixed_analysis": {
+          "correct": 2,
+          "false_choices": 1,
+          "abstentions": 0
+        }
+      },
+      "restart": {
+        "provider_requests_before": 5,
+        "provider_requests_after": 5,
+        "no_redispatch": true,
+        "retained_exchanges": 3
+      },
+      "exchanges": [
+        {
+          "id": "9fde8de4-e35a-4178-b105-ed46c437cf80",
+          "goal": "Review the supplied repository for bugs that prevent shipping.",
+          "status": "LIVE MODEL",
+          "source": {
+            "resources": {
+              "source_ref": "3650d3bf-ac7e-4278-bffb-61d0f55c9abc",
+              "approval_id": "e0505862-dd28-4f0c-965f-e51218e88944",
+              "content_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+              "scope_sha256": "968d5a5b34f1026f3f370759075456563ca2bd510a8fb7616ab554cdbc4ae7a7"
+            },
+            "label": "Public arithmetic demo",
+            "scope": {
+              "items": [
+                "README.md",
+                "mean.py"
+              ]
+            },
+            "inventory": {
+              "items": [
+                {
+                  "item": "README.md",
+                  "bytes": 77,
+                  "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+                },
+                {
+                  "item": "mean.py",
+                  "bytes": 63,
+                  "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+                }
+              ],
+              "omitted": []
+            },
+            "expires_at": "2026-11-01T12:42:58.167496+00:00",
+            "principal": "owner-cli:ernan"
+          },
+          "live_choice": "approved-repository-analysis",
+          "independent_label": "approved-repository-analysis",
+          "correct_choice": true,
+          "interpretation": {
+            "origin": "model_inference",
+            "value": {
+              "alternative_interpretations": [
+                "Owner wants a full semantic bug-find blocking release, not just file listing."
+              ],
+              "ambiguities": [
+                "What counts as `prevent shipping` - crashes/errors vs style vs security."
+              ],
+              "assumptions": [
+                "Owner refers to the `Public arithmetic demo` repository capture."
+              ],
+              "candidates": [
+                {
+                  "addresses": "fully",
+                  "recipe_id": "approved-repository-analysis",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Only procedure that performs governed review for stated objective against approved capture with citation checks."
+                }
+              ],
+              "clarification_question": "",
+              "evidence_requirements": [
+                {
+                  "importance": "required",
+                  "requirement": "owner-approved repository capture with file contents",
+                  "status": "not_observed"
+                },
+                {
+                  "importance": "required",
+                  "requirement": "definition of shipping blockers for this repo",
+                  "status": "unknown"
+                }
+              ],
+              "explicit_goal": "Review the supplied repository for bugs that prevent shipping.",
+              "intent_kind": "inspect_implementation",
+              "limits_of_available_procedures": [
+                "No procedure can execute code, run tests, or verify truth in world; findings are model assessments with reference checks only.",
+                "Content not yet observed - only names and sizes listed - so no bug conclusion possible until approved capture is available."
+              ],
+              "missing_information": [
+                "Actual file contents for README.md and mean.py",
+                "Approved capture identity for analysis",
+                "Shipping criteria / blocking severity definition"
+              ],
+              "needs_clarification": false,
+              "primary_objective": "Determine whether bugs in the supplied repository block shipping it.",
+              "subordinate_objectives": [
+                {
+                  "objective": "Obtain and inspect approved repository files",
+                  "rationale": "Cannot assess bugs without observing file contents, only names/sizes are listed."
+                },
+                {
+                  "objective": "Identify ship-blocking defects",
+                  "rationale": "Core of explicit goal is bugs that prevent shipping."
+                }
+              ]
+            }
+          },
+          "calls": [
+            {
+              "id": "d7865b4f-6cf7-41aa-a621-101fcc7da4f9",
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3-contributor",
+              "usage": {
+                "completion_tokens": 765,
+                "prompt_tokens": 1703,
+                "total_tokens": 2468,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 378
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 1649
+                },
+                "charged_tokens": 2468
+              },
+              "latency_ms": 8436.07399999928,
+              "endpoint": "https://api.meta.ai/v1/chat/completions",
+              "provider_receipts": [
+                {
+                  "pi_run_id": "bdafc763-6d10-4477-a09e-63f937b0b972",
+                  "request_id": "91e99ebd-eba2-47a0-a096-de7332eeed36",
+                  "state": "settled",
+                  "http_status": 200,
+                  "usage": {
+                    "completion_tokens": 765,
+                    "prompt_tokens": 1703,
+                    "total_tokens": 2468,
+                    "completion_tokens_details": {
+                      "reasoning_tokens": 378
+                    },
+                    "prompt_tokens_details": {
+                      "cached_tokens": 1649
+                    }
+                  },
+                  "response_sha256": "8c264672b5d24968d2442cac2a98e1bd74e22b309f70c0afc76b1e6298d9a1fb",
+                  "model_observed": null,
+                  "latency_ms": 7923.743299999842
+                }
+              ]
+            },
+            {
+              "id": "70aeeb24-c13a-4506-a810-1a5dfed6e75a",
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3-contributor",
+              "usage": {
+                "completion_tokens": 377,
+                "prompt_tokens": 981,
+                "total_tokens": 1358,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 52
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 881
+                },
+                "charged_tokens": 1358
+              },
+              "latency_ms": 4622.1065999998245,
+              "endpoint": "https://api.meta.ai/v1/chat/completions",
+              "provider_receipts": [
+                {
+                  "pi_run_id": "1d4fa96f-6192-4aa5-85a6-2aff3c245e75",
+                  "request_id": "5fe50429-b18e-4870-a23d-5635c4a70e71",
+                  "state": "settled",
+                  "http_status": 200,
+                  "usage": {
+                    "completion_tokens": 377,
+                    "prompt_tokens": 981,
+                    "total_tokens": 1358,
+                    "completion_tokens_details": {
+                      "reasoning_tokens": 52
+                    },
+                    "prompt_tokens_details": {
+                      "cached_tokens": 881
+                    }
+                  },
+                  "response_sha256": "9ef4ae029c458beb6b8bdb439bf055fcb8b2ff0d743bafcce5dcbfba0866537d",
+                  "model_observed": null,
+                  "latency_ms": 4171.0205999997925
+                }
+              ]
+            }
+          ],
+          "report": {
+            "admission_id": "8e7313c9-575e-496e-beb5-aa6359536b3a",
+            "run_id": "8dc79a9a-8752-4a34-9d0e-064d65c3ac67",
+            "artifact_sha256": "5f4c8a6d7dbca94e662f18c95fb26f2061debd8f96fd881d8aaf0abd3c7941a8",
+            "result": {
+              "analysis_sha256": "9ef4ae029c458beb6b8bdb439bf055fcb8b2ff0d743bafcce5dcbfba0866537d",
+              "findings": [
+                {
+                  "finding_id": "F001",
+                  "model_assessment": {
+                    "category": "correctness",
+                    "evidence": [
+                      {
+                        "file": "mean.py",
+                        "line_end": 2,
+                        "line_start": 1,
+                        "quote": "def mean(values):"
+                      },
+                      {
+                        "file": "mean.py",
+                        "line_end": 2,
+                        "line_start": 2,
+                        "quote": "    return sum(values) / (len(values) + 1)"
+                      },
+                      {
+                        "file": "README.md",
+                        "line_end": 2,
+                        "line_start": 2,
+                        "quote": "mean should return the arithmetic mean."
+                      }
+                    ],
+                    "explanation": "mean() divides by len(values)+1 instead of len(values), so it never returns the arithmetic mean. e.g. mean([1,2,3]) returns 1.5 instead of 2. This contradicts README.md stated objective and blocks shipping.",
+                    "severity": "high",
+                    "suggested_verification": "Run mean([1,2,3]) and check equals 2; run mean([5]) equals 5.",
+                    "title": "Off-by-one denominator in mean prevents correct average",
+                    "uncertainty": "No uncertainty about formula error, but empty-input expected behavior is undefined in supplied files."
+                  },
+                  "reference_check": {
+                    "contract": "repository-citation-existence/v1",
+                    "evidence": [
+                      {
+                        "file": "mean.py",
+                        "file_sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e",
+                        "line_end": 2,
+                        "line_start": 1,
+                        "status": "quote_matches"
+                      },
+                      {
+                        "file": "mean.py",
+                        "file_sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e",
+                        "line_end": 2,
+                        "line_start": 2,
+                        "status": "quote_matches"
+                      },
+                      {
+                        "file": "README.md",
+                        "file_sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894",
+                        "line_end": 2,
+                        "line_start": 2,
+                        "status": "quote_matches"
+                      }
+                    ],
+                    "status": "references_valid"
+                  },
+                  "verification": "none"
+                }
+              ],
+              "objective": "Review the supplied repository for bugs that prevent shipping.",
+              "report_markdown": "# Repository analysis\n\n## Investigation objective\nReview the supplied repository for bugs that prevent shipping.\n\n## Approved source scope\nSource 3650d3bf-ac7e-4278-bffb-61d0f55c9abc (digest 46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b).\nFiles supplied to the model: README.md, mean.py.\nOmitted: none.\nThis analysis covers only those files, not the whole repository.\n\n## Model summary (model assessment, not verified)\nmean.py cannot ship: denominator len(values)+1 contradicts README requirement to return arithmetic mean. Fix to len(values) and define empty-input behavior.\n\n## Findings whose citations exist in the captured files\n\n### F001: Off-by-one denominator in mean prevents correct average\nModel-assessed severity: high; category: correctness.\nmean() divides by len(values)+1 instead of len(values), so it never returns the arithmetic mean. e.g. mean([1,2,3]) returns 1.5 instead of 2. This contradicts README.md stated objective and blocks shipping.\nEvidence:\n- mean.py:1-2 (quote_matches)\n- mean.py:2-2 (quote_matches)\n- README.md:2-2 (quote_matches)\nUncertainty: No uncertainty about formula error, but empty-input expected behavior is undefined in supplied files.\nSuggested verification: Run mean([1,2,3]) and check equals 2; run mean([5]) equals 5.\n\n## Unsupported hypotheses (a citation did not match the captured files)\nNone.\n\n## Unresolved questions\n- What should mean([]) do? Supplied files do not specify - raise exception vs return value.\n\n## Validation status\nCitation existence: 1 of 1 findings have citations that match the captured files.\nA matching citation shows the cited lines exist. It does not show the model is right.\nIndependent verification: none performed. Semantic status: unverified.",
+              "schema": "repository-analysis-result/v1",
+              "source": {
+                "files": [
+                  {
+                    "bytes": 77,
+                    "path": "README.md",
+                    "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+                  },
+                  {
+                    "bytes": 63,
+                    "path": "mean.py",
+                    "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+                  }
+                ],
+                "omitted": [],
+                "scoped_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+                "source_ref": "3650d3bf-ac7e-4278-bffb-61d0f55c9abc",
+                "source_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b"
+              },
+              "summary": "mean.py cannot ship: denominator len(values)+1 contradicts README requirement to return arithmetic mean. Fix to len(values) and define empty-input behavior.",
+              "unresolved_questions": [
+                "What should mean([]) do? Supplied files do not specify - raise exception vs return value."
+              ]
+            },
+            "assessment": {
+              "contract": "repository-citation-existence/v1",
+              "findings_total": 1,
+              "findings_with_unsupported_references": 0,
+              "findings_with_valid_references": 1,
+              "independent_verification": false,
+              "reference_identity_status": "all_valid",
+              "semantic_status": "unverified"
+            },
+            "usage": {
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3-contributor",
+              "reserved_tokens": 6532,
+              "usage": {
+                "completion_tokens": 377,
+                "prompt_tokens": 981,
+                "total_tokens": 1358,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 52
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 881
+                },
+                "charged_tokens": 1358
+              },
+              "latency_ms": 4622.1065999998245,
+              "model_calls": 1,
+              "cost": "unknown; no price is configured and none is estimated"
+            },
+            "verification": "none; findings are model assessments with checked citations"
+          },
+          "inspection": null
+        },
+        {
+          "id": "afbd4a70-e9c6-4eab-95fd-d6de3e020c62",
+          "goal": "Check whether mean([2, 4]) returns the correct arithmetic mean.",
+          "status": "LIVE MODEL",
+          "source": {
+            "resources": {
+              "source_ref": "3650d3bf-ac7e-4278-bffb-61d0f55c9abc",
+              "approval_id": "e0505862-dd28-4f0c-965f-e51218e88944",
+              "content_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+              "scope_sha256": "968d5a5b34f1026f3f370759075456563ca2bd510a8fb7616ab554cdbc4ae7a7"
+            },
+            "label": "Public arithmetic demo",
+            "scope": {
+              "items": [
+                "README.md",
+                "mean.py"
+              ]
+            },
+            "inventory": {
+              "items": [
+                {
+                  "item": "README.md",
+                  "bytes": 77,
+                  "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+                },
+                {
+                  "item": "mean.py",
+                  "bytes": 63,
+                  "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+                }
+              ],
+              "omitted": []
+            },
+            "expires_at": "2026-11-01T12:42:58.167496+00:00",
+            "principal": "owner-cli:ernan"
+          },
+          "live_choice": "approved-repository-analysis",
+          "independent_label": "approved-repository-analysis",
+          "correct_choice": true,
+          "interpretation": {
+            "origin": "model_inference",
+            "value": {
+              "alternative_interpretations": [
+                "Owner wants read-only inspection of mean.py implementation to judge correctness against arithmetic mean definition.",
+                "Owner wants verification that calling mean([2, 4]) would return 3."
+              ],
+              "ambiguities": [
+                "Whether checking source code alone is sufficient or actual execution result is required.",
+                "Which definition of correct arithmetic mean is intended for this case."
+              ],
+              "assumptions": [
+                "Expected arithmetic mean of [2, 4] is 3.",
+                "mean.py is intended to contain the mean function to be checked.",
+                "No execution or testing is available beyond inspection procedures."
+              ],
+              "candidates": [
+                {
+                  "addresses": "partly",
+                  "recipe_id": "approved-repository-inspection",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Reads the approved repository capture including mean.py without model inference."
+                },
+                {
+                  "addresses": "partly",
+                  "recipe_id": "approved-repository-analysis",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Reviews approved capture with one governed model call and citation checks for implementation assessment."
+                },
+                {
+                  "addresses": "partly",
+                  "recipe_id": "captured-repository",
+                  "recipe_version": "1.0.0",
+                  "relevance": "Inspects approved captured files only; explicitly no semantic verification."
+                }
+              ],
+              "clarification_question": "",
+              "evidence_requirements": [
+                {
+                  "importance": "required",
+                  "requirement": "Approved capture of repository including mean.py",
+                  "status": "unknown"
+                },
+                {
+                  "importance": "required",
+                  "requirement": "Implementation text of mean function",
+                  "status": "unknown"
+                },
+                {
+                  "importance": "recommended",
+                  "requirement": "Expected value 3 for mean([2,4])",
+                  "status": "unknown"
+                }
+              ],
+              "explicit_goal": "Check whether mean([2, 4]) returns the correct arithmetic mean.",
+              "intent_kind": "inspect_implementation",
+              "limits_of_available_procedures": [
+                "No catalogue procedure executes code or verifies runtime return value.",
+                "No procedure provides semantic verification; findings remain assessments, not verified facts.",
+                "Cannot grant, install, or run anything beyond read-only inspection."
+              ],
+              "missing_information": [
+                "Actual content of mean.py and README.md not yet observed.",
+                "Whether approved capture exists and is owner-approved.",
+                "Whether execution-based testing is acceptable alternative."
+              ],
+              "needs_clarification": false,
+              "primary_objective": "Determine if the repository mean implementation correctly computes the arithmetic mean for [2, 4].",
+              "subordinate_objectives": [
+                {
+                  "objective": "Obtain and read mean.py implementation",
+                  "rationale": "Needed to see how mean is computed before judging correctness."
+                },
+                {
+                  "objective": "Compare implementation logic to expected mean of 3",
+                  "rationale": "Establishes whether the stated case would return correct value."
+                }
+              ]
+            }
+          },
+          "calls": [
+            {
+              "id": "6b8922c5-ce22-4585-9fcb-1189cdb8e4c8",
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3-contributor",
+              "usage": {
+                "completion_tokens": 820,
+                "prompt_tokens": 1708,
+                "total_tokens": 2528,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 242
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 1649
+                },
+                "charged_tokens": 2528
+              },
+              "latency_ms": 7794.798300000366,
+              "endpoint": "https://api.meta.ai/v1/chat/completions",
+              "provider_receipts": [
+                {
+                  "pi_run_id": "7dc048e4-4e5a-4985-8198-19bcaccda552",
+                  "request_id": "6a62d8d6-8500-4474-bfe7-e461720a8460",
+                  "state": "settled",
+                  "http_status": 200,
+                  "usage": {
+                    "completion_tokens": 820,
+                    "prompt_tokens": 1708,
+                    "total_tokens": 2528,
+                    "completion_tokens_details": {
+                      "reasoning_tokens": 242
+                    },
+                    "prompt_tokens_details": {
+                      "cached_tokens": 1649
+                    }
+                  },
+                  "response_sha256": "39c099bcc22a78e281139e0786cd087202aca60cb02c5e2706b40830e2761c6d",
+                  "model_observed": null,
+                  "latency_ms": 7354.81880000043
+                }
+              ]
+            },
+            {
+              "id": "6db765a6-9621-43b3-8b01-eb033f496bec",
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3-contributor",
+              "usage": {
+                "completion_tokens": 258,
+                "prompt_tokens": 986,
+                "total_tokens": 1244,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 58
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "charged_tokens": 1244
+              },
+              "latency_ms": 3315.24249999984,
+              "endpoint": "https://api.meta.ai/v1/chat/completions",
+              "provider_receipts": [
+                {
+                  "pi_run_id": "36cf88c8-0747-4425-b82a-a2789ec78eb8",
+                  "request_id": "cb83bfc9-7209-40f6-b47c-1514d32f76c3",
+                  "state": "settled",
+                  "http_status": 200,
+                  "usage": {
+                    "completion_tokens": 258,
+                    "prompt_tokens": 986,
+                    "total_tokens": 1244,
+                    "completion_tokens_details": {
+                      "reasoning_tokens": 58
+                    },
+                    "prompt_tokens_details": {
+                      "cached_tokens": 0
+                    }
+                  },
+                  "response_sha256": "ef4de24216295f4869217349d4ede32a97522f0b95f4f54f9b3ca2794f2c3b20",
+                  "model_observed": null,
+                  "latency_ms": 2816.061499999705
+                }
+              ]
+            }
+          ],
+          "report": {
+            "admission_id": "b58f735c-9bb4-4978-91f1-c34ac5a731ed",
+            "run_id": "f76fb8bd-29bf-4db2-bef2-1fc6bafed371",
+            "artifact_sha256": "fa780e2f9e2be7aef1dc172b2da47e98e2e4bcd470dbe86244d9acab2c7a15c6",
+            "result": {
+              "analysis_sha256": "ef4de24216295f4869217349d4ede32a97522f0b95f4f54f9b3ca2794f2c3b20",
+              "findings": [
+                {
+                  "finding_id": "F1-wrong-denominator",
+                  "model_assessment": {
+                    "category": "correctness",
+                    "evidence": [
+                      {
+                        "file": "mean.py",
+                        "line_end": 2,
+                        "line_start": 1,
+                        "quote": "def mean(values):"
+                      }
+                    ],
+                    "explanation": "mean() divides by len(values)+1 instead of len(values). For [2,4] it returns 6/3=2.0 instead of correct arithmetic mean 3.0, violating README requirement.",
+                    "severity": "high",
+                    "suggested_verification": "Run mean([2,4]) and assert result == 3.",
+                    "title": "mean divides by len+1 instead of len",
+                    "uncertainty": "None - bug is directly visible in supplied code."
+                  },
+                  "reference_check": {
+                    "contract": "repository-citation-existence/v1",
+                    "evidence": [
+                      {
+                        "file": "mean.py",
+                        "file_sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e",
+                        "line_end": 2,
+                        "line_start": 1,
+                        "status": "quote_matches"
+                      }
+                    ],
+                    "status": "references_valid"
+                  },
+                  "verification": "none"
+                }
+              ],
+              "objective": "Check whether mean([2, 4]) returns the correct arithmetic mean.",
+              "report_markdown": "# Repository analysis\n\n## Investigation objective\nCheck whether mean([2, 4]) returns the correct arithmetic mean.\n\n## Approved source scope\nSource 3650d3bf-ac7e-4278-bffb-61d0f55c9abc (digest 46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b).\nFiles supplied to the model: README.md, mean.py.\nOmitted: none.\nThis analysis covers only those files, not the whole repository.\n\n## Model summary (model assessment, not verified)\nmean([2,4]) does not return correct arithmetic mean due to off-by-one denominator.\n\n## Findings whose citations exist in the captured files\n\n### F1-wrong-denominator: mean divides by len+1 instead of len\nModel-assessed severity: high; category: correctness.\nmean() divides by len(values)+1 instead of len(values). For [2,4] it returns 6/3=2.0 instead of correct arithmetic mean 3.0, violating README requirement.\nEvidence:\n- mean.py:1-2 (quote_matches)\nUncertainty: None - bug is directly visible in supplied code.\nSuggested verification: Run mean([2,4]) and assert result == 3.\n\n## Unsupported hypotheses (a citation did not match the captured files)\nNone.\n\n## Unresolved questions\n- None stated.\n\n## Validation status\nCitation existence: 1 of 1 findings have citations that match the captured files.\nA matching citation shows the cited lines exist. It does not show the model is right.\nIndependent verification: none performed. Semantic status: unverified.",
+              "schema": "repository-analysis-result/v1",
+              "source": {
+                "files": [
+                  {
+                    "bytes": 77,
+                    "path": "README.md",
+                    "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+                  },
+                  {
+                    "bytes": 63,
+                    "path": "mean.py",
+                    "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+                  }
+                ],
+                "omitted": [],
+                "scoped_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+                "source_ref": "3650d3bf-ac7e-4278-bffb-61d0f55c9abc",
+                "source_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b"
+              },
+              "summary": "mean([2,4]) does not return correct arithmetic mean due to off-by-one denominator.",
+              "unresolved_questions": []
+            },
+            "assessment": {
+              "contract": "repository-citation-existence/v1",
+              "findings_total": 1,
+              "findings_with_unsupported_references": 0,
+              "findings_with_valid_references": 1,
+              "independent_verification": false,
+              "reference_identity_status": "all_valid",
+              "semantic_status": "unverified"
+            },
+            "usage": {
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3-contributor",
+              "reserved_tokens": 6533,
+              "usage": {
+                "completion_tokens": 258,
+                "prompt_tokens": 986,
+                "total_tokens": 1244,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 58
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "charged_tokens": 1244
+              },
+              "latency_ms": 3315.24249999984,
+              "model_calls": 1,
+              "cost": "unknown; no price is configured and none is estimated"
+            },
+            "verification": "none; findings are model assessments with checked citations"
+          },
+          "inspection": null
+        },
+        {
+          "id": "e19e6464-51d6-4ff3-baa9-6eb0f31fd0c0",
+          "goal": "Write a sonnet about autumn; do not review the repository.",
+          "status": "LIVE MODEL",
+          "source": {
+            "resources": {
+              "source_ref": "3650d3bf-ac7e-4278-bffb-61d0f55c9abc",
+              "approval_id": "e0505862-dd28-4f0c-965f-e51218e88944",
+              "content_sha256": "46736c0dbfa64356e847b2fecc8371b11fc7d75f29d6e4895141ab41f654d86b",
+              "scope_sha256": "968d5a5b34f1026f3f370759075456563ca2bd510a8fb7616ab554cdbc4ae7a7"
+            },
+            "label": "Public arithmetic demo",
+            "scope": {
+              "items": [
+                "README.md",
+                "mean.py"
+              ]
+            },
+            "inventory": {
+              "items": [
+                {
+                  "item": "README.md",
+                  "bytes": 77,
+                  "sha256": "b091725b891abc7de2ba931de38f14b53e6b13af57fecb2fc3ffecd210828894"
+                },
+                {
+                  "item": "mean.py",
+                  "bytes": 63,
+                  "sha256": "676e3490f7b96c7d03e0826013c80fbb96138afa9f51a62a6161a79816b0d69e"
+                }
+              ],
+              "omitted": []
+            },
+            "expires_at": "2026-11-01T12:42:58.167496+00:00",
+            "principal": "owner-cli:ernan"
+          },
+          "live_choice": null,
+          "independent_label": null,
+          "correct_choice": true,
+          "interpretation": {
+            "origin": "model_inference",
+            "value": {
+              "alternative_interpretations": [],
+              "ambiguities": [],
+              "assumptions": [
+                "Owner explicitly forbids repository review, so no repository procedures are wanted.",
+                "Creative writing task requires no evidentiary validation from catalogue."
+              ],
+              "candidates": [],
+              "clarification_question": "",
+              "evidence_requirements": [],
+              "explicit_goal": "Write a sonnet about autumn; do not review the repository.",
+              "intent_kind": "unclear",
+              "limits_of_available_procedures": [
+                "No catalogue procedure produces creative writing such as a sonnet.",
+                "All catalogue procedures require repository or evidence review, which owner explicitly forbids.",
+                "No available procedure can establish or validate a sonnet."
+              ],
+              "missing_information": [],
+              "needs_clarification": false,
+              "primary_objective": "Create a sonnet about autumn for the owner without accessing repository",
+              "subordinate_objectives": [
+                {
+                  "objective": "Compose autumn-themed sonnet",
+                  "rationale": "Directly fulfills owner's stated creative request."
+                },
+                {
+                  "objective": "Avoid any repository review",
+                  "rationale": "Owner explicitly prohibited repository access."
+                }
+              ]
+            }
+          },
+          "calls": [
+            {
+              "id": "774934f4-63f9-4c55-b745-e40599d2b892",
+              "status": "validated",
+              "provider": "meta",
+              "model": "muse-spark-1.3-contributor",
+              "usage": {
+                "completion_tokens": 336,
+                "prompt_tokens": 1706,
+                "total_tokens": 2042,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 141
+                },
+                "prompt_tokens_details": {
+                  "cached_tokens": 0
+                },
+                "charged_tokens": 2042
+              },
+              "latency_ms": 4180.443100000048,
+              "endpoint": "https://api.meta.ai/v1/chat/completions",
+              "provider_receipts": [
+                {
+                  "pi_run_id": "4c8324eb-e880-45cd-926f-24fc9da23a2c",
+                  "request_id": "d0295d47-7feb-4021-9616-9f3ac6c1f2a3",
+                  "state": "settled",
+                  "http_status": 200,
+                  "usage": {
+                    "completion_tokens": 336,
+                    "prompt_tokens": 1706,
+                    "total_tokens": 2042,
+                    "completion_tokens_details": {
+                      "reasoning_tokens": 141
+                    },
+                    "prompt_tokens_details": {
+                      "cached_tokens": 0
+                    }
+                  },
+                  "response_sha256": "8a99f4436498edf9150b21aa8793998fcd114ec9845b7ab3b474fc7e1912622b",
+                  "model_observed": null,
+                  "latency_ms": 3740.249400000721
+                }
+              ]
+            }
+          ],
+          "report": null,
+          "inspection": null
+        }
+      ]
+    }
+  ]
+}

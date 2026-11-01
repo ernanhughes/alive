@@ -5,7 +5,7 @@ import asyncio
 import json
 import sys
 
-from alive.admission import service
+from alive.admission import live, service
 from alive.admission.profiles import PROFILES, definition_text
 from alive.capabilities.registry import load_registry
 from alive.config import Settings
@@ -38,6 +38,16 @@ async def run(args):
                     kernel, definition_text(PROFILES[name]), status="active", source="admin"
                 )
                 result[name] = registered
+        elif args.command == "trust":
+            result = await live.approve(
+                kernel, args.admission_id, confirm_sha256=args.confirm_sha256, principal=principal()
+            )
+        elif args.command == "untrust":
+            await live.revoke(kernel, args.admission_id, principal=principal())
+            result = {"state": "revoked"}
+        elif args.command == "inspect-trust":
+            async with kernel.db.sessions() as session:
+                result = await live.consent(session, kernel, args.admission_id, active=False)
         elif args.command == "inspect":
             result = await service.get(kernel, args.admission_id)
         elif args.command == "approve":
@@ -56,10 +66,10 @@ def main(argv=None):
     commands = parser.add_subparsers(dest="command", required=True)
     install = commands.add_parser("install", help="register only the shipped closed profiles")
     install.add_argument("--profile", choices=list(PROFILES))
-    for name in ("inspect", "approve", "revoke"):
+    for name in ("inspect", "approve", "revoke", "trust", "untrust", "inspect-trust"):
         command = commands.add_parser(name)
         command.add_argument("admission_id")
-        if name == "approve":
+        if name in ("approve", "trust"):
             command.add_argument("--confirm-sha256", required=True)
     try:
         asyncio.run(run(parser.parse_args(argv)))
