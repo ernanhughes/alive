@@ -120,7 +120,9 @@ it("shows exactly what leaves the machine and offers no way to start before loca
   await screen.findByText("Disclosure to the model provider");
   expect(screen.getByText(/model call, at most/)).toBeTruthy();
   expect(screen.getByText("Leaves this machine")).toBeTruthy();
-  expect(screen.getByText(/https:\/\/approved\.example:8443\/v2\/completions/)).toBeTruthy();
+  expect(
+    screen.getByText(/https:\/\/approved\.example:8443\/v2\/completions/),
+  ).toBeTruthy();
   expect(screen.getAllByText(/calc\.py/).length).toBeGreaterThan(0);
   expect(
     (

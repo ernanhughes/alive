@@ -591,3 +591,96 @@ def test_a_cancelled_or_ambiguous_interpretation_is_never_retried(ready):
     assert start(client, review).json()["run"]["status"] == "UNKNOWN"
     assert len(upstream.calls) == 1
     assert client.post(BASE + f"/{review['id']}/recommendation").status_code == 409
+
+
+def test_the_adapter_alone_refuses_a_catalogue_that_changed_after_start(ready, monkeypatch):
+    client, upstream, *_ = ready
+    review = prepared(ready)
+    approve_review(client, review)
+    fence_off(client)
+    import alive.intent.adapters as adapters
+    from alive.bespoke.recipes import load_catalogue
+
+    original = adapters.interpret
+    kernel = client.app.state.kernel
+
+    async def changed_late(ctx):
+        kernel.bespoke_recipes = tuple(
+            r for r in load_catalogue() if r.id != "controlled-comparison"
+        )
+        return await original(ctx)
+
+    monkeypatch.setattr(adapters, "interpret", changed_late)
+    start(client, review)
+    assert not upstream.calls
+
+
+def test_a_recommendation_cannot_be_composed_from_another_kind_of_admission(ready):
+    client, upstream, root, settings, paths, captured, approval = ready
+    _, analysis_approval = call(
+        client, approve_source, root, ["calc.py"], ["repository.analyze", "repository.inspect"]
+    )
+    from tests.test_repository_analysis import make_request as analysis_request
+
+    review = client.post(BASE, json=analysis_request(client, analysis_approval, ["calc.py"])).json()
+    approve_review(client, review)
+    assert start(client, review).status_code == 200
+    assert client.post(BASE + f"/{review['id']}/recommendation").status_code == 409
+
+
+def test_a_tampered_interpretation_artifact_is_refused(ready):
+    client, upstream, *_ = ready
+    review, _ = interpreted(ready)
+
+    async def tamper(kernel):
+        from alive.cognitive_models import CognitiveMessage
+
+        async with kernel.db.sessions.begin() as session:
+            for message in (await session.scalars(select(CognitiveMessage))).all():
+                if isinstance(message.content, dict) and "result" in message.content:
+                    message.content = json.loads(json.dumps(message.content))
+                    message.content["result"]["interpretation"]["candidates"] = []
+
+    call(client, tamper)
+    assert client.post(BASE + f"/{review['id']}/recommendation").status_code == 409
+
+
+def test_a_request_beyond_the_governor_ceiling_is_refused_at_review(ready):
+    client, upstream, *_ = ready
+
+    async def shrink(kernel):
+        from alive.cognitive_models import CognitiveControl
+
+        async with kernel.db.sessions.begin() as session:
+            control = await session.get(CognitiveControl, kernel.instance_id)
+            control.configuration = control.configuration | {"request_tokens": 6000}
+
+    call(client, shrink)
+    _, _, _, _, paths, _, approval = ready
+    response = client.post(BASE, json=make_request(client, approval, paths))
+    assert response.status_code == 409 and not upstream.calls
+
+
+def test_a_retained_recommendation_cannot_be_edited_or_deleted(ready):
+    client, upstream, *_ = ready
+    review, _ = interpreted(ready)
+    client.post(BASE + f"/{review['id']}/recommendation")
+
+    async def mutate(kernel):
+        from alive.workflows.models import ImmutableRecord
+
+        results = []
+        for work in ("update", "delete"):
+            try:
+                async with kernel.db.sessions.begin() as session:
+                    row = (await session.scalars(select(IntentRecommendation))).one()
+                    if work == "update":
+                        row.record = {"status": "recommended"}
+                    else:
+                        await session.delete(row)
+                results.append("changed")
+            except ImmutableRecord:
+                results.append("refused")
+        return results
+
+    assert call(client, mutate) == ["refused", "refused"]

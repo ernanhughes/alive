@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ApiError, request } from "../api";
 import type { Goal } from "../api";
 import { WorkflowGraph } from "../workflows/WorkflowGraph";
+import { RecommendationPanel } from "./RecommendationPanel";
 import { PROFILE_LIMITS, admissionRef, checkedAdmission } from "./contracts";
 import type {
   Admission,
@@ -445,6 +446,10 @@ function OwnerAdmission({ token }: { token: string }) {
               <option value="approved-repository-analysis">
                 Analyze with one model call (sends code to the model provider)
               </option>
+              <option value="intent-interpretation">
+                Interpret my goal and recommend a procedure (sends the goal and
+                file names, not file content)
+              </option>
             </select>
           </label>
           <label>
@@ -550,7 +555,17 @@ function OwnerAdmission({ token }: { token: string }) {
               }}
             />
           </label>
-          {limits.model ? (
+          {profileName === "intent-interpretation" ? (
+            <p role="note">
+              This procedure makes one model call. Your goal text and the names
+              and sizes of the selected files, with the list of available
+              procedures, are sent to the model provider shown in the review. No
+              file content is sent. The result is a proposal: it executes
+              nothing and needs a separate review to act. The prompt and
+              response are retained in clear text locally. Cost is not
+              estimated. It needs a started Meta cognition.
+            </p>
+          ) : limits.model ? (
             <p role="note">
               This procedure makes one model call. The exact files you select
               are sent, as text, to the model provider shown in the review, and
@@ -696,16 +711,30 @@ function OwnerAdmission({ token }: { token: string }) {
                         <dd>
                           {disclosure.destination.provider} (
                           {disclosure.destination.endpoint ??
-                            disclosure.destination.host ?? "host unknown"}) ·
-                          model {disclosure.destination.model} · via{" "}
+                            disclosure.destination.host ??
+                            "host unknown"}
+                          ) · model {disclosure.destination.model} · via{" "}
                           {disclosure.destination.transport}
                         </dd>
                       </div>
                       <div>
                         <dt>Leaves this machine</dt>
                         <dd>
-                          Yes: {disclosure.files.map((f) => f.path).join(", ")}{" "}
-                          ({disclosure.source_bytes} bytes)
+                          {disclosure.content_sent === false ? (
+                            <>
+                              Your goal ({disclosure.goal_characters}{" "}
+                              characters), the names and sizes of{" "}
+                              {disclosure.files.map((f) => f.path).join(", ")},
+                              and {disclosure.catalogue_entries} catalogue
+                              entries. File content: not sent.
+                            </>
+                          ) : (
+                            <>
+                              Yes:{" "}
+                              {disclosure.files.map((f) => f.path).join(", ")} (
+                              {disclosure.source_bytes} bytes)
+                            </>
+                          )}
                         </dd>
                       </div>
                       <div>
@@ -797,6 +826,17 @@ function OwnerAdmission({ token }: { token: string }) {
                   . Task quality remains unverified.
                 </p>
               )}
+              {selected.terms.profile === "intent-interpretation" &&
+                selected.run?.status === "COMPLETED" && (
+                  <RecommendationPanel
+                    admissionId={selected.id}
+                    token={token}
+                    onPrepare={(profile) => {
+                      newReview();
+                      setProfileName(profile as ProfileName);
+                    }}
+                  />
+                )}
               {report && (
                 <section aria-label="Analysis report">
                   <h4>Analysis report</h4>
