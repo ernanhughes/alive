@@ -491,6 +491,11 @@ function LiveAI({ token }: { token: string }) {
           {exchange.answer && (
             <section aria-label="ALIVE contextual answer">
               <p style={{ whiteSpace: "pre-wrap" }}>{exchange.answer.answer}</p>
+              <p>
+                Procedure used:{" "}
+                {(exchange.result_admission || exchange.admission).terms.profile ||
+                  "approved-repository-inspection"}
+              </p>
               {!!exchange.answer.lesson_ids_used?.length && (
                 <p>Strategies used: {exchange.answer.lesson_ids_used.join(", ")}</p>
               )}
@@ -599,7 +604,7 @@ function LiveAI({ token }: { token: string }) {
                 }
               </p>
               <p>
-                Selected procedure:{" "}
+                Intent recommendation:{" "}
                 {exchange.recommendation.record.recommendation?.recipe_id ||
                   "None useful for this goal"}
               </p>
