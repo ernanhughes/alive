@@ -379,18 +379,24 @@ async def record_application(
                 other_admission_id and other_admission_id != admission_id,
                 "baseline_must_be_same_task_other_run",
             )
-            other_admission, baseline, baseline_snapshot, baseline_models = (
-                await _validated_measurement(
-                    session, kernel, other_admission_id, baseline_measurement_ref
-                )
+            (
+                other_admission,
+                baseline,
+                baseline_snapshot,
+                baseline_models,
+            ) = await _validated_measurement(
+                session, kernel, other_admission_id, baseline_measurement_ref
             )
             require(
                 all(
-                    outcome.get(name) is not None
-                    and outcome[name] == baseline.get(name)
+                    outcome.get(name) is not None and outcome[name] == baseline.get(name)
                     for name in (
-                        "task_id", "split", "family", "verifier",
-                        "corpus_sha256", "oracle_sha256",
+                        "task_id",
+                        "split",
+                        "family",
+                        "verifier",
+                        "corpus_sha256",
+                        "oracle_sha256",
                     )
                 )
                 and admission.principal == other_admission.principal
@@ -400,8 +406,12 @@ async def record_application(
                     admission.terms["model_disclosure"].get(name)
                     == other_admission.terms["model_disclosure"].get(name)
                     for name in (
-                        "operation", "destination", "role",
-                        "role_contract_sha256", "context_policy", "max_output_tokens",
+                        "operation",
+                        "destination",
+                        "role",
+                        "role_contract_sha256",
+                        "context_policy",
+                        "max_output_tokens",
                     )
                 )
                 and models == baseline_models,
@@ -414,9 +424,7 @@ async def record_application(
                 and baseline_snapshot.get("items") == [],
                 "baseline_must_be_stateless",
             )
-        supplied = [
-            i for i in snapshot["items"] if i["source_type"] == "learned_strategy"
-        ]
+        supplied = [i for i in snapshot["items"] if i["source_type"] == "learned_strategy"]
         written = []
         for item in supplied:
             row = await session.scalar(select(Event).where(Event.id == item["id"]))
@@ -441,7 +449,7 @@ async def record_application(
                 "lesson_row": row.id,
                 "version": lesson["version"],
                 "admission_id": admission_id,
-                "selection_ref": snapshot.payload["snapshot"].get("selection_ref"),
+                "selection_ref": snapshot.get("selection_ref"),
                 "measurement_ref": measurement_ref,
                 "baseline_measurement_ref": baseline_measurement_ref,
                 "task_id": outcome["task_id"],
