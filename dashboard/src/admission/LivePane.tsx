@@ -367,10 +367,11 @@ function LiveAI({ token }: { token: string }) {
               exchange.admission.run?.status ||
               exchange.admission.state}
           </p>
-          {exchange.availability === "AI unavailable" && (
+          {(exchange.followup ||
+            exchange.availability === "AI unavailable") && (
             <p role="alert">
               {exchange.followup
-                ? `Follow-up not authorized (${exchange.followup.reason}). Your interpretation and model receipt are retained below; no automatic retry will run.`
+                ? `Follow-up ${exchange.followup.status === "followup_failed" ? "failed" : "not authorized"} (${exchange.followup.reason}). Your interpretation and model receipt are retained below; no automatic retry will run.`
                 : "AI unavailable. The request failed or was cancelled; retained results are shown below."}
             </p>
           )}

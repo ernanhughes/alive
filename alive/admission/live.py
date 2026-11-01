@@ -4,6 +4,7 @@ Events retain consent and conservative reservations. Each call still has an exac
 source approval, Governor budget and Pi dispatch fence. No provider or runner lives here.
 """
 
+import re
 from datetime import datetime, timedelta
 
 from sqlalchemy import select
@@ -25,6 +26,17 @@ PREPARED = "admission.standing.prepared"
 APPROVED = "admission.standing.approved"
 REVOKED = "admission.standing.revoked"
 FOLLOWUP_BLOCKED = "admission.live.followup.blocked"
+FOLLOWUP_FAILED = "admission.live.followup.failed"
+AUTHORIZATION_REFUSALS = {
+    "standing_budget_exhausted": "budget_exhausted",
+    "governor_budget_exhausted": "budget_exhausted",
+    "standing_consent_required_expired_or_revoked": "consent_required",
+    "admission_expired_or_revoked": "consent_required",
+    "authorization_expired_or_revoked": "consent_required",
+    "source_withdrawn": "consent_required",
+    "source_approval_expired": "consent_required",
+    "source_operation_not_approved": "consent_required",
+}
 
 
 async def followup_outcome(session, kernel, admission_id):
@@ -33,7 +45,7 @@ async def followup_outcome(session, kernel, admission_id):
         .where(
             Event.instance_id == kernel.instance_id,
             Event.source == "admission",
-            Event.event_type == FOLLOWUP_BLOCKED,
+            Event.event_type.in_((FOLLOWUP_BLOCKED, FOLLOWUP_FAILED)),
             Event.correlation_id == admission_id,
         )
         .order_by(Event.sequence_number)
@@ -42,19 +54,32 @@ async def followup_outcome(session, kernel, admission_id):
 
 
 async def retain_blocked_followup(kernel, admission_id, profile, error):
-    # A refusal is a retained partial result, not permission to retry a model call later.
-    reason = {
-        "standing_budget_exhausted": "budget_exhausted",
-        "governor_budget_exhausted": "budget_exhausted",
-        "standing_consent_required_expired_or_revoked": "consent_required",
-    }.get(str(error), "authorization_unavailable")
+    await retain_followup(
+        kernel,
+        admission_id,
+        profile,
+        FOLLOWUP_BLOCKED,
+        "analysis_not_authorized",
+        AUTHORIZATION_REFUSALS[str(error)],
+    )
+
+
+async def retain_failed_followup(kernel, admission_id, profile, error):
+    # Refused categories are code-owned identifiers, not arbitrary exception text.
+    category = str(error)
+    reason = category if re.fullmatch(r"[a-z][a-z0-9_]{0,119}", category) else "internal_failure"
+    await retain_followup(kernel, admission_id, profile, FOLLOWUP_FAILED, "followup_failed", reason)
+
+
+async def retain_followup(kernel, admission_id, profile, event_type, status, reason):
+    # Retain intent and the actual outcome; replay is never implicit permission to redispatch.
     async with kernel.lock, kernel.db.sessions.begin() as session:
         if await followup_outcome(session, kernel, admission_id) is None:
             kernel.add_event(
                 session,
-                FOLLOWUP_BLOCKED,
+                event_type,
                 {
-                    "status": "analysis_not_authorized",
+                    "status": status,
                     "reason": reason,
                     "profile": profile,
                 },
@@ -340,7 +365,10 @@ async def ask(app, request):
         try:
             await run(chosen["recipe_id"], "result")
         except Refused as error:
-            await retain_blocked_followup(kernel, interpreted["id"], chosen["recipe_id"], error)
+            if str(error) in AUTHORIZATION_REFUSALS:
+                await retain_blocked_followup(kernel, interpreted["id"], chosen["recipe_id"], error)
+            else:
+                await retain_failed_followup(kernel, interpreted["id"], chosen["recipe_id"], error)
     return await exchange(kernel, interpreted["id"])
 
 
@@ -475,7 +503,7 @@ async def exchange(kernel, admission_id):
                 value["inspection"] = await result_event(session, stage)
         value["availability"] = (
             "AI unavailable"
-            if blocked or any(c.status in ("failed", "cancelled", "interrupted") for c in calls)
+            if any(c.status in ("failed", "cancelled", "interrupted") for c in calls)
             else "available"
             if calls
             else "not_called"
