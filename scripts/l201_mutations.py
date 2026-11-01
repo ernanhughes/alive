@@ -185,9 +185,9 @@ MUTANTS = [
         [
             (
                 SVC,
-                '        require(profile_of(admission.terms).id == INTENT and admission.run_id, "not_an_interpretation")'
+                '            profile_of(admission.terms).id == INTENT and admission.run_id, "not_an_interpretation"'
                 + NL,
-                '        require(admission.run_id, "not_an_interpretation")' + NL,
+                '            admission.run_id, "not_an_interpretation"' + NL,
             )
         ],
         "compose: only interpretation admissions",
