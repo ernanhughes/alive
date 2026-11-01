@@ -1,0 +1,82 @@
+schema_version: 1
+id: context.validate
+version: 1.0.0
+name: Contextual Reference Validation
+description: Check context item identities and citation existence; never semantic
+  truth.
+implementation:
+  provider: builtin
+  id: contextual-validator-v1
+execution:
+  kind: validation
+  side_effects: none
+  timeout_seconds: 30
+  max_input_bytes: 65536
+  max_output_bytes: 65536
+  max_input_items: 8
+  max_invocations: 1
+  retry_policy: none
+  max_model_calls: 0
+  max_output_tokens: 0
+permissions:
+  filesystem:
+    mode: none
+    roots: []
+  network:
+    mode: none
+  process:
+    mode: none
+  evidence: none
+  persistence: none
+  sources: approved_capture
+inputs:
+  type: object
+  additionalProperties: false
+  properties:
+    source_ref:
+      type: string
+      maxLength: 36
+    context_ref:
+      type: string
+      maxLength: 36
+    answer:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+    snapshot:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+  required:
+  - source_ref
+  - context_ref
+  - answer
+  - snapshot
+outputs:
+  type: object
+  additionalProperties: false
+  properties:
+    result:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+    assessment:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+  required:
+  - result
+  - assessment
+presentation:
+  category: development
+  icon: shield-check
+  tags:
+  - validation
+  - interpretation
+supported_source_types:
+- repository
+examples: []

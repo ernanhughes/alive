@@ -30,6 +30,30 @@ interface Exchange {
   status: string;
   availability: string;
   followup?: { status: string; reason: string; profile: string } | null;
+  conversation_ref?: string | null;
+  context?: {
+    items: {
+      id: string;
+      source_type: string;
+      content: unknown;
+      verification: string;
+    }[];
+    omitted: unknown[];
+    omitted_count?: number;
+  } | null;
+  answer?: {
+    answer: string;
+    recalled_item_ids: string[];
+    citations: unknown[];
+    uncertainty: string[];
+    revision: {
+      supersedes: string[];
+      changed: string;
+      rationale: string;
+      still_supported: string[];
+      withdrawn_or_qualified: string[];
+    } | null;
+  } | null;
   model_calls: number;
   admission: Admission;
   result_admission: Admission | null;
@@ -51,9 +75,16 @@ interface Exchange {
     inference_provenance?: string;
   }[];
 }
+interface Conversation {
+  id: string;
+  title: string;
+  consent_ref: string;
+  admission_ids: string[];
+}
 interface History {
   consents: Consent[];
   exchanges: Exchange[];
+  conversations?: Conversation[];
 }
 
 export function LivePane({ token }: { token: string }) {
@@ -70,6 +101,7 @@ function LiveAI({ token }: { token: string }) {
   const [source, setSource] = useState("");
   const [goalRef, setGoalRef] = useState("");
   const [consentRef, setConsentRef] = useState("");
+  const [conversationRef, setConversationRef] = useState("");
   const [goal, setGoal] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
@@ -80,6 +112,14 @@ function LiveAI({ token }: { token: string }) {
   const approved =
     selected?.state === "approved" &&
     Date.parse(selected.terms.expires_at) > Date.now();
+  const contextual = !!selected?.terms.profiles["contextual-reasoning"];
+  const visibleExchanges = contextual
+    ? history.exchanges.filter((e) =>
+        conversationRef === "legacy"
+          ? !e.conversation_ref
+          : e.conversation_ref === conversationRef,
+      )
+    : history.exchanges;
 
   useEffect(() => {
     alive.current = true;
@@ -112,6 +152,15 @@ function LiveAI({ token }: { token: string }) {
             h.consents.find((v) => v.state === "approved")?.id ||
             h.consents[0]?.id ||
             "",
+        );
+        const activeConsent = h.consents.find(
+          (v) => v.state === "approved",
+        )?.id;
+        setConversationRef(
+          (ref) =>
+            ref ||
+            h.conversations?.find((c) => c.consent_ref === activeConsent)?.id ||
+            "new",
         );
       })
       .catch((e: Error) => {
@@ -175,15 +224,17 @@ function LiveAI({ token }: { token: string }) {
           goal_ref: goalRef,
           approval_ref: source,
           paths: capture.inventory.items.map((i) => i.item),
-          max_calls: 6,
+          max_calls: 12,
           max_tokens: 200000,
           ttl_seconds: 3600,
+          contextual: true,
         },
         "POST",
       );
       if (!alive.current) return;
       setHistory((h) => ({ ...h, consents: [value, ...h.consents] }));
       setConsentRef(value.id);
+      setConversationRef("new");
     } catch (e) {
       if (alive.current) setError((e as Error).message);
     } finally {
@@ -193,12 +244,35 @@ function LiveAI({ token }: { token: string }) {
 
   async function ask() {
     if (!approved || !goal.trim()) return;
-    const signature = JSON.stringify([consentRef, goal]);
+    const signature = JSON.stringify([consentRef, conversationRef, goal]);
     if (retry.current?.signature !== signature)
       retry.current = { signature, key: crypto.randomUUID() };
     setBusy(true);
     setError("");
     try {
+      let conversation = conversationRef;
+      if (
+        contextual &&
+        (!conversation || conversation === "new" || conversation === "legacy")
+      ) {
+        const created = await request<Conversation>(
+          "/admissions/live/conversations",
+          token,
+          { consent_ref: consentRef, title: goal.slice(0, 100) },
+          "POST",
+        );
+        conversation = created.id;
+        retry.current = {
+          signature: JSON.stringify([consentRef, conversation, goal]),
+          key: retry.current!.key,
+        };
+        if (!alive.current) return;
+        setConversationRef(conversation);
+        setHistory((h) => ({
+          ...h,
+          conversations: [created, ...(h.conversations || [])],
+        }));
+      }
       const value = await request<Exchange>(
         "/admissions/live/ask",
         token,
@@ -206,6 +280,7 @@ function LiveAI({ token }: { token: string }) {
           consent_ref: consentRef,
           goal,
           idempotency_key: retry.current.key,
+          ...(contextual ? { conversation_ref: conversation } : {}),
         },
         "POST",
       );
@@ -253,7 +328,10 @@ function LiveAI({ token }: { token: string }) {
         <select
           value={consentRef}
           disabled={busy}
-          onChange={(e) => setConsentRef(e.target.value)}
+          onChange={(e) => {
+            setConsentRef(e.target.value);
+            setConversationRef("new");
+          }}
         >
           <option value="">Choose a configured session</option>
           {history.consents.map((c) => (
@@ -263,6 +341,38 @@ function LiveAI({ token }: { token: string }) {
           ))}
         </select>
       </label>
+      {contextual && (
+        <div>
+          <label>
+            Conversation
+            <select
+              value={conversationRef}
+              disabled={busy}
+              onChange={(e) => setConversationRef(e.target.value)}
+            >
+              <option value="new">New conversation</option>
+              {(history.conversations || [])
+                .filter((c) => c.consent_ref === consentRef)
+                .map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.title}
+                  </option>
+                ))}
+              <option value="legacy">Earlier unlinked exchanges</option>
+            </select>
+          </label>
+          <button
+            disabled={busy}
+            onClick={() => {
+              setConversationRef("new");
+              retry.current = null;
+              setGoal("");
+            }}
+          >
+            Start new conversation
+          </button>
+        </div>
+      )}
       {!approved && (
         <p role="status">
           NO MODEL CALL · AI unavailable / consent required. Configure and
@@ -294,10 +404,11 @@ function LiveAI({ token }: { token: string }) {
           Install the shipped procedures with{" "}
           <code>python -m alive.admission install</code>. Capture a nonsecret
           repository scope and approve <code>intent.interpret</code>,{" "}
-          <code>repository.inspect</code> and <code>repository.analyze</code>{" "}
-          using <code>python -m alive.sources</code>. Review connects the
-          configured Meta model with autonomy paused and preserves the existing
-          Governor budget.
+          <code>repository.inspect</code>, <code>repository.analyze</code>,{" "}
+          <code>context.reason</code> and <code>context.validate</code> using{" "}
+          <code>python -m alive.sources</code>. Review connects the configured
+          Meta model with autonomy paused and preserves the existing Governor
+          budget.
         </p>
         <label>
           Accepted owner goal
@@ -322,7 +433,7 @@ function LiveAI({ token }: { token: string }) {
           </select>
         </label>
         <button disabled={busy || !source || !goalRef} onClick={setup}>
-          Review one-hour session (6 calls)
+          Review one-hour contextual session (12 calls)
         </button>
         {selected && (
           <>
@@ -354,12 +465,51 @@ function LiveAI({ token }: { token: string }) {
         )}
       </details>
       <h3>Conversation and evidence</h3>
-      {history.exchanges.length === 0 && (
-        <p>No retained model responses yet.</p>
-      )}
-      {history.exchanges.map((exchange) => (
+      {visibleExchanges.length === 0 && <p>No retained model responses yet.</p>}
+      {visibleExchanges.map((exchange) => (
         <article key={exchange.id}>
           <h4>{exchange.goal}</h4>
+          {exchange.answer && (
+            <section aria-label="ALIVE contextual answer">
+              <p style={{ whiteSpace: "pre-wrap" }}>{exchange.answer.answer}</p>
+              {exchange.answer.revision && (
+                <div>
+                  <h4>Assessment revised</h4>
+                  <p>{exchange.answer.revision.changed}</p>
+                  <p>{exchange.answer.revision.rationale}</p>
+                  <p>
+                    Still supported:{" "}
+                    {exchange.answer.revision.still_supported.join(" ")}
+                  </p>
+                  <p>
+                    Withdrawn or qualified:{" "}
+                    {exchange.answer.revision.withdrawn_or_qualified.join(" ")}
+                  </p>
+                </div>
+              )}
+              {exchange.answer.uncertainty.map((u) => (
+                <p key={u}>{u}</p>
+              ))}
+              <details>
+                <summary>
+                  Prior evidence used:{" "}
+                  {exchange.answer.recalled_item_ids.length} item(s)
+                </summary>
+                <pre>
+                  {JSON.stringify(
+                    {
+                      recalled: exchange.answer.recalled_item_ids,
+                      context: exchange.context,
+                      citations: exchange.answer.citations,
+                      revision: exchange.answer.revision,
+                    },
+                    null,
+                    2,
+                  )}
+                </pre>
+              </details>
+            </section>
+          )}
           <p>
             <strong>{exchange.status}</strong> · {exchange.model_calls} model
             invocation(s) ·{" "}
