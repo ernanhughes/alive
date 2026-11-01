@@ -346,6 +346,7 @@ def test_standing_terms_fail_closed_without_model_fallback(ready, change):
 def test_model_failure_is_visible_and_never_retried(ready):
     client, upstream, *_ = ready
     trust(ready)
+    successful = upstream.respond
     upstream.respond = lambda _: httpx.Response(503, json={"error": "unavailable"})
     key = uid()
     response = ask(ready, key=key)
@@ -355,6 +356,21 @@ def test_model_failure_is_visible_and_never_retried(ready):
     assert value["status"] == "MODEL CALL FAILED" and value["report"] is None
     assert ask(ready, key=key).json() == value
     assert len(upstream.calls) == 1
+    # The same standing session can process a different goal after provider failure.
+    upstream.respond = successful
+    following = ask(ready, "Review the arithmetic implementation after that failed request")
+    assert following.status_code == 200, following.text
+    assert following.json()["report"] and following.json()["model_calls"] == 2
+    assert len(upstream.calls) == 3
+    assert ask(ready, key=key).json() == value
+    assert len(upstream.calls) == 3
+    # Explicit owner cancellation still blocks new work; the live path cannot reaccept it.
+    goal_id = ready[2]["terms"]["goal_ref"]
+    client.post(
+        f"/api/v1/goals/{goal_id}/transition", json={"status": "cancelled"}
+    ).raise_for_status()
+    blocked = ask(ready, "Another review after owner cancellation")
+    assert blocked.status_code == 409 and len(upstream.calls) == 3
 
 
 def test_no_useful_procedure_returns_interpretation_without_extra_call(ready):
