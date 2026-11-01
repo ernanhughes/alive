@@ -1,0 +1,1412 @@
+{
+  "schema": "adaptation-live/v1",
+  "status": "INCOMPLETE",
+  "implementation_sha": "00e5a840a3cf237706c125012a10c988a65014b7",
+  "corpus_lock": {
+    "corpus_sha256": "dd226359f0f04d7e886be2a5141c0d05e35ea267b77f754f7d8bbd0f8fb04563",
+    "oracle_sha256": "7b58b1746d3d28f857adc5a80408d65a779268bf90aad04c246f9ccbd8ee4b4c",
+    "purpose": "Predeclared public fixtures; train/dev/heldout split immutable"
+  },
+  "plan": [
+    {
+      "phase": "dev",
+      "task_id": "numeric-3",
+      "arm": "C"
+    },
+    {
+      "phase": "dev",
+      "task_id": "numeric-3",
+      "arm": "B"
+    },
+    {
+      "phase": "dev",
+      "task_id": "numeric-3",
+      "arm": "A"
+    },
+    {
+      "phase": "dev",
+      "task_id": "parsing-3",
+      "arm": "C"
+    },
+    {
+      "phase": "dev",
+      "task_id": "parsing-3",
+      "arm": "B"
+    },
+    {
+      "phase": "dev",
+      "task_id": "parsing-3",
+      "arm": "A"
+    },
+    {
+      "phase": "dev",
+      "task_id": "state-3",
+      "arm": "C"
+    },
+    {
+      "phase": "dev",
+      "task_id": "state-3",
+      "arm": "A"
+    },
+    {
+      "phase": "dev",
+      "task_id": "state-3",
+      "arm": "B"
+    },
+    {
+      "phase": "dev",
+      "task_id": "authorization-3",
+      "arm": "B"
+    },
+    {
+      "phase": "dev",
+      "task_id": "authorization-3",
+      "arm": "C"
+    },
+    {
+      "phase": "dev",
+      "task_id": "authorization-3",
+      "arm": "A"
+    },
+    {
+      "phase": "dev",
+      "task_id": "defaults-3",
+      "arm": "C"
+    },
+    {
+      "phase": "dev",
+      "task_id": "defaults-3",
+      "arm": "B"
+    },
+    {
+      "phase": "dev",
+      "task_id": "defaults-3",
+      "arm": "A"
+    },
+    {
+      "phase": "dev",
+      "task_id": "errors-3",
+      "arm": "A"
+    },
+    {
+      "phase": "dev",
+      "task_id": "errors-3",
+      "arm": "C"
+    },
+    {
+      "phase": "dev",
+      "task_id": "errors-3",
+      "arm": "B"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "numeric-4",
+      "arm": "B"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "numeric-4",
+      "arm": "C"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "numeric-4",
+      "arm": "A"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "numeric-5",
+      "arm": "C"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "numeric-5",
+      "arm": "B"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "numeric-5",
+      "arm": "A"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "parsing-4",
+      "arm": "A"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "parsing-4",
+      "arm": "B"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "parsing-4",
+      "arm": "C"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "parsing-5",
+      "arm": "B"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "parsing-5",
+      "arm": "C"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "parsing-5",
+      "arm": "A"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "state-4",
+      "arm": "A"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "state-4",
+      "arm": "C"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "state-4",
+      "arm": "B"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "state-5",
+      "arm": "B"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "state-5",
+      "arm": "C"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "state-5",
+      "arm": "A"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "authorization-4",
+      "arm": "B"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "authorization-4",
+      "arm": "C"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "authorization-4",
+      "arm": "A"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "authorization-5",
+      "arm": "B"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "authorization-5",
+      "arm": "C"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "authorization-5",
+      "arm": "A"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "defaults-4",
+      "arm": "B"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "defaults-4",
+      "arm": "A"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "defaults-4",
+      "arm": "C"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "defaults-5",
+      "arm": "B"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "defaults-5",
+      "arm": "C"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "defaults-5",
+      "arm": "A"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "errors-4",
+      "arm": "B"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "errors-4",
+      "arm": "A"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "errors-4",
+      "arm": "C"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "errors-5",
+      "arm": "B"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "errors-5",
+      "arm": "C"
+    },
+    {
+      "phase": "heldout",
+      "task_id": "errors-5",
+      "arm": "A"
+    },
+    {
+      "phase": "repeat",
+      "task_id": "numeric-5",
+      "arm": "C"
+    },
+    {
+      "phase": "repeat",
+      "task_id": "numeric-5",
+      "arm": "A"
+    },
+    {
+      "phase": "repeat",
+      "task_id": "numeric-5",
+      "arm": "B"
+    },
+    {
+      "phase": "repeat",
+      "task_id": "authorization-5",
+      "arm": "B"
+    },
+    {
+      "phase": "repeat",
+      "task_id": "authorization-5",
+      "arm": "A"
+    },
+    {
+      "phase": "repeat",
+      "task_id": "authorization-5",
+      "arm": "C"
+    }
+  ],
+  "seed": 4319,
+  "limits": {
+    "provider_requests": 180,
+    "conservative_units": 2000000
+  },
+  "model": "muse-spark-1.3-contributor",
+  "transport": "production Pi / network",
+  "cost": "unknown; no authoritative currency tariff available",
+  "training": [
+    {
+      "task_id": "numeric-1",
+      "review": {
+        "id": "a55ff6c2-523a-40db-b19c-c551129ca04e",
+        "goal": "Review the supplied implementation against this contract: Return arithmetic mean; empty input returns null. Identify any real defect, explain why and recommend a minimal correction if needed. For each named input case in README.md, predict observed and required Use JSON or ERROR:ExceptionName, and issue_present. Do not invent defects in correct code.",
+        "conversation_ref": "82ddfbac-83e3-413f-8005-8412b9dffe27",
+        "answer": {
+          "answer": "Real defect: denominator is `len(p)+1` instead of `len(p)`, so it returns `sum/len+1` not arithmetic mean. Empty case is correct (`None`). Minimal fix: `return sum(p)/len(p) if p else None`. Effect is masked when sum is 0 (c2,c3).",
+          "citation_checks": [
+            {
+              "file": "implementation.py",
+              "file_sha256": "3f72626c97a17dcaef1b2290fde57de1a40baf661bd59969edcd0bbefe88572b",
+              "line_end": 2,
+              "line_start": 1,
+              "status": "quote_matches"
+            },
+            {
+              "file": "README.md",
+              "file_sha256": "2d2b9d375115a37dc3b029e624e3185745314ca9d8e36a9864580aac655785e3",
+              "line_end": 3,
+              "line_start": 2,
+              "status": "quote_matches"
+            }
+          ],
+          "citations": [
+            {
+              "file": "implementation.py",
+              "line_end": 2,
+              "line_start": 1,
+              "quote": "def solve(p): return sum(p)/(len(p)+1) if p else None"
+            },
+            {
+              "file": "README.md",
+              "line_end": 3,
+              "line_start": 2,
+              "quote": "Contract: Return arithmetic mean; empty input returns null."
+            }
+          ],
+          "context_ref": "1d9bd2b7-a2b3-47fa-be57-ab9b8e723977",
+          "context_sha256": "fc8efdb5e78ca5cd6a46d5eff4ebafc231df18104d69be1148dfc97324bee66d",
+          "issue_present": true,
+          "lesson_ids_used": [],
+          "lesson_proposal": null,
+          "needs_clarification": false,
+          "predictions": [
+            {
+              "case_id": "c1",
+              "observed": "2.0",
+              "required": "3.0"
+            },
+            {
+              "case_id": "c2",
+              "observed": "0.0",
+              "required": "0.0"
+            },
+            {
+              "case_id": "c3",
+              "observed": "0.0",
+              "required": "0.0"
+            },
+            {
+              "case_id": "c4",
+              "observed": "null",
+              "required": "null"
+            }
+          ],
+          "recalled_item_ids": [],
+          "revision": null,
+          "schema": "contextual-answer/v1",
+          "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+          "uncertainty": [],
+          "artifact_sha256": "260ade76633f09f3064709e205aa8619625aab39861f7ce07fcb241787947d21"
+        },
+        "context": {
+          "policy": "conversation-context/v1",
+          "conversation_ref": "82ddfbac-83e3-413f-8005-8412b9dffe27",
+          "items": [],
+          "omitted": [],
+          "selection": "live intent families; bounded owner-approved exports",
+          "strategy_mode": "stateless",
+          "families": [
+            "numeric",
+            "defaults"
+          ]
+        },
+        "calls": [
+          {
+            "id": "750fa765-964f-4265-8589-1e154dfb998b",
+            "status": "validated",
+            "provider": "meta",
+            "model": "muse-spark-1.3-contributor",
+            "usage": {
+              "completion_tokens": 871,
+              "prompt_tokens": 1973,
+              "total_tokens": 2844,
+              "completion_tokens_details": {
+                "reasoning_tokens": 368
+              },
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "charged_tokens": 2844
+            },
+            "latency_ms": 9465.89170000152,
+            "endpoint": "https://api.meta.ai/v1/chat/completions",
+            "provider_receipts": [
+              {
+                "pi_run_id": "f33e0a9e-1854-41c9-afcb-49acb24af98e",
+                "pi_state": "SETTLED",
+                "transport": "network",
+                "request_id": "3be8e750-ff24-4bc0-91be-44315e566774",
+                "state": "settled",
+                "http_status": 200,
+                "usage": {
+                  "completion_tokens": 871,
+                  "prompt_tokens": 1973,
+                  "total_tokens": 2844,
+                  "completion_tokens_details": {
+                    "reasoning_tokens": 368
+                  },
+                  "prompt_tokens_details": {
+                    "cached_tokens": 0
+                  }
+                },
+                "response_sha256": "f2e7d86ae8666b46743e2dab5be84d7a5f6ed3c04b770ce0f78be62782e28aeb",
+                "model_observed": null,
+                "model_requested": "muse-spark-1.3-contributor",
+                "latency_ms": 8930.648700003076
+              }
+            ],
+            "inference_provenance": "production_pi"
+          },
+          {
+            "id": "f96caa9c-46a1-415a-8ea6-4cd1dd631854",
+            "status": "validated",
+            "provider": "meta",
+            "model": "muse-spark-1.3-contributor",
+            "usage": {
+              "completion_tokens": 583,
+              "prompt_tokens": 1818,
+              "total_tokens": 2401,
+              "completion_tokens_details": {
+                "reasoning_tokens": 287
+              },
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "charged_tokens": 2401
+            },
+            "latency_ms": 5558.128300002863,
+            "endpoint": "https://api.meta.ai/v1/chat/completions",
+            "provider_receipts": [
+              {
+                "pi_run_id": "351a0a4e-7ca4-4fb1-8280-f3af57b64513",
+                "pi_state": "SETTLED",
+                "transport": "network",
+                "request_id": "186f4e29-1b1a-45a4-9ee7-06a606ed13c2",
+                "state": "settled",
+                "http_status": 200,
+                "usage": {
+                  "completion_tokens": 583,
+                  "prompt_tokens": 1818,
+                  "total_tokens": 2401,
+                  "completion_tokens_details": {
+                    "reasoning_tokens": 287
+                  },
+                  "prompt_tokens_details": {
+                    "cached_tokens": 0
+                  }
+                },
+                "response_sha256": "7157763c853d647b7a5d8d53b97e86a7e680c39e37d3f9eb75c88ea43128d7d2",
+                "model_observed": null,
+                "model_requested": "muse-spark-1.3-contributor",
+                "latency_ms": 5092.302099998051
+              }
+            ],
+            "inference_provenance": "production_pi"
+          }
+        ],
+        "model_calls": 2,
+        "status": "LIVE MODEL",
+        "availability": "available",
+        "followup": null,
+        "result_admission_id": "710d78c2-eec3-4e35-989e-79d0a53bb2da",
+        "request": {
+          "consent_ref": "f8ab2ba9-475c-461a-8c0e-21775cae77af",
+          "conversation_ref": "82ddfbac-83e3-413f-8005-8412b9dffe27",
+          "goal": "Review the supplied implementation against this contract: Return arithmetic mean; empty input returns null. Identify any real defect, explain why and recommend a minimal correction if needed. For each named input case in README.md, predict observed and required Use JSON or ERROR:ExceptionName, and issue_present. Do not invent defects in correct code.",
+          "strategy_mode": "stateless",
+          "idempotency_key": "train:numeric-1:A"
+        },
+        "wall_seconds": 17.476803699999437
+      },
+      "grade": {
+        "score": 1.0,
+        "passed": true,
+        "issue_present": true,
+        "issue_correct": true,
+        "cases": [
+          {
+            "id": "c1",
+            "actual": {
+              "value": 2.0
+            },
+            "required": {
+              "value": 3.0
+            },
+            "passed": true
+          },
+          {
+            "id": "c2",
+            "actual": {
+              "value": 0.0
+            },
+            "required": {
+              "value": 0.0
+            },
+            "passed": true
+          },
+          {
+            "id": "c3",
+            "actual": {
+              "value": 0.0
+            },
+            "required": {
+              "value": 0.0
+            },
+            "passed": true
+          },
+          {
+            "id": "c4",
+            "actual": {
+              "value": null
+            },
+            "required": {
+              "value": null
+            },
+            "passed": true
+          }
+        ],
+        "prose_verified": false,
+        "verifier": "frozen-executable-fixture/v1"
+      }
+    }
+  ],
+  "evaluation": [],
+  "sources": {
+    "numeric-1": {
+      "id": "f8ab2ba9-475c-461a-8c0e-21775cae77af",
+      "terms": {
+        "principal": "owner-cli:ernan",
+        "goal_ref": "b066cd28-ddd9-49f5-83df-436d649f5234",
+        "approval_ref": "b833f65b-4379-4518-9dc1-e6d3980ce5a2",
+        "paths": [
+          "README.md",
+          "implementation.py"
+        ],
+        "profiles": {
+          "intent-interpretation": {
+            "profile": "intent-interpretation",
+            "source": {
+              "resources": {
+                "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+                "approval_id": "b833f65b-4379-4518-9dc1-e6d3980ce5a2",
+                "content_sha256": "117e1d26dc97586690152ca072b15488e7f36a7ce1fe9dad2c754fe6ac15d502",
+                "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+              },
+              "label": "Public fixture numeric-1",
+              "scope": {
+                "items": [
+                  "README.md",
+                  "implementation.py"
+                ]
+              },
+              "inventory": {
+                "items": [
+                  {
+                    "item": "README.md",
+                    "bytes": 228,
+                    "sha256": "2d2b9d375115a37dc3b029e624e3185745314ca9d8e36a9864580aac655785e3"
+                  },
+                  {
+                    "item": "implementation.py",
+                    "bytes": 60,
+                    "sha256": "3f72626c97a17dcaef1b2290fde57de1a40baf661bd59969edcd0bbefe88572b"
+                  }
+                ],
+                "omitted": []
+              },
+              "expires_at": "2026-11-01T22:06:24.662256+00:00",
+              "principal": "owner-cli:ernan"
+            },
+            "grant": {
+              "version": 1,
+              "principal": "owner-cli:ernan",
+              "definition_id": "2e164965-b536-4759-a91f-e0612af25d5b",
+              "definition_sha256": "a33c2f9fabbce0d775123bda017400dcdd58d206ab5fd45ff3d6105f18362394",
+              "context_provenance": {
+                "source": "admission-owner",
+                "event_type": "workflow.owner.context",
+                "custody": "approved_capture",
+                "consent": "exact_content_and_scope"
+              },
+              "operations": [
+                "intent.interpret",
+                "intent.validate",
+                "result.record"
+              ],
+              "capability_binding_sha256": "438839bd933d8608601383447a0ebc91d1b71dae339fd612411822f04938ca62",
+              "capabilities": {
+                "interpret": {
+                  "identity": {
+                    "id": "intent.interpret",
+                    "version": "1.0.0",
+                    "manifest_sha256": "f53d70b34d7a4d8086207a8b11f931dfa041c5328f1f0cd8cfb09a236c6942ce",
+                    "implementation_id": "intent-interpreter-v1",
+                    "implementation_sha256": "e091cfd778cdcbf14f660b2b0104201e54287b017b2652ae7cd1d22e3dfadc1d"
+                  },
+                  "permissions": {
+                    "evidence": "none",
+                    "filesystem": {
+                      "mode": "none",
+                      "roots": []
+                    },
+                    "network": {
+                      "mode": "governed_pi"
+                    },
+                    "persistence": "none",
+                    "process": {
+                      "mode": "none"
+                    },
+                    "sources": "approved_capture"
+                  },
+                  "limits": {
+                    "max_files": 0,
+                    "max_input_bytes": 65536,
+                    "max_input_items": 4,
+                    "max_invocations": 1,
+                    "max_model_calls": 1,
+                    "max_output_bytes": 65536,
+                    "max_output_tokens": 1536,
+                    "max_source_bytes": 0,
+                    "timeout_seconds": 120
+                  },
+                  "policy_sha256": "9522238b30d9bec8618cfbec05c4c785fce0b49c842e346f3228852bcd23b436",
+                  "resources": {
+                    "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+                    "approval_id": "b833f65b-4379-4518-9dc1-e6d3980ce5a2",
+                    "content_sha256": "117e1d26dc97586690152ca072b15488e7f36a7ce1fe9dad2c754fe6ac15d502",
+                    "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+                  }
+                },
+                "validate": {
+                  "identity": {
+                    "id": "intent.validate",
+                    "version": "1.0.0",
+                    "manifest_sha256": "32b52fad133b0bc6a4da3a5102e1ecad4ce2679a97fab7513521e5b3263b21b7",
+                    "implementation_id": "intent-validator-v1",
+                    "implementation_sha256": "e02e52202a6d88fa4ce2f6053bf3295ef627a50caf492aa1103f9567d41313c9"
+                  },
+                  "permissions": {
+                    "evidence": "none",
+                    "filesystem": {
+                      "mode": "none",
+                      "roots": []
+                    },
+                    "network": {
+                      "mode": "none"
+                    },
+                    "persistence": "none",
+                    "process": {
+                      "mode": "none"
+                    }
+                  },
+                  "limits": {
+                    "max_files": 0,
+                    "max_input_bytes": 65536,
+                    "max_input_items": 4,
+                    "max_invocations": 1,
+                    "max_model_calls": 0,
+                    "max_output_bytes": 65536,
+                    "max_output_tokens": 0,
+                    "max_source_bytes": 0,
+                    "timeout_seconds": 30
+                  },
+                  "policy_sha256": "3306297fc8bebf9281c94aba18245234feff8992cc6d91ccd9be1136a6ef051d",
+                  "resources": {}
+                },
+                "record": {
+                  "identity": {
+                    "id": "result.record",
+                    "version": "1.0.0",
+                    "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+                    "implementation_id": "result-record-v1",
+                    "implementation_sha256": "497ef193d82ea32a9e772e8759f4f686275f38c86a1e5d8d1564a42a83594416"
+                  },
+                  "permissions": {
+                    "evidence": "approved_context",
+                    "filesystem": {
+                      "mode": "none",
+                      "roots": []
+                    },
+                    "network": {
+                      "mode": "none"
+                    },
+                    "persistence": "workflow_result",
+                    "process": {
+                      "mode": "none"
+                    }
+                  },
+                  "limits": {
+                    "max_files": 0,
+                    "max_input_bytes": 65536,
+                    "max_input_items": 32,
+                    "max_invocations": 1,
+                    "max_model_calls": 0,
+                    "max_output_bytes": 65536,
+                    "max_output_tokens": 0,
+                    "max_source_bytes": 0,
+                    "timeout_seconds": 30
+                  },
+                  "policy_sha256": "3c91710e29520c9368fa091b59d964a3b757ffb8e67048e9dfa678dc36b50e7a",
+                  "resources": {}
+                }
+              },
+              "configuration_sha256": "482707a2cea858c5aab7ecaf4277a549dad6bf5d6772630f4a1cce0cbd867303",
+              "models": {
+                "intent_interpreter": "muse-spark-1.3-contributor"
+              },
+              "role_contracts": {
+                "intent_interpreter": "2bf4795b4963fa4e22d9e3c0ac90fec9587886c352fa16f614be1c8e28499da3"
+              },
+              "max_model_calls": 1,
+              "max_output_tokens": 1536,
+              "wall_seconds": 180,
+              "outbound_approved": true
+            },
+            "inputs": {
+              "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+              "paths": [
+                "README.md",
+                "implementation.py"
+              ],
+              "catalogue_sha256": "413fb86a1066021156c1d5ac0acb6f917ff11786bb3c31ad4bb5d9cd4edac575"
+            },
+            "disclosure": {
+              "operation": "intent.interpret",
+              "destination": {
+                "kind": "remote_provider",
+                "provider": "meta",
+                "transport": "pi",
+                "host": "api.meta.ai",
+                "endpoint": "https://api.meta.ai/v1/chat/completions",
+                "model": "muse-spark-1.3-contributor"
+              },
+              "role": "intent_interpreter",
+              "role_contract_sha256": "2bf4795b4963fa4e22d9e3c0ac90fec9587886c352fa16f614be1c8e28499da3",
+              "context_policy": "alive-intent-context/v1",
+              "files": [
+                {
+                  "path": "README.md",
+                  "bytes": 228
+                },
+                {
+                  "path": "implementation.py",
+                  "bytes": 60
+                }
+              ],
+              "source_bytes": 0,
+              "content_sent": false,
+              "catalogue_sha256": "413fb86a1066021156c1d5ac0acb6f917ff11786bb3c31ad4bb5d9cd4edac575",
+              "catalogue_entries": 6,
+              "max_model_calls": 1,
+              "max_output_tokens": 1536,
+              "leaves_host": true,
+              "cost": "unknown; no price is configured and none is estimated",
+              "cancellation": "A request already sent to the provider cannot be recalled. An ambiguous outcome is never retried; its reservation stays charged.",
+              "retention": "The prompt and response are retained in the local database in clear text."
+            },
+            "recipe_sha256": "2e12cf876686490502a56d2ba523af96066eb0182c4aff1232a39ff99adf8492"
+          },
+          "approved-repository-analysis": {
+            "profile": "approved-repository-analysis",
+            "source": {
+              "resources": {
+                "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+                "approval_id": "b833f65b-4379-4518-9dc1-e6d3980ce5a2",
+                "content_sha256": "117e1d26dc97586690152ca072b15488e7f36a7ce1fe9dad2c754fe6ac15d502",
+                "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+              },
+              "label": "Public fixture numeric-1",
+              "scope": {
+                "items": [
+                  "README.md",
+                  "implementation.py"
+                ]
+              },
+              "inventory": {
+                "items": [
+                  {
+                    "item": "README.md",
+                    "bytes": 228,
+                    "sha256": "2d2b9d375115a37dc3b029e624e3185745314ca9d8e36a9864580aac655785e3"
+                  },
+                  {
+                    "item": "implementation.py",
+                    "bytes": 60,
+                    "sha256": "3f72626c97a17dcaef1b2290fde57de1a40baf661bd59969edcd0bbefe88572b"
+                  }
+                ],
+                "omitted": []
+              },
+              "expires_at": "2026-11-01T22:06:24.662256+00:00",
+              "principal": "owner-cli:ernan"
+            },
+            "grant": {
+              "version": 1,
+              "principal": "owner-cli:ernan",
+              "definition_id": "697b71b5-199f-4eee-b9ba-beee3713e671",
+              "definition_sha256": "e83c8f892f0d50585ba7b4f6298bc62321587556f6599a98c2911e80a3c95d21",
+              "context_provenance": {
+                "source": "admission-owner",
+                "event_type": "workflow.owner.context",
+                "custody": "approved_capture",
+                "consent": "exact_content_and_scope"
+              },
+              "operations": [
+                "repository.inspect",
+                "repository.analyze",
+                "repository.validate_findings",
+                "result.record"
+              ],
+              "capability_binding_sha256": "7d0f93d52d6e16075b29683742a0ec6f6ce90cd7dbe315e81cb3bb5bd92defd3",
+              "capabilities": {
+                "read": {
+                  "identity": {
+                    "id": "repository.inspect",
+                    "version": "1.1.0",
+                    "manifest_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d",
+                    "implementation_id": "repository-inspector-v2",
+                    "implementation_sha256": "baefb977d2947e12cea935fca26574642df53a53783c24eb967128fcfff078a4"
+                  },
+                  "permissions": {
+                    "evidence": "none",
+                    "filesystem": {
+                      "mode": "none",
+                      "roots": []
+                    },
+                    "network": {
+                      "mode": "none"
+                    },
+                    "persistence": "none",
+                    "process": {
+                      "mode": "none"
+                    },
+                    "sources": "approved_capture"
+                  },
+                  "limits": {
+                    "max_files": 20,
+                    "max_input_bytes": 8192,
+                    "max_input_items": 4,
+                    "max_invocations": 1,
+                    "max_model_calls": 0,
+                    "max_output_bytes": 65536,
+                    "max_output_tokens": 0,
+                    "max_source_bytes": 32768,
+                    "timeout_seconds": 30
+                  },
+                  "policy_sha256": "e8e4b9b048ae31f1774fb2be319f6a9004a5fc2ce1781f9364e18473c227a0bb",
+                  "resources": {
+                    "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+                    "approval_id": "b833f65b-4379-4518-9dc1-e6d3980ce5a2",
+                    "content_sha256": "117e1d26dc97586690152ca072b15488e7f36a7ce1fe9dad2c754fe6ac15d502",
+                    "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+                  }
+                },
+                "analyze": {
+                  "identity": {
+                    "id": "repository.analyze",
+                    "version": "1.0.0",
+                    "manifest_sha256": "56b6125f0d0bb1e966ded65ad680b3b3e3827823bddd92900c9962d1588ddffe",
+                    "implementation_id": "repository-analyst-v1",
+                    "implementation_sha256": "542b31a107c4b36cb4b29a255785eb1a78e94a0c9bcffaec74217427aea57fb5"
+                  },
+                  "permissions": {
+                    "evidence": "none",
+                    "filesystem": {
+                      "mode": "none",
+                      "roots": []
+                    },
+                    "network": {
+                      "mode": "governed_pi"
+                    },
+                    "persistence": "none",
+                    "process": {
+                      "mode": "none"
+                    },
+                    "sources": "approved_capture"
+                  },
+                  "limits": {
+                    "max_files": 0,
+                    "max_input_bytes": 65536,
+                    "max_input_items": 8,
+                    "max_invocations": 1,
+                    "max_model_calls": 1,
+                    "max_output_bytes": 65536,
+                    "max_output_tokens": 1536,
+                    "max_source_bytes": 0,
+                    "timeout_seconds": 120
+                  },
+                  "policy_sha256": "9628e78c73bfaa0630c304f06ed4d512b21e58bee8170fc5d1768c2eb86f4639",
+                  "resources": {
+                    "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+                    "approval_id": "b833f65b-4379-4518-9dc1-e6d3980ce5a2",
+                    "content_sha256": "117e1d26dc97586690152ca072b15488e7f36a7ce1fe9dad2c754fe6ac15d502",
+                    "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+                  }
+                },
+                "validate": {
+                  "identity": {
+                    "id": "repository.validate_findings",
+                    "version": "1.0.0",
+                    "manifest_sha256": "ebb0a26fcfeb35619978d65a546f97ab13d2087fe5a6a54b89b6fe8d0fabae38",
+                    "implementation_id": "repository-findings-validator-v1",
+                    "implementation_sha256": "bcf69256a86a714d1f557c923f8e64da121c22cb2f6a0f54b0774ee30020dddb"
+                  },
+                  "permissions": {
+                    "evidence": "none",
+                    "filesystem": {
+                      "mode": "none",
+                      "roots": []
+                    },
+                    "network": {
+                      "mode": "none"
+                    },
+                    "persistence": "none",
+                    "process": {
+                      "mode": "none"
+                    }
+                  },
+                  "limits": {
+                    "max_files": 0,
+                    "max_input_bytes": 65536,
+                    "max_input_items": 8,
+                    "max_invocations": 1,
+                    "max_model_calls": 0,
+                    "max_output_bytes": 65536,
+                    "max_output_tokens": 0,
+                    "max_source_bytes": 0,
+                    "timeout_seconds": 30
+                  },
+                  "policy_sha256": "758e73b57cab8ed5e277b6c6693a36d3b9e2d9c795790f9aa58567d682facd06",
+                  "resources": {}
+                },
+                "record": {
+                  "identity": {
+                    "id": "result.record",
+                    "version": "1.0.0",
+                    "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+                    "implementation_id": "result-record-v1",
+                    "implementation_sha256": "497ef193d82ea32a9e772e8759f4f686275f38c86a1e5d8d1564a42a83594416"
+                  },
+                  "permissions": {
+                    "evidence": "approved_context",
+                    "filesystem": {
+                      "mode": "none",
+                      "roots": []
+                    },
+                    "network": {
+                      "mode": "none"
+                    },
+                    "persistence": "workflow_result",
+                    "process": {
+                      "mode": "none"
+                    }
+                  },
+                  "limits": {
+                    "max_files": 0,
+                    "max_input_bytes": 65536,
+                    "max_input_items": 32,
+                    "max_invocations": 1,
+                    "max_model_calls": 0,
+                    "max_output_bytes": 65536,
+                    "max_output_tokens": 0,
+                    "max_source_bytes": 0,
+                    "timeout_seconds": 30
+                  },
+                  "policy_sha256": "3c91710e29520c9368fa091b59d964a3b757ffb8e67048e9dfa678dc36b50e7a",
+                  "resources": {}
+                }
+              },
+              "configuration_sha256": "482707a2cea858c5aab7ecaf4277a549dad6bf5d6772630f4a1cce0cbd867303",
+              "models": {
+                "repository_analyst": "muse-spark-1.3-contributor"
+              },
+              "role_contracts": {
+                "repository_analyst": "4134b4bdb946fecd0c0cffe5d7290b4d929ec52df007715d0095f491fd6498e5"
+              },
+              "max_model_calls": 1,
+              "max_output_tokens": 1536,
+              "wall_seconds": 180,
+              "outbound_approved": true
+            },
+            "inputs": {
+              "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+              "paths": [
+                "README.md",
+                "implementation.py"
+              ]
+            },
+            "disclosure": {
+              "operation": "repository.analyze",
+              "destination": {
+                "kind": "remote_provider",
+                "provider": "meta",
+                "transport": "pi",
+                "host": "api.meta.ai",
+                "endpoint": "https://api.meta.ai/v1/chat/completions",
+                "model": "muse-spark-1.3-contributor"
+              },
+              "role": "repository_analyst",
+              "role_contract_sha256": "4134b4bdb946fecd0c0cffe5d7290b4d929ec52df007715d0095f491fd6498e5",
+              "context_policy": "repository-analysis-context/v1",
+              "files": [
+                {
+                  "path": "README.md",
+                  "bytes": 228
+                },
+                {
+                  "path": "implementation.py",
+                  "bytes": 60
+                }
+              ],
+              "source_bytes": 288,
+              "max_model_calls": 1,
+              "max_output_tokens": 1536,
+              "leaves_host": true,
+              "cost": "unknown; no price is configured and none is estimated",
+              "cancellation": "A request already sent to the provider cannot be recalled. An ambiguous outcome is never retried; its reservation stays charged.",
+              "retention": "The prompt and response are retained in the local database in clear text."
+            },
+            "recipe_sha256": "a5cbf81b0eddff9828b8b197cab09c5bac9e8a629fc26872df84178bfd863c13"
+          },
+          "approved-repository-inspection": {
+            "profile": "approved-repository-inspection",
+            "source": {
+              "resources": {
+                "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+                "approval_id": "b833f65b-4379-4518-9dc1-e6d3980ce5a2",
+                "content_sha256": "117e1d26dc97586690152ca072b15488e7f36a7ce1fe9dad2c754fe6ac15d502",
+                "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+              },
+              "label": "Public fixture numeric-1",
+              "scope": {
+                "items": [
+                  "README.md",
+                  "implementation.py"
+                ]
+              },
+              "inventory": {
+                "items": [
+                  {
+                    "item": "README.md",
+                    "bytes": 228,
+                    "sha256": "2d2b9d375115a37dc3b029e624e3185745314ca9d8e36a9864580aac655785e3"
+                  },
+                  {
+                    "item": "implementation.py",
+                    "bytes": 60,
+                    "sha256": "3f72626c97a17dcaef1b2290fde57de1a40baf661bd59969edcd0bbefe88572b"
+                  }
+                ],
+                "omitted": []
+              },
+              "expires_at": "2026-11-01T22:06:24.662256+00:00",
+              "principal": "owner-cli:ernan"
+            },
+            "grant": {
+              "version": 1,
+              "principal": "owner-cli:ernan",
+              "definition_id": "aded4116-5986-4d8f-8dec-d02f2ca837d8",
+              "definition_sha256": "bfe419f3577ce3b9f813da79452f701d8f6ebab9c6af2f6d6dceef15d290b713",
+              "context_provenance": {
+                "source": "admission-owner",
+                "event_type": "workflow.owner.context",
+                "custody": "approved_capture",
+                "consent": "exact_content_and_scope"
+              },
+              "operations": [
+                "repository.inspect"
+              ],
+              "capability_binding_sha256": "d964cda1d059222da361e8591c07e846728fee345fc14291575602b80f4bdb8e",
+              "capabilities": {
+                "read": {
+                  "identity": {
+                    "id": "repository.inspect",
+                    "version": "1.1.0",
+                    "manifest_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d",
+                    "implementation_id": "repository-inspector-v2",
+                    "implementation_sha256": "baefb977d2947e12cea935fca26574642df53a53783c24eb967128fcfff078a4"
+                  },
+                  "permissions": {
+                    "evidence": "none",
+                    "filesystem": {
+                      "mode": "none",
+                      "roots": []
+                    },
+                    "network": {
+                      "mode": "none"
+                    },
+                    "persistence": "none",
+                    "process": {
+                      "mode": "none"
+                    },
+                    "sources": "approved_capture"
+                  },
+                  "limits": {
+                    "max_files": 20,
+                    "max_input_bytes": 8192,
+                    "max_input_items": 4,
+                    "max_invocations": 1,
+                    "max_model_calls": 0,
+                    "max_output_bytes": 65536,
+                    "max_output_tokens": 0,
+                    "max_source_bytes": 32768,
+                    "timeout_seconds": 30
+                  },
+                  "policy_sha256": "e8e4b9b048ae31f1774fb2be319f6a9004a5fc2ce1781f9364e18473c227a0bb",
+                  "resources": {
+                    "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+                    "approval_id": "b833f65b-4379-4518-9dc1-e6d3980ce5a2",
+                    "content_sha256": "117e1d26dc97586690152ca072b15488e7f36a7ce1fe9dad2c754fe6ac15d502",
+                    "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+                  }
+                }
+              },
+              "configuration_sha256": "482707a2cea858c5aab7ecaf4277a549dad6bf5d6772630f4a1cce0cbd867303",
+              "models": {},
+              "role_contracts": {},
+              "max_model_calls": 0,
+              "max_output_tokens": 0,
+              "wall_seconds": 30,
+              "outbound_approved": false
+            },
+            "inputs": {
+              "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+              "paths": [
+                "README.md",
+                "implementation.py"
+              ]
+            },
+            "disclosure": {},
+            "recipe_sha256": "c43b72e195f720c6c51e872a2a5e514c7374b10ad5a22b89f1f0fa82cba82e6d"
+          },
+          "contextual-reasoning": {
+            "profile": "contextual-reasoning",
+            "source": {
+              "resources": {
+                "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+                "approval_id": "b833f65b-4379-4518-9dc1-e6d3980ce5a2",
+                "content_sha256": "117e1d26dc97586690152ca072b15488e7f36a7ce1fe9dad2c754fe6ac15d502",
+                "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+              },
+              "label": "Public fixture numeric-1",
+              "scope": {
+                "items": [
+                  "README.md",
+                  "implementation.py"
+                ]
+              },
+              "inventory": {
+                "items": [
+                  {
+                    "item": "README.md",
+                    "bytes": 228,
+                    "sha256": "2d2b9d375115a37dc3b029e624e3185745314ca9d8e36a9864580aac655785e3"
+                  },
+                  {
+                    "item": "implementation.py",
+                    "bytes": 60,
+                    "sha256": "3f72626c97a17dcaef1b2290fde57de1a40baf661bd59969edcd0bbefe88572b"
+                  }
+                ],
+                "omitted": []
+              },
+              "expires_at": "2026-11-01T22:06:24.662256+00:00",
+              "principal": "owner-cli:ernan"
+            },
+            "grant": {
+              "version": 1,
+              "principal": "owner-cli:ernan",
+              "definition_id": "a7386d63-29b2-45d0-9265-faaad610af1c",
+              "definition_sha256": "ea2fcae8fd017f0e6459a1b2a4bd957a79c103d9faf954f2879174afc059e5cb",
+              "context_provenance": {
+                "source": "admission-owner",
+                "event_type": "workflow.owner.context",
+                "custody": "approved_capture",
+                "consent": "exact_content_and_scope"
+              },
+              "operations": [
+                "context.reason",
+                "context.validate",
+                "result.record"
+              ],
+              "capability_binding_sha256": "3d8341df93b4dd448adb761f2003e62322c8f6017750e15663cd932c3579cc30",
+              "capabilities": {
+                "reason": {
+                  "identity": {
+                    "id": "context.reason",
+                    "version": "1.0.0",
+                    "manifest_sha256": "473b75ddc07a86e23173ecc048143aac5f852fd4b3b5eaab2ba9e4373891b14a",
+                    "implementation_id": "contextual-reasoner-v1",
+                    "implementation_sha256": "49c58df48e10498a1a1c946dcecb38beade4fca0a143bfda56669a16933f53bd"
+                  },
+                  "permissions": {
+                    "evidence": "none",
+                    "filesystem": {
+                      "mode": "none",
+                      "roots": []
+                    },
+                    "network": {
+                      "mode": "governed_pi"
+                    },
+                    "persistence": "none",
+                    "process": {
+                      "mode": "none"
+                    },
+                    "sources": "approved_capture"
+                  },
+                  "limits": {
+                    "max_files": 0,
+                    "max_input_bytes": 65536,
+                    "max_input_items": 8,
+                    "max_invocations": 1,
+                    "max_model_calls": 1,
+                    "max_output_bytes": 65536,
+                    "max_output_tokens": 1536,
+                    "max_source_bytes": 0,
+                    "timeout_seconds": 120
+                  },
+                  "policy_sha256": "33155ab98afb7deec2761dea00f4703a438a02d25edffec27ce7901ca1403f83",
+                  "resources": {
+                    "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+                    "approval_id": "b833f65b-4379-4518-9dc1-e6d3980ce5a2",
+                    "content_sha256": "117e1d26dc97586690152ca072b15488e7f36a7ce1fe9dad2c754fe6ac15d502",
+                    "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+                  }
+                },
+                "validate": {
+                  "identity": {
+                    "id": "context.validate",
+                    "version": "1.0.0",
+                    "manifest_sha256": "d71544db53d371ebc241a804641226bb99688987152515be87020cb507b8e681",
+                    "implementation_id": "contextual-validator-v1",
+                    "implementation_sha256": "72ce729024285d29d8f6b77777552b42ebca3d304f1e31ff4b8babc25746bcdf"
+                  },
+                  "permissions": {
+                    "evidence": "none",
+                    "filesystem": {
+                      "mode": "none",
+                      "roots": []
+                    },
+                    "network": {
+                      "mode": "none"
+                    },
+                    "persistence": "none",
+                    "process": {
+                      "mode": "none"
+                    },
+                    "sources": "approved_capture"
+                  },
+                  "limits": {
+                    "max_files": 0,
+                    "max_input_bytes": 65536,
+                    "max_input_items": 8,
+                    "max_invocations": 1,
+                    "max_model_calls": 0,
+                    "max_output_bytes": 65536,
+                    "max_output_tokens": 0,
+                    "max_source_bytes": 0,
+                    "timeout_seconds": 30
+                  },
+                  "policy_sha256": "a76269e0674777d8d50b1758589020460e09fd905bb12a5f8757673cda8d9279",
+                  "resources": {
+                    "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+                    "approval_id": "b833f65b-4379-4518-9dc1-e6d3980ce5a2",
+                    "content_sha256": "117e1d26dc97586690152ca072b15488e7f36a7ce1fe9dad2c754fe6ac15d502",
+                    "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+                  }
+                },
+                "record": {
+                  "identity": {
+                    "id": "result.record",
+                    "version": "1.0.0",
+                    "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+                    "implementation_id": "result-record-v1",
+                    "implementation_sha256": "497ef193d82ea32a9e772e8759f4f686275f38c86a1e5d8d1564a42a83594416"
+                  },
+                  "permissions": {
+                    "evidence": "approved_context",
+                    "filesystem": {
+                      "mode": "none",
+                      "roots": []
+                    },
+                    "network": {
+                      "mode": "none"
+                    },
+                    "persistence": "workflow_result",
+                    "process": {
+                      "mode": "none"
+                    }
+                  },
+                  "limits": {
+                    "max_files": 0,
+                    "max_input_bytes": 65536,
+                    "max_input_items": 32,
+                    "max_invocations": 1,
+                    "max_model_calls": 0,
+                    "max_output_bytes": 65536,
+                    "max_output_tokens": 0,
+                    "max_source_bytes": 0,
+                    "timeout_seconds": 30
+                  },
+                  "policy_sha256": "3c91710e29520c9368fa091b59d964a3b757ffb8e67048e9dfa678dc36b50e7a",
+                  "resources": {}
+                }
+              },
+              "configuration_sha256": "482707a2cea858c5aab7ecaf4277a549dad6bf5d6772630f4a1cce0cbd867303",
+              "models": {
+                "contextual_reasoner": "muse-spark-1.3-contributor"
+              },
+              "role_contracts": {
+                "contextual_reasoner": "19fe21e713687bb4cb78e2d3f7005b7a4212ab0b3fe35f9756eeaa4218ef41c1"
+              },
+              "max_model_calls": 1,
+              "max_output_tokens": 1536,
+              "wall_seconds": 180,
+              "outbound_approved": true
+            },
+            "inputs": {
+              "source_ref": "02a9117b-79e8-42ad-a62d-abebc3763f13",
+              "paths": [
+                "README.md",
+                "implementation.py"
+              ]
+            },
+            "disclosure": {
+              "operation": "context.reason",
+              "destination": {
+                "kind": "remote_provider",
+                "provider": "meta",
+                "transport": "pi",
+                "host": "api.meta.ai",
+                "endpoint": "https://api.meta.ai/v1/chat/completions",
+                "model": "muse-spark-1.3-contributor"
+              },
+              "role": "contextual_reasoner",
+              "role_contract_sha256": "19fe21e713687bb4cb78e2d3f7005b7a4212ab0b3fe35f9756eeaa4218ef41c1",
+              "context_policy": "conversation-context/v1",
+              "files": [
+                {
+                  "path": "README.md",
+                  "bytes": 228
+                },
+                {
+                  "path": "implementation.py",
+                  "bytes": 60
+                }
+              ],
+              "source_bytes": 288,
+              "max_model_calls": 1,
+              "max_output_tokens": 1536,
+              "leaves_host": true,
+              "cost": "unknown; not estimated",
+              "retention": "Local prompts, frozen context and responses persist in clear text.",
+              "cancellation": "Disclosed data cannot be recalled; ambiguous calls are not retried."
+            },
+            "recipe_sha256": "b6e68f2e36f7eb91960493615c67395641f08a990ca6fbaec593a9bbfe38f880"
+          }
+        },
+        "max_calls": 16,
+        "max_tokens": 300000,
+        "expires_at": "2026-11-01T22:06:24.662256+00:00",
+        "disclosure": "Future goal text, file names and approved file content may leave this host. Local prompts/results persist. Read-only inspection/analysis is automatic. Reservations stay charged after failures; currency cost is unknown. Adaptive reasoning may reuse up to two bounded, explicitly owner-approved lesson exports from other conversations at this same provider/model. Raw prior source is not exported. Lessons remain fallible data, not execution authority. In a linked conversation, bounded prior owner statements, model findings and revisions from this exact source may also be disclosed to the same destination.",
+        "adaptive": true
+      },
+      "sha256": "9df5a025091536c4a7650cc892804b05fee10c5eac8e8b2b81282058b043da7c",
+      "state": "approved"
+    }
+  },
+  "failure": "Refused: oracle_fixture_source_mismatch"
+}

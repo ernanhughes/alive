@@ -264,3 +264,57 @@ def test_heldout_feedback_cannot_support_lesson(adaptive):
     response = ask(adaptive, ref, "extract a reusable lesson", "contamination")
     assert response.status_code == 200
     assert call(client, service.listing)["lessons"] == []
+
+
+def test_oracle_measures_only_exact_captured_public_fixture(adaptive, tmp_path):
+    from alive.adaptation.oracle import source_files
+    from alive.sources import capture, custody
+
+    client, _, _, body, *_ = adaptive
+    task = oracle.frozen_corpus()[0]["tasks"][0]
+    files = source_files(task)
+    for name, text in files.items():
+        (tmp_path / name).write_bytes(text.encode("utf-8"))
+
+    async def approve(kernel):
+        candidate = await custody.create_capture(
+            kernel,
+            source_type="repository",
+            label="Frozen fixture",
+            locator="public-fixture",
+            classification="owner_internal",
+            capture_method="owner_cli_repository",
+            content=capture.repository_content(tmp_path, list(files)),
+        )
+        return await custody.approve(
+            kernel,
+            candidate["id"],
+            confirm_sha256=candidate["content_sha256"],
+            operations=[
+                "repository.inspect",
+                "repository.analyze",
+                "intent.interpret",
+                "context.reason",
+                "context.validate",
+            ],
+            scope={"items": list(files)},
+            ttl_seconds=3600,
+            principal=principal(),
+            request_id=uid(),
+        )
+
+    approval = call(client, approve)
+    setup = client.post(
+        BASE + "/setup",
+        json=body | {"adaptive": True, "paths": list(files), "approval_ref": approval["id"]},
+    ).json()
+    call(client, live.approve, setup["id"], confirm_sha256=setup["sha256"], principal=principal())
+    ready = (client, adaptive[1], setup, body, *adaptive[4:])
+    result = ask(ready, conversation(ready), "Review numeric code").json()
+    measured = call(client, oracle.measure, result["result_admission"]["id"], task["id"])
+    ref = call(
+        client, service.experience, result["result_admission"]["id"], measured, "oracle-regression"
+    )
+    assert ref
+    with pytest.raises(Refused, match="oracle_fixture_source_mismatch"):
+        call(client, oracle.measure, result["result_admission"]["id"], "numeric-2")

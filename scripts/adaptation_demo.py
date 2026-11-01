@@ -108,7 +108,7 @@ def compact(value):
     } | {"result_admission_id": (value.get("result_admission") or {}).get("id")}
 
 
-def run(folder, approve_live):
+def run(folder, approve_live, previous_ledger=None):
     if not approve_live:
         raise ValueError("Explicit --approve-live required; otherwise live qualification NOT_RUN")
     folder = folder.resolve()
@@ -119,6 +119,10 @@ def run(folder, approve_live):
     if subprocess.check_output(["git", "status", "--porcelain"], text=True).strip():
         raise ValueError("Commit implementation and frozen oracle before live qualification")
     corpus, lock = oracle.frozen_corpus()
+    prior_requests = 0
+    if previous_ledger:
+        prior = json.loads(previous_ledger.read_text(encoding="utf-8"))
+        prior_requests = sum(t["review"]["model_calls"] for t in prior["training"])
     ledger = {
         "schema": "adaptation-live/v1",
         "status": "INCOMPLETE",
@@ -137,6 +141,11 @@ def run(folder, approve_live):
         "sources": {},
     }
     path = folder / "adaptation-ledger.json"
+    ledger["earlier_attempt"] = {
+        "ledger_sha256": digest(prior) if previous_ledger else None,
+        "provider_requests": prior_requests,
+        "conservative_units_upper_bound": prior_requests * 30000,
+    }
 
     def save():
         path.write_text(json.dumps(ledger, indent=2), encoding="utf-8")
@@ -183,7 +192,7 @@ def run(folder, approve_live):
                 directory.mkdir(parents=True)
                 files = oracle.source_files(task)
                 for name, text in files.items():
-                    (directory / name).write_text(text, encoding="utf-8")
+                    (directory / name).write_bytes(text.encode("utf-8"))
 
                 async def approve(kernel):
                     candidate = await custody.create_capture(
@@ -249,8 +258,8 @@ def run(folder, approve_live):
                 before = call(client, counts)
                 # Reserve worst-case room before a two-call turn. Existing checks fence each call.
                 if (
-                    before["provider_requests"] + 2 > 180
-                    or before["reserved_units"] + 60000 > 2000000
+                    before["provider_requests"] + prior_requests + 2 > 180
+                    or before["reserved_units"] + prior_requests * 30000 + 60000 > 2000000
                 ):
                     raise RuntimeError("Predeclared global envelope exhausted")
                 request = {
@@ -414,5 +423,8 @@ if __name__ == "__main__":
     parser.add_argument("directory", type=Path)
     parser.add_argument("--approve-live", action="store_true")
     parser.add_argument("--replay-only", action="store_true")
+    parser.add_argument("--previous-ledger", type=Path)
     args = parser.parse_args()
-    replay(args.directory) if args.replay_only else run(args.directory, args.approve_live)
+    replay(args.directory) if args.replay_only else run(
+        args.directory, args.approve_live, args.previous_ledger
+    )
