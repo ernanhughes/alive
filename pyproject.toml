@@ -30,6 +30,10 @@ dev = ["pytest>=8", "pytest-asyncio>=0.25", "ruff>=0.11"]
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests", "alive/intelligence/tests"]
+markers = ["slow: long-running suite (excluded from bare pytest default; run explicitly)"]
+# Fast default: bare `pytest` runs only fast tests (~1 min target).
+# Full qualification: `pytest -o addopts=""` or `python scripts/test_run.py --mode full`.
+addopts = ["-m", "not slow"]
 [tool.ruff]
 target-version = "py313"
 line-length = 100
