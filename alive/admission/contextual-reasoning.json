@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "name": "owner-contextual-reasoning",
+  "version": 1,
+  "title": "Contextual reasoning",
+  "description": "Read-only reasoning and revision from approved source and frozen conversation evidence.",
+  "inputs": {
+    "source_ref": {
+      "type": "string"
+    },
+    "paths": {
+      "type": "array"
+    },
+    "objective": {
+      "type": "string"
+    },
+    "context_ref": {
+      "type": "string"
+    },
+    "context_sha256": {
+      "type": "string"
+    },
+    "model_input_sha256": {
+      "type": "string"
+    }
+  },
+  "limits": {
+    "max_wall_seconds": 180,
+    "max_model_calls": 1,
+    "max_total_output_tokens": 1536
+  },
+  "stages": [
+    {
+      "id": "reason",
+      "title": "Reason",
+      "type": "pi_agent",
+      "operation": "context.reason",
+      "capability_version": "1.0.0",
+      "capability_sha256": "473b75ddc07a86e23173ecc048143aac5f852fd4b3b5eaab2ba9e4373891b14a",
+      "inputs": {
+        "source_ref": "$input.source_ref",
+        "paths": "$input.paths",
+        "objective": "$input.objective",
+        "context_ref": "$input.context_ref",
+        "context_sha256": "$input.context_sha256",
+        "model_input_sha256": "$input.model_input_sha256"
+      },
+      "output_schema": {
+        "properties": {
+          "answer": {
+            "type": "object"
+          },
+          "snapshot": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "answer",
+          "snapshot"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 120,
+        "max_output_tokens": 1536
+      }
+    },
+    {
+      "id": "validate",
+      "title": "Validate",
+      "type": "validation",
+      "operation": "context.validate",
+      "capability_version": "1.0.0",
+      "capability_sha256": "d71544db53d371ebc241a804641226bb99688987152515be87020cb507b8e681",
+      "inputs": {
+        "source_ref": "$input.source_ref",
+        "context_ref": "$input.context_ref",
+        "answer": "$stage.reason.answer",
+        "snapshot": "$stage.reason.snapshot"
+      },
+      "output_schema": {
+        "properties": {
+          "result": {
+            "type": "object"
+          },
+          "assessment": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "result",
+          "assessment"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      },
+      "depends_on": [
+        "reason"
+      ]
+    },
+    {
+      "id": "record",
+      "title": "Retain the proposal",
+      "type": "deterministic",
+      "operation": "result.record",
+      "capability_version": "1.0.0",
+      "capability_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+      "inputs": {
+        "result": "$stage.validate.result",
+        "assessment": "$stage.validate.assessment"
+      },
+      "output_schema": {
+        "properties": {
+          "artifact_id": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "sha256"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      },
+      "depends_on": [
+        "validate"
+      ]
+    }
+  ]
+}

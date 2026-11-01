@@ -12,7 +12,7 @@ from sqlalchemy import select
 from alive.admission import service
 from alive.admission.contracts import ReviewRequest
 from alive.admission.models import Admission
-from alive.admission.profiles import ANALYSIS, INSPECTION, INTENT
+from alive.admission.profiles import ANALYSIS, CONTEXTUAL, INSPECTION, INTENT
 from alive.bespoke.recipes import recipe_hash
 from alive.cognitive_models import ModelInvocation
 from alive.intent import service as intent
@@ -110,7 +110,11 @@ def scope(terms):
                 "idempotency_key",
             }
         },
-        "inputs": {k: v for k, v in grant["inputs"].items() if k != "objective"},
+        "inputs": {
+            k: v
+            for k, v in grant["inputs"].items()
+            if k not in ("objective", "context_ref", "context_sha256", "model_input_sha256")
+        },
         "disclosure": {
             k: v
             for k, v in disclosure.items()
@@ -118,6 +122,10 @@ def scope(terms):
             not in {
                 "goal_characters",
                 "reserved_request_bytes",
+                "context_sha256",
+                "context_bytes",
+                "conversation_ref",
+                "model_input_sha256",
             }
         },
         "recipe_sha256": terms["candidate"]["recipe_sha256"],
@@ -172,7 +180,12 @@ async def consent(session, kernel, ref, *, active=True):
 
 async def prepare(kernel, request):
     reviews = {}
-    for profile in (INTENT, ANALYSIS, INSPECTION):
+    profiles = (
+        (INTENT, ANALYSIS, INSPECTION, CONTEXTUAL)
+        if request.contextual
+        else (INTENT, ANALYSIS, INSPECTION)
+    )
+    for profile in profiles:
         reviews[profile] = await service.prepare(
             kernel,
             ReviewRequest(
@@ -208,6 +221,11 @@ async def prepare(kernel, request):
             "host. Local prompts/results persist. Read-only inspection/analysis is automatic. "
             "Reservations stay charged after failures; currency cost is unknown.",
         }
+        if request.contextual:
+            terms["disclosure"] += (
+                " In a linked conversation, bounded prior owner statements, model findings and "
+                "revisions from this exact source may also be disclosed to the same destination."
+            )
         event = kernel.add_event(
             session,
             PREPARED,
@@ -264,6 +282,20 @@ async def validate_receipt(session, kernel, row, receipt):
         and scope(row.terms) == terms["profiles"].get(service.profile_of(row.terms).id),
         "standing_scope_changed",
     )
+    if service.profile_of(row.terms).id == CONTEXTUAL:
+        from alive.continuity.service import frozen
+
+        grant = row.terms["proposed_grant_data"]
+        require(bool(grant["inputs"]["context_ref"]), "frozen_context_required")
+        snapshot = await frozen(
+            session,
+            kernel,
+            grant["inputs"]["context_ref"],
+            row.terms["source"]["resources"],
+            row.principal,
+            consent_ref=current["id"],
+        )
+        require(digest(snapshot) == grant["inputs"]["context_sha256"], "context_snapshot_integrity")
 
 
 async def authorize(kernel, ref, review):
@@ -313,13 +345,18 @@ async def authorize(kernel, ref, review):
 
 async def ask(app, request):
     kernel = app.state.kernel
+    request_key = (
+        digest([request.conversation_ref, request.idempotency_key])[:60]
+        if request.conversation_ref
+        else request.idempotency_key
+    )
     async with kernel.db.sessions() as session:
         current = await consent(session, kernel, request.consent_ref, active=False)
         existing = await session.scalar(
             select(Admission).where(
                 Admission.instance_id == kernel.instance_id,
                 Admission.principal == current["terms"]["principal"],
-                Admission.idempotency_key == f"live:{request.idempotency_key}:intent",
+                Admission.idempotency_key == f"live:{request_key}:intent",
             )
         )
         if existing and await followup_outcome(session, kernel, existing.id):
@@ -333,6 +370,11 @@ async def ask(app, request):
             return await exchange(kernel, existing.id)
         require(current["state"] == "approved", "standing_consent_required_expired_or_revoked")
     terms = current["terms"]
+    context_ref, continuation = None, False
+    if request.conversation_ref:
+        from alive.continuity.service import prepare_turn
+
+        context_ref, continuation = await prepare_turn(kernel, request, current)
 
     async def run(profile, suffix):
         review = await service.prepare(
@@ -344,15 +386,22 @@ async def ask(app, request):
                 recipe_sha256=terms["profiles"][profile]["recipe_sha256"],
                 objective={"kind": "inspect_implementation", "requested_outcome": request.goal},
                 paths=terms["paths"],
-                idempotency_key=f"live:{request.idempotency_key}:{suffix}",
+                idempotency_key=f"live:{request_key}:{suffix}",
+                context_ref=context_ref if profile == CONTEXTUAL else None,
             ),
         )
+        if request.conversation_ref:
+            from alive.continuity.service import link
+
+            await link(kernel, request.conversation_ref, review["id"])
         # A retained terminal run is history, even after consent expires. No restart/retry.
         if not review["run"]:
             await authorize(kernel, request.consent_ref, review)
         return await service.start(app, review["id"], review["review_sha256"])
 
-    interpreted = await run(INTENT, "intent")
+    interpreted = await run(CONTEXTUAL if continuation else INTENT, "intent")
+    if continuation:
+        return await exchange(kernel, interpreted["id"])
     if interpreted["run"]["status"] != "COMPLETED":
         return await exchange(kernel, interpreted["id"])
     recommendation = (await intent.compose(kernel, interpreted["id"]))["record"]
@@ -388,6 +437,16 @@ async def exchange(kernel, admission_id):
             )
         )
         recommendation = await intent.stored(session, kernel, row.id)
+        from alive.continuity import service as continuity
+
+        membership = await session.scalar(
+            select(Event).where(
+                Event.instance_id == kernel.instance_id,
+                Event.source == continuity.SOURCE,
+                Event.event_type == continuity.LINKED,
+                Event.payload["admission_id"].as_string() == row.id,
+            )
+        )
         blocked = await followup_outcome(session, kernel, row.id)
         inquiries = [r.terms["proposed_grant_data"]["investigation_id"] for r in (row, result) if r]
         calls = (
@@ -488,7 +547,18 @@ async def exchange(kernel, admission_id):
             "followup": blocked.payload if blocked else None,
             "report": None,
             "inspection": None,
+            "conversation_ref": membership.correlation_id if membership else None,
+            "context": None,
+            "answer": None,
         }
+        if service.profile_of(row.terms).id == CONTEXTUAL:
+            context_ref = row.terms["proposed_grant_data"]["inputs"]["context_ref"]
+            value["context"] = await continuity.frozen(
+                session, kernel, context_ref, row.terms["source"]["resources"], row.principal
+            )
+            retained = await continuity.artifact(session, kernel, row)
+            if retained:
+                value["answer"] = retained["result"] | {"artifact_sha256": retained["sha256"]}
         if result and service.profile_of(result.terms).id == INSPECTION:
             from alive.workflows.models import WorkflowRun
 
@@ -546,4 +616,10 @@ async def listing(kernel):
             )
         ).all()
         configs = [await consent(session, kernel, e.id, active=False) for e in setups]
-    return {"consents": configs, "exchanges": [await exchange(kernel, r.id) for r in rows]}
+    from alive.continuity.service import listing as conversations
+
+    return {
+        "consents": configs,
+        "exchanges": [await exchange(kernel, r.id) for r in rows],
+        "conversations": await conversations(kernel),
+    }
