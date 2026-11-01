@@ -24,8 +24,38 @@ interface Consent {
     >;
   };
 }
+interface SelectionView {
+  policy: string;
+  decision: "selected" | "none" | "abstained" | "refused";
+  no_lesson_reason: string | null;
+  task_mechanisms: string[];
+  override: string | null;
+  received: string[];
+  reported_used: string[];
+  selected: { item_id: string; lesson_id: string; version: number; tier: string }[];
+  candidates: {
+    lesson_id: string;
+    status: string;
+    reasons: string[];
+    overlap: string[];
+    tier: string;
+    supporting_outcomes: { experience_id: string; task_id: string; passed: boolean }[];
+  }[];
+  context_bytes: number;
+  independent_outcome: { passed: boolean; verifier: string; semantic?: string | null } | null;
+}
+interface Lesson {
+  id: string;
+  lesson_id?: string;
+  state: string;
+  qualification: string;
+  withdrawal?: string;
+  proposal: { strategy: string };
+  utility?: { state: string; paired_gains: number; paired_losses: number; applications: number };
+}
 interface Exchange {
   id: string;
+  selection?: SelectionView | null;
   goal: string;
   status: string;
   availability: string;
@@ -89,8 +119,106 @@ interface History {
   conversations?: Conversation[];
   adaptation?: {
     experiences: { id: string; admission_id: string; passed: boolean; verifier: string }[];
-    lessons: { id: string; state: string; qualification: string; proposal: { strategy: string } }[];
+    lessons: Lesson[];
   };
+}
+
+const NO_LESSON: Record<string, string> = {
+  no_lessons_available: "No reusable lesson has been approved yet.",
+  no_applicable_lesson:
+    "No stored lesson matched this task's failure mechanisms, so ALIVE reasoned from the evidence alone.",
+  task_mechanisms_unavailable:
+    "ALIVE could not tell which failure mechanisms apply, so it used no lesson.",
+  authorization_scope:
+    "A matching lesson exists but is outside this owner or model scope, so it was not used.",
+  control_supplies_no_experience: "This request ran as a no-experience control.",
+};
+const EXCLUDED: Record<string, string> = {
+  no_mechanism_overlap: "different mechanism",
+  unscoped_lesson_without_mechanisms: "no declared scope",
+  not_active_or_withdrawn: "withdrawn or inactive",
+  empirically_demoted: "demoted on counterevidence",
+  empirically_contradicted: "contradicted by measured outcomes",
+  dominated_by_selected_lesson: "covered by a better lesson",
+  owner_changed: "different owner",
+  destination_changed: "different model destination",
+};
+
+export function standing(lesson?: Lesson) {
+  if (!lesson) return "unknown";
+  if (lesson.state === "rejected")
+    return lesson.withdrawal ? "withdrawn by owner" : "rejected on counterevidence";
+  const u = lesson.utility?.state;
+  if (u === "demoted" || u === "contradicted") return "contradicted by measured outcomes";
+  if (u === "useful") return "useful (measured gain)";
+  return "provisional (no measured benefit yet)";
+}
+
+function reason(code: string) {
+  return EXCLUDED[code] || code.replace(/^excluded_mechanism_present:/, "excluded: ");
+}
+
+function SelectionNote({ selection, lessons }: { selection: SelectionView; lessons: Lesson[] }) {
+  const byId = new Map<string, Lesson>(
+    lessons.flatMap((l) => [[l.id, l] as [string, Lesson], [l.lesson_id || l.id, l] as [string, Lesson]]),
+  );
+  const supplied = selection.selected;
+  return (
+    <section aria-label="Learned context decision">
+      <p>
+        <strong>Learned context:</strong>{" "}
+        {supplied.length
+          ? `${supplied.length} lesson(s) supplied`
+          : "none supplied"}
+        {selection.policy.startsWith("selective") ? "" : ` · control (${selection.policy})`}
+      </p>
+      {!supplied.length && (
+        <p>
+          {NO_LESSON[selection.no_lesson_reason || ""] ||
+            selection.no_lesson_reason ||
+            "No lesson was supplied."}
+        </p>
+      )}
+      {supplied.map((s) => {
+        const lesson = byId.get(s.lesson_id);
+        return (
+          <p key={s.item_id}>
+            Lesson v{s.version} ({s.tier}): {lesson?.proposal.strategy || s.lesson_id}{" "}
+            <small>now {standing(lesson)}</small>
+          </p>
+        );
+      })}
+      {!!supplied.length && (
+        <p>
+          {selection.reported_used.length
+            ? "ALIVE reported using it (a self-report, not proof)."
+            : "ALIVE did not report using it."}
+        </p>
+      )}
+      {selection.independent_outcome && (
+        <p>
+          Independent check:{" "}
+          {selection.independent_outcome.passed ? "passed" : "needs correction"} ·{" "}
+          {selection.independent_outcome.verifier}
+        </p>
+      )}
+      {selection.override && <p role="note">Evaluation intervention: {selection.override}</p>}
+      {!!selection.candidates.length && (
+        <details>
+          <summary>
+            Considered {selection.candidates.length} lesson(s) · {selection.context_bytes} bytes sent
+          </summary>
+          {selection.candidates.map((c) => (
+            <p key={c.lesson_id}>
+              <strong>{c.status}</strong>: {byId.get(c.lesson_id)?.proposal.strategy || c.lesson_id}
+              {c.reasons.length ? ` — ${c.reasons.map(reason).join("; ")}` : ""}
+              {c.overlap.length ? ` — matched ${c.overlap.join(", ")}` : ""}
+            </p>
+          ))}
+        </details>
+      )}
+    </section>
+  );
 }
 
 export function LivePane({ token }: { token: string }) {
@@ -477,7 +605,7 @@ function LiveAI({ token }: { token: string }) {
           <summary>Reusable lessons ({history.adaptation.lessons.length})</summary>
           {history.adaptation.lessons.map((lesson) => (
             <p key={lesson.id}>
-              <strong>{lesson.state}</strong>: {lesson.proposal.strategy}{" "}
+              <strong>{standing(lesson)}</strong>: {lesson.proposal.strategy}{" "}
               <small>{lesson.qualification} · {lesson.id}</small>
             </p>
           ))}
@@ -496,6 +624,12 @@ function LiveAI({ token }: { token: string }) {
                 {(exchange.result_admission || exchange.admission).terms.profile ||
                   "approved-repository-inspection"}
               </p>
+              {exchange.selection && (
+                <SelectionNote
+                  selection={exchange.selection}
+                  lessons={history.adaptation?.lessons || []}
+                />
+              )}
               {!!exchange.answer.lesson_ids_used?.length && (
                 <p>Strategies used: {exchange.answer.lesson_ids_used.join(", ")}</p>
               )}

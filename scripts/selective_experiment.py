@@ -90,13 +90,15 @@ def extraction_goal(task, experience):
         "lesson_proposal field with family, strategy, applies_when, not_when, "
         "supporting_experience_ids (cite that experience ID), mechanisms (the closed-vocabulary "
         "failure mechanisms it addresses), excluded_mechanisms (mechanisms it must not be applied "
-        "to) and uncertainty. Do not copy answers, function names or source text."
+        "to) and uncertainty. The lesson_proposal field must be present and not null; the answer "
+        "field may be one short sentence. Do not copy answers, function names or source text."
     )
 
 
 def compact(value):
     result = value.get("result_admission") or {}
-    run = result.get("run") or {}
+    # A continuation turn runs on the exchange's own admission rather than a result admission.
+    run = (result or value.get("admission") or {}).get("run") or {}
     return {
         k: value.get(k)
         for k in (
@@ -193,12 +195,27 @@ def run(folder, approve_live, *, through="ablate", open_heldout=False, limit_tra
     if path.exists():
         ledger = json.loads(path.read_text(encoding="utf-8"))
         assert ledger["corpus_lock"] == lock and ledger["plan"] == plan(corpus)
-        subprocess.run(
-            ["git", "diff", "--exit-code", ledger["implementation_sha"], "--", "alive"], check=True
-        )
+        drift = subprocess.run(
+            ["git", "diff", "--exit-code", ledger["implementation_sha"], "--", "alive"]
+        ).returncode
+        if drift and ledger["evaluation"]:
+            raise RuntimeError("alive/ changed after evaluated turns began; start a new run")
         ledger.setdefault("resumptions", []).append(
-            {"harness_sha": head, "completed_evaluations": len(ledger["evaluation"])}
+            {
+                "harness_sha": head,
+                "completed_evaluations": len(ledger["evaluation"]),
+                # Allowed only while training is the sole completed phase: evaluated arms must
+                # all run on one implementation. The change is disclosed, never hidden.
+                "rebased_implementation_from": ledger["implementation_sha"] if drift else None,
+                "alive_diff": subprocess.check_output(
+                    ["git", "diff", "--stat", ledger["implementation_sha"], "--", "alive"],
+                    text=True,
+                )
+                if drift
+                else None,
+            }
         )
+        ledger["implementation_sha"] = head
     else:
         ledger = {
             "schema": "selective-live/v1",

@@ -84,22 +84,26 @@ def contract_compliance(output, case_ids):
 def typed_references(output, items):
     """Validate adaptation references by their actual item type.
 
-    A fabricated ID, or an ID that is not an adaptation item at all, is refused. A real supplied
-    historical record reported as a strategy (or the reverse) keeps the answer, is recorded under
-    its actual type and is never credited as strategy use.
+    An ID that was never supplied is fabricated and refuses the turn. A real supplied item
+    reported under the wrong type (a historical record as a strategy, a feedback record as
+    history, ...) keeps the answer and is recorded under its actual type. Only a supplied
+    ``learned_strategy`` is ever credited as strategy use.
     """
-    actual = {i["id"]: i["source_type"] for i in items if i["source_type"] in ADAPTATION_TYPES}
-    strategies, historical, normalized = [], [], []
+    actual = {i["id"]: i["source_type"] for i in items}
+    strategies, historical, other, normalized = [], [], [], []
     for claimed, refs, refusal in (
         ("learned_strategy", output.lesson_ids_used, "lesson_not_supplied"),
         ("historical_experience", output.historical_ids_used, "historical_reference_not_supplied"),
     ):
         for ref in refs:
             require(ref in actual, refusal)
-            (strategies if actual[ref] == "learned_strategy" else historical).append(ref)
-            if actual[ref] != claimed:
-                normalized.append({"id": ref, "claimed_as": claimed, "actual": actual[ref]})
-    return list(dict.fromkeys(strategies)), list(dict.fromkeys(historical)), normalized
+            kind = actual[ref]
+            bucket = {"learned_strategy": strategies, "historical_experience": historical}
+            bucket.get(kind, other).append(ref)
+            if kind != claimed:
+                normalized.append({"id": ref, "claimed_as": claimed, "actual": kind})
+    unique = [list(dict.fromkeys(group)) for group in (strategies, historical, other)]
+    return *unique, normalized
 
 
 async def validate_answer(ctx):
@@ -107,7 +111,7 @@ async def validate_answer(ctx):
     snapshot = ctx.inputs["snapshot"]
     ids = {item["id"] for item in snapshot["items"]}
     require(set(output.recalled_item_ids) <= ids, "context_reference_not_supplied")
-    strategies, historical, normalized = typed_references(output, snapshot["items"])
+    strategies, historical, other, normalized = typed_references(output, snapshot["items"])
     for item in snapshot["items"]:
         require(digest(item["content"]) == item["content_sha256"], "context_item_integrity")
     if output.revision:
@@ -121,6 +125,7 @@ async def validate_answer(ctx):
     citations = [check_evidence(e, files) for e in output.citations]
     compliance = contract_compliance(output, review_cases(files))
     value = output.model_dump(mode="json") | {
+        "recalled_item_ids": list(dict.fromkeys([*output.recalled_item_ids, *other])),
         "lesson_ids_used": strategies,
         "historical_ids_used": historical,
         "schema": "contextual-answer/v2",

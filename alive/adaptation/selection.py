@@ -243,13 +243,13 @@ async def choose(session, kernel, principal, destination, families, task_mechani
         "candidates": candidates,
         "selected": [
             {
-                "item_id": i["id"],
-                "lesson_id": i["content"]["lesson_id"],
-                "version": i["content"]["version"],
+                "item_id": c["row_id"],
+                "lesson_id": c["lesson_id"],
+                "version": c["version"],
                 "content_sha256": i["content_sha256"],
-                "tier": next(c["tier"] for c in chosen if c["row_id"] == i["id"]),
+                "tier": c["tier"],
             }
-            for i in items
+            for c, i in zip(chosen, items, strict=True)
         ],
         "context_bytes": len(json.dumps(items, ensure_ascii=False).encode()),
         "items_sha256": digest(items),
@@ -275,7 +275,7 @@ def legacy_record(mode, items, families, task_mechanisms):
         "selected": [
             {
                 "item_id": i["id"],
-                "lesson_id": i["id"],
+                "lesson_id": i["admission_id"],
                 "version": i["content"].get("version"),
                 "content_sha256": i["content_sha256"],
                 "tier": "control",

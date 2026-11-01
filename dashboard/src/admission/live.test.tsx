@@ -391,3 +391,132 @@ it("reuses the same request identity after losing a first-turn response", async 
     mock.mock.calls.filter((c) => c[0] === "/admissions/live/conversations"),
   ).toHaveLength(1);
 });
+
+function selectionHistory(selection: unknown, lessons: unknown[]) {
+  const contextualConsent = {
+    ...consent,
+    terms: {
+      ...consent.terms,
+      profiles: { "contextual-reasoning": { disclosure: {} } },
+    },
+  };
+  const retained = {
+    ...exchange,
+    conversation_ref: "conversation-1",
+    report: null,
+    context: { items: [], omitted: [] },
+    answer: {
+      answer: "Reviewed against the supplied source.",
+      recalled_item_ids: [],
+      citations: [],
+      uncertainty: [],
+      revision: null,
+      lesson_ids_used: [],
+    },
+    selection,
+  };
+  const base = backend();
+  mock.mockImplementation(async (path, token, body, method) => {
+    if (path === "/admissions/live")
+      return {
+        consents: [contextualConsent],
+        exchanges: [retained],
+        conversations: [
+          {
+            id: "conversation-1",
+            title: "Review",
+            consent_ref: consent.id,
+            admission_ids: [retained.id],
+          },
+        ],
+        adaptation: { experiences: [], lessons },
+      };
+    return base(path);
+  });
+}
+
+const lesson = {
+  id: "row-1",
+  lesson_id: "lesson-1",
+  state: "active",
+  qualification: "provisional",
+  proposal: { strategy: "Check negative inputs against floor semantics." },
+  utility: { state: "unproven", paired_gains: 0, paired_losses: 0, applications: 0 },
+};
+
+it("shows which lesson was supplied, why, its standing, the self-report and the independent outcome", async () => {
+  selectionHistory(
+    {
+      policy: "selective-adaptation/v1",
+      decision: "selected",
+      no_lesson_reason: null,
+      task_mechanisms: ["numeric.signed_values"],
+      override: null,
+      received: ["row-1"],
+      reported_used: ["row-1"],
+      selected: [{ item_id: "row-1", lesson_id: "lesson-1", version: 3, tier: "unproven" }],
+      candidates: [
+        {
+          lesson_id: "lesson-1",
+          status: "selected",
+          reasons: [],
+          overlap: ["numeric.signed_values"],
+          tier: "unproven",
+          supporting_outcomes: [],
+        },
+        {
+          lesson_id: "lesson-2",
+          status: "excluded",
+          reasons: ["no_mechanism_overlap"],
+          overlap: [],
+          tier: "unproven",
+          supporting_outcomes: [],
+        },
+      ],
+      context_bytes: 612,
+      independent_outcome: { passed: true, verifier: "frozen-executable-fixture/v2" },
+    },
+    [lesson],
+  );
+  render(<LivePane token="token" />);
+  await screen.findByText(/1 lesson\(s\) supplied/);
+  expect(screen.getByText(/Lesson v3 \(unproven\)/)).toBeTruthy();
+  expect(screen.getByText(/now provisional \(no measured benefit yet\)/)).toBeTruthy();
+  expect(screen.getByText(/self-report, not proof/)).toBeTruthy();
+  expect(screen.getByText(/Independent check: passed/)).toBeTruthy();
+  expect(screen.getByText(/different mechanism/)).toBeTruthy();
+});
+
+it("explains a deliberate decision to use no lesson and shows demoted standing", async () => {
+  selectionHistory(
+    {
+      policy: "selective-adaptation/v1",
+      decision: "none",
+      no_lesson_reason: "no_applicable_lesson",
+      task_mechanisms: ["numeric.rounding"],
+      override: null,
+      received: [],
+      reported_used: [],
+      selected: [],
+      candidates: [
+        {
+          lesson_id: "lesson-1",
+          status: "excluded",
+          reasons: ["empirically_demoted"],
+          overlap: ["numeric.rounding"],
+          tier: "unproven",
+          supporting_outcomes: [],
+        },
+      ],
+      context_bytes: 2,
+      independent_outcome: null,
+    },
+    [{ ...lesson, utility: { state: "demoted", paired_gains: 0, paired_losses: 1, applications: 1 } }],
+  );
+  render(<LivePane token="token" />);
+  await screen.findByText(/none supplied/);
+  expect(screen.getByText(/reasoned from the evidence alone/)).toBeTruthy();
+  expect(screen.getAllByText(/contradicted by measured outcomes/).length).toBeGreaterThan(0);
+  expect(screen.getByText(/demoted on counterevidence/)).toBeTruthy();
+  expect(screen.queryByText(/Independent check/)).toBeNull();
+});

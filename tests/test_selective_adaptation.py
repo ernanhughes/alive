@@ -480,7 +480,19 @@ def test_typed_references_keep_real_ids_and_refuse_fabrications(selective):
     sel.script.strategies = lambda items: []
     reverse = ask(sel, "Review this arithmetic code", mode="learned")["answer"]
     assert len(reverse["lesson_ids_used"]) == 1 and reverse["historical_ids_used"] == []
-    # Fabricated IDs and non-adaptation IDs still fail the turn.
+    # A real supplied record of another type is never credited as strategy use, but the answer
+    # is kept; its ID is recorded as recalled evidence instead.
+    sel.script.strategies = lambda items: [
+        i["id"] for i in items if i["source_type"] == "owner_goal"
+    ]
+    sel.script.historical = lambda items: []
+    ref = start(sel)
+    ask(sel, "Review this arithmetic code", ref=ref)
+    typed = ask(sel, "Why that problem?", ref=ref)["answer"]
+    assert typed["lesson_ids_used"] == [] and typed["reference_integrity"]["status"] == "normalized"
+    assert typed["reference_integrity"]["normalized"][0]["actual"] == "owner_goal"
+    assert typed["recalled_item_ids"]
+    # Fabricated IDs, and IDs of things that are not items of this turn, still fail the turn.
     for forged in (uid(), lesson):
         sel.script.strategies = lambda items, forged=forged: [forged]
         sel.script.historical = lambda items: []
@@ -619,3 +631,37 @@ def test_oracle_v2_measures_exact_multifile_capture_and_a_refused_run(selective,
     assert failed and row["end_to_end"] is False and row["no_validated_artifact"] is True
     assert row["dimensions"]["semantic"] == "correct"
     assert row["dimensions"]["reference_integrity"] == "invalid"
+
+
+def test_evaluation_override_is_labelled_cannot_bypass_authorization_and_resets(selective):
+    sel = selective
+    sel.script.mechanisms = ["numeric.rounding"]
+    unrelated, _ = call(sel.client, seed, sel, ["authz.default_deny"], family="authorization")
+    foreign, _ = call(sel.client, seed, sel, ["numeric.rounding"], principal="someone-else")
+
+    async def forced(kernel, ids):
+        async with kernel.db.sessions() as session:
+            with selection.evaluation_override(ids, "ablation:irrelevant"):
+                return await selection.choose(
+                    session,
+                    kernel,
+                    sel.principal,
+                    sel.destination,
+                    ["numeric"],
+                    ["numeric.rounding"],
+                )
+
+    items, record = call(sel.client, forced, [unrelated])
+    assert [i["content"]["lesson_id"] for i in items] and record["decision"] == "selected"
+    assert record["override"] == "ablation:irrelevant"
+    assert record["selected"][0]["lesson_id"] == unrelated  # relevance deliberately ignored
+    # Authorization is never bypassed, even by the evaluation intervention.
+    with pytest.raises(Refused, match="override_lesson_not_authorized"):
+        call(sel.client, forced, [foreign])
+    # Forcing "no lesson" yields an empty, labelled selection, and the override does not persist.
+    items, record = call(sel.client, forced, [])
+    assert items == [] and record["override"] == "ablation:irrelevant"
+    assert selection._override == {"lessons": None, "reason": None}
+    normal = ask(sel, "Review this rounding code")
+    # An otherwise applicable lesson owned by someone else is refused, not silently ignored.
+    assert normal["selection"]["override"] is None and normal["selection"]["decision"] == "refused"
