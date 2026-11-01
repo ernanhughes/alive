@@ -4,13 +4,20 @@ from fastapi import APIRouter, Depends, HTTPException, Path, Query
 from sqlalchemy import select
 
 from alive.admission import live, service
-from alive.admission.contracts import Confirmation, LiveGoal, LiveSetup, ReviewRequest
+from alive.admission.contracts import (
+    Confirmation,
+    ConversationRequest,
+    LiveGoal,
+    LiveSetup,
+    ReviewRequest,
+)
 from alive.admission.models import Admission
 from alive.admission.profiles import PROFILES
 from alive.bespoke.recipes import recipe_hash
 from alive.intent import service as intent_service
 from alive.sources import custody
 from alive.sources.models import SourceApproval, SourceCapture
+from alive.workflows.context import Refused
 
 
 def router(app, ready):
@@ -19,6 +26,15 @@ def router(app, ready):
     async def safe(work):
         try:
             return await work
+        except Refused as error:
+            category = str(error)
+            if category.isidentifier() and category.startswith(
+                ("context", "conversation", "essential_context")
+            ):
+                raise HTTPException(409, category) from None
+            raise HTTPException(
+                409, "Admission unavailable, unapproved, expired or changed"
+            ) from None
         except (ValueError, KeyError, TypeError):
             raise HTTPException(
                 409, "Admission unavailable, unapproved, expired or changed"
@@ -28,6 +44,7 @@ def router(app, ready):
         "approved-repository-inspection",
         "approved-repository-analysis",
         "intent-interpretation",
+        "contextual-reasoning",
     ]
 
     @api.get("/profile")
@@ -104,6 +121,12 @@ def router(app, ready):
     @api.post("/live/ask")
     async def live_ask(request: LiveGoal):
         return await safe(live.ask(app, request))
+
+    @api.post("/live/conversations")
+    async def new_conversation(request: ConversationRequest):
+        from alive.continuity.service import create
+
+        return await safe(create(app.state.kernel, request.consent_ref, request.title))
 
     @api.get("/live/{admission_id}")
     async def live_exchange(admission_id: str = Path(max_length=36)):

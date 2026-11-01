@@ -10,7 +10,7 @@ from types import SimpleNamespace
 from sqlalchemy import select
 
 from alive.admission.models import Admission
-from alive.admission.profiles import ANALYSIS, INSPECTION, INTENT, PROFILES, disclose
+from alive.admission.profiles import ANALYSIS, CONTEXTUAL, INSPECTION, INTENT, PROFILES, disclose
 from alive.bespoke.recipes import recipe_hash
 from alive.bespoke.selector import evaluate
 from alive.capabilities.bindings import binding_record, digest, registry_for
@@ -124,6 +124,17 @@ async def current_terms(session, kernel, row):
         "admission_no_longer_eligible",
     )
     if profile.model:
+        snapshot = None
+        if profile.id == CONTEXTUAL:
+            from alive.continuity.service import frozen
+
+            snapshot = await frozen(
+                session,
+                kernel,
+                proposed.inputs["context_ref"],
+                terms["source"]["resources"],
+                row.principal,
+            )
         # The destination, model, role contract and size ceilings are part of what was approved.
         current = disclose(
             profile,
@@ -132,6 +143,7 @@ async def current_terms(session, kernel, row):
             source,
             proposed.inputs["paths"],
             terms["objective"]["requested_outcome"],
+            snapshot=snapshot,
         )
         require(
             current == terms["model_disclosure"]
@@ -194,9 +206,10 @@ async def prepare(kernel, request):
             )
         )
         # The inspection profile's retry identity predates profiles; keep it byte-identical.
-        request_hash = digest(
-            request.model_dump(mode="json", exclude=None if profile.model else {"profile"})
-        )
+        excluded = set() if profile.model else {"profile"}
+        if request.context_ref is None:
+            excluded.add("context_ref")
+        request_hash = digest(request.model_dump(mode="json", exclude=excluded))
         if existing:
             require(existing.request_sha256 == request_hash, "admission_retry_conflict")
             return await view(session, kernel, existing)
@@ -224,6 +237,15 @@ async def prepare(kernel, request):
         inputs = {"source_ref": source.source_ref, "paths": paths}
         if profile.model:
             inputs["objective"] = request.objective.requested_outcome
+        snapshot = None
+        if profile.id == CONTEXTUAL:
+            from alive.continuity.service import frozen
+
+            inputs["context_ref"] = request.context_ref or ""
+            snapshot = await frozen(
+                session, kernel, inputs["context_ref"], resources, approval.approved_by
+            )
+            inputs["context_sha256"] = owner_digest(snapshot)
         if profile.reads_files:
             cap = registry_for(kernel).get("repository.inspect", "1.1.0")
             validate(
@@ -243,12 +265,22 @@ async def prepare(kernel, request):
             },
         }
         model_terms = (
-            disclose(profile, kernel, control, source, paths, request.objective.requested_outcome)
+            disclose(
+                profile,
+                kernel,
+                control,
+                source,
+                paths,
+                request.objective.requested_outcome,
+                snapshot=snapshot,
+            )
             if profile.model
             else None
         )
         if profile.id == INTENT:
             inputs["catalogue_sha256"] = model_terms["catalogue_sha256"]
+        if profile.id == CONTEXTUAL:
+            inputs["model_input_sha256"] = model_terms["model_input_sha256"]
         expiry = min(now() + timedelta(seconds=request.ttl_seconds), aware(approval.expires_at))
         proposed = Grant(
             principal=approval.approved_by,

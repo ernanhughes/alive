@@ -142,7 +142,27 @@ def intent_binding(call, stage, grant):
     )
 
 
-TYPED_BINDINGS = {ANALYSIS_ROLE: analysis_binding, INTENT_ROLE: intent_binding}
+def contextual_binding(call, stage, grant):
+    from alive.continuity.contracts import INSTRUCTIONS, role_contract
+
+    stored, context = call.input_json, call.input_json["context"]
+    return (
+        stored["instructions"] == INSTRUCTIONS
+        and grant.role_contracts.get(call.role) == role_contract()
+        and stored.get("context_sha256") == digest(context)
+        and digest(context) == grant.inputs["model_input_sha256"]
+        and context["user_goal"] == grant.inputs["objective"]
+        and digest(context["conversation"]) == grant.inputs["context_sha256"]
+        and context["source"]["source"]["source_sha256"]
+        == grant.capabilities[stage.stage_id]["resources"]["content_sha256"]
+    )
+
+
+TYPED_BINDINGS = {
+    ANALYSIS_ROLE: analysis_binding,
+    INTENT_ROLE: intent_binding,
+    "contextual_reasoner": contextual_binding,
+}
 
 
 async def result_event(session, stage):
