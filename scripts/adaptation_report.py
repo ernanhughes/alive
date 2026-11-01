@@ -99,10 +99,32 @@ def summary(ledger):
         p for p in result["paired_heldout"] if p["C_minus_A"] > 0 or p["C_minus_B"] > 0
     ]
     result["restart_replay"] = ledger.get("restart_replay")
+    result["post_evaluation_guards"] = ledger.get("post_evaluation_guards")
     result["training_experiences"] = len(ledger.get("frozen_policy", {}).get("experiences", []))
     result["active_provisional_lessons"] = sum(
         lesson["state"] == "active" for lesson in ledger.get("frozen_policy", {}).get("lessons", [])
     )
+    result["known_label_issue"] = {
+        "task_id": "errors-4",
+        "reason": "Contract requires a copied list; reference/issue oracle observe returns only. "
+        "All arms correctly identify input mutation but frozen issue label is false.",
+        "original_scores_retained": True,
+        "independent_label_review": "NOT_RUN",
+    }
+    result["sensitivity_excluding_errors_4"] = {}
+    for arm in ("A", "B", "C"):
+        selected = [
+            r
+            for r in ledger["evaluation"]
+            if r["phase"] == "heldout" and r["arm"] == arm and r["task_id"] != "errors-4"
+        ]
+        result["sensitivity_excluding_errors_4"][arm] = {
+            "n": len(selected),
+            "fully_correct": sum(r["grade"]["passed"] for r in selected),
+            "mean_frozen_score": statistics.mean(r["grade"]["score"] for r in selected)
+            if selected
+            else None,
+        }
     return result
 
 
