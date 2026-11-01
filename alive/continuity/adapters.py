@@ -20,6 +20,7 @@ async def reason(ctx):
             inputs["context_ref"],
             admission.terms["source"]["resources"],
             admission.principal,
+            for_dispatch=True,
         )
     require(bool(inputs["context_ref"]), "frozen_context_required")
     require(digest(snapshot) == inputs["context_sha256"], "context_snapshot_integrity")
@@ -47,6 +48,8 @@ async def validate_answer(ctx):
     snapshot = ctx.inputs["snapshot"]
     ids = {item["id"] for item in snapshot["items"]}
     require(set(output.recalled_item_ids) <= ids, "context_reference_not_supplied")
+    lesson_ids = {i["id"] for i in snapshot["items"] if i["source_type"] == "learned_strategy"}
+    require(set(output.lesson_ids_used) <= lesson_ids, "lesson_not_supplied")
     for item in snapshot["items"]:
         require(digest(item["content"]) == item["content_sha256"], "context_item_integrity")
     if output.revision:

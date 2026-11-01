@@ -46,6 +46,8 @@ interface Exchange {
     recalled_item_ids: string[];
     citations: unknown[];
     uncertainty: string[];
+    lesson_ids_used?: string[];
+    lesson_proposal?: { strategy: string; applies_when: string; not_when: string } | null;
     revision: {
       supersedes: string[];
       changed: string;
@@ -85,6 +87,10 @@ interface History {
   consents: Consent[];
   exchanges: Exchange[];
   conversations?: Conversation[];
+  adaptation?: {
+    experiences: { id: string; admission_id: string; passed: boolean; verifier: string }[];
+    lessons: { id: string; state: string; qualification: string; proposal: { strategy: string } }[];
+  };
 }
 
 export function LivePane({ token }: { token: string }) {
@@ -228,6 +234,7 @@ function LiveAI({ token }: { token: string }) {
           max_tokens: 200000,
           ttl_seconds: 3600,
           contextual: true,
+          adaptive: true,
         },
         "POST",
       );
@@ -465,6 +472,18 @@ function LiveAI({ token }: { token: string }) {
         )}
       </details>
       <h3>Conversation and evidence</h3>
+      {!!history.adaptation?.lessons.length && (
+        <details>
+          <summary>Reusable lessons ({history.adaptation.lessons.length})</summary>
+          {history.adaptation.lessons.map((lesson) => (
+            <p key={lesson.id}>
+              <strong>{lesson.state}</strong>: {lesson.proposal.strategy}{" "}
+              <small>{lesson.qualification} · {lesson.id}</small>
+            </p>
+          ))}
+          <p>Qualification and reusable text approval are owner-local actions. Model claims alone do not qualify a lesson.</p>
+        </details>
+      )}
       {visibleExchanges.length === 0 && <p>No retained model responses yet.</p>}
       {visibleExchanges.map((exchange) => (
         <article key={exchange.id}>
@@ -472,6 +491,15 @@ function LiveAI({ token }: { token: string }) {
           {exchange.answer && (
             <section aria-label="ALIVE contextual answer">
               <p style={{ whiteSpace: "pre-wrap" }}>{exchange.answer.answer}</p>
+              {!!exchange.answer.lesson_ids_used?.length && (
+                <p>Strategies used: {exchange.answer.lesson_ids_used.join(", ")}</p>
+              )}
+              {exchange.answer.lesson_proposal && (
+                <p>Proposed lesson: {exchange.answer.lesson_proposal.strategy} (provisional)</p>
+              )}
+              {history.adaptation?.experiences.filter((e) => e.admission_id === (exchange.result_admission?.id || exchange.id)).map((e) => (
+                <p key={e.id}>Executable fixture feedback: {e.passed ? "passed" : "needs correction"} · {e.verifier}. Explanatory prose remains unverified.</p>
+              ))}
               {exchange.answer.revision && (
                 <div>
                   <h4>Assessment revised</h4>

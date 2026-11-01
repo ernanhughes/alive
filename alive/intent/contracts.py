@@ -31,7 +31,10 @@ INSTRUCTIONS = (
     "limits_of_available_procedures and propose only procedures that genuinely help; an empty "
     "candidate list is a valid answer. Ask for clarification only when the choice changes the "
     "investigation materially and no useful read-only recommendation is possible. intent_kind "
-    "must be one of the listed values, or 'unclear'. Output the requested JSON schema only."
+    "must be a listed value, or 'unclear'. Classify problem_families from the goal and "
+    "inventory: numeric, parsing, state, authorization, defaults, errors; return an empty "
+    "list if unclear. These tags select fallible candidate strategies, not execution authority. "
+    "Output the requested JSON schema only."
 )
 
 IntentKind = Literal[
@@ -75,6 +78,9 @@ class IntentInterpretation(Strict):
     limits_of_available_procedures: list[str] = Field(max_length=4)
     needs_clarification: bool
     clarification_question: str = Field(max_length=300)
+    problem_families: list[
+        Literal["numeric", "parsing", "state", "authorization", "defaults", "errors"]
+    ] = Field(default_factory=list, max_length=3)
 
 
 def role_contract():

@@ -129,6 +129,9 @@ async def items_for(session, kernel, row):
         elif "findings" in result:
             for index, finding in enumerate(result["findings"], 1):
                 add(finding["finding_id"], "model_finding", finding, stored["sha256"], index)
+    from alive.adaptation.service import feedback_items
+
+    items.extend(await feedback_items(session, kernel, row.id))
     return items
 
 
@@ -147,7 +150,9 @@ async def links(session, kernel, ref):
     ).all()
 
 
-async def frozen(session, kernel, ref, resources, principal, consent_ref=None):
+async def frozen(
+    session, kernel, ref, resources, principal, consent_ref=None, *, for_dispatch=False
+):
     if not ref:
         return empty_snapshot()  # initial configuration exemplar, never a dispatch input
     row = await event(session, kernel, ref, SNAPSHOT)
@@ -162,6 +167,20 @@ async def frozen(session, kernel, ref, resources, principal, consent_ref=None):
     )
     permitted = {e.payload["admission_id"] for e in await links(session, kernel, opened.id)}
     for item in payload["snapshot"]["items"]:
+        if item["source_type"] in ("learned_strategy", "historical_experience"):
+            from alive.adaptation.service import verify_item
+            from alive.admission.live import consent
+
+            approved = await consent(
+                session, kernel, opened.payload["consent_ref"], active=for_dispatch
+            )
+            terms = approved["terms"]
+            require(terms.get("adaptive"), "adaptive_consent_required")
+            destination = terms["profiles"][PROFILE]["disclosure"]["destination"]
+            await verify_item(
+                session, kernel, item, principal, destination, for_dispatch=for_dispatch
+            )
+            continue
         require(item["admission_id"] in permitted, "context_not_in_conversation")
         parent = await session.get(Admission, item["admission_id"])
         require(
@@ -174,6 +193,64 @@ async def frozen(session, kernel, ref, resources, principal, consent_ref=None):
         candidates = await items_for(session, kernel, parent)
         require(item in candidates, "context_item_changed")
     return payload["snapshot"]
+
+
+async def adaptive_snapshot(kernel, request, approved, families):
+    """Freeze a cross-conversation selection after live intent classification, once only."""
+    from alive.adaptation.service import selected
+
+    async with kernel.lock, kernel.db.sessions.begin() as session:
+        opened = await conversation(session, kernel, request.conversation_ref, approved)
+        key = request.idempotency_key + ":adaptation"
+        previous = await session.scalar(
+            select(Event).where(
+                Event.instance_id == kernel.instance_id,
+                Event.source == SOURCE,
+                Event.event_type == SNAPSHOT,
+                Event.correlation_id == opened.id,
+                Event.payload["request_key"].as_string() == key,
+            )
+        )
+        if previous:
+            require(
+                previous.payload["goal"] == request.goal
+                and previous.payload["mode"] == request.strategy_mode,
+                "adaptation_retry_conflict",
+            )
+            return previous.id
+        destination = approved["terms"]["profiles"][PROFILE]["disclosure"]["destination"]
+        items = await selected(
+            session,
+            kernel,
+            opened.payload["principal"],
+            destination,
+            families,
+            request.strategy_mode,
+        )
+        snapshot = empty_snapshot() | {
+            "conversation_ref": opened.id,
+            "items": items,
+            "selection": "live intent families; bounded owner-approved exports",
+            "strategy_mode": request.strategy_mode,
+            "families": families,
+        }
+        require(len(json.dumps(snapshot).encode()) <= MAX_BYTES, "adaptation_context_budget")
+        row = kernel.add_event(
+            session,
+            SNAPSHOT,
+            {
+                "request_key": key,
+                "goal": request.goal,
+                "snapshot": snapshot,
+                "sha256": digest(snapshot),
+                "continuation": False,
+                "mode": request.strategy_mode,
+            },
+            source=SOURCE,
+            correlation=opened.id,
+        )
+        await session.flush()
+        return str(row.event_id)
 
 
 async def prepare_turn(kernel, request, approved):

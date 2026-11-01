@@ -182,7 +182,7 @@ async def prepare(kernel, request):
     reviews = {}
     profiles = (
         (INTENT, ANALYSIS, INSPECTION, CONTEXTUAL)
-        if request.contextual
+        if request.contextual or request.adaptive
         else (INTENT, ANALYSIS, INSPECTION)
     )
     for profile in profiles:
@@ -221,6 +221,13 @@ async def prepare(kernel, request):
             "host. Local prompts/results persist. Read-only inspection/analysis is automatic. "
             "Reservations stay charged after failures; currency cost is unknown.",
         }
+        if request.adaptive:
+            terms["adaptive"] = True
+            terms["disclosure"] += (
+                " Adaptive reasoning may reuse up to two bounded, explicitly owner-approved "
+                "lesson exports from other conversations at this same provider/model. Raw prior "
+                "source is not exported. Lessons remain fallible data, not execution authority."
+            )
         if request.contextual:
             terms["disclosure"] += (
                 " In a linked conversation, bounded prior owner statements, model findings and "
@@ -294,6 +301,7 @@ async def validate_receipt(session, kernel, row, receipt):
             row.terms["source"]["resources"],
             row.principal,
             consent_ref=current["id"],
+            for_dispatch=True,
         )
         require(digest(snapshot) == grant["inputs"]["context_sha256"], "context_snapshot_integrity")
 
@@ -401,10 +409,27 @@ async def ask(app, request):
 
     interpreted = await run(CONTEXTUAL if continuation else INTENT, "intent")
     if continuation:
+        from alive.adaptation.service import capture_proposal
+
+        if terms.get("adaptive") and interpreted["run"]["status"] == "COMPLETED":
+            await capture_proposal(kernel, interpreted["id"])
         return await exchange(kernel, interpreted["id"])
     if interpreted["run"]["status"] != "COMPLETED":
         return await exchange(kernel, interpreted["id"])
     recommendation = (await intent.compose(kernel, interpreted["id"]))["record"]
+    if terms.get("adaptive") and request.conversation_ref:
+        from alive.continuity.service import adaptive_snapshot
+
+        families = recommendation["interpretation"]["value"].get("problem_families", [])
+        context_ref = await adaptive_snapshot(kernel, request, current, families)
+        try:
+            await run(CONTEXTUAL, "result")
+        except Refused as error:
+            if str(error) in AUTHORIZATION_REFUSALS:
+                await retain_blocked_followup(kernel, interpreted["id"], CONTEXTUAL, error)
+            else:
+                await retain_failed_followup(kernel, interpreted["id"], CONTEXTUAL, error)
+        return await exchange(kernel, interpreted["id"])
     chosen = recommendation["recommendation"]
     if (
         chosen
@@ -551,12 +576,19 @@ async def exchange(kernel, admission_id):
             "context": None,
             "answer": None,
         }
-        if service.profile_of(row.terms).id == CONTEXTUAL:
-            context_ref = row.terms["proposed_grant_data"]["inputs"]["context_ref"]
+        contextual = next(
+            (r for r in (result, row) if r and service.profile_of(r.terms).id == CONTEXTUAL), None
+        )
+        if contextual:
+            context_ref = contextual.terms["proposed_grant_data"]["inputs"]["context_ref"]
             value["context"] = await continuity.frozen(
-                session, kernel, context_ref, row.terms["source"]["resources"], row.principal
+                session,
+                kernel,
+                context_ref,
+                contextual.terms["source"]["resources"],
+                contextual.principal,
             )
-            retained = await continuity.artifact(session, kernel, row)
+            retained = await continuity.artifact(session, kernel, contextual)
             if retained:
                 value["answer"] = retained["result"] | {"artifact_sha256": retained["sha256"]}
         if result and service.profile_of(result.terms).id == INSPECTION:
@@ -616,10 +648,12 @@ async def listing(kernel):
             )
         ).all()
         configs = [await consent(session, kernel, e.id, active=False) for e in setups]
+    from alive.adaptation.service import listing as adaptation
     from alive.continuity.service import listing as conversations
 
     return {
         "consents": configs,
         "exchanges": [await exchange(kernel, r.id) for r in rows],
         "conversations": await conversations(kernel),
+        "adaptation": await adaptation(kernel),
     }
