@@ -383,6 +383,26 @@ _BUILTINS["intent-validator-v1"] = TrustedImplementation(
     _INTENT_FILES,
     traits=frozenset({"validation.independent"}),
 )
+for _identifier, _kind, _adapter, _traits in (
+    ("contextual-reasoner-v1", "pi_agent", "reason", {"model.role"}),
+    ("contextual-validator-v1", "validation", "validate_answer", {"validation.independent"}),
+):
+    _BUILTINS[_identifier] = TrustedImplementation(
+        _identifier,
+        _kind,
+        "none",
+        f"alive.continuity.adapters:{_adapter}",
+        f"alive.continuity.adapters:{_adapter}",
+        None,
+        frozenset({"model.infer", "source.read"} if _kind == "pi_agent" else {"source.read"}),
+        (
+            "alive/continuity/adapters.py",
+            "alive/continuity/contracts.py",
+            "alive/continuity/context.py",
+            "alive/continuity/service.py",
+        ),
+        traits=frozenset(_traits),
+    )
 TRUSTED = MappingProxyType(_BUILTINS)
 
 

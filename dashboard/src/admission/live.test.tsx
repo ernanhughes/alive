@@ -268,3 +268,126 @@ it("shows captured-file evidence when the model selects read-only inspection", a
   expect(screen.getByText("def mean(values): pass")).toBeTruthy();
   expect(mock.mock.calls.every((c) => c[3] === "GET")).toBe(true);
 });
+
+it("continues a retained conversation, displays revisions, and starts a clean conversation", async () => {
+  const contextualConsent = {
+    ...consent,
+    terms: {
+      ...consent.terms,
+      profiles: { "contextual-reasoning": { disclosure: {} } },
+    },
+  };
+  const previous = { ...exchange, conversation_ref: "conversation-1" };
+  const updated = {
+    ...previous,
+    goal: "Why that problem?",
+    report: null,
+    context: { items: [], omitted: [] },
+    answer: {
+      answer: "The divisor adds one.",
+      recalled_item_ids: ["finding-1"],
+      citations: [],
+      uncertainty: [],
+      revision: {
+        supersedes: ["finding-1"],
+        changed: "Zero sums are an exception.",
+        rationale: "0 divided by either divisor is 0.",
+        still_supported: ["General divisor bug"],
+        withdrawn_or_qualified: ["Never correct"],
+      },
+    },
+  };
+  const base = backend();
+  mock.mockImplementation(async (path, token, body, method) => {
+    if (path === "/admissions/live")
+      return {
+        consents: [contextualConsent],
+        exchanges: [previous],
+        conversations: [
+          {
+            id: "conversation-1",
+            title: "Mean review",
+            consent_ref: consent.id,
+            admission_ids: [previous.id],
+          },
+        ],
+      };
+    if (path === "/admissions/live/ask") return updated;
+    return base(path);
+  });
+  render(<LivePane token="token" />);
+  await screen.findByDisplayValue("Mean review");
+  fireEvent.change(screen.getByLabelText("Your goal"), {
+    target: { value: "Why that problem?" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Ask ALIVE" }));
+  await screen.findByText("The divisor adds one.");
+  expect(screen.getByText("Assessment revised")).toBeTruthy();
+  expect(
+    mock.mock.calls.find((c) => c[0] === "/admissions/live/ask")?.[2],
+  ).toMatchObject({ conversation_ref: "conversation-1" });
+  fireEvent.click(
+    screen.getByRole("button", { name: "Start new conversation" }),
+  );
+  expect(screen.queryByText("The divisor adds one.")).toBeNull();
+  fireEvent.click(
+    screen.getByRole("button", { name: "Refresh AI and history" }),
+  );
+  await waitFor(() =>
+    expect(
+      (screen.getByLabelText("Conversation") as HTMLSelectElement).value,
+    ).toBe("new"),
+  );
+});
+
+it("reuses the same request identity after losing a first-turn response", async () => {
+  const contextualConsent = {
+    ...consent,
+    terms: {
+      ...consent.terms,
+      profiles: { "contextual-reasoning": { disclosure: {} } },
+    },
+  };
+  let attempts = 0;
+  const base = backend();
+  mock.mockImplementation(async (path) => {
+    if (path === "/admissions/live")
+      return {
+        consents: [contextualConsent],
+        exchanges: [],
+        conversations: [],
+      };
+    if (path === "/admissions/live/conversations")
+      return {
+        id: "created-conversation",
+        title: "Review",
+        consent_ref: consent.id,
+      };
+    if (path === "/admissions/live/ask") {
+      if (attempts++ === 0) throw new Error("Response lost after dispatch");
+      return { ...exchange, conversation_ref: "created-conversation" };
+    }
+    return base(path);
+  });
+  render(<LivePane token="token" />);
+  await screen.findByLabelText("Conversation");
+  fireEvent.change(screen.getByLabelText("Your goal"), {
+    target: { value: "Review" },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Ask ALIVE" }));
+  await screen.findByRole("alert");
+  await waitFor(() =>
+    expect(
+      (screen.getByRole("button", { name: "Ask ALIVE" }) as HTMLButtonElement)
+        .disabled,
+    ).toBe(false),
+  );
+  fireEvent.click(screen.getByRole("button", { name: "Ask ALIVE" }));
+  await screen.findByText("Review my repository");
+  const asks = mock.mock.calls.filter((c) => c[0] === "/admissions/live/ask");
+  expect(asks).toHaveLength(2);
+  expect(asks[0][2]).toEqual(asks[1][2]);
+  expect(
+    mock.mock.calls.filter((c) => c[0] === "/admissions/live/conversations"),
+  ).toHaveLength(1);
+});

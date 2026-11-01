@@ -28,6 +28,7 @@ from alive.workflows.context import require
 INSPECTION = "approved-repository-inspection"
 ANALYSIS = "approved-repository-analysis"
 INTENT = "intent-interpretation"
+CONTEXTUAL = "contextual-reasoning"
 
 
 @dataclass(frozen=True)
@@ -48,6 +49,21 @@ class Profile:
 
 
 PROFILES = {
+    CONTEXTUAL: Profile(
+        CONTEXTUAL,
+        "contextual-reasoning.json",
+        ("context.reason", "context.validate", "result.record"),
+        ("context.reason", "context.validate"),
+        ("reason", "validate"),
+        MAX_FILES,
+        MAX_SOURCE_BYTES,
+        180,
+        1,
+        1536,
+        True,
+        "contextual_reasoner",
+        False,
+    ),
     INSPECTION: Profile(
         INSPECTION,
         "repository-inspection.json",
@@ -226,9 +242,56 @@ def intent_disclosure(kernel, control, source, paths, objective):
     }
 
 
-def disclose(profile, kernel, control, source, paths, objective):
+def disclose(profile, kernel, control, source, paths, objective, snapshot=None):
+    if profile.id == CONTEXTUAL:
+        return contextual_disclosure(kernel, control, source, paths, objective, snapshot)
     work = intent_disclosure if profile.id == INTENT else disclosure
     return work(kernel, control, source, paths, objective)
+
+
+def contextual_disclosure(kernel, control, source, paths, objective, snapshot):
+    from alive.cognition import CognitiveConfiguration
+    from alive.continuity.context import empty_snapshot, package, request_bytes
+    from alive.continuity.contracts import POLICY, ROLE, role_contract
+    from alive.workflows.context import digest
+
+    config = CognitiveConfiguration.model_validate(control.configuration)
+    snapshot = snapshot if snapshot is not None else empty_snapshot()
+    data = package(source, paths, objective, snapshot)
+    limit = min(config.output_tokens, PROFILES[CONTEXTUAL].max_output_tokens)
+    request = request_bytes(data, limit)
+    require(
+        request <= config.request_tokens and request <= config.investigation_tokens,
+        "context_exceeds_governor_request_ceiling",
+    )
+    settings = kernel.settings
+    return {
+        "operation": "context.reason",
+        "destination": {
+            "kind": "remote_provider",
+            "provider": "meta",
+            "transport": "pi",
+            "host": meta_endpoint_host(settings),
+            "endpoint": analysis_endpoint(settings),
+            "model": settings.alive_role_models.get(ROLE, settings.alive_meta_model),
+        },
+        "role": ROLE,
+        "role_contract_sha256": role_contract(),
+        "context_policy": POLICY,
+        "files": [{"path": f["path"], "bytes": f["bytes"]} for f in source.content["files"]],
+        "source_bytes": sum(f["bytes"] for f in source.content["files"]),
+        "context_sha256": digest(snapshot),
+        "context_bytes": len(json.dumps(snapshot).encode()),
+        "model_input_sha256": digest(data),
+        "conversation_ref": snapshot["conversation_ref"],
+        "reserved_request_bytes": request,
+        "max_model_calls": 1,
+        "max_output_tokens": limit,
+        "leaves_host": True,
+        "cost": "unknown; not estimated",
+        "retention": "Local prompts, frozen context and responses persist in clear text.",
+        "cancellation": "Disclosed data cannot be recalled; ambiguous calls are not retried.",
+    }
 
 
 def definition_text(profile):

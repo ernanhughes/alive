@@ -1,0 +1,48 @@
+schema_version: 1
+id: contextual-reasoning
+version: 1.0.0
+name: Contextual reasoning
+description: Explain, propose or revise an assessment using frozen authorized conversation
+  context and current source evidence.
+context_types:
+- repository
+intents:
+- inspect_implementation
+workflow:
+  name: owner-contextual-reasoning
+  version: 1
+  definition_sha256: ea2fcae8fd017f0e6459a1b2a4bd957a79c103d9faf954f2879174afc059e5cb
+capabilities:
+- stage_id: reason
+  id: context.reason
+  version: 1.0.0
+  manifest_sha256: 473b75ddc07a86e23173ecc048143aac5f852fd4b3b5eaab2ba9e4373891b14a
+- stage_id: validate
+  id: context.validate
+  version: 1.0.0
+  manifest_sha256: d71544db53d371ebc241a804641226bb99688987152515be87020cb507b8e681
+- stage_id: record
+  id: result.record
+  version: 1.0.0
+  manifest_sha256: 9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca
+limits:
+  max_model_calls: 1
+  max_wall_seconds: 180
+  max_output_tokens: 1536
+  outbound_allowed: true
+  permissions:
+  - evidence.read
+  - model.infer
+  - source.read
+  - workflow.write
+required_evidence: approved_capture
+output_artifact: workflow_result
+validation: reference_identity
+status: active
+presentation:
+  category: bespoke
+  icon: brain-circuit
+  tags:
+  - interpretation
+  - model
+  - owner-review
