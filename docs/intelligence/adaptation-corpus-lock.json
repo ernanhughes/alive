@@ -1,0 +1,5 @@
+{
+  "corpus_sha256": "dd226359f0f04d7e886be2a5141c0d05e35ea267b77f754f7d8bbd0f8fb04563",
+  "oracle_sha256": "7b58b1746d3d28f857adc5a80408d65a779268bf90aad04c246f9ccbd8ee4b4c",
+  "purpose": "Predeclared public fixtures; train/dev/heldout split immutable"
+}

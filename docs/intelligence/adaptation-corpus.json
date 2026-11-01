@@ -1,0 +1,1016 @@
+{
+  "schema": "adaptation-corpus/v1",
+  "tasks": [
+    {
+      "id": "numeric-1",
+      "family": "numeric",
+      "split": "train",
+      "contract": "Return arithmetic mean; empty input returns null.",
+      "code": "def solve(p):\n    return sum(p)/(len(p)+1) if p else None\n",
+      "reference": "def solve(p):\n    return sum(p)/len(p) if p else None\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": [
+            2,
+            4
+          ]
+        },
+        {
+          "id": "c2",
+          "input": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": "c3",
+          "input": [
+            -3,
+            3
+          ]
+        },
+        {
+          "id": "c4",
+          "input": []
+        }
+      ]
+    },
+    {
+      "id": "numeric-2",
+      "family": "numeric",
+      "split": "train",
+      "contract": "Return fraction completed, bounded to [0,1]. Zero total returns 0.",
+      "code": "def solve(p):\n    n,t=p\n    return min(1,n/t) if t else 0\n",
+      "reference": "def solve(p):\n    n,t=p\n    return max(0,min(1,n/t)) if t else 0\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": [
+            1,
+            4
+          ]
+        },
+        {
+          "id": "c2",
+          "input": [
+            -2,
+            4
+          ]
+        },
+        {
+          "id": "c3",
+          "input": [
+            9,
+            4
+          ]
+        },
+        {
+          "id": "c4",
+          "input": [
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "numeric-3",
+      "family": "numeric",
+      "split": "dev",
+      "contract": "Round integer cents up to the next whole dollar, including negative credits.",
+      "code": "def solve(p):\n    return int(p/100)+1\n",
+      "reference": "def solve(p):\n    return -(-p//100)\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": 100
+        },
+        {
+          "id": "c2",
+          "input": 101
+        },
+        {
+          "id": "c3",
+          "input": 0
+        },
+        {
+          "id": "c4",
+          "input": -101
+        }
+      ]
+    },
+    {
+      "id": "numeric-4",
+      "family": "numeric",
+      "split": "heldout",
+      "contract": "Return median of a sorted numeric list; empty returns null.",
+      "code": "def solve(p):\n    if not p: return None\n    i=len(p)//2\n    return p[i] if len(p)%2 else (p[i-1]+p[i])/2\n",
+      "reference": "def solve(p):\n    if not p: return None\n    i=len(p)//2\n    return p[i] if len(p)%2 else (p[i-1]+p[i])/2\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": [
+            1,
+            9
+          ]
+        },
+        {
+          "id": "c2",
+          "input": [
+            0,
+            0
+          ]
+        },
+        {
+          "id": "c3",
+          "input": [
+            -4,
+            0,
+            6
+          ]
+        },
+        {
+          "id": "c4",
+          "input": []
+        }
+      ]
+    },
+    {
+      "id": "numeric-5",
+      "family": "numeric",
+      "split": "heldout",
+      "contract": "Return a discount in integer cents, rounding down; negative prices raise ValueError.",
+      "code": "def solve(p):\n    cents,percent=p\n    return round(cents*(100-percent)/100)\n",
+      "reference": "def solve(p):\n    cents,percent=p\n    if cents<0: raise ValueError()\n    return cents*(100-percent)//100\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": [
+            101,
+            50
+          ]
+        },
+        {
+          "id": "c2",
+          "input": [
+            100,
+            0
+          ]
+        },
+        {
+          "id": "c3",
+          "input": [
+            -2,
+            20
+          ]
+        },
+        {
+          "id": "c4",
+          "input": [
+            0,
+            10
+          ]
+        }
+      ]
+    },
+    {
+      "id": "parsing-1",
+      "family": "parsing",
+      "split": "train",
+      "contract": "Parse a boolean: case-insensitive true/false only, trim whitespace; others raise ValueError.",
+      "code": "def solve(p):\n    return bool(p)\n",
+      "reference": "def solve(p):\n    s=p.strip().lower()\n    if s not in ('true','false'): raise ValueError()\n    return s=='true'\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": "true"
+        },
+        {
+          "id": "c2",
+          "input": "false"
+        },
+        {
+          "id": "c3",
+          "input": " FALSE "
+        },
+        {
+          "id": "c4",
+          "input": "yes"
+        }
+      ]
+    },
+    {
+      "id": "parsing-2",
+      "family": "parsing",
+      "split": "train",
+      "contract": "Split a single key=value at the first equals; trim both parts; absent equals raises ValueError.",
+      "code": "def solve(p):\n    a,b=p.split('=')\n    return [a.strip(),b.strip()]\n",
+      "reference": "def solve(p):\n    a,b=p.split('=',1)\n    return [a.strip(),b.strip()]\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": "x=1"
+        },
+        {
+          "id": "c2",
+          "input": " x = y=z "
+        },
+        {
+          "id": "c3",
+          "input": "missing"
+        },
+        {
+          "id": "c4",
+          "input": "=empty"
+        }
+      ]
+    },
+    {
+      "id": "parsing-3",
+      "family": "parsing",
+      "split": "dev",
+      "contract": "Parse signed decimal integer text, whitespace allowed. Reject decimals with ValueError.",
+      "code": "def solve(p):\n    return int(float(p))\n",
+      "reference": "def solve(p):\n    return int(p)\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": "12"
+        },
+        {
+          "id": "c2",
+          "input": " -2 "
+        },
+        {
+          "id": "c3",
+          "input": "2.9"
+        },
+        {
+          "id": "c4",
+          "input": "oops"
+        }
+      ]
+    },
+    {
+      "id": "parsing-4",
+      "family": "parsing",
+      "split": "heldout",
+      "contract": "Parse comma-separated decimal integers; empty or whitespace-only input gives an empty list.",
+      "code": "def solve(p):\n    return [int(x) for x in p.split(',')] if p else []\n",
+      "reference": "def solve(p):\n    return [int(x) for x in p.split(',')] if p.strip() else []\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": "1,2"
+        },
+        {
+          "id": "c2",
+          "input": ""
+        },
+        {
+          "id": "c3",
+          "input": "   "
+        },
+        {
+          "id": "c4",
+          "input": "1,x"
+        }
+      ]
+    },
+    {
+      "id": "parsing-5",
+      "family": "parsing",
+      "split": "heldout",
+      "contract": "Separate a label at the LAST colon. With no colon return [input, empty string].",
+      "code": "def solve(p):\n    a,sep,b=p.rpartition(':')\n    return [a,b] if sep else [p,'']\n",
+      "reference": "def solve(p):\n    a,sep,b=p.rpartition(':')\n    return [a,b] if sep else [p,'']\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": "a:b:c"
+        },
+        {
+          "id": "c2",
+          "input": "abc"
+        },
+        {
+          "id": "c3",
+          "input": ":"
+        },
+        {
+          "id": "c4",
+          "input": "http:x"
+        }
+      ]
+    },
+    {
+      "id": "state-1",
+      "family": "state",
+      "split": "train",
+      "contract": "Process [key,value] updates. First value for a key wins; return final mapping.",
+      "code": "def solve(p):\n    d={}\n    for k,v in p: d[k]=v\n    return d\n",
+      "reference": "def solve(p):\n    d={}\n    for k,v in p: d.setdefault(k,v)\n    return d\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": [
+            [
+              "a",
+              1
+            ],
+            [
+              "a",
+              2
+            ]
+          ]
+        },
+        {
+          "id": "c2",
+          "input": []
+        },
+        {
+          "id": "c3",
+          "input": [
+            [
+              "b",
+              0
+            ],
+            [
+              "c",
+              3
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "state-2",
+      "family": "state",
+      "split": "train",
+      "contract": "A closed task cannot reopen; commands finish closes, reopen opens only if not closed.",
+      "code": "def solve(p):\n    state='open'\n    for cmd in p:\n        if cmd=='finish': state='closed'\n        elif cmd=='reopen': state='open'\n    return state\n",
+      "reference": "def solve(p):\n    return 'closed' if 'finish' in p else 'open'\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": []
+        },
+        {
+          "id": "c2",
+          "input": [
+            "finish"
+          ]
+        },
+        {
+          "id": "c3",
+          "input": [
+            "finish",
+            "reopen"
+          ]
+        },
+        {
+          "id": "c4",
+          "input": [
+            "reopen"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "state-3",
+      "family": "state",
+      "split": "dev",
+      "contract": "Return unique items preserving FIRST occurrence order.",
+      "code": "def solve(p):\n    return sorted(set(p))\n",
+      "reference": "def solve(p):\n    return list(dict.fromkeys(p))\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": [
+            3,
+            1,
+            3,
+            2
+          ]
+        },
+        {
+          "id": "c2",
+          "input": []
+        },
+        {
+          "id": "c3",
+          "input": [
+            1,
+            1
+          ]
+        },
+        {
+          "id": "c4",
+          "input": [
+            2,
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "id": "state-4",
+      "family": "state",
+      "split": "heldout",
+      "contract": "A signed-out user stays signed out until login. logout clears authentication; view does nothing.",
+      "code": "def solve(p):\n    active=False\n    for cmd in p:\n        if cmd=='login': active=True\n        elif cmd=='logout': active=False\n    return active\n",
+      "reference": "def solve(p):\n    active=False\n    for cmd in p:\n        if cmd=='login': active=True\n        elif cmd=='logout': active=False\n    return active\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": []
+        },
+        {
+          "id": "c2",
+          "input": [
+            "login",
+            "logout",
+            "view"
+          ]
+        },
+        {
+          "id": "c3",
+          "input": [
+            "logout",
+            "login"
+          ]
+        },
+        {
+          "id": "c4",
+          "input": [
+            "view"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "state-5",
+      "family": "state",
+      "split": "heldout",
+      "contract": "Handle [request_id,amount] deposits once per request_id, including zero amounts. Return sum.",
+      "code": "def solve(p):\n    seen={}\n    total=0\n    for key,amount in p:\n        if not seen.get(key):\n            total+=amount\n            seen[key]=amount\n    return total\n",
+      "reference": "def solve(p):\n    seen=set()\n    total=0\n    for key,amount in p:\n        if key not in seen:\n            total+=amount\n            seen.add(key)\n    return total\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": [
+            [
+              "x",
+              0
+            ],
+            [
+              "x",
+              5
+            ]
+          ]
+        },
+        {
+          "id": "c2",
+          "input": [
+            [
+              "x",
+              2
+            ],
+            [
+              "x",
+              2
+            ]
+          ]
+        },
+        {
+          "id": "c3",
+          "input": []
+        },
+        {
+          "id": "c4",
+          "input": [
+            [
+              "x",
+              1
+            ],
+            [
+              "y",
+              2
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "id": "authorization-1",
+      "family": "authorization",
+      "split": "train",
+      "contract": "Allow only when authenticated AND admin. Missing fields deny.",
+      "code": "def solve(p):\n    return bool(p.get('authenticated') or p.get('admin'))\n",
+      "reference": "def solve(p):\n    return bool(p.get('authenticated') and p.get('admin'))\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": {}
+        },
+        {
+          "id": "c2",
+          "input": {
+            "authenticated": true
+          }
+        },
+        {
+          "id": "c3",
+          "input": {
+            "admin": true
+          }
+        },
+        {
+          "id": "c4",
+          "input": {
+            "authenticated": true,
+            "admin": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "authorization-2",
+      "family": "authorization",
+      "split": "train",
+      "contract": "Access requires matching tenant and read scope; absent tenant denies even if both are null.",
+      "code": "def solve(p):\n    return p.get('tenant')==p.get('resource_tenant') and 'read' in p.get('scopes',[])\n",
+      "reference": "def solve(p):\n    return p.get('tenant') is not None and p.get('tenant')==p.get('resource_tenant') and 'read' in p.get('scopes',[])\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": {
+            "scopes": [
+              "read"
+            ]
+          }
+        },
+        {
+          "id": "c2",
+          "input": {
+            "tenant": "a",
+            "resource_tenant": "a",
+            "scopes": [
+              "read"
+            ]
+          }
+        },
+        {
+          "id": "c3",
+          "input": {
+            "tenant": "a",
+            "resource_tenant": "b",
+            "scopes": [
+              "read"
+            ]
+          }
+        },
+        {
+          "id": "c4",
+          "input": {}
+        }
+      ]
+    },
+    {
+      "id": "authorization-3",
+      "family": "authorization",
+      "split": "dev",
+      "contract": "An unrevoked grant is valid only strictly BEFORE expiry; input [now,expiry,revoked].",
+      "code": "def solve(p):\n    n,e,r=p\n    return n<=e and not r\n",
+      "reference": "def solve(p):\n    n,e,r=p\n    return n<e and not r\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": [
+            9,
+            10,
+            false
+          ]
+        },
+        {
+          "id": "c2",
+          "input": [
+            10,
+            10,
+            false
+          ]
+        },
+        {
+          "id": "c3",
+          "input": [
+            8,
+            10,
+            true
+          ]
+        },
+        {
+          "id": "c4",
+          "input": [
+            11,
+            10,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "id": "authorization-4",
+      "family": "authorization",
+      "split": "heldout",
+      "contract": "A protected action requires editor role AND enabled account. Disabled always denies.",
+      "code": "def solve(p):\n    return p.get('enabled',False) and p.get('role')=='editor'\n",
+      "reference": "def solve(p):\n    return p.get('enabled',False) and p.get('role')=='editor'\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": {
+            "role": "editor",
+            "enabled": true
+          }
+        },
+        {
+          "id": "c2",
+          "input": {
+            "role": "editor",
+            "enabled": false
+          }
+        },
+        {
+          "id": "c3",
+          "input": {
+            "role": "viewer",
+            "enabled": true
+          }
+        },
+        {
+          "id": "c4",
+          "input": {}
+        }
+      ]
+    },
+    {
+      "id": "authorization-5",
+      "family": "authorization",
+      "split": "heldout",
+      "contract": "Permission uses exact path component prefix: /docs includes /docs/a but excludes /docsevil.",
+      "code": "def solve(p):\n    root,path=p\n    return path.startswith(root)\n",
+      "reference": "def solve(p):\n    root,path=p\n    return path==root or path.startswith(root.rstrip('/')+'/')\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": [
+            "/docs",
+            "/docs/a"
+          ]
+        },
+        {
+          "id": "c2",
+          "input": [
+            "/docs",
+            "/docsevil"
+          ]
+        },
+        {
+          "id": "c3",
+          "input": [
+            "/docs",
+            "/docs"
+          ]
+        },
+        {
+          "id": "c4",
+          "input": [
+            "/docs",
+            "/other"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "defaults-1",
+      "family": "defaults",
+      "split": "train",
+      "contract": "Return timeout; use 30 only when missing or null. Explicit zero is valid.",
+      "code": "def solve(p):\n    return p.get('timeout') or 30\n",
+      "reference": "def solve(p):\n    v=p.get('timeout')\n    return 30 if v is None else v\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": {}
+        },
+        {
+          "id": "c2",
+          "input": {
+            "timeout": null
+          }
+        },
+        {
+          "id": "c3",
+          "input": {
+            "timeout": 0
+          }
+        },
+        {
+          "id": "c4",
+          "input": {
+            "timeout": 5
+          }
+        }
+      ]
+    },
+    {
+      "id": "defaults-2",
+      "family": "defaults",
+      "split": "train",
+      "contract": "Return enabled flag; default true only for missing key. Explicit false or null is preserved.",
+      "code": "def solve(p):\n    return p.get('enabled') or True\n",
+      "reference": "def solve(p):\n    return p.get('enabled',True)\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": {}
+        },
+        {
+          "id": "c2",
+          "input": {
+            "enabled": false
+          }
+        },
+        {
+          "id": "c3",
+          "input": {
+            "enabled": null
+          }
+        },
+        {
+          "id": "c4",
+          "input": {
+            "enabled": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "defaults-3",
+      "family": "defaults",
+      "split": "dev",
+      "contract": "Use default name only when missing; explicit empty string and null are preserved.",
+      "code": "def solve(p):\n    return p.get('name') or 'guest'\n",
+      "reference": "def solve(p):\n    return p.get('name','guest')\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": {}
+        },
+        {
+          "id": "c2",
+          "input": {
+            "name": ""
+          }
+        },
+        {
+          "id": "c3",
+          "input": {
+            "name": null
+          }
+        },
+        {
+          "id": "c4",
+          "input": {
+            "name": "a"
+          }
+        }
+      ]
+    },
+    {
+      "id": "defaults-4",
+      "family": "defaults",
+      "split": "heldout",
+      "contract": "Return retries; missing gives 3. All explicit values, including zero and null, are preserved.",
+      "code": "def solve(p):\n    return p.get('retries',3)\n",
+      "reference": "def solve(p):\n    return p.get('retries',3)\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": {}
+        },
+        {
+          "id": "c2",
+          "input": {
+            "retries": 0
+          }
+        },
+        {
+          "id": "c3",
+          "input": {
+            "retries": null
+          }
+        },
+        {
+          "id": "c4",
+          "input": {
+            "retries": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "defaults-5",
+      "family": "defaults",
+      "split": "heldout",
+      "contract": "Merge user settings over defaults. Preserve every supplied value including false and empty list.",
+      "code": "def solve(p):\n    d={'enabled':True,'tags':['base']}\n    d.update({k:v for k,v in p.items() if v})\n    return d\n",
+      "reference": "def solve(p):\n    d={'enabled':True,'tags':['base']}\n    d.update(p)\n    return d\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": {}
+        },
+        {
+          "id": "c2",
+          "input": {
+            "enabled": false
+          }
+        },
+        {
+          "id": "c3",
+          "input": {
+            "tags": []
+          }
+        },
+        {
+          "id": "c4",
+          "input": {
+            "enabled": false,
+            "tags": [
+              "x"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "errors-1",
+      "family": "errors",
+      "split": "train",
+      "contract": "Divide [numerator,denominator]. Zero denominator raises ZeroDivisionError; never silently return 0.",
+      "code": "def solve(p):\n    try: return p[0]/p[1]\n    except ZeroDivisionError: return 0\n",
+      "reference": "def solve(p):\n    return p[0]/p[1]\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": [
+            4,
+            2
+          ]
+        },
+        {
+          "id": "c2",
+          "input": [
+            1,
+            0
+          ]
+        },
+        {
+          "id": "c3",
+          "input": [
+            0,
+            2
+          ]
+        },
+        {
+          "id": "c4",
+          "input": [
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": "errors-2",
+      "family": "errors",
+      "split": "train",
+      "contract": "Read key x; missing raises KeyError. Do not turn missing data into null.",
+      "code": "def solve(p):\n    return p.get('x')\n",
+      "reference": "def solve(p):\n    return p['x']\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": {}
+        },
+        {
+          "id": "c2",
+          "input": {
+            "x": null
+          }
+        },
+        {
+          "id": "c3",
+          "input": {
+            "x": 0
+          }
+        },
+        {
+          "id": "c4",
+          "input": {
+            "x": "ok"
+          }
+        }
+      ]
+    },
+    {
+      "id": "errors-3",
+      "family": "errors",
+      "split": "dev",
+      "contract": "Parse integer string; ValueError becomes null, but TypeError must propagate.",
+      "code": "def solve(p):\n    try: return int(p)\n    except Exception: return None\n",
+      "reference": "def solve(p):\n    try: return int(p)\n    except ValueError: return None\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": "12"
+        },
+        {
+          "id": "c2",
+          "input": "bad"
+        },
+        {
+          "id": "c3",
+          "input": null
+        },
+        {
+          "id": "c4",
+          "input": []
+        }
+      ]
+    },
+    {
+      "id": "errors-4",
+      "family": "errors",
+      "split": "heldout",
+      "contract": "Pop last element from a copied list; empty must raise IndexError.",
+      "code": "def solve(p):\n    return p.pop()\n",
+      "reference": "def solve(p):\n    return p.pop()\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": []
+        },
+        {
+          "id": "c2",
+          "input": [
+            1
+          ]
+        },
+        {
+          "id": "c3",
+          "input": [
+            null
+          ]
+        },
+        {
+          "id": "c4",
+          "input": [
+            2,
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "id": "errors-5",
+      "family": "errors",
+      "split": "heldout",
+      "contract": "Convert text to int; invalid strings return null, unsupported types raise TypeError.",
+      "code": "def solve(p):\n    try: return int(p)\n    except (ValueError,TypeError): return None\n",
+      "reference": "def solve(p):\n    try: return int(p)\n    except ValueError: return None\n",
+      "cases": [
+        {
+          "id": "c1",
+          "input": "7"
+        },
+        {
+          "id": "c2",
+          "input": "no"
+        },
+        {
+          "id": "c3",
+          "input": null
+        },
+        {
+          "id": "c4",
+          "input": {
+            "x": 1
+          }
+        }
+      ]
+    }
+  ]
+}
