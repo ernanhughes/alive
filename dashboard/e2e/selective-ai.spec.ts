@@ -1,17 +1,19 @@
 import { test, expect } from "@playwright/test";
-import { readFileSync, writeFileSync } from "node:fs";
+import { writeFileSync } from "node:fs";
 
 // Read-only proof against a retained live ledger: no write request may be sent.
 test("retained selective adaptation shows a supplied lesson and a deliberate no-lesson decision", async ({ page }) => {
-  const path = process.env.ALIVE_SELECTIVE_LEDGER;
+  const path = process.env.ALIVE_SELECTIVE_LEDGER; // only names the output files
   const app = process.env.ALIVE_BASE_URL;
   test.skip(!path || !app || !process.env.ALIVE_API_TOKEN, "Requires approved disposable live ledger");
-  const ledger = JSON.parse(readFileSync(path!, "utf8"));
-  const turns = ledger.evaluation.filter((r: any) => r.arm === "D" && r.review.answer && r.review.selection);
-  const supplied = turns.find((r: any) => r.review.selection.selected.length && r.review.answer.lesson_ids_used.length);
-  const none = turns.find((r: any) => r.review.selection.decision === "none");
-  expect(supplied).toBeTruthy();
-  expect(none).toBeTruthy();
+  // Pick turns the dashboard actually lists (latest 20 exchanges), read-only.
+  const history = await (
+    await page.request.get(app! + "/api/v1/admissions/live", {
+      headers: { Authorization: "Bearer " + process.env.ALIVE_API_TOKEN! },
+    })
+  ).json();
+  const consentOf = (e: any) =>
+    history.conversations.find((c: any) => c.id === e.conversation_ref)?.consent_ref;
   const writes: string[] = [];
   page.on("request", (request) => {
     if (request.url().startsWith(app! + "/api/") && request.method() !== "GET") writes.push(request.url());
@@ -20,15 +22,30 @@ test("retained selective adaptation shows a supplied lesson and a deliberate no-
   await page.getByLabel("Local API token").fill(process.env.ALIVE_API_TOKEN!);
   await page.getByRole("button", { name: "Connect", exact: true }).click();
   const pane = page.getByRole("region", { name: "ALIVE Live AI", exact: true });
+  // Only turns whose trusted session the dropdown actually offers can be opened.
+  await expect(
+    pane.getByRole("combobox", { name: "Trusted workspace session", exact: true }).locator("option"),
+  ).not.toHaveCount(1);
+  const offered: string[] = await pane
+    .getByRole("combobox", { name: "Trusted workspace session", exact: true })
+    .locator("option")
+    .evaluateAll((options) => options.map((o) => (o as HTMLOptionElement).value));
+  const listed = history.exchanges.filter(
+    (e: any) => e.answer && e.selection && e.conversation_ref && offered.includes(consentOf(e)),
+  );
+  const supplied = listed.find((e: any) => e.selection.selected.length && e.answer.lesson_ids_used.length);
+  const none = listed.find((e: any) => e.selection.decision === "none");
+  expect(supplied).toBeTruthy();
+  expect(none).toBeTruthy();
 
   async function open(turn: any) {
     await pane
       .getByRole("combobox", { name: "Trusted workspace session", exact: true })
-      .selectOption(turn.review.request.consent_ref);
+      .selectOption(consentOf(turn));
     await pane
       .getByRole("combobox", { name: "Conversation", exact: true })
-      .selectOption(turn.review.conversation_ref);
-    await expect(pane.getByText(turn.review.answer.answer, { exact: true })).toBeVisible();
+      .selectOption(turn.conversation_ref);
+    await expect(pane.getByText(turn.answer.answer, { exact: true })).toBeVisible();
   }
 
   await open(supplied);
@@ -51,9 +68,11 @@ test("retained selective adaptation shows a supplied lesson and a deliberate no-
     path!.replace(".json", "-ui-proof.json"),
     JSON.stringify(
       {
-        supplied_exchange: supplied.review.id,
-        no_lesson_exchange: none.review.id,
-        no_lesson_reason: none.review.selection.no_lesson_reason,
+        supplied_exchange: supplied.id,
+        no_lesson_exchange: none.id,
+        supplied_override: supplied.selection.override,
+        no_lesson_reason: none.selection.no_lesson_reason,
+        no_lesson_override: none.selection.override,
         writes,
         retained_live_output: true,
       },

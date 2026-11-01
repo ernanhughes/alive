@@ -103,7 +103,7 @@ held-out tasks are reused.
 ## Amendment 1 (before any held-out or calibration call)
 
 The development phase finished with **arm A solving 12/12 development tasks (all six "hard" ones)**
-and arm D matching it (lessons supplied on 7 tasks, none on 5; no paired gain or loss). The corpus
+and arm D matching it (lessons supplied on 8 tasks, none on 4; no paired gain or loss) [corrected after a recount; the first draft said 7 and 5, which does not change the amendment]. The corpus
 therefore had no headroom, the AI-FIRST-03 ceiling problem again. Before opening held-out, and
 without using any held-out outcome (none exists):
 
