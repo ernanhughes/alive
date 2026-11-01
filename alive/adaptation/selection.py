@@ -396,7 +396,14 @@ async def record_application(
                 and admission.principal == other_admission.principal
                 and admission.terms["source"] == other_admission.terms["source"]
                 and admission.terms.get("profile") == other_admission.terms.get("profile")
-                and admission.terms["model_disclosure"] == other_admission.terms["model_disclosure"]
+                and all(
+                    admission.terms["model_disclosure"].get(name)
+                    == other_admission.terms["model_disclosure"].get(name)
+                    for name in (
+                        "operation", "destination", "role",
+                        "role_contract_sha256", "context_policy", "max_output_tokens",
+                    )
+                )
                 and models == baseline_models,
                 "baseline_identity_mismatch",
             )
