@@ -97,15 +97,19 @@ def activatable(registry, pin=None):
 
 
 def test_activation_judges_a_pinned_stage_by_the_version_it_pins():
+    # Since PI-03C, an unpinned stage of a legacy operation means its original 1.0.0 (see
+    # `bind`), so disabling only a newer version leaves it runnable; the pin is judged by the
+    # version it names.
     newest_disabled = versioned("1.0.0", "2.0.0", disabled=("context.prepare@2.0.0",))
-    activatable(newest_disabled, pin="1.0.0")  # the pinned version runs even though latest does not
-    with pytest.raises(DefinitionError, match="unavailable"):
-        activatable(newest_disabled)  # unpinned means latest, which is disabled
+    activatable(newest_disabled, pin="1.0.0")  # the pinned version runs even though 2.0.0 does not
+    activatable(newest_disabled)  # unpinned means 1.0.0 for this operation
 
-    pinned_disabled = versioned("1.0.0", "2.0.0", disabled=("context.prepare@1.0.0",))
-    activatable(pinned_disabled)
+    original_disabled = versioned("1.0.0", "2.0.0", disabled=("context.prepare@1.0.0",))
     with pytest.raises(DefinitionError, match="unavailable"):
-        activatable(pinned_disabled, pin="1.0.0")  # used to pass activation and fail at runtime
+        activatable(original_disabled)  # unpinned means 1.0.0, which is disabled
+    with pytest.raises(DefinitionError, match="unavailable"):
+        activatable(original_disabled, pin="1.0.0")  # used to pass activation and fail at runtime
+    activatable(original_disabled, pin="2.0.0")  # an explicit pin to an enabled version
     with pytest.raises(DefinitionError, match="unavailable"):
         activatable(versioned("1.0.0"), pin="9.9.9")  # a version that is not installed
 
