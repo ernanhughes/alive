@@ -240,6 +240,7 @@ async def transition(
     principal,
     export_sha256=None,
     counterevidence_ref=None,
+    owner_withdrawal=False,
 ):
     """Explicit owner-local qualification/export or independently evidenced demotion."""
     async with kernel.lock, kernel.db.sessions.begin() as session:
@@ -260,6 +261,7 @@ async def transition(
             "rejected": set(),
         }
         require(state in allowed[body["state"]], "lesson_transition_invalid")
+        require(not owner_withdrawal or state == "rejected", "withdrawal_only_revokes_export")
         export = body["export"]
         if state in ("qualified", "active"):
             candidate = export_text(body)
@@ -268,7 +270,7 @@ async def transition(
                 "exact_bounded_owner_export_required",
             )
             export = candidate
-        if body["state"] == "active":
+        if body["state"] == "active" and not owner_withdrawal:
             evidence = await session.scalar(select(Event).where(Event.id == counterevidence_ref))
             counter = value(evidence)
             require(
@@ -287,6 +289,9 @@ async def transition(
             "previous_sha256": current.payload["sha256"],
             "counterevidence_ref": counterevidence_ref,
         }
+        if owner_withdrawal:
+            # Consent withdrawal is always available; it is not scientific counterevidence.
+            updated.update(export=None, withdrawal="owner_withdrew_reusable_export")
         return await put(session, kernel, LESSON, f"{lesson_id}:{updated['version']}", updated)
 
 
