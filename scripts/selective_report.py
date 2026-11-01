@@ -192,7 +192,7 @@ def main(path, out=None):
                 )
                 for a in ARMS
             }
-            for tier in ("standard", "hard")
+            for tier in ("standard", "hard", "extreme")
         },
         "by_label": {
             label: {
@@ -238,6 +238,11 @@ def main(path, out=None):
         a: summarize([e for e in dev if e["arm"] == a])
         for a in "AD"
         if any(e["arm"] == a for e in dev)
+    }
+    cal = [e for e in ledger["evaluation"] if e["phase"] == "calibration"]
+    result["calibration_A"] = {
+        "end_to_end": rate(sum(e["grade"]["end_to_end"] for e in cal), len(cal)),
+        "tasks": {e["task_id"]: explain(e) for e in cal},
     }
     result["development_calibration_A_by_tier"] = {
         tier: rate(

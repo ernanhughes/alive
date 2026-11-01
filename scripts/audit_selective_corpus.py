@@ -29,7 +29,7 @@ LEAKY = re.compile(
     re.IGNORECASE,
 )
 VOCABULARY = set(Mechanism.__args__)
-TARGETS = {"train": 18, "dev": 12, "heldout": 24}
+TARGETS = {"train": 18, "dev": 12, "calibration": 6, "heldout": 36}
 
 
 def main():
@@ -118,7 +118,7 @@ def main():
         "tiers": {
             s: {
                 k: sum(t["tier"] == k and t["split"] == s for t in tasks)
-                for k in ("standard", "hard")
+                for k in ("standard", "hard", "extreme")
             }
             for s in TARGETS
         },

@@ -99,3 +99,26 @@ Programmatic audit of the fixtures, not independent human adjudication; implemen
 authored tasks; one model; small, related Python fixtures; prose unverified by the oracle; first-pass
 results only (no repair/retry); AI-FIRST-03 evidence was used to design the experiment, so none of its
 held-out tasks are reused.
+
+## Amendment 1 (before any held-out or calibration call)
+
+The development phase finished with **arm A solving 12/12 development tasks (all six "hard" ones)**
+and arm D matching it (lessons supplied on 7 tasks, none on 5; no paired gain or loss). The corpus
+therefore had no headroom, the AI-FIRST-03 ceiling problem again. Before opening held-out, and
+without using any held-out outcome (none exists):
+
+* 18 computation-heavy tasks (`extreme` tier) are **added unconditionally**: 6 `calibration` tasks
+  (arm A only, report-only, never used for lessons or held-out claims) and 12 more held-out tasks.
+  Held-out becomes 36 tasks (15 correct implementations in the corpus overall). The 54 original tasks
+  are unchanged. Nothing is selected or dropped by outcome.
+* Their expected values come from an **independent third implementation** (a differently formulated
+  `spec`), not from hand typing; the audit requires implementation, reference and spec to agree as the
+  label demands. Three held-out `extreme` tasks are correct implementations.
+* Budget is re-planned under the Governor's 500-call experiment ceiling: ~111 calls already spent in
+  training and development, calibration 12, held-out 288, repeats (`num-06`, `def-08`, `err-09`)
+  24, ablation (4 development tasks) 32, positive-transfer ablation (<=3 tasks) 24. Dev arms B/C stay
+  unrun.
+* If arm A also solves the calibration tasks, that is reported as a ceiling and held-out proceeds
+  as locked; no further tasks are authored.
+
+The primary metric, arms, selector, analysis plan and interpretation rules above are unchanged.

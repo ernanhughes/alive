@@ -44,8 +44,8 @@ SEED = 4401
 MODES = {"A": "stateless", "B": "contextual", "C": "learned", "D": "selective"}
 LIMITS = {"provider_requests": 560, "conservative_units": 8_000_000}
 SESSION_ROLL = 170  # Governor session ceiling is 200 calls; roll before reaching it
-REPEATS = ["num-06", "sta-06", "def-08", "err-09"]  # predeclared; mixed defective and correct
-ABLATION_TASKS = 6
+REPEATS = ["num-06", "def-08", "err-09"]  # predeclared; mixed defective and correct
+ABLATION_TASKS = 4
 ABLATION_CONDITIONS = (
     "R1_one_relevant",
     "R2_one_irrelevant",
@@ -57,9 +57,12 @@ REFERENCE_FAILURES = ("lesson_not_supplied", "historical_reference_not_supplied"
 
 def plan(corpus):
     rng = random.Random(SEED)
-    by_split = {s: [t for t in corpus["tasks"] if t["split"] == s] for s in ("dev", "heldout")}
+    by_split = {
+        s: [t for t in corpus["tasks"] if t["split"] == s]
+        for s in ("dev", "calibration", "heldout")
+    }
     runs = []
-    for phase, arms in (("dev", "AD"), ("heldout", "ABCD")):
+    for phase, arms in (("dev", "AD"), ("calibration", "A"), ("heldout", "ABCD")):
         tasks = list(by_split[phase])
         rng.shuffle(tasks)
         for task in tasks:
@@ -194,6 +197,36 @@ def run(folder, approve_live, *, through="ablate", open_heldout=False, limit_tra
     head = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     if path.exists():
         ledger = json.loads(path.read_text(encoding="utf-8"))
+        if ledger["corpus_lock"] != lock:
+            # Amendment 1: tasks may be ADDED before any calibration or held-out turn exists;
+            # every previously used task must be byte-identical and the development plan equal.
+            old = json.loads(
+                subprocess.check_output(
+                    [
+                        "git",
+                        "show",
+                        f"{ledger['implementation_sha']}:docs/intelligence/selective-corpus-v2.json",
+                    ],
+                    text=True,
+                )
+            )
+            now = {t["id"]: digest(t) for t in corpus["tasks"]}
+            assert all(now.get(t["id"]) == digest(t) for t in old["tasks"])
+            assert not any(r["phase"] not in ("dev", "train") for r in ledger["evaluation"])
+            fresh = plan(corpus)
+            assert [r for r in fresh if r["phase"] == "dev"] == [
+                r for r in ledger["plan"] if r["phase"] == "dev"
+            ]
+            ledger.setdefault("amendments", []).append(
+                {
+                    "id": "amendment-1-extreme-tier",
+                    "previous_lock": ledger["corpus_lock"],
+                    "new_lock": lock,
+                    "reason": "development arm A solved 12/12; added calibration and held-out "
+                    "tasks before any held-out call",
+                }
+            )
+            ledger["corpus_lock"], ledger["plan"] = lock, fresh
         assert ledger["corpus_lock"] == lock and ledger["plan"] == plan(corpus)
         drift = subprocess.run(
             ["git", "diff", "--exit-code", ledger["implementation_sha"], "--", "alive"]
@@ -575,14 +608,28 @@ def run(folder, approve_live, *, through="ablate", open_heldout=False, limit_tra
                 ledger["frozen_policy_sha256"] = digest(policy)
                 ledger["dev_complete"] = True
                 save()
-            if through == "dev" or not open_heldout:
+            if through == "dev":
                 print("development complete; held-out set not opened", flush=True)
+                return
+            # Calibration: arm A only, report-only; never used for lessons or held-out claims.
+            for planned in ledger["plan"]:
+                if planned["phase"] != "calibration" or any(
+                    r["phase"] == "calibration" and r["task_id"] == planned["task_id"]
+                    for r in ledger["evaluation"]
+                ):
+                    continue
+                task = tasks[planned["task_id"]]
+                entry = record_turn("calibration", task, "A", f"calib:{task['id']}:A")
+                ledger["evaluation"].append(entry)
+                save()
+            if through == "calibration" or not open_heldout:
+                print("calibration complete; held-out set not opened", flush=True)
                 return
 
             # ------------------------------------------------------------ held-out + repeats
             roll_session()
             for planned in ledger["plan"]:
-                if planned["phase"] == "dev" or (
+                if planned["phase"] in ("dev", "calibration") or (
                     planned["phase"],
                     planned["task_id"],
                     planned["arm"],
@@ -696,7 +743,7 @@ def positive(folder, approve_live):
                 and (treated["review"]["selection"] or {}).get("selected")
             ):
                 candidates.append(treated)
-    candidates = candidates[:4]
+    candidates = candidates[:3]
     ledger["positive_candidates"] = [c["task_id"] for c in candidates]
     done = {r["key"] for r in ledger.setdefault("positive_ablation", [])}
     with TestClient(create_app(settings), headers={"Authorization": f"Bearer {TOKEN}"}) as client:
@@ -796,7 +843,7 @@ if __name__ == "__main__":
     parser.add_argument("directory", type=Path)
     parser.add_argument("--approve-live", action="store_true")
     parser.add_argument(
-        "--through", choices=["train", "dev", "heldout", "ablate"], default="ablate"
+        "--through", choices=["train", "dev", "calibration", "heldout", "ablate"], default="ablate"
     )
     parser.add_argument("--open-heldout", action="store_true")
     parser.add_argument("--limit-train", type=int)

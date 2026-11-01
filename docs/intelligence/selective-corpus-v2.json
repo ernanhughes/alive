@@ -3505,6 +3505,1763 @@
      }
     }
    ]
+  },
+  {
+   "id": "num-10",
+   "family": "numeric",
+   "split": "calibration",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "numeric.counting"
+   ],
+   "contract": "Return true when the digit string passes the Luhn check: starting from the rightmost digit and moving left, double every second digit, subtract 9 from any doubled digit above 9, add everything up, and the total must be a multiple of 10.",
+   "code": "def solve(p):\n    total = 0\n    for i, ch in enumerate(p):\n        d = int(ch)\n        if i % 2 == 0:\n            d *= 2\n            if d > 9:\n                d -= 9\n        total += d\n    return total % 10 == 0\n",
+   "reference": "def solve(p):\n    total = 0\n    for i, ch in enumerate(reversed(p)):\n        d = int(ch)\n        if i % 2 == 1:\n            d *= 2\n            if d > 9:\n                d -= 9\n        total += d\n    return total % 10 == 0\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "4539578763621486",
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c2",
+     "input": "4111111111111111",
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c3",
+     "input": "4111111111111112",
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c4",
+     "input": "378282246310005",
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c5",
+     "input": "79927398713",
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c6",
+     "input": "79927398710",
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c7",
+     "input": "0",
+     "expected": {
+      "value": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "num-11",
+   "family": "numeric",
+   "split": "heldout",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "numeric.rounding"
+   ],
+   "contract": "Split a whole number of cents among n people as evenly as possible. Input is [total, n]. Return the list of n shares; any remainder goes one cent at a time to the earliest people.",
+   "code": "def solve(p):\n    share = round(p[0] / p[1])\n    return [share] * p[1]\n",
+   "reference": "def solve(p):\n    q, r = divmod(p[0], p[1])\n    return [q + 1] * r + [q] * (p[1] - r)\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      10,
+      3
+     ],
+     "expected": {
+      "value": [
+       4,
+       3,
+       3
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      9,
+      3
+     ],
+     "expected": {
+      "value": [
+       3,
+       3,
+       3
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      1,
+      3
+     ],
+     "expected": {
+      "value": [
+       1,
+       0,
+       0
+      ]
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      0,
+      4
+     ],
+     "expected": {
+      "value": [
+       0,
+       0,
+       0,
+       0
+      ]
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      7,
+      2
+     ],
+     "expected": {
+      "value": [
+       4,
+       3
+      ]
+     }
+    },
+    {
+     "id": "c6",
+     "input": [
+      100,
+      7
+     ],
+     "expected": {
+      "value": [
+       15,
+       15,
+       14,
+       14,
+       14,
+       14,
+       14
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "num-12",
+   "family": "numeric",
+   "split": "heldout",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "numeric.signed_values"
+   ],
+   "contract": "Count the 1 bits in the 8-bit two's complement form of an integer from -128 to 127. For example -1 is 11111111.",
+   "code": "def solve(p):\n    return bin(p).count(\"1\")\n",
+   "reference": "def solve(p):\n    return bin(p & 0xFF).count(\"1\")\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": 5,
+     "expected": {
+      "value": 2
+     }
+    },
+    {
+     "id": "c2",
+     "input": -1,
+     "expected": {
+      "value": 8
+     }
+    },
+    {
+     "id": "c3",
+     "input": -128,
+     "expected": {
+      "value": 1
+     }
+    },
+    {
+     "id": "c4",
+     "input": 127,
+     "expected": {
+      "value": 7
+     }
+    },
+    {
+     "id": "c5",
+     "input": -5,
+     "expected": {
+      "value": 7
+     }
+    },
+    {
+     "id": "c6",
+     "input": 0,
+     "expected": {
+      "value": 0
+     }
+    }
+   ]
+  },
+  {
+   "id": "par-10",
+   "family": "parsing",
+   "split": "calibration",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "parsing.delimiter_position"
+   ],
+   "contract": "Split one CSV line into fields. A comma inside double quotes does not split. The surrounding quotes are removed, and two double quotes inside a quoted field stand for one literal double quote.",
+   "code": "def solve(p):\n    fields, current, quoted = [], \"\", False\n    for ch in p:\n        if ch == '\"':\n            quoted = not quoted\n        elif ch == \",\" and not quoted:\n            fields.append(current)\n            current = \"\"\n        else:\n            current += ch\n    fields.append(current)\n    return fields\n",
+   "reference": "def solve(p):\n    fields, current, quoted, i = [], \"\", False, 0\n    while i < len(p):\n        ch = p[i]\n        if ch == '\"':\n            if quoted and p[i + 1:i + 2] == '\"':\n                current += '\"'\n                i += 1\n            else:\n                quoted = not quoted\n        elif ch == \",\" and not quoted:\n            fields.append(current)\n            current = \"\"\n        else:\n            current += ch\n        i += 1\n    fields.append(current)\n    return fields\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "a,b,c",
+     "expected": {
+      "value": [
+       "a",
+       "b",
+       "c"
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": "a,\"b,c\",d",
+     "expected": {
+      "value": [
+       "a",
+       "b,c",
+       "d"
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": "\"he said \"\"hi\"\"\",x",
+     "expected": {
+      "value": [
+       "he said \"hi\"",
+       "x"
+      ]
+     }
+    },
+    {
+     "id": "c4",
+     "input": "\"\",a",
+     "expected": {
+      "value": [
+       "",
+       "a"
+      ]
+     }
+    },
+    {
+     "id": "c5",
+     "input": "a,",
+     "expected": {
+      "value": [
+       "a",
+       ""
+      ]
+     }
+    },
+    {
+     "id": "c6",
+     "input": "x,\"y \"\"z\"\" w\",,q",
+     "expected": {
+      "value": [
+       "x",
+       "y \"z\" w",
+       "",
+       "q"
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "par-11",
+   "family": "parsing",
+   "split": "heldout",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "parsing.delimiter_position",
+    "parsing.empty_fields"
+   ],
+   "contract": "Parse 'key=value' items separated by semicolons into a list of [key, value] pairs (a key with no equals sign gives a one-element list). A backslash before a semicolon makes it part of the text instead of a separator. Empty items are skipped.",
+   "code": "def solve(p):\n    return [item.split(\"=\", 1) for item in p.split(\";\") if item]\n",
+   "reference": "def solve(p):\n    items, current, i = [], \"\", 0\n    while i < len(p):\n        if p[i] == \"\\\\\" and p[i + 1:i + 2] == \";\":\n            current += \";\"\n            i += 2\n            continue\n        if p[i] == \";\":\n            items.append(current)\n            current = \"\"\n        else:\n            current += p[i]\n        i += 1\n    items.append(current)\n    return [item.split(\"=\", 1) for item in items if item]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "a=1;b=2",
+     "expected": {
+      "value": [
+       [
+        "a",
+        "1"
+       ],
+       [
+        "b",
+        "2"
+       ]
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": "a=x\\;y;b=2",
+     "expected": {
+      "value": [
+       [
+        "a",
+        "x;y"
+       ],
+       [
+        "b",
+        "2"
+       ]
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": "",
+     "expected": {
+      "value": []
+     }
+    },
+    {
+     "id": "c4",
+     "input": "k=;j",
+     "expected": {
+      "value": [
+       [
+        "k",
+        ""
+       ],
+       [
+        "j"
+       ]
+      ]
+     }
+    },
+    {
+     "id": "c5",
+     "input": "a=1;;b=2",
+     "expected": {
+      "value": [
+       [
+        "a",
+        "1"
+       ],
+       [
+        "b",
+        "2"
+       ]
+      ]
+     }
+    },
+    {
+     "id": "c6",
+     "input": "p=1\\;2\\;3",
+     "expected": {
+      "value": [
+       [
+        "p",
+        "1;2;3"
+       ]
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "par-12",
+   "family": "parsing",
+   "split": "heldout",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "parsing.type_coercion"
+   ],
+   "contract": "Convert text such as '1h30m15s' into seconds. Any of the hours, minutes and seconds parts may be left out, but they must appear in that order. Empty text is 0 seconds. Any text that does not follow this form is an error of type ValueError.",
+   "code": "import re\n\ndef solve(p):\n    units = {\"h\": 3600, \"m\": 60, \"s\": 1}\n    return sum(int(n) * units[u] for n, u in re.findall(r\"(\\d+)([hms])\", p))\n",
+   "reference": "import re\n\ndef solve(p):\n    if not re.fullmatch(r\"(\\d+h)?(\\d+m)?(\\d+s)?\", p):\n        raise ValueError(p)\n    units = {\"h\": 3600, \"m\": 60, \"s\": 1}\n    return sum(int(n) * units[u] for n, u in re.findall(r\"(\\d+)([hms])\", p))\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "1h30m15s",
+     "expected": {
+      "value": 5415
+     }
+    },
+    {
+     "id": "c2",
+     "input": "90m",
+     "expected": {
+      "value": 5400
+     }
+    },
+    {
+     "id": "c3",
+     "input": "45s",
+     "expected": {
+      "value": 45
+     }
+    },
+    {
+     "id": "c4",
+     "input": "2h",
+     "expected": {
+      "value": 7200
+     }
+    },
+    {
+     "id": "c5",
+     "input": "5x",
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c6",
+     "input": "1h5",
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c7",
+     "input": "",
+     "expected": {
+      "value": 0
+     }
+    },
+    {
+     "id": "c8",
+     "input": "30m1h",
+     "expected": {
+      "error": "ValueError"
+     }
+    }
+   ]
+  },
+  {
+   "id": "sta-10",
+   "family": "state",
+   "split": "calibration",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "state.ordering"
+   ],
+   "contract": "Run a stack machine over a list of commands, starting from an empty stack, and return the final stack (bottom first). 'push N' pushes the integer N, 'pop' removes the top, 'dup' pushes a copy of the top, 'swap' exchanges the top two, 'add' replaces the top two with their sum. Running out of items raises IndexError.",
+   "code": "def solve(p):\n    stack = []\n    for command in p:\n        parts = command.split()\n        if parts[0] == \"push\":\n            stack.append(int(parts[1]))\n        elif parts[0] == \"pop\":\n            stack.pop()\n        elif parts[0] == \"dup\":\n            stack.append(stack[0])\n        elif parts[0] == \"swap\":\n            stack[-1], stack[-2] = stack[-2], stack[-1]\n        elif parts[0] == \"add\":\n            stack.append(stack.pop() + stack.pop())\n    return stack\n",
+   "reference": "def solve(p):\n    stack = []\n    for command in p:\n        parts = command.split()\n        if parts[0] == \"push\":\n            stack.append(int(parts[1]))\n        elif parts[0] == \"pop\":\n            stack.pop()\n        elif parts[0] == \"dup\":\n            stack.append(stack[-1])\n        elif parts[0] == \"swap\":\n            stack[-1], stack[-2] = stack[-2], stack[-1]\n        elif parts[0] == \"add\":\n            stack.append(stack.pop() + stack.pop())\n    return stack\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      "push 3",
+      "push 4",
+      "dup",
+      "add"
+     ],
+     "expected": {
+      "value": [
+       3,
+       8
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      "push 1",
+      "push 2",
+      "push 3",
+      "dup",
+      "swap",
+      "add"
+     ],
+     "expected": {
+      "value": [
+       1,
+       2,
+       6
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      "push 5",
+      "dup",
+      "dup",
+      "add",
+      "add"
+     ],
+     "expected": {
+      "value": [
+       15
+      ]
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      "push 2",
+      "push 7",
+      "swap",
+      "dup",
+      "add",
+      "push 1",
+      "add"
+     ],
+     "expected": {
+      "value": [
+       7,
+       5
+      ]
+     }
+    },
+    {
+     "id": "c5",
+     "input": [],
+     "expected": {
+      "value": []
+     }
+    },
+    {
+     "id": "c6",
+     "input": [
+      "pop"
+     ],
+     "expected": {
+      "error": "IndexError"
+     }
+    },
+    {
+     "id": "c7",
+     "input": [
+      "push 9",
+      "push 1",
+      "push 6",
+      "dup",
+      "add",
+      "swap",
+      "pop",
+      "dup"
+     ],
+     "expected": {
+      "value": [
+       9,
+       12,
+       12
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "sta-11",
+   "family": "state",
+   "split": "heldout",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "state.transition_guard"
+   ],
+   "contract": "Replay account operations such as 'deposit 100' and 'withdraw 30' from a zero balance. A withdrawal larger than the balance is rejected and changes nothing; a withdrawal equal to the balance is allowed. Return [final balance, rejected count].",
+   "code": "def solve(p):\n    balance, rejected = 0, 0\n    for op in p:\n        kind, amount = op.split()\n        amount = int(amount)\n        if kind == \"deposit\":\n            balance += amount\n        elif amount < balance:\n            balance -= amount\n        else:\n            rejected += 1\n    return [balance, rejected]\n",
+   "reference": "def solve(p):\n    balance, rejected = 0, 0\n    for op in p:\n        kind, amount = op.split()\n        amount = int(amount)\n        if kind == \"deposit\":\n            balance += amount\n        elif amount <= balance:\n            balance -= amount\n        else:\n            rejected += 1\n    return [balance, rejected]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      "deposit 100",
+      "withdraw 30",
+      "withdraw 70",
+      "withdraw 1"
+     ],
+     "expected": {
+      "value": [
+       0,
+       1
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      "withdraw 5"
+     ],
+     "expected": {
+      "value": [
+       0,
+       1
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      "deposit 50",
+      "withdraw 20",
+      "deposit 10",
+      "withdraw 40",
+      "withdraw 1"
+     ],
+     "expected": {
+      "value": [
+       0,
+       1
+      ]
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      "deposit 5",
+      "withdraw 5",
+      "deposit 5",
+      "withdraw 6",
+      "withdraw 5"
+     ],
+     "expected": {
+      "value": [
+       0,
+       1
+      ]
+     }
+    },
+    {
+     "id": "c5",
+     "input": [],
+     "expected": {
+      "value": [
+       0,
+       0
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "sta-12",
+   "family": "state",
+   "split": "heldout",
+   "tier": "extreme",
+   "label": "correct",
+   "mechanisms": [
+    "state.repeat_application"
+   ],
+   "contract": "Decode run-length text: each character is followed by its repeat count, which may have several digits, so 'a3b2' is 'aaabb' and 'x12' is twelve x characters.",
+   "code": "import re\n\ndef solve(p):\n    return \"\".join(ch * int(n) for ch, n in re.findall(r\"(\\D)(\\d+)\", p))\n",
+   "reference": "import re\n\ndef solve(p):\n    return \"\".join(ch * int(n) for ch, n in re.findall(r\"(\\D)(\\d+)\", p))\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "a3b2",
+     "expected": {
+      "value": "aaabb"
+     }
+    },
+    {
+     "id": "c2",
+     "input": "x12",
+     "expected": {
+      "value": "xxxxxxxxxxxx"
+     }
+    },
+    {
+     "id": "c3",
+     "input": "a1b10c2",
+     "expected": {
+      "value": "abbbbbbbbbbcc"
+     }
+    },
+    {
+     "id": "c4",
+     "input": "z0q3",
+     "expected": {
+      "value": "qqq"
+     }
+    },
+    {
+     "id": "c5",
+     "input": "",
+     "expected": {
+      "value": ""
+     }
+    },
+    {
+     "id": "c6",
+     "input": "m11",
+     "expected": {
+      "value": "mmmmmmmmmmm"
+     }
+    }
+   ]
+  },
+  {
+   "id": "aut-10",
+   "family": "authorization",
+   "split": "calibration",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "authz.precedence"
+   ],
+   "contract": "Decide an action from ordered rules. Input is [rules, user, groups, action] where each rule is [effect, subject, rule_action]. A rule applies when its subject is '*', the user's name, or 'group:NAME' for a group the user belongs to, and its rule_action is the action or '*'. When several rules apply the LAST one decides; effect 'allow' permits and 'deny' refuses. With no applicable rule the answer is refuse.",
+   "code": "def solve(p):\n    rules, user, groups, action = p\n    for effect, subject, rule_action in rules:\n        who = subject == \"*\" or subject == user or (\n            subject.startswith(\"group:\") and subject[6:] in groups\n        )\n        if who and rule_action in (action, \"*\"):\n            return effect == \"allow\"\n    return False\n",
+   "reference": "def solve(p):\n    rules, user, groups, action = p\n    verdict = False\n    for effect, subject, rule_action in rules:\n        who = subject == \"*\" or subject == user or (\n            subject.startswith(\"group:\") and subject[6:] in groups\n        )\n        if who and rule_action in (action, \"*\"):\n            verdict = effect == \"allow\"\n    return verdict\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      [
+       [
+        "allow",
+        "*",
+        "read"
+       ],
+       [
+        "deny",
+        "bob",
+        "read"
+       ]
+      ],
+      "bob",
+      [],
+      "read"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      [
+       [
+        "deny",
+        "group:staff",
+        "*"
+       ],
+       [
+        "allow",
+        "ann",
+        "read"
+       ]
+      ],
+      "ann",
+      [
+       "staff"
+      ],
+      "read"
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      [
+       [
+        "allow",
+        "group:ops",
+        "write"
+       ]
+      ],
+      "cy",
+      [
+       "dev"
+      ],
+      "write"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      [],
+      "x",
+      [],
+      "read"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      [
+       [
+        "allow",
+        "*",
+        "*"
+       ],
+       [
+        "deny",
+        "group:temp",
+        "write"
+       ],
+       [
+        "allow",
+        "dan",
+        "write"
+       ]
+      ],
+      "dan",
+      [
+       "temp"
+      ],
+      "write"
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c6",
+     "input": [
+      [
+       [
+        "allow",
+        "*",
+        "*"
+       ],
+       [
+        "deny",
+        "group:temp",
+        "write"
+       ],
+       [
+        "allow",
+        "dan",
+        "write"
+       ]
+      ],
+      "eve",
+      [
+       "temp"
+      ],
+      "write"
+     ],
+     "expected": {
+      "value": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "aut-11",
+   "family": "authorization",
+   "split": "heldout",
+   "tier": "extreme",
+   "label": "correct",
+   "mechanisms": [
+    "authz.scope_boundary"
+   ],
+   "contract": "Access is allowed from hour 'start' up to but not including hour 'end', on a 24 hour clock. A window such as 22 to 6 runs through midnight. Equal start and end hours mean an empty window. Input is [start, end, hour].",
+   "code": "def solve(p):\n    start, end, hour = p\n    if start <= end:\n        return start <= hour < end\n    return hour >= start or hour < end\n",
+   "reference": "def solve(p):\n    start, end, hour = p\n    if start <= end:\n        return start <= hour < end\n    return hour >= start or hour < end\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      9,
+      17,
+      9
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      9,
+      17,
+      17
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      22,
+      6,
+      23
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      22,
+      6,
+      3
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      22,
+      6,
+      12
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c6",
+     "input": [
+      22,
+      6,
+      6
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c7",
+     "input": [
+      5,
+      5,
+      5
+     ],
+     "expected": {
+      "value": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "aut-12",
+   "family": "authorization",
+   "split": "heldout",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "authz.scope_boundary",
+    "authz.substring_match"
+   ],
+   "contract": "Permissions inherit down a path. Input is [rules, path] where rules maps path prefixes to true or false. The rule with the longest prefix that contains the path decides, and a prefix contains a path only at a '/' boundary ('/a' contains '/a' and '/a/x' but not '/ab'). A path no rule contains is refused.",
+   "code": "def solve(p):\n    rules, path = p\n    for prefix, allowed in rules.items():\n        if path.startswith(prefix):\n            return allowed\n    return False\n",
+   "reference": "def solve(p):\n    rules, path = p\n    best = None\n    for prefix in rules:\n        if path == prefix or path.startswith(prefix.rstrip(\"/\") + \"/\"):\n            if best is None or len(prefix) > len(best):\n                best = prefix\n    return rules[best] if best is not None else False\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      {
+       "/": true,
+       "/a": false,
+       "/a/b": true
+      },
+      "/a/b/c"
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      {
+       "/": true,
+       "/a": false,
+       "/a/b": true
+      },
+      "/a/x"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      {
+       "/": true,
+       "/a": false,
+       "/a/b": true
+      },
+      "/z"
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      {
+       "/": true,
+       "/a": false,
+       "/a/b": true
+      },
+      "/ab"
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      {
+       "/": true,
+       "/a": false,
+       "/a/b": true
+      },
+      "/a"
+     ],
+     "expected": {
+      "value": false
+     }
+    },
+    {
+     "id": "c6",
+     "input": [
+      {
+       "/a": false,
+       "/ab": true
+      },
+      "/ab/c"
+     ],
+     "expected": {
+      "value": true
+     }
+    },
+    {
+     "id": "c7",
+     "input": [
+      {
+       "/a": true
+      },
+      "/b"
+     ],
+     "expected": {
+      "value": false
+     }
+    }
+   ]
+  },
+  {
+   "id": "def-10",
+   "family": "defaults",
+   "split": "calibration",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "defaults.merge_depth",
+    "defaults.override_precedence"
+   ],
+   "contract": "Look up a dotted key such as 'a.b' in a list of configuration layers, later layers overriding earlier ones. Input is [layers, key]. A layer that holds a plain value (not a dict) on the way to the key hides that key in that layer and in every earlier layer, so the answer is null. A layer that simply lacks the key defers to earlier layers. No layer holding the key gives null.",
+   "code": "def solve(p):\n    layers, key = p\n    for layer in reversed(layers):\n        node = layer\n        found = True\n        for part in key.split(\".\"):\n            if isinstance(node, dict) and part in node:\n                node = node[part]\n            else:\n                found = False\n                break\n        if found:\n            return node\n    return None\n",
+   "reference": "def solve(p):\n    layers, key = p\n    for layer in reversed(layers):\n        node = layer\n        for part in key.split(\".\"):\n            if not isinstance(node, dict):\n                return None\n            if part not in node:\n                break\n            node = node[part]\n        else:\n            return node\n    return None\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      [
+       {
+        "a": {
+         "b": 1
+        }
+       },
+       {
+        "a": 5
+       }
+      ],
+      "a.b"
+     ],
+     "expected": {
+      "value": null
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      [
+       {
+        "a": {
+         "b": 1
+        }
+       },
+       {
+        "a": {
+         "c": 2
+        }
+       }
+      ],
+      "a.b"
+     ],
+     "expected": {
+      "value": 1
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      [
+       {
+        "a": {
+         "b": 1
+        }
+       },
+       {
+        "a": {
+         "b": 2
+        }
+       }
+      ],
+      "a.b"
+     ],
+     "expected": {
+      "value": 2
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      [
+       {
+        "x": 1
+       }
+      ],
+      "y"
+     ],
+     "expected": {
+      "value": null
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      [
+       {
+        "a": {
+         "b": {
+          "c": 3
+         }
+        }
+       },
+       {
+        "a": {
+         "b": 4
+        }
+       }
+      ],
+      "a.b.c"
+     ],
+     "expected": {
+      "value": null
+     }
+    },
+    {
+     "id": "c6",
+     "input": [
+      [
+       {
+        "a": null
+       }
+      ],
+      "a"
+     ],
+     "expected": {
+      "value": null
+     }
+    },
+    {
+     "id": "c7",
+     "input": [
+      [
+       {
+        "a": {
+         "b": 1
+        }
+       },
+       {},
+       {
+        "a": {
+         "c": 2
+        }
+       }
+      ],
+      "a.b"
+     ],
+     "expected": {
+      "value": 1
+     }
+    }
+   ]
+  },
+  {
+   "id": "def-11",
+   "family": "defaults",
+   "split": "heldout",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "defaults.falsy_vs_missing"
+   ],
+   "contract": "Complete records from defaults. Input is [defaults, records]. Each returned record has every default key it lacks; values the record sets itself, including 0, false, the empty string and null, are kept. The arguments are not modified.",
+   "code": "def solve(p):\n    defaults, records = p\n    out = []\n    for record in records:\n        merged = dict(defaults)\n        for key, value in record.items():\n            if value:\n                merged[key] = value\n        out.append(merged)\n    return out\n",
+   "reference": "def solve(p):\n    defaults, records = p\n    out = []\n    for record in records:\n        merged = dict(defaults)\n        merged.update(record)\n        out.append(merged)\n    return out\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      {
+       "a": 1,
+       "b": 2
+      },
+      [
+       {
+        "a": 0
+       },
+       {
+        "b": null,
+        "c": 3
+       },
+       {}
+      ]
+     ],
+     "expected": {
+      "value": [
+       {
+        "a": 0,
+        "b": 2
+       },
+       {
+        "a": 1,
+        "b": null,
+        "c": 3
+       },
+       {
+        "a": 1,
+        "b": 2
+       }
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      {
+       "x": true
+      },
+      [
+       {
+        "x": false
+       },
+       {
+        "x": true
+       }
+      ]
+     ],
+     "expected": {
+      "value": [
+       {
+        "x": false
+       },
+       {
+        "x": true
+       }
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      {},
+      [
+       {
+        "k": ""
+       }
+      ]
+     ],
+     "expected": {
+      "value": [
+       {
+        "k": ""
+       }
+      ]
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      {
+       "a": 1
+      },
+      []
+     ],
+     "expected": {
+      "value": []
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      {
+       "a": "d",
+       "b": "e"
+      },
+      [
+       {
+        "a": "",
+        "b": "z"
+       }
+      ]
+     ],
+     "expected": {
+      "value": [
+       {
+        "a": "",
+        "b": "z"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "def-12",
+   "family": "defaults",
+   "split": "heldout",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "defaults.falsy_vs_missing"
+   ],
+   "contract": "Read environment-style flags. Input is a list of strings. 'KEY=VALUE' sets KEY to the text VALUE (which may be empty and may itself contain '='), a bare 'KEY' sets it to true, and a later entry for the same key replaces an earlier one. Return a dict.",
+   "code": "def solve(p):\n    out = {}\n    for item in p:\n        key, _, value = item.partition(\"=\")\n        out[key] = value or True\n    return out\n",
+   "reference": "def solve(p):\n    out = {}\n    for item in p:\n        if \"=\" in item:\n            key, value = item.split(\"=\", 1)\n            out[key] = value\n        else:\n            out[item] = True\n    return out\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      "DEBUG=0",
+      "NAME=",
+      "X"
+     ],
+     "expected": {
+      "value": {
+       "DEBUG": "0",
+       "NAME": "",
+       "X": true
+      }
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      "A=1",
+      "A=2"
+     ],
+     "expected": {
+      "value": {
+       "A": "2"
+      }
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      "K=a=b"
+     ],
+     "expected": {
+      "value": {
+       "K": "a=b"
+      }
+     }
+    },
+    {
+     "id": "c4",
+     "input": [],
+     "expected": {
+      "value": {}
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      "A=1",
+      "A"
+     ],
+     "expected": {
+      "value": {
+       "A": true
+      }
+     }
+    },
+    {
+     "id": "c6",
+     "input": [
+      "B",
+      "B="
+     ],
+     "expected": {
+      "value": {
+       "B": ""
+      }
+     }
+    }
+   ]
+  },
+  {
+   "id": "err-10",
+   "family": "errors",
+   "split": "calibration",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "errors.swallowed",
+    "errors.wrong_type"
+   ],
+   "contract": "Compute 100 divided by each job in a list. A job that raises any exception is recorded and skipped. Return [results, errors] where results holds the successful quotients in order and errors holds [index, ExceptionName] for each failed job.",
+   "code": "def solve(p):\n    results, errors = [], []\n    for index, job in enumerate(p):\n        try:\n            results.append(100 / job)\n        except ZeroDivisionError:\n            errors.append([index, \"ZeroDivisionError\"])\n    return [results, errors]\n",
+   "reference": "def solve(p):\n    results, errors = [], []\n    for index, job in enumerate(p):\n        try:\n            results.append(100 / job)\n        except Exception as error:\n            errors.append([index, type(error).__name__])\n    return [results, errors]\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      4,
+      0,
+      "x",
+      5
+     ],
+     "expected": {
+      "value": [
+       [
+        25.0,
+        20.0
+       ],
+       [
+        [
+         1,
+         "ZeroDivisionError"
+        ],
+        [
+         2,
+         "TypeError"
+        ]
+       ]
+      ]
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      2,
+      4
+     ],
+     "expected": {
+      "value": [
+       [
+        50.0,
+        25.0
+       ],
+       []
+      ]
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      0
+     ],
+     "expected": {
+      "value": [
+       [],
+       [
+        [
+         0,
+         "ZeroDivisionError"
+        ]
+       ]
+      ]
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      null,
+      10,
+      50
+     ],
+     "expected": {
+      "value": [
+       [
+        10.0,
+        2.0
+       ],
+       [
+        [
+         0,
+         "TypeError"
+        ]
+       ]
+      ]
+     }
+    },
+    {
+     "id": "c5",
+     "input": [],
+     "expected": {
+      "value": [
+       [],
+       []
+      ]
+     }
+    },
+    {
+     "id": "c6",
+     "input": [
+      8
+     ],
+     "expected": {
+      "value": [
+       [
+        12.5
+       ],
+       []
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "err-11",
+   "family": "errors",
+   "split": "heldout",
+   "tier": "extreme",
+   "label": "correct",
+   "mechanisms": [
+    "errors.swallowed"
+   ],
+   "contract": "Simulate retries. Input is a list of attempt outcomes, each 'ok' or 'fail'. Attempts are made in order and stop at the first 'ok', but at most 3 attempts are made. Return the number of attempts used. If none of the first 3 succeeds, raise RuntimeError.",
+   "code": "def solve(p):\n    for attempt in range(3):\n        if attempt < len(p) and p[attempt] == \"ok\":\n            return attempt + 1\n    raise RuntimeError(\"exhausted\")\n",
+   "reference": "def solve(p):\n    for attempt in range(3):\n        if attempt < len(p) and p[attempt] == \"ok\":\n            return attempt + 1\n    raise RuntimeError(\"exhausted\")\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": [
+      "ok"
+     ],
+     "expected": {
+      "value": 1
+     }
+    },
+    {
+     "id": "c2",
+     "input": [
+      "fail",
+      "ok"
+     ],
+     "expected": {
+      "value": 2
+     }
+    },
+    {
+     "id": "c3",
+     "input": [
+      "fail",
+      "fail",
+      "ok"
+     ],
+     "expected": {
+      "value": 3
+     }
+    },
+    {
+     "id": "c4",
+     "input": [
+      "fail",
+      "fail",
+      "fail",
+      "ok"
+     ],
+     "expected": {
+      "error": "RuntimeError"
+     }
+    },
+    {
+     "id": "c5",
+     "input": [
+      "fail",
+      "fail",
+      "fail"
+     ],
+     "expected": {
+      "error": "RuntimeError"
+     }
+    },
+    {
+     "id": "c6",
+     "input": [],
+     "expected": {
+      "error": "RuntimeError"
+     }
+    }
+   ]
+  },
+  {
+   "id": "err-12",
+   "family": "errors",
+   "split": "heldout",
+   "tier": "extreme",
+   "label": "defective",
+   "mechanisms": [
+    "errors.swallowed",
+    "parsing.type_coercion"
+   ],
+   "contract": "Parse a positive integer written with optional underscores, such as '1_000'. An underscore is allowed only between two digits. Any other text is an error of type ValueError.",
+   "code": "def solve(p):\n    return int(p.replace(\"_\", \"\"))\n",
+   "reference": "import re\n\ndef solve(p):\n    if not re.fullmatch(r\"\\d+(_\\d+)*\", p):\n        raise ValueError(p)\n    return int(p.replace(\"_\", \"\"))\n",
+   "input_state": "unchanged",
+   "tolerance": 0,
+   "cases": [
+    {
+     "id": "c1",
+     "input": "1_000",
+     "expected": {
+      "value": 1000
+     }
+    },
+    {
+     "id": "c2",
+     "input": "1__0",
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c3",
+     "input": "_1",
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c4",
+     "input": "1_",
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c5",
+     "input": "10",
+     "expected": {
+      "value": 10
+     }
+    },
+    {
+     "id": "c6",
+     "input": "1_2_3",
+     "expected": {
+      "value": 123
+     }
+    },
+    {
+     "id": "c7",
+     "input": "",
+     "expected": {
+      "error": "ValueError"
+     }
+    },
+    {
+     "id": "c8",
+     "input": "x_1",
+     "expected": {
+      "error": "ValueError"
+     }
+    }
+   ]
   }
  ]
 }
