@@ -1,0 +1,1053 @@
+{
+ "schema": "selective-summary/v1",
+ "ledger_status": "COMPLETE",
+ "implementation_sha": "20d89cc1b909f9797118fbb3e455ce61ac6c9257",
+ "heldout_tasks_complete": 36,
+ "arms": {
+  "A": {
+   "n": 36,
+   "end_to_end": 33,
+   "semantic_correct": 33,
+   "semantic_incorrect": 1,
+   "semantic_undetermined": 2,
+   "contract_compliant": 34,
+   "run_failures": 0,
+   "reference_normalized": 0,
+   "grounded": 32,
+   "provider_requests": 72,
+   "tokens": 228489,
+   "tokens_per_correct": 6924,
+   "requests_per_correct": 2.18,
+   "median_invocation_latency_ms": 7819,
+   "median_context_bytes": 2.0,
+   "lessons_supplied": 0,
+   "turns_with_a_lesson": 0
+  },
+  "B": {
+   "n": 36,
+   "end_to_end": 31,
+   "semantic_correct": 31,
+   "semantic_incorrect": 0,
+   "semantic_undetermined": 5,
+   "contract_compliant": 31,
+   "run_failures": 1,
+   "reference_normalized": 0,
+   "grounded": 30,
+   "provider_requests": 71,
+   "tokens": 248114,
+   "tokens_per_correct": 8004,
+   "requests_per_correct": 2.29,
+   "median_invocation_latency_ms": 7994,
+   "median_context_bytes": 1706.5,
+   "lessons_supplied": 63,
+   "turns_with_a_lesson": 36
+  },
+  "C": {
+   "n": 36,
+   "end_to_end": 30,
+   "semantic_correct": 30,
+   "semantic_incorrect": 3,
+   "semantic_undetermined": 3,
+   "contract_compliant": 33,
+   "run_failures": 0,
+   "reference_normalized": 0,
+   "grounded": 34,
+   "provider_requests": 72,
+   "tokens": 253552,
+   "tokens_per_correct": 8452,
+   "requests_per_correct": 2.4,
+   "median_invocation_latency_ms": 8293,
+   "median_context_bytes": 2257.0,
+   "lessons_supplied": 65,
+   "turns_with_a_lesson": 36
+  },
+  "D": {
+   "n": 36,
+   "end_to_end": 31,
+   "semantic_correct": 31,
+   "semantic_incorrect": 0,
+   "semantic_undetermined": 5,
+   "contract_compliant": 31,
+   "run_failures": 0,
+   "reference_normalized": 0,
+   "grounded": 33,
+   "provider_requests": 72,
+   "tokens": 242703,
+   "tokens_per_correct": 7829,
+   "requests_per_correct": 2.32,
+   "median_invocation_latency_ms": 8356,
+   "median_context_bytes": 1133.0,
+   "lessons_supplied": 36,
+   "turns_with_a_lesson": 28
+  }
+ },
+ "by_tier": {
+  "standard": {
+   "A": "9/9",
+   "B": "9/9",
+   "C": "8/9",
+   "D": "7/9"
+  },
+  "hard": {
+   "A": "14/15",
+   "B": "14/15",
+   "C": "12/15",
+   "D": "14/15"
+  },
+  "extreme": {
+   "A": "10/12",
+   "B": "8/12",
+   "C": "10/12",
+   "D": "10/12"
+  }
+ },
+ "by_label": {
+  "defective": {
+   "A": "24/27",
+   "B": "22/27",
+   "C": "21/27",
+   "D": "24/27"
+  },
+  "correct": {
+   "A": "9/9",
+   "B": "9/9",
+   "C": "9/9",
+   "D": "7/9"
+  }
+ },
+ "paired": [
+  {
+   "pair": "D vs A",
+   "x_wins": 2,
+   "x_losses": 4,
+   "ties_both_pass": 29,
+   "ties_both_fail": 1,
+   "exact_mcnemar_p": 0.6875,
+   "x_win_tasks": [
+    "sta-07",
+    "def-11"
+   ],
+   "x_loss_tasks": [
+    "par-06",
+    "err-11",
+    "aut-09",
+    "par-09"
+   ]
+  },
+  {
+   "pair": "D vs C",
+   "x_wins": 3,
+   "x_losses": 2,
+   "ties_both_pass": 28,
+   "ties_both_fail": 3,
+   "exact_mcnemar_p": 1.0,
+   "x_win_tasks": [
+    "sta-07",
+    "def-08",
+    "sta-11"
+   ],
+   "x_loss_tasks": [
+    "err-11",
+    "aut-09"
+   ]
+  },
+  {
+   "pair": "D vs B",
+   "x_wins": 4,
+   "x_losses": 4,
+   "ties_both_pass": 27,
+   "ties_both_fail": 1,
+   "exact_mcnemar_p": 1.0,
+   "x_win_tasks": [
+    "aut-08",
+    "sta-11",
+    "err-12",
+    "def-11"
+   ],
+   "x_loss_tasks": [
+    "par-06",
+    "err-11",
+    "aut-09",
+    "par-09"
+   ]
+  },
+  {
+   "pair": "C vs A",
+   "x_wins": 1,
+   "x_losses": 4,
+   "ties_both_pass": 29,
+   "ties_both_fail": 2,
+   "exact_mcnemar_p": 0.375,
+   "x_win_tasks": [
+    "def-11"
+   ],
+   "x_loss_tasks": [
+    "par-06",
+    "def-08",
+    "sta-11",
+    "par-09"
+   ]
+  },
+  {
+   "pair": "B vs A",
+   "x_wins": 1,
+   "x_losses": 3,
+   "ties_both_pass": 30,
+   "ties_both_fail": 2,
+   "exact_mcnemar_p": 0.625,
+   "x_win_tasks": [
+    "sta-07"
+   ],
+   "x_loss_tasks": [
+    "aut-08",
+    "sta-11",
+    "err-12"
+   ]
+  }
+ ],
+ "per_task": [
+  {
+   "task": "aut-06",
+   "tier": "hard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "e09ae02b"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "aut-07",
+   "tier": "hard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "aut-08",
+   "tier": "hard",
+   "label": "defective",
+   "A": 1,
+   "B": 0,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "2a189e1e"
+   ],
+   "explanation": "B: incomplete structure: missing predictions c1,c2,c3,c4,c5; no issue_present"
+  },
+  {
+   "task": "aut-09",
+   "tier": "standard",
+   "label": "correct",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 0,
+   "supplied_D": [
+    "2a189e1e"
+   ],
+   "explanation": "D: incomplete structure: missing predictions c1,c2,c3,c4,c5; no issue_present"
+  },
+  {
+   "task": "aut-11",
+   "tier": "extreme",
+   "label": "correct",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "aef45ef8"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "aut-12",
+   "tier": "extreme",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "6c3ccf44"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "def-06",
+   "tier": "hard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "b104ff31"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "def-07",
+   "tier": "hard",
+   "label": "correct",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "def-08",
+   "tier": "hard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 0,
+   "D": 1,
+   "supplied_D": [
+    "e09ae02b"
+   ],
+   "explanation": "C: incomplete structure: missing predictions c1,c2,c3,c4,c5,c6; no issue_present"
+  },
+  {
+   "task": "def-09",
+   "tier": "standard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "b104ff31",
+    "1ddd12be"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "def-11",
+   "tier": "extreme",
+   "label": "defective",
+   "A": 0,
+   "B": 0,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "b104ff31"
+   ],
+   "explanation": "A: incomplete structure: no issue_present; B: incomplete structure: missing predictions c1,c2,c3,c4,c5; no issue_present"
+  },
+  {
+   "task": "def-12",
+   "tier": "extreme",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "97392e3c"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "err-06",
+   "tier": "hard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "2a189e1e",
+    "8ba2e504"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "err-07",
+   "tier": "hard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "b104ff31"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "err-08",
+   "tier": "standard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "82ac7d4b"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "err-09",
+   "tier": "standard",
+   "label": "correct",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "err-11",
+   "tier": "extreme",
+   "label": "correct",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 0,
+   "supplied_D": [
+    "97392e3c",
+    "82ac7d4b"
+   ],
+   "explanation": "D: incomplete structure: missing predictions c1,c2,c3,c4,c5,c6; no issue_present"
+  },
+  {
+   "task": "err-12",
+   "tier": "extreme",
+   "label": "defective",
+   "A": 1,
+   "B": 0,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "9eb4fb2e",
+    "82ac7d4b"
+   ],
+   "explanation": "B: incomplete structure: missing predictions c1,c2,c3,c4,c5,c6,c7,c8; no issue_present"
+  },
+  {
+   "task": "num-06",
+   "tier": "standard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "5afe92c4"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "num-07",
+   "tier": "hard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "num-08",
+   "tier": "standard",
+   "label": "correct",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "5afe92c4"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "num-09",
+   "tier": "hard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "82ac7d4b"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "num-11",
+   "tier": "extreme",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "num-12",
+   "tier": "extreme",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "par-06",
+   "tier": "standard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 0,
+   "D": 0,
+   "supplied_D": [
+    "9eb4fb2e"
+   ],
+   "explanation": "C: incomplete structure: missing predictions c1,c2,c3,c4; no issue_present; D: incomplete structure: missing predictions c1,c2,c3,c4; no issue_present"
+  },
+  {
+   "task": "par-07",
+   "tier": "hard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "9eb4fb2e"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "par-08",
+   "tier": "standard",
+   "label": "correct",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "par-09",
+   "tier": "hard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 0,
+   "D": 0,
+   "supplied_D": [
+    "82ac7d4b"
+   ],
+   "explanation": "C: incomplete structure: missing predictions c1,c2,c3,c4,c5; no issue_present; D: incomplete structure: missing predictions c1,c2,c3,c4,c5; no issue_present"
+  },
+  {
+   "task": "par-11",
+   "tier": "extreme",
+   "label": "defective",
+   "A": 0,
+   "B": 0,
+   "C": 0,
+   "D": 0,
+   "supplied_D": [
+    "9eb4fb2e"
+   ],
+   "explanation": "A: incomplete structure: malformed c2,c6; B: no validated answer (adapter_execution_failure); semantic undetermined; C: wrong prediction c2:req,c6:req; D: incomplete structure: missing predictions c1,c2,c3,c4,c5,c6; no issue_present"
+  },
+  {
+   "task": "par-12",
+   "tier": "extreme",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "9eb4fb2e",
+    "82ac7d4b"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "sta-06",
+   "tier": "standard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "5afe92c4",
+    "b104ff31"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "sta-07",
+   "tier": "hard",
+   "label": "defective",
+   "A": 0,
+   "B": 1,
+   "C": 0,
+   "D": 1,
+   "supplied_D": [
+    "8ba2e504"
+   ],
+   "explanation": "A: wrong prediction c4:req; C: wrong prediction c4:req"
+  },
+  {
+   "task": "sta-08",
+   "tier": "hard",
+   "label": "correct",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "8ba2e504",
+    "82ac7d4b"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "sta-09",
+   "tier": "hard",
+   "label": "defective",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [
+    "97392e3c"
+   ],
+   "explanation": "all arms ok"
+  },
+  {
+   "task": "sta-11",
+   "tier": "extreme",
+   "label": "defective",
+   "A": 1,
+   "B": 0,
+   "C": 0,
+   "D": 1,
+   "supplied_D": [
+    "aef45ef8",
+    "b104ff31"
+   ],
+   "explanation": "B: incomplete structure: missing predictions c1,c2,c3,c4,c5; no issue_present; C: wrong prediction c3:req"
+  },
+  {
+   "task": "sta-12",
+   "tier": "extreme",
+   "label": "correct",
+   "A": 1,
+   "B": 1,
+   "C": 1,
+   "D": 1,
+   "supplied_D": [],
+   "explanation": "all arms ok"
+  }
+ ],
+ "selection_vs_gold": {
+  "A": {
+   "lessons_supplied": 0,
+   "supplied_gold_relevant": 0,
+   "precision": null,
+   "tasks_with_a_relevant_lesson_available": 23,
+   "recall_of_available_relevant": "0/23",
+   "tasks_with_no_relevant_lesson_available": 13,
+   "correctly_supplied_none": "13/13"
+  },
+  "B": {
+   "lessons_supplied": 63,
+   "supplied_gold_relevant": 11,
+   "precision": 0.175,
+   "tasks_with_a_relevant_lesson_available": 23,
+   "recall_of_available_relevant": "9/23",
+   "tasks_with_no_relevant_lesson_available": 13,
+   "correctly_supplied_none": "0/13"
+  },
+  "C": {
+   "lessons_supplied": 65,
+   "supplied_gold_relevant": 12,
+   "precision": 0.185,
+   "tasks_with_a_relevant_lesson_available": 23,
+   "recall_of_available_relevant": "10/23",
+   "tasks_with_no_relevant_lesson_available": 13,
+   "correctly_supplied_none": "0/13"
+  },
+  "D": {
+   "lessons_supplied": 36,
+   "supplied_gold_relevant": 15,
+   "precision": 0.417,
+   "tasks_with_a_relevant_lesson_available": 23,
+   "recall_of_available_relevant": "15/23",
+   "tasks_with_no_relevant_lesson_available": 13,
+   "correctly_supplied_none": "3/13"
+  }
+ },
+ "development": {
+  "A": {
+   "n": 12,
+   "end_to_end": 12,
+   "semantic_correct": 12,
+   "semantic_incorrect": 0,
+   "semantic_undetermined": 0,
+   "contract_compliant": 12,
+   "run_failures": 0,
+   "reference_normalized": 0,
+   "grounded": 9,
+   "provider_requests": 24,
+   "tokens": 72087,
+   "tokens_per_correct": 6007,
+   "requests_per_correct": 2.0,
+   "median_invocation_latency_ms": 6771,
+   "median_context_bytes": 2.0,
+   "lessons_supplied": 0,
+   "turns_with_a_lesson": 0
+  },
+  "D": {
+   "n": 12,
+   "end_to_end": 12,
+   "semantic_correct": 12,
+   "semantic_incorrect": 0,
+   "semantic_undetermined": 0,
+   "contract_compliant": 12,
+   "run_failures": 0,
+   "reference_normalized": 0,
+   "grounded": 12,
+   "provider_requests": 24,
+   "tokens": 75027,
+   "tokens_per_correct": 6252,
+   "requests_per_correct": 2.0,
+   "median_invocation_latency_ms": 6835,
+   "median_context_bytes": 1050.0,
+   "lessons_supplied": 8,
+   "turns_with_a_lesson": 8
+  }
+ },
+ "calibration_A": {
+  "end_to_end": "6/6",
+  "tasks": {
+   "par-10": "ok",
+   "err-10": "ok",
+   "num-10": "ok",
+   "aut-10": "ok",
+   "sta-10": "ok",
+   "def-10": "ok"
+  }
+ },
+ "development_calibration_A_by_tier": {
+  "standard": "6/6",
+  "hard": "6/6"
+ },
+ "repeats": {
+  "num-06": {
+   "C": {
+    "first": true,
+    "repeat": true
+   },
+   "B": {
+    "first": true,
+    "repeat": true
+   },
+   "A": {
+    "first": true,
+    "repeat": true
+   },
+   "D": {
+    "first": true,
+    "repeat": true
+   }
+  },
+  "def-08": {
+   "C": {
+    "first": false,
+    "repeat": true
+   },
+   "B": {
+    "first": true,
+    "repeat": true
+   },
+   "A": {
+    "first": true,
+    "repeat": true
+   },
+   "D": {
+    "first": true,
+    "repeat": true
+   }
+  },
+  "err-09": {
+   "C": {
+    "first": true,
+    "repeat": false
+   },
+   "A": {
+    "first": true,
+    "repeat": true
+   },
+   "D": {
+    "first": true,
+    "repeat": true
+   },
+   "B": {
+    "first": true,
+    "repeat": true
+   }
+  }
+ },
+ "ablation": [
+  {
+   "task": "par-05",
+   "condition": "R1_one_relevant",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 1,
+   "relevant_included": true,
+   "stateless_baseline": true
+  },
+  {
+   "task": "par-05",
+   "condition": "R2_one_irrelevant",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 1,
+   "relevant_included": false,
+   "stateless_baseline": true
+  },
+  {
+   "task": "par-05",
+   "condition": "R3_mixed_three",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 3,
+   "relevant_included": true,
+   "stateless_baseline": true
+  },
+  {
+   "task": "par-05",
+   "condition": "R4_three_irrelevant",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 3,
+   "relevant_included": false,
+   "stateless_baseline": true
+  },
+  {
+   "task": "def-04",
+   "condition": "R1_one_relevant",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 1,
+   "relevant_included": true,
+   "stateless_baseline": true
+  },
+  {
+   "task": "def-04",
+   "condition": "R2_one_irrelevant",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 1,
+   "relevant_included": false,
+   "stateless_baseline": true
+  },
+  {
+   "task": "def-04",
+   "condition": "R3_mixed_three",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 3,
+   "relevant_included": true,
+   "stateless_baseline": true
+  },
+  {
+   "task": "def-04",
+   "condition": "R4_three_irrelevant",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 3,
+   "relevant_included": false,
+   "stateless_baseline": true
+  },
+  {
+   "task": "sta-05",
+   "condition": "R1_one_relevant",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 1,
+   "relevant_included": true,
+   "stateless_baseline": true
+  },
+  {
+   "task": "sta-05",
+   "condition": "R2_one_irrelevant",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 1,
+   "relevant_included": false,
+   "stateless_baseline": true
+  },
+  {
+   "task": "sta-05",
+   "condition": "R3_mixed_three",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 3,
+   "relevant_included": true,
+   "stateless_baseline": true
+  },
+  {
+   "task": "sta-05",
+   "condition": "R4_three_irrelevant",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 3,
+   "relevant_included": false,
+   "stateless_baseline": true
+  },
+  {
+   "task": "err-05",
+   "condition": "R1_one_relevant",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 1,
+   "relevant_included": true,
+   "stateless_baseline": true
+  },
+  {
+   "task": "err-05",
+   "condition": "R2_one_irrelevant",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 1,
+   "relevant_included": false,
+   "stateless_baseline": true
+  },
+  {
+   "task": "err-05",
+   "condition": "R3_mixed_three",
+   "end_to_end": false,
+   "semantic": "undetermined",
+   "compliant": false,
+   "lessons": 3,
+   "relevant_included": true,
+   "stateless_baseline": true
+  },
+  {
+   "task": "err-05",
+   "condition": "R4_three_irrelevant",
+   "end_to_end": true,
+   "semantic": "correct",
+   "compliant": true,
+   "lessons": 3,
+   "relevant_included": false,
+   "stateless_baseline": true
+  }
+ ],
+ "positive_transfer_ablation": [
+  {
+   "task": "sta-07",
+   "condition": "with_lesson",
+   "repetition": 1,
+   "end_to_end": false
+  },
+  {
+   "task": "sta-07",
+   "condition": "with_lesson",
+   "repetition": 2,
+   "end_to_end": true
+  },
+  {
+   "task": "sta-07",
+   "condition": "without_lesson",
+   "repetition": 1,
+   "end_to_end": false
+  },
+  {
+   "task": "sta-07",
+   "condition": "without_lesson",
+   "repetition": 2,
+   "end_to_end": false
+  },
+  {
+   "task": "def-11",
+   "condition": "with_lesson",
+   "repetition": 1,
+   "end_to_end": true
+  },
+  {
+   "task": "def-11",
+   "condition": "with_lesson",
+   "repetition": 2,
+   "end_to_end": true
+  },
+  {
+   "task": "def-11",
+   "condition": "without_lesson",
+   "repetition": 1,
+   "end_to_end": true
+  },
+  {
+   "task": "def-11",
+   "condition": "without_lesson",
+   "repetition": 2,
+   "end_to_end": true
+  }
+ ],
+ "totals": {
+  "provider_requests": 467,
+  "reserved_units": 6406241
+ },
+ "restart_replay": {
+  "before": {
+   "provider_requests": 467,
+   "reserved_units": 6406241
+  },
+  "after": {
+   "provider_requests": 467,
+   "reserved_units": 6406241
+  },
+  "exchanges": 247,
+  "policy_unchanged": true
+ },
+ "training": {
+  "tasks": 18,
+  "end_to_end": 18,
+  "lessons_exported": 14,
+  "extraction_retries": 9
+ }
+}

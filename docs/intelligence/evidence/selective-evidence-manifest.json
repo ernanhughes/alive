@@ -1,0 +1,48 @@
+{
+ "schema": "selective-evidence-manifest/v1",
+ "note": "Authoritative raw records (prompts/responses) remain in the disposable local databases listed here; ledgers carry hashes and receipts.",
+ "databases": {
+  ".alive/ai-first-04-live-03/demo.db": "main run (483 provider requests)",
+  ".alive/ai-first-04-live-02/demo.db": "interrupted run (37)",
+  ".alive/ai-first-04-live-01/demo.db": "pilot 1 (6)",
+  ".alive/ai-first-04-demo/demo.db": "product demonstration (7)"
+ },
+ "files": {
+  "selective-demo-none-1440.png": {
+   "bytes": 227546,
+   "sha256": "f495218ebee5fbffcf890abedeaa6a9c9c55fa253a5134db1704446903a99afc"
+  },
+  "selective-demo-supplied-1440.png": {
+   "bytes": 230557,
+   "sha256": "8389f2bd4ae8c94230d244251c5ac89debcdfd62fd9a111caed23937447d02b5"
+  },
+  "selective-demo-supplied-390.png": {
+   "bytes": 200836,
+   "sha256": "72e1dc146c31069e809061ad04ff523b463185aa9d759535733185a9f5451043"
+  },
+  "selective-demo-ui-proof.json": {
+   "bytes": 282,
+   "sha256": "8b039f3bdface1d3e4903e6aaf790d8fbb5d59848c5b4374707b545bdf5ecc2b"
+  },
+  "selective-demo.json": {
+   "bytes": 35961,
+   "sha256": "cb9c5c414ed57aad3d080fdbe4952666bc7c92c7692f8cb58bdc263a0a58d00e"
+  },
+  "selective-live-02-interrupted-ledger.json": {
+   "bytes": 588122,
+   "sha256": "f7ea1824446958b61134e70f44c68d1ac20d673bba70ba0ee6d9d273a4811404"
+  },
+  "selective-live-ledger.json": {
+   "bytes": 5548105,
+   "sha256": "add82b0257915a1133d90a2c657bf53b382457adc9c3fd2f5e91fb47a732a62d"
+  },
+  "selective-pilot-1-ledger.json": {
+   "bytes": 104861,
+   "sha256": "ac6e94e688a1929e5afb6a4eb0cf1c8ed665ce55ec83040f9546182cd1f7c789"
+  },
+  "selective-summary.json": {
+   "bytes": 19703,
+   "sha256": "abc7282eab524fedf91abd7d880d0284d9c7b9f410ad3be73e928b521101d7af"
+  }
+ }
+}

@@ -1,0 +1,3370 @@
+{
+ "schema": "selective-live/v1",
+ "status": "INCOMPLETE",
+ "implementation_sha": "8752509d67d62da6fe8dd89895dac97b80645bda",
+ "corpus_lock": {
+  "corpus_sha256": "a7868ac91c6597d208f89d38da1c3db72403c9b9ac72e7fba2314f94c730d8fc",
+  "oracle_sha256": "19938e47effba05fd672a43319a1b224b340bbb22398ef15ec979b2d162fe3ad",
+  "audit_sha256": "3d719412a13f51df5a712f781884cc62f3fc7690462f62b69cbae4343f70b60f",
+  "contextual_role_contract_sha256": "81d567943b9223e3f113753ab7d44ef8c672ebee88e5d6968af580ba9607dc28",
+  "intent_role_contract_sha256": "cfa3851a44a792f6aff71126d2982a84aa2e0278f44936baeb0ecdceb6d1cf96",
+  "seed": 4401,
+  "purpose": "AI-FIRST-04 fresh corpus; train/dev/heldout split immutable once locked. Programmatically audited, not independently human-adjudicated."
+ },
+ "plan": [
+  {
+   "phase": "dev",
+   "task_id": "par-05",
+   "arm": "A"
+  },
+  {
+   "phase": "dev",
+   "task_id": "par-05",
+   "arm": "D"
+  },
+  {
+   "phase": "dev",
+   "task_id": "def-04",
+   "arm": "A"
+  },
+  {
+   "phase": "dev",
+   "task_id": "def-04",
+   "arm": "D"
+  },
+  {
+   "phase": "dev",
+   "task_id": "sta-05",
+   "arm": "D"
+  },
+  {
+   "phase": "dev",
+   "task_id": "sta-05",
+   "arm": "A"
+  },
+  {
+   "phase": "dev",
+   "task_id": "err-05",
+   "arm": "D"
+  },
+  {
+   "phase": "dev",
+   "task_id": "err-05",
+   "arm": "A"
+  },
+  {
+   "phase": "dev",
+   "task_id": "num-04",
+   "arm": "D"
+  },
+  {
+   "phase": "dev",
+   "task_id": "num-04",
+   "arm": "A"
+  },
+  {
+   "phase": "dev",
+   "task_id": "err-04",
+   "arm": "A"
+  },
+  {
+   "phase": "dev",
+   "task_id": "err-04",
+   "arm": "D"
+  },
+  {
+   "phase": "dev",
+   "task_id": "def-05",
+   "arm": "A"
+  },
+  {
+   "phase": "dev",
+   "task_id": "def-05",
+   "arm": "D"
+  },
+  {
+   "phase": "dev",
+   "task_id": "aut-04",
+   "arm": "D"
+  },
+  {
+   "phase": "dev",
+   "task_id": "aut-04",
+   "arm": "A"
+  },
+  {
+   "phase": "dev",
+   "task_id": "sta-04",
+   "arm": "A"
+  },
+  {
+   "phase": "dev",
+   "task_id": "sta-04",
+   "arm": "D"
+  },
+  {
+   "phase": "dev",
+   "task_id": "num-05",
+   "arm": "A"
+  },
+  {
+   "phase": "dev",
+   "task_id": "num-05",
+   "arm": "D"
+  },
+  {
+   "phase": "dev",
+   "task_id": "par-04",
+   "arm": "D"
+  },
+  {
+   "phase": "dev",
+   "task_id": "par-04",
+   "arm": "A"
+  },
+  {
+   "phase": "dev",
+   "task_id": "aut-05",
+   "arm": "A"
+  },
+  {
+   "phase": "dev",
+   "task_id": "aut-05",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-06",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-06",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-06",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-06",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-06",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-06",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-06",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-06",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-06",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-06",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-06",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-06",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-06",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-06",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-06",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-06",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-07",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-07",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-07",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-07",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-07",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-07",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-07",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-07",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-07",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-07",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-07",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-07",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-08",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-08",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-08",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-08",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-09",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-09",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-09",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-09",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-09",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-09",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-09",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-09",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-08",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-08",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-08",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-08",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-06",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-06",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-06",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-06",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-09",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-09",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-09",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-09",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-07",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-07",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-07",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-07",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-08",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-08",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-08",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-08",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-09",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-09",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-09",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-09",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-07",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-07",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-07",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "par-07",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-08",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-08",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-08",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-08",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-06",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-06",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-06",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "num-06",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-09",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-09",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-09",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "aut-09",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-08",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-08",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-08",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-08",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-09",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-09",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-09",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "err-09",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-08",
+   "arm": "D"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-08",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-08",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "sta-08",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-07",
+   "arm": "C"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-07",
+   "arm": "A"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-07",
+   "arm": "B"
+  },
+  {
+   "phase": "heldout",
+   "task_id": "def-07",
+   "arm": "D"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "num-06",
+   "arm": "A"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "num-06",
+   "arm": "C"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "num-06",
+   "arm": "D"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "num-06",
+   "arm": "B"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "sta-06",
+   "arm": "D"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "sta-06",
+   "arm": "C"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "sta-06",
+   "arm": "B"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "sta-06",
+   "arm": "A"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "def-08",
+   "arm": "D"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "def-08",
+   "arm": "A"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "def-08",
+   "arm": "C"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "def-08",
+   "arm": "B"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "err-09",
+   "arm": "B"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "err-09",
+   "arm": "C"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "err-09",
+   "arm": "D"
+  },
+  {
+   "phase": "repeat",
+   "task_id": "err-09",
+   "arm": "A"
+  }
+ ],
+ "seed": 4401,
+ "limits": {
+  "provider_requests": 560,
+  "conservative_units": 8000000
+ },
+ "model": "muse-spark-1.3-contributor",
+ "transport": "production Pi / network",
+ "arms": {
+  "A": "stateless",
+  "B": "contextual",
+  "C": "learned",
+  "D": "selective"
+ },
+ "repeats": [
+  "num-06",
+  "sta-06",
+  "def-08",
+  "err-09"
+ ],
+ "cost": "unknown; no authoritative currency tariff available",
+ "selection_policy": {
+  "id": "selective-adaptation/v1",
+  "allow_unproven": true,
+  "max_selected": 2
+ },
+ "training": [
+  {
+   "phase": "train",
+   "task_id": "num-01",
+   "arm": "A",
+   "key": "train:num-01",
+   "review": {
+    "id": "c1158fe3-f4b5-4052-b50a-0d469d1ff1f6",
+    "goal": "Review the supplied implementation against this contract: Return the whole-dollar amount of an integer number of cents, rounding toward negative infinity, so -150 cents is -2 dollars. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+    "conversation_ref": "dbf321bc-a644-405d-9ce9-4f6f1206578a",
+    "answer": {
+     "answer": "Implementation uses `int(p/100)` which truncates toward zero, not floor toward negative infinity. For negative non-multiples like -150 it returns -1 instead of required -2. Minimal fix: `return p // 100` which is Python floor division for ints.",
+     "citation_checks": [
+      {
+       "file": "README.md",
+       "file_sha256": "3b4016a42db2df046a1f7b6fa8e880597dbd52c15e09240fdbc219ed1d671fad",
+       "line_end": 3,
+       "line_start": 2,
+       "status": "quote_matches"
+      },
+      {
+       "file": "implementation.py",
+       "file_sha256": "6083f1e098f07f9f18d04122421ccb45c24938ec984a1b44450a2bd045010edf",
+       "line_end": 2,
+       "line_start": 1,
+       "status": "quote_matches"
+      }
+     ],
+     "citations": [
+      {
+       "file": "README.md",
+       "line_end": 3,
+       "line_start": 2,
+       "quote": "rounding toward negative infinity, so -150 cents is -2 dollars."
+      },
+      {
+       "file": "implementation.py",
+       "line_end": 2,
+       "line_start": 1,
+       "quote": "def solve(p):\n    return int(p / 100)"
+      }
+     ],
+     "context_ref": "b667081f-e527-46f8-ab1e-c3badf205155",
+     "context_sha256": "fc42eb52e2ed318d510cf71cd711db5e1ed75547f5f454fcb1bf7f4e17db1ac1",
+     "contract_compliance": {
+      "complete": true,
+      "duplicate_cases": [],
+      "issue_flag_present": true,
+      "missing_cases": [],
+      "required": true,
+      "unexpected_cases": []
+     },
+     "historical_ids_used": [],
+     "issue_present": true,
+     "lesson_ids_used": [],
+     "lesson_proposal": null,
+     "needs_clarification": false,
+     "predictions": [
+      {
+       "case_id": "c1",
+       "observed": "2",
+       "required": "2"
+      },
+      {
+       "case_id": "c2",
+       "observed": "1",
+       "required": "1"
+      },
+      {
+       "case_id": "c3",
+       "observed": "-1",
+       "required": "-2"
+      },
+      {
+       "case_id": "c4",
+       "observed": "-1",
+       "required": "-1"
+      },
+      {
+       "case_id": "c5",
+       "observed": "0",
+       "required": "0"
+      }
+     ],
+     "recalled_item_ids": [],
+     "reference_integrity": {
+      "status": "valid"
+     },
+     "revision": null,
+     "schema": "contextual-answer/v2",
+     "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+     "uncertainty": [],
+     "artifact_sha256": "09b100f68b7100ae360cd3ad5b0b2504adc7f7909a50082b4f02629bee214349"
+    },
+    "context": {
+     "policy": "conversation-context/v1",
+     "conversation_ref": "dbf321bc-a644-405d-9ce9-4f6f1206578a",
+     "items": [],
+     "omitted": [],
+     "selection": "no-experience-control/v1",
+     "selection_ref": "1747d45b-2e2d-503b-8711-de58fd303a3c",
+     "decision": "none",
+     "strategy_mode": "stateless",
+     "families": [
+      "numeric"
+     ]
+    },
+    "model_calls": 2,
+    "status": "LIVE MODEL",
+    "availability": "available",
+    "followup": null,
+    "selection": {
+     "ref": "1747d45b-2e2d-503b-8711-de58fd303a3c",
+     "policy": "no-experience-control/v1",
+     "decision": "none",
+     "no_lesson_reason": "control_supplies_no_experience",
+     "task_mechanisms": [
+      "numeric.rounding",
+      "numeric.signed_values"
+     ],
+     "override": null,
+     "received": [],
+     "reported_used": [],
+     "selected": [],
+     "candidates": [],
+     "context_bytes": 2,
+     "items_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "independent_outcome": null
+    },
+    "result_admission_id": "1851a892-d2c4-4c2f-95de-2f7dd2026900",
+    "run": {
+     "status": "COMPLETED",
+     "terminal_reason": "required_stages_completed"
+    },
+    "calls": [
+     {
+      "id": "ee340e3a-8bac-4423-95e5-679ea4ba2904",
+      "status": "validated",
+      "model": "muse-spark-1.3-contributor",
+      "usage": {
+       "completion_tokens": 1047,
+       "prompt_tokens": 2176,
+       "total_tokens": 3223,
+       "completion_tokens_details": {
+        "reasoning_tokens": 489
+       },
+       "prompt_tokens_details": {
+        "cached_tokens": 0
+       },
+       "charged_tokens": 3223
+      },
+      "latency_ms": 10566.526300004625,
+      "provenance": "production_pi",
+      "provider_receipts": [
+       {
+        "request_id": "1ddeb22c-d066-479a-987c-c68216be5713",
+        "http_status": 200,
+        "response_sha256": "85c2275d3c44b78790875c56f39c1ee545b580ae5986a6a7b9cf780806a49115",
+        "model_requested": "muse-spark-1.3-contributor",
+        "model_observed": null,
+        "latency_ms": 10062.44479999441
+       }
+      ]
+     },
+     {
+      "id": "a4fabeb0-529c-4309-8f14-6f756d724474",
+      "status": "validated",
+      "model": "muse-spark-1.3-contributor",
+      "usage": {
+       "completion_tokens": 466,
+       "prompt_tokens": 2355,
+       "total_tokens": 2821,
+       "completion_tokens_details": {
+        "reasoning_tokens": 177
+       },
+       "prompt_tokens_details": {
+        "cached_tokens": 0
+       },
+       "charged_tokens": 2821
+      },
+      "latency_ms": 4743.3004999984405,
+      "provenance": "production_pi",
+      "provider_receipts": [
+       {
+        "request_id": "dd996caf-1dc5-4ee4-884c-063c4b3ad19a",
+        "http_status": 200,
+        "response_sha256": "502257e88649141270ff05d5176fc63e081b48f63cbb92505ad3ba87e3636098",
+        "model_requested": "muse-spark-1.3-contributor",
+        "model_observed": null,
+        "latency_ms": 4278.433399995265
+       }
+      ]
+     }
+    ],
+    "request": {
+     "consent_ref": "c153a758-1418-46d3-b9e7-85a447e61d54",
+     "conversation_ref": "dbf321bc-a644-405d-9ce9-4f6f1206578a",
+     "goal": "Review the supplied implementation against this contract: Return the whole-dollar amount of an integer number of cents, rounding toward negative infinity, so -150 cents is -2 dollars. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+     "strategy_mode": "stateless",
+     "idempotency_key": "train:num-01"
+    },
+    "wall_seconds": 17.535162400003173,
+    "usage": {
+     "provider_requests": 2,
+     "tokens": 6044,
+     "invocation_latency_ms": 15309.826800003066
+    }
+   },
+   "grade": {
+    "verifier": "frozen-executable-fixture/v2",
+    "issue_present": true,
+    "issue_flag": "correct",
+    "cases": [
+     {
+      "id": "c1",
+      "actual": {
+       "value": 2
+      },
+      "state_changed": false,
+      "conforms": true,
+      "return_conforms": true,
+      "state_conforms": true,
+      "observed_prediction": "correct",
+      "required_prediction": "correct"
+     },
+     {
+      "id": "c2",
+      "actual": {
+       "value": 1
+      },
+      "state_changed": false,
+      "conforms": true,
+      "return_conforms": true,
+      "state_conforms": true,
+      "observed_prediction": "correct",
+      "required_prediction": "correct"
+     },
+     {
+      "id": "c3",
+      "actual": {
+       "value": -1
+      },
+      "state_changed": false,
+      "conforms": false,
+      "return_conforms": false,
+      "state_conforms": true,
+      "observed_prediction": "correct",
+      "required_prediction": "correct"
+     },
+     {
+      "id": "c4",
+      "actual": {
+       "value": -1
+      },
+      "state_changed": false,
+      "conforms": true,
+      "return_conforms": true,
+      "state_conforms": true,
+      "observed_prediction": "correct",
+      "required_prediction": "correct"
+     },
+     {
+      "id": "c5",
+      "actual": {
+       "value": 0
+      },
+      "state_changed": false,
+      "conforms": true,
+      "return_conforms": true,
+      "state_conforms": true,
+      "observed_prediction": "correct",
+      "required_prediction": "correct"
+     }
+    ],
+    "dimensions": {
+     "semantic": "correct",
+     "prediction_correctness": {
+      "correct_units": 10,
+      "provided_units": 10,
+      "total_units": 10
+     },
+     "contract_compliance": {
+      "ok": true,
+      "missing_cases": [],
+      "malformed_cases": [],
+      "duplicate_cases": [],
+      "issue_flag": true
+     },
+     "reference_integrity": "valid",
+     "reference_normalized": false,
+     "grounding": {
+      "citations": 2,
+      "matching": 2
+     },
+     "task_completion": true,
+     "run_failure": null
+    },
+    "score": 1.0,
+    "passed": true,
+    "end_to_end": true,
+    "prose_verified": false
+   },
+   "raw_refused_output": null,
+   "measurement_ref": "eb506ed6-d3d3-5998-bc99-460363806ea0",
+   "experience_id": "d9574550-6207-5e98-be89-a57362e4c9b8",
+   "extraction": {
+    "id": "008faacd-6f60-4e83-bf3f-37e8377553cb",
+    "goal": "Extract a reusable numeric strategy from verified training feedback d9574550-6207-5e98-be89-a57362e4c9b8. Cite that experience ID in supporting_experience_ids. State when it applies and when it must not be applied, name the mechanisms it addresses and the excluded mechanisms from the closed vocabulary, and give uncertainty. Do not copy answers, function names or source text.",
+    "conversation_ref": "dbf321bc-a644-405d-9ce9-4f6f1206578a",
+    "answer": null,
+    "context": {
+     "policy": "conversation-context/v1",
+     "conversation_ref": "dbf321bc-a644-405d-9ce9-4f6f1206578a",
+     "items": [
+      {
+       "id": "d9574550-6207-5e98-be89-a57362e4c9b8",
+       "admission_id": "1851a892-d2c4-4c2f-95de-2f7dd2026900",
+       "source_type": "verified_feedback",
+       "content": {
+        "experience_id": "d9574550-6207-5e98-be89-a57362e4c9b8",
+        "task_id": "num-01",
+        "split": "train",
+        "family": "numeric",
+        "outcome": 1.0,
+        "passed": true,
+        "verifier": "frozen-executable-fixture/v2"
+       },
+       "content_sha256": "7c67d2891f8103207e56cc9e04dbdb61a7aed30dcf1cbecbfb6d7a1ad4970bdd",
+       "source_sha256": "358fc0d969f9aba645779edae92d202a5912723405ee45c24e2be269f463a4b4",
+       "recorded_at": "2026-11-01T19:49:56.378579",
+       "ordinal": null,
+       "verification": "executable_fixture_outcome; prose_unverified"
+      },
+      {
+       "id": "1851a892-d2c4-4c2f-95de-2f7dd2026900:answer",
+       "admission_id": "1851a892-d2c4-4c2f-95de-2f7dd2026900",
+       "source_type": "model_answer",
+       "content": {
+        "answer": "Implementation uses `int(p/100)` which truncates toward zero, not floor toward negative infinity. For negative non-multiples like -150 it returns -1 instead of required -2. Minimal fix: `return p // 100` which is Python floor division for ints.",
+        "revision": null,
+        "citations": [
+         {
+          "file": "README.md",
+          "line_end": 3,
+          "line_start": 2,
+          "quote": "rounding toward negative infinity, so -150 cents is -2 dollars."
+         },
+         {
+          "file": "implementation.py",
+          "line_end": 2,
+          "line_start": 1,
+          "quote": "def solve(p):\n    return int(p / 100)"
+         }
+        ],
+        "recalled_item_ids": [],
+        "uncertainty": []
+       },
+       "content_sha256": "e74229fc5e7185fc0759c6028ccb5e7270ee8039e91208321df9797519183037",
+       "source_sha256": "09b100f68b7100ae360cd3ad5b0b2504adc7f7909a50082b4f02629bee214349",
+       "recorded_at": "2026-11-01T19:49:50.223865+00:00",
+       "ordinal": null,
+       "verification": "unverified_model_assessment"
+      },
+      {
+       "id": "1851a892-d2c4-4c2f-95de-2f7dd2026900:goal",
+       "admission_id": "1851a892-d2c4-4c2f-95de-2f7dd2026900",
+       "source_type": "owner_goal",
+       "content": "Review the supplied implementation against this contract: Return the whole-dollar amount of an integer number of cents, rounding toward negative infinity, so -150 cents is -2 dollars. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+       "content_sha256": "905de644cd614de48023ce155b6c6dd35ff81f812668c440bf0133bffa0e01fe",
+       "source_sha256": "41cd4b462bd06cb57ccb481199b01136486b05a6311a91106f2a8dee6b0df9a9",
+       "recorded_at": "2026-11-01T19:49:50.223865+00:00",
+       "ordinal": null,
+       "verification": "owner_statement"
+      },
+      {
+       "id": "c1158fe3-f4b5-4052-b50a-0d469d1ff1f6:goal",
+       "admission_id": "c1158fe3-f4b5-4052-b50a-0d469d1ff1f6",
+       "source_type": "owner_goal",
+       "content": "Review the supplied implementation against this contract: Return the whole-dollar amount of an integer number of cents, rounding toward negative infinity, so -150 cents is -2 dollars. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+       "content_sha256": "905de644cd614de48023ce155b6c6dd35ff81f812668c440bf0133bffa0e01fe",
+       "source_sha256": "e8fc02c47d10cc15ef8fff0d241e0c578c1d2d07a59578a54bad2bf47c4b80e6",
+       "recorded_at": "2026-11-01T19:49:38.589706+00:00",
+       "ordinal": null,
+       "verification": "owner_statement"
+      }
+     ],
+     "omitted": [],
+     "omitted_count": 0,
+     "selection": "explicit identifiers, revisions, findings and recent turns; model resolves relevance"
+    },
+    "model_calls": 0,
+    "status": "NO MODEL CALL",
+    "availability": "AI unavailable",
+    "followup": null,
+    "selection": null,
+    "result_admission_id": null,
+    "run": {
+     "status": null,
+     "terminal_reason": null
+    },
+    "calls": [
+     {
+      "id": "642dc9a9-23c3-4675-9468-05cbd2feb08e",
+      "status": "failed",
+      "model": "muse-spark-1.3-contributor",
+      "usage": {
+       "completion_tokens": 1536,
+       "prompt_tokens": 3513,
+       "total_tokens": 5049,
+       "completion_tokens_details": {
+        "reasoning_tokens": 357
+       },
+       "prompt_tokens_details": {
+        "cached_tokens": 0
+       },
+       "charged_tokens": 16153,
+       "reason": "conservative reservation retained"
+      },
+      "latency_ms": 13865.204999994603,
+      "provenance": "unverified",
+      "provider_receipts": [
+       {
+        "request_id": "c4bd127f-85fa-4346-bace-474f8fc75073",
+        "http_status": null,
+        "response_sha256": null,
+        "model_requested": "muse-spark-1.3-contributor",
+        "model_observed": null,
+        "latency_ms": 13411.988800005929
+       }
+      ]
+     }
+    ],
+    "request": {
+     "consent_ref": "c153a758-1418-46d3-b9e7-85a447e61d54",
+     "conversation_ref": "dbf321bc-a644-405d-9ce9-4f6f1206578a",
+     "goal": "Extract a reusable numeric strategy from verified training feedback d9574550-6207-5e98-be89-a57362e4c9b8. Cite that experience ID in supporting_experience_ids. State when it applies and when it must not be applied, name the mechanisms it addresses and the excluded mechanisms from the closed vocabulary, and give uncertainty. Do not copy answers, function names or source text.",
+     "strategy_mode": "stateless",
+     "idempotency_key": "extract:num-01"
+    },
+    "wall_seconds": 14.645844599996053,
+    "usage": {
+     "provider_requests": 0,
+     "tokens": 5049,
+     "invocation_latency_ms": 13865.204999994603
+    }
+   }
+  },
+  {
+   "phase": "train",
+   "task_id": "num-02",
+   "arm": "A",
+   "key": "train:num-02",
+   "review": {
+    "id": "0140a87d-1547-457f-80d8-d3bb92225cb1",
+    "goal": "Review the supplied implementation against this contract: Return the arithmetic mean of a list of numbers. An empty list returns 0. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+    "conversation_ref": "ac618ee5-c811-4fb8-8a01-ea8dd829e59e",
+    "answer": {
+     "answer": "Implementation `sum(p)/len(p)` is correct for non-empty lists but violates the contract for empty list: it raises ZeroDivisionError instead of returning 0. Minimal fix: return 0 when list is empty, e.g. `return 0 if len(p)==0 else sum(p)/len(p)`.",
+     "citation_checks": [
+      {
+       "file": "implementation.py",
+       "file_sha256": "594911455cd3218948614a3fc4368cebdad243c976fbd7f228b8c32dddc44583",
+       "line_end": 2,
+       "line_start": 1,
+       "status": "quote_matches"
+      },
+      {
+       "file": "README.md",
+       "file_sha256": "066bbdea0d170c8eb482c9e34c9f856176fc4b5b4b74fa19ba30a84e88f5bcce",
+       "line_end": 3,
+       "line_start": 2,
+       "status": "quote_matches"
+      }
+     ],
+     "citations": [
+      {
+       "file": "implementation.py",
+       "line_end": 2,
+       "line_start": 1,
+       "quote": "def solve(p): return sum(p) / len(p)"
+      },
+      {
+       "file": "README.md",
+       "line_end": 3,
+       "line_start": 2,
+       "quote": "Contract: Return the arithmetic mean of a list of numbers. An empty list returns 0."
+      }
+     ],
+     "context_ref": "0c03c4df-b3bb-4b2f-8ba2-1373d03b476b",
+     "context_sha256": "b18a6edf1f113d14473208912c1cc177c7e4c87960b11e76477d1590e6337edf",
+     "contract_compliance": {
+      "complete": true,
+      "duplicate_cases": [],
+      "issue_flag_present": true,
+      "missing_cases": [],
+      "required": true,
+      "unexpected_cases": []
+     },
+     "historical_ids_used": [],
+     "issue_present": true,
+     "lesson_ids_used": [],
+     "lesson_proposal": null,
+     "needs_clarification": false,
+     "predictions": [
+      {
+       "case_id": "c1",
+       "observed": "3.0",
+       "required": "3.0"
+      },
+      {
+       "case_id": "c2",
+       "observed": "5.0",
+       "required": "5.0"
+      },
+      {
+       "case_id": "c3",
+       "observed": "ERROR:ZeroDivisionError",
+       "required": "0"
+      },
+      {
+       "case_id": "c4",
+       "observed": "0.0",
+       "required": "0.0"
+      }
+     ],
+     "recalled_item_ids": [],
+     "reference_integrity": {
+      "status": "valid"
+     },
+     "revision": null,
+     "schema": "contextual-answer/v2",
+     "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+     "uncertainty": [],
+     "artifact_sha256": "c33220d36cfd728befb579064680a2125d3565729dd6be3c3dcb4b8d201a7e0b"
+    },
+    "context": {
+     "policy": "conversation-context/v1",
+     "conversation_ref": "ac618ee5-c811-4fb8-8a01-ea8dd829e59e",
+     "items": [],
+     "omitted": [],
+     "selection": "no-experience-control/v1",
+     "selection_ref": "76d7f8a7-c705-504a-b319-5583bfbed5de",
+     "decision": "none",
+     "strategy_mode": "stateless",
+     "families": [
+      "numeric",
+      "errors"
+     ]
+    },
+    "model_calls": 2,
+    "status": "LIVE MODEL",
+    "availability": "available",
+    "followup": null,
+    "selection": {
+     "ref": "76d7f8a7-c705-504a-b319-5583bfbed5de",
+     "policy": "no-experience-control/v1",
+     "decision": "none",
+     "no_lesson_reason": "control_supplies_no_experience",
+     "task_mechanisms": [
+      "numeric.empty_or_zero",
+      "numeric.counting",
+      "errors.wrong_type"
+     ],
+     "override": null,
+     "received": [],
+     "reported_used": [],
+     "selected": [],
+     "candidates": [],
+     "context_bytes": 2,
+     "items_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+     "independent_outcome": null
+    },
+    "result_admission_id": "cdac3d1a-8f13-4752-b83a-381742328b2d",
+    "run": {
+     "status": "COMPLETED",
+     "terminal_reason": "required_stages_completed"
+    },
+    "calls": [
+     {
+      "id": "a7b5c7ff-b4de-4b59-b055-45e4e6ec54e6",
+      "status": "validated",
+      "model": "muse-spark-1.3-contributor",
+      "usage": {
+       "completion_tokens": 1011,
+       "prompt_tokens": 2167,
+       "total_tokens": 3178,
+       "completion_tokens_details": {
+        "reasoning_tokens": 264
+       },
+       "prompt_tokens_details": {
+        "cached_tokens": 0
+       },
+       "charged_tokens": 3178
+      },
+      "latency_ms": 9853.316599997925,
+      "provenance": "production_pi",
+      "provider_receipts": [
+       {
+        "request_id": "0ec87833-c4b5-4b19-ae19-338873c2f4ae",
+        "http_status": 200,
+        "response_sha256": "a6a65313f88bc996ad0b60ca6abcd7d52366d7df22d37ed647876c9e807ae238",
+        "model_requested": "muse-spark-1.3-contributor",
+        "model_observed": null,
+        "latency_ms": 9410.475999997288
+       }
+      ]
+     },
+     {
+      "id": "4b72a3a3-1b2b-4e1a-8e37-387138d15367",
+      "status": "validated",
+      "model": "muse-spark-1.3-contributor",
+      "usage": {
+       "completion_tokens": 630,
+       "prompt_tokens": 2314,
+       "total_tokens": 2944,
+       "completion_tokens_details": {
+        "reasoning_tokens": 313
+       },
+       "prompt_tokens_details": {
+        "cached_tokens": 0
+       },
+       "charged_tokens": 2944
+      },
+      "latency_ms": 5851.4068000004045,
+      "provenance": "production_pi",
+      "provider_receipts": [
+       {
+        "request_id": "f06aa12f-17a6-4e62-b8cd-1f3ecc0eece1",
+        "http_status": 200,
+        "response_sha256": "3268616f54b1885cb02a32636059a419074b75c7e6c47a6db55dc944b2d2faa0",
+        "model_requested": "muse-spark-1.3-contributor",
+        "model_observed": null,
+        "latency_ms": 5412.416700004542
+       }
+      ]
+     }
+    ],
+    "request": {
+     "consent_ref": "9262f041-4cf0-4b85-b21b-4a2ddd14542c",
+     "conversation_ref": "ac618ee5-c811-4fb8-8a01-ea8dd829e59e",
+     "goal": "Review the supplied implementation against this contract: Return the arithmetic mean of a list of numbers. An empty list returns 0. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+     "strategy_mode": "stateless",
+     "idempotency_key": "train:num-02"
+    },
+    "wall_seconds": 17.940289199999825,
+    "usage": {
+     "provider_requests": 2,
+     "tokens": 6122,
+     "invocation_latency_ms": 15704.72339999833
+    }
+   },
+   "grade": {
+    "verifier": "frozen-executable-fixture/v2",
+    "issue_present": true,
+    "issue_flag": "correct",
+    "cases": [
+     {
+      "id": "c1",
+      "actual": {
+       "value": 3.0
+      },
+      "state_changed": false,
+      "conforms": true,
+      "return_conforms": true,
+      "state_conforms": true,
+      "observed_prediction": "correct",
+      "required_prediction": "correct"
+     },
+     {
+      "id": "c2",
+      "actual": {
+       "value": 5.0
+      },
+      "state_changed": false,
+      "conforms": true,
+      "return_conforms": true,
+      "state_conforms": true,
+      "observed_prediction": "correct",
+      "required_prediction": "correct"
+     },
+     {
+      "id": "c3",
+      "actual": {
+       "error": "ZeroDivisionError"
+      },
+      "state_changed": false,
+      "conforms": false,
+      "return_conforms": false,
+      "state_conforms": true,
+      "observed_prediction": "correct",
+      "required_prediction": "correct"
+     },
+     {
+      "id": "c4",
+      "actual": {
+       "value": 0.0
+      },
+      "state_changed": false,
+      "conforms": true,
+      "return_conforms": true,
+      "state_conforms": true,
+      "observed_prediction": "correct",
+      "required_prediction": "correct"
+     }
+    ],
+    "dimensions": {
+     "semantic": "correct",
+     "prediction_correctness": {
+      "correct_units": 8,
+      "provided_units": 8,
+      "total_units": 8
+     },
+     "contract_compliance": {
+      "ok": true,
+      "missing_cases": [],
+      "malformed_cases": [],
+      "duplicate_cases": [],
+      "issue_flag": true
+     },
+     "reference_integrity": "valid",
+     "reference_normalized": false,
+     "grounding": {
+      "citations": 2,
+      "matching": 2
+     },
+     "task_completion": true,
+     "run_failure": null
+    },
+    "score": 1.0,
+    "passed": true,
+    "end_to_end": true,
+    "prose_verified": false
+   },
+   "raw_refused_output": null,
+   "measurement_ref": "b9cecabb-3cd7-5f3b-90f8-3d1a3d2f91db",
+   "experience_id": "4b6f00ed-c32f-5733-99f0-aca5c44bd12a",
+   "extraction": {
+    "id": "dc8a8989-981a-4ab6-8168-7f887447ef5b",
+    "goal": "Extract a reusable numeric strategy from verified training feedback 4b6f00ed-c32f-5733-99f0-aca5c44bd12a. Cite that experience ID in supporting_experience_ids. State when it applies and when it must not be applied, name the mechanisms it addresses and the excluded mechanisms from the closed vocabulary, and give uncertainty. Do not copy answers, function names or source text.",
+    "conversation_ref": "ac618ee5-c811-4fb8-8a01-ea8dd829e59e",
+    "answer": {
+     "answer": "Reusable numeric guard: check for empty/zero-denominator before averaging; empty list must return contract default 0 rather than dividing.",
+     "citation_checks": [
+      {
+       "file": "README.md",
+       "file_sha256": "066bbdea0d170c8eb482c9e34c9f856176fc4b5b4b74fa19ba30a84e88f5bcce",
+       "line_end": 3,
+       "line_start": 2,
+       "status": "quote_matches"
+      },
+      {
+       "file": "implementation.py",
+       "file_sha256": "594911455cd3218948614a3fc4368cebdad243c976fbd7f228b8c32dddc44583",
+       "line_end": 2,
+       "line_start": 1,
+       "status": "quote_matches"
+      },
+      {
+       "file": "implementation.py",
+       "file_sha256": "594911455cd3218948614a3fc4368cebdad243c976fbd7f228b8c32dddc44583",
+       "line_end": 2,
+       "line_start": 2,
+       "status": "quote_matches"
+      }
+     ],
+     "citations": [
+      {
+       "file": "README.md",
+       "line_end": 3,
+       "line_start": 2,
+       "quote": "Contract: Return the arithmetic mean of a list of numbers. An empty list returns 0."
+      },
+      {
+       "file": "implementation.py",
+       "line_end": 2,
+       "line_start": 1,
+       "quote": "def solve(p):"
+      },
+      {
+       "file": "implementation.py",
+       "line_end": 2,
+       "line_start": 2,
+       "quote": "return sum(p) / len(p)"
+      }
+     ],
+     "context_ref": "d1a5229e-8b12-42c6-887e-1a3a7d5b6493",
+     "context_sha256": "f5fdf6c7801861237aa9c43e6632f939c0a2493540a7364c6f638eb947b0420e",
+     "contract_compliance": {
+      "complete": false,
+      "duplicate_cases": [],
+      "issue_flag_present": false,
+      "missing_cases": [
+       "c1",
+       "c2",
+       "c3",
+       "c4"
+      ],
+      "required": true,
+      "unexpected_cases": []
+     },
+     "historical_ids_used": [],
+     "issue_present": null,
+     "lesson_ids_used": [],
+     "lesson_proposal": null,
+     "needs_clarification": false,
+     "predictions": [],
+     "recalled_item_ids": [
+      "4b6f00ed-c32f-5733-99f0-aca5c44bd12a"
+     ],
+     "reference_integrity": {
+      "status": "valid"
+     },
+     "revision": null,
+     "schema": "contextual-answer/v2",
+     "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+     "uncertainty": [
+      "Single verified training observation; provisional generalization only.",
+      "Predictions are inferred from source, not executed.",
+      "Strategy does not decide return type int vs float.",
+      "Strategy does not cover non-list or non-numeric inputs. verified.",
+      "verified_feedback_in_context: 4b6f00ed-c32f-5733-99f0-aca5c44bd12a says outcome 1.0 passed true; prose unverified so treated as hint only."
+     ],
+     "artifact_sha256": "2918f1acca6a9f41842718ebf48d805f5252d07250804c69644aeeaaac961e60"
+    },
+    "context": {
+     "policy": "conversation-context/v1",
+     "conversation_ref": "ac618ee5-c811-4fb8-8a01-ea8dd829e59e",
+     "items": [
+      {
+       "id": "4b6f00ed-c32f-5733-99f0-aca5c44bd12a",
+       "admission_id": "cdac3d1a-8f13-4752-b83a-381742328b2d",
+       "source_type": "verified_feedback",
+       "content": {
+        "experience_id": "4b6f00ed-c32f-5733-99f0-aca5c44bd12a",
+        "task_id": "num-02",
+        "split": "train",
+        "family": "numeric",
+        "outcome": 1.0,
+        "passed": true,
+        "verifier": "frozen-executable-fixture/v2"
+       },
+       "content_sha256": "0f284cea24a886dd3b2cd51b139053d8f040027880808a49f376005ae12ea818",
+       "source_sha256": "029a8ec00c574044169ab3bad91a0d3cf656846bebdfb1331ab21ae992cde6da",
+       "recorded_at": "2026-11-01T19:50:29.730824",
+       "ordinal": null,
+       "verification": "executable_fixture_outcome; prose_unverified"
+      },
+      {
+       "id": "cdac3d1a-8f13-4752-b83a-381742328b2d:answer",
+       "admission_id": "cdac3d1a-8f13-4752-b83a-381742328b2d",
+       "source_type": "model_answer",
+       "content": {
+        "answer": "Implementation `sum(p)/len(p)` is correct for non-empty lists but violates the contract for empty list: it raises ZeroDivisionError instead of returning 0. Minimal fix: return 0 when list is empty, e.g. `return 0 if len(p)==0 else sum(p)/len(p)`.",
+        "revision": null,
+        "citations": [
+         {
+          "file": "implementation.py",
+          "line_end": 2,
+          "line_start": 1,
+          "quote": "def solve(p): return sum(p) / len(p)"
+         },
+         {
+          "file": "README.md",
+          "line_end": 3,
+          "line_start": 2,
+          "quote": "Contract: Return the arithmetic mean of a list of numbers. An empty list returns 0."
+         }
+        ],
+        "recalled_item_ids": [],
+        "uncertainty": []
+       },
+       "content_sha256": "5d5f383256a7e0c751187ded6814ff24c64a7d3d46935c494802e1a6467bbf84",
+       "source_sha256": "c33220d36cfd728befb579064680a2125d3565729dd6be3c3dcb4b8d201a7e0b",
+       "recorded_at": "2026-11-01T19:50:22.449272+00:00",
+       "ordinal": null,
+       "verification": "unverified_model_assessment"
+      },
+      {
+       "id": "cdac3d1a-8f13-4752-b83a-381742328b2d:goal",
+       "admission_id": "cdac3d1a-8f13-4752-b83a-381742328b2d",
+       "source_type": "owner_goal",
+       "content": "Review the supplied implementation against this contract: Return the arithmetic mean of a list of numbers. An empty list returns 0. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+       "content_sha256": "6e567b3ebdeada25600027435c27db6485debfee93c90f589089a50619b083b6",
+       "source_sha256": "4d733d0844cf6f9f968745b24a485ab1497b6a7a5c111239ab09b320cb328f09",
+       "recorded_at": "2026-11-01T19:50:22.449272+00:00",
+       "ordinal": null,
+       "verification": "owner_statement"
+      },
+      {
+       "id": "0140a87d-1547-457f-80d8-d3bb92225cb1:goal",
+       "admission_id": "0140a87d-1547-457f-80d8-d3bb92225cb1",
+       "source_type": "owner_goal",
+       "content": "Review the supplied implementation against this contract: Return the arithmetic mean of a list of numbers. An empty list returns 0. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+       "content_sha256": "6e567b3ebdeada25600027435c27db6485debfee93c90f589089a50619b083b6",
+       "source_sha256": "e3183a83ec8041ba2316c3f6f80d35d10a2be858c55805f0200946a1fe5ee317",
+       "recorded_at": "2026-11-01T19:50:11.527438+00:00",
+       "ordinal": null,
+       "verification": "owner_statement"
+      }
+     ],
+     "omitted": [],
+     "omitted_count": 0,
+     "selection": "explicit identifiers, revisions, findings and recent turns; model resolves relevance"
+    },
+    "model_calls": 1,
+    "status": "LIVE MODEL",
+    "availability": "available",
+    "followup": null,
+    "selection": null,
+    "result_admission_id": null,
+    "run": {
+     "status": null,
+     "terminal_reason": null
+    },
+    "calls": [
+     {
+      "id": "097aa415-2144-4531-8652-3a828f3f3ccf",
+      "status": "validated",
+      "model": "muse-spark-1.3-contributor",
+      "usage": {
+       "completion_tokens": 635,
+       "prompt_tokens": 3478,
+       "total_tokens": 4113,
+       "completion_tokens_details": {
+        "reasoning_tokens": 335
+       },
+       "prompt_tokens_details": {
+        "cached_tokens": 0
+       },
+       "charged_tokens": 4113
+      },
+      "latency_ms": 7519.9762000047485,
+      "provenance": "production_pi",
+      "provider_receipts": [
+       {
+        "request_id": "a6985437-889d-44f5-b073-082a97f7b7ce",
+        "http_status": 200,
+        "response_sha256": "73863f83b3c74551090e130ef161cf7deea31137ff0e4760b15626a9d44233d0",
+        "model_requested": "muse-spark-1.3-contributor",
+        "model_observed": null,
+        "latency_ms": 7057.906200003345
+       }
+      ]
+     }
+    ],
+    "request": {
+     "consent_ref": "9262f041-4cf0-4b85-b21b-4a2ddd14542c",
+     "conversation_ref": "ac618ee5-c811-4fb8-8a01-ea8dd829e59e",
+     "goal": "Extract a reusable numeric strategy from verified training feedback 4b6f00ed-c32f-5733-99f0-aca5c44bd12a. Cite that experience ID in supporting_experience_ids. State when it applies and when it must not be applied, name the mechanisms it addresses and the excluded mechanisms from the closed vocabulary, and give uncertainty. Do not copy answers, function names or source text.",
+     "strategy_mode": "stateless",
+     "idempotency_key": "extract:num-02"
+    },
+    "wall_seconds": 9.049099100004241,
+    "usage": {
+     "provider_requests": 1,
+     "tokens": 4113,
+     "invocation_latency_ms": 7519.9762000047485
+    }
+   }
+  }
+ ],
+ "evaluation": [],
+ "ablation": [],
+ "sources": {
+  "num-01": {
+   "id": "c153a758-1418-46d3-b9e7-85a447e61d54",
+   "terms": {
+    "principal": "owner-cli:ernan",
+    "goal_ref": "0c9dc948-567e-434c-9868-b6445965326f",
+    "approval_ref": "5d0f0729-ac7e-40fb-bb6d-d31257636cb5",
+    "paths": [
+     "README.md",
+     "implementation.py"
+    ],
+    "profiles": {
+     "intent-interpretation": {
+      "profile": "intent-interpretation",
+      "source": {
+       "resources": {
+        "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+        "approval_id": "5d0f0729-ac7e-40fb-bb6d-d31257636cb5",
+        "content_sha256": "a3f060e209b5252e21e5ebe276d6ca854aa08552b5ddae546cc4ea8c7d618bd1",
+        "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+       },
+       "label": "Public fixture num-01",
+       "scope": {
+        "items": [
+         "README.md",
+         "implementation.py"
+        ]
+       },
+       "inventory": {
+        "items": [
+         {
+          "item": "README.md",
+          "bytes": 320,
+          "sha256": "3b4016a42db2df046a1f7b6fa8e880597dbd52c15e09240fdbc219ed1d671fad"
+         },
+         {
+          "item": "implementation.py",
+          "bytes": 38,
+          "sha256": "6083f1e098f07f9f18d04122421ccb45c24938ec984a1b44450a2bd045010edf"
+         }
+        ],
+        "omitted": []
+       },
+       "expires_at": "2026-11-02T01:49:38.110071+00:00",
+       "principal": "owner-cli:ernan"
+      },
+      "grant": {
+       "version": 1,
+       "principal": "owner-cli:ernan",
+       "definition_id": "6e383724-6856-4f59-8b38-a5b213a606e2",
+       "definition_sha256": "a33c2f9fabbce0d775123bda017400dcdd58d206ab5fd45ff3d6105f18362394",
+       "context_provenance": {
+        "source": "admission-owner",
+        "event_type": "workflow.owner.context",
+        "custody": "approved_capture",
+        "consent": "exact_content_and_scope"
+       },
+       "operations": [
+        "intent.interpret",
+        "intent.validate",
+        "result.record"
+       ],
+       "capability_binding_sha256": "85cd190efeab2a58cce14fa15601e8116fbdd1445337828330f6d885874b7ce1",
+       "capabilities": {
+        "interpret": {
+         "identity": {
+          "id": "intent.interpret",
+          "version": "1.0.0",
+          "manifest_sha256": "f53d70b34d7a4d8086207a8b11f931dfa041c5328f1f0cd8cfb09a236c6942ce",
+          "implementation_id": "intent-interpreter-v1",
+          "implementation_sha256": "790ceb7498623d9bb4e7c00a64ae0e69cbb838368a1b5170deebc3e602301870"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "governed_pi"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          },
+          "sources": "approved_capture"
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 4,
+          "max_invocations": 1,
+          "max_model_calls": 1,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 1536,
+          "max_source_bytes": 0,
+          "timeout_seconds": 120
+         },
+         "policy_sha256": "536c8cec462051a308c487ce9884f7c2458884ffa765fad1d8548c2776e249d4",
+         "resources": {
+          "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+          "approval_id": "5d0f0729-ac7e-40fb-bb6d-d31257636cb5",
+          "content_sha256": "a3f060e209b5252e21e5ebe276d6ca854aa08552b5ddae546cc4ea8c7d618bd1",
+          "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+         }
+        },
+        "validate": {
+         "identity": {
+          "id": "intent.validate",
+          "version": "1.0.0",
+          "manifest_sha256": "32b52fad133b0bc6a4da3a5102e1ecad4ce2679a97fab7513521e5b3263b21b7",
+          "implementation_id": "intent-validator-v1",
+          "implementation_sha256": "34c1d7d18aed620671e31a34992bda6b38ee11cb56dc34c681bb6fe795f150d3"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          }
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 4,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 0,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "b1d6bdcde2b9ed642628f792d2f9c24863094828d9afe82428224298329dd7ab",
+         "resources": {}
+        },
+        "record": {
+         "identity": {
+          "id": "result.record",
+          "version": "1.0.0",
+          "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+          "implementation_id": "result-record-v1",
+          "implementation_sha256": "497ef193d82ea32a9e772e8759f4f686275f38c86a1e5d8d1564a42a83594416"
+         },
+         "permissions": {
+          "evidence": "approved_context",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "workflow_result",
+          "process": {
+           "mode": "none"
+          }
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 32,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 0,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "3c91710e29520c9368fa091b59d964a3b757ffb8e67048e9dfa678dc36b50e7a",
+         "resources": {}
+        }
+       },
+       "configuration_sha256": "d2de561c6409f6629b8c2c4d43c50aa04b45b12ba40fc68983eee33a80790171",
+       "models": {
+        "intent_interpreter": "muse-spark-1.3-contributor"
+       },
+       "role_contracts": {
+        "intent_interpreter": "cfa3851a44a792f6aff71126d2982a84aa2e0278f44936baeb0ecdceb6d1cf96"
+       },
+       "max_model_calls": 1,
+       "max_output_tokens": 1536,
+       "wall_seconds": 180,
+       "outbound_approved": true
+      },
+      "inputs": {
+       "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+       "paths": [
+        "README.md",
+        "implementation.py"
+       ],
+       "catalogue_sha256": "413fb86a1066021156c1d5ac0acb6f917ff11786bb3c31ad4bb5d9cd4edac575"
+      },
+      "disclosure": {
+       "operation": "intent.interpret",
+       "destination": {
+        "kind": "remote_provider",
+        "provider": "meta",
+        "transport": "pi",
+        "host": "api.meta.ai",
+        "endpoint": "https://api.meta.ai/v1/chat/completions",
+        "model": "muse-spark-1.3-contributor"
+       },
+       "role": "intent_interpreter",
+       "role_contract_sha256": "cfa3851a44a792f6aff71126d2982a84aa2e0278f44936baeb0ecdceb6d1cf96",
+       "context_policy": "alive-intent-context/v1",
+       "files": [
+        {
+         "path": "README.md",
+         "bytes": 320
+        },
+        {
+         "path": "implementation.py",
+         "bytes": 38
+        }
+       ],
+       "source_bytes": 0,
+       "content_sent": false,
+       "catalogue_sha256": "413fb86a1066021156c1d5ac0acb6f917ff11786bb3c31ad4bb5d9cd4edac575",
+       "catalogue_entries": 6,
+       "max_model_calls": 1,
+       "max_output_tokens": 1536,
+       "leaves_host": true,
+       "cost": "unknown; no price is configured and none is estimated",
+       "cancellation": "A request already sent to the provider cannot be recalled. An ambiguous outcome is never retried; its reservation stays charged.",
+       "retention": "The prompt and response are retained in the local database in clear text."
+      },
+      "recipe_sha256": "2e12cf876686490502a56d2ba523af96066eb0182c4aff1232a39ff99adf8492"
+     },
+     "approved-repository-analysis": {
+      "profile": "approved-repository-analysis",
+      "source": {
+       "resources": {
+        "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+        "approval_id": "5d0f0729-ac7e-40fb-bb6d-d31257636cb5",
+        "content_sha256": "a3f060e209b5252e21e5ebe276d6ca854aa08552b5ddae546cc4ea8c7d618bd1",
+        "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+       },
+       "label": "Public fixture num-01",
+       "scope": {
+        "items": [
+         "README.md",
+         "implementation.py"
+        ]
+       },
+       "inventory": {
+        "items": [
+         {
+          "item": "README.md",
+          "bytes": 320,
+          "sha256": "3b4016a42db2df046a1f7b6fa8e880597dbd52c15e09240fdbc219ed1d671fad"
+         },
+         {
+          "item": "implementation.py",
+          "bytes": 38,
+          "sha256": "6083f1e098f07f9f18d04122421ccb45c24938ec984a1b44450a2bd045010edf"
+         }
+        ],
+        "omitted": []
+       },
+       "expires_at": "2026-11-02T01:49:38.110071+00:00",
+       "principal": "owner-cli:ernan"
+      },
+      "grant": {
+       "version": 1,
+       "principal": "owner-cli:ernan",
+       "definition_id": "a9db48a2-5012-4dc9-8484-4c64566e1de3",
+       "definition_sha256": "e83c8f892f0d50585ba7b4f6298bc62321587556f6599a98c2911e80a3c95d21",
+       "context_provenance": {
+        "source": "admission-owner",
+        "event_type": "workflow.owner.context",
+        "custody": "approved_capture",
+        "consent": "exact_content_and_scope"
+       },
+       "operations": [
+        "repository.inspect",
+        "repository.analyze",
+        "repository.validate_findings",
+        "result.record"
+       ],
+       "capability_binding_sha256": "7d0f93d52d6e16075b29683742a0ec6f6ce90cd7dbe315e81cb3bb5bd92defd3",
+       "capabilities": {
+        "read": {
+         "identity": {
+          "id": "repository.inspect",
+          "version": "1.1.0",
+          "manifest_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d",
+          "implementation_id": "repository-inspector-v2",
+          "implementation_sha256": "baefb977d2947e12cea935fca26574642df53a53783c24eb967128fcfff078a4"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          },
+          "sources": "approved_capture"
+         },
+         "limits": {
+          "max_files": 20,
+          "max_input_bytes": 8192,
+          "max_input_items": 4,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 32768,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "e8e4b9b048ae31f1774fb2be319f6a9004a5fc2ce1781f9364e18473c227a0bb",
+         "resources": {
+          "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+          "approval_id": "5d0f0729-ac7e-40fb-bb6d-d31257636cb5",
+          "content_sha256": "a3f060e209b5252e21e5ebe276d6ca854aa08552b5ddae546cc4ea8c7d618bd1",
+          "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+         }
+        },
+        "analyze": {
+         "identity": {
+          "id": "repository.analyze",
+          "version": "1.0.0",
+          "manifest_sha256": "56b6125f0d0bb1e966ded65ad680b3b3e3827823bddd92900c9962d1588ddffe",
+          "implementation_id": "repository-analyst-v1",
+          "implementation_sha256": "542b31a107c4b36cb4b29a255785eb1a78e94a0c9bcffaec74217427aea57fb5"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "governed_pi"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          },
+          "sources": "approved_capture"
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 8,
+          "max_invocations": 1,
+          "max_model_calls": 1,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 1536,
+          "max_source_bytes": 0,
+          "timeout_seconds": 120
+         },
+         "policy_sha256": "9628e78c73bfaa0630c304f06ed4d512b21e58bee8170fc5d1768c2eb86f4639",
+         "resources": {
+          "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+          "approval_id": "5d0f0729-ac7e-40fb-bb6d-d31257636cb5",
+          "content_sha256": "a3f060e209b5252e21e5ebe276d6ca854aa08552b5ddae546cc4ea8c7d618bd1",
+          "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+         }
+        },
+        "validate": {
+         "identity": {
+          "id": "repository.validate_findings",
+          "version": "1.0.0",
+          "manifest_sha256": "ebb0a26fcfeb35619978d65a546f97ab13d2087fe5a6a54b89b6fe8d0fabae38",
+          "implementation_id": "repository-findings-validator-v1",
+          "implementation_sha256": "bcf69256a86a714d1f557c923f8e64da121c22cb2f6a0f54b0774ee30020dddb"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          }
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 8,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 0,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "758e73b57cab8ed5e277b6c6693a36d3b9e2d9c795790f9aa58567d682facd06",
+         "resources": {}
+        },
+        "record": {
+         "identity": {
+          "id": "result.record",
+          "version": "1.0.0",
+          "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+          "implementation_id": "result-record-v1",
+          "implementation_sha256": "497ef193d82ea32a9e772e8759f4f686275f38c86a1e5d8d1564a42a83594416"
+         },
+         "permissions": {
+          "evidence": "approved_context",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "workflow_result",
+          "process": {
+           "mode": "none"
+          }
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 32,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 0,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "3c91710e29520c9368fa091b59d964a3b757ffb8e67048e9dfa678dc36b50e7a",
+         "resources": {}
+        }
+       },
+       "configuration_sha256": "d2de561c6409f6629b8c2c4d43c50aa04b45b12ba40fc68983eee33a80790171",
+       "models": {
+        "repository_analyst": "muse-spark-1.3-contributor"
+       },
+       "role_contracts": {
+        "repository_analyst": "4134b4bdb946fecd0c0cffe5d7290b4d929ec52df007715d0095f491fd6498e5"
+       },
+       "max_model_calls": 1,
+       "max_output_tokens": 1536,
+       "wall_seconds": 180,
+       "outbound_approved": true
+      },
+      "inputs": {
+       "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+       "paths": [
+        "README.md",
+        "implementation.py"
+       ]
+      },
+      "disclosure": {
+       "operation": "repository.analyze",
+       "destination": {
+        "kind": "remote_provider",
+        "provider": "meta",
+        "transport": "pi",
+        "host": "api.meta.ai",
+        "endpoint": "https://api.meta.ai/v1/chat/completions",
+        "model": "muse-spark-1.3-contributor"
+       },
+       "role": "repository_analyst",
+       "role_contract_sha256": "4134b4bdb946fecd0c0cffe5d7290b4d929ec52df007715d0095f491fd6498e5",
+       "context_policy": "repository-analysis-context/v1",
+       "files": [
+        {
+         "path": "README.md",
+         "bytes": 320
+        },
+        {
+         "path": "implementation.py",
+         "bytes": 38
+        }
+       ],
+       "source_bytes": 358,
+       "max_model_calls": 1,
+       "max_output_tokens": 1536,
+       "leaves_host": true,
+       "cost": "unknown; no price is configured and none is estimated",
+       "cancellation": "A request already sent to the provider cannot be recalled. An ambiguous outcome is never retried; its reservation stays charged.",
+       "retention": "The prompt and response are retained in the local database in clear text."
+      },
+      "recipe_sha256": "a5cbf81b0eddff9828b8b197cab09c5bac9e8a629fc26872df84178bfd863c13"
+     },
+     "approved-repository-inspection": {
+      "profile": "approved-repository-inspection",
+      "source": {
+       "resources": {
+        "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+        "approval_id": "5d0f0729-ac7e-40fb-bb6d-d31257636cb5",
+        "content_sha256": "a3f060e209b5252e21e5ebe276d6ca854aa08552b5ddae546cc4ea8c7d618bd1",
+        "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+       },
+       "label": "Public fixture num-01",
+       "scope": {
+        "items": [
+         "README.md",
+         "implementation.py"
+        ]
+       },
+       "inventory": {
+        "items": [
+         {
+          "item": "README.md",
+          "bytes": 320,
+          "sha256": "3b4016a42db2df046a1f7b6fa8e880597dbd52c15e09240fdbc219ed1d671fad"
+         },
+         {
+          "item": "implementation.py",
+          "bytes": 38,
+          "sha256": "6083f1e098f07f9f18d04122421ccb45c24938ec984a1b44450a2bd045010edf"
+         }
+        ],
+        "omitted": []
+       },
+       "expires_at": "2026-11-02T01:49:38.110071+00:00",
+       "principal": "owner-cli:ernan"
+      },
+      "grant": {
+       "version": 1,
+       "principal": "owner-cli:ernan",
+       "definition_id": "d1034295-10b0-49ea-96b7-62b68ca10f4e",
+       "definition_sha256": "bfe419f3577ce3b9f813da79452f701d8f6ebab9c6af2f6d6dceef15d290b713",
+       "context_provenance": {
+        "source": "admission-owner",
+        "event_type": "workflow.owner.context",
+        "custody": "approved_capture",
+        "consent": "exact_content_and_scope"
+       },
+       "operations": [
+        "repository.inspect"
+       ],
+       "capability_binding_sha256": "d964cda1d059222da361e8591c07e846728fee345fc14291575602b80f4bdb8e",
+       "capabilities": {
+        "read": {
+         "identity": {
+          "id": "repository.inspect",
+          "version": "1.1.0",
+          "manifest_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d",
+          "implementation_id": "repository-inspector-v2",
+          "implementation_sha256": "baefb977d2947e12cea935fca26574642df53a53783c24eb967128fcfff078a4"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          },
+          "sources": "approved_capture"
+         },
+         "limits": {
+          "max_files": 20,
+          "max_input_bytes": 8192,
+          "max_input_items": 4,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 32768,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "e8e4b9b048ae31f1774fb2be319f6a9004a5fc2ce1781f9364e18473c227a0bb",
+         "resources": {
+          "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+          "approval_id": "5d0f0729-ac7e-40fb-bb6d-d31257636cb5",
+          "content_sha256": "a3f060e209b5252e21e5ebe276d6ca854aa08552b5ddae546cc4ea8c7d618bd1",
+          "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+         }
+        }
+       },
+       "configuration_sha256": "d2de561c6409f6629b8c2c4d43c50aa04b45b12ba40fc68983eee33a80790171",
+       "models": {},
+       "role_contracts": {},
+       "max_model_calls": 0,
+       "max_output_tokens": 0,
+       "wall_seconds": 30,
+       "outbound_approved": false
+      },
+      "inputs": {
+       "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+       "paths": [
+        "README.md",
+        "implementation.py"
+       ]
+      },
+      "disclosure": {},
+      "recipe_sha256": "c43b72e195f720c6c51e872a2a5e514c7374b10ad5a22b89f1f0fa82cba82e6d"
+     },
+     "contextual-reasoning": {
+      "profile": "contextual-reasoning",
+      "source": {
+       "resources": {
+        "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+        "approval_id": "5d0f0729-ac7e-40fb-bb6d-d31257636cb5",
+        "content_sha256": "a3f060e209b5252e21e5ebe276d6ca854aa08552b5ddae546cc4ea8c7d618bd1",
+        "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+       },
+       "label": "Public fixture num-01",
+       "scope": {
+        "items": [
+         "README.md",
+         "implementation.py"
+        ]
+       },
+       "inventory": {
+        "items": [
+         {
+          "item": "README.md",
+          "bytes": 320,
+          "sha256": "3b4016a42db2df046a1f7b6fa8e880597dbd52c15e09240fdbc219ed1d671fad"
+         },
+         {
+          "item": "implementation.py",
+          "bytes": 38,
+          "sha256": "6083f1e098f07f9f18d04122421ccb45c24938ec984a1b44450a2bd045010edf"
+         }
+        ],
+        "omitted": []
+       },
+       "expires_at": "2026-11-02T01:49:38.110071+00:00",
+       "principal": "owner-cli:ernan"
+      },
+      "grant": {
+       "version": 1,
+       "principal": "owner-cli:ernan",
+       "definition_id": "c5e3ea27-d744-4281-bd84-f30265dcad6f",
+       "definition_sha256": "ea2fcae8fd017f0e6459a1b2a4bd957a79c103d9faf954f2879174afc059e5cb",
+       "context_provenance": {
+        "source": "admission-owner",
+        "event_type": "workflow.owner.context",
+        "custody": "approved_capture",
+        "consent": "exact_content_and_scope"
+       },
+       "operations": [
+        "context.reason",
+        "context.validate",
+        "result.record"
+       ],
+       "capability_binding_sha256": "0c1faa1693bd4e873a622a41b7c52df11f3184ef61807f12e2eccf299d84e95e",
+       "capabilities": {
+        "reason": {
+         "identity": {
+          "id": "context.reason",
+          "version": "1.0.0",
+          "manifest_sha256": "473b75ddc07a86e23173ecc048143aac5f852fd4b3b5eaab2ba9e4373891b14a",
+          "implementation_id": "contextual-reasoner-v1",
+          "implementation_sha256": "032e056c039289162af013764366b8a575b655837b657f8e17b6157d2b6b1bd5"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "governed_pi"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          },
+          "sources": "approved_capture"
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 8,
+          "max_invocations": 1,
+          "max_model_calls": 1,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 1536,
+          "max_source_bytes": 0,
+          "timeout_seconds": 120
+         },
+         "policy_sha256": "7650226d5c5119186fc19290ab5caade43d8596865462675bd0d3857397635d9",
+         "resources": {
+          "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+          "approval_id": "5d0f0729-ac7e-40fb-bb6d-d31257636cb5",
+          "content_sha256": "a3f060e209b5252e21e5ebe276d6ca854aa08552b5ddae546cc4ea8c7d618bd1",
+          "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+         }
+        },
+        "validate": {
+         "identity": {
+          "id": "context.validate",
+          "version": "1.0.0",
+          "manifest_sha256": "d71544db53d371ebc241a804641226bb99688987152515be87020cb507b8e681",
+          "implementation_id": "contextual-validator-v1",
+          "implementation_sha256": "286bf0d7d16f8977eb5e911072ea1e1dd4c025f7d7f12cad13f3a8844deb78bc"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          },
+          "sources": "approved_capture"
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 8,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 0,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "b43139cd528576c8d1b29ac1ea0452e037e61810e71a0c1b01ae08d01b42b8c6",
+         "resources": {
+          "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+          "approval_id": "5d0f0729-ac7e-40fb-bb6d-d31257636cb5",
+          "content_sha256": "a3f060e209b5252e21e5ebe276d6ca854aa08552b5ddae546cc4ea8c7d618bd1",
+          "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+         }
+        },
+        "record": {
+         "identity": {
+          "id": "result.record",
+          "version": "1.0.0",
+          "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+          "implementation_id": "result-record-v1",
+          "implementation_sha256": "497ef193d82ea32a9e772e8759f4f686275f38c86a1e5d8d1564a42a83594416"
+         },
+         "permissions": {
+          "evidence": "approved_context",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "workflow_result",
+          "process": {
+           "mode": "none"
+          }
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 32,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 0,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "3c91710e29520c9368fa091b59d964a3b757ffb8e67048e9dfa678dc36b50e7a",
+         "resources": {}
+        }
+       },
+       "configuration_sha256": "d2de561c6409f6629b8c2c4d43c50aa04b45b12ba40fc68983eee33a80790171",
+       "models": {
+        "contextual_reasoner": "muse-spark-1.3-contributor"
+       },
+       "role_contracts": {
+        "contextual_reasoner": "81d567943b9223e3f113753ab7d44ef8c672ebee88e5d6968af580ba9607dc28"
+       },
+       "max_model_calls": 1,
+       "max_output_tokens": 1536,
+       "wall_seconds": 180,
+       "outbound_approved": true
+      },
+      "inputs": {
+       "source_ref": "0d9241c0-a9e7-47b9-b89a-bfa4f5cbc0ef",
+       "paths": [
+        "README.md",
+        "implementation.py"
+       ]
+      },
+      "disclosure": {
+       "operation": "context.reason",
+       "destination": {
+        "kind": "remote_provider",
+        "provider": "meta",
+        "transport": "pi",
+        "host": "api.meta.ai",
+        "endpoint": "https://api.meta.ai/v1/chat/completions",
+        "model": "muse-spark-1.3-contributor"
+       },
+       "role": "contextual_reasoner",
+       "role_contract_sha256": "81d567943b9223e3f113753ab7d44ef8c672ebee88e5d6968af580ba9607dc28",
+       "context_policy": "conversation-context/v1",
+       "files": [
+        {
+         "path": "README.md",
+         "bytes": 320
+        },
+        {
+         "path": "implementation.py",
+         "bytes": 38
+        }
+       ],
+       "source_bytes": 358,
+       "max_model_calls": 1,
+       "max_output_tokens": 1536,
+       "leaves_host": true,
+       "cost": "unknown; not estimated",
+       "retention": "Local prompts, frozen context and responses persist in clear text.",
+       "cancellation": "Disclosed data cannot be recalled; ambiguous calls are not retried."
+      },
+      "recipe_sha256": "b6e68f2e36f7eb91960493615c67395641f08a990ca6fbaec593a9bbfe38f880"
+     }
+    },
+    "max_calls": 30,
+    "max_tokens": 450000,
+    "expires_at": "2026-11-02T01:49:38.110071+00:00",
+    "disclosure": "Future goal text, file names and approved file content may leave this host. Local prompts/results persist. Read-only inspection/analysis is automatic. Reservations stay charged after failures; currency cost is unknown. Adaptive reasoning may reuse up to two bounded, explicitly owner-approved lesson exports from other conversations at this same provider/model. Raw prior source is not exported. Lessons remain fallible data, not execution authority. In a linked conversation, bounded prior owner statements, model findings and revisions from this exact source may also be disclosed to the same destination.",
+    "adaptive": true
+   },
+   "sha256": "ee553338fa9e0a119212c3a32b20256bc3fcee6530d5f95fddc3d50667309a18",
+   "state": "approved"
+  },
+  "num-02": {
+   "id": "9262f041-4cf0-4b85-b21b-4a2ddd14542c",
+   "terms": {
+    "principal": "owner-cli:ernan",
+    "goal_ref": "0c9dc948-567e-434c-9868-b6445965326f",
+    "approval_ref": "98c06915-2034-4fc7-9b1a-4769569f1474",
+    "paths": [
+     "README.md",
+     "implementation.py"
+    ],
+    "profiles": {
+     "intent-interpretation": {
+      "profile": "intent-interpretation",
+      "source": {
+       "resources": {
+        "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+        "approval_id": "98c06915-2034-4fc7-9b1a-4769569f1474",
+        "content_sha256": "65a60ab846720ee14befa4e3ef9a03800bee5e25e51b22ded603112bfbc69bd8",
+        "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+       },
+       "label": "Public fixture num-02",
+       "scope": {
+        "items": [
+         "README.md",
+         "implementation.py"
+        ]
+       },
+       "inventory": {
+        "items": [
+         {
+          "item": "README.md",
+          "bytes": 246,
+          "sha256": "066bbdea0d170c8eb482c9e34c9f856176fc4b5b4b74fa19ba30a84e88f5bcce"
+         },
+         {
+          "item": "implementation.py",
+          "bytes": 41,
+          "sha256": "594911455cd3218948614a3fc4368cebdad243c976fbd7f228b8c32dddc44583"
+         }
+        ],
+        "omitted": []
+       },
+       "expires_at": "2026-11-02T01:50:11.045204+00:00",
+       "principal": "owner-cli:ernan"
+      },
+      "grant": {
+       "version": 1,
+       "principal": "owner-cli:ernan",
+       "definition_id": "6e383724-6856-4f59-8b38-a5b213a606e2",
+       "definition_sha256": "a33c2f9fabbce0d775123bda017400dcdd58d206ab5fd45ff3d6105f18362394",
+       "context_provenance": {
+        "source": "admission-owner",
+        "event_type": "workflow.owner.context",
+        "custody": "approved_capture",
+        "consent": "exact_content_and_scope"
+       },
+       "operations": [
+        "intent.interpret",
+        "intent.validate",
+        "result.record"
+       ],
+       "capability_binding_sha256": "85cd190efeab2a58cce14fa15601e8116fbdd1445337828330f6d885874b7ce1",
+       "capabilities": {
+        "interpret": {
+         "identity": {
+          "id": "intent.interpret",
+          "version": "1.0.0",
+          "manifest_sha256": "f53d70b34d7a4d8086207a8b11f931dfa041c5328f1f0cd8cfb09a236c6942ce",
+          "implementation_id": "intent-interpreter-v1",
+          "implementation_sha256": "790ceb7498623d9bb4e7c00a64ae0e69cbb838368a1b5170deebc3e602301870"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "governed_pi"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          },
+          "sources": "approved_capture"
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 4,
+          "max_invocations": 1,
+          "max_model_calls": 1,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 1536,
+          "max_source_bytes": 0,
+          "timeout_seconds": 120
+         },
+         "policy_sha256": "536c8cec462051a308c487ce9884f7c2458884ffa765fad1d8548c2776e249d4",
+         "resources": {
+          "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+          "approval_id": "98c06915-2034-4fc7-9b1a-4769569f1474",
+          "content_sha256": "65a60ab846720ee14befa4e3ef9a03800bee5e25e51b22ded603112bfbc69bd8",
+          "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+         }
+        },
+        "validate": {
+         "identity": {
+          "id": "intent.validate",
+          "version": "1.0.0",
+          "manifest_sha256": "32b52fad133b0bc6a4da3a5102e1ecad4ce2679a97fab7513521e5b3263b21b7",
+          "implementation_id": "intent-validator-v1",
+          "implementation_sha256": "34c1d7d18aed620671e31a34992bda6b38ee11cb56dc34c681bb6fe795f150d3"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          }
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 4,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 0,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "b1d6bdcde2b9ed642628f792d2f9c24863094828d9afe82428224298329dd7ab",
+         "resources": {}
+        },
+        "record": {
+         "identity": {
+          "id": "result.record",
+          "version": "1.0.0",
+          "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+          "implementation_id": "result-record-v1",
+          "implementation_sha256": "497ef193d82ea32a9e772e8759f4f686275f38c86a1e5d8d1564a42a83594416"
+         },
+         "permissions": {
+          "evidence": "approved_context",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "workflow_result",
+          "process": {
+           "mode": "none"
+          }
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 32,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 0,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "3c91710e29520c9368fa091b59d964a3b757ffb8e67048e9dfa678dc36b50e7a",
+         "resources": {}
+        }
+       },
+       "configuration_sha256": "d2de561c6409f6629b8c2c4d43c50aa04b45b12ba40fc68983eee33a80790171",
+       "models": {
+        "intent_interpreter": "muse-spark-1.3-contributor"
+       },
+       "role_contracts": {
+        "intent_interpreter": "cfa3851a44a792f6aff71126d2982a84aa2e0278f44936baeb0ecdceb6d1cf96"
+       },
+       "max_model_calls": 1,
+       "max_output_tokens": 1536,
+       "wall_seconds": 180,
+       "outbound_approved": true
+      },
+      "inputs": {
+       "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+       "paths": [
+        "README.md",
+        "implementation.py"
+       ],
+       "catalogue_sha256": "413fb86a1066021156c1d5ac0acb6f917ff11786bb3c31ad4bb5d9cd4edac575"
+      },
+      "disclosure": {
+       "operation": "intent.interpret",
+       "destination": {
+        "kind": "remote_provider",
+        "provider": "meta",
+        "transport": "pi",
+        "host": "api.meta.ai",
+        "endpoint": "https://api.meta.ai/v1/chat/completions",
+        "model": "muse-spark-1.3-contributor"
+       },
+       "role": "intent_interpreter",
+       "role_contract_sha256": "cfa3851a44a792f6aff71126d2982a84aa2e0278f44936baeb0ecdceb6d1cf96",
+       "context_policy": "alive-intent-context/v1",
+       "files": [
+        {
+         "path": "README.md",
+         "bytes": 246
+        },
+        {
+         "path": "implementation.py",
+         "bytes": 41
+        }
+       ],
+       "source_bytes": 0,
+       "content_sent": false,
+       "catalogue_sha256": "413fb86a1066021156c1d5ac0acb6f917ff11786bb3c31ad4bb5d9cd4edac575",
+       "catalogue_entries": 6,
+       "max_model_calls": 1,
+       "max_output_tokens": 1536,
+       "leaves_host": true,
+       "cost": "unknown; no price is configured and none is estimated",
+       "cancellation": "A request already sent to the provider cannot be recalled. An ambiguous outcome is never retried; its reservation stays charged.",
+       "retention": "The prompt and response are retained in the local database in clear text."
+      },
+      "recipe_sha256": "2e12cf876686490502a56d2ba523af96066eb0182c4aff1232a39ff99adf8492"
+     },
+     "approved-repository-analysis": {
+      "profile": "approved-repository-analysis",
+      "source": {
+       "resources": {
+        "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+        "approval_id": "98c06915-2034-4fc7-9b1a-4769569f1474",
+        "content_sha256": "65a60ab846720ee14befa4e3ef9a03800bee5e25e51b22ded603112bfbc69bd8",
+        "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+       },
+       "label": "Public fixture num-02",
+       "scope": {
+        "items": [
+         "README.md",
+         "implementation.py"
+        ]
+       },
+       "inventory": {
+        "items": [
+         {
+          "item": "README.md",
+          "bytes": 246,
+          "sha256": "066bbdea0d170c8eb482c9e34c9f856176fc4b5b4b74fa19ba30a84e88f5bcce"
+         },
+         {
+          "item": "implementation.py",
+          "bytes": 41,
+          "sha256": "594911455cd3218948614a3fc4368cebdad243c976fbd7f228b8c32dddc44583"
+         }
+        ],
+        "omitted": []
+       },
+       "expires_at": "2026-11-02T01:50:11.045204+00:00",
+       "principal": "owner-cli:ernan"
+      },
+      "grant": {
+       "version": 1,
+       "principal": "owner-cli:ernan",
+       "definition_id": "a9db48a2-5012-4dc9-8484-4c64566e1de3",
+       "definition_sha256": "e83c8f892f0d50585ba7b4f6298bc62321587556f6599a98c2911e80a3c95d21",
+       "context_provenance": {
+        "source": "admission-owner",
+        "event_type": "workflow.owner.context",
+        "custody": "approved_capture",
+        "consent": "exact_content_and_scope"
+       },
+       "operations": [
+        "repository.inspect",
+        "repository.analyze",
+        "repository.validate_findings",
+        "result.record"
+       ],
+       "capability_binding_sha256": "7d0f93d52d6e16075b29683742a0ec6f6ce90cd7dbe315e81cb3bb5bd92defd3",
+       "capabilities": {
+        "read": {
+         "identity": {
+          "id": "repository.inspect",
+          "version": "1.1.0",
+          "manifest_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d",
+          "implementation_id": "repository-inspector-v2",
+          "implementation_sha256": "baefb977d2947e12cea935fca26574642df53a53783c24eb967128fcfff078a4"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          },
+          "sources": "approved_capture"
+         },
+         "limits": {
+          "max_files": 20,
+          "max_input_bytes": 8192,
+          "max_input_items": 4,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 32768,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "e8e4b9b048ae31f1774fb2be319f6a9004a5fc2ce1781f9364e18473c227a0bb",
+         "resources": {
+          "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+          "approval_id": "98c06915-2034-4fc7-9b1a-4769569f1474",
+          "content_sha256": "65a60ab846720ee14befa4e3ef9a03800bee5e25e51b22ded603112bfbc69bd8",
+          "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+         }
+        },
+        "analyze": {
+         "identity": {
+          "id": "repository.analyze",
+          "version": "1.0.0",
+          "manifest_sha256": "56b6125f0d0bb1e966ded65ad680b3b3e3827823bddd92900c9962d1588ddffe",
+          "implementation_id": "repository-analyst-v1",
+          "implementation_sha256": "542b31a107c4b36cb4b29a255785eb1a78e94a0c9bcffaec74217427aea57fb5"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "governed_pi"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          },
+          "sources": "approved_capture"
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 8,
+          "max_invocations": 1,
+          "max_model_calls": 1,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 1536,
+          "max_source_bytes": 0,
+          "timeout_seconds": 120
+         },
+         "policy_sha256": "9628e78c73bfaa0630c304f06ed4d512b21e58bee8170fc5d1768c2eb86f4639",
+         "resources": {
+          "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+          "approval_id": "98c06915-2034-4fc7-9b1a-4769569f1474",
+          "content_sha256": "65a60ab846720ee14befa4e3ef9a03800bee5e25e51b22ded603112bfbc69bd8",
+          "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+         }
+        },
+        "validate": {
+         "identity": {
+          "id": "repository.validate_findings",
+          "version": "1.0.0",
+          "manifest_sha256": "ebb0a26fcfeb35619978d65a546f97ab13d2087fe5a6a54b89b6fe8d0fabae38",
+          "implementation_id": "repository-findings-validator-v1",
+          "implementation_sha256": "bcf69256a86a714d1f557c923f8e64da121c22cb2f6a0f54b0774ee30020dddb"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          }
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 8,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 0,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "758e73b57cab8ed5e277b6c6693a36d3b9e2d9c795790f9aa58567d682facd06",
+         "resources": {}
+        },
+        "record": {
+         "identity": {
+          "id": "result.record",
+          "version": "1.0.0",
+          "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+          "implementation_id": "result-record-v1",
+          "implementation_sha256": "497ef193d82ea32a9e772e8759f4f686275f38c86a1e5d8d1564a42a83594416"
+         },
+         "permissions": {
+          "evidence": "approved_context",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "workflow_result",
+          "process": {
+           "mode": "none"
+          }
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 32,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 0,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "3c91710e29520c9368fa091b59d964a3b757ffb8e67048e9dfa678dc36b50e7a",
+         "resources": {}
+        }
+       },
+       "configuration_sha256": "d2de561c6409f6629b8c2c4d43c50aa04b45b12ba40fc68983eee33a80790171",
+       "models": {
+        "repository_analyst": "muse-spark-1.3-contributor"
+       },
+       "role_contracts": {
+        "repository_analyst": "4134b4bdb946fecd0c0cffe5d7290b4d929ec52df007715d0095f491fd6498e5"
+       },
+       "max_model_calls": 1,
+       "max_output_tokens": 1536,
+       "wall_seconds": 180,
+       "outbound_approved": true
+      },
+      "inputs": {
+       "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+       "paths": [
+        "README.md",
+        "implementation.py"
+       ]
+      },
+      "disclosure": {
+       "operation": "repository.analyze",
+       "destination": {
+        "kind": "remote_provider",
+        "provider": "meta",
+        "transport": "pi",
+        "host": "api.meta.ai",
+        "endpoint": "https://api.meta.ai/v1/chat/completions",
+        "model": "muse-spark-1.3-contributor"
+       },
+       "role": "repository_analyst",
+       "role_contract_sha256": "4134b4bdb946fecd0c0cffe5d7290b4d929ec52df007715d0095f491fd6498e5",
+       "context_policy": "repository-analysis-context/v1",
+       "files": [
+        {
+         "path": "README.md",
+         "bytes": 246
+        },
+        {
+         "path": "implementation.py",
+         "bytes": 41
+        }
+       ],
+       "source_bytes": 287,
+       "max_model_calls": 1,
+       "max_output_tokens": 1536,
+       "leaves_host": true,
+       "cost": "unknown; no price is configured and none is estimated",
+       "cancellation": "A request already sent to the provider cannot be recalled. An ambiguous outcome is never retried; its reservation stays charged.",
+       "retention": "The prompt and response are retained in the local database in clear text."
+      },
+      "recipe_sha256": "a5cbf81b0eddff9828b8b197cab09c5bac9e8a629fc26872df84178bfd863c13"
+     },
+     "approved-repository-inspection": {
+      "profile": "approved-repository-inspection",
+      "source": {
+       "resources": {
+        "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+        "approval_id": "98c06915-2034-4fc7-9b1a-4769569f1474",
+        "content_sha256": "65a60ab846720ee14befa4e3ef9a03800bee5e25e51b22ded603112bfbc69bd8",
+        "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+       },
+       "label": "Public fixture num-02",
+       "scope": {
+        "items": [
+         "README.md",
+         "implementation.py"
+        ]
+       },
+       "inventory": {
+        "items": [
+         {
+          "item": "README.md",
+          "bytes": 246,
+          "sha256": "066bbdea0d170c8eb482c9e34c9f856176fc4b5b4b74fa19ba30a84e88f5bcce"
+         },
+         {
+          "item": "implementation.py",
+          "bytes": 41,
+          "sha256": "594911455cd3218948614a3fc4368cebdad243c976fbd7f228b8c32dddc44583"
+         }
+        ],
+        "omitted": []
+       },
+       "expires_at": "2026-11-02T01:50:11.045204+00:00",
+       "principal": "owner-cli:ernan"
+      },
+      "grant": {
+       "version": 1,
+       "principal": "owner-cli:ernan",
+       "definition_id": "d1034295-10b0-49ea-96b7-62b68ca10f4e",
+       "definition_sha256": "bfe419f3577ce3b9f813da79452f701d8f6ebab9c6af2f6d6dceef15d290b713",
+       "context_provenance": {
+        "source": "admission-owner",
+        "event_type": "workflow.owner.context",
+        "custody": "approved_capture",
+        "consent": "exact_content_and_scope"
+       },
+       "operations": [
+        "repository.inspect"
+       ],
+       "capability_binding_sha256": "d964cda1d059222da361e8591c07e846728fee345fc14291575602b80f4bdb8e",
+       "capabilities": {
+        "read": {
+         "identity": {
+          "id": "repository.inspect",
+          "version": "1.1.0",
+          "manifest_sha256": "f47fb00ba91b3aa66fba20dfadaa57a033950cf8222b2670bb2ea45eb1cb732d",
+          "implementation_id": "repository-inspector-v2",
+          "implementation_sha256": "baefb977d2947e12cea935fca26574642df53a53783c24eb967128fcfff078a4"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          },
+          "sources": "approved_capture"
+         },
+         "limits": {
+          "max_files": 20,
+          "max_input_bytes": 8192,
+          "max_input_items": 4,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 32768,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "e8e4b9b048ae31f1774fb2be319f6a9004a5fc2ce1781f9364e18473c227a0bb",
+         "resources": {
+          "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+          "approval_id": "98c06915-2034-4fc7-9b1a-4769569f1474",
+          "content_sha256": "65a60ab846720ee14befa4e3ef9a03800bee5e25e51b22ded603112bfbc69bd8",
+          "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+         }
+        }
+       },
+       "configuration_sha256": "d2de561c6409f6629b8c2c4d43c50aa04b45b12ba40fc68983eee33a80790171",
+       "models": {},
+       "role_contracts": {},
+       "max_model_calls": 0,
+       "max_output_tokens": 0,
+       "wall_seconds": 30,
+       "outbound_approved": false
+      },
+      "inputs": {
+       "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+       "paths": [
+        "README.md",
+        "implementation.py"
+       ]
+      },
+      "disclosure": {},
+      "recipe_sha256": "c43b72e195f720c6c51e872a2a5e514c7374b10ad5a22b89f1f0fa82cba82e6d"
+     },
+     "contextual-reasoning": {
+      "profile": "contextual-reasoning",
+      "source": {
+       "resources": {
+        "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+        "approval_id": "98c06915-2034-4fc7-9b1a-4769569f1474",
+        "content_sha256": "65a60ab846720ee14befa4e3ef9a03800bee5e25e51b22ded603112bfbc69bd8",
+        "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+       },
+       "label": "Public fixture num-02",
+       "scope": {
+        "items": [
+         "README.md",
+         "implementation.py"
+        ]
+       },
+       "inventory": {
+        "items": [
+         {
+          "item": "README.md",
+          "bytes": 246,
+          "sha256": "066bbdea0d170c8eb482c9e34c9f856176fc4b5b4b74fa19ba30a84e88f5bcce"
+         },
+         {
+          "item": "implementation.py",
+          "bytes": 41,
+          "sha256": "594911455cd3218948614a3fc4368cebdad243c976fbd7f228b8c32dddc44583"
+         }
+        ],
+        "omitted": []
+       },
+       "expires_at": "2026-11-02T01:50:11.045204+00:00",
+       "principal": "owner-cli:ernan"
+      },
+      "grant": {
+       "version": 1,
+       "principal": "owner-cli:ernan",
+       "definition_id": "c5e3ea27-d744-4281-bd84-f30265dcad6f",
+       "definition_sha256": "ea2fcae8fd017f0e6459a1b2a4bd957a79c103d9faf954f2879174afc059e5cb",
+       "context_provenance": {
+        "source": "admission-owner",
+        "event_type": "workflow.owner.context",
+        "custody": "approved_capture",
+        "consent": "exact_content_and_scope"
+       },
+       "operations": [
+        "context.reason",
+        "context.validate",
+        "result.record"
+       ],
+       "capability_binding_sha256": "0c1faa1693bd4e873a622a41b7c52df11f3184ef61807f12e2eccf299d84e95e",
+       "capabilities": {
+        "reason": {
+         "identity": {
+          "id": "context.reason",
+          "version": "1.0.0",
+          "manifest_sha256": "473b75ddc07a86e23173ecc048143aac5f852fd4b3b5eaab2ba9e4373891b14a",
+          "implementation_id": "contextual-reasoner-v1",
+          "implementation_sha256": "032e056c039289162af013764366b8a575b655837b657f8e17b6157d2b6b1bd5"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "governed_pi"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          },
+          "sources": "approved_capture"
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 8,
+          "max_invocations": 1,
+          "max_model_calls": 1,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 1536,
+          "max_source_bytes": 0,
+          "timeout_seconds": 120
+         },
+         "policy_sha256": "7650226d5c5119186fc19290ab5caade43d8596865462675bd0d3857397635d9",
+         "resources": {
+          "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+          "approval_id": "98c06915-2034-4fc7-9b1a-4769569f1474",
+          "content_sha256": "65a60ab846720ee14befa4e3ef9a03800bee5e25e51b22ded603112bfbc69bd8",
+          "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+         }
+        },
+        "validate": {
+         "identity": {
+          "id": "context.validate",
+          "version": "1.0.0",
+          "manifest_sha256": "d71544db53d371ebc241a804641226bb99688987152515be87020cb507b8e681",
+          "implementation_id": "contextual-validator-v1",
+          "implementation_sha256": "286bf0d7d16f8977eb5e911072ea1e1dd4c025f7d7f12cad13f3a8844deb78bc"
+         },
+         "permissions": {
+          "evidence": "none",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "none",
+          "process": {
+           "mode": "none"
+          },
+          "sources": "approved_capture"
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 8,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 0,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "b43139cd528576c8d1b29ac1ea0452e037e61810e71a0c1b01ae08d01b42b8c6",
+         "resources": {
+          "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+          "approval_id": "98c06915-2034-4fc7-9b1a-4769569f1474",
+          "content_sha256": "65a60ab846720ee14befa4e3ef9a03800bee5e25e51b22ded603112bfbc69bd8",
+          "scope_sha256": "3633088295fe28e4f85edd3333ebb1cd74c14354890ff067e39dd8fd74fc3582"
+         }
+        },
+        "record": {
+         "identity": {
+          "id": "result.record",
+          "version": "1.0.0",
+          "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+          "implementation_id": "result-record-v1",
+          "implementation_sha256": "497ef193d82ea32a9e772e8759f4f686275f38c86a1e5d8d1564a42a83594416"
+         },
+         "permissions": {
+          "evidence": "approved_context",
+          "filesystem": {
+           "mode": "none",
+           "roots": []
+          },
+          "network": {
+           "mode": "none"
+          },
+          "persistence": "workflow_result",
+          "process": {
+           "mode": "none"
+          }
+         },
+         "limits": {
+          "max_files": 0,
+          "max_input_bytes": 65536,
+          "max_input_items": 32,
+          "max_invocations": 1,
+          "max_model_calls": 0,
+          "max_output_bytes": 65536,
+          "max_output_tokens": 0,
+          "max_source_bytes": 0,
+          "timeout_seconds": 30
+         },
+         "policy_sha256": "3c91710e29520c9368fa091b59d964a3b757ffb8e67048e9dfa678dc36b50e7a",
+         "resources": {}
+        }
+       },
+       "configuration_sha256": "d2de561c6409f6629b8c2c4d43c50aa04b45b12ba40fc68983eee33a80790171",
+       "models": {
+        "contextual_reasoner": "muse-spark-1.3-contributor"
+       },
+       "role_contracts": {
+        "contextual_reasoner": "81d567943b9223e3f113753ab7d44ef8c672ebee88e5d6968af580ba9607dc28"
+       },
+       "max_model_calls": 1,
+       "max_output_tokens": 1536,
+       "wall_seconds": 180,
+       "outbound_approved": true
+      },
+      "inputs": {
+       "source_ref": "6c1d4278-e894-4027-9f12-cfc5f6838ff2",
+       "paths": [
+        "README.md",
+        "implementation.py"
+       ]
+      },
+      "disclosure": {
+       "operation": "context.reason",
+       "destination": {
+        "kind": "remote_provider",
+        "provider": "meta",
+        "transport": "pi",
+        "host": "api.meta.ai",
+        "endpoint": "https://api.meta.ai/v1/chat/completions",
+        "model": "muse-spark-1.3-contributor"
+       },
+       "role": "contextual_reasoner",
+       "role_contract_sha256": "81d567943b9223e3f113753ab7d44ef8c672ebee88e5d6968af580ba9607dc28",
+       "context_policy": "conversation-context/v1",
+       "files": [
+        {
+         "path": "README.md",
+         "bytes": 246
+        },
+        {
+         "path": "implementation.py",
+         "bytes": 41
+        }
+       ],
+       "source_bytes": 287,
+       "max_model_calls": 1,
+       "max_output_tokens": 1536,
+       "leaves_host": true,
+       "cost": "unknown; not estimated",
+       "retention": "Local prompts, frozen context and responses persist in clear text.",
+       "cancellation": "Disclosed data cannot be recalled; ambiguous calls are not retried."
+      },
+      "recipe_sha256": "b6e68f2e36f7eb91960493615c67395641f08a990ca6fbaec593a9bbfe38f880"
+     }
+    },
+    "max_calls": 30,
+    "max_tokens": 450000,
+    "expires_at": "2026-11-02T01:50:11.045204+00:00",
+    "disclosure": "Future goal text, file names and approved file content may leave this host. Local prompts/results persist. Read-only inspection/analysis is automatic. Reservations stay charged after failures; currency cost is unknown. Adaptive reasoning may reuse up to two bounded, explicitly owner-approved lesson exports from other conversations at this same provider/model. Raw prior source is not exported. Lessons remain fallible data, not execution authority. In a linked conversation, bounded prior owner statements, model findings and revisions from this exact source may also be disclosed to the same destination.",
+    "adaptive": true
+   },
+   "sha256": "03562b57768da7b43891a4b77f02dd6e3b24ea53eda95c2e479db43836d6dfcf",
+   "state": "approved"
+  }
+ }
+}

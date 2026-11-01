@@ -1,0 +1,1014 @@
+{
+ "schema": "selective-demo/v1",
+ "implementation_sha": "20d89cc1b909f9797118fbb3e455ce61ac6c9257",
+ "corpus_lock": {
+  "corpus_sha256": "86c57b094a3a6dc49c3fff6681cd450d04a73ee6d1ac16d72eeaf034c992a5a3",
+  "oracle_sha256": "19938e47effba05fd672a43319a1b224b340bbb22398ef15ec979b2d162fe3ad",
+  "audit_sha256": "c86271841de2a61dacb54a6d877e77c8f9da81552840e0a9c29b196cc343c378",
+  "contextual_role_contract_sha256": "26abfc77d3f5e32a533ef4a07c5d8ad5790733bcec9e3846fdab403205b3579a",
+  "intent_role_contract_sha256": "cfa3851a44a792f6aff71126d2982a84aa2e0278f44936baeb0ecdceb6d1cf96",
+  "seed": 4401,
+  "purpose": "AI-FIRST-04 fresh corpus; train/dev/heldout split immutable once locked. Programmatically audited, not independently human-adjudicated."
+ },
+ "stages": {
+  "1_verified_experience": {
+   "task": "num-03",
+   "passed_end_to_end": true,
+   "experience": "0c08d3c1-b230-56fd-95e4-754c23c52442"
+  },
+  "2_reusable_lesson": {
+   "lesson": "94eb3206-7946-40fe-b7e9-d4740e8fcdfc",
+   "mechanisms": [
+    "numeric.boundary"
+   ],
+   "excluded": [
+    "numeric.rounding",
+    "numeric.signed_values",
+    "parsing.type_coercion"
+   ],
+   "approved_export_sha256": "3fb53090e18ed2d2125977abebdcdc8d6fdd78da463f7afc2a9b945095d0b701",
+   "detail": {
+    "strategy": {
+     "family": "numeric",
+     "strategy": "Test both endpoint values separately against the specification and verify the comparison operators include equality when inclusion is required.",
+     "applies_when": "A specification requires an interval check with explicitly inclusive endpoints.",
+     "not_when": "The specification requires exclusive bounds, open intervals, or non-comparison logic.",
+     "uncertainty": "Single verified observation; provisional until confirmed on additional inclusive-range cases."
+    },
+    "history": {
+     "family": "numeric",
+     "prior_assessment": "Defect: implementation uses exclusive bounds `0 < p < 100` instead of inclusive `0 <= p <= 100`. It therefore incorrectly rejects boundary values 0 and 100. Minimal fix: change to `return 0 <= p <= 100`.",
+     "past_score": 1.0,
+     "past_passed": true,
+     "prose_verified": false
+    }
+   }
+  },
+  "4_reasoning_relevant": {
+   "task": "num-05",
+   "decision": "selected",
+   "reason": null,
+   "task_mechanisms": [
+    "numeric.empty_or_zero",
+    "numeric.counting",
+    "numeric.boundary"
+   ],
+   "lessons_received": 1,
+   "reported_used": 1
+  },
+  "4_reasoning_unrelated": {
+   "task": "par-04",
+   "decision": "none",
+   "reason": "no_applicable_lesson",
+   "task_mechanisms": [
+    "parsing.delimiter_position",
+    "parsing.empty_fields"
+   ],
+   "lessons_received": 0,
+   "reported_used": 0
+  },
+  "5_measurement_relevant": {
+   "task": "num-05",
+   "measurement": "2b65f6ce-4187-507a-abf9-3295e93379fa"
+  },
+  "5_measurement_unrelated": {
+   "task": "par-04",
+   "measurement": "6a129db9-0f9b-53c5-862e-ee7952c16170"
+  },
+  "6_feedback": {
+   "applications": 1,
+   "lesson_standing": [
+    {
+     "state": "unproven",
+     "applications": 1,
+     "applied_passed": 1,
+     "applied_failed": 0,
+     "paired_gains": 0,
+     "paired_losses": 0
+    }
+   ]
+  },
+  "7_restart": {
+   "provider_requests_before": 7,
+   "provider_requests_after": 7,
+   "lesson_state_unchanged": true,
+   "decisions_unchanged": true
+  }
+ },
+ "turns": {
+  "train": {
+   "id": "0294cede-8be3-41a6-afca-b327db5b54ca",
+   "goal": "Review the supplied implementation against this contract: Return true when the number lies between 0 and 100, both ends included. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+   "conversation_ref": "6ee05366-6531-4649-b7ad-7a8c0a671318",
+   "answer": {
+    "answer": "Defect: implementation uses exclusive bounds `0 < p < 100` instead of inclusive `0 <= p <= 100`. It therefore incorrectly rejects boundary values 0 and 100. Minimal fix: change to `return 0 <= p <= 100`.",
+    "citation_checks": [
+     {
+      "file": "README.md",
+      "file_sha256": "da6af3019968365158d015b3d1e329af47a4a53b08cf91928a203393a19d8965",
+      "line_end": 3,
+      "line_start": 2,
+      "status": "quote_matches"
+     },
+     {
+      "file": "implementation.py",
+      "file_sha256": "d9b556867e9bb65758ea82e685bfaae98d29f5560a2e34184d0b633bc04f0daf",
+      "line_end": 2,
+      "line_start": 1,
+      "status": "quote_matches"
+     }
+    ],
+    "citations": [
+     {
+      "file": "README.md",
+      "line_end": 3,
+      "line_start": 2,
+      "quote": "Contract: Return true when the number lies between 0 and 100, both ends included."
+     },
+     {
+      "file": "implementation.py",
+      "line_end": 2,
+      "line_start": 1,
+      "quote": "def solve(p): return 0 < p < 100"
+     }
+    ],
+    "context_ref": "8c3df5de-bdd7-4b08-b2f4-a102565aa2e3",
+    "context_sha256": "8fd9f6843b3fe377b5fb8092852e7aba9a689caf6f76d34d29c50fd216fdf507",
+    "contract_compliance": {
+     "complete": true,
+     "duplicate_cases": [],
+     "issue_flag_present": true,
+     "missing_cases": [],
+     "required": true,
+     "unexpected_cases": []
+    },
+    "historical_ids_used": [],
+    "issue_present": true,
+    "lesson_ids_used": [],
+    "lesson_proposal": null,
+    "needs_clarification": false,
+    "predictions": [
+     {
+      "case_id": "c1",
+      "observed": "false",
+      "required": "true"
+     },
+     {
+      "case_id": "c2",
+      "observed": "true",
+      "required": "true"
+     },
+     {
+      "case_id": "c3",
+      "observed": "false",
+      "required": "true"
+     },
+     {
+      "case_id": "c4",
+      "observed": "false",
+      "required": "false"
+     },
+     {
+      "case_id": "c5",
+      "observed": "false",
+      "required": "false"
+     }
+    ],
+    "recalled_item_ids": [],
+    "reference_integrity": {
+     "status": "valid"
+    },
+    "revision": null,
+    "schema": "contextual-answer/v2",
+    "source_ref": "91db0656-98a7-42ad-abfa-20d2e9c91215",
+    "uncertainty": [],
+    "artifact_sha256": "68a01bc3d4859266c24fa8079ecf2aef3ed2abcbd0b39525298b980e3a24da4c"
+   },
+   "context": {
+    "policy": "conversation-context/v1",
+    "conversation_ref": "6ee05366-6531-4649-b7ad-7a8c0a671318",
+    "items": [],
+    "omitted": [],
+    "selection": "selective-adaptation/v1",
+    "selection_ref": "500e4245-6fd6-5857-919a-c27d120fdfba",
+    "decision": "none",
+    "strategy_mode": "selective",
+    "families": [
+     "numeric"
+    ]
+   },
+   "model_calls": 2,
+   "status": "LIVE MODEL",
+   "availability": "available",
+   "followup": null,
+   "selection": {
+    "ref": "500e4245-6fd6-5857-919a-c27d120fdfba",
+    "policy": "selective-adaptation/v1",
+    "decision": "none",
+    "no_lesson_reason": "no_lessons_available",
+    "task_mechanisms": [
+     "numeric.boundary"
+    ],
+    "override": null,
+    "received": [],
+    "reported_used": [],
+    "selected": [],
+    "candidates": [],
+    "context_bytes": 2,
+    "items_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "independent_outcome": null
+   },
+   "result_admission_id": "d74d69de-192c-4e54-a950-1d3c9901365e",
+   "run": {
+    "status": "COMPLETED",
+    "terminal_reason": "required_stages_completed"
+   },
+   "calls": [
+    {
+     "id": "d63b9ed7-257f-40b3-b242-13a08a281c96",
+     "status": "validated",
+     "model": "muse-spark-1.3-contributor",
+     "usage": {
+      "completion_tokens": 944,
+      "prompt_tokens": 2167,
+      "total_tokens": 3111,
+      "completion_tokens_details": {
+       "reasoning_tokens": 139
+      },
+      "prompt_tokens_details": {
+       "cached_tokens": 0
+      },
+      "charged_tokens": 3111
+     },
+     "latency_ms": 9289.452300006815,
+     "provenance": "production_pi",
+     "provider_receipts": [
+      {
+       "request_id": "7a3c1f32-bf1b-43f3-b743-8d32b513ac41",
+       "http_status": 200,
+       "response_sha256": "d642d9a9f0f51c27d6278621ed3bc4eaa49dd4c541de7ee85cabf882e8b3e9a6",
+       "model_requested": "muse-spark-1.3-contributor",
+       "model_observed": null,
+       "latency_ms": 8634.309400003986
+      }
+     ]
+    },
+    {
+     "id": "42a08ac6-96a1-4868-9f7a-1ef1fda8f97e",
+     "status": "validated",
+     "model": "muse-spark-1.3-contributor",
+     "usage": {
+      "completion_tokens": 425,
+      "prompt_tokens": 2355,
+      "total_tokens": 2780,
+      "completion_tokens_details": {
+       "reasoning_tokens": 135
+      },
+      "prompt_tokens_details": {
+       "cached_tokens": 0
+      },
+      "charged_tokens": 2780
+     },
+     "latency_ms": 5077.278400000068,
+     "provenance": "production_pi",
+     "provider_receipts": [
+      {
+       "request_id": "ef21dfda-a113-466e-b7e9-3fae8f69c380",
+       "http_status": 200,
+       "response_sha256": "37c20f7588d46367596c5f1a00525ae645d0892afd2706f6aaa2893d3e8cc888",
+       "model_requested": "muse-spark-1.3-contributor",
+       "model_observed": null,
+       "latency_ms": 4428.544500005955
+      }
+     ]
+    }
+   ],
+   "request": {
+    "consent_ref": "cdd5b319-a90f-428d-966d-f81fab5c6e7b",
+    "conversation_ref": "6ee05366-6531-4649-b7ad-7a8c0a671318",
+    "goal": "Review the supplied implementation against this contract: Return true when the number lies between 0 and 100, both ends included. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+    "strategy_mode": "selective",
+    "idempotency_key": "demo-train"
+   },
+   "wall_seconds": 18.179827400002978
+  },
+  "extraction": {
+   "id": "94eb3206-7946-40fe-b7e9-d4740e8fcdfc",
+   "goal": "Extract a reusable numeric strategy from verified training feedback 0c08d3c1-b230-56fd-95e4-754c23c52442. This is a lesson-extraction request, not a review: return it in the lesson_proposal field with family, strategy, applies_when, not_when, supporting_experience_ids (cite that experience ID), mechanisms (the closed-vocabulary failure mechanisms it addresses), excluded_mechanisms (mechanisms it must not be applied to) and uncertainty. The lesson_proposal field must be present and not null; the answer field may be one short sentence. Do not copy answers, function names or source text.",
+   "conversation_ref": "6ee05366-6531-4649-b7ad-7a8c0a671318",
+   "answer": {
+    "answer": "Reusable numeric boundary lesson extracted.",
+    "citation_checks": [
+     {
+      "file": "README.md",
+      "file_sha256": "da6af3019968365158d015b3d1e329af47a4a53b08cf91928a203393a19d8965",
+      "line_end": 3,
+      "line_start": 2,
+      "status": "quote_matches"
+     },
+     {
+      "file": "implementation.py",
+      "file_sha256": "d9b556867e9bb65758ea82e685bfaae98d29f5560a2e34184d0b633bc04f0daf",
+      "line_end": 2,
+      "line_start": 2,
+      "status": "quote_matches"
+     }
+    ],
+    "citations": [
+     {
+      "file": "README.md",
+      "line_end": 3,
+      "line_start": 2,
+      "quote": "Contract: Return true when the number lies between 0 and 100, both ends included."
+     },
+     {
+      "file": "implementation.py",
+      "line_end": 2,
+      "line_start": 2,
+      "quote": "return 0 < p < 100"
+     }
+    ],
+    "context_ref": "f7c82e6f-bf19-43fc-8fab-3c0dc067ebea",
+    "context_sha256": "5c186af9f3a6a7a266ac021bcba958a86652a65ab8c898faf81cdaef54e77845",
+    "contract_compliance": {
+     "complete": false,
+     "duplicate_cases": [],
+     "issue_flag_present": false,
+     "missing_cases": [
+      "c1",
+      "c2",
+      "c3",
+      "c4",
+      "c5"
+     ],
+     "required": true,
+     "unexpected_cases": []
+    },
+    "historical_ids_used": [],
+    "issue_present": null,
+    "lesson_ids_used": [],
+    "lesson_proposal": {
+     "applies_when": "A specification requires an interval check with explicitly inclusive endpoints.",
+     "excluded_mechanisms": [
+      "numeric.rounding",
+      "numeric.signed_values",
+      "parsing.type_coercion"
+     ],
+     "family": "numeric",
+     "mechanisms": [
+      "numeric.boundary"
+     ],
+     "not_when": "The specification requires exclusive bounds, open intervals, or non-comparison logic.",
+     "strategy": "Test both endpoint values separately against the specification and verify the comparison operators include equality when inclusion is required.",
+     "supporting_experience_ids": [
+      "0c08d3c1-b230-56fd-95e4-754c23c52442"
+     ],
+     "uncertainty": "Single verified observation; provisional until confirmed on additional inclusive-range cases."
+    },
+    "needs_clarification": false,
+    "predictions": [],
+    "recalled_item_ids": [
+     "0c08d3c1-b230-56fd-95e4-754c23c52442"
+    ],
+    "reference_integrity": {
+     "status": "valid"
+    },
+    "revision": null,
+    "schema": "contextual-answer/v2",
+    "source_ref": "91db0656-98a7-42ad-abfa-20d2e9c91215",
+    "uncertainty": [
+     "Lesson based on one verified interval-boundary case."
+    ],
+    "artifact_sha256": "341757f082f5f34ff69a646e951241736d8c87987ee8c7bb2eb30a5207539313"
+   },
+   "context": {
+    "policy": "conversation-context/v1",
+    "conversation_ref": "6ee05366-6531-4649-b7ad-7a8c0a671318",
+    "items": [
+     {
+      "id": "0c08d3c1-b230-56fd-95e4-754c23c52442",
+      "admission_id": "d74d69de-192c-4e54-a950-1d3c9901365e",
+      "source_type": "verified_feedback",
+      "content": {
+       "experience_id": "0c08d3c1-b230-56fd-95e4-754c23c52442",
+       "task_id": "num-03",
+       "split": "train",
+       "family": "numeric",
+       "outcome": 1.0,
+       "passed": true,
+       "verifier": "frozen-executable-fixture/v2"
+      },
+      "content_sha256": "b5afa55bd8ced374a0baa8275d91b887621d1dec00351b56d3115d65e663d715",
+      "source_sha256": "4e61ad0e5115b61e9e93da60fe18c903bdf09d49924f0d18ec4a196b8e5834ce",
+      "recorded_at": "2026-11-01T21:33:08.426957",
+      "ordinal": null,
+      "verification": "executable_fixture_outcome; prose_unverified"
+     },
+     {
+      "id": "d74d69de-192c-4e54-a950-1d3c9901365e:answer",
+      "admission_id": "d74d69de-192c-4e54-a950-1d3c9901365e",
+      "source_type": "model_answer",
+      "content": {
+       "answer": "Defect: implementation uses exclusive bounds `0 < p < 100` instead of inclusive `0 <= p <= 100`. It therefore incorrectly rejects boundary values 0 and 100. Minimal fix: change to `return 0 <= p <= 100`.",
+       "revision": null,
+       "citations": [
+        {
+         "file": "README.md",
+         "line_end": 3,
+         "line_start": 2,
+         "quote": "Contract: Return true when the number lies between 0 and 100, both ends included."
+        },
+        {
+         "file": "implementation.py",
+         "line_end": 2,
+         "line_start": 1,
+         "quote": "def solve(p): return 0 < p < 100"
+        }
+       ],
+       "recalled_item_ids": [],
+       "uncertainty": []
+      },
+      "content_sha256": "24730caa1b229ea2b2d19317f246d413d7c1d55efc0f400c34b19d0440de73c6",
+      "source_sha256": "68a01bc3d4859266c24fa8079ecf2aef3ed2abcbd0b39525298b980e3a24da4c",
+      "recorded_at": "2026-11-01T21:33:01.271890+00:00",
+      "ordinal": null,
+      "verification": "unverified_model_assessment"
+     },
+     {
+      "id": "d74d69de-192c-4e54-a950-1d3c9901365e:goal",
+      "admission_id": "d74d69de-192c-4e54-a950-1d3c9901365e",
+      "source_type": "owner_goal",
+      "content": "Review the supplied implementation against this contract: Return true when the number lies between 0 and 100, both ends included. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+      "content_sha256": "61683b4209ba732a4adfa0a11ae4d32568582baf75001a51de2640fe0dbb7525",
+      "source_sha256": "056fbd00f1244600dfb1ed7deef18233904e3bf2cf2377aca86699a156b590e9",
+      "recorded_at": "2026-11-01T21:33:01.271890+00:00",
+      "ordinal": null,
+      "verification": "owner_statement"
+     },
+     {
+      "id": "0294cede-8be3-41a6-afca-b327db5b54ca:goal",
+      "admission_id": "0294cede-8be3-41a6-afca-b327db5b54ca",
+      "source_type": "owner_goal",
+      "content": "Review the supplied implementation against this contract: Return true when the number lies between 0 and 100, both ends included. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+      "content_sha256": "61683b4209ba732a4adfa0a11ae4d32568582baf75001a51de2640fe0dbb7525",
+      "source_sha256": "63245894cf399724644ed617e90ac53def82c945d5055e48c15839eef514e6a0",
+      "recorded_at": "2026-11-01T21:32:50.100187+00:00",
+      "ordinal": null,
+      "verification": "owner_statement"
+     }
+    ],
+    "omitted": [],
+    "omitted_count": 0,
+    "selection": "explicit identifiers, revisions, findings and recent turns; model resolves relevance"
+   },
+   "model_calls": 1,
+   "status": "LIVE MODEL",
+   "availability": "available",
+   "followup": null,
+   "selection": null,
+   "result_admission_id": null,
+   "run": {
+    "status": "COMPLETED",
+    "terminal_reason": "required_stages_completed"
+   },
+   "calls": [
+    {
+     "id": "bb870927-d083-4691-b782-37b91b306641",
+     "status": "validated",
+     "model": "muse-spark-1.3-contributor",
+     "usage": {
+      "completion_tokens": 586,
+      "prompt_tokens": 3611,
+      "total_tokens": 4197,
+      "completion_tokens_details": {
+       "reasoning_tokens": 242
+      },
+      "prompt_tokens_details": {
+       "cached_tokens": 0
+      },
+      "charged_tokens": 4197
+     },
+     "latency_ms": 6048.984699998982,
+     "provenance": "production_pi",
+     "provider_receipts": [
+      {
+       "request_id": "bcff073c-f234-4cf4-9921-6ba16622f38e",
+       "http_status": 200,
+       "response_sha256": "172f9088b69dfe0eb3b8b23d2dc9cf7bb4e6b540bada58d4e4ce755c0180312b",
+       "model_requested": "muse-spark-1.3-contributor",
+       "model_observed": null,
+       "latency_ms": 5371.578999998746
+      }
+     ]
+    }
+   ],
+   "request": {
+    "consent_ref": "cdd5b319-a90f-428d-966d-f81fab5c6e7b",
+    "conversation_ref": "6ee05366-6531-4649-b7ad-7a8c0a671318",
+    "goal": "Extract a reusable numeric strategy from verified training feedback 0c08d3c1-b230-56fd-95e4-754c23c52442. This is a lesson-extraction request, not a review: return it in the lesson_proposal field with family, strategy, applies_when, not_when, supporting_experience_ids (cite that experience ID), mechanisms (the closed-vocabulary failure mechanisms it addresses), excluded_mechanisms (mechanisms it must not be applied to) and uncertainty. The lesson_proposal field must be present and not null; the answer field may be one short sentence. Do not copy answers, function names or source text.",
+    "strategy_mode": "selective",
+    "idempotency_key": "demo-extract"
+   },
+   "wall_seconds": 8.529354899997998
+  },
+  "selective_relevant": {
+   "id": "c6068a06-8f6a-4001-baf8-a1fb5bbbd1c0",
+   "goal": "Review the supplied implementation against this contract: Return how many integers lie in the inclusive range [a, b] given as the pair [a, b]. If b is smaller than a the answer is 0. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+   "conversation_ref": "2d37e62c-269c-4ff6-90f7-8996eac2beec",
+   "answer": {
+    "answer": "Implementation is correct. `max(0, p[1]-p[0]+1)` returns inclusive count `b-a+1` when `b>=a` and 0 when `b<a`, matching the contract. No defect; no fix needed.",
+    "citation_checks": [
+     {
+      "file": "README.md",
+      "file_sha256": "49f2b848f56b78202ff20d2f1e9d9fb8562dc66cbec0713cdd63e9eb9e7f0d24",
+      "line_end": 2,
+      "line_start": 2,
+      "quote_checked": false,
+      "status": "locator_valid"
+     },
+     {
+      "file": "README.md",
+      "file_sha256": "49f2b848f56b78202ff20d2f1e9d9fb8562dc66cbec0713cdd63e9eb9e7f0d24",
+      "line_end": 3,
+      "line_start": 3,
+      "quote_checked": false,
+      "status": "locator_valid"
+     },
+     {
+      "file": "implementation.py",
+      "file_sha256": "41275e16c2086c1932ec6bf04fd82b4a5b0551c0d55f9b3f48819fed1f00dec3",
+      "line_end": 2,
+      "line_start": 1,
+      "quote_checked": false,
+      "status": "locator_valid"
+     }
+    ],
+    "citations": [
+     {
+      "file": "README.md",
+      "line_end": 2,
+      "line_start": 2,
+      "quote": ""
+     },
+     {
+      "file": "README.md",
+      "line_end": 3,
+      "line_start": 3,
+      "quote": ""
+     },
+     {
+      "file": "implementation.py",
+      "line_end": 2,
+      "line_start": 1,
+      "quote": ""
+     }
+    ],
+    "context_ref": "e33f99c6-3420-4da7-b3b5-0c38ef08d46c",
+    "context_sha256": "09747af477625cde2c7d2855936a5ec06ab3bffb7f486f2ad7742b3ebe98b343",
+    "contract_compliance": {
+     "complete": true,
+     "duplicate_cases": [],
+     "issue_flag_present": true,
+     "missing_cases": [],
+     "required": true,
+     "unexpected_cases": []
+    },
+    "historical_ids_used": [],
+    "issue_present": false,
+    "lesson_ids_used": [
+     "8aead4d0-eb94-512e-b700-5d934f043b19"
+    ],
+    "lesson_proposal": null,
+    "needs_clarification": false,
+    "predictions": [
+     {
+      "case_id": "c1",
+      "observed": "5",
+      "required": "5"
+     },
+     {
+      "case_id": "c2",
+      "observed": "1",
+      "required": "1"
+     },
+     {
+      "case_id": "c3",
+      "observed": "0",
+      "required": "0"
+     },
+     {
+      "case_id": "c4",
+      "observed": "5",
+      "required": "5"
+     }
+    ],
+    "recalled_item_ids": [
+     "8aead4d0-eb94-512e-b700-5d934f043b19"
+    ],
+    "reference_integrity": {
+     "status": "valid"
+    },
+    "revision": null,
+    "schema": "contextual-answer/v2",
+    "source_ref": "5d17040f-d9bf-4fd3-bc27-8d41a1ad0311",
+    "uncertainty": [],
+    "artifact_sha256": "e3085cdf50713eca480d699c37a7a0e94f884fe07aca22c9c0094d493dd471d7"
+   },
+   "context": {
+    "policy": "conversation-context/v1",
+    "conversation_ref": "2d37e62c-269c-4ff6-90f7-8996eac2beec",
+    "items": [
+     {
+      "id": "8aead4d0-eb94-512e-b700-5d934f043b19",
+      "admission_id": "94eb3206-7946-40fe-b7e9-d4740e8fcdfc",
+      "source_type": "learned_strategy",
+      "content": {
+       "family": "numeric",
+       "strategy": "Test both endpoint values separately against the specification and verify the comparison operators include equality when inclusion is required.",
+       "applies_when": "A specification requires an interval check with explicitly inclusive endpoints.",
+       "not_when": "The specification requires exclusive bounds, open intervals, or non-comparison logic.",
+       "uncertainty": "Single verified observation; provisional until confirmed on additional inclusive-range cases.",
+       "lesson_id": "8aead4d0-eb94-512e-b700-5d934f043b19",
+       "version": 3,
+       "qualification": "provisional; one observation is not general validity"
+      },
+      "content_sha256": "128bc3c1608bfe1581c667094c6023f8975efc24c7a9fffabc8f03fa0da75adf",
+      "source_sha256": "016331cc0147f970756b858c39ecd5a9c06c21279de92e476bac6cb82cc83155",
+      "recorded_at": "2026-11-01T21:33:16.990291",
+      "ordinal": null,
+      "verification": "owner_approved_provisional_strategy"
+     }
+    ],
+    "omitted": [],
+    "selection": "selective-adaptation/v1",
+    "selection_ref": "59819532-1a2b-5518-8a4f-741ee57ed3b2",
+    "decision": "selected",
+    "strategy_mode": "selective",
+    "families": [
+     "numeric"
+    ]
+   },
+   "model_calls": 2,
+   "status": "LIVE MODEL",
+   "availability": "available",
+   "followup": null,
+   "selection": {
+    "ref": "59819532-1a2b-5518-8a4f-741ee57ed3b2",
+    "policy": "selective-adaptation/v1",
+    "decision": "selected",
+    "no_lesson_reason": null,
+    "task_mechanisms": [
+     "numeric.empty_or_zero",
+     "numeric.counting",
+     "numeric.boundary"
+    ],
+    "override": null,
+    "received": [
+     "8aead4d0-eb94-512e-b700-5d934f043b19"
+    ],
+    "reported_used": [
+     "8aead4d0-eb94-512e-b700-5d934f043b19"
+    ],
+    "selected": [
+     {
+      "item_id": "8aead4d0-eb94-512e-b700-5d934f043b19",
+      "lesson_id": "94eb3206-7946-40fe-b7e9-d4740e8fcdfc",
+      "version": 3,
+      "content_sha256": "128bc3c1608bfe1581c667094c6023f8975efc24c7a9fffabc8f03fa0da75adf",
+      "tier": "unproven"
+     }
+    ],
+    "candidates": [
+     {
+      "lesson_id": "94eb3206-7946-40fe-b7e9-d4740e8fcdfc",
+      "status": "selected",
+      "reasons": [],
+      "overlap": [
+       "numeric.boundary"
+      ],
+      "tier": "unproven",
+      "supporting_outcomes": [
+       {
+        "experience_id": "0c08d3c1-b230-56fd-95e4-754c23c52442",
+        "task_id": "num-03",
+        "passed": true
+       }
+      ]
+     }
+    ],
+    "context_bytes": 1072,
+    "items_sha256": "f555ecaf5642a3f7000e313b62a5c4760b2a2cf96105c05fe7922ee07fe35b07",
+    "independent_outcome": null
+   },
+   "result_admission_id": "ae9632ce-3699-4bff-89b4-14016c2cb09f",
+   "run": {
+    "status": "COMPLETED",
+    "terminal_reason": "required_stages_completed"
+   },
+   "calls": [
+    {
+     "id": "1344ef45-8170-4046-8ed6-260aa11da1ff",
+     "status": "validated",
+     "model": "muse-spark-1.3-contributor",
+     "usage": {
+      "completion_tokens": 844,
+      "prompt_tokens": 2185,
+      "total_tokens": 3029,
+      "completion_tokens_details": {
+       "reasoning_tokens": 265
+      },
+      "prompt_tokens_details": {
+       "cached_tokens": 1137
+      },
+      "charged_tokens": 3029
+     },
+     "latency_ms": 7839.985099999467,
+     "provenance": "production_pi",
+     "provider_receipts": [
+      {
+       "request_id": "b5124eb5-64dc-4505-9e87-ec8341cf983d",
+       "http_status": 200,
+       "response_sha256": "09df88827e0447fc77e1a4cdb9f7d81931631d42706f4bc8ffd800b5b37657e1",
+       "model_requested": "muse-spark-1.3-contributor",
+       "model_observed": null,
+       "latency_ms": 7157.3812999995425
+      }
+     ]
+    },
+    {
+     "id": "27df2971-70a9-473c-95e2-0a69878605c8",
+     "status": "validated",
+     "model": "muse-spark-1.3-contributor",
+     "usage": {
+      "completion_tokens": 494,
+      "prompt_tokens": 2744,
+      "total_tokens": 3238,
+      "completion_tokens_details": {
+       "reasoning_tokens": 199
+      },
+      "prompt_tokens_details": {
+       "cached_tokens": 0
+      },
+      "charged_tokens": 3238
+     },
+     "latency_ms": 4808.465900001465,
+     "provenance": "production_pi",
+     "provider_receipts": [
+      {
+       "request_id": "a2800dca-de3c-476b-823b-7e3b3f3ab38a",
+       "http_status": 200,
+       "response_sha256": "0b35f172b996b9b8ae753cf64009566e626f725cf20e27ac8716b6dc59ffb1c3",
+       "model_requested": "muse-spark-1.3-contributor",
+       "model_observed": null,
+       "latency_ms": 4232.640299997001
+      }
+     ]
+    }
+   ],
+   "request": {
+    "consent_ref": "9038f048-3885-41c9-ab71-10017d2780cd",
+    "conversation_ref": "2d37e62c-269c-4ff6-90f7-8996eac2beec",
+    "goal": "Review the supplied implementation against this contract: Return how many integers lie in the inclusive range [a, b] given as the pair [a, b]. If b is smaller than a the answer is 0. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+    "strategy_mode": "selective",
+    "idempotency_key": "demo-relevant-selective"
+   },
+   "wall_seconds": 15.925820899996324
+  },
+  "selective_unrelated": {
+   "id": "7f46cef4-5d84-4f77-b9d7-c2bed23e395d",
+   "goal": "Review the supplied implementation against this contract: Remove the prefix '0x' from text when it starts with that prefix. Any other text is returned unchanged. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+   "conversation_ref": "4adbe9f7-9038-42ae-9ec3-b08c7ae70c54",
+   "answer": {
+    "answer": "Defect present: implementation uses `p.lstrip(\"0x\")` which strips all leading `0`/`x` characters, not the exact prefix `\"0x\"`. This over-strips cases like `0x0f` -> `f` (should be `0f`), `00ab` -> `ab` (should be unchanged), and `xyz` -> `yz` (should be unchanged). Minimal fix: only remove one leading `0x` if present, e.g. `return p[2:] if p.startswith(\"0x\") else p`.",
+    "citation_checks": [
+     {
+      "file": "README.md",
+      "file_sha256": "11242293dfe19fb91eabcd0f925142c17413fd94447f7b897106974026d32988",
+      "line_end": 2,
+      "line_start": 2,
+      "status": "quote_matches"
+     },
+     {
+      "file": "README.md",
+      "file_sha256": "11242293dfe19fb91eabcd0f925142c17413fd94447f7b897106974026d32988",
+      "line_end": 3,
+      "line_start": 3,
+      "status": "quote_matches"
+     },
+     {
+      "file": "implementation.py",
+      "file_sha256": "9848be08a6e28a42b25e7aaea0f9380dc6dec5bc330965a9dc1626f7afd0e658",
+      "line_end": 2,
+      "line_start": 1,
+      "status": "quote_matches"
+     }
+    ],
+    "citations": [
+     {
+      "file": "README.md",
+      "line_end": 2,
+      "line_start": 2,
+      "quote": "Contract: Remove the prefix '0x' from text when it starts with that prefix."
+     },
+     {
+      "file": "README.md",
+      "line_end": 3,
+      "line_start": 3,
+      "quote": "Named input cases"
+     },
+     {
+      "file": "implementation.py",
+      "line_end": 2,
+      "line_start": 1,
+      "quote": "def solve(p): return p.lstrip(\"0x\")"
+     }
+    ],
+    "context_ref": "41a3027a-9c8a-4e5a-addc-433dc88c38ae",
+    "context_sha256": "bd18587ab68835cac8ef5af482dfe5adf0eb45042402111be7b09e39393b9a85",
+    "contract_compliance": {
+     "complete": true,
+     "duplicate_cases": [],
+     "issue_flag_present": true,
+     "missing_cases": [],
+     "required": true,
+     "unexpected_cases": []
+    },
+    "historical_ids_used": [],
+    "issue_present": true,
+    "lesson_ids_used": [],
+    "lesson_proposal": null,
+    "needs_clarification": false,
+    "predictions": [
+     {
+      "case_id": "c1",
+      "observed": "\"ff\"",
+      "required": "\"ff\""
+     },
+     {
+      "case_id": "c2",
+      "observed": "\"f\"",
+      "required": "\"0f\""
+     },
+     {
+      "case_id": "c3",
+      "observed": "\"abc\"",
+      "required": "\"abc\""
+     },
+     {
+      "case_id": "c4",
+      "observed": "\"\"",
+      "required": "\"\""
+     },
+     {
+      "case_id": "c5",
+      "observed": "\"ab\"",
+      "required": "\"00ab\""
+     },
+     {
+      "case_id": "c6",
+      "observed": "\"yz\"",
+      "required": "\"xyz\""
+     }
+    ],
+    "recalled_item_ids": [],
+    "reference_integrity": {
+     "status": "valid"
+    },
+    "revision": null,
+    "schema": "contextual-answer/v2",
+    "source_ref": "92e8c179-3082-4fd1-83ff-3dcfc1a4aeb2",
+    "uncertainty": [],
+    "artifact_sha256": "63cf68bca1a97b69dc04394f7968019616be165f2b38fbe8b2e2bb2e60e39cdd"
+   },
+   "context": {
+    "policy": "conversation-context/v1",
+    "conversation_ref": "4adbe9f7-9038-42ae-9ec3-b08c7ae70c54",
+    "items": [],
+    "omitted": [],
+    "selection": "selective-adaptation/v1",
+    "selection_ref": "2c8aed17-a6d7-5119-a1a1-75d42dc322ea",
+    "decision": "none",
+    "strategy_mode": "selective",
+    "families": [
+     "parsing"
+    ]
+   },
+   "model_calls": 2,
+   "status": "LIVE MODEL",
+   "availability": "available",
+   "followup": null,
+   "selection": {
+    "ref": "2c8aed17-a6d7-5119-a1a1-75d42dc322ea",
+    "policy": "selective-adaptation/v1",
+    "decision": "none",
+    "no_lesson_reason": "no_applicable_lesson",
+    "task_mechanisms": [
+     "parsing.delimiter_position",
+     "parsing.empty_fields"
+    ],
+    "override": null,
+    "received": [],
+    "reported_used": [],
+    "selected": [],
+    "candidates": [
+     {
+      "lesson_id": "94eb3206-7946-40fe-b7e9-d4740e8fcdfc",
+      "status": "excluded",
+      "reasons": [
+       "no_mechanism_overlap"
+      ],
+      "overlap": [],
+      "tier": "unproven",
+      "supporting_outcomes": [
+       {
+        "experience_id": "0c08d3c1-b230-56fd-95e4-754c23c52442",
+        "task_id": "num-03",
+        "passed": true
+       }
+      ]
+     }
+    ],
+    "context_bytes": 2,
+    "items_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "independent_outcome": null
+   },
+   "result_admission_id": "da6ccc53-9328-4273-b9db-f8134a2944eb",
+   "run": {
+    "status": "COMPLETED",
+    "terminal_reason": "required_stages_completed"
+   },
+   "calls": [
+    {
+     "id": "67a28078-8388-4684-b405-0afa25a3fced",
+     "status": "validated",
+     "model": "muse-spark-1.3-contributor",
+     "usage": {
+      "completion_tokens": 950,
+      "prompt_tokens": 2173,
+      "total_tokens": 3123,
+      "completion_tokens_details": {
+       "reasoning_tokens": 291
+      },
+      "prompt_tokens_details": {
+       "cached_tokens": 0
+      },
+      "charged_tokens": 3123
+     },
+     "latency_ms": 10925.540600001113,
+     "provenance": "production_pi",
+     "provider_receipts": [
+      {
+       "request_id": "90aed609-8a29-4d79-9b57-39134947aebd",
+       "http_status": 200,
+       "response_sha256": "15e30c1e9a291bf7946333d3265d45438dabf3f24561e0ea2a4d032bf598a23e",
+       "model_requested": "muse-spark-1.3-contributor",
+       "model_observed": null,
+       "latency_ms": 10381.728000000294
+      }
+     ]
+    },
+    {
+     "id": "0d36009d-2be8-4554-8101-9fec87b92ba5",
+     "status": "validated",
+     "model": "muse-spark-1.3-contributor",
+     "usage": {
+      "completion_tokens": 717,
+      "prompt_tokens": 2381,
+      "total_tokens": 3098,
+      "completion_tokens_details": {
+       "reasoning_tokens": 308
+      },
+      "prompt_tokens_details": {
+       "cached_tokens": 1521
+      },
+      "charged_tokens": 3098
+     },
+     "latency_ms": 6700.271900001098,
+     "provenance": "production_pi",
+     "provider_receipts": [
+      {
+       "request_id": "ccd46192-aba0-41aa-93b4-5824b9d5aba5",
+       "http_status": 200,
+       "response_sha256": "2ad8f6ae6a1ca86f49856225d2991b6352d370325a52b3331a9452b6a39fb516",
+       "model_requested": "muse-spark-1.3-contributor",
+       "model_observed": null,
+       "latency_ms": 6224.663700006204
+      }
+     ]
+    }
+   ],
+   "request": {
+    "consent_ref": "78ffbeeb-5239-4749-aa6f-1231b3db7de0",
+    "conversation_ref": "4adbe9f7-9038-42ae-9ec3-b08c7ae70c54",
+    "goal": "Review the supplied implementation against this contract: Remove the prefix '0x' from text when it starts with that prefix. Any other text is returned unchanged. Identify any real defect, explain why and recommend a minimal correction if needed. For every named input case in README.md give the result the supplied code produces and the result the contract requires (a JSON value or ERROR:ExceptionName) in predictions, and set issue_present. Do not invent defects in correct code.",
+    "strategy_mode": "selective",
+    "idempotency_key": "demo-unrelated-selective"
+   },
+   "wall_seconds": 20.61314919999859
+  }
+ },
+ "totals": {
+  "provider_requests": 7,
+  "reserved_units": 94417
+ }
+}
