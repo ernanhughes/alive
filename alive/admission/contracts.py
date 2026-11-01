@@ -43,7 +43,7 @@ class LiveGoal(Strict):
     goal: str = Field(min_length=1, max_length=1000)
     idempotency_key: str = Field(min_length=1, max_length=60)
     conversation_ref: Ref | None = None
-    strategy_mode: Literal["stateless", "contextual", "learned"] = "learned"
+    strategy_mode: Literal["stateless", "contextual", "learned", "selective"] = "selective"
 
 
 class ConversationRequest(Strict):

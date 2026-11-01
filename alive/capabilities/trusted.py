@@ -402,6 +402,7 @@ for _identifier, _kind, _adapter, _traits in (
             "alive/continuity/service.py",
             "alive/adaptation/contracts.py",
             "alive/adaptation/service.py",
+            "alive/adaptation/selection.py",
         ),
         traits=frozenset(_traits),
     )

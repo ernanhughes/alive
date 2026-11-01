@@ -16,7 +16,6 @@ from alive.sources.cli import principal
 from alive.workflows.context import Refused, digest
 from tests.test_contextual_continuity import (  # noqa: F401
     BASE,
-    ask,
     case,
     conversation,
     quick_settle,
@@ -26,6 +25,21 @@ from tests.test_contextual_continuity import (  # noqa: F401
 from tests.test_intent_interpretation import interpretation, respond_with
 from tests.test_live_admission import call
 from tests.test_pi_gateway import USAGE
+
+
+def ask(ready, ref, goal, key=None, mode="learned"):
+    """Legacy AI-FIRST-03 tests exercise the preserved family-latest control (``learned``)."""
+    client, _, setup, *_ = ready
+    return client.post(
+        BASE + "/ask",
+        json={
+            "consent_ref": setup["id"],
+            "conversation_ref": ref,
+            "goal": goal,
+            "idempotency_key": key or uid(),
+            "strategy_mode": mode,
+        },
+    )
 
 
 @pytest.fixture
@@ -245,7 +259,12 @@ def test_verified_learning_reuse_scopes_versions_and_replay(adaptive):
         == version
     )
     # Old history remains readable after demotion; old frozen strategy cannot dispatch anew.
-    assert client.get(BASE + "/" + reused["id"]).json() == reused
+    # Recording an independent outcome is the only change history may show; the rest is frozen.
+    reread = client.get(BASE + "/" + reused["id"]).json()
+    outcome = reread["selection"].pop("independent_outcome")
+    assert outcome["passed"] is False and reused["selection"]["independent_outcome"] is None
+    reused["selection"].pop("independent_outcome")
+    assert reread == reused
 
     async def stale(kernel):
         async with kernel.db.sessions() as session:

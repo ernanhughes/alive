@@ -195,8 +195,9 @@ async def frozen(
     return payload["snapshot"]
 
 
-async def adaptive_snapshot(kernel, request, approved, families):
+async def adaptive_snapshot(kernel, request, approved, families, mechanisms=()):
     """Freeze a cross-conversation selection after live intent classification, once only."""
+    from alive.adaptation import selection
     from alive.adaptation.service import selected
 
     async with kernel.lock, kernel.db.sessions.begin() as session:
@@ -219,18 +220,27 @@ async def adaptive_snapshot(kernel, request, approved, families):
             )
             return previous.id
         destination = approved["terms"]["profiles"][PROFILE]["disclosure"]["destination"]
-        items = await selected(
-            session,
-            kernel,
-            opened.payload["principal"],
-            destination,
-            families,
-            request.strategy_mode,
+        principal = opened.payload["principal"]
+        if request.strategy_mode == "selective":
+            items, record = await selection.choose(
+                session, kernel, principal, destination, families, list(mechanisms)
+            )
+        else:
+            items = await selected(
+                session, kernel, principal, destination, families, request.strategy_mode
+            )
+            record = selection.legacy_record(
+                request.strategy_mode, items, families, list(mechanisms)
+            )
+        selection_ref = await selection.record_selection(
+            session, kernel, f"{opened.id}:{key}", record
         )
         snapshot = empty_snapshot() | {
             "conversation_ref": opened.id,
             "items": items,
-            "selection": "live intent families; bounded owner-approved exports",
+            "selection": record["policy"],
+            "selection_ref": selection_ref,
+            "decision": record["decision"],
             "strategy_mode": request.strategy_mode,
             "families": families,
         }

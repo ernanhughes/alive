@@ -401,13 +401,21 @@ async def verify_item(session, kernel, supplied, principal, destination, *, for_
 
 
 async def listing(kernel):
+    from alive.adaptation.selection import standing, utility
+
     async with kernel.db.sessions() as session:
+        states = await standing(session, kernel)
         return {
             "experiences": [
                 {"id": r.id, **value(r)} for r in await rows(session, kernel, EXPERIENCE)
             ],
             "lessons": [
-                {"id": r.id, "sha256": r.payload["sha256"], **value(r)}
+                {
+                    "id": r.id,
+                    "sha256": r.payload["sha256"],
+                    "utility": states.get(value(r)["lesson_id"], (utility([], False), []))[0],
+                    **value(r),
+                }
                 for r in (await latest(session, kernel)).values()
             ],
         }

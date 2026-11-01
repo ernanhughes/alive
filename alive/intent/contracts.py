@@ -5,10 +5,11 @@ from typing import Callable, Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from alive.adaptation.contracts import Mechanism
 from alive.workflows.context import digest
 
 ROLE = "intent_interpreter"
-ROLE_SPEC_VERSION = 1
+ROLE_SPEC_VERSION = 2
 SCHEMA = "alive-intent-interpretation/v1"
 CONTEXT_POLICY = "alive-intent-context/v1"
 IMPLEMENTATION = "intent-interpreter-v1"
@@ -33,7 +34,9 @@ INSTRUCTIONS = (
     "investigation materially and no useful read-only recommendation is possible. intent_kind "
     "must be a listed value, or 'unclear'. Classify problem_families from the goal and "
     "inventory: numeric, parsing, state, authorization, defaults, errors; return an empty "
-    "list if unclear. These tags select fallible candidate strategies, not execution authority. "
+    "list if unclear. Also list task_mechanisms: the closed-vocabulary failure mechanisms the "
+    "goal's contract makes plausibly relevant to reviewing this work (empty if none or unclear). "
+    "These tags select fallible candidate strategies, not execution authority. "
     "Output the requested JSON schema only."
 )
 
@@ -81,6 +84,7 @@ class IntentInterpretation(Strict):
     problem_families: list[
         Literal["numeric", "parsing", "state", "authorization", "defaults", "errors"]
     ] = Field(default_factory=list, max_length=3)
+    task_mechanisms: list[Mechanism] = Field(default_factory=list, max_length=4)
 
 
 def role_contract():

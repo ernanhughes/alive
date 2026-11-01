@@ -420,8 +420,14 @@ async def ask(app, request):
     if terms.get("adaptive") and request.conversation_ref:
         from alive.continuity.service import adaptive_snapshot
 
-        families = recommendation["interpretation"]["value"].get("problem_families", [])
-        context_ref = await adaptive_snapshot(kernel, request, current, families)
+        interpretation = recommendation["interpretation"]["value"]
+        context_ref = await adaptive_snapshot(
+            kernel,
+            request,
+            current,
+            interpretation.get("problem_families", []),
+            interpretation.get("task_mechanisms", []),
+        )
         try:
             await run(CONTEXTUAL, "result")
         except Refused as error:
@@ -575,6 +581,7 @@ async def exchange(kernel, admission_id):
             "conversation_ref": membership.correlation_id if membership else None,
             "context": None,
             "answer": None,
+            "selection": None,
         }
         contextual = next(
             (r for r in (result, row) if r and service.profile_of(r.terms).id == CONTEXTUAL), None
@@ -591,6 +598,11 @@ async def exchange(kernel, admission_id):
             retained = await continuity.artifact(session, kernel, contextual)
             if retained:
                 value["answer"] = retained["result"] | {"artifact_sha256": retained["sha256"]}
+            from alive.adaptation.selection import view
+
+            value["selection"] = await view(
+                session, kernel, value["context"], value["answer"], contextual.id
+            )
         if result and service.profile_of(result.terms).id == INSPECTION:
             from alive.workflows.models import WorkflowRun
 
