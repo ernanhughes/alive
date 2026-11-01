@@ -46,7 +46,9 @@ NON_PYTEST_FULL = [
 
 
 def build_pytest_cmd(selected: list[str], extra: list[str]) -> list[str]:
-    return [sys.executable, "-m", "pytest", "-q", *selected, *extra]
+    # Override the fast-default addopts so tier selection is authoritative:
+    # quick/affected choose files, full runs everything including slow.
+    return [sys.executable, "-m", "pytest", "-q", "-o", "addopts=", *selected, *extra]
 
 
 def main(argv: list[str] | None = None) -> int:

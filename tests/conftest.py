@@ -10,6 +10,31 @@ from alive.models import Base
 TOKEN = "test-token-for-alive-tests-123456789"
 MANIFESTS_DIR = Path(__file__).resolve().parents[1] / "alive/capabilities/manifests"
 
+# Fast default (1-min target): bare `pytest` runs only these files.
+# Everything else under testpaths is auto-marked `slow` and skipped unless
+# explicitly requested (`pytest -o addopts=""`, `-m "slow or not slow"`,
+# or `python scripts/test_run.py --mode full|affected` which overrides addopts).
+# Keep this list to proven-quick unit/config files only.
+FAST_FILES = {
+    "tests/test_transport.py",
+    "tests/test_docker_config.py",
+    "tests/test_test_select.py",
+    "tests/test_arch_boundaries.py",
+    "tests/test_workflows_spec.py",
+    "tests/test_validation_workflows.py",
+    "tests/test_meta_memory.py",
+    "tests/test_capability_registry.py",
+}
+
+
+def pytest_collection_modifyitems(items):
+    for item in items:
+        path = item.nodeid.split("::")[0].replace("\\", "/")
+        if (path.startswith("tests/") or path.startswith("alive/intelligence/tests/")) and (
+            path not in FAST_FILES
+        ):
+            item.add_marker(pytest.mark.slow)
+
 
 @pytest.fixture
 def settings(tmp_path):
