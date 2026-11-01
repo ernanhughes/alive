@@ -281,7 +281,10 @@ def run(folder, approve_live, previous_ledger=None, resume=False):
                             "before_task": task["id"],
                             "arm": arm,
                             "phase": phase,
-                            "reason": "Previous failed explicit run demoted the experiment goal; no inference retry.",
+                            "reason": (
+                                "Previous failed explicit run demoted the experiment goal; "
+                                "no inference retry."
+                            ),
                         }
                     )
                     save()

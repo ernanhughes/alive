@@ -1,0 +1,11 @@
+{
+  "exchange_id": "b3399105-bd79-4ffb-8eb4-465755464aeb",
+  "strategy_ids": [
+    "b91fdbdd-4bb9-566a-8bc2-2202228a2657"
+  ],
+  "conversation_ref": "41108d09-9473-40e5-8ea0-27eed0c5b077",
+  "writes": [],
+  "retained_live_output": true,
+  "provider_requests_before": 156,
+  "provider_requests_after": 156
+}
