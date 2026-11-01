@@ -316,6 +316,68 @@ def test_model_self_success_and_misleading_strategy_cannot_qualify(adaptive):
     call(client, rejected)
 
 
+def test_owner_can_withdraw_export_without_counterevidence(adaptive):
+    client, *_ = adaptive
+    ref = conversation(adaptive)
+    initial = ask(adaptive, ref, "Review arithmetic repository").json()
+    call(client, feedback, initial["result_admission"]["id"])
+    ask(adaptive, ref, "extract a reusable numeric lesson").raise_for_status()
+    for target in ("qualified", "active"):
+        current = call(client, service.listing)["lessons"][0]
+        call(
+            client,
+            service.transition,
+            current["lesson_id"],
+            state=target,
+            expected_sha256=current["sha256"],
+            principal=principal(),
+            export_sha256=digest(service.export_text(current)),
+        )
+    current = call(client, service.listing)["lessons"][0]
+    with pytest.raises(Refused, match="lesson_owner_required"):
+        call(
+            client,
+            service.transition,
+            current["lesson_id"],
+            state="rejected",
+            expected_sha256=current["sha256"],
+            principal="different-owner",
+            owner_withdrawal=True,
+        )
+    result = call(
+        client,
+        service.transition,
+        current["lesson_id"],
+        state="rejected",
+        expected_sha256=current["sha256"],
+        principal=principal(),
+        owner_withdrawal=True,
+    )
+    assert (
+        call(
+            client,
+            service.transition,
+            current["lesson_id"],
+            state="rejected",
+            expected_sha256=current["sha256"],
+            principal=principal(),
+            owner_withdrawal=True,
+        )
+        == result
+    )
+    withdrawn = call(client, service.listing)["lessons"][0]
+    assert withdrawn["export"] is None
+    assert withdrawn["withdrawal"] == "owner_withdrew_reusable_export"
+
+    async def absent(kernel):
+        async with kernel.db.sessions() as session:
+            assert not await service.selected(
+                session, kernel, principal(), current["destination"], ["numeric"], "learned"
+            )
+
+    call(client, absent)
+
+
 def test_oracle_measures_only_exact_captured_public_fixture(adaptive, tmp_path):
     from alive.adaptation.oracle import source_files
     from alive.sources import capture, custody

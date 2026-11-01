@@ -27,6 +27,16 @@ async def main(args):
                 kernel, args.admission, measurement, args.feedback_key
             )
             print(json.dumps({"experience_id": result, "measurement_ref": measurement}))
+        elif args.command == "withdraw":
+            result = await service.transition(
+                kernel,
+                args.lesson,
+                state="rejected",
+                expected_sha256=args.confirm_sha256,
+                principal=principal(),
+                owner_withdrawal=True,
+            )
+            print(json.dumps({"version_ref": result, "reason": "owner_export_withdrawal"}))
         else:
             result = await service.transition(
                 kernel,
@@ -50,6 +60,11 @@ if __name__ == "__main__":
     feedback.add_argument("admission")
     feedback.add_argument("--task", required=True)
     feedback.add_argument("--feedback-key", required=True)
+    withdraw = commands.add_parser(
+        "withdraw", help="Revoke reusable export without a quality claim"
+    )
+    withdraw.add_argument("lesson")
+    withdraw.add_argument("--confirm-sha256", required=True)
     change = commands.add_parser("transition")
     change.add_argument("lesson")
     change.add_argument("state", choices=["qualified", "active", "revised", "rejected"])
