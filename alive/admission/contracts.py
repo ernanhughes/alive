@@ -7,9 +7,11 @@ from alive.capabilities.manifest import Strict
 
 
 class ReviewRequest(Strict):
-    profile: Literal["approved-repository-inspection", "approved-repository-analysis"] = (
-        "approved-repository-inspection"
-    )
+    profile: Literal[
+        "approved-repository-inspection",
+        "approved-repository-analysis",
+        "intent-interpretation",
+    ] = "approved-repository-inspection"
     goal_ref: Ref
     approval_ref: Ref
     recipe_sha256: Hash

@@ -124,6 +124,27 @@ def analysis_binding(call, stage, grant):
     )
 
 
+INTENT_ROLE = "intent_interpreter"
+
+
+def intent_binding(call, stage, grant):
+    """The interpreter call carries exactly the owner's goal and the approved catalogue."""
+    from alive.intent.contracts import INSTRUCTIONS, role_contract
+
+    stored = call.input_json
+    context = stored["context"]
+    return (
+        stored["instructions"] == INSTRUCTIONS
+        and grant.role_contracts.get(call.role) == role_contract()
+        and stored.get("context_sha256") == digest(context)
+        and context["user_goal"] == grant.inputs["objective"]
+        and context["catalogue_sha256"] == grant.inputs["catalogue_sha256"]
+    )
+
+
+TYPED_BINDINGS = {ANALYSIS_ROLE: analysis_binding, INTENT_ROLE: intent_binding}
+
+
 async def result_event(session, stage):
     require(stage.output_ref and stage.output_ref.startswith("event:"), "result_unavailable")
     event = await session.scalar(select(Event).where(Event.id == stage.output_ref[6:]))
@@ -195,12 +216,12 @@ class WorkflowRunner:
                 and grant.models.get(call.role) == call.model
                 and (
                     call.input_json["context"] == approved
-                    if call.role != ANALYSIS_ROLE
-                    else analysis_binding(call, stage, grant)
+                    if call.role not in TYPED_BINDINGS
+                    else TYPED_BINDINGS[call.role](call, stage, grant)
                 ),
                 "dispatch_stage_binding",
             )
-            if call.role == ANALYSIS_ROLE:
+            if call.role in TYPED_BINDINGS:
                 from alive.admission.models import Admission
 
                 admission = await session.get(Admission, grant.admission_ref)

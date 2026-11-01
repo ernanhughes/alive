@@ -354,6 +354,35 @@ for _identifier, _adapter, _reads in (
         _VALIDATION_FILES,
         traits=frozenset({"validation.independent"}),
     )
+_INTENT_FILES = (
+    "alive/intent/adapters.py",
+    "alive/intent/contracts.py",
+    "alive/intent/context.py",
+)
+# L2-01. The interpreter makes the one model call; like the analyst it holds the model and the
+# source bit, so its own custody check names the `intent.interpret` operation.
+_BUILTINS["intent-interpreter-v1"] = TrustedImplementation(
+    "intent-interpreter-v1",
+    "pi_agent",
+    "none",
+    "alive.intent.adapters:interpret",
+    "alive.intent.adapters:interpret",
+    None,
+    frozenset({"model.infer", "source.read"}),
+    _INTENT_FILES,
+    traits=frozenset({"model.role"}),
+)
+_BUILTINS["intent-validator-v1"] = TrustedImplementation(
+    "intent-validator-v1",
+    "validation",
+    "none",
+    "alive.intent.adapters:validate_interpretation",
+    "alive.intent.adapters:validate_interpretation",
+    None,
+    frozenset(),
+    _INTENT_FILES,
+    traits=frozenset({"validation.independent"}),
+)
 TRUSTED = MappingProxyType(_BUILTINS)
 
 

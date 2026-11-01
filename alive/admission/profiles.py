@@ -18,11 +18,16 @@ from alive.analysis.contracts import (
     ROLE,
     role_contract,
 )
+from alive.intent import context as intent_context
+from alive.intent.contracts import CONTEXT_POLICY as INTENT_POLICY
+from alive.intent.contracts import ROLE as INTENT_ROLE
+from alive.intent.contracts import role_contract as intent_role_contract
 from alive.providers import meta_endpoint_host, meta_endpoint_url
 from alive.workflows.context import require
 
 INSPECTION = "approved-repository-inspection"
 ANALYSIS = "approved-repository-analysis"
+INTENT = "intent-interpretation"
 
 
 @dataclass(frozen=True)
@@ -38,6 +43,8 @@ class Profile:
     max_model_calls: int
     max_output_tokens: int
     model: bool
+    role: str | None = None
+    reads_files: bool = True
 
 
 PROFILES = {
@@ -71,6 +78,22 @@ PROFILES = {
         1,
         1536,
         True,
+        ROLE,
+    ),
+    INTENT: Profile(
+        INTENT,
+        "intent-interpretation.json",
+        ("intent.interpret", "intent.validate", "result.record"),
+        ("intent.interpret",),
+        ("interpret",),
+        20,
+        32768,
+        180,
+        1,
+        1536,
+        True,
+        INTENT_ROLE,
+        False,
     ),
 }
 
@@ -150,6 +173,62 @@ def disclosure(kernel, control, source, paths, objective):
         "ambiguous outcome is never retried; its reservation stays charged.",
         "retention": "The prompt and response are retained in the local database in clear text.",
     }
+
+
+def intent_disclosure(kernel, control, source, paths, objective):
+    """What the interpreter receives: the goal, file names and sizes, and the catalogue."""
+    from alive.bespoke.recipes import load_catalogue
+    from alive.cognition import CognitiveConfiguration
+    from alive.intent.adapters import source_view
+
+    config = CognitiveConfiguration.model_validate(control.configuration)
+    settings = kernel.settings
+    endpoint = analysis_endpoint(settings)
+    recipes = getattr(kernel, "bespoke_recipes", None) or load_catalogue()
+    rows = intent_context.project_catalogue(recipes)
+    view = source_view(source)
+    require(sorted(f["path"] for f in view["inventory"]) == sorted(paths), "intent_scope_mismatch")
+    inputs = {"user_goal": objective, "source": view, "catalogue": rows}
+    intent_context.context_package(inputs)  # raises on any size or shape violation
+    output_limit = min(config.output_tokens, PROFILES[INTENT].max_output_tokens)
+    request = intent_context.request_bytes(inputs, output_limit)
+    require(
+        request <= config.request_tokens and request <= config.investigation_tokens,
+        "context_exceeds_governor_request_ceiling",
+    )
+    return {
+        "operation": "intent.interpret",
+        "destination": {
+            "kind": "remote_provider",
+            "provider": "meta",
+            "transport": "pi",
+            "host": meta_endpoint_host(settings),
+            "endpoint": endpoint,
+            "model": settings.alive_role_models.get(INTENT_ROLE, settings.alive_meta_model),
+        },
+        "role": INTENT_ROLE,
+        "role_contract_sha256": intent_role_contract(),
+        "context_policy": INTENT_POLICY,
+        "files": [{"path": f["path"], "bytes": f["bytes"]} for f in view["inventory"]],
+        "source_bytes": 0,
+        "content_sent": False,
+        "goal_characters": len(objective),
+        "catalogue_sha256": intent_context.catalogue_sha256(rows),
+        "catalogue_entries": len(rows),
+        "reserved_request_bytes": request,
+        "max_model_calls": 1,
+        "max_output_tokens": output_limit,
+        "leaves_host": True,
+        "cost": "unknown; no price is configured and none is estimated",
+        "cancellation": "A request already sent to the provider cannot be recalled. An "
+        "ambiguous outcome is never retried; its reservation stays charged.",
+        "retention": "The prompt and response are retained in the local database in clear text.",
+    }
+
+
+def disclose(profile, kernel, control, source, paths, objective):
+    work = intent_disclosure if profile.id == INTENT else disclosure
+    return work(kernel, control, source, paths, objective)
 
 
 def definition_text(profile):

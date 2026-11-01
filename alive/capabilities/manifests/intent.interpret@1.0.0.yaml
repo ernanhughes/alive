@@ -1,0 +1,73 @@
+schema_version: 1
+id: intent.interpret
+version: 1.0.0
+name: Intent Interpretation
+description: One bounded model call that interprets the owner's stated goal against the
+  trusted recipe catalogue and the names and sizes of an approved source. No file content
+  is sent. Disclosure of the goal and source metadata to the approved model destination is
+  a separate owner-approved source operation. Output is a proposal, not an instruction.
+implementation:
+  provider: builtin
+  id: intent-interpreter-v1
+execution:
+  kind: pi_agent
+  side_effects: none
+  timeout_seconds: 120
+  max_input_bytes: 65536
+  max_output_bytes: 65536
+  max_input_items: 4
+  max_invocations: 1
+  retry_policy: none
+  max_model_calls: 1
+  max_output_tokens: 1536
+permissions:
+  filesystem:
+    mode: none
+    roots: []
+  network:
+    mode: governed_pi
+  process:
+    mode: none
+  evidence: none
+  persistence: none
+  sources: approved_capture
+inputs:
+  type: object
+  additionalProperties: false
+  properties:
+    source_ref:
+      type: string
+      maxLength: 36
+    objective:
+      type: string
+      maxLength: 1000
+    catalogue_sha256:
+      type: string
+      maxLength: 64
+  required:
+  - source_ref
+  - objective
+  - catalogue_sha256
+outputs:
+  type: object
+  additionalProperties: false
+  properties:
+    interpretation:
+      type: object
+      additionalProperties: true
+      properties: {}
+      required: []
+  required:
+  - interpretation
+presentation:
+  category: development
+  icon: brain-circuit
+  tags:
+  - interpretation
+  - model
+supported_source_types:
+- repository
+examples:
+- source_ref: 00000000-0000-0000-0000-000000000000
+  objective: Can we release this?
+  catalogue_sha256: '0000000000000000000000000000000000000000000000000000000000000000'

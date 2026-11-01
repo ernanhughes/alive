@@ -10,8 +10,7 @@ from types import SimpleNamespace
 from sqlalchemy import select
 
 from alive.admission.models import Admission
-from alive.admission.profiles import INSPECTION, PROFILES, disclosure
-from alive.analysis.contracts import ROLE
+from alive.admission.profiles import ANALYSIS, INSPECTION, INTENT, PROFILES, disclose
 from alive.bespoke.recipes import recipe_hash
 from alive.bespoke.selector import evaluate
 from alive.capabilities.bindings import binding_record, digest, registry_for
@@ -114,7 +113,9 @@ async def current_terms(session, kernel, row):
         session,
         kernel,
         recipe,
-        SimpleNamespace(objective=recipe_context_objective(terms), constraints=recipe.limits),
+        SimpleNamespace(
+            objective=recipe_context_objective(terms, profile), constraints=recipe.limits
+        ),
         proposed,
         terms["selection_context"],
     )
@@ -124,7 +125,8 @@ async def current_terms(session, kernel, row):
     )
     if profile.model:
         # The destination, model, role contract and size ceilings are part of what was approved.
-        current = disclosure(
+        current = disclose(
+            profile,
             kernel,
             control,
             source,
@@ -133,8 +135,12 @@ async def current_terms(session, kernel, row):
         )
         require(
             current == terms["model_disclosure"]
-            and proposed.models == {ROLE: current["destination"]["model"]}
-            and proposed.role_contracts == {ROLE: current["role_contract_sha256"]}
+            and proposed.models == {profile.role: current["destination"]["model"]}
+            and proposed.role_contracts == {profile.role: current["role_contract_sha256"]}
+            and (
+                profile.id != INTENT
+                or proposed.inputs.get("catalogue_sha256") == current["catalogue_sha256"]
+            )
             and proposed.max_output_tokens == current["max_output_tokens"]
             and kernel.settings.alive_model_transport == "pi",
             "model_terms_changed",
@@ -142,10 +148,14 @@ async def current_terms(session, kernel, row):
     return proposed
 
 
-def recipe_context_objective(terms):
+def recipe_context_objective(terms, profile=None):
     from alive.bespoke.contracts import Objective
 
-    return Objective.model_validate(terms["objective"])
+    value = Objective.model_validate(terms["objective"])
+    if profile is not None and profile.id == INTENT:
+        # Eligibility of the interpreter procedure itself, not of the owner's intent.
+        value = value.model_copy(update={"kind": "inspect_implementation"})
+    return value
 
 
 async def prepare(kernel, request):
@@ -214,11 +224,12 @@ async def prepare(kernel, request):
         inputs = {"source_ref": source.source_ref, "paths": paths}
         if profile.model:
             inputs["objective"] = request.objective.requested_outcome
-        cap = registry_for(kernel).get("repository.inspect", "1.1.0")
-        validate(
-            {"mode": "read", "source_ref": inputs["source_ref"], "paths": paths},
-            cap.manifest["inputs"],
-        )
+        if profile.reads_files:
+            cap = registry_for(kernel).get("repository.inspect", "1.1.0")
+            validate(
+                {"mode": "read", "source_ref": inputs["source_ref"], "paths": paths},
+                cap.manifest["inputs"],
+            )
         context = {
             "goal_id": goal.id,
             "admission_ref": admission_id,
@@ -232,10 +243,12 @@ async def prepare(kernel, request):
             },
         }
         model_terms = (
-            disclosure(kernel, control, source, paths, request.objective.requested_outcome)
+            disclose(profile, kernel, control, source, paths, request.objective.requested_outcome)
             if profile.model
             else None
         )
+        if profile.id == INTENT:
+            inputs["catalogue_sha256"] = model_terms["catalogue_sha256"]
         expiry = min(now() + timedelta(seconds=request.ttl_seconds), aware(approval.expires_at))
         proposed = Grant(
             principal=approval.approved_by,
@@ -259,8 +272,10 @@ async def prepare(kernel, request):
             ),
             inputs=inputs,
             configuration_sha256=owner_digest(control.configuration),
-            models={ROLE: model_terms["destination"]["model"]} if profile.model else {},
-            role_contracts={ROLE: model_terms["role_contract_sha256"]} if profile.model else {},
+            models={profile.role: model_terms["destination"]["model"]} if profile.model else {},
+            role_contracts={profile.role: model_terms["role_contract_sha256"]}
+            if profile.model
+            else {},
             max_model_calls=profile.max_model_calls,
             max_output_tokens=model_terms["max_output_tokens"]
             if profile.model
@@ -280,7 +295,12 @@ async def prepare(kernel, request):
             session,
             kernel,
             recipe,
-            SimpleNamespace(objective=request.objective, constraints=recipe.limits),
+            SimpleNamespace(
+                objective=request.objective.model_copy(update={"kind": "inspect_implementation"})
+                if profile.id == INTENT
+                else request.objective,
+                constraints=recipe.limits,
+            ),
             proposed,
             selection_context,
         )
@@ -514,7 +534,7 @@ async def report(kernel, admission_id):
 
     async with kernel.db.sessions() as session:
         row = await row_for(session, kernel, admission_id)
-        require(profile_of(row.terms).model and row.run_id, "report_unavailable")
+        require(profile_of(row.terms).id == ANALYSIS and row.run_id, "report_unavailable")
         run = await session.get(WorkflowRun, row.run_id)
         require(run is not None and run.status == "COMPLETED", "report_unavailable")
         stages = {
