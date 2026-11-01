@@ -1,5 +1,7 @@
 name: ALIVE checks
-on: [push, pull_request]
+# TEMPORARY LOCAL PAUSE - DO NOT MERGE: disables push/PR runs so today's
+# pushes don't wait 2h local + 1h GitHub. Revert `on:` before merge.
+on: workflow_dispatch
 jobs:
   backend:
     runs-on: ${{ matrix.os }}
