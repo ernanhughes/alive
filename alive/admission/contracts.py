@@ -35,6 +35,7 @@ class LiveSetup(Strict):
     max_tokens: int = Field(default=200000, ge=1, le=2000000)
     ttl_seconds: int = Field(default=3600, ge=60, le=86400)
     contextual: bool = False
+    adaptive: bool = False
 
 
 class LiveGoal(Strict):
@@ -42,6 +43,7 @@ class LiveGoal(Strict):
     goal: str = Field(min_length=1, max_length=1000)
     idempotency_key: str = Field(min_length=1, max_length=60)
     conversation_ref: Ref | None = None
+    strategy_mode: Literal["stateless", "contextual", "learned"] = "learned"
 
 
 class ConversationRequest(Strict):

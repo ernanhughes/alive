@@ -134,6 +134,7 @@ async def current_terms(session, kernel, row):
                 proposed.inputs["context_ref"],
                 terms["source"]["resources"],
                 row.principal,
+                for_dispatch=True,
             )
         # The destination, model, role contract and size ceilings are part of what was approved.
         current = disclose(
