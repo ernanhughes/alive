@@ -1,5 +1,33 @@
 # Working on ALIVE
 
+## ALIVE product policy — live AI is normal
+
+ALIVE's purpose is a continuing, useful, **live model-backed intelligence**. Do not let
+model-governance scaffolding, deterministic selectors, fake provider tests or approval screens
+become the product. Inference with the configured model is the default reasoning operation,
+not an exceptional research event.
+
+- Prefer the real approved model for user-facing intent understanding, reasoning, review and
+  experimentation. Show model identity, request/result receipts and usage clearly. Never
+  silently substitute a scripted, mock or deterministic answer and label it AI.
+- **Avoid per-inference approval ceremonies.** Build/reuse one revocable, bounded owner
+  authorization for a trusted workspace/source class, provider endpoint, model and spend/token
+  envelope. Routine inference inside those terms should be automatic. Enforce the terms at
+  dispatch via existing Governor/source/model transport checks.
+- Preserve explicit owner consent when sending a *new* class of sensitive information to
+  an external provider, increasing the recipient/scope, or performing consequential writes,
+  execution, publication or irreversible actions. A model recommendation grants no tool power.
+- Fail visibly on unavailable models, exhausted limits and missing consent. Do not promote
+  deterministic fallback to an indistinguishable intelligence response.
+- **Real-model runs are mandatory for AI-quality acceptance** and demonstrations. Frozen
+  independently labelled tasks, real receipts and fair baselines decide outcomes. Scripts/fakes
+  can exercise infrastructure and negative controls but cannot prove AI quality.
+- Reuse the current Cognition, Living, Bespoke, ModelGateway/Pi, experience and workflow code.
+  No new general intelligence framework, policy gate or approval machinery without evidence
+  that it is necessary to complete the live user journey.
+
+See [the live-first pivot](docs/intelligence/LIVE-FIRST-PIVOT.md) on branches that contain it.
+
 ## Default to fast, targeted verification
 
 Do not run the full backend suite after every edit. A one-line change does not
@@ -87,8 +115,10 @@ assert a fallback must explicitly establish its precondition. For example,
 than assuming the developer has no local model installed. Preserve its fallback
 assertions; do not change production search behavior to satisfy the test.
 
-Use disposable workspaces/databases and scripted providers for integration
-checks. Do not use paid inference for verification.
+Use disposable workspaces/databases and scripted providers for **offline regression and
+failure-injection tests**. For genuine AI behavior qualification, require explicitly authorized,
+budget-capped **live model inference** and retain receipts; if authorization/runtime is absent,
+report NOT_RUN instead of treating a mock as equivalent. Do not automatically spend money in CI.
 
 When creating a worktree from a base that predates this file, carry this testing
 policy into the task's instructions so the fast development loop remains the
