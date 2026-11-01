@@ -1,0 +1,424 @@
+{
+  "id": "b0d79350-342d-4271-9eab-65b476c6243d",
+  "review_sha256": "0377cc831d447505738baa81d4b75e6da10b1b4f82f23283a8d85f17564b7ef9",
+  "terms": {
+    "schema": "owner-admission/v1",
+    "policy": "owner-admission/v1",
+    "instance_id": "ed84d34c-3089-4506-912d-b8bc42ffb14b",
+    "goal": {
+      "id": "4252652a-670c-484b-8be5-72a4d2856e6d",
+      "title": "Inspect the approved repository"
+    },
+    "objective": {
+      "kind": null,
+      "requested_outcome": "Can you work out whether we're ready to release this?"
+    },
+    "source": {
+      "resources": {
+        "source_ref": "6bc55bbb-8208-4c02-9323-25564c29ec54",
+        "approval_id": "0850aede-dfb3-4149-aa68-bfbe635f0c4b",
+        "content_sha256": "0aa247d56ade4caef1db207b17b47f4a337ad87bcce07266d591d132e173b9d9",
+        "scope_sha256": "1cd842fc3e7af164b3bc62b8e6e67e90ec2957743a20366a55d1cfae9d4ea994"
+      },
+      "label": "Owner repository",
+      "scope": {
+        "items": [
+          "README.md",
+          "release.py"
+        ]
+      },
+      "inventory": {
+        "items": [
+          {
+            "item": "README.md",
+            "bytes": 34,
+            "sha256": "2344e12b158564d058dfaebff1c3b1f03922e91cd8d2f2ad589c27c175e06dcb"
+          },
+          {
+            "item": "release.py",
+            "bytes": 65,
+            "sha256": "d8dbdfa56f706a78dbebe0d267bfbb2164cd22b72f61b0f4378becf7814496e2"
+          }
+        ],
+        "omitted": []
+      },
+      "expires_at": "2026-11-01T01:11:37.822159+00:00",
+      "principal": "owner-cli:owner"
+    },
+    "candidate": {
+      "recipe": {
+        "schema_version": 1,
+        "id": "intent-interpretation",
+        "version": "1.0.0",
+        "name": "Intent interpretation",
+        "description": "Interpret the owner's stated goal against the trusted procedure catalogue with one governed model call. Only the goal text and the names and sizes of the approved source files are sent; no file content. The result is a proposal and executes nothing.",
+        "context_types": [
+          "repository"
+        ],
+        "intents": [
+          "inspect_implementation"
+        ],
+        "workflow": {
+          "name": "owner-intent-interpretation",
+          "version": 1,
+          "definition_sha256": "a33c2f9fabbce0d775123bda017400dcdd58d206ab5fd45ff3d6105f18362394"
+        },
+        "capabilities": [
+          {
+            "stage_id": "interpret",
+            "id": "intent.interpret",
+            "version": "1.0.0",
+            "manifest_sha256": "f53d70b34d7a4d8086207a8b11f931dfa041c5328f1f0cd8cfb09a236c6942ce"
+          },
+          {
+            "stage_id": "record",
+            "id": "result.record",
+            "version": "1.0.0",
+            "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca"
+          },
+          {
+            "stage_id": "validate",
+            "id": "intent.validate",
+            "version": "1.0.0",
+            "manifest_sha256": "32b52fad133b0bc6a4da3a5102e1ecad4ce2679a97fab7513521e5b3263b21b7"
+          }
+        ],
+        "limits": {
+          "max_model_calls": 1,
+          "max_wall_seconds": 180,
+          "max_output_tokens": 1536,
+          "outbound_allowed": true,
+          "permissions": [
+            "evidence.read",
+            "model.infer",
+            "source.read",
+            "workflow.write"
+          ]
+        },
+        "required_evidence": "approved_capture",
+        "output_artifact": "workflow_result",
+        "validation": "reference_identity",
+        "status": "active",
+        "presentation": {
+          "category": "bespoke",
+          "icon": "brain-circuit",
+          "tags": [
+            "interpretation",
+            "model",
+            "owner-review"
+          ]
+        }
+      },
+      "recipe_sha256": "2e12cf876686490502a56d2ba523af96066eb0182c4aff1232a39ff99adf8492",
+      "eligible": true,
+      "reasons": [],
+      "definition_id": "627baa65-f360-4b83-a5b6-ad55fa1624a4",
+      "binding_sha256": "543a9113125748a3222409b602f98417db4133cbd752e190f6b18be4b5cb4c31",
+      "capability_identities": [
+        {
+          "id": "intent.interpret",
+          "version": "1.0.0",
+          "manifest_sha256": "f53d70b34d7a4d8086207a8b11f931dfa041c5328f1f0cd8cfb09a236c6942ce",
+          "implementation_id": "intent-interpreter-v1",
+          "implementation_sha256": "cd615155420d3e255b51381f813667e4431b772c9f273d8056f5a132651da8bc"
+        },
+        {
+          "id": "result.record",
+          "version": "1.0.0",
+          "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+          "implementation_id": "result-record-v1",
+          "implementation_sha256": "3fe6518b30b5f5a599b84961d0f79615980a790f9d90831de05ad152c230b463"
+        },
+        {
+          "id": "intent.validate",
+          "version": "1.0.0",
+          "manifest_sha256": "32b52fad133b0bc6a4da3a5102e1ecad4ce2679a97fab7513521e5b3263b21b7",
+          "implementation_id": "intent-validator-v1",
+          "implementation_sha256": "6bea989ea744c23941056fd0e0333e82116a8255e4a11d0d1a178ce193c0d5c3"
+        }
+      ],
+      "capability_policies": [
+        "0e3b87259495f9621afd8af964a2f0d69fcc7ad6d50c406d69414d80159ac863",
+        "e71e940e7ef88b9dc981e25e777f823f3430e865306941d93a20344b610bb44e",
+        "65b9feda1408ef69aa7dcb5dbd0df8923a11f089e68e4d7dbf87186934040d34"
+      ],
+      "procedure_sha256": "5f48c9bb4ca4436fa54c6656e0a6268269c6d79c19bf37ac5a012cabf1e03c40",
+      "graph": {
+        "name": "owner-intent-interpretation",
+        "version": 1,
+        "definition_sha256": "a33c2f9fabbce0d775123bda017400dcdd58d206ab5fd45ff3d6105f18362394",
+        "nodes": [
+          {
+            "id": "interpret",
+            "title": "Model interpretation of the goal",
+            "type": "pi_agent",
+            "operation": "intent.interpret",
+            "available": true
+          },
+          {
+            "id": "validate",
+            "title": "Check the goal is unchanged",
+            "type": "validation",
+            "operation": "intent.validate",
+            "available": true
+          },
+          {
+            "id": "record",
+            "title": "Retain the proposal",
+            "type": "deterministic",
+            "operation": "result.record",
+            "available": true
+          }
+        ],
+        "edges": [
+          {
+            "from": "interpret",
+            "to": "validate"
+          },
+          {
+            "from": "validate",
+            "to": "record"
+          }
+        ]
+      },
+      "suitability": 93,
+      "factors": {
+        "explicit_goal_alignment": 40,
+        "captured_context_match": 25,
+        "required_evidence_present": 15,
+        "validation_contract": 10,
+        "resource_headroom": 0,
+        "operational_simplicity": 3
+      }
+    },
+    "selection_context": {
+      "surface": "repository",
+      "claims_count": 0,
+      "sources_count": 1,
+      "inputs_sha256": "81e52d317e3794272a6530f13d98ae563d3eb80df60655bb39f5311277c77b09"
+    },
+    "proposed_grant_data": {
+      "version": 1,
+      "principal": "owner-cli:owner",
+      "goal_id": "4252652a-670c-484b-8be5-72a4d2856e6d",
+      "investigation_id": "afc22fed-8ca8-4591-9112-197a1e4df5b0",
+      "definition_id": "627baa65-f360-4b83-a5b6-ad55fa1624a4",
+      "definition_sha256": "a33c2f9fabbce0d775123bda017400dcdd58d206ab5fd45ff3d6105f18362394",
+      "context_event_id": "fcb20db0-633d-4eb7-99fa-c2073e92cb6a",
+      "context_sha256": "ee486be376e4852cf5ed86899b193aeca26984d563297cbd4f80d45c59f07659",
+      "context_provenance": {
+        "source": "admission-owner",
+        "event_type": "workflow.owner.context",
+        "custody": "approved_capture",
+        "consent": "exact_content_and_scope"
+      },
+      "admission_ref": "b0d79350-342d-4271-9eab-65b476c6243d",
+      "operations": [
+        "intent.interpret",
+        "intent.validate",
+        "result.record"
+      ],
+      "capability_binding_sha256": "543a9113125748a3222409b602f98417db4133cbd752e190f6b18be4b5cb4c31",
+      "capabilities": {
+        "interpret": {
+          "identity": {
+            "id": "intent.interpret",
+            "version": "1.0.0",
+            "manifest_sha256": "f53d70b34d7a4d8086207a8b11f931dfa041c5328f1f0cd8cfb09a236c6942ce",
+            "implementation_id": "intent-interpreter-v1",
+            "implementation_sha256": "cd615155420d3e255b51381f813667e4431b772c9f273d8056f5a132651da8bc"
+          },
+          "permissions": {
+            "evidence": "none",
+            "filesystem": {
+              "mode": "none",
+              "roots": []
+            },
+            "network": {
+              "mode": "governed_pi"
+            },
+            "persistence": "none",
+            "process": {
+              "mode": "none"
+            },
+            "sources": "approved_capture"
+          },
+          "limits": {
+            "max_files": 0,
+            "max_input_bytes": 65536,
+            "max_input_items": 4,
+            "max_invocations": 1,
+            "max_model_calls": 1,
+            "max_output_bytes": 65536,
+            "max_output_tokens": 1536,
+            "max_source_bytes": 0,
+            "timeout_seconds": 120
+          },
+          "policy_sha256": "0e3b87259495f9621afd8af964a2f0d69fcc7ad6d50c406d69414d80159ac863",
+          "resources": {
+            "source_ref": "6bc55bbb-8208-4c02-9323-25564c29ec54",
+            "approval_id": "0850aede-dfb3-4149-aa68-bfbe635f0c4b",
+            "content_sha256": "0aa247d56ade4caef1db207b17b47f4a337ad87bcce07266d591d132e173b9d9",
+            "scope_sha256": "1cd842fc3e7af164b3bc62b8e6e67e90ec2957743a20366a55d1cfae9d4ea994"
+          }
+        },
+        "validate": {
+          "identity": {
+            "id": "intent.validate",
+            "version": "1.0.0",
+            "manifest_sha256": "32b52fad133b0bc6a4da3a5102e1ecad4ce2679a97fab7513521e5b3263b21b7",
+            "implementation_id": "intent-validator-v1",
+            "implementation_sha256": "6bea989ea744c23941056fd0e0333e82116a8255e4a11d0d1a178ce193c0d5c3"
+          },
+          "permissions": {
+            "evidence": "none",
+            "filesystem": {
+              "mode": "none",
+              "roots": []
+            },
+            "network": {
+              "mode": "none"
+            },
+            "persistence": "none",
+            "process": {
+              "mode": "none"
+            }
+          },
+          "limits": {
+            "max_files": 0,
+            "max_input_bytes": 65536,
+            "max_input_items": 4,
+            "max_invocations": 1,
+            "max_model_calls": 0,
+            "max_output_bytes": 65536,
+            "max_output_tokens": 0,
+            "max_source_bytes": 0,
+            "timeout_seconds": 30
+          },
+          "policy_sha256": "65b9feda1408ef69aa7dcb5dbd0df8923a11f089e68e4d7dbf87186934040d34",
+          "resources": {}
+        },
+        "record": {
+          "identity": {
+            "id": "result.record",
+            "version": "1.0.0",
+            "manifest_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+            "implementation_id": "result-record-v1",
+            "implementation_sha256": "3fe6518b30b5f5a599b84961d0f79615980a790f9d90831de05ad152c230b463"
+          },
+          "permissions": {
+            "evidence": "approved_context",
+            "filesystem": {
+              "mode": "none",
+              "roots": []
+            },
+            "network": {
+              "mode": "none"
+            },
+            "persistence": "workflow_result",
+            "process": {
+              "mode": "none"
+            }
+          },
+          "limits": {
+            "max_files": 0,
+            "max_input_bytes": 65536,
+            "max_input_items": 32,
+            "max_invocations": 1,
+            "max_model_calls": 0,
+            "max_output_bytes": 65536,
+            "max_output_tokens": 0,
+            "max_source_bytes": 0,
+            "timeout_seconds": 30
+          },
+          "policy_sha256": "e71e940e7ef88b9dc981e25e777f823f3430e865306941d93a20344b610bb44e",
+          "resources": {}
+        }
+      },
+      "inputs": {
+        "source_ref": "6bc55bbb-8208-4c02-9323-25564c29ec54",
+        "paths": [
+          "README.md",
+          "release.py"
+        ],
+        "objective": "Can you work out whether we're ready to release this?",
+        "catalogue_sha256": "274506fd22226db88095e9f40978f5fa1e8580ce38cb7369dfff0239453efe74"
+      },
+      "configuration_sha256": "1fc515cf726ac7847b08ec787d0e4cf19d1858971bd4edca6ca1384c2a7e4b28",
+      "models": {
+        "intent_interpreter": "muse-spark-1.3"
+      },
+      "role_contracts": {
+        "intent_interpreter": "16d3c4ca8716b336d5450314c76302c13a780422c95693ead8c1e034dddd5514"
+      },
+      "max_model_calls": 1,
+      "max_output_tokens": 1536,
+      "wall_seconds": 180,
+      "expires_at": "2026-11-01T00:16:37.910978Z",
+      "outbound_approved": true,
+      "idempotency_key": "admission:b0d79350-342d-4271-9eab-65b476c6243d"
+    },
+    "context": {
+      "goal_id": "4252652a-670c-484b-8be5-72a4d2856e6d",
+      "admission_ref": "b0d79350-342d-4271-9eab-65b476c6243d",
+      "context": {
+        "observation": "Can you work out whether we're ready to release this?",
+        "claims": [],
+        "sources": [
+          {
+            "id": "6bc55bbb-8208-4c02-9323-25564c29ec54",
+            "content_sha256": "0aa247d56ade4caef1db207b17b47f4a337ad87bcce07266d591d132e173b9d9"
+          }
+        ],
+        "memories": [],
+        "source_event_ids": [
+          "fcb20db0-633d-4eb7-99fa-c2073e92cb6a"
+        ],
+        "requested_action_kind": "record_analysis"
+      }
+    },
+    "expected_output": "workflow_result",
+    "semantic_status": "unverified",
+    "cost_status": "one_model_call; cost_unknown_not_estimated",
+    "profile": "intent-interpretation",
+    "model_disclosure": {
+      "operation": "intent.interpret",
+      "destination": {
+        "kind": "remote_provider",
+        "provider": "meta",
+        "transport": "pi",
+        "host": "api.meta.ai",
+        "endpoint": "https://api.meta.ai/v1/chat/completions",
+        "model": "muse-spark-1.3"
+      },
+      "role": "intent_interpreter",
+      "role_contract_sha256": "16d3c4ca8716b336d5450314c76302c13a780422c95693ead8c1e034dddd5514",
+      "context_policy": "alive-intent-context/v1",
+      "files": [
+        {
+          "path": "README.md",
+          "bytes": 34
+        },
+        {
+          "path": "release.py",
+          "bytes": 65
+        }
+      ],
+      "source_bytes": 0,
+      "content_sent": false,
+      "goal_characters": 53,
+      "catalogue_sha256": "274506fd22226db88095e9f40978f5fa1e8580ce38cb7369dfff0239453efe74",
+      "catalogue_entries": 5,
+      "reserved_request_bytes": 10418,
+      "max_model_calls": 1,
+      "max_output_tokens": 1536,
+      "leaves_host": true,
+      "cost": "unknown; no price is configured and none is estimated",
+      "cancellation": "A request already sent to the provider cannot be recalled. An ambiguous outcome is never retried; its reservation stays charged.",
+      "retention": "The prompt and response are retained in the local database in clear text."
+    }
+  },
+  "authorization_state": "pending",
+  "state": "pending",
+  "run": null
+}

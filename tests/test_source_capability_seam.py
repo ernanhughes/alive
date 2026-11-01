@@ -31,12 +31,28 @@ SOURCE_CAPABILITIES = {
 }
 # L1-02 adds new identities; it changes none of the above.
 ANALYSIS_CAPABILITIES = {"repository.analyze@1.0.0", "repository.validate_findings@1.0.0"}
+# PI-03C added these four; they change none of the earlier identities.
+PI03C_CAPABILITIES = {
+    "evidence.verify-locators@1.0.0",
+    "evidence.validate_references@1.1.0",
+    "evidence.compare-claims@1.0.0",
+    "report.compose@1.0.0",
+}
+# L2-01 adds two more identities and changes none of the above.
+INTENT_CAPABILITIES = {"intent.interpret@1.0.0", "intent.validate@1.0.0"}
 
 
 def test_every_earlier_manifest_keeps_its_exact_hash():
     found = {f"{c.identity['id']}@{c.identity['version']}": c for c in default_registry().list()}
     assert {k: found[k].manifest_sha256 for k in PRE_EXISTING} == PRE_EXISTING
-    assert set(found) == set(PRE_EXISTING) | SOURCE_CAPABILITIES | ANALYSIS_CAPABILITIES
+    assert (
+        set(found)
+        == set(PRE_EXISTING)
+        | SOURCE_CAPABILITIES
+        | ANALYSIS_CAPABILITIES
+        | PI03C_CAPABILITIES
+        | INTENT_CAPABILITIES
+    )
 
 
 def declared(path="context.prepare@1.0.0.yaml", **permissions):

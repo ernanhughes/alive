@@ -1,0 +1,120 @@
+{
+  "schema_version": 1,
+  "name": "owner-intent-interpretation",
+  "version": 1,
+  "title": "Intent interpretation",
+  "description": "Interpret the owner's stated goal against the trusted procedure catalogue with one governed model call, keep the goal unchanged, and retain the proposal. It executes nothing.",
+  "inputs": {
+    "source_ref": {
+      "type": "string"
+    },
+    "paths": {
+      "type": "array"
+    },
+    "objective": {
+      "type": "string"
+    },
+    "catalogue_sha256": {
+      "type": "string"
+    }
+  },
+  "limits": {
+    "max_wall_seconds": 180,
+    "max_model_calls": 1,
+    "max_total_output_tokens": 1536
+  },
+  "stages": [
+    {
+      "id": "interpret",
+      "title": "Model interpretation of the goal",
+      "type": "pi_agent",
+      "operation": "intent.interpret",
+      "capability_version": "1.0.0",
+      "capability_sha256": "f53d70b34d7a4d8086207a8b11f931dfa041c5328f1f0cd8cfb09a236c6942ce",
+      "inputs": {
+        "source_ref": "$input.source_ref",
+        "objective": "$input.objective",
+        "catalogue_sha256": "$input.catalogue_sha256"
+      },
+      "output_schema": {
+        "properties": {
+          "interpretation": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "interpretation"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 120,
+        "max_output_tokens": 1536
+      }
+    },
+    {
+      "id": "validate",
+      "title": "Check the goal is unchanged",
+      "type": "validation",
+      "operation": "intent.validate",
+      "capability_version": "1.0.0",
+      "capability_sha256": "32b52fad133b0bc6a4da3a5102e1ecad4ce2679a97fab7513521e5b3263b21b7",
+      "inputs": {
+        "interpretation": "$stage.interpret.interpretation",
+        "objective": "$input.objective",
+        "catalogue_sha256": "$input.catalogue_sha256"
+      },
+      "output_schema": {
+        "properties": {
+          "result": {
+            "type": "object"
+          },
+          "assessment": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "result",
+          "assessment"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      },
+      "depends_on": [
+        "interpret"
+      ]
+    },
+    {
+      "id": "record",
+      "title": "Retain the proposal",
+      "type": "deterministic",
+      "operation": "result.record",
+      "capability_version": "1.0.0",
+      "capability_sha256": "9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca",
+      "inputs": {
+        "result": "$stage.validate.result",
+        "assessment": "$stage.validate.assessment"
+      },
+      "output_schema": {
+        "properties": {
+          "artifact_id": {
+            "type": "string"
+          },
+          "sha256": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "artifact_id",
+          "sha256"
+        ]
+      },
+      "limits": {
+        "timeout_seconds": 30
+      },
+      "depends_on": [
+        "validate"
+      ]
+    }
+  ]
+}

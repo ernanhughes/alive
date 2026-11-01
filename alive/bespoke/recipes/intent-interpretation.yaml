@@ -1,0 +1,49 @@
+schema_version: 1
+id: intent-interpretation
+version: 1.0.0
+name: Intent interpretation
+description: Interpret the owner's stated goal against the trusted procedure catalogue with
+  one governed model call. Only the goal text and the names and sizes of the approved source
+  files are sent; no file content. The result is a proposal and executes nothing.
+context_types:
+- repository
+intents:
+- inspect_implementation
+workflow:
+  name: owner-intent-interpretation
+  version: 1
+  definition_sha256: a33c2f9fabbce0d775123bda017400dcdd58d206ab5fd45ff3d6105f18362394
+capabilities:
+- stage_id: interpret
+  id: intent.interpret
+  version: 1.0.0
+  manifest_sha256: f53d70b34d7a4d8086207a8b11f931dfa041c5328f1f0cd8cfb09a236c6942ce
+- stage_id: validate
+  id: intent.validate
+  version: 1.0.0
+  manifest_sha256: 32b52fad133b0bc6a4da3a5102e1ecad4ce2679a97fab7513521e5b3263b21b7
+- stage_id: record
+  id: result.record
+  version: 1.0.0
+  manifest_sha256: 9eb884e56453645356940304b4177f135ba34ae0ba242546aba6ef5b045216ca
+limits:
+  max_model_calls: 1
+  max_wall_seconds: 180
+  max_output_tokens: 1536
+  outbound_allowed: true
+  permissions:
+  - evidence.read
+  - model.infer
+  - source.read
+  - workflow.write
+required_evidence: approved_capture
+output_artifact: workflow_result
+validation: reference_identity
+status: active
+presentation:
+  category: bespoke
+  icon: brain-circuit
+  tags:
+  - interpretation
+  - model
+  - owner-review

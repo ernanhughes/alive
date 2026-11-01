@@ -8,6 +8,7 @@ from alive.admission.contracts import Confirmation, ReviewRequest
 from alive.admission.models import Admission
 from alive.admission.profiles import PROFILES
 from alive.bespoke.recipes import recipe_hash
+from alive.intent import service as intent_service
 from alive.sources import custody
 from alive.sources.models import SourceApproval, SourceCapture
 
@@ -23,7 +24,11 @@ def router(app, ready):
                 409, "Admission unavailable, unapproved, expired or changed"
             ) from None
 
-    ProfileName = Literal["approved-repository-inspection", "approved-repository-analysis"]
+    ProfileName = Literal[
+        "approved-repository-inspection",
+        "approved-repository-analysis",
+        "intent-interpretation",
+    ]
 
     @api.get("/profile")
     async def profile(profile: ProfileName = Query("approved-repository-inspection")):
@@ -95,6 +100,15 @@ def router(app, ready):
     @api.get("/{admission_id}/report")
     async def report(admission_id: str = Path(max_length=36)):
         return await safe(service.report(app.state.kernel, admission_id))
+
+    @api.post("/{admission_id}/recommendation")
+    async def compose_recommendation(admission_id: str = Path(max_length=36)):
+        # Deterministic: reads the retained interpretation and re-runs eligibility. No model call.
+        return await safe(intent_service.compose(app.state.kernel, admission_id))
+
+    @api.get("/{admission_id}/recommendation")
+    async def recommendation(admission_id: str = Path(max_length=36)):
+        return await safe(intent_service.get(app.state.kernel, admission_id))
 
     @api.post("/{admission_id}/start")
     async def start(request: Confirmation, admission_id: str = Path(max_length=36)):

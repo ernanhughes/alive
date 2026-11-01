@@ -10,6 +10,15 @@ Level 1 is **not qualified** pending independent review and the remaining exit g
 PI-03C general validation, L2 interpretation/composition and L3 live outcome/improvement/
 promotion remain subsequent milestones. Do not start their dependent implementation yet.
 
+## Update (1 November 2026)
+
+PR #83 (Level 1 destination hardening) and PR #84 (PI-03C deterministic validation) are merged
+(`2f27f3a`). The L2-01 draft PR adds governed intent interpretation: a model call proposes, the
+unchanged selector decides eligibility, and a recommendation grants nothing. See
+[L2-01-ARCHITECTURE.md](L2-01-ARCHITECTURE.md). L2-01 has been exercised only with scripted
+providers; no claim of improved interpretation quality is made, and Level 1 qualification
+remains subject to independent review. L2-02 and L3 remain subsequent milestones.
+
 The table below records the original programme design, not the current delivery status.
 
 Audited baseline: integrated main `1b97c4dc121c5f6f0962f48590ce78f2bad89d9d` (PI-03B and BESPOKE-01 merged).

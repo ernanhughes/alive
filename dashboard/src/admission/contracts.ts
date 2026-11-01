@@ -12,13 +12,16 @@ export interface Source {
   expires_at: string;
 }
 export type ProfileName =
-  "approved-repository-inspection" | "approved-repository-analysis";
+  | "approved-repository-inspection"
+  | "approved-repository-analysis"
+  | "intent-interpretation";
 export const PROFILE_LIMITS: Record<
   ProfileName,
   { files: number; bytes: number; model: boolean }
 > = {
   "approved-repository-inspection": { files: 20, bytes: 32768, model: false },
   "approved-repository-analysis": { files: 8, bytes: 8192, model: true },
+  "intent-interpretation": { files: 20, bytes: 32768, model: true },
 };
 export interface Profile {
   profile: ProfileName;
@@ -27,6 +30,10 @@ export interface Profile {
   recipe: Recipe;
 }
 export interface Disclosure {
+  content_sent?: boolean;
+  catalogue_sha256?: string;
+  catalogue_entries?: number;
+  goal_characters?: number;
   operation: string;
   destination: {
     kind: string;
@@ -158,11 +165,12 @@ export function checkedAdmission(
   const grant = value.terms?.proposed_grant_data;
   const disclosure = value.terms?.model_disclosure;
   const analysis = value.terms?.profile === "approved-repository-analysis";
+  const intent = value.terms?.profile === "intent-interpretation";
   const inspection = value.terms?.profile === undefined;
   if (
     !grant ||
     !value.terms.candidate?.graph ||
-    !(analysis || inspection) ||
+    !(analysis || intent || inspection) ||
     (inspection &&
       (grant.max_model_calls !== 0 ||
         grant.max_output_tokens !== 0 ||
@@ -170,6 +178,16 @@ export function checkedAdmission(
         grant.wall_seconds !== 30 ||
         disclosure !== undefined ||
         value.terms.expected_output !== "captured_files")) ||
+    (intent &&
+      (grant.max_model_calls !== 1 ||
+        grant.max_output_tokens > 1536 ||
+        grant.outbound_approved !== true ||
+        grant.wall_seconds !== 180 ||
+        !disclosure ||
+        disclosure.leaves_host !== true ||
+        disclosure.content_sent !== false ||
+        disclosure.max_model_calls !== 1 ||
+        value.terms.expected_output !== "workflow_result")) ||
     (analysis &&
       (grant.max_model_calls !== 1 ||
         grant.max_output_tokens > 1536 ||
@@ -181,7 +199,64 @@ export function checkedAdmission(
         value.terms.expected_output !== "workflow_result"))
   )
     throw new Error(
-      "Admission exceeds the supported inspection and analysis profiles.",
+      "Admission exceeds the supported inspection, analysis and interpretation profiles.",
     );
   return value;
+}
+
+export interface Proposal {
+  recipe_id: string;
+  recipe_version: string;
+  addresses: "fully" | "partly" | "tangential";
+  relevance: string;
+  resolution: string;
+  reasons: string[];
+}
+export interface Recommendation {
+  id: string;
+  admission_id: string;
+  record_sha256: string;
+  record: {
+    status: string;
+    original_goal: string;
+    goal_preservation: { preserved: boolean; model_goal: string | null };
+    catalogue_sha256: string;
+    interpreter: { model: string; model_calls: number };
+    interpretation: {
+      origin: string;
+      value: {
+        primary_objective: string;
+        subordinate_objectives: { objective: string; rationale: string }[];
+        evidence_requirements: {
+          requirement: string;
+          importance: string;
+          status: string;
+        }[];
+      } | null;
+    };
+    resolution: { proposals: Proposal[] };
+    recommendation: {
+      recipe_id: string;
+      recipe_version: string;
+      chosen_by: string;
+      needs_model: boolean;
+    } | null;
+    alternatives: Proposal[];
+    unavailable: Proposal[];
+    uncertainty: {
+      ambiguities: string[];
+      missing_information: string[];
+      assumptions: string[];
+      alternative_interpretations: string[];
+      limits_of_available_procedures: string[];
+      needs_clarification: boolean;
+      clarification_question: string;
+    } | null;
+    authorization: {
+      execution: string;
+      this_recommendation_grants: string;
+      admission_profile: string | null;
+      needs_model_authorization: boolean;
+    };
+  };
 }
