@@ -7,7 +7,7 @@ from alive.admission.models import Admission
 from alive.analysis.validation import OK, check_evidence
 from alive.continuity import service
 from alive.continuity.context import package
-from alive.continuity.contracts import ROLE, ContextualAnswer, ReasoningSpec
+from alive.continuity.contracts import ContextualAnswer, ReasoningSpec
 from alive.workflows.adapters import StageResult
 from alive.workflows.context import digest, require
 
@@ -27,20 +27,36 @@ async def reason(ctx):
         )
     require(bool(inputs["context_ref"]), "frozen_context_required")
     require(digest(snapshot) == inputs["context_sha256"], "context_snapshot_integrity")
-    data = package(ctx.resources, inputs["paths"], inputs["objective"], snapshot)
+    from alive.task_review import contracts as task
+    from alive.task_review.service import package as task_package
+
+    task_mode = admission.terms.get("profile") in (task.PROFILE, task.REPAIR_PROFILE)
+    assemble = task_package if task_mode else package
+    data = assemble(ctx.resources, inputs["paths"], inputs["objective"], snapshot)
     require(digest(data) == inputs["model_input_sha256"], "context_model_input_changed")
-    spec = ReasoningSpec(inputs=inputs, context_for=lambda _: data)
+    spec = (
+        task.Spec(
+            inputs=inputs,
+            context_for=lambda _: data,
+            repair=admission.terms["profile"] == task.REPAIR_PROFILE,
+        )
+        if task_mode
+        else ReasoningSpec(inputs=inputs, context_for=lambda _: data)
+    )
     output = await ctx.cognition.call_role(
         ctx.inquiry_id,
-        ROLE,
+        spec.role,
         data,
         ledger=ctx.ledger,
         output_ceiling=ctx.stage.limits.max_output_tokens,
         workflow_claim=(ctx.run_id, ctx.stage_id, ctx.owner),
         spec=spec,
     )
+    answer = output.model_dump(mode="json")
+    if task_mode:
+        answer["task_contract"] = data["task_contract"]
     return StageResult(
-        {"answer": output.model_dump(mode="json"), "snapshot": snapshot},
+        {"answer": answer, "snapshot": snapshot},
         (ctx.resources.source_ref, inputs["context_ref"]),
         "not_run",
     )
@@ -107,6 +123,10 @@ def typed_references(output, items):
 
 
 async def validate_answer(ctx):
+    if "task_contract" in ctx.inputs["answer"]:
+        from alive.task_review.adapters import validate_answer as validate_task
+
+        return await validate_task(ctx)
     output = ContextualAnswer.model_validate(ctx.inputs["answer"])
     snapshot = ctx.inputs["snapshot"]
     ids = {item["id"] for item in snapshot["items"]}

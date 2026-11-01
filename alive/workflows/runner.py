@@ -158,7 +158,15 @@ def contextual_binding(call, stage, grant):
     )
 
 
+def code_review_binding(call, stage, grant):
+    from alive.task_review.service import binding
+
+    return binding(call, stage, grant)
+
+
 TYPED_BINDINGS = {
+    "code_reviewer": code_review_binding,
+    "code_review_repairer": code_review_binding,
     ANALYSIS_ROLE: analysis_binding,
     INTENT_ROLE: intent_binding,
     "contextual_reasoner": contextual_binding,

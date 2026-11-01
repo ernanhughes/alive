@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import Field
+from pydantic import Field, field_validator
 
 from alive.bespoke.contracts import Hash, Objective, Ref
 from alive.capabilities.manifest import Strict
@@ -12,6 +12,8 @@ class ReviewRequest(Strict):
         "approved-repository-analysis",
         "intent-interpretation",
         "contextual-reasoning",
+        "code-review-v1",
+        "code-review-repair-v1",
     ] = "approved-repository-inspection"
     goal_ref: Ref
     approval_ref: Ref
@@ -36,6 +38,8 @@ class LiveSetup(Strict):
     ttl_seconds: int = Field(default=3600, ge=60, le=86400)
     contextual: bool = False
     adaptive: bool = False
+    code_review: bool = False
+    completion_repair: bool = False
 
 
 class LiveGoal(Strict):
@@ -43,7 +47,19 @@ class LiveGoal(Strict):
     goal: str = Field(min_length=1, max_length=1000)
     idempotency_key: str = Field(min_length=1, max_length=60)
     conversation_ref: Ref | None = None
+    task_mode: Literal["general_contextual", "code_review"] = "general_contextual"
+    task_case_ids: list[str] | None = Field(default=None, max_length=8)
+    repair_incomplete: bool = False
     strategy_mode: Literal["stateless", "contextual", "learned", "selective"] = "selective"
+
+    @field_validator("task_case_ids")
+    @classmethod
+    def bounded_case_ids(cls, values):
+        if values is not None and (
+            len(set(values)) != len(values) or any(not v.strip() or len(v) > 40 for v in values)
+        ):
+            raise ValueError("Case IDs must be distinct, nonempty and at most 40 characters")
+        return values
 
 
 class ConversationRequest(Strict):

@@ -14,6 +14,8 @@ interface Consent {
     max_tokens: number;
     expires_at: string;
     disclosure: string;
+    code_review?: boolean;
+    completion_repair?: boolean;
     profiles: Record<
       string,
       {
@@ -53,7 +55,27 @@ interface Lesson {
   proposal: { strategy: string };
   utility?: { state: string; paired_gains: number; paired_losses: number; applications: number };
 }
+interface TaskCandidate {
+  candidate_id: string;
+  raw_text: string;
+  candidate: unknown;
+  contract: { case_ids: string[] };
+  transport_completed: boolean;
+  response_schema_valid: boolean;
+  schema_valid: boolean;
+  task_complete: boolean;
+  semantically_verified: boolean;
+  completion: { all_cases_addressed: boolean; contains_undetermined: boolean; errors: unknown[] };
+}
 interface Exchange {
+  task_review?: {
+    original: TaskCandidate;
+    effective: TaskCandidate;
+    repair: unknown;
+    repair_attempted: boolean;
+    repair_successful: boolean;
+    additional_model_calls: number;
+  };
   id: string;
   selection?: SelectionView | null;
   goal: string;
@@ -237,6 +259,9 @@ function LiveAI({ token }: { token: string }) {
   const [consentRef, setConsentRef] = useState("");
   const [conversationRef, setConversationRef] = useState("");
   const [goal, setGoal] = useState("");
+  const [taskMode, setTaskMode] = useState("general_contextual");
+  const [caseIds, setCaseIds] = useState("");
+  const [completionRepair, setCompletionRepair] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [revision, setRevision] = useState(0);
@@ -363,6 +388,8 @@ function LiveAI({ token }: { token: string }) {
           ttl_seconds: 3600,
           contextual: true,
           adaptive: true,
+          code_review: taskMode === "code_review",
+          completion_repair: taskMode === "code_review" && completionRepair,
         },
         "POST",
       );
@@ -379,7 +406,7 @@ function LiveAI({ token }: { token: string }) {
 
   async function ask() {
     if (!approved || !goal.trim()) return;
-    const signature = JSON.stringify([consentRef, conversationRef, goal]);
+    const signature = JSON.stringify([consentRef, conversationRef, goal, taskMode, caseIds, completionRepair]);
     if (retry.current?.signature !== signature)
       retry.current = { signature, key: crypto.randomUUID() };
     setBusy(true);
@@ -398,7 +425,7 @@ function LiveAI({ token }: { token: string }) {
         );
         conversation = created.id;
         retry.current = {
-          signature: JSON.stringify([consentRef, conversation, goal]),
+          signature: JSON.stringify([consentRef, conversation, goal, taskMode, caseIds, completionRepair]),
           key: retry.current!.key,
         };
         if (!alive.current) return;
@@ -416,6 +443,11 @@ function LiveAI({ token }: { token: string }) {
           goal,
           idempotency_key: retry.current.key,
           ...(contextual ? { conversation_ref: conversation } : {}),
+          ...(taskMode === "code_review" ? {
+            task_mode: taskMode,
+            task_case_ids: caseIds.trim() ? caseIds.split(",").map((v) => v.trim()) : null,
+            repair_incomplete: completionRepair,
+          } : {}),
         },
         "POST",
       );
@@ -521,6 +553,26 @@ function LiveAI({ token }: { token: string }) {
         </p>
       )}
       <label>
+        Response contract
+        <select value={taskMode} disabled={busy} onChange={(e) => {
+          setTaskMode(e.target.value); setCompletionRepair(false);
+        }}>
+          <option value="general_contextual">General conversation (existing)</option>
+          <option value="code_review">Code review v1 (opt-in)</option>
+        </select>
+      </label>
+      {taskMode === "code_review" && <>
+        <label>Declared case IDs (optional, comma separated)
+          <input value={caseIds} maxLength={320} disabled={busy} onChange={(e) => setCaseIds(e.target.value)} />
+        </label>
+        <label><input type="checkbox" checked={completionRepair} disabled={busy}
+          onChange={(e) => setCompletionRepair(e.target.checked)} />
+          Request one completion repair if authorized (one extra model call)
+        </label>
+        {selected && !selected.terms.code_review && <p>Configure and approve a session with this task contract before asking.</p>}
+        {completionRepair && selected && !selected.terms.completion_repair && <p>This session does not authorize completion repair; configure a new session to enable it.</p>}
+      </>}
+      <label>
         Your goal
         <textarea
           value={goal}
@@ -530,7 +582,8 @@ function LiveAI({ token }: { token: string }) {
           placeholder="Review my repository and tell me what's preventing us from shipping."
         />
       </label>
-      <button disabled={busy || !approved || !goal.trim()} onClick={ask}>
+      <button disabled={busy || !approved || !goal.trim() || (taskMode === "code_review" &&
+          (!selected?.terms.code_review || (completionRepair && !selected?.terms.completion_repair)))} onClick={ask}>
         {busy ? "ALIVE is examining the evidence…" : "Ask ALIVE"}
       </button>
       <details open={!approved}>
@@ -616,6 +669,17 @@ function LiveAI({ token }: { token: string }) {
       {visibleExchanges.map((exchange) => (
         <article key={exchange.id}>
           <h4>{exchange.goal}</h4>
+          {exchange.task_review && <section aria-label="Code-review completion">
+            <p><strong>Code-review contract: {exchange.task_review.effective.task_complete ? "complete" : "incomplete"}</strong></p>
+            <p>Transport returned: {exchange.task_review.original.transport_completed ? "yes" : "no"} · Original response schema valid: {exchange.task_review.original.response_schema_valid ? "yes" : "no"} · Candidate schema valid: {exchange.task_review.effective.schema_valid ? "yes" : "no"}</p>
+            <p>Every declared case addressed ({exchange.task_review.effective.contract.case_ids.length} required): {exchange.task_review.effective.completion.all_cases_addressed ? "yes" : "no"}</p>
+            <p>Independent semantic verification: {exchange.task_review.effective.semantically_verified ? "verified" : "not performed"}</p>
+            {exchange.task_review.effective.completion.contains_undetermined && <p>Structurally complete answers can still contain undetermined outcomes.</p>}
+            <p>Repair: {exchange.task_review.repair_attempted ? (exchange.task_review.repair_successful ? "completed the contract" : "did not complete the contract") : "not attempted"} · {exchange.task_review.additional_model_calls} additional model call(s)</p>
+            <details><summary>Original candidate, omissions and repair evidence</summary>
+              <pre>{JSON.stringify(exchange.task_review, null, 2)}</pre>
+            </details>
+          </section>}
           {exchange.answer && (
             <section aria-label="ALIVE contextual answer">
               <p style={{ whiteSpace: "pre-wrap" }}>{exchange.answer.answer}</p>

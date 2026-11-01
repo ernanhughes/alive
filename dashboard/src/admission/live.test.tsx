@@ -520,3 +520,37 @@ it("explains a deliberate decision to use no lesson and shows demoted standing",
   expect(screen.getByText(/demoted on counterevidence/)).toBeTruthy();
   expect(screen.queryByText(/Independent check/)).toBeNull();
 });
+
+
+it("keeps an incomplete task response visible and separates structure from semantic verification", async () => {
+  const candidate = {
+    candidate_id: "original-candidate", raw_text: "original partial JSON", candidate: { explanation: "Useful partial result" },
+    contract: { case_ids: ["c1", "c2"] }, transport_completed: true, response_schema_valid: true,
+    schema_valid: true, task_complete: false, semantically_verified: false,
+    completion: { all_cases_addressed: false, contains_undetermined: false, errors: [{ field: "predictions", case_id: "c2" }] },
+  };
+  mock.mockImplementation(backend({consents:[consent], exchanges:[{
+    ...exchange, report: null, task_review: { original:candidate, effective:candidate,
+      repair:null, repair_attempted:false, repair_successful:false, additional_model_calls:0 },
+  }]}));
+  render(<LivePane token="token" />);
+  await screen.findByText("Code-review contract: incomplete");
+  expect(screen.getByText(/Original response schema valid: yes/)).toBeTruthy();
+  expect(screen.getByText(/Every declared case addressed .*: no/)).toBeTruthy();
+  expect(screen.getByText("Independent semantic verification: not performed")).toBeTruthy();
+  expect(screen.getByText(/Repair: not attempted/)).toBeTruthy();
+  fireEvent.click(screen.getByText("Original candidate, omissions and repair evidence"));
+  expect(screen.getByText(/original partial JSON/)).toBeTruthy();
+});
+
+it("keeps code review opt-in and blocks asking through an old session", async () => {
+  mock.mockImplementation(backend());
+  render(<LivePane token="token" />);
+  await screen.findByText(/6 calls/);
+  expect((screen.getByLabelText("Response contract") as HTMLSelectElement).value).toBe("general_contextual");
+  fireEvent.change(screen.getByLabelText("Response contract"), { target:{value:"code_review"} });
+  fireEvent.change(screen.getByLabelText("Your goal"), { target:{value:"Review named cases"} });
+  expect((screen.getByRole("button", {name:"Ask ALIVE"}) as HTMLButtonElement).disabled).toBe(true);
+  expect(screen.getByText(/Configure and approve a session with this task contract/)).toBeTruthy();
+  expect((screen.getByLabelText(/Request one completion repair/) as HTMLInputElement).checked).toBe(false);
+});
