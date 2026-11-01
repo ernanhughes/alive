@@ -232,6 +232,7 @@ def test_context_cannot_cross_or_tamper_with_scope(ready, change):
 def test_explicit_older_findings_and_context_dependence(ready):
     _, upstream, *_ = ready
     base = upstream.respond
+    title = "Missing authorization check"
 
     def respond(body):
         data = json.loads(body["messages"][1]["content"])
@@ -260,7 +261,7 @@ def test_explicit_older_findings_and_context_dependence(ready):
                             "content": json.dumps(
                                 analysis(
                                     finding(finding_id="F17", title="Rounding error"),
-                                    finding(finding_id="F23", title="Missing authorization check"),
+                                    finding(finding_id="F23", title=title),
                                 )
                             )
                         },
@@ -278,20 +279,40 @@ def test_explicit_older_findings_and_context_dependence(ready):
     assert result["answer"]["answer"] == "Missing authorization check"
     assert result["answer"]["recalled_item_ids"][0].endswith(":F23")
     assert {i["id"].split(":")[-1] for i in result["context"]["items"]} >= {"F17", "F23"}
+    title = "A different F23 finding in an independent conversation"
+    other = conversation(ready, "Different retained findings")
+    initial(ready, other)
+    changed = ask(ready, other, "Which is the F23 problem rather than F17?").json()
+    assert changed["answer"]["answer"] == title
+    assert changed["answer"]["answer"] != result["answer"]["answer"]
+    assert not set(changed["answer"]["recalled_item_ids"]) & set(
+        result["answer"]["recalled_item_ids"]
+    )
 
 
-@pytest.mark.parametrize("change", ["consent", "source"])
-def test_revoked_context_scope_never_dispatches(ready, change):
+@pytest.mark.parametrize("change", ["consent", "source", "expiry", "endpoint", "model"])
+def test_revoked_context_scope_never_dispatches(ready, change, monkeypatch):
     from alive.sources import custody
     from alive.sources.cli import principal
 
-    _, upstream, setup, _, approval, _ = ready
+    _, upstream, setup, _, approval, settings = ready
     ref = conversation(ready)
     initial(ready, ref)
     if change == "consent":
         call(ready[0], live.revoke, setup["id"], principal=principal())
-    else:
+    elif change == "source":
         call(ready[0], custody.withdraw, approval["id"], reason="test", principal=principal())
+    elif change == "expiry":
+        from datetime import timedelta
+
+        from alive.models import now
+
+        expired = now() + timedelta(hours=2)
+        monkeypatch.setattr(custody, "now", lambda: expired)
+    elif change == "endpoint":
+        settings.alive_meta_base_url = "https://unapproved.example/v1"
+    else:
+        settings.alive_role_models = {"contextual_reasoner": "unapproved-model"}
     assert ask(ready, ref, "Explain it").status_code == 409
     assert len(upstream.calls) == 2
 

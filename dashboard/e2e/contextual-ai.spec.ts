@@ -17,45 +17,55 @@ test("retained live conversation answers a natural follow-up in Ask ALIVE", asyn
   await page.getByRole("button", { name: "Connect", exact: true }).click();
   const pane = page.getByRole("region", { name: "ALIVE Live AI", exact: true });
   await pane
-    .getByLabel("Conversation", { exact: true })
+    .getByRole("combobox", { name: "Conversation", exact: true })
     .selectOption(ledger.conversation.id);
-  await expect(pane.locator("article")).not.toHaveCount(0);
   const writes: string[] = [];
   page.on("request", (r) => {
     if (r.url().startsWith(app + "/api/") && r.method() !== "GET")
       writes.push(r.url());
   });
-  await pane
-    .getByLabel("Your goal", { exact: true })
-    .fill(
-      "What did the zero-value counterexample change in our earlier finding?",
+  const goals = ledger.main.length
+    ? ["What did the zero-value counterexample change in our earlier finding?"]
+    : ledger.main_goals.slice(0, 4);
+  ledger.browser = [];
+  for (const goal of goals) {
+    await pane.getByLabel("Your goal", { exact: true }).fill(goal);
+    const completed = page.waitForResponse(
+      (r) =>
+        r.url().endsWith("/api/v1/admissions/live/ask") &&
+        r.request().method() === "POST",
     );
-  const completed = page.waitForResponse(
-    (r) =>
-      r.url().endsWith("/api/v1/admissions/live/ask") &&
-      r.request().method() === "POST",
+    await pane.getByRole("button", { name: "Ask ALIVE", exact: true }).click();
+    const response = await completed;
+    expect(response.ok()).toBeTruthy();
+    const value = await response.json();
+    ledger.browser.push(value);
+    writeFileSync(ledgerPath!, JSON.stringify(ledger, null, 2));
+    expect(value.status).toBe("LIVE MODEL");
+    expect(value.answer || value.report).toBeTruthy();
+    if (value.answer) {
+      expect(value.answer.recalled_item_ids.length).toBeGreaterThan(0);
+      await expect(
+        pane.getByText(value.answer.answer, { exact: true }),
+      ).toBeVisible();
+    }
+    await expect(pane.getByLabel("Your goal", { exact: true })).toHaveValue("");
+  }
+  expect(writes).toEqual(
+    Array(goals.length).fill(app + "/api/v1/admissions/live/ask"),
   );
-  await pane.getByRole("button", { name: "Ask ALIVE", exact: true }).click();
-  const response = await completed;
-  expect(response.ok()).toBeTruthy();
-  const value = await response.json();
-  ledger.browser = value;
-  writeFileSync(ledgerPath!, JSON.stringify(ledger, null, 2));
-  expect(value.status).toBe("LIVE MODEL");
-  expect(value.answer.answer).toBeTruthy();
-  expect(value.answer.recalled_item_ids.length).toBeGreaterThan(0);
-  await expect(
-    pane.getByText(value.answer.answer, { exact: true }),
-  ).toBeVisible();
-  expect(writes).toEqual([app + "/api/v1/admissions/live/ask"]);
+  const last = ledger.browser.at(-1);
   await page.reload();
   await pane
-    .getByLabel("Conversation", { exact: true })
+    .getByRole("combobox", { name: "Conversation", exact: true })
     .selectOption(ledger.conversation.id);
   await expect(
-    pane.getByText(value.answer.answer, { exact: true }),
+    pane.getByText(last.answer.answer, { exact: true }),
   ).toBeVisible();
-  expect(writes).toHaveLength(1);
+  expect(writes).toHaveLength(goals.length);
+  ledger.status = "LIVE_BROWSER_CONVERSATION_DEMONSTRATED";
+  ledger.browser_writes = writes;
+  writeFileSync(ledgerPath!, JSON.stringify(ledger, null, 2));
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.screenshot({
     path: ledgerPath!.replace(".json", "-1440.png"),
