@@ -30,9 +30,11 @@ Design: [AI-FIRST-04.md](AI-FIRST-04.md). Protocol (predeclared, one amendment):
 `main` (89e3822, tree d5ca9a6…) lacked `alive/adaptation/` because PR #94 merged into
 `codex/integrate-contextual-92`. The six approved AI-FIRST-03 commits were cherry-picked onto main as
 draft PR [#95](https://github.com/ernanhughes/alive/pull/95); the resulting tree
-`e7219960ca9d030635fed8d6901261369b1a8f4d` is byte-identical to approved `2fc4c06`. 46 focused
-tests passed on it. This PR is stacked on that branch (base `ai-first-03-integration-main`,
-`659945f`); retarget to `main` after #95 merges. Not merged by me.
+`e7219960ca9d030635fed8d6901261369b1a8f4d` is byte-identical to approved `2fc4c06`, and 46 focused
+tests passed on it. The owner then merged #95 into `main` (21:03Z, rebase-style, so SHAs differ, content
+identical). This work was developed on that integration branch (base `659945f`); `main` was merged back
+in without rewriting history so the commit SHAs cited by the evidence ledgers stay valid. This PR
+targets `main` and its diff is AI-FIRST-04 only. I did not merge anything.
 
 ## 2. Production files changed (vs #95)
 
