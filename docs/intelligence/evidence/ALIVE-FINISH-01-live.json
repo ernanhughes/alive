@@ -1,0 +1,513 @@
+{
+  "milestone": "ALIVE-FINISH-01",
+  "tested_implementation_sha": "3f30158a8597b226fb3c39e8ca1b58c7c1b80a94",
+  "environment": {
+    "database": "disposable PostgreSQL database alive_finish01",
+    "workspace": "disposable temp workspace",
+    "transport": "pi",
+    "model_requested": "muse-spark-1.3-contributor",
+    "embedding_enabled": false,
+    "provider": "meta"
+  },
+  "authorization": {
+    "source_capture": "0c4ce683-00bb-480e-b9a2-1411770a1912",
+    "source_approval": "7b761ebe-c76a-4609-b1da-90131246a4da",
+    "source_content_sha256": "60df35836e07566da4a628175f781da2bfc19b8f83e265765f03a8318d6334f4",
+    "goal": "2d60081f-caf4-4075-82bc-dc1b7a71399d",
+    "consent_main": "5be8188b-bef3-40e4-beeb-a06e2b50bdba",
+    "consent_repair": "71bb7a05-e673-4f00-a27f-36797f75b91c",
+    "max_calls_main": 6,
+    "max_calls_repair": 4
+  },
+  "test_a": {
+    "exchange_id": "1946a58f-a60e-4c82-9ffc-82f30a4f0e75",
+    "status": "LIVE MODEL",
+    "model_calls": 2,
+    "availability": "available",
+    "conversation_ref": "0b6327b0-a9d2-47c5-8713-5e81e5d552bd",
+    "calls": [
+      {
+        "id": "c07706ec-4448-4a3b-9f93-fa1756defa50",
+        "status": "validated",
+        "provider": "meta",
+        "model": "muse-spark-1.3-contributor",
+        "usage": {
+          "total_tokens": 3171,
+          "prompt_tokens": 2116,
+          "charged_tokens": 3171,
+          "completion_tokens": 1055,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 425
+          }
+        },
+        "latency_ms": 10449.994700000389,
+        "inference_provenance": "production_pi",
+        "provider_receipts": [
+          {
+            "pi_run_id": "6b89b717-9f6e-4787-b2d8-1edf4e5807d9",
+            "request_id": "71fd0284-33b9-4b37-8b4a-aeafdafddaba",
+            "pi_state": "SETTLED",
+            "state": "settled",
+            "http_status": 200,
+            "transport": "network",
+            "model_requested": "muse-spark-1.3-contributor",
+            "model_observed": null,
+            "response_sha256": "48531f3a197090251f9f6891c42e308f2d38ac81fca30658191b82cb17a8f7f5",
+            "usage": {
+              "total_tokens": 3171,
+              "prompt_tokens": 2116,
+              "completion_tokens": 1055,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 425
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "483b8cc6-35e8-4c3d-97ca-c38e56c1170d",
+        "status": "validated",
+        "provider": "meta",
+        "model": "muse-spark-1.3-contributor",
+        "usage": {
+          "total_tokens": 1827,
+          "prompt_tokens": 1260,
+          "charged_tokens": 1827,
+          "completion_tokens": 567,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 192
+          }
+        },
+        "latency_ms": 6177.612699997553,
+        "inference_provenance": "production_pi",
+        "provider_receipts": [
+          {
+            "pi_run_id": "b6983c68-7e04-4ee2-943b-65897fd102c9",
+            "request_id": "e88bd0f8-ae57-47c5-8c75-f1cf4bc6b620",
+            "pi_state": "SETTLED",
+            "state": "settled",
+            "http_status": 200,
+            "transport": "network",
+            "model_requested": "muse-spark-1.3-contributor",
+            "model_observed": null,
+            "response_sha256": "be8b5caa5f9c6ca9f08c0f91d0a483eeeda6de11d00f64abd2f06b196f55ba3d",
+            "usage": {
+              "total_tokens": 1827,
+              "prompt_tokens": 1260,
+              "completion_tokens": 567,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 192
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "report_artifact_sha256": "8aa94c4a6327bd94c2f5a6fb250b40a8598681983057d8d6ee92fb47eb3c200a",
+    "summary": "No, append_item does not always append to the caller list. README requires in-place append and same-object return when items is not None, but `items or []` replaces falsy empty list with a new list, so empty-list callers are not mutated.",
+    "assessment": {
+      "contract": "repository-citation-existence/v1",
+      "findings_total": 1,
+      "semantic_status": "unverified",
+      "independent_verification": false,
+      "reference_identity_status": "all_valid",
+      "findings_with_valid_references": 1,
+      "findings_with_unsupported_references": 0
+    }
+  },
+  "test_b": {
+    "exchange_id": "e42d980c-aab2-4018-b822-ff1a87c1da81",
+    "status": "LIVE MODEL",
+    "model_calls": 2,
+    "availability": "available",
+    "conversation_ref": "858847df-8116-483f-b44e-b1de5d796f3e",
+    "calls": [
+      {
+        "id": "a7df3e0b-7e1d-44d6-aff3-21d1fc718066",
+        "status": "validated",
+        "provider": "meta",
+        "model": "muse-spark-1.3-contributor",
+        "usage": {
+          "total_tokens": 3180,
+          "prompt_tokens": 2141,
+          "charged_tokens": 3180,
+          "completion_tokens": 1039,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 246
+          }
+        },
+        "latency_ms": 9657.2828999997,
+        "inference_provenance": "production_pi",
+        "provider_receipts": [
+          {
+            "pi_run_id": "3c997c67-895f-4a3e-90bc-b88d540e92f5",
+            "request_id": "1fe1fc73-ca3a-4b11-8815-ead8cbf7f25d",
+            "pi_state": "SETTLED",
+            "state": "settled",
+            "http_status": 200,
+            "transport": "network",
+            "model_requested": "muse-spark-1.3-contributor",
+            "model_observed": null,
+            "response_sha256": "726ec9b1ab5cbe5376525ce5563eefed2c74e8eb665c60ed74dea57622355e37",
+            "usage": {
+              "total_tokens": 3180,
+              "prompt_tokens": 2141,
+              "completion_tokens": 1039,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 246
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "971b377b-1347-4d26-a1ec-ce2e57c8b78a",
+        "status": "validated",
+        "provider": "meta",
+        "model": "muse-spark-1.3-contributor",
+        "usage": {
+          "total_tokens": 3295,
+          "prompt_tokens": 2326,
+          "charged_tokens": 3295,
+          "completion_tokens": 969,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 534
+          }
+        },
+        "latency_ms": 8627.277899999171,
+        "inference_provenance": "production_pi",
+        "provider_receipts": [
+          {
+            "pi_run_id": "d7d42d8b-840e-48bd-8c97-cdd15b7e05ac",
+            "request_id": "f02d1f79-8868-4bb1-ba67-4fd70a07e834",
+            "pi_state": "SETTLED",
+            "state": "settled",
+            "http_status": 200,
+            "transport": "network",
+            "model_requested": "muse-spark-1.3-contributor",
+            "model_observed": null,
+            "response_sha256": "dff58135342c3305504ae7f3ff6c250e7413b73c7a732675f133ca658a3515d7",
+            "usage": {
+              "total_tokens": 3295,
+              "prompt_tokens": 2326,
+              "completion_tokens": 969,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 534
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "task_review": {
+      "repair_requested": false,
+      "repair_attempted": false,
+      "repair_successful": false,
+      "additional_model_calls": 0,
+      "original": {
+        "candidate_id": "676e1dbf79c299d516f0458c07de02b303a4c77be971ed79fdedbd247dc34c79",
+        "schema_valid": true,
+        "response_schema_valid": true,
+        "transport_completed": true,
+        "task_complete": false,
+        "all_cases_addressed": true,
+        "contains_undetermined": true,
+        "completion_errors": [
+          {
+            "code": "unsupported_reference",
+            "field": "citations",
+            "reference": {
+              "file": "README.md",
+              "quote": "If items is None, create a new list.",
+              "line_end": 12,
+              "line_start": 10
+            }
+          }
+        ],
+        "defect": {
+          "status": "determined",
+          "issue_present": true
+        },
+        "prediction_statuses": {
+          "c1": {
+            "observed": "undetermined",
+            "required": "undetermined"
+          },
+          "c2": {
+            "observed": "undetermined",
+            "required": "undetermined"
+          },
+          "c3": {
+            "observed": "undetermined",
+            "required": "undetermined"
+          },
+          "c4": {
+            "observed": "undetermined",
+            "required": "undetermined"
+          }
+        }
+      },
+      "effective": {
+        "task_complete": false,
+        "all_cases_addressed": true,
+        "defect": {
+          "status": "determined",
+          "issue_present": true
+        },
+        "completion_errors": [
+          {
+            "code": "unsupported_reference",
+            "field": "citations",
+            "reference": {
+              "file": "README.md",
+              "quote": "If items is None, create a new list.",
+              "line_end": 12,
+              "line_start": 10
+            }
+          }
+        ]
+      },
+      "repair": null
+    }
+  },
+  "test_c": {
+    "exchange_id": "5588bf5b-f3a5-4536-9c8a-c9bba2c70e4d",
+    "status": "LIVE MODEL",
+    "model_calls": 3,
+    "availability": "available",
+    "conversation_ref": "c3a222f4-0b22-44c4-b495-ac22f288d365",
+    "calls": [
+      {
+        "id": "11260f1d-b431-4689-ae24-f8db4565e2ac",
+        "status": "validated",
+        "provider": "meta",
+        "model": "muse-spark-1.3-contributor",
+        "usage": {
+          "total_tokens": 3240,
+          "prompt_tokens": 2141,
+          "charged_tokens": 3240,
+          "completion_tokens": 1099,
+          "prompt_tokens_details": {
+            "cached_tokens": 2033
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 403
+          }
+        },
+        "latency_ms": 10902.250799998,
+        "inference_provenance": "production_pi",
+        "provider_receipts": [
+          {
+            "pi_run_id": "9e7e7e8f-aec6-415c-aac3-c90cb43172c4",
+            "request_id": "b7ead59e-7c20-4c2c-b6a2-1f62b1239fe4",
+            "pi_state": "SETTLED",
+            "state": "settled",
+            "http_status": 200,
+            "transport": "network",
+            "model_requested": "muse-spark-1.3-contributor",
+            "model_observed": null,
+            "response_sha256": "8ef483f4fd4bf4b5da28ec7e734b5c9574ff68a5260086a15f758810ebc56aab",
+            "usage": {
+              "total_tokens": 3240,
+              "prompt_tokens": 2141,
+              "completion_tokens": 1099,
+              "prompt_tokens_details": {
+                "cached_tokens": 2033
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 403
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "91193e99-1bf6-48e8-819b-67cf820db695",
+        "status": "validated",
+        "provider": "meta",
+        "model": "muse-spark-1.3-contributor",
+        "usage": {
+          "total_tokens": 3183,
+          "prompt_tokens": 2327,
+          "charged_tokens": 3183,
+          "completion_tokens": 856,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 385
+          }
+        },
+        "latency_ms": 6631.578799999261,
+        "inference_provenance": "production_pi",
+        "provider_receipts": [
+          {
+            "pi_run_id": "64741da0-1274-4e97-b52b-f32608e6b2ef",
+            "request_id": "49122a0f-fc5a-4af0-a5b5-b3ef75586c93",
+            "pi_state": "SETTLED",
+            "state": "settled",
+            "http_status": 200,
+            "transport": "network",
+            "model_requested": "muse-spark-1.3-contributor",
+            "model_observed": null,
+            "response_sha256": "94e7821042548cc15271c62eb1b960794a73b5db9b3a57420ccb8cf840e3be58",
+            "usage": {
+              "total_tokens": 3183,
+              "prompt_tokens": 2327,
+              "completion_tokens": 856,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 385
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "a6c10b28-69e4-491d-a437-3a884c856620",
+        "status": "validated",
+        "provider": "meta",
+        "model": "muse-spark-1.3-contributor",
+        "usage": {
+          "total_tokens": 4548,
+          "prompt_tokens": 3886,
+          "charged_tokens": 4548,
+          "completion_tokens": 662,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens_details": {
+            "reasoning_tokens": 481
+          }
+        },
+        "latency_ms": 6698.883400000341,
+        "inference_provenance": "production_pi",
+        "provider_receipts": [
+          {
+            "pi_run_id": "25fcd5a0-742c-4f33-9b0c-acd1a56dd12f",
+            "request_id": "ba95ea70-a63e-4e4d-94d1-19f342456953",
+            "pi_state": "SETTLED",
+            "state": "settled",
+            "http_status": 200,
+            "transport": "network",
+            "model_requested": "muse-spark-1.3-contributor",
+            "model_observed": null,
+            "response_sha256": "2166fbb6e69240c0056f708de9963b7e71c65532b550deb089edd1f33fc49ddf",
+            "usage": {
+              "total_tokens": 4548,
+              "prompt_tokens": 3886,
+              "completion_tokens": 662,
+              "prompt_tokens_details": {
+                "cached_tokens": 0
+              },
+              "completion_tokens_details": {
+                "reasoning_tokens": 481
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "task_review": {
+      "repair_requested": true,
+      "repair_attempted": true,
+      "repair_successful": false,
+      "additional_model_calls": 1,
+      "original": {
+        "candidate_id": "d26e52348fd76aa7cd5536efd61a7ef8d08cd813ab36b6e6f7f4100f91e9c74f",
+        "schema_valid": true,
+        "response_schema_valid": true,
+        "transport_completed": true,
+        "task_complete": false,
+        "all_cases_addressed": true,
+        "contains_undetermined": true,
+        "completion_errors": [
+          {
+            "code": "unsupported_reference",
+            "field": "citations",
+            "reference": {
+              "file": "README.md",
+              "quote": "If items is None, create a new list.",
+              "line_end": 12,
+              "line_start": 10
+            }
+          }
+        ],
+        "defect": {
+          "status": "determined",
+          "issue_present": true
+        },
+        "prediction_statuses": {
+          "c1": {
+            "observed": "undetermined",
+            "required": "undetermined"
+          },
+          "c2": {
+            "observed": "undetermined",
+            "required": "undetermined"
+          },
+          "c3": {
+            "observed": "undetermined",
+            "required": "undetermined"
+          },
+          "c4": {
+            "observed": "undetermined",
+            "required": "undetermined"
+          }
+        }
+      },
+      "effective": {
+        "task_complete": false,
+        "all_cases_addressed": true,
+        "defect": {
+          "status": "determined",
+          "issue_present": true
+        },
+        "completion_errors": [
+          {
+            "code": "unsupported_reference",
+            "field": "citations",
+            "reference": {
+              "file": "README.md",
+              "quote": "If items is None, create a new list.",
+              "line_end": 12,
+              "line_start": 10
+            }
+          }
+        ]
+      },
+      "repair": {
+        "candidate_id": "1e3d0bbfcd8d3312aa930b12c8de41ef182bd13efe0ec1c5278f0b9b92dd9849",
+        "schema_valid": true,
+        "repair_rejection": "repair_refused_identity_or_accepted_content_changed",
+        "parent_candidate_id": "d26e52348fd76aa7cd5536efd61a7ef8d08cd813ab36b6e6f7f4100f91e9c74f"
+      }
+    }
+  }
+}
