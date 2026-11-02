@@ -88,7 +88,9 @@ class CognitiveEnvelope(Strict):
     schema_version: Literal[1] = 1
     message_id: str
     investigation_id: str
-    sender: Literal["observer", "proposer", "critic", "investigator", "evaluator", "governor"]
+    sender: Literal[
+        "observer", "proposer", "critic", "investigator", "evaluator", "governor", "researcher"
+    ]
     recipient: Literal["governor"] = "governor"
     message_type: Literal[
         "observation",

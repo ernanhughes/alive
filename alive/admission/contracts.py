@@ -4,6 +4,7 @@ from pydantic import Field, field_validator
 
 from alive.bespoke.contracts import Hash, Objective, Ref
 from alive.capabilities.manifest import Strict
+from alive.research.contracts import ResearchReference
 
 
 class ReviewRequest(Strict):
@@ -40,6 +41,7 @@ class LiveSetup(Strict):
     adaptive: bool = False
     code_review: bool = False
     completion_repair: bool = False
+    research: bool = False
 
 
 class LiveGoal(Strict):
@@ -47,10 +49,13 @@ class LiveGoal(Strict):
     goal: str = Field(min_length=1, max_length=1000)
     idempotency_key: str = Field(min_length=1, max_length=60)
     conversation_ref: Ref | None = None
-    task_mode: Literal["general_contextual", "code_review"] = "general_contextual"
+    task_mode: Literal["general_contextual", "code_review", "research"] = "general_contextual"
     task_case_ids: list[str] | None = Field(default=None, max_length=8)
     repair_incomplete: bool = False
     strategy_mode: Literal["stateless", "contextual", "learned", "selective"] = "selective"
+    # Qualification-only frozen labels. This is host-side verification metadata and is never
+    # included in the model situation or sent to a provider.
+    reference: ResearchReference | None = None
 
     @field_validator("task_case_ids")
     @classmethod

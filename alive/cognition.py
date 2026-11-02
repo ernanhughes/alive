@@ -803,6 +803,7 @@ class Cognition:
         ledger=None,
         output_ceiling=None,
         workflow_claim=None,
+        research_claim=None,
         spec=None,
     ):
         """Run one role invocation. Every exit leaves its ModelInvocation settled (F-002).
@@ -814,7 +815,14 @@ class Cognition:
         ledger = {} if ledger is None else ledger
         try:
             return await self._invoke_role(
-                run_id, role, context, ledger, output_ceiling, workflow_claim, spec
+                run_id,
+                role,
+                context,
+                ledger,
+                output_ceiling,
+                workflow_claim,
+                research_claim,
+                spec,
             )
         except BaseException as exc:
             if ledger.get("call_id"):
@@ -849,10 +857,20 @@ class Cognition:
         await complete_despite_cancel(settle())
 
     async def _invoke_role(
-        self, run_id, role, context, ledger, output_ceiling=None, workflow_claim=None, spec=None
+        self,
+        run_id,
+        role,
+        context,
+        ledger,
+        output_ceiling=None,
+        workflow_claim=None,
+        research_claim=None,
+        spec=None,
     ):
         k = self.k
-        if spec is not None and (workflow_claim is None or role != spec.role):
+        if spec is not None and (
+            (workflow_claim is None and research_claim is None) or role != spec.role
+        ):
             raise ValueError("A typed analysis role runs only inside an authorized workflow stage")
         schema = RoleOutput.model_json_schema() if spec is None else spec.schema
         prompt = role_prompt(role) if spec is None else spec.instructions
@@ -874,7 +892,9 @@ class Cognition:
                     raise BudgetExhausted("Invalid stage output ceiling")
                 output_limit = min(output_limit, output_ceiling)
             reserve += output_limit
-            owner_inference = workflow_claim is not None and self.mode == "paused"
+            owner_inference = (
+                research_claim is not None and self.mode in ("running", "paused")
+            ) or (workflow_claim is not None and self.mode == "paused")
             if (self.mode != "running" and not owner_inference) or row.state in TERMINAL:
                 raise asyncio.CancelledError()
             if (
@@ -888,6 +908,21 @@ class Cognition:
             model = k.settings.alive_role_models.get(role, k.settings.alive_meta_model)
             workflow_stage = None
             destination = None
+            if research_claim is not None:
+                from alive.research.authority import validate_dispatch
+
+                destination = await validate_dispatch(
+                    session,
+                    k,
+                    research_claim,
+                    role=role,
+                    spec=spec,
+                    model=model,
+                    output_limit=output_limit,
+                    context=context,
+                )
+                if control.provider != "meta":
+                    raise ValueError("Research inference requires governed Meta transport")
             if workflow_claim is not None:
                 from alive.workflows.context import model_claim
 
@@ -910,6 +945,20 @@ class Cognition:
                 reserved_tokens=reserve,
             )
             session.add(call)
+            if research_claim is not None:
+                from dataclasses import asdict
+
+                from alive.workflows.context import digest as workflow_digest
+
+                call.input_json = call.input_json | {
+                    "context_sha256": workflow_digest(context),
+                    "model_destination": asdict(destination),
+                    "research_consent_ref": research_claim.consent_ref,
+                    "research_goal_ref": research_claim.goal_ref,
+                    "research_principal": research_claim.principal,
+                    "research_paths": list(research_claim.paths),
+                    "research_output_limit": output_limit,
+                }
             if workflow_stage is not None:
                 if spec is not None:
                     from dataclasses import asdict
@@ -962,7 +1011,9 @@ class Cognition:
                 )
             )
             usage = ledger["usage"] = generated.usage
-            if workflow_claim is not None and len(generated.text.encode("utf-8")) > 65536:
+            if (workflow_claim is not None or research_claim is not None) and len(
+                generated.text.encode("utf-8")
+            ) > 65536:
                 raise ValueError("Workflow model output exceeds the retained size ceiling")
             try:
                 if spec is None:
@@ -1009,6 +1060,8 @@ class Cognition:
                 "critic": "critique",
                 "evaluator": "evaluation",
             }[role]
+        elif role == "research_decider":
+            sender, kind = "researcher", "decision"
         else:
             sender, kind = "observer", "observation"
         await self.message(run_id, sender, kind, output.model_dump(), call_id)
@@ -1345,7 +1398,7 @@ class Cognition:
             )
 
     async def finish_in_session(
-        self, session, run_id, target, outcome, *, truncated=False, error=None
+        self, session, run_id, target, outcome, *, truncated=False, error=None, action=None
     ):
         """Same settlement in a caller-owned transaction; no dispatch or external work."""
         run = await session.get(Investigation, run_id)
@@ -1383,13 +1436,20 @@ class Cognition:
             # Preserve owner cancellations and charge failures normally; never redispatch a run.
             if not observation or observation.provenance.get("source") != "owner-admission":
                 goal.status = "proposed"
-        action = await session.scalar(
+        proposal = await session.scalar(
             select(ActionProposal).where(ActionProposal.investigation_id == run_id)
         )
-        if action and action.status not in ("executed", "rejected"):
-            action.status = "cancelled"
+        if proposal and proposal.status not in ("executed", "rejected"):
+            proposal.status = "cancelled"
         control = await session.get(CognitiveControl, self.k.instance_id)
-        self._experience(session, run, control, outcome, truncated=truncated)
+        self._experience(
+            session,
+            run,
+            control,
+            outcome,
+            action=action or (record(proposal) if proposal else None),
+            truncated=truncated,
+        )
 
     async def detail(self, run_id):
         async with self.k.db.sessions() as session:

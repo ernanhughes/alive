@@ -128,6 +128,12 @@ def router(app, ready):
 
         return await safe(create(app.state.kernel, request.consent_ref, request.title))
 
+    @api.get("/live/research/{task_id}")
+    async def research_task(task_id: str = Path(max_length=36)):
+        from alive.research import service as research_service
+
+        return await safe(research_service.view(app.state.kernel, task_id))
+
     @api.get("/live/{admission_id}")
     async def live_exchange(admission_id: str = Path(max_length=36)):
         return await safe(live.exchange(app.state.kernel, admission_id))
