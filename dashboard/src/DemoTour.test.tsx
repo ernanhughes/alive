@@ -75,12 +75,13 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe("DemoTourPane", () => {
-  it("is unavailable, and cannot start, when the runtime disables it", async () => {
+  it("is unavailable, and hides all fixture content, when the runtime disables it", async () => {
     route({ "/demo-tour": info({ enabled: false, reason: "Local fixture providers are disabled on this runtime." }) });
     render(<DemoTourPane token="t" revealDelayMs={0} />);
     expect(await screen.findByText("Demonstration unavailable")).toBeTruthy();
     expect(screen.getByText(/fixture providers are disabled/)).toBeTruthy();
-    expect((screen.getByRole("button", { name: "Start demonstration" }) as HTMLButtonElement).disabled).toBe(true);
+    expect(screen.queryByText(LABEL)).toBeNull();
+    expect(screen.queryByRole("button", { name: "Start demonstration" })).toBeNull();
     expect(mocked).toHaveBeenCalledTimes(1);
   });
 

@@ -119,7 +119,7 @@ export function CognitionPane({
     [actions, setActions] = useState<Action[]>([]),
     [selected, setSelected] = useState(""),
     [detail, setDetail] = useState<Detail | null>(null);
-  const [provider, setProvider] = useState("mock"),
+  const [provider, setProvider] = useState<string | null>(null),
     [error, setError] = useState(""),
     [busy, setBusy] = useState(false),
     [config, setConfig] = useState(""),
@@ -127,6 +127,7 @@ export function CognitionPane({
     [browser, setBrowser] = useState(""),
     [scenario, setScenario] = useState("relevant"),
     [health, setHealth] = useState("");
+  const selectedProvider = provider ?? mind?.control.provider ?? "mock";
   const refresh = useCallback(async () => {
     const [m, b, r, e, a] = await Promise.all([
       request<Mind>("/cognition", token),
@@ -179,7 +180,10 @@ export function CognitionPane({
     }
   }
   async function command(command: string) {
-    await request("/cognition/control", token, { command, provider });
+    await request("/cognition/control", token, {
+      command,
+      provider: selectedProvider,
+    });
   }
   async function lab() {
     const env = await request<{ id: string }>("/lab", token, { scenario });
@@ -207,7 +211,7 @@ export function CognitionPane({
         <div className="button-row">
           <select
             aria-label="Cognitive provider"
-            value={provider}
+            value={selectedProvider}
             onChange={(e) => setProvider(e.target.value)}
             disabled={mind?.control.mode === "running"}
           >

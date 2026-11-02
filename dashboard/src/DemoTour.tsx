@@ -204,21 +204,23 @@ export function DemoTourPane({
 
   return (
     <div className="tour">
-      <section className="panel tour-hero">
-        <p>
-          ALIVE remembers a sentence from one source, notices a later source that
-          changes its standing, explains the change or declines to infer one, and
-          lets you withdraw the original and everything that depended on it.
-        </p>
-        <p className="tour-banner" role="note">
-          {info?.label || "DETERMINISTIC LOCAL FIXTURE — NOT LIVE META"}
-        </p>
-        <p className="muted">
-          It does not show that either document is true, that a model reasoned about
-          them, or that ALIVE improves research. Matching pinned bytes identifies a
-          document; it is not a judgement about its claims.
-        </p>
-      </section>
+      {info?.enabled && (
+        <section className="panel tour-hero">
+          <p>
+            ALIVE remembers a sentence from one source, notices a later source that
+            changes its standing, explains the change or declines to infer one, and
+            lets you withdraw the original and everything that depended on it.
+          </p>
+          <p className="tour-banner" role="note">
+            {info.label}
+          </p>
+          <p className="muted">
+            It does not show that either document is true, that a model reasoned about
+            them, or that ALIVE improves research. Matching pinned bytes identifies a
+            document; it is not a judgement about its claims.
+          </p>
+        </section>
+      )}
 
       {error && (
         <div className="error" role="alert">
@@ -232,52 +234,54 @@ export function DemoTourPane({
         </div>
       )}
 
-      <section className="panel tour-controls">
-        <h2>Start</h2>
-        <p className="tour-consent">{info?.consent_text}</p>
-        <label className="living-consent">
-          <input
-            type="checkbox"
-            checked={pause}
-            onChange={(e) => setPause(e.target.checked)}
-          />{" "}
-          Pause before withdrawal so I can withdraw manually.
-        </label>
-        <button
-          className="primary"
-          disabled={!info?.enabled || busy}
-          onClick={() =>
-            void perform(
-              () =>
-                request<TourRun>("/demo-tour/runs", token, {
-                  pause_before_withdrawal: pause,
-                }),
-              true,
-            )
-          }
-        >
-          {busy ? "Working…" : "Start demonstration"}
-        </button>
-        {info && info.runs.length > 0 && (
-          <p className="muted">
-            Earlier runs:{" "}
-            {info.runs.map((r) => (
-              <button
-                key={r.run_id}
-                className="link"
-                onClick={() =>
-                  void perform(
-                    () => request<TourRun>("/demo-tour/runs/" + r.run_id, token),
-                    false,
-                  )
-                }
-              >
-                #{r.number} ({r.status})
-              </button>
-            ))}
-          </p>
-        )}
-      </section>
+      {info?.enabled && (
+        <section className="panel tour-controls">
+          <h2>Start</h2>
+          <p className="tour-consent">{info?.consent_text}</p>
+          <label className="living-consent">
+            <input
+              type="checkbox"
+              checked={pause}
+              onChange={(e) => setPause(e.target.checked)}
+            />{" "}
+            Pause before withdrawal so I can withdraw manually.
+          </label>
+          <button
+            className="primary"
+            disabled={!info?.enabled || busy}
+            onClick={() =>
+              void perform(
+                () =>
+                  request<TourRun>("/demo-tour/runs", token, {
+                    pause_before_withdrawal: pause,
+                  }),
+                true,
+              )
+            }
+          >
+            {busy ? "Working…" : "Start demonstration"}
+          </button>
+          {info && info.runs.length > 0 && (
+            <p className="muted">
+              Earlier runs:{" "}
+              {info.runs.map((r) => (
+                <button
+                  key={r.run_id}
+                  className="link"
+                  onClick={() =>
+                    void perform(
+                      () => request<TourRun>("/demo-tour/runs/" + r.run_id, token),
+                      false,
+                    )
+                  }
+                >
+                  #{r.number} ({r.status})
+                </button>
+              ))}
+            </p>
+          )}
+        </section>
+      )}
 
       {run && (
         <section className="panel" aria-label="Demonstration journey">
