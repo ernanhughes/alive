@@ -24,7 +24,7 @@ from alive.providers import MetaProvider, ProviderError
 from alive.schemas import BrowserAction
 from alive.society import role_prompt
 
-MODEL = "muse-spark-1.3"
+MODEL = "muse-spark-1.3-contributor"
 INSTRUCTION = role_prompt("proposer") + (
     " Living-experience-v1: read-only evidence synthesis. Actions must be []. "
     "If sources is empty, abstain with claims=[]; current and historical claims are not "

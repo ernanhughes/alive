@@ -20,7 +20,7 @@ FROZEN_PROTOCOL_SHA256 = "85fe891cee31bf93d178c4cba2102642b8f4b5e666a0ee426186d5
 FROZEN_ANSWER_KEY_SHA256 = "255e706dd569634d1710a50831f65a6dd6eb7dabc5ee56e1cd763b382554b43d"
 FROZEN_OUTPUT_TOKEN_CAP = 1536
 ALLOWED_PROVIDER_MODELS = {
-    "meta": "muse-spark-1.3",
+    "meta": "muse-spark-1.3-contributor",
     "local_stub": "deterministic-local-stub-v1",
 }
 

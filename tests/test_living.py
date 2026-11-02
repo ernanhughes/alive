@@ -225,7 +225,7 @@ def test_stop_settles_unknown_call_and_forbids_budget_reset(
     from alive.providers import MetaProvider
 
     async def discover(self):
-        return {"models": ["muse-spark-1.3"]}
+        return {"models": ["muse-spark-1.3-contributor"]}
 
     async def wait(*args, **kwargs):
         await asyncio.sleep(300)
