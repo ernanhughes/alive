@@ -817,8 +817,14 @@ export function App() {
                   <h2>Managed Chrome</h2>
                   <Globe2 size={18} />
                 </div>
+                {caps?.browser?.available === false && (
+                  <p className="muted">
+                    Managed Chrome is not available in this deployment. Browser
+                    automation requires a runtime with Chrome installed.
+                  </p>
+                )}
                 <button
-                  disabled={busy}
+                  disabled={busy || caps?.browser?.available === false}
                   className="primary"
                   onClick={() =>
                     act(async () => {
@@ -1007,7 +1013,12 @@ export function App() {
               ))}
             </section>
           )}
-          {tab === "Cognition" && token && <CognitionPane token={token} />}
+          {tab === "Cognition" && token && (
+            <CognitionPane
+              token={token}
+              experimentsEnabled={caps?.experiments?.available ?? false}
+            />
+          )}
           {tab === "Workflows" && token && <WorkflowsPane token={token} />}
           {tab === "Capabilities" && token && (
             <CapabilitiesPane token={token} />

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { request } from "./api";
+import { ApiError, request } from "./api";
 
 type Score = { correct: boolean; correct_abstention: boolean; reason: string };
 type Arm = { invoked: boolean; score: Score; error?: string; allocated_tokens: number;
@@ -25,6 +25,7 @@ export function Experiments({ token }: { token: string }) {
   const [detail, setDetail] = useState<Detail | null>(null);
   const [review, setReview] = useState<Review | null>(null);
   const [error, setError] = useState("");
+  const [unavailable, setUnavailable] = useState(false);
   const refresh = useCallback(async () => {
     try {
       const [items, pack] = await Promise.all([
@@ -33,10 +34,16 @@ export function Experiments({ token }: { token: string }) {
       ]);
       setRuns(items); setReview(pack); setError("");
       setSelected(current => current || items[0]?.id || "");
-    } catch (e) { setError(String(e)); }
+    } catch (e) {
+      setError(String(e));
+      if (e instanceof ApiError && e.status === 404) setUnavailable(true);
+    }
   }, [token]);
-  useEffect(() => { void refresh(); const timer = setInterval(() => void refresh(), 5000);
-    return () => clearInterval(timer); }, [refresh]);
+  useEffect(() => {
+    if (unavailable) return;
+    void refresh(); const timer = setInterval(() => void refresh(), 5000);
+    return () => clearInterval(timer);
+  }, [refresh, unavailable]);
   useEffect(() => {
     let cancelled = false;
     if (selected) request<Detail>("/experiments/runs/" + selected, token)
@@ -44,6 +51,12 @@ export function Experiments({ token }: { token: string }) {
       .catch(e => { if (!cancelled) setError(String(e)); });
     return () => { cancelled = true; };
   }, [selected, runs, token]);
+  if (unavailable) return <section className="panel experiment-panel" data-testid="policy-comparison">
+    <div className="panel-top"><h2>Selective cognition experiment</h2>
+      <span className="tag subtle">DISABLED</span></div>
+    <p className="muted">The experiment harness is not enabled on this backend.
+      Set ALIVE_EXPERIMENTS_ENABLED=true on a controlled runtime.</p>
+  </section>;
   const summary = detail?.data.summary;
   return <section className="panel experiment-panel" data-testid="policy-comparison">
     <div className="panel-top"><h2>Selective cognition experiment</h2>

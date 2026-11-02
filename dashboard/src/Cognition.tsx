@@ -105,7 +105,13 @@ interface Detail extends Investigation {
   experiences: Experience[];
 }
 
-export function CognitionPane({ token }: { token: string }) {
+export function CognitionPane({
+  token,
+  experimentsEnabled = false,
+}: {
+  token: string;
+  experimentsEnabled?: boolean;
+}) {
   const [mind, setMind] = useState<Mind | null>(null),
     [bids, setBids] = useState<Bid[]>([]),
     [runs, setRuns] = useState<Investigation[]>([]),
@@ -630,7 +636,20 @@ export function CognitionPane({ token }: { token: string }) {
           ))}
         </section>
       </div>
-      <Experiments token={token} />
+      {experimentsEnabled ? (
+        <Experiments token={token} />
+      ) : (
+        <section className="panel experiment-panel" data-testid="policy-comparison">
+          <div className="panel-top">
+            <h2>Selective cognition experiment</h2>
+            <span className="tag subtle">DISABLED</span>
+          </div>
+          <p className="muted">
+            The experiment harness is disabled in this deployment. Enable it with
+            ALIVE_EXPERIMENTS_ENABLED=true on a controlled runtime.
+          </p>
+        </section>
+      )}
       <Learning token={token} />
     </div>
   );

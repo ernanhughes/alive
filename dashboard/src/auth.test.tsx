@@ -19,6 +19,8 @@ const capabilities = {
   pgvector: { storage: false, search: false, reason: "disabled" },
   zeromq: { available: false, received: 0 },
   pi: { configured: false },
+  browser: { engine: "Chrome / Playwright", available: false, origins: [] },
+  experiments: { available: false },
   providers: { meta: { configured: false } },
 };
 const response = (status = 200, body: unknown = capabilities) =>

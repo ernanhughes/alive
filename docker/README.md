@@ -53,6 +53,12 @@ provider inside the container, set `ALIVE_DOCKER_PI_PROVIDER` and `ALIVE_DOCKER_
 1024-dimensional and is **not** compatible with the current `vector(384)` memory schema; the probe
 reports it but does not select it.
 
+The slim image has no Chrome and the research experiment harness is opt-in. Compose therefore
+reports `ALIVE_BROWSER_AVAILABLE=false` and `ALIVE_EXPERIMENTS_ENABLED=false`, and the dashboard
+disables those controls instead of issuing requests that would return 502/404. Use a local
+runtime with Chrome for managed browsing, and set `ALIVE_EXPERIMENTS_ENABLED=true` on a controlled
+runtime only when you intend to run the experiment harness.
+
 ## Evidence-lifecycle demo (fixture, no inference)
 
 With the stack running, the pinned local mirrors are served at
@@ -140,8 +146,12 @@ them only discards disposable test data.
   `POSTGRES_*` values match `DATABASE_URL` credentials.
 - **Frontend shows "Backend disconnected"**: the token in session storage must
   equal `ALIVE_API_TOKEN`; use the header `local` button to change it.
-- **Managed-browser actions fail (502)**: expected in this image — no Chrome
-  is bundled. API/demo/fixture workflows are unaffected.
+- **Managed-browser controls are disabled**: expected in this image — no Chrome is bundled.
+  The dashboard reports `ALIVE_BROWSER_AVAILABLE=false`; use a local runtime with Chrome for
+  managed browsing. API/demo/fixture workflows are unaffected.
+- **Cognition shows the experiment harness disabled**: expected — the research harness is opt-in.
+  Set `ALIVE_EXPERIMENTS_ENABLED=true` on a controlled runtime to enable it; the default
+  container does not poll `/api/v1/experiments`.
 - **Vector search 409**: the image should contain the pinned MiniLM model. Check
   `docker compose logs app` and `ALIVE_EMBEDDING_ENABLED`; text search
   (`postgresql_fts`) remains the fallback.

@@ -41,10 +41,13 @@ dependencies (`uv sync --locked`), the built dashboard, the pinned 384-dimension
 Not in the image: a browser (managed browser sessions need Chrome on the host), any external Pi
 command, and Ollama. Compose probes a host Ollama at `http://host.docker.internal:11434` and
 auto-configures the Pi agent with a small detected chat model. `mxbai-embed-large` is 1024-dimensional
-and is not selected because the memory schema stores 384-dimensional vectors.
+and is not selected because the memory schema stores 384-dimensional vectors. Compose also reports
+`ALIVE_BROWSER_AVAILABLE=false` and `ALIVE_EXPERIMENTS_ENABLED=false`, so the dashboard disables the
+Browser controls and the experiment harness instead of issuing requests that would return 502/404.
 
 Compose passes only these to the app: `DATABASE_URL`, `ALIVE_API_TOKEN` (required),
-`ALIVE_ALLOWED_ORIGINS`, `ALIVE_BROWSER_ORIGINS`, `ALIVE_COGNITIVE_PROVIDER`, `ALIVE_DEMO_MODE` (and the
+`ALIVE_ALLOWED_ORIGINS`, `ALIVE_BROWSER_ORIGINS`, `ALIVE_BROWSER_AVAILABLE`, `ALIVE_EXPERIMENTS_ENABLED`,
+`ALIVE_COGNITIVE_PROVIDER`, `ALIVE_DEMO_MODE` (and the
 demo flags tied to it), `ALIVE_EMBEDDING_ENABLED`, `ALIVE_EMBEDDING_PATH`, `ALIVE_OLLAMA_URL`,
 `ALIVE_OLLAMA_CHAT_MODEL`, `ALIVE_PI_COMMAND` (the pinned fallback), `ALIVE_DOCKER_PI_PROVIDER`,
 `ALIVE_DOCKER_PI_MODEL`, `ALIVE_META_API_KEY` and `ALIVE_META_MODEL`. Anything else you set locally
@@ -63,6 +66,8 @@ Ollama chat model; set them only when the container has the matching provider cr
 | `401` / "token required" | `ALIVE_API_TOKEN` vs `.alive/token`; run `scripts/init.ps1` |
 | A setting seems ignored | Doctor *Unrecognised variables* and the `source` column |
 | Works locally, differs in Docker | Doctor *Docker parity* |
+| Browser controls disabled | `ALIVE_BROWSER_AVAILABLE`; the slim Docker image has no Chrome |
+| Experiments disabled | `ALIVE_EXPERIMENTS_ENABLED`; the research harness is opt-in |
 | Pi failure in the Agents tab | `ALIVE_PI_COMMAND` and `Pi agent model` checks in the doctor |
 | Pi failure in workflows or Pi tests | Pinned Pi check; run the `npm ci` line above |
 | Pi says model not configured | `Pi agent model` in the doctor; set `ALIVE_PI_*` or start Ollama |

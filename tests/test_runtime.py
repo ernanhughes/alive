@@ -21,6 +21,8 @@ def test_security_and_degraded_startup(client, settings):
     assert caps["pgvector"]["dimension"] == 384
     assert caps["pi"]["configured"] is False
     assert caps["ollama"]["available"] is False
+    assert caps["browser"]["available"] is True
+    assert caps["experiments"]["available"] is True
     assert (
         client.post("/api/v1/memories/search", json={"query": "a", "mode": "vector"}).status_code
         == 409
@@ -33,6 +35,7 @@ def test_capabilities_report_detected_ollama_and_pi_configuration(settings, monk
     from tests.conftest import _boot
 
     settings.alive_ollama_url = "http://ollama.test:11434"
+    settings.alive_browser_available = False
     monkeypatch.setattr(
         "alive.ollama.probe_cached",
         lambda url, model="", timeout=1.5: {
@@ -56,6 +59,8 @@ def test_capabilities_report_detected_ollama_and_pi_configuration(settings, monk
     assert caps["pi"]["configured"] is True
     assert caps["pi"]["provider"] == "ollama"
     assert caps["pi"]["model"] == "qwen2.5:0.5b"
+    assert caps["browser"]["available"] is False
+    assert caps["experiments"]["available"] is False
 
 
 def test_observation_atomicity_duplicate_memory_and_goals(client):

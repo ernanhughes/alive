@@ -80,6 +80,7 @@ hostname `db` never reaches browser JS: the browser only talks to
 | `ALIVE_PI_COMMAND`, `ALIVE_DOCKER_PI_PROVIDER/MODEL` | only for live Pi runs; default `mock` runner; host `ALIVE_PI_*` is not copied into the container | credentials live outside the repo |
 | `ALIVE_OLLAMA_URL/CHAT_MODEL` | optional host Ollama discovery; no credentials | no |
 | `ALIVE_EMBEDDING_ENABLED/PATH`, `ALIVE_COGNITIVE_PROVIDER` | MiniLM is baked into the image and enabled by Compose; local defaults `false`/mock | no |
+| `ALIVE_BROWSER_AVAILABLE`, `ALIVE_EXPERIMENTS_ENABLED` | Compose reports both as `false`; the dashboard disables those controls | no |
 | `ALIVE_DEMO_MODE` | Docker-entrypoint only (`true` default); idempotent fixture seed, never wipes data | no |
 
 No secrets are committed; `.dockerignore` excludes `.env`, `.alive/`, `node_modules/`,
@@ -103,10 +104,12 @@ No secrets are committed; `.dockerignore` excludes `.env`, `.alive/`, `node_modu
 
 ## G. Known limitations (honest, not hidden)
 
-1. Managed Chrome is unavailable in the slim runtime image: browser-session
-   endpoints return honest `502` (`browser_operation` in `alive/app.py:417-431`);
-   the demo journey therefore uses the `/demo` + `/demo-live-01/*` fixture pages
-   through API-driven observation ingest, not live Chrome automation.
+1. Managed Chrome is unavailable in the slim runtime image. Compose reports
+   `ALIVE_BROWSER_AVAILABLE=false`; the dashboard disables the Browser controls,
+   and any direct browser-session endpoint still returns an honest `502`
+   (`browser_operation` in `alive/app.py`). The demo journey therefore uses the
+   `/demo` + `/demo-live-01/*` fixture pages through API-driven observation ingest,
+   not live Chrome automation.
 2. Semantic/vector search is available by default: the image bakes the pinned
    384-dimensional MiniLM model at `/app/models/minilm`. A text-only build is
    possible with `--build-arg ALIVE_INSTALL_EMBEDDING_MODEL=false`; text search
@@ -114,3 +117,6 @@ No secrets are committed; `.dockerignore` excludes `.env`, `.alive/`, `node_modu
 3. The pinned Pi runtime is in the image. Compose probes a host Ollama and
    auto-configures the Agents runner with a small detected chat model; live
    Meta calls still require explicit credentials and never run by default.
+4. The research experiment harness is opt-in. Compose reports
+   `ALIVE_EXPERIMENTS_ENABLED=false` and the Cognition tab shows it as disabled;
+   enabling it requires an explicit controlled runtime.

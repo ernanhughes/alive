@@ -185,6 +185,15 @@ def test_dockerfile_bundles_the_pinned_embedding_model():
     assert "test -s /app/models/minilm/tokenizer.json" in dockerfile
 
 
+def test_compose_reports_unavailable_browser_and_disabled_experiments():
+    compose = read("compose.yaml")
+    assert "ALIVE_BROWSER_AVAILABLE: ${ALIVE_BROWSER_AVAILABLE:-false}" in compose
+    assert "ALIVE_EXPERIMENTS_ENABLED: ${ALIVE_EXPERIMENTS_ENABLED:-false}" in compose
+    e2e = read("compose.e2e.yaml")
+    assert 'ALIVE_BROWSER_AVAILABLE: "false"' in e2e
+    assert 'ALIVE_EXPERIMENTS_ENABLED: "false"' in e2e
+
+
 def test_compose_detects_host_ollama_and_passes_pi_configuration():
     compose = read("compose.yaml")
     assert "host.docker.internal:11434" in compose

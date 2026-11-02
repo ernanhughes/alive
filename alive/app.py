@@ -314,7 +314,12 @@ def create_app(settings=None, include_experiments=None, *, capability_registry=N
                 "next_action": pi["next_action"],
             },
             "ollama": ollama_status,
-            "browser": {"engine": "Chrome / Playwright", "origins": settings.alive_browser_origins},
+            "browser": {
+                "engine": "Chrome / Playwright",
+                "available": settings.alive_browser_available,
+                "origins": settings.alive_browser_origins,
+            },
+            "experiments": {"available": bool(include_experiments)},
             "providers": {"mock": True, "meta": MetaProvider(settings).capabilities()},
         }
 

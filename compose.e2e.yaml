@@ -30,6 +30,8 @@ services:
       ALIVE_BROWSER_ORIGINS: '["http://app:8000","http://localhost:8081","http://127.0.0.1:8000"]'
       ALIVE_COGNITIVE_PROVIDER: mock
       ALIVE_DEMO_MODE: "false"
+      ALIVE_BROWSER_AVAILABLE: "false"
+      ALIVE_EXPERIMENTS_ENABLED: "false"
     volumes:
       - alive-e2e-appdata:/app/.alive
     healthcheck:

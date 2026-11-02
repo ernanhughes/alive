@@ -72,6 +72,8 @@ export interface Capabilities {
     embedding_model: string | null;
     reason: string;
   };
+  browser?: { engine: string; available?: boolean; origins: string[] };
+  experiments?: { available: boolean };
   providers: { meta: { configured: boolean } };
 }
 export function resolveApiBase(): string {

@@ -69,6 +69,8 @@ class Settings(BaseSettings):
     alive_ollama_chat_model: str = ""
     alive_cognitive_provider: str = "mock"
     alive_headless: bool = True
+    # Managed Chrome is available in local development; the slim Docker image sets this false.
+    alive_browser_available: bool = True
     alive_experiments_enabled: bool = False
     alive_workspace: Path = Path(".alive/agent-workspace")
 

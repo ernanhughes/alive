@@ -29,6 +29,10 @@ services:
       ALIVE_API_TOKEN: ${ALIVE_API_TOKEN:?Run scripts/init.ps1 in this checkout to set ALIVE_API_TOKEN}
       ALIVE_ALLOWED_ORIGINS: '["http://localhost:${ALIVE_HOST_PORT:-8000}","http://127.0.0.1:${ALIVE_HOST_PORT:-8000}"]'
       ALIVE_BROWSER_ORIGINS: '["http://app:8000","http://localhost:${ALIVE_HOST_PORT:-8000}","http://127.0.0.1:8000"]'
+      # The slim image has no Chrome; report that honestly and disable the controls.
+      ALIVE_BROWSER_AVAILABLE: ${ALIVE_BROWSER_AVAILABLE:-false}
+      # The research experiment harness is opt-in and stays off in the default deployment.
+      ALIVE_EXPERIMENTS_ENABLED: ${ALIVE_EXPERIMENTS_ENABLED:-false}
       ALIVE_COGNITIVE_PROVIDER: ${ALIVE_COGNITIVE_PROVIDER:-mock}
       ALIVE_DEMO_MODE: ${ALIVE_DEMO_MODE:-true}
       # The image bakes the pinned 384-dimensional MiniLM model. Disable only for a text-only
