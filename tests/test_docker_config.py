@@ -114,6 +114,12 @@ def test_entrypoint_migrates_without_destroying_data():
         assert destructive not in entrypoint, destructive
 
 
+def test_compose_migrations_identify_a_disposable_target():
+    for name in ("compose.yaml", "compose.e2e.yaml"):
+        compose = read(name)
+        assert "ALIVE_DB_TARGET: disposable:${POSTGRES_DB:-" in compose
+
+
 def test_frontend_base_is_configurable():
     api = read("dashboard/src/api.ts")
     assert "VITE_ALIVE_API_BASE" in api

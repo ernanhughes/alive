@@ -17,6 +17,23 @@ class Settings(BaseSettings):
         default="sqlite+aiosqlite:///.alive/development.db",
         validation_alias=AliasChoices("DATABASE_URL", "ALIVE_DSN", "database_url"),
     )
+    # FINISH-01R: migration/qualification safety. Application runtime intentionally keeps
+    # using database_url directly; these fields are consumed by alive.db_target.
+    alive_db_target: str = Field(
+        default="",
+        repr=False,
+        validation_alias=AliasChoices("ALIVE_DB_TARGET", "alive_db_target"),
+    )
+    alive_qualification: bool = Field(
+        default=False,
+        validation_alias=AliasChoices("ALIVE_QUALIFICATION", "alive_qualification"),
+    )
+    alive_allow_production_migration: bool = Field(
+        default=False,
+        validation_alias=AliasChoices(
+            "ALIVE_ALLOW_PRODUCTION_MIGRATION", "alive_allow_production_migration"
+        ),
+    )
     alive_api_token: str = Field(default="", repr=False)
     alive_capability_directory: str = Field(default="", repr=False)
     alive_disabled_capabilities: list[str] = Field(default_factory=list, max_length=128)

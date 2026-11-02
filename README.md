@@ -81,6 +81,9 @@ uv sync --locked
 Copy-Item .env.example .env
 # Edit .env locally: set DATABASE_URL (or ALIVE_DSN) and a strong ALIVE_API_TOKEN.
 # If ALIVE_API_TOKEN is omitted, ALIVE generates an ignored .alive/token file.
+# Local/dev database: set ALIVE_DB_TARGET=disposable:<database>.
+# Production migration: set ALIVE_DB_TARGET=production:<database> and
+# ALIVE_ALLOW_PRODUCTION_MIGRATION=1 only after owner approval.
 uv run alembic upgrade head
 cd dashboard
 npm ci

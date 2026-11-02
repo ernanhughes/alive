@@ -1,6 +1,7 @@
 """INT-02 durable fixture lifecycle/restart/replay/concurrency on an EXPLICIT disposable DB.
 
-DATABASE_URL=... ALIVE_API_TOKEN=<test token> python -m scripts.intelligence_check
+ALIVE_DB_TARGET=disposable:<db> DATABASE_URL=...
+ALIVE_API_TOKEN=<test token> python -m scripts.intelligence_check
 Never uses default .env, live inference, Pi, tools or production evidence authority.
 """
 

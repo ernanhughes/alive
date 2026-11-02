@@ -1,15 +1,15 @@
-import os
 import sqlite3
 import subprocess
 import sys
 
 from alive.intelligence.models import IntelligenceEpisode  # registers all five tables
 from alive.models import Base
+from tests.conftest import database_env
 
 
 def test_intelligence_migration_parity_and_reversible_upgrade(tmp_path):
     path = tmp_path / "intelligence-migration.db"
-    env = os.environ | {"DATABASE_URL": f"sqlite+aiosqlite:///{path}"}
+    env = database_env(DATABASE_URL=f"sqlite+aiosqlite:///{path}")
 
     def migrate(*args):
         subprocess.run(

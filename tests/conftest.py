@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import pytest
@@ -10,6 +11,23 @@ from alive.models import Base
 TOKEN = "test-token-for-alive-tests-123456789"
 MANIFESTS_DIR = Path(__file__).resolve().parents[1] / "alive/capabilities/manifests"
 
+DATABASE_ALIASES = (
+    "DATABASE_URL",
+    "ALIVE_DSN",
+    "database_url",
+    "ALIVE_DB_TARGET",
+    "ALIVE_QUALIFICATION",
+    "ALIVE_ALLOW_PRODUCTION_MIGRATION",
+)
+
+
+def database_env(**overrides):
+    """Isolate subprocess migrations from an inherited worktree/production DSN."""
+    env = {key: value for key, value in os.environ.items() if key not in DATABASE_ALIASES}
+    env.update({key: str(value) for key, value in overrides.items()})
+    return env
+
+
 # Fast default (1-min target): bare `pytest` runs only these files.
 # Everything else under testpaths is auto-marked `slow` and skipped unless
 # explicitly requested (`pytest -o addopts=""`, `-m "slow or not slow"`,
@@ -17,6 +35,7 @@ MANIFESTS_DIR = Path(__file__).resolve().parents[1] / "alive/capabilities/manife
 # Keep this list to proven-quick unit/config files only.
 FAST_FILES = {
     "tests/test_transport.py",
+    "tests/test_database_target.py",
     "tests/test_docker_config.py",
     "tests/test_ollama.py",
     "tests/test_test_select.py",

@@ -1,5 +1,6 @@
 """ALIVE-PI-02A: the workflow foundation against a REAL database (PostgreSQL in CI).
 
+    ALIVE_DB_TARGET=disposable:<db>
     DATABASE_URL=postgresql+asyncpg://... ALIVE_API_TOKEN=<32+ chars> \
         uv run python -m scripts.workflows_check
 

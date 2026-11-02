@@ -17,13 +17,14 @@ import sys
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import text
+from sqlalchemy.engine import make_url
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from alive.app import create_app
 from alive.config import Settings
 from alive.workflows import store
 from alive.workflows.examples import definition
-from tests.conftest import TOKEN
+from tests.conftest import TOKEN, database_env
 from tests.workflow_execution_helpers import call, lifecycle, observation, prepare
 
 URL = os.environ.get("ALIVE_TEST_POSTGRES_URL", "")
@@ -32,7 +33,9 @@ TABLES = ("workflow_definitions", "workflow_runs", "workflow_stage_runs", "workf
 
 
 def alembic(*args):
-    env = os.environ | {"DATABASE_URL": URL}
+    env = database_env(
+        DATABASE_URL=URL, ALIVE_DB_TARGET="disposable:" + str(make_url(URL).database)
+    )
     done = subprocess.run(
         [sys.executable, "-B", "-m", "alembic", *args], env=env, capture_output=True, text=True
     )

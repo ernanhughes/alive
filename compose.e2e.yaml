@@ -28,6 +28,9 @@ services:
         condition: service_healthy
     environment:
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-alive}:${POSTGRES_PASSWORD:-change-me-for-local-use}@db:5432/${POSTGRES_DB:-alive_e2e}
+      # FINISH-01R: this composed database is a local demo target. A production compose
+      # must override this with production:<database> and set ALIVE_ALLOW_PRODUCTION_MIGRATION=1.
+      ALIVE_DB_TARGET: disposable:${POSTGRES_DB:-alive_e2e}
       ALIVE_API_TOKEN: ${ALIVE_API_TOKEN:-alive-e2e-token-replace-for-local-use-0}
       ALIVE_ALLOWED_ORIGINS: '["http://localhost:8081","http://127.0.0.1:8081"]'
       ALIVE_BROWSER_ORIGINS: '["http://127.0.0.1:8000","http://localhost:8000"]'

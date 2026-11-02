@@ -1,12 +1,13 @@
-import os
 import sqlite3
 import subprocess
 import sys
 
+from tests.conftest import database_env
+
 
 def test_upgrade_requires_review_of_old_dangling_pi_references(tmp_path):
     path = tmp_path / "historical.db"
-    environment = os.environ | {"DATABASE_URL": f"sqlite+aiosqlite:///{path}"}
+    environment = database_env(DATABASE_URL=f"sqlite+aiosqlite:///{path}")
     command = [sys.executable, "-B", "-m", "alembic"]
     subprocess.run(command + ["upgrade", "0009"], env=environment, check=True, capture_output=True)
     # A deliberately unqualified historical PI-02A reference. The migration must refuse

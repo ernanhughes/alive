@@ -1,12 +1,13 @@
-import os
 import sqlite3
 import subprocess
 import sys
 
+from tests.conftest import database_env
+
 
 def test_migration_execution_and_repeat(tmp_path):
     db = tmp_path / "migration.db"
-    env = os.environ | {"DATABASE_URL": f"sqlite+aiosqlite:///{db}"}
+    env = database_env(DATABASE_URL=f"sqlite+aiosqlite:///{db}")
     for _ in range(2):
         subprocess.run(
             [sys.executable, "-m", "alembic", "upgrade", "head"],
@@ -42,7 +43,7 @@ def test_migration_execution_and_repeat(tmp_path):
 
 def test_pi_migration_downgrades_cleanly_to_0006(tmp_path):
     db = tmp_path / "downgrade.db"
-    env = os.environ | {"DATABASE_URL": f"sqlite+aiosqlite:///{db}"}
+    env = database_env(DATABASE_URL=f"sqlite+aiosqlite:///{db}")
     for command in (["upgrade", "head"], ["downgrade", "0006"]):
         subprocess.run(
             [sys.executable, "-m", "alembic", *command], env=env, check=True, capture_output=True
@@ -62,7 +63,7 @@ def test_workflow_tables_match_the_models_and_the_migration_downgrades(tmp_path)
     from alive.workflows import models as workflow_models  # noqa: F401  (registers the tables)
 
     db = tmp_path / "workflows.db"
-    env = os.environ | {"DATABASE_URL": f"sqlite+aiosqlite:///{db}"}
+    env = database_env(DATABASE_URL=f"sqlite+aiosqlite:///{db}")
 
     def alembic(*args):
         subprocess.run(

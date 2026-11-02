@@ -7,7 +7,7 @@ Backend: Python 3.13 and uv. Frontend: Node 24+ and npm. Main target: Windows, l
 1. Run `uv sync --locked` from the repository root.
 2. Run `npm ci` from `dashboard`.
 3. Copy `.env.example` to ignored `.env` and configure your database and token.
-4. Run `uv run alembic upgrade head`.
+4. Set `ALIVE_DB_TARGET=disposable:<database>` in `.env` for a local/dev database, then run `uv run alembic upgrade head`. Production migrations require `production:<database>` plus `ALIVE_ALLOW_PRODUCTION_MIGRATION=1` after owner approval.
 
 `DATABASE_URL` or `ALIVE_DSN` accepts `postgresql://` (normalized internally to asyncpg) or `postgresql+asyncpg://`. Never print or commit a real URL. The owner-supplied local credentials are stored only in `.env`. Existing environment variables take precedence over `.env`.
 

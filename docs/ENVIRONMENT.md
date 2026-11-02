@@ -20,6 +20,15 @@ A shell variable silently overrides `.env`; the doctor's `source` column shows w
 A few settings have more than one accepted name (`DATABASE_URL` or `ALIVE_DSN`;
 `ALIVE_META_API_KEY`, `MODEL_API_KEY` or `META_API_KEY`). The first listed wins and the doctor warns
 when several are set. A misspelt `ALIVE_*` name is **ignored without an error**; the doctor lists those.
+## Database migration target safety
+
+Alembic refuses to migrate an unidentified non-SQLite database. Set
+`ALIVE_DB_TARGET=disposable:<database>` for local/dev/test databases.
+A production migration additionally requires `ALIVE_DB_TARGET=production:<database>` and
+`ALIVE_ALLOW_PRODUCTION_MIGRATION=1`, after owner approval. Qualification runs require an
+explicit disposable target (`ALIVE_QUALIFICATION=1` enforces this). The guard also refuses
+when `DATABASE_URL`, `ALIVE_DSN` or the worktree `.env` disagree; it does so before opening a
+connection.
 
 ## Two different "Pi"s
 
@@ -46,7 +55,7 @@ at `http://host.docker.internal:11434` and auto-configures the Pi agent with a s
 model. `mxbai-embed-large` is 1024-dimensional and is not selected because the memory schema stores
 384-dimensional vectors.
 
-Compose passes only these to the app: `DATABASE_URL`, `ALIVE_API_TOKEN` (required),
+Compose passes only these to the app: `DATABASE_URL`, `ALIVE_DB_TARGET`, `ALIVE_API_TOKEN` (required),
 `ALIVE_ALLOWED_ORIGINS`, `ALIVE_BROWSER_ORIGINS`, `ALIVE_BROWSER_AVAILABLE`, `ALIVE_EXPERIMENTS_ENABLED`,
 `ALIVE_COGNITIVE_PROVIDER`, `ALIVE_DEMO_MODE` (and the
 demo flags tied to it), `ALIVE_EMBEDDING_ENABLED`, `ALIVE_EMBEDDING_PATH`, `ALIVE_OLLAMA_URL`,
