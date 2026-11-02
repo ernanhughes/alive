@@ -449,6 +449,11 @@ async def ask(app, request):
             request.task_case_ids is None and not request.repair_incomplete,
             "research_task_options_invalid",
         )
+        # Frozen labels are qualification metadata, not an owner-asserted "verified" claim.
+        require(
+            request.reference is None or kernel.settings.alive_qualification,
+            "research_reference_qualification_only",
+        )
         from alive.research import service as research_service
 
         return await research_service.run(app, request, current, reference=request.reference)

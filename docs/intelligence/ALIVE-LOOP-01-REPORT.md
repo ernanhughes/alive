@@ -41,7 +41,7 @@ experience reuse.
 
 Focused results:
 
-- **14 LOOP-01 tests passed** (`tests/test_research_loop.py`).
+- **15 LOOP-01 tests passed** (`tests/test_research_loop.py`).
 - **11 real model dispatches** were made, within the 12-dispatch campaign ceiling.
 - **3 of 4 controlled tasks were VERIFIED_SUCCESS.** Task 1 was semantically correct but failed
   the frozen exact-answer match; this is reported as a verifier limitation, not hidden.
@@ -232,6 +232,9 @@ Verification is deterministic and independent of the model:
   citation existence is not promoted to semantic truth.
 - `VERIFIED_FAILURE` means the answer or its grounding failed the frozen check.
 - `ABSTAINED` and `ERROR` remain distinct states.
+- Frozen references are accepted only when the host is in qualification mode
+  (`ALIVE_QUALIFICATION=1`). An ordinary owner request carrying a reference is refused, so a
+  caller cannot assert their own "verified" claim through the product API.
 
 | Task | State | Verification | Basis |
 |---|---|---|---|
@@ -273,7 +276,7 @@ no-experience control, which is LOOP-LEARN-01.
 
 ## 8. Focused tests
 
-`tests/test_research_loop.py` - **14 passed**:
+`tests/test_research_loop.py` - **15 passed**:
 
 - model chooses search -> read -> answer;
 - chosen action determines actual execution;
@@ -293,6 +296,7 @@ no-experience control, which is LOOP-LEARN-01.
 - one-call baseline sees the full corpus and never executes a tool;
 - restart preserves the episode;
 - research mode without its own consent is refused;
+- a frozen reference is refused outside qualification mode;
 - dispatch revalidation refuses revoked consent.
 
 Additional checks:

@@ -133,6 +133,8 @@ def guard() -> Settings:
     settings = Settings()
     if not settings.alive_db_target.startswith("disposable:"):
         refused("ALIVE_DB_TARGET must identify a disposable database")
+    if not settings.alive_qualification:
+        refused("ALIVE_QUALIFICATION=1 is required for frozen references")
     if settings.alive_model_transport != "pi":
         refused("ALIVE_MODEL_TRANSPORT must be pi for the approved production path")
     if not settings.alive_meta_api_key:

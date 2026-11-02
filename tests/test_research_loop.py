@@ -116,6 +116,7 @@ class Script:
 @pytest.fixture
 def research_case(case):
     client, upstream, root, settings = case
+    settings.alive_qualification = True
     (root / "INJECTION.md").write_bytes(INJECTION.encode())
     _, approval = call(client, approve_source, root, PATHS, SOURCE_OPERATIONS)
     body = {
@@ -549,6 +550,23 @@ def test_unverified_episode_is_never_presented_as_a_successful_strategy(research
     assert episode["verified_success"] is False
     assert episode["verification"]["status"] == "INCONCLUSIVE"
     assert response.json()["reuse"]["previous_outcome_status"] == "INCONCLUSIVE"
+
+
+def test_frozen_reference_is_refused_outside_qualification(research_case):
+    client, upstream, setup, *_ = research_case
+    settings = research_case[5]
+    settings.alive_qualification = False
+    try:
+        response = ask(
+            research_case,
+            "Why is the mean calculation wrong?",
+            "loop-reference-not-qualified",
+            reference_payload=reference(),
+        )
+    finally:
+        settings.alive_qualification = True
+    assert response.status_code == 409, response.text
+    assert not upstream.calls
 
 
 def test_relevance_terms_normalise_punctuation_and_common_words():
