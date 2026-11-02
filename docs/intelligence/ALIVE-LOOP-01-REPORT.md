@@ -190,8 +190,8 @@ executed (one-call mode), so it did not answer; result `INCONCLUSIVE`. Under the
 schema, the model did not treat the full corpus as sufficient to answer without a search action.
 That is evidence for the value of the tool round-trip, not proof of improved research quality.
 
-No document content, URL, shell command or external web request was executed by the model. The
-host executed only `search` and `read` over the approved captured files.
+The model never executed a URL, shell command or external web request. The host executed only
+`search` and `read` over the approved captured files.
 
 ---
 
