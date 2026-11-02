@@ -1,0 +1,902 @@
+{
+  "baseline": {
+    "actions": [
+      {
+        "action": "search",
+        "observation": {
+          "baseline": "tool not executed; the one-call baseline has no round-trip"
+        },
+        "params": {
+          "query": "return request window refund issue time",
+          "reason": "No loop evidence yet; need to gather snippets before answering."
+        },
+        "step": 1
+      }
+    ],
+    "comparison": "one call with full approved corpus, no tool round-trip",
+    "conclusion_status": "INCONCLUSIVE",
+    "consent_id": "59f5a431-77c2-4092-b188-52dd7765814d",
+    "episode_id": "c9d27cee-caf1-4b44-9aa5-c358fb03bbd7",
+    "key": "loop01-return-refund",
+    "message_senders": [
+      "researcher"
+    ],
+    "model_calls": 1,
+    "models": [
+      {
+        "model": "muse-spark-1.3",
+        "provider": "meta",
+        "role": "research_decider",
+        "status": "validated"
+      }
+    ],
+    "outcome": {
+      "effect": "none",
+      "reason": "research_abstained",
+      "verification": {
+        "basis": "baseline_did_not_answer",
+        "notes": [
+          "The baseline model chose a tool action in its only call."
+        ],
+        "status": "INCONCLUSIVE"
+      }
+    },
+    "phase": "one-call full-corpus baseline",
+    "previous_episode": {
+      "episode_id": "f6309913-1695-4e06-bab2-50ffd904c263",
+      "first_action": "search",
+      "verification": {
+        "basis": "independent_reference_mismatch",
+        "citations_present": 2,
+        "citations_required": 2,
+        "grounded": true,
+        "matched_answer": false,
+        "notes": [
+          "Answer did not match the frozen reference answer set."
+        ],
+        "reference_id": "loop01-return-refund",
+        "required_present": 2,
+        "status": "VERIFIED_FAILURE"
+      },
+      "verified_success": false
+    },
+    "question": "What is the return request window and the refund issue time? Answer exactly as '<window>; <refund time>'.",
+    "reuse": {
+      "current_first_action": "search",
+      "first_action_changed": false,
+      "previous_episode_id": "f6309913-1695-4e06-bab2-50ffd904c263",
+      "previous_first_action": "search",
+      "previous_outcome_status": "VERIFIED_FAILURE",
+      "supplied": true
+    },
+    "state": "ABSTAINED",
+    "status": "LIVE MODEL",
+    "task_id": "f1718096-5e11-4118-9213-5ffa91cd0af9",
+    "usage": [
+      {
+        "id": "a3341fa4-2568-409a-af47-8a2641e41e1d",
+        "latency_ms": 5153.543500004162,
+        "usage": {
+          "charged_tokens": 2789,
+          "completion_tokens": 646,
+          "completion_tokens_details": {
+            "reasoning_tokens": 599
+          },
+          "prompt_tokens": 2143,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "total_tokens": 2789
+        }
+      }
+    ],
+    "verification": {
+      "basis": "baseline_did_not_answer",
+      "notes": [
+        "The baseline model chose a tool action in its only call."
+      ],
+      "status": "INCONCLUSIVE"
+    }
+  },
+  "campaign_dispatch_ceiling": 12,
+  "consent": {
+    "id": "59f5a431-77c2-4092-b188-52dd7765814d",
+    "paths": [
+      "policy.md",
+      "refunds.md",
+      "shipping.md",
+      "warranty.md"
+    ],
+    "research": {
+      "max_model_calls": 4,
+      "max_output_tokens": 1536,
+      "max_steps": 4,
+      "max_tokens": 120000,
+      "model": "muse-spark-1.3",
+      "role": "research_decider"
+    },
+    "source_ref": "0ab934e2-e60d-43b1-95bb-aea9d30e269c"
+  },
+  "database": {
+    "finish_01r_target_guard": "migration_database_url resolved the disposable target before schema use",
+    "kind": "disposable SQLite",
+    "target_basename": "loop01.db"
+  },
+  "dispatches": 11,
+  "finished_at": "2026-11-02T02:59:14.281692+00:00",
+  "milestone": "ALIVE-LOOP-01",
+  "model": "muse-spark-1.3",
+  "notes": [
+    "Task 1 produced the correct facts with both grounded citations, but its wording did not match the frozen exact-answer set, so the independent verifier returned VERIFIED_FAILURE. This is a verifier strictness result, not a missing or ungrounded answer.",
+    "The one-call baseline received the full approved corpus but still chose a search action in its only dispatch; it did not answer. The product loop's tool round-trip was necessary under the same action schema.",
+    "The first reuse probe was retained. It exposed a relevance-tokenisation defect (punctuation and common words inflated an unrelated prior episode); the defect was fixed and the second probe supplied a verified related episode.",
+    "The second reuse probe was supplied the previous VERIFIED_SUCCESS episode and changed its first action from search to read. This demonstrates experience reuse; it does not prove improved learning performance, which requires a separate controlled comparison."
+  ],
+  "reuse_consent": {
+    "id": "82058fb7-666c-4dc5-805d-97afd9cbe769",
+    "paths": [
+      "policy.md",
+      "refunds.md",
+      "shipping.md",
+      "warranty.md"
+    ],
+    "research": {
+      "max_model_calls": 3,
+      "max_output_tokens": 1536,
+      "max_steps": 4,
+      "max_tokens": 120000,
+      "model": "muse-spark-1.3",
+      "role": "research_decider"
+    },
+    "source_ref": "0ab934e2-e60d-43b1-95bb-aea9d30e269c"
+  },
+  "started_at": "2026-11-02T02:57:09.238539+00:00",
+  "status": "LIVE_MODEL_RUN_COMPLETED",
+  "tasks": [
+    {
+      "actions": [
+        {
+          "action": "search",
+          "observation": {
+            "action": "search",
+            "documents": [
+              {
+                "document_id": "refunds.md",
+                "line_end": 4,
+                "line_start": 2,
+                "score": 5
+              },
+              {
+                "document_id": "policy.md",
+                "line_end": 6,
+                "line_start": 4,
+                "score": 4
+              }
+            ],
+            "query": "return request window refund issue time"
+          },
+          "params": {
+            "query": "return request window refund issue time",
+            "reason": "Gather evidence before answering."
+          },
+          "step": 1
+        },
+        {
+          "action": "read",
+          "observation": {
+            "action": "read",
+            "bytes": 188,
+            "document_id": "refunds.md",
+            "line_end": 7,
+            "line_start": 1
+          },
+          "params": {
+            "document_id": "refunds.md",
+            "reason": "Need refund issue time evidence before answering.",
+            "section": 0
+          },
+          "step": 2
+        },
+        {
+          "action": "answer",
+          "observation": {
+            "verification": {
+              "basis": "independent_reference_mismatch",
+              "citations_present": 2,
+              "citations_required": 2,
+              "grounded": true,
+              "matched_answer": false,
+              "notes": [
+                "Answer did not match the frozen reference answer set."
+              ],
+              "reference_id": "loop01-return-refund",
+              "required_present": 2,
+              "status": "VERIFIED_FAILURE"
+            }
+          },
+          "params": {
+            "answer": "30 days from delivery; within 10 business days after inspection",
+            "citations": [
+              {
+                "document_id": "policy.md",
+                "line_end": null,
+                "line_start": null,
+                "quote": "\nThe request window is 30 days from delivery.\n"
+              },
+              {
+                "document_id": "refunds.md",
+                "line_end": null,
+                "line_start": null,
+                "quote": "Refunds are issued within 10 business days after inspection."
+              }
+            ]
+          },
+          "step": 3
+        }
+      ],
+      "conclusion_status": "CONTRADICTED",
+      "consent_id": "59f5a431-77c2-4092-b188-52dd7765814d",
+      "episode_id": "f6309913-1695-4e06-bab2-50ffd904c263",
+      "expected": "30 days; 10 business days",
+      "key": "loop01-return-refund",
+      "message_senders": [
+        "researcher",
+        "investigator",
+        "researcher",
+        "investigator",
+        "researcher"
+      ],
+      "model_calls": 3,
+      "models": [
+        {
+          "model": "muse-spark-1.3",
+          "provider": "meta",
+          "role": "research_decider",
+          "status": "validated"
+        },
+        {
+          "model": "muse-spark-1.3",
+          "provider": "meta",
+          "role": "research_decider",
+          "status": "validated"
+        },
+        {
+          "model": "muse-spark-1.3",
+          "provider": "meta",
+          "role": "research_decider",
+          "status": "validated"
+        }
+      ],
+      "outcome": {
+        "effect": "answer",
+        "reason": "research_answer_retained",
+        "verification": {
+          "basis": "independent_reference_mismatch",
+          "citations_present": 2,
+          "citations_required": 2,
+          "grounded": true,
+          "matched_answer": false,
+          "notes": [
+            "Answer did not match the frozen reference answer set."
+          ],
+          "reference_id": "loop01-return-refund",
+          "required_present": 2,
+          "status": "VERIFIED_FAILURE"
+        }
+      },
+      "phase": "initial multi-document task",
+      "previous_episode": null,
+      "question": "What is the return request window and the refund issue time? Answer exactly as '<window>; <refund time>'.",
+      "reuse": {
+        "current_first_action": "search",
+        "first_action_changed": false,
+        "previous_episode_id": null,
+        "previous_first_action": null,
+        "previous_outcome_status": null,
+        "supplied": false
+      },
+      "state": "COMPLETED",
+      "status": "LIVE MODEL",
+      "task_id": "8db951d6-ef28-4cf3-be09-fde8d4f87914",
+      "usage": [
+        {
+          "id": "fca677b1-22a9-4031-a89b-3bf1418e5b61",
+          "latency_ms": 1800.1389999990351,
+          "usage": {
+            "charged_tokens": 1069,
+            "completion_tokens": 49,
+            "completion_tokens_details": {
+              "reasoning_tokens": 9
+            },
+            "prompt_tokens": 1020,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 1069
+          }
+        },
+        {
+          "id": "b10d9b41-9e64-4bdf-a577-9a7a3554b615",
+          "latency_ms": 1688.5477999967407,
+          "usage": {
+            "charged_tokens": 1309,
+            "completion_tokens": 64,
+            "completion_tokens_details": {
+              "reasoning_tokens": 22
+            },
+            "prompt_tokens": 1245,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 1309
+          }
+        },
+        {
+          "id": "a3995656-f400-4670-8938-d77e73a1c7af",
+          "latency_ms": 2746.1685000016587,
+          "usage": {
+            "charged_tokens": 1636,
+            "completion_tokens": 283,
+            "completion_tokens_details": {
+              "reasoning_tokens": 196
+            },
+            "prompt_tokens": 1353,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 1636
+          }
+        }
+      ],
+      "verification": {
+        "basis": "independent_reference_mismatch",
+        "citations_present": 2,
+        "citations_required": 2,
+        "grounded": true,
+        "matched_answer": false,
+        "notes": [
+          "Answer did not match the frozen reference answer set."
+        ],
+        "reference_id": "loop01-return-refund",
+        "required_present": 2,
+        "status": "VERIFIED_FAILURE"
+      }
+    },
+    {
+      "actions": [
+        {
+          "action": "search",
+          "observation": {
+            "action": "search",
+            "documents": [
+              {
+                "document_id": "shipping.md",
+                "line_end": 7,
+                "line_start": 6,
+                "score": 5
+              }
+            ],
+            "query": "express shipping duration"
+          },
+          "params": {
+            "query": "express shipping duration",
+            "reason": "Need to gather snippets before answering."
+          },
+          "step": 1
+        },
+        {
+          "action": "answer",
+          "observation": {
+            "verification": {
+              "basis": "independent_reference_and_required_quotes",
+              "citations_present": 1,
+              "citations_required": 1,
+              "grounded": true,
+              "matched_answer": true,
+              "notes": [],
+              "reference_id": "loop01-express",
+              "required_present": 1,
+              "status": "VERIFIED_SUCCESS"
+            }
+          },
+          "params": {
+            "answer": "2 business days",
+            "citations": [
+              {
+                "document_id": "shipping.md",
+                "line_end": null,
+                "line_start": null,
+                "quote": "\nExpress shipping takes 2 business days."
+              }
+            ]
+          },
+          "step": 2
+        }
+      ],
+      "conclusion_status": "VERIFIED",
+      "consent_id": "59f5a431-77c2-4092-b188-52dd7765814d",
+      "episode_id": "df369e15-3abd-423c-a80f-40b0f305763d",
+      "expected": "2 business days",
+      "key": "loop01-express",
+      "message_senders": [
+        "researcher",
+        "investigator",
+        "researcher"
+      ],
+      "model_calls": 2,
+      "models": [
+        {
+          "model": "muse-spark-1.3",
+          "provider": "meta",
+          "role": "research_decider",
+          "status": "validated"
+        },
+        {
+          "model": "muse-spark-1.3",
+          "provider": "meta",
+          "role": "research_decider",
+          "status": "validated"
+        }
+      ],
+      "outcome": {
+        "effect": "answer",
+        "reason": "research_answer_retained",
+        "verification": {
+          "basis": "independent_reference_and_required_quotes",
+          "citations_present": 1,
+          "citations_required": 1,
+          "grounded": true,
+          "matched_answer": true,
+          "notes": [],
+          "reference_id": "loop01-express",
+          "required_present": 1,
+          "status": "VERIFIED_SUCCESS"
+        }
+      },
+      "phase": "single-document and reuse probe",
+      "previous_episode": {
+        "episode_id": "c9d27cee-caf1-4b44-9aa5-c358fb03bbd7",
+        "first_action": "search",
+        "verification": {
+          "basis": "baseline_did_not_answer",
+          "notes": [
+            "The baseline model chose a tool action in its only call."
+          ],
+          "status": "INCONCLUSIVE"
+        },
+        "verified_success": false
+      },
+      "question": "How long does express shipping take? Answer with the duration only.",
+      "reuse": {
+        "current_first_action": "search",
+        "first_action_changed": false,
+        "previous_episode_id": "c9d27cee-caf1-4b44-9aa5-c358fb03bbd7",
+        "previous_first_action": "search",
+        "previous_outcome_status": "INCONCLUSIVE",
+        "supplied": true
+      },
+      "state": "COMPLETED",
+      "status": "LIVE MODEL",
+      "task_id": "7f0b0780-4823-4289-a35a-7e4f9f5fc0e6",
+      "usage": [
+        {
+          "id": "391866fd-5b18-41b5-aa6b-c5dbdcd1cc1e",
+          "latency_ms": 1607.015199995658,
+          "usage": {
+            "charged_tokens": 1314,
+            "completion_tokens": 47,
+            "completion_tokens_details": {
+              "reasoning_tokens": 8
+            },
+            "prompt_tokens": 1267,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 1314
+          }
+        },
+        {
+          "id": "624d0f57-2b72-497a-a8d7-d38e1020521a",
+          "latency_ms": 2031.1359000043012,
+          "usage": {
+            "charged_tokens": 1477,
+            "completion_tokens": 94,
+            "completion_tokens_details": {
+              "reasoning_tokens": 45
+            },
+            "prompt_tokens": 1383,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 1477
+          }
+        }
+      ],
+      "verification": {
+        "basis": "independent_reference_and_required_quotes",
+        "citations_present": 1,
+        "citations_required": 1,
+        "grounded": true,
+        "matched_answer": true,
+        "notes": [],
+        "reference_id": "loop01-express",
+        "required_present": 1,
+        "status": "VERIFIED_SUCCESS"
+      }
+    },
+    {
+      "actions": [
+        {
+          "action": "search",
+          "observation": {
+            "action": "search",
+            "documents": [
+              {
+                "document_id": "policy.md",
+                "line_end": 4,
+                "line_start": 2,
+                "score": 4
+              },
+              {
+                "document_id": "refunds.md",
+                "line_end": 4,
+                "line_start": 2,
+                "score": 2
+              }
+            ],
+            "query": "return request duration how long"
+          },
+          "params": {
+            "query": "return request duration how long",
+            "reason": "Need to gather snippets before answering."
+          },
+          "step": 1
+        },
+        {
+          "action": "read",
+          "observation": {
+            "action": "read",
+            "bytes": 198,
+            "document_id": "policy.md",
+            "line_end": 7,
+            "line_start": 1
+          },
+          "params": {
+            "document_id": "policy.md",
+            "reason": "Snippets lack duration; need to read full policy to find return window."
+          },
+          "step": 2
+        },
+        {
+          "action": "answer",
+          "observation": {
+            "verification": {
+              "basis": "independent_reference_and_required_quotes",
+              "citations_present": 1,
+              "citations_required": 1,
+              "grounded": true,
+              "matched_answer": true,
+              "notes": [],
+              "reference_id": "loop01-return-reuse",
+              "required_present": 1,
+              "status": "VERIFIED_SUCCESS"
+            }
+          },
+          "params": {
+            "answer": "30 days",
+            "citations": [
+              {
+                "document_id": "policy.md",
+                "line_end": null,
+                "line_start": null,
+                "quote": "The request window is 30 days from delivery."
+              }
+            ]
+          },
+          "step": 3
+        }
+      ],
+      "conclusion_status": "VERIFIED",
+      "consent_id": "59f5a431-77c2-4092-b188-52dd7765814d",
+      "episode_id": "a8356c03-1611-41f8-b7f2-eb704f5222bb",
+      "expected": "30 days",
+      "key": "loop01-return-reuse",
+      "message_senders": [
+        "researcher",
+        "investigator",
+        "researcher",
+        "investigator",
+        "researcher"
+      ],
+      "model_calls": 3,
+      "models": [
+        {
+          "model": "muse-spark-1.3",
+          "provider": "meta",
+          "role": "research_decider",
+          "status": "validated"
+        },
+        {
+          "model": "muse-spark-1.3",
+          "provider": "meta",
+          "role": "research_decider",
+          "status": "validated"
+        },
+        {
+          "model": "muse-spark-1.3",
+          "provider": "meta",
+          "role": "research_decider",
+          "status": "validated"
+        }
+      ],
+      "outcome": {
+        "effect": "answer",
+        "reason": "research_answer_retained",
+        "verification": {
+          "basis": "independent_reference_and_required_quotes",
+          "citations_present": 1,
+          "citations_required": 1,
+          "grounded": true,
+          "matched_answer": true,
+          "notes": [],
+          "reference_id": "loop01-return-reuse",
+          "required_present": 1,
+          "status": "VERIFIED_SUCCESS"
+        }
+      },
+      "phase": "single-document and reuse probe",
+      "previous_episode": {
+        "episode_id": "df369e15-3abd-423c-a80f-40b0f305763d",
+        "first_action": "search",
+        "verification": {
+          "basis": "independent_reference_and_required_quotes",
+          "citations_present": 1,
+          "citations_required": 1,
+          "grounded": true,
+          "matched_answer": true,
+          "notes": [],
+          "reference_id": "loop01-express",
+          "required_present": 1,
+          "status": "VERIFIED_SUCCESS"
+        },
+        "verified_success": true
+      },
+      "question": "How long do customers have to request a return? Answer with the duration only.",
+      "reuse": {
+        "current_first_action": "search",
+        "first_action_changed": false,
+        "previous_episode_id": "df369e15-3abd-423c-a80f-40b0f305763d",
+        "previous_first_action": "search",
+        "previous_outcome_status": "VERIFIED_SUCCESS",
+        "supplied": true
+      },
+      "state": "COMPLETED",
+      "status": "LIVE MODEL",
+      "task_id": "bc758366-af96-41d3-afa6-1b64c13a919c",
+      "usage": [
+        {
+          "id": "15b9d77d-d91f-449b-8d30-f019a7057d65",
+          "latency_ms": 2126.831800000218,
+          "usage": {
+            "charged_tokens": 1567,
+            "completion_tokens": 45,
+            "completion_tokens_details": {
+              "reasoning_tokens": 4
+            },
+            "prompt_tokens": 1522,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 1567
+          }
+        },
+        {
+          "id": "3b09a543-d9dc-422f-91a2-4f502ebfd573",
+          "latency_ms": 3034.3276999992668,
+          "usage": {
+            "charged_tokens": 1862,
+            "completion_tokens": 110,
+            "completion_tokens_details": {
+              "reasoning_tokens": 63
+            },
+            "prompt_tokens": 1752,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 1862
+          }
+        },
+        {
+          "id": "03dd2541-3c95-4012-8a1c-39f16a459ae8",
+          "latency_ms": 2619.599300000118,
+          "usage": {
+            "charged_tokens": 2117,
+            "completion_tokens": 240,
+            "completion_tokens_details": {
+              "reasoning_tokens": 191
+            },
+            "prompt_tokens": 1877,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 2117
+          }
+        }
+      ],
+      "verification": {
+        "basis": "independent_reference_and_required_quotes",
+        "citations_present": 1,
+        "citations_required": 1,
+        "grounded": true,
+        "matched_answer": true,
+        "notes": [],
+        "reference_id": "loop01-return-reuse",
+        "required_present": 1,
+        "status": "VERIFIED_SUCCESS"
+      }
+    },
+    {
+      "actions": [
+        {
+          "action": "read",
+          "observation": {
+            "action": "read",
+            "bytes": 198,
+            "document_id": "policy.md",
+            "line_end": 7,
+            "line_start": 1
+          },
+          "params": {
+            "document_id": "policy.md",
+            "reason": "Need to gather corpus evidence for return window before answering."
+          },
+          "step": 1
+        },
+        {
+          "action": "answer",
+          "observation": {
+            "verification": {
+              "basis": "independent_reference_and_required_quotes",
+              "citations_present": 1,
+              "citations_required": 1,
+              "grounded": true,
+              "matched_answer": true,
+              "notes": [],
+              "reference_id": "loop01-return-reuse-fixed",
+              "required_present": 1,
+              "status": "VERIFIED_SUCCESS"
+            }
+          },
+          "params": {
+            "answer": "30 days",
+            "citations": [
+              {
+                "document_id": "policy.md",
+                "line_end": null,
+                "line_start": null,
+                "quote": "The request window is 30 days from delivery."
+              }
+            ]
+          },
+          "step": 2
+        }
+      ],
+      "conclusion_status": "VERIFIED",
+      "consent_id": "82058fb7-666c-4dc5-805d-97afd9cbe769",
+      "episode_id": "23ab9377-4ae7-44dc-91d3-50768164bd16",
+      "expected": "30 days",
+      "key": "loop01-return-reuse-fixed",
+      "message_senders": [
+        "researcher",
+        "investigator",
+        "researcher"
+      ],
+      "model_calls": 2,
+      "models": [
+        {
+          "model": "muse-spark-1.3",
+          "provider": "meta",
+          "role": "research_decider",
+          "status": "validated"
+        },
+        {
+          "model": "muse-spark-1.3",
+          "provider": "meta",
+          "role": "research_decider",
+          "status": "validated"
+        }
+      ],
+      "outcome": {
+        "effect": "answer",
+        "reason": "research_answer_retained",
+        "verification": {
+          "basis": "independent_reference_and_required_quotes",
+          "citations_present": 1,
+          "citations_required": 1,
+          "grounded": true,
+          "matched_answer": true,
+          "notes": [],
+          "reference_id": "loop01-return-reuse-fixed",
+          "required_present": 1,
+          "status": "VERIFIED_SUCCESS"
+        }
+      },
+      "phase": "reuse probe after relevance fix",
+      "previous_episode": {
+        "episode_id": "a8356c03-1611-41f8-b7f2-eb704f5222bb",
+        "first_action": "search",
+        "verification": {
+          "basis": "independent_reference_and_required_quotes",
+          "citations_present": 1,
+          "citations_required": 1,
+          "grounded": true,
+          "matched_answer": true,
+          "notes": [],
+          "reference_id": "loop01-return-reuse",
+          "required_present": 1,
+          "status": "VERIFIED_SUCCESS"
+        },
+        "verified_success": true
+      },
+      "question": "Within how many days must a customer request a return? Answer with the duration only.",
+      "reuse": {
+        "current_first_action": "read",
+        "first_action_changed": true,
+        "previous_episode_id": "a8356c03-1611-41f8-b7f2-eb704f5222bb",
+        "previous_first_action": "search",
+        "previous_outcome_status": "VERIFIED_SUCCESS",
+        "supplied": true
+      },
+      "state": "COMPLETED",
+      "status": "LIVE MODEL",
+      "task_id": "f545bc38-ef84-4d63-a593-c356698d0dce",
+      "usage": [
+        {
+          "id": "3501635b-246b-4e91-8711-02ee880819ce",
+          "latency_ms": 3797.4325999966823,
+          "usage": {
+            "charged_tokens": 2037,
+            "completion_tokens": 216,
+            "completion_tokens_details": {
+              "reasoning_tokens": 173
+            },
+            "prompt_tokens": 1821,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 2037
+          }
+        },
+        {
+          "id": "d7e8f00d-0895-4b66-885f-3b3c84e9a9d8",
+          "latency_ms": 1957.318300002953,
+          "usage": {
+            "charged_tokens": 2130,
+            "completion_tokens": 66,
+            "completion_tokens_details": {
+              "reasoning_tokens": 17
+            },
+            "prompt_tokens": 2064,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "total_tokens": 2130
+          }
+        }
+      ],
+      "verification": {
+        "basis": "independent_reference_and_required_quotes",
+        "citations_present": 1,
+        "citations_required": 1,
+        "grounded": true,
+        "matched_answer": true,
+        "notes": [],
+        "reference_id": "loop01-return-reuse-fixed",
+        "required_present": 1,
+        "status": "VERIFIED_SUCCESS"
+      }
+    }
+  ],
+  "transport": "pi",
+  "within_campaign_ceiling": true
+}

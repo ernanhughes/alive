@@ -230,6 +230,28 @@ class WorkflowRunner:
     async def authorize_dispatch(self, session, call):
         """Host callback at PI-01B's actual dispatch fence, inside its existing transaction."""
         try:
+            if call.input_json.get("research_consent_ref"):
+                from alive.research.authority import ResearchClaim, validate_dispatch
+                from alive.research.contracts import Spec
+
+                require(call.status == "reserved", "dispatch_invocation")
+                claim = ResearchClaim(
+                    consent_ref=call.input_json["research_consent_ref"],
+                    goal_ref=call.input_json["research_goal_ref"],
+                    principal=call.input_json["research_principal"],
+                    paths=tuple(call.input_json["research_paths"]),
+                )
+                await validate_dispatch(
+                    session,
+                    self.k,
+                    claim,
+                    role=call.role,
+                    spec=Spec(),
+                    model=call.model,
+                    output_limit=call.input_json["research_output_limit"],
+                    context=call.input_json["context"],
+                )
+                return True
             run_id = call.input_json["workflow_run_id"]
             execution = await session.get(WorkflowExecution, run_id)
             _, run, grant, _, approved = await self._authority(session, run_id, execution.owner)

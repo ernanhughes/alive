@@ -26,6 +26,8 @@ from alive.cognitive_models import ModelInvocation
 from alive.intent import service as intent
 from alive.models import Event, now
 from alive.pi.models import PiProviderRequest, PiRun
+from alive.research.contracts import ROLE as RESEARCH_ROLE
+from alive.research.contracts import role_contract as research_role_contract
 from alive.workflows.context import Refused, digest, require
 from alive.workflows.models import WorkflowStageRun
 from alive.workflows.runner import result_event
@@ -190,11 +192,15 @@ async def prepare(kernel, request):
     reviews = {}
     profiles = (
         (INTENT, ANALYSIS, INSPECTION, CONTEXTUAL)
-        if request.contextual or request.adaptive or request.code_review
+        if request.contextual or request.adaptive or request.code_review or request.research
         else (INTENT, ANALYSIS, INSPECTION)
     )
     require(
         not request.completion_repair or request.code_review, "task_profile_required_for_repair"
+    )
+    require(
+        not request.research or request.contextual,
+        "research_requires_contextual_source",
     )
     if request.code_review:
         profiles += (CODE_REVIEW,)
@@ -263,6 +269,31 @@ async def prepare(kernel, request):
             terms["disclosure"] += (
                 " In a linked conversation, bounded prior owner statements, model findings and "
                 "revisions from this exact source may also be disclosed to the same destination."
+            )
+        if request.research:
+            destination = dict(reviews[CONTEXTUAL]["terms"]["model_disclosure"]["destination"])
+            destination["model"] = kernel.settings.alive_role_models.get(
+                RESEARCH_ROLE, kernel.settings.alive_meta_model
+            )
+            # The research tools read the same captured source the contextual profile approved.
+            terms["source"] = reviews[CONTEXTUAL]["terms"]["source"]
+            terms["research"] = {
+                "role": RESEARCH_ROLE,
+                "role_contract_sha256": research_role_contract(),
+                "model": destination["model"],
+                "destination": destination,
+                "paths": sorted(request.paths),
+                "max_model_calls": min(4, request.max_calls),
+                "max_output_tokens": min(
+                    1536,
+                    reviews[CONTEXTUAL]["terms"]["model_disclosure"]["max_output_tokens"],
+                ),
+                "max_steps": 4,
+                "max_tokens": request.max_tokens,
+            }
+            terms["disclosure"] += (
+                " The research loop may make up to four model decisions and read only the "
+                "approved captured corpus; it cannot fetch the web or write files."
             )
         event = kernel.add_event(
             session,
@@ -412,6 +443,15 @@ async def ask(app, request):
             return await exchange(kernel, existing.id)
         require(current["state"] == "approved", "standing_consent_required_expired_or_revoked")
     terms = current["terms"]
+    if request.task_mode == "research":
+        require(terms.get("research"), "research_not_authorized")
+        require(
+            request.task_case_ids is None and not request.repair_incomplete,
+            "research_task_options_invalid",
+        )
+        from alive.research import service as research_service
+
+        return await research_service.run(app, request, current, reference=request.reference)
     task_review = request.task_mode == "code_review"
     if task_review:
         require(
