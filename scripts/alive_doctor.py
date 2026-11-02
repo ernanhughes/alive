@@ -31,6 +31,7 @@ EXTERNAL = {
     "ALIVE_HOST_PORT": "compose.yaml: host port for the container (extension expects 8000)",
     "ALIVE_DOCKER_PI_PROVIDER": "compose.yaml: Pi provider inside the container",
     "ALIVE_DOCKER_PI_MODEL": "compose.yaml: Pi model inside the container",
+    "ALIVE_INSTALL_BROWSER": "Dockerfile/compose.yaml: install Chrome into the image",
     "VITE_ALIVE_API_BASE": "Dockerfile/dashboard build: API origin baked into the UI",
     "POSTGRES_DB": "compose.yaml: database name for the db service",
     "POSTGRES_USER": "compose.yaml: database user for the db service",
@@ -290,6 +291,7 @@ def docker_parity(known, env_file, environment):
             "VITE_ALIVE_API_BASE",
             "ALIVE_DOCKER_PI_PROVIDER",
             "ALIVE_DOCKER_PI_MODEL",
+            "ALIVE_INSTALL_BROWSER",
         }
     )
     if not missing:

@@ -38,6 +38,12 @@ class RedirectingPage(Page):
         return self.text
 
 
+def test_relative_navigation_resolves_against_the_first_allowed_origin():
+    browsers = Browsers(Kernel())
+    assert browsers.resolve("/world/lab-1") == "http://127.0.0.1:8000/world/lab-1"
+    assert browsers.resolve("http://127.0.0.1:8000/demo") == "http://127.0.0.1:8000/demo"
+
+
 async def test_managed_chrome_observation_carries_source_and_integrity_metadata():
     kernel = Kernel()
     browsers = Browsers(kernel)

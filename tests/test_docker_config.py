@@ -185,13 +185,22 @@ def test_dockerfile_bundles_the_pinned_embedding_model():
     assert "test -s /app/models/minilm/tokenizer.json" in dockerfile
 
 
-def test_compose_reports_unavailable_browser_and_disabled_experiments():
+def test_compose_enables_demo_browser_and_experiments_by_default():
     compose = read("compose.yaml")
-    assert "ALIVE_BROWSER_AVAILABLE: ${ALIVE_BROWSER_AVAILABLE:-false}" in compose
-    assert "ALIVE_EXPERIMENTS_ENABLED: ${ALIVE_EXPERIMENTS_ENABLED:-false}" in compose
+    assert "ALIVE_BROWSER_AVAILABLE: ${ALIVE_BROWSER_AVAILABLE:-true}" in compose
+    assert "ALIVE_EXPERIMENTS_ENABLED: ${ALIVE_EXPERIMENTS_ENABLED:-true}" in compose
+    assert "ALIVE_INSTALL_BROWSER: ${ALIVE_INSTALL_BROWSER:-true}" in compose
     e2e = read("compose.e2e.yaml")
     assert 'ALIVE_BROWSER_AVAILABLE: "false"' in e2e
     assert 'ALIVE_EXPERIMENTS_ENABLED: "false"' in e2e
+    assert 'ALIVE_INSTALL_BROWSER: "false"' in e2e
+
+
+def test_dockerfile_installs_chrome_for_the_demo_image():
+    dockerfile = read("Dockerfile")
+    assert "ARG ALIVE_INSTALL_BROWSER=true" in dockerfile
+    assert "ALIVE_BROWSER_AVAILABLE=${ALIVE_INSTALL_BROWSER}" in dockerfile
+    assert "playwright install --with-deps chrome" in dockerfile
 
 
 def test_compose_detects_host_ollama_and_passes_pi_configuration():

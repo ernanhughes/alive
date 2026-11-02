@@ -80,7 +80,8 @@ hostname `db` never reaches browser JS: the browser only talks to
 | `ALIVE_PI_COMMAND`, `ALIVE_DOCKER_PI_PROVIDER/MODEL` | only for live Pi runs; default `mock` runner; host `ALIVE_PI_*` is not copied into the container | credentials live outside the repo |
 | `ALIVE_OLLAMA_URL/CHAT_MODEL` | optional host Ollama discovery; no credentials | no |
 | `ALIVE_EMBEDDING_ENABLED/PATH`, `ALIVE_COGNITIVE_PROVIDER` | MiniLM is baked into the image and enabled by Compose; local defaults `false`/mock | no |
-| `ALIVE_BROWSER_AVAILABLE`, `ALIVE_EXPERIMENTS_ENABLED` | Compose reports both as `false`; the dashboard disables those controls | no |
+| `ALIVE_BROWSER_AVAILABLE`, `ALIVE_EXPERIMENTS_ENABLED` | Compose reports both as `true` in the demo image; set `false` for a slim deployment | no |
+| `ALIVE_INSTALL_BROWSER` | Docker build argument (default `true`); installs Google Chrome and its system dependencies | no |
 | `ALIVE_DEMO_MODE` | Docker-entrypoint only (`true` default); idempotent fixture seed, never wipes data | no |
 
 No secrets are committed; `.dockerignore` excludes `.env`, `.alive/`, `node_modules/`,
@@ -104,12 +105,11 @@ No secrets are committed; `.dockerignore` excludes `.env`, `.alive/`, `node_modu
 
 ## G. Known limitations (honest, not hidden)
 
-1. Managed Chrome is unavailable in the slim runtime image. Compose reports
-   `ALIVE_BROWSER_AVAILABLE=false`; the dashboard disables the Browser controls,
-   and any direct browser-session endpoint still returns an honest `502`
-   (`browser_operation` in `alive/app.py`). The demo journey therefore uses the
-   `/demo` + `/demo-live-01/*` fixture pages through API-driven observation ingest,
-   not live Chrome automation.
+1. The default demo image installs Google Chrome and reports
+   `ALIVE_BROWSER_AVAILABLE=true`, so managed browser sessions work inside the
+   container. A slim image is available with `--build-arg ALIVE_INSTALL_BROWSER=false`
+   and `ALIVE_BROWSER_AVAILABLE=false`; the dashboard then disables the Browser
+   controls instead of issuing a `502`.
 2. Semantic/vector search is available by default: the image bakes the pinned
    384-dimensional MiniLM model at `/app/models/minilm`. A text-only build is
    possible with `--build-arg ALIVE_INSTALL_EMBEDDING_MODEL=false`; text search
@@ -117,6 +117,6 @@ No secrets are committed; `.dockerignore` excludes `.env`, `.alive/`, `node_modu
 3. The pinned Pi runtime is in the image. Compose probes a host Ollama and
    auto-configures the Agents runner with a small detected chat model; live
    Meta calls still require explicit credentials and never run by default.
-4. The research experiment harness is opt-in. Compose reports
-   `ALIVE_EXPERIMENTS_ENABLED=false` and the Cognition tab shows it as disabled;
-   enabling it requires an explicit controlled runtime.
+4. The demo image enables the research experiment harness
+   (`ALIVE_EXPERIMENTS_ENABLED=true`) so the Cognition tab and `/api/v1/experiments`
+   are available. Set it to `false` for a deployment that should hide the harness.

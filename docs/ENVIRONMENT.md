@@ -38,12 +38,13 @@ dependencies (`uv sync --locked`), the built dashboard, the pinned 384-dimension
 `/app/models/minilm` (semantic search enabled), `curl` and `postgresql-client`. The database is the
 `pgvector/pgvector:pg16` image.
 
-Not in the image: a browser (managed browser sessions need Chrome on the host), any external Pi
-command, and Ollama. Compose probes a host Ollama at `http://host.docker.internal:11434` and
-auto-configures the Pi agent with a small detected chat model. `mxbai-embed-large` is 1024-dimensional
-and is not selected because the memory schema stores 384-dimensional vectors. Compose also reports
-`ALIVE_BROWSER_AVAILABLE=false` and `ALIVE_EXPERIMENTS_ENABLED=false`, so the dashboard disables the
-Browser controls and the experiment harness instead of issuing requests that would return 502/404.
+Not in the image: any external Pi command and Ollama. The default demo image installs Google Chrome
+and enables the research experiment harness; Compose reports `ALIVE_BROWSER_AVAILABLE=true` and
+`ALIVE_EXPERIMENTS_ENABLED=true`. A slim build is available with `ALIVE_INSTALL_BROWSER=false`,
+`ALIVE_BROWSER_AVAILABLE=false` and `ALIVE_EXPERIMENTS_ENABLED=false`. Compose probes a host Ollama
+at `http://host.docker.internal:11434` and auto-configures the Pi agent with a small detected chat
+model. `mxbai-embed-large` is 1024-dimensional and is not selected because the memory schema stores
+384-dimensional vectors.
 
 Compose passes only these to the app: `DATABASE_URL`, `ALIVE_API_TOKEN` (required),
 `ALIVE_ALLOWED_ORIGINS`, `ALIVE_BROWSER_ORIGINS`, `ALIVE_BROWSER_AVAILABLE`, `ALIVE_EXPERIMENTS_ENABLED`,
@@ -53,6 +54,7 @@ demo flags tied to it), `ALIVE_EMBEDDING_ENABLED`, `ALIVE_EMBEDDING_PATH`, `ALIV
 `ALIVE_DOCKER_PI_MODEL`, `ALIVE_META_API_KEY` and `ALIVE_META_MODEL`. Anything else you set locally
 does **not** reach the container, which runs with the default for it. The doctor's *Docker parity*
 section lists the differences. To pass one through, add it under `app.environment` in `compose.yaml`.
+`ALIVE_INSTALL_BROWSER` is a Docker build argument (default `true`), not an application setting.
 
 Docker uses `ALIVE_DOCKER_PI_PROVIDER` / `ALIVE_DOCKER_PI_MODEL` so a host-only Pi configuration
 (and its credentials) is not copied into the container. Leave them empty to auto-detect a small
@@ -66,8 +68,8 @@ Ollama chat model; set them only when the container has the matching provider cr
 | `401` / "token required" | `ALIVE_API_TOKEN` vs `.alive/token`; run `scripts/init.ps1` |
 | A setting seems ignored | Doctor *Unrecognised variables* and the `source` column |
 | Works locally, differs in Docker | Doctor *Docker parity* |
-| Browser controls disabled | `ALIVE_BROWSER_AVAILABLE`; the slim Docker image has no Chrome |
-| Experiments disabled | `ALIVE_EXPERIMENTS_ENABLED`; the research harness is opt-in |
+| Browser controls disabled | `ALIVE_BROWSER_AVAILABLE`; set false only for a slim image built with `ALIVE_INSTALL_BROWSER=false` |
+| Experiments disabled | `ALIVE_EXPERIMENTS_ENABLED`; the demo default is true, set false to hide |
 | Pi failure in the Agents tab | `ALIVE_PI_COMMAND` and `Pi agent model` checks in the doctor |
 | Pi failure in workflows or Pi tests | Pinned Pi check; run the `npm ci` line above |
 | Pi says model not configured | `Pi agent model` in the doctor; set `ALIVE_PI_*` or start Ollama |

@@ -40,6 +40,17 @@ class Browsers:
         # Exact origins including ports; no wildcard hosts or arbitrary loopback ports.
         return origin in self.kernel.settings.alive_browser_origins
 
+    def resolve(self, url):
+        """Resolve a dashboard-relative path against the first allowed origin.
+
+        The dashboard is same-origin in production, so its ``base`` is empty and a managed
+        browser destination arrives as ``/world/...``. The managed browser runs inside the
+        container, where the first allowlisted origin (``http://app:8000``) is the app itself.
+        """
+        if url.startswith("/"):
+            return self.kernel.settings.alive_browser_origins[0].rstrip("/") + url
+        return url
+
     async def create(self):
         if len(self.pages) >= 3:
             raise ValueError("Managed browser session limit reached")
@@ -47,7 +58,11 @@ class Browsers:
             self.playwright = await async_playwright().start()
         if not self.browser:
             self.browser = await self.playwright.chromium.launch(
-                channel="chrome", headless=self.kernel.settings.alive_headless
+                channel="chrome",
+                headless=self.kernel.settings.alive_headless,
+                # Chrome's HTTPS-first policy upgrades non-local HTTP origins inside Docker.
+                # Managed pages are explicit HTTP origins on the private container network.
+                args=["--disable-features=HttpsUpgrades,HttpsFirstModeV2,HttpsFirstMode"],
             )
         context = await self.browser.new_context(accept_downloads=False, service_workers="block")
 
@@ -112,6 +127,7 @@ class Browsers:
         return payload
 
     async def navigate(self, session_id, url):
+        url = self.resolve(url)
         if not self.allowed(url):
             raise PermissionError("Destination is not in ALIVE_BROWSER_ORIGINS")
         page = self.page(session_id)

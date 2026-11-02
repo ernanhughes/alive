@@ -8,6 +8,10 @@ ARG NODE_IMAGE=node:24.22.2-slim@sha256:c86ecead9e55a5210ac1727de38a4ca840bf03dc
 # to build a text-only image (the runtime still reports the absence honestly).
 ARG ALIVE_INSTALL_EMBEDDING_MODEL=true
 
+# Managed Chrome: install Google Chrome and its system dependencies for the demo image. Set to
+# false for a slim image; the dashboard then disables browser controls instead of returning 502.
+ARG ALIVE_INSTALL_BROWSER=true
+
 # Stage 1: build the real dashboard UI.
 FROM node:24-slim AS frontend-build
 WORKDIR /build
@@ -28,12 +32,14 @@ RUN npm ci --ignore-scripts --no-audit --no-fund
 # Stage 2: reproducible Python runtime serving API + built UI.
 FROM python:3.13-slim
 ARG ALIVE_INSTALL_EMBEDDING_MODEL
+ARG ALIVE_INSTALL_BROWSER
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     UV_LINK_MODE=copy \
     PATH="/app/.venv/bin:${PATH}" \
     ALIVE_EMBEDDING_ENABLED=${ALIVE_INSTALL_EMBEDDING_MODEL} \
     ALIVE_EMBEDDING_PATH=/app/models/minilm \
+    ALIVE_BROWSER_AVAILABLE=${ALIVE_INSTALL_BROWSER} \
     HF_HOME=/tmp/huggingface
 RUN apt-get update \
     && apt-get install -y --no-install-recommends curl postgresql-client \
@@ -48,6 +54,15 @@ USER alive
 RUN uv sync --locked --no-dev \
     && mkdir -p /app/.alive /app/dashboard \
     && chmod 700 /app/.alive
+# Playwright needs root to install Chrome's system dependencies. Chrome itself is system-wide;
+# the root browser cache is discarded so the runtime user does not depend on it.
+USER root
+RUN if [ "$ALIVE_INSTALL_BROWSER" = "true" ]; then \
+      apt-get update \
+      && DEBIAN_FRONTEND=noninteractive python -m playwright install --with-deps chrome \
+      && rm -rf /var/lib/apt/lists/* /root/.cache/ms-playwright; \
+    fi
+USER alive
 COPY --chown=alive:alive alive/ ./alive/
 COPY --chown=alive:alive migrations/ ./migrations/
 COPY --chown=alive:alive fixtures/ ./fixtures/

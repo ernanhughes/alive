@@ -53,11 +53,12 @@ provider inside the container, set `ALIVE_DOCKER_PI_PROVIDER` and `ALIVE_DOCKER_
 1024-dimensional and is **not** compatible with the current `vector(384)` memory schema; the probe
 reports it but does not select it.
 
-The slim image has no Chrome and the research experiment harness is opt-in. Compose therefore
-reports `ALIVE_BROWSER_AVAILABLE=false` and `ALIVE_EXPERIMENTS_ENABLED=false`, and the dashboard
-disables those controls instead of issuing requests that would return 502/404. Use a local
-runtime with Chrome for managed browsing, and set `ALIVE_EXPERIMENTS_ENABLED=true` on a controlled
-runtime only when you intend to run the experiment harness.
+The demo image installs Google Chrome and enables the research experiment harness by default.
+Compose reports `ALIVE_BROWSER_AVAILABLE=true` and `ALIVE_EXPERIMENTS_ENABLED=true`; the image is
+larger and the first build takes longer because Chrome and its system dependencies are installed.
+For a slim deployment, set `ALIVE_INSTALL_BROWSER=false`, `ALIVE_BROWSER_AVAILABLE=false` and
+`ALIVE_EXPERIMENTS_ENABLED=false`; the dashboard then disables those controls instead of issuing
+requests that would return 502/404.
 
 ## Evidence-lifecycle demo (fixture, no inference)
 
@@ -146,12 +147,15 @@ them only discards disposable test data.
   `POSTGRES_*` values match `DATABASE_URL` credentials.
 - **Frontend shows "Backend disconnected"**: the token in session storage must
   equal `ALIVE_API_TOKEN`; use the header `local` button to change it.
-- **Managed-browser controls are disabled**: expected in this image — no Chrome is bundled.
-  The dashboard reports `ALIVE_BROWSER_AVAILABLE=false`; use a local runtime with Chrome for
-  managed browsing. API/demo/fixture workflows are unaffected.
-- **Cognition shows the experiment harness disabled**: expected — the research harness is opt-in.
-  Set `ALIVE_EXPERIMENTS_ENABLED=true` on a controlled runtime to enable it; the default
-  container does not poll `/api/v1/experiments`.
+- **Managed-browser controls are disabled**: only when the image was built with
+  `ALIVE_INSTALL_BROWSER=false` or `ALIVE_BROWSER_AVAILABLE=false`. The default demo image
+  includes Google Chrome and enables the controls.
+- **Cognition shows the experiment harness disabled**: only when
+  `ALIVE_EXPERIMENTS_ENABLED=false`. The default demo image enables the harness and serves
+  `/api/v1/experiments`.
+- **Chrome fails to launch**: check `docker compose logs app`; the demo image installs Chrome and
+  its system dependencies during the build. Rebuild with `docker compose up -d --build` after
+  changing `ALIVE_INSTALL_BROWSER`.
 - **Vector search 409**: the image should contain the pinned MiniLM model. Check
   `docker compose logs app` and `ALIVE_EMBEDDING_ENABLED`; text search
   (`postgresql_fts`) remains the fallback.
