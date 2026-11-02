@@ -29,6 +29,8 @@ EXTERNAL = {
     "ALIVE_BASE_URL": "scripts/docker-*.py: where the smoke/e2e scripts send requests",
     "ALIVE_DEMO_MODE": "docker/entrypoint.sh + compose.yaml: seed fixture content on start",
     "ALIVE_HOST_PORT": "compose.yaml: host port for the container (extension expects 8000)",
+    "ALIVE_DOCKER_PI_PROVIDER": "compose.yaml: Pi provider inside the container",
+    "ALIVE_DOCKER_PI_MODEL": "compose.yaml: Pi model inside the container",
     "VITE_ALIVE_API_BASE": "Dockerfile/dashboard build: API origin baked into the UI",
     "POSTGRES_DB": "compose.yaml: database name for the db service",
     "POSTGRES_USER": "compose.yaml: database user for the db service",
@@ -169,6 +171,36 @@ def prerequisites(settings):
             'set ALIVE_PI_COMMAND, e.g. ["node","C:/Users/YOU/.pi/agent/bin/pi-launcher.js"]',
         )
 
+    from alive import ollama
+    from alive.agents import pi_status
+
+    ollama_status = ollama.probe(
+        settings.alive_ollama_url or ollama.DEFAULT_URL,
+        timeout=1.5,
+        chat_model=settings.alive_ollama_chat_model,
+    )
+    if ollama_status["available"]:
+        record(
+            "OK",
+            "Ollama",
+            f"{ollama_status['url']}  chat={ollama_status['chat_model'] or 'none'}  "
+            f"embedding={ollama_status['embedding_model'] or 'none'}",
+        )
+    else:
+        record(
+            "INFO",
+            "Ollama",
+            ollama_status["reason"],
+            "start Ollama or set ALIVE_OLLAMA_URL",
+        )
+    pi = pi_status(settings, ollama_status)
+    record(
+        "OK" if pi["configured"] else "WARN",
+        "Pi agent model",
+        pi["reason"],
+        pi["next_action"],
+    )
+
     token_file = ROOT / ".alive" / "token"
     have_token = bool(settings.alive_api_token) or token_file.is_file()
     record(
@@ -189,14 +221,24 @@ def prerequisites(settings):
     record("OK" if deps else "WARN", "dashboard dependencies", "installed" if deps else "missing",
            "" if deps else "npm --prefix dashboard ci")  # fmt: skip
 
+    from alive.memory import LocalEmbedding
+
+    embedding = LocalEmbedding(settings)
     if settings.alive_embedding_enabled:
-        path = Path(settings.alive_embedding_path)
-        path = path if path.is_absolute() else ROOT / path
         record(
-            "OK" if path.exists() else "FAIL",
+            "OK" if embedding.available else "FAIL",
             "embedding model (ALIVE_EMBEDDING_ENABLED=true)",
-            str(settings.alive_embedding_path),
-            "" if path.exists() else "install the pinned MiniLM model there or set it to false",
+            f"{settings.alive_embedding_path} ({embedding.provider_id})",
+            ""
+            if embedding.available
+            else "run scripts/prepare_embeddings.py or set ALIVE_EMBEDDING_ENABLED=false",
+        )
+    else:
+        record(
+            "INFO",
+            "embedding model",
+            "disabled (text search only)",
+            "set ALIVE_EMBEDDING_ENABLED=true and run scripts/prepare_embeddings.py",
         )
     if settings.alive_cognitive_provider != "mock" or settings.alive_model_transport == "pi":
         record(
@@ -239,12 +281,28 @@ def docker_parity(known, env_file, environment):
         for k in [*env_file, *environment]
         if k in known and k.startswith(("ALIVE_", "DATABASE_URL"))
     }
-    missing = sorted(local - passed - {"ALIVE_HOST_PORT", "ALIVE_BASE_URL", "VITE_ALIVE_API_BASE"})
+    missing = sorted(
+        local
+        - passed
+        - {
+            "ALIVE_HOST_PORT",
+            "ALIVE_BASE_URL",
+            "VITE_ALIVE_API_BASE",
+            "ALIVE_DOCKER_PI_PROVIDER",
+            "ALIVE_DOCKER_PI_MODEL",
+        }
+    )
     if not missing:
         record("OK", "every locally set ALIVE variable reaches the container")
     for name in missing:
         record("INFO", f"{name} does not reach the container", "the image uses its default",
                "add it under app.environment in compose.yaml if the demo needs it")  # fmt: skip
+    if local & {"ALIVE_PI_PROVIDER", "ALIVE_PI_MODEL"}:
+        record(
+            "INFO",
+            "host ALIVE_PI_* is not copied into the container",
+            "use ALIVE_DOCKER_PI_PROVIDER / ALIVE_DOCKER_PI_MODEL for Docker",
+        )
     if "ALIVE_MODEL_TRANSPORT" not in passed:
         record(
             "INFO", "container runs ALIVE_MODEL_TRANSPORT=direct (pinned Pi is installed, unused)"

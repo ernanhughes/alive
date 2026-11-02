@@ -63,6 +63,10 @@ class Settings(BaseSettings):
     alive_role_models: dict[str, str] = {}
     alive_embedding_enabled: bool = False
     alive_embedding_path: str = ".alive/models/minilm"
+    # Optional local Ollama. Empty disables discovery; compose sets host.docker.internal.
+    # The chat model is used only by the Pi agent runner, never by the memory index.
+    alive_ollama_url: str = ""
+    alive_ollama_chat_model: str = ""
     alive_cognitive_provider: str = "mock"
     alive_headless: bool = True
     alive_experiments_enabled: bool = False

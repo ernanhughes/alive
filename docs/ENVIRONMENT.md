@@ -34,17 +34,26 @@ The pinned install is verified by version and SHA-256, and a different build is 
 ## What Docker installs (see `Dockerfile`, `compose.yaml`)
 
 In the image: pinned Node, the lockfile-pinned Pi (checked at build time), Python 3.13 with locked
-dependencies (`uv sync --locked`), the built dashboard, `curl` and `postgresql-client`. The database is
-the `pgvector/pgvector:pg16` image.
+dependencies (`uv sync --locked`), the built dashboard, the pinned 384-dimensional MiniLM model at
+`/app/models/minilm` (semantic search enabled), `curl` and `postgresql-client`. The database is the
+`pgvector/pgvector:pg16` image.
 
-Not in the image: a browser (managed browser sessions need Chrome on the host), the
-embedding model, and any external Pi command.
+Not in the image: a browser (managed browser sessions need Chrome on the host), any external Pi
+command, and Ollama. Compose probes a host Ollama at `http://host.docker.internal:11434` and
+auto-configures the Pi agent with a small detected chat model. `mxbai-embed-large` is 1024-dimensional
+and is not selected because the memory schema stores 384-dimensional vectors.
 
 Compose passes only these to the app: `DATABASE_URL`, `ALIVE_API_TOKEN` (required),
 `ALIVE_ALLOWED_ORIGINS`, `ALIVE_BROWSER_ORIGINS`, `ALIVE_COGNITIVE_PROVIDER`, `ALIVE_DEMO_MODE` (and the
-demo flags tied to it), `ALIVE_META_API_KEY` and `ALIVE_META_MODEL`. Anything else you set locally
+demo flags tied to it), `ALIVE_EMBEDDING_ENABLED`, `ALIVE_EMBEDDING_PATH`, `ALIVE_OLLAMA_URL`,
+`ALIVE_OLLAMA_CHAT_MODEL`, `ALIVE_PI_COMMAND` (the pinned fallback), `ALIVE_DOCKER_PI_PROVIDER`,
+`ALIVE_DOCKER_PI_MODEL`, `ALIVE_META_API_KEY` and `ALIVE_META_MODEL`. Anything else you set locally
 does **not** reach the container, which runs with the default for it. The doctor's *Docker parity*
 section lists the differences. To pass one through, add it under `app.environment` in `compose.yaml`.
+
+Docker uses `ALIVE_DOCKER_PI_PROVIDER` / `ALIVE_DOCKER_PI_MODEL` so a host-only Pi configuration
+(and its credentials) is not copied into the container. Leave them empty to auto-detect a small
+Ollama chat model; set them only when the container has the matching provider credentials.
 
 ## Where to look
 
@@ -54,8 +63,10 @@ section lists the differences. To pass one through, add it under `app.environmen
 | `401` / "token required" | `ALIVE_API_TOKEN` vs `.alive/token`; run `scripts/init.ps1` |
 | A setting seems ignored | Doctor *Unrecognised variables* and the `source` column |
 | Works locally, differs in Docker | Doctor *Docker parity* |
-| Pi failure in the Agents tab | `ALIVE_PI_COMMAND` check in the doctor |
+| Pi failure in the Agents tab | `ALIVE_PI_COMMAND` and `Pi agent model` checks in the doctor |
 | Pi failure in workflows or Pi tests | Pinned Pi check; run the `npm ci` line above |
+| Pi says model not configured | `Pi agent model` in the doctor; set `ALIVE_PI_*` or start Ollama |
+| Ollama not detected | `Ollama` in the doctor; host listener must accept Docker connections |
 | Search is text-only | `ALIVE_EMBEDDING_ENABLED` and the model at `ALIVE_EMBEDDING_PATH` |
 | Capability missing or unavailable | `uv run python -m alive.capabilities doctor` |
 | Live model calls refused | `ALIVE_META_API_KEY`, `ALIVE_COGNITIVE_PROVIDER`; budgets are enforced by the Governor |

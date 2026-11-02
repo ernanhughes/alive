@@ -45,9 +45,33 @@ export interface State {
 }
 export interface Capabilities {
   database: { available: boolean; backend: string; error: string | null };
-  pgvector: { storage: boolean; search: boolean; reason: string };
+  pgvector: {
+    storage: boolean;
+    search: boolean;
+    reason: string;
+    provider?: string;
+    model?: string;
+    dimension?: number;
+  };
   zeromq: { available: boolean; received: number };
-  pi: { configured: boolean };
+  pi: {
+    configured: boolean;
+    installed?: boolean;
+    command_configured?: boolean;
+    command_source?: string;
+    provider?: string;
+    model?: string;
+    reason?: string;
+    next_action?: string;
+  };
+  ollama?: {
+    available: boolean;
+    url: string;
+    models: string[];
+    chat_model: string | null;
+    embedding_model: string | null;
+    reason: string;
+  };
   providers: { meta: { configured: boolean } };
 }
 export function resolveApiBase(): string {

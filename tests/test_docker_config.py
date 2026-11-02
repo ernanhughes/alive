@@ -174,3 +174,23 @@ def test_dockerfile_installs_pi_from_the_lockfile_without_running_install_script
 def test_compose_does_not_switch_the_model_transport_to_pi():
     for name in ("compose.yaml", "compose.e2e.yaml"):
         assert "ALIVE_MODEL_TRANSPORT" not in read(name), "the default transport stays direct"
+
+
+def test_dockerfile_bundles_the_pinned_embedding_model():
+    dockerfile = read("Dockerfile")
+    assert "prepare_embeddings.py" in dockerfile
+    assert "ALIVE_EMBEDDING_PATH=/app/models/minilm" in dockerfile
+    assert "ALIVE_EMBEDDING_ENABLED=${ALIVE_INSTALL_EMBEDDING_MODEL}" in dockerfile
+    assert "test -s /app/models/minilm/model.onnx" in dockerfile
+    assert "test -s /app/models/minilm/tokenizer.json" in dockerfile
+
+
+def test_compose_detects_host_ollama_and_passes_pi_configuration():
+    compose = read("compose.yaml")
+    assert "host.docker.internal:11434" in compose
+    assert "host.docker.internal:host-gateway" in compose
+    assert "ALIVE_OLLAMA_URL" in compose and "ALIVE_OLLAMA_CHAT_MODEL" in compose
+    assert "ALIVE_PI_PROVIDER: ${ALIVE_DOCKER_PI_PROVIDER:-}" in compose
+    assert "ALIVE_PI_MODEL: ${ALIVE_DOCKER_PI_MODEL:-}" in compose
+    assert "ALIVE_EMBEDDING_ENABLED: ${ALIVE_EMBEDDING_ENABLED:-true}" in compose
+    assert "ALIVE_EMBEDDING_PATH: /app/models/minilm" in compose

@@ -13,8 +13,9 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy import func, literal_column, select
 
+from alive import ollama
 from alive.admission.api import router as admission_router
-from alive.agents import Agents
+from alive.agents import Agents, pi_status
 from alive.bespoke.api import router as bespoke_router
 from alive.bespoke.recipes import load_catalogue
 from alive.browser import Browsers
@@ -272,6 +273,13 @@ def create_app(settings=None, include_experiments=None, *, capability_registry=N
 
     @app.get("/api/v1/capabilities", dependencies=[Depends(auth)])
     async def capabilities():
+        embedding = app.state.memory.embedding
+        ollama_status = await asyncio.to_thread(
+            ollama.probe_cached,
+            settings.alive_ollama_url,
+            settings.alive_ollama_chat_model,
+        )
+        pi = await asyncio.to_thread(pi_status, settings, ollama_status)
         return {
             "database": {
                 "available": kernel.ready,
@@ -280,10 +288,13 @@ def create_app(settings=None, include_experiments=None, *, capability_registry=N
             },
             "pgvector": {
                 "storage": kernel.vector_storage,
-                "search": app.state.memory.embedding.available,
-                "dimension": 384,
+                "search": embedding.available,
+                "dimension": embedding.dimension,
+                "provider": embedding.provider_id,
+                "model": embedding.model_id,
+                "revision": embedding.revision,
                 "reason": "Pinned MiniLM available"
-                if app.state.memory.embedding.available
+                if embedding.available
                 else "No embedding model configured",
             },
             "zeromq": {
@@ -292,10 +303,17 @@ def create_app(settings=None, include_experiments=None, *, capability_registry=N
                 "delivery": "Ephemeral PUB/SUB; recover via persisted sequence cursor",
             },
             "pi": {
-                "configured": bool(settings.alive_pi_model),
+                "configured": pi["configured"],
+                "installed": pi["installed"],
                 "tools": [],
-                "command_configured": bool(settings.alive_pi_command),
+                "command_configured": pi["installed"],
+                "command_source": pi["command_source"],
+                "provider": pi["provider"],
+                "model": pi["model"],
+                "reason": pi["reason"],
+                "next_action": pi["next_action"],
             },
+            "ollama": ollama_status,
             "browser": {"engine": "Chrome / Playwright", "origins": settings.alive_browser_origins},
             "providers": {"mock": True, "meta": MetaProvider(settings).capabilities()},
         }

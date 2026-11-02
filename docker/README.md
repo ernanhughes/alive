@@ -27,6 +27,32 @@ The app is published on host port **8000** because that is the port the Chrome
 extension is built for (its permissions, authorised pages and default backend,
 and the server's page allow-list). Stop any dev backend on 8000 first.
 
+## Local infrastructure defaults
+
+The image installs the pinned 384-dimensional MiniLM ONNX model at
+`/app/models/minilm` and enables semantic search, so the Infrastructure panel reports
+**Semantic search: MiniLM · 384d** without a mounted model. The pinned Pi runtime is also in
+the image; the Agents runner falls back to it when no `pi` executable is on `PATH`.
+
+Compose probes an optional Ollama on the host at `http://host.docker.internal:11434`. If
+Ollama is reachable and has a supported small chat model, ALIVE auto-configures Pi with
+`ollama/<model>`; otherwise the panel and doctor report the exact missing piece. Ollama must
+accept connections from Docker:
+
+```powershell
+# Restart Ollama with a non-loopback listener, then pull a small chat model.
+$env:OLLAMA_HOST = "0.0.0.0:11434"
+ollama serve
+ollama pull qwen2.5:0.5b
+```
+
+Override detection with `ALIVE_OLLAMA_URL` and `ALIVE_OLLAMA_CHAT_MODEL`. To use a cloud Pi
+provider inside the container, set `ALIVE_DOCKER_PI_PROVIDER` and `ALIVE_DOCKER_PI_MODEL`; host
+`ALIVE_PI_*` values are deliberately not copied, so host-only credentials cannot leak in. Set
+`ALIVE_EMBEDDING_ENABLED=false` for a text-only deployment. `mxbai-embed-large` is
+1024-dimensional and is **not** compatible with the current `vector(384)` memory schema; the probe
+reports it but does not select it.
+
 ## Evidence-lifecycle demo (fixture, no inference)
 
 With the stack running, the pinned local mirrors are served at
@@ -116,7 +142,16 @@ them only discards disposable test data.
   equal `ALIVE_API_TOKEN`; use the header `local` button to change it.
 - **Managed-browser actions fail (502)**: expected in this image — no Chrome
   is bundled. API/demo/fixture workflows are unaffected.
-- **Vector search 409**: expected without a mounted embedding model; text
-  search (`postgresql_fts`) is the supported Docker path.
+- **Vector search 409**: the image should contain the pinned MiniLM model. Check
+  `docker compose logs app` and `ALIVE_EMBEDDING_ENABLED`; text search
+  (`postgresql_fts`) remains the fallback.
+- **Ollama not detected**: the host listener must accept Docker connections
+  (`OLLAMA_HOST=0.0.0.0:11434`), and `ALIVE_OLLAMA_URL` must point at it. Run
+  `docker compose exec app python -m alive.ollama --url http://host.docker.internal:11434`
+  for a read-only probe.
+- **Pi says "Installed · model not configured"**: install a supported small Ollama chat model,
+  or set `ALIVE_DOCKER_PI_PROVIDER` and `ALIVE_DOCKER_PI_MODEL` for a cloud provider whose
+  credentials are present in the container. The pinned Pi runtime is already in the image;
+  live model calls still need a provider.
 - **Missing provider credentials**: live Meta/Pi calls need explicit keys and
   never run by default; the demo and tests use the deterministic mock runner.

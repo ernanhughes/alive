@@ -617,14 +617,26 @@ export function App() {
                     [
                       "Semantic search",
                       caps?.pgvector.search
-                        ? "Available"
+                        ? caps.pgvector.model?.includes("MiniLM")
+                          ? "MiniLM · 384d"
+                          : "Available"
                         : "No embedding model",
                     ],
                     [
                       "Pi agent",
                       caps?.pi.configured
                         ? "Configured · tools disabled"
-                        : "Needs model configuration",
+                        : caps?.pi.installed
+                          ? "Installed · model not configured"
+                          : "Unavailable",
+                    ],
+                    [
+                      "Local Ollama",
+                      caps?.ollama?.available
+                        ? caps.ollama.chat_model
+                          ? `Detected · ${caps.ollama.chat_model}`
+                          : "Detected · no chat model"
+                        : "Not detected",
                     ],
                   ].map(([name, status]) => (
                     <div className="infra" key={name}>

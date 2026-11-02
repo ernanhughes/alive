@@ -77,8 +77,9 @@ hostname `db` never reaches browser JS: the browser only talks to
 | `POSTGRES_DB/USER/PASSWORD` | yes (Compose defaults, overridable) | yes (password) |
 | `ALIVE_ALLOWED_ORIGINS`, `ALIVE_BROWSER_ORIGINS` | yes (safe local defaults in Compose) | no |
 | `ALIVE_META_API_KEY` / aliases, `ALIVE_META_URL/BASE_URL/MODEL`, `ALIVE_ROLE_MODELS` | only for live inference; empty by default | yes — never committed, never in images |
-| `ALIVE_PI_COMMAND/PROVIDER/MODEL` | only for live Pi runs; default `mock` runner | credentials live outside the repo |
-| `ALIVE_EMBEDDING_ENABLED/PATH`, `ALIVE_COGNITIVE_PROVIDER` | optional; defaults `false`/mock, no inference | no |
+| `ALIVE_PI_COMMAND`, `ALIVE_DOCKER_PI_PROVIDER/MODEL` | only for live Pi runs; default `mock` runner; host `ALIVE_PI_*` is not copied into the container | credentials live outside the repo |
+| `ALIVE_OLLAMA_URL/CHAT_MODEL` | optional host Ollama discovery; no credentials | no |
+| `ALIVE_EMBEDDING_ENABLED/PATH`, `ALIVE_COGNITIVE_PROVIDER` | MiniLM is baked into the image and enabled by Compose; local defaults `false`/mock | no |
 | `ALIVE_DEMO_MODE` | Docker-entrypoint only (`true` default); idempotent fixture seed, never wipes data | no |
 
 No secrets are committed; `.dockerignore` excludes `.env`, `.alive/`, `node_modules/`,
@@ -106,6 +107,10 @@ No secrets are committed; `.dockerignore` excludes `.env`, `.alive/`, `node_modu
    endpoints return honest `502` (`browser_operation` in `alive/app.py:417-431`);
    the demo journey therefore uses the `/demo` + `/demo-live-01/*` fixture pages
    through API-driven observation ingest, not live Chrome automation.
-2. Semantic/vector search reports unavailable unless an embedding model is
-   mounted; text search (`postgresql_fts`) is the supported Docker path.
-3. Live Meta/Pi calls require explicit credentials and never run by default.
+2. Semantic/vector search is available by default: the image bakes the pinned
+   384-dimensional MiniLM model at `/app/models/minilm`. A text-only build is
+   possible with `--build-arg ALIVE_INSTALL_EMBEDDING_MODEL=false`; text search
+   (`postgresql_fts`) remains the fallback.
+3. The pinned Pi runtime is in the image. Compose probes a host Ollama and
+   auto-configures the Agents runner with a small detected chat model; live
+   Meta calls still require explicit credentials and never run by default.

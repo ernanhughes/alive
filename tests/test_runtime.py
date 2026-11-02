@@ -16,13 +16,46 @@ def test_security_and_degraded_startup(client, settings):
         client.post("/api/v1/alive/start", headers={"Origin": "https://evil.example"}).status_code
         == 403
     )
-    assert client.get("/api/v1/capabilities").json()["pgvector"]["search"] is False
+    caps = client.get("/api/v1/capabilities").json()
+    assert caps["pgvector"]["search"] is False
+    assert caps["pgvector"]["dimension"] == 384
+    assert caps["pi"]["configured"] is False
+    assert caps["ollama"]["available"] is False
     assert (
         client.post("/api/v1/memories/search", json={"query": "a", "mode": "vector"}).status_code
         == 409
     )
     with TestClient(create_app(settings)) as second:
         assert second.get("/api/v1/health").json()["status"] == "degraded"
+
+
+def test_capabilities_report_detected_ollama_and_pi_configuration(settings, monkeypatch):
+    from tests.conftest import _boot
+
+    settings.alive_ollama_url = "http://ollama.test:11434"
+    monkeypatch.setattr(
+        "alive.ollama.probe_cached",
+        lambda url, model="", timeout=1.5: {
+            "available": True,
+            "url": url,
+            "models": ["qwen2.5:0.5b", "all-minilm:l6-v2"],
+            "chat_model": "qwen2.5:0.5b",
+            "embedding_model": "all-minilm:l6-v2",
+            "requested_chat_model": model,
+            "reason": "Ollama reachable; local chat model available",
+        },
+    )
+    _boot(settings)
+    with TestClient(
+        create_app(settings, include_experiments=False),
+        headers={"Authorization": f"Bearer {TOKEN}"},
+    ) as c:
+        caps = c.get("/api/v1/capabilities").json()
+    assert caps["ollama"]["available"] is True
+    assert caps["ollama"]["chat_model"] == "qwen2.5:0.5b"
+    assert caps["pi"]["configured"] is True
+    assert caps["pi"]["provider"] == "ollama"
+    assert caps["pi"]["model"] == "qwen2.5:0.5b"
 
 
 def test_observation_atomicity_duplicate_memory_and_goals(client):

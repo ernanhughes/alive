@@ -3,7 +3,7 @@ import sys
 
 import pytest
 
-from alive.agents import PiRunner
+from alive.agents import PiRunner, pi_status
 from alive.providers import MetaProvider, MockProvider
 
 
@@ -51,6 +51,26 @@ async def test_pi_error_timeout_and_cancellation(settings, tmp_path):
     task.cancel()
     with pytest.raises(asyncio.CancelledError):
         await task
+
+
+def test_pi_status_uses_the_pinned_runtime_and_a_detected_ollama_model(settings, monkeypatch):
+    monkeypatch.setattr("alive.agents.pi_command", lambda _: (["node", "cli.js"], "pinned"))
+    status = pi_status(
+        settings,
+        {
+            "available": True,
+            "models": ["qwen2.5:0.5b"],
+            "chat_model": "qwen2.5:0.5b",
+            "embedding_model": "all-minilm:l6-v2",
+            "reason": "ok",
+        },
+    )
+    assert status["installed"] is True
+    assert status["configured"] is True
+    assert status["provider"] == "ollama"
+    assert status["model"] == "qwen2.5:0.5b"
+    assert status["auto_detected"] is True
+    assert status["pinned"] is True
 
 
 async def test_provider_contract(settings):

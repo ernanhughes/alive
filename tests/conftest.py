@@ -18,6 +18,7 @@ MANIFESTS_DIR = Path(__file__).resolve().parents[1] / "alive/capabilities/manife
 FAST_FILES = {
     "tests/test_transport.py",
     "tests/test_docker_config.py",
+    "tests/test_ollama.py",
     "tests/test_test_select.py",
     "tests/test_arch_boundaries.py",
     "tests/test_workflows_spec.py",
@@ -45,6 +46,9 @@ def settings(tmp_path):
         alive_api_token=TOKEN,
         alive_heartbeat_seconds=0.1,
         alive_workspace=tmp_path / "workspace",
+        alive_ollama_url="",
+        alive_pi_provider="",
+        alive_pi_model="",
     )
 
 

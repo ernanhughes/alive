@@ -67,6 +67,8 @@ ALIVE_PI_MODEL=YOUR_MODEL
 
 This machine completed a real run with Pi 1.4.0, provider `opencode`, model `gpt-6-luna`. Model catalog availability does not prove credential validity. The free model route returned a usage limit; the `opencode-go` route returned an upstream invalid-credential error. The working `opencode` route used existing environment credentials; none were copied into the repository.
 
+For a local Ollama, set `ALIVE_OLLAMA_URL` (for example `http://127.0.0.1:11434`) and install a small chat model such as `qwen2.5:0.5b`. The Agents runner detects it and configures Pi automatically; `ALIVE_OLLAMA_CHAT_MODEL` pins a specific model. The memory index remains on the pinned 384-dimensional MiniLM model, so `mxbai-embed-large` (1024 dimensions) is reported but not selected.
+
 ## Browser and extension
 
 Stable Chrome is used through Playwright's `chrome` channel. `ALIVE_HEADLESS=false` opens visible managed sessions. Allowed network origins default to `http://127.0.0.1:8000`; modify `ALIVE_BROWSER_ORIGINS` deliberately. Click/fill controls must opt in via `data-alive-allow`. Use `data-alive-private` to exclude a subtree from text perception.

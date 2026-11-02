@@ -31,6 +31,20 @@ services:
       ALIVE_BROWSER_ORIGINS: '["http://app:8000","http://localhost:${ALIVE_HOST_PORT:-8000}","http://127.0.0.1:8000"]'
       ALIVE_COGNITIVE_PROVIDER: ${ALIVE_COGNITIVE_PROVIDER:-mock}
       ALIVE_DEMO_MODE: ${ALIVE_DEMO_MODE:-true}
+      # The image bakes the pinned 384-dimensional MiniLM model. Disable only for a text-only
+      # deployment; the dashboard then reports semantic search as unavailable.
+      ALIVE_EMBEDDING_ENABLED: ${ALIVE_EMBEDDING_ENABLED:-true}
+      ALIVE_EMBEDDING_PATH: /app/models/minilm
+      # Optional Ollama on the host. Docker Desktop resolves host.docker.internal; Linux gets
+      # it from extra_hosts below. Ollama must listen on 0.0.0.0:11434 to accept this connection.
+      ALIVE_OLLAMA_URL: ${ALIVE_OLLAMA_URL:-http://host.docker.internal:11434}
+      ALIVE_OLLAMA_CHAT_MODEL: ${ALIVE_OLLAMA_CHAT_MODEL:-}
+      # The image contains the pinned Pi runtime. Docker-specific overrides are separate from
+      # the host ALIVE_PI_* values so local cloud-provider credentials are not copied into the
+      # container. Empty values let ALIVE auto-detect a small installed Ollama chat model.
+      ALIVE_PI_COMMAND: '["pi"]'
+      ALIVE_PI_PROVIDER: ${ALIVE_DOCKER_PI_PROVIDER:-}
+      ALIVE_PI_MODEL: ${ALIVE_DOCKER_PI_MODEL:-}
       # Deterministic, non-external fixture providers (local_fixture_claim, local_stub_invalid)
       # for the pinned /demo-live-01 mirrors. Tied to demo mode so it is off whenever demo mode is
       # off. The paid Meta claim/research flags are deliberately not set here.
@@ -46,6 +60,9 @@ services:
       # pages, default backend) and the server's PAGES allow-list. Overriding it also moves the
       # dashboard, but the extension will not follow.
       - "127.0.0.1:${ALIVE_HOST_PORT:-8000}:8000"
+    extra_hosts:
+      # Linux Docker needs this mapping for the optional host Ollama probe.
+      - "host.docker.internal:host-gateway"
     volumes:
       - alive-appdata:/app/.alive
     healthcheck:
