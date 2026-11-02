@@ -65,7 +65,7 @@ const icons = [
   BrainCircuit,
   Terminal,
   Globe2,
-  Waypoints,
+  Activity,
   BrainCircuit,
   Waypoints,
   Blocks,
