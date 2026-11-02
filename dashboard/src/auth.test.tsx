@@ -70,7 +70,25 @@ function serveDashboard() {
         drives: {},
       });
     if (path.endsWith("/agents")) return response(200, { runs: [] });
-    return response(200, []);
+    // App opens on the Bespoke tab, which mounts LivePane and BespokePane. Their endpoints
+    // return objects, not the empty array used for the plain list endpoints below.
+    if (
+      path.endsWith("/memories") ||
+      path.endsWith("/goals") ||
+      path.endsWith("/browser/sessions")
+    )
+      return response(200, []);
+    if (path.endsWith("/admissions/live"))
+      return response(200, { consents: [], exchanges: [] });
+    if (path.includes("/admissions/sources"))
+      return response(200, { sources: [] });
+    if (path.endsWith("/bespoke/recipes"))
+      return response(200, { recipes: [] });
+    if (path.endsWith("/bespoke/contexts"))
+      return response(200, { contexts: [] });
+    if (path.endsWith("/bespoke/recommendations"))
+      return response(200, { recommendations: [] });
+    return response(404, { detail: "Unmocked dashboard request: " + path });
   });
 }
 
